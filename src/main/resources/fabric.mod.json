@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "lord_of_the_rings_-_middle_earth",
+  "version": "${version}",
+  "name": "Lord of the Rings - Middle Earth",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRModClient"
+    ],
+    "main": [
+      "net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
