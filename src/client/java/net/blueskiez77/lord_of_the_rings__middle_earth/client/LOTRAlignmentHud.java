@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentBar;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionRank;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -16,28 +17,32 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
 /**
- * Minimal on-screen alignment readout (top-left corner). First real
- * client-side UI. Deliberately crude: shows a chosen "viewed faction" and
- * the player's current alignment + rank with it. A proper alignment bar /
- * faction picker comes later; this exists to make alignment visible without
- * running a command.
- * For now the viewed faction is hardcoded to GONDOR so there's something to
- * look at; once a "current faction" selection exists (menu slice) this reads
- * from that instead.
- * IMPORTANT (26.1 rendering notes):
- *  - Registered via HudElementRegistry (HudRenderCallback was REMOVED in 26.1).
- *  - Colors are ARGB (0xFF......); a bare RGB value renders invisible.
- *  - The HudElement lambda's graphics parameter type may be GuiGraphics or,
- *    in the newest split-phase docs, GuiGraphicsExtractor. If this fails to
- *    compile on the type, change the render() first parameter type to match
- *    what the HudElement functional interface declares (hover it in-IDE).
+ * On-screen alignment bar. Upgrades the earlier text-only readout into a real
+ * progress bar toward the next rank, using the faithful rank-window math in
+ * LOTRAlignmentBar.
+ *
+ * Rendering is deliberately texture-FREE: the original used a bitmap atlas
+ * with raw GL11 blits, none of which port cleanly to 26.1. Instead we draw
+ * with primitive fill() rectangles. When the texture atlas is ported later,
+ * swap the fill() calls for blits; the math is reused.
+ *
+ * 26.1 API notes (verified against working project code):
+ *  - Identifier lives in net.minecraft.resources.
+ *  - HUD graphics param is GuiGraphicsExtractor; text via .text(...), boxes
+ *    via .fill(x1, y1, x2, y2, argb). Colors are ARGB (0xFF......).
+ *
+ * Viewed faction is hardcoded to GONDOR until a selection system exists.
  */
 public final class LOTRAlignmentHud {
 
     private static final Identifier ID =
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "alignment_hud");
 
-    // Temporary: the faction the HUD shows until a selection system exists.
+    private static final int BAR_WIDTH = 120;
+    private static final int BAR_HEIGHT = 6;
+    private static final int MARKER_WIDTH = 3;
+    private static final int MARGIN_TOP = 6;
+
     private static LOTRFaction viewedFaction = LOTRFaction.GONDOR;
 
     private LOTRAlignmentHud() {
@@ -66,22 +71,39 @@ public final class LOTRAlignmentHud {
 
         float alignment = LOTRPlayerAlignments.getAlignment(player, faction);
         LOTRFactionRank rank = LOTRPlayerAlignments.getRank(player, faction);
+        LOTRAlignmentBar bar = LOTRAlignmentBar.compute(faction, alignment);
 
-        Component nameLine = Component.translatable(faction.untranslatedFactionName());
-        Component valueLine = Component.literal(formatAlignment(alignment) + "  ")
-                .append(rank.getDisplayName());
+        int screenW = graphics.guiWidth();
+        int centerX = screenW / 2;
+        int barLeft = centerX - BAR_WIDTH / 2;
+        int barTop = MARGIN_TOP;
 
-        int x = 4;
-        int y = 4;
         int factionColor = 0xFF000000 | faction.getFactionColor();
+        int trackBg = 0x80000000;
         int white = 0xFFFFFFFF;
 
-        graphics.text(mc.font, nameLine, x, y, factionColor, true);
-        graphics.text(mc.font, valueLine, x, y + 10, white, true);
+        graphics.fill(barLeft - 1, barTop - 1, barLeft + BAR_WIDTH + 1, barTop + BAR_HEIGHT + 1, trackBg);
+        int fillWidth = Math.round(bar.progress * BAR_WIDTH);
+        graphics.fill(barLeft, barTop, barLeft + fillWidth, barTop + BAR_HEIGHT, factionColor);
+
+        int markerX = barLeft + fillWidth - MARKER_WIDTH / 2;
+        graphics.fill(markerX, barTop - 1, markerX + MARKER_WIDTH, barTop + BAR_HEIGHT + 1, white);
+
+        Component name = Component.translatable(faction.untranslatedFactionName());
+        int nameWidth = mc.font.width(name);
+        graphics.text(mc.font, name, centerX - nameWidth / 2, barTop - 11, factionColor, true);
+
+        Component below = Component.literal(formatAlignment(alignment) + "  ").append(rank.getDisplayName());
+        int belowWidth = mc.font.width(below);
+        graphics.text(mc.font, below, centerX - belowWidth / 2, barTop + BAR_HEIGHT + 2, white, true);
+
+        Component minLabel = bar.rankMin.getShortNameWithGender(false);
+        Component maxLabel = bar.rankMax.getShortNameWithGender(false);
+        graphics.text(mc.font, minLabel, barLeft, barTop + BAR_HEIGHT + 12, 0xFFBBBBBB, true);
+        graphics.text(mc.font, maxLabel, barLeft + BAR_WIDTH - mc.font.width(maxLabel), barTop + BAR_HEIGHT + 12, 0xFFBBBBBB, true);
     }
 
     private static String formatAlignment(float alignment) {
-        // Whole numbers show without a trailing .0; keep one decimal otherwise.
         if (alignment == Math.floor(alignment)) {
             return String.valueOf((int) alignment);
         }
