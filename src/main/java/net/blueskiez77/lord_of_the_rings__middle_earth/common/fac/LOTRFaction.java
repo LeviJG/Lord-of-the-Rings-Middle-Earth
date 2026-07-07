@@ -13,6 +13,8 @@ import java.util.Random;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRMapCoords;
+import com.mojang.serialization.Codec;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
@@ -31,6 +33,14 @@ public enum LOTRFaction {
 
     public static final Random factionRand = new Random();
     public static final int CONTROL_ZONE_EXTRA_RANGE = 50;
+
+    /**
+     * Codec keyed by faction code name (e.g. "GONDOR"), used by the alignment
+     * attachment for persistence. Faithful to the old NBT scheme, which also
+     * stored factions by codeName() rather than ordinal.
+     */
+    public static final Codec<LOTRFaction> CODEC =
+            Codec.STRING.xmap(LOTRFaction::forName, LOTRFaction::codeName);
 
     public LOTRDimension factionDimension;
     public LOTRDimension.DimensionRegion factionRegion;
@@ -56,7 +66,7 @@ public enum LOTRFaction {
     }
 
     LOTRFaction(int color, LOTRDimension dim, int alignment, Collection<FactionType> types) {
-        this(color, dim, dim.dimensionRegions.get(0), true, true, alignment, null, types);
+        this(color, dim, dim.dimensionRegions.getFirst(), true, true, alignment, null, types);
     }
 
     LOTRFaction(int color, LOTRDimension dim, LOTRDimension.DimensionRegion region, boolean player, boolean registry, int alignment, LOTRMapRegion mapInfo, Collection<FactionType> types) {
@@ -756,7 +766,7 @@ public enum LOTRFaction {
             factionRand.setSeed(i);
             List<String> list = Arrays.asList(names);
             Collections.shuffle(list, factionRand);
-            return Component.literal(list.get(0));
+            return Component.literal(list.getFirst());
         }
         return Component.translatable(untranslatedFactionName());
     }
@@ -834,7 +844,7 @@ public enum LOTRFaction {
         if (ranksSortedDescending.isEmpty()) {
             return LOTRFactionRank.RANK_NEUTRAL;
         }
-        return ranksSortedDescending.get(ranksSortedDescending.size() - 1);
+        return ranksSortedDescending.getLast();
     }
 
     public List<LOTRFaction> getOthersOfRelation(LOTRFactionRelations.Relation rel) {
@@ -915,7 +925,7 @@ public enum LOTRFaction {
         if (index >= 0) {
             index -= n;
             if (index < 0) {
-                return ranksSortedDescending.get(0);
+                return ranksSortedDescending.getFirst();
             }
             if (index > ranksSortedDescending.size() - 1) {
                 return LOTRFactionRank.RANK_NEUTRAL;
@@ -1049,3 +1059,4 @@ public enum LOTRFaction {
         TYPE_FREE, TYPE_ELF, TYPE_MAN, TYPE_DWARF, TYPE_ORC, TYPE_TROLL, TYPE_TREE
     }
 }
+
