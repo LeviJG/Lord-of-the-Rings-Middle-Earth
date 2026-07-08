@@ -24,7 +24,7 @@ import net.minecraft.world.level.Level;
  * Faithful port of 1.7.10 lotr.common.fac.LOTRFaction.
  * Enum constants, fields, and all five constructors are verbatim from source.
  * TODO(port) markers flag deferred subsystems (banners, achievements, player
- * data, april-fools, custom dimension). Control-zone waypoint references are
+ * datagen, april-fools, custom dimension). Control-zone waypoint references are
  * inlined as map coordinates (commented wp:NAME) until waypoints are ported.
  */
 public enum LOTRFaction {

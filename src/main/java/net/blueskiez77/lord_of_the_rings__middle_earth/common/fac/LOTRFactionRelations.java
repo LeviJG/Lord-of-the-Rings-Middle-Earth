@@ -11,7 +11,7 @@ import net.minecraft.network.chat.Component;
  * Faithful port of 1.7.10 lotr.common.fac.LOTRFactionRelations.
  * Relation logic (defaults, overrides, symmetric pair keys, UNALIGNED/HOSTILE
  * special cases) is 1:1. Disk persistence (load/save to faction_relations.dat)
- * and packet broadcasts are stubbed as TODO(port) until the level-data and
+ * and packet broadcasts are stubbed as TODO(port) until the level-datagen and
  * networking slices land. Old NBT format is documented in comments.
  */
 public class LOTRFactionRelations {

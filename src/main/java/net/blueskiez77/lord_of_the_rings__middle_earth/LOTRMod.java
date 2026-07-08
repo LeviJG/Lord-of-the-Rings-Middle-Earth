@@ -2,7 +2,9 @@ package net.blueskiez77.lord_of_the_rings__middle_earth;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRAlignmentCommand;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -19,8 +21,8 @@ public class LOTRMod implements ModInitializer {
 
     // Namespace for all Identifiers (attachments, registries, assets).
     // Kept hyphen-free and snake_case to satisfy Identifier namespace
-    // rules and avoid the '-' liability; this is the namespace your data/asset
-    // folders should use (assets/lotr/..., data/lotr/...).
+    // rules and avoid the '-' liability; this is the namespace your datagen/asset
+    // folders should use (assets/lotr/..., datagen/lotr/...).
     public static final String NAMESPACE = "lotr";
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -34,6 +36,10 @@ public class LOTRMod implements ModInitializer {
 
         // Register the per-player alignment Data Attachment.
         LOTRPlayerAlignments.init();
+
+        // Register content.
+        LOTRBlocks.init();
+        LOTRItems.init();
 
         // Register the /alignment test/dev command.
         LOTRAlignmentCommand.register();

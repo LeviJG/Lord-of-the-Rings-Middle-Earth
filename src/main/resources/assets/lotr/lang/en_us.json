@@ -1,4 +1,10 @@
 {
+  "block.lotr.mithril_ore": "Mithril Ore",
+  "item.lotr.athelas": "Athelas",
+  "item.lotr.mithril": "Mithril",
+  "item.lotr.pipeweed": "Pipe-weed",
+  "key.categories.lotr": "The Lord of the Rings",
+  "key.lotr.factions": "Open Factions Menu",
   "lotr.dimension.MiddleEarth": "Middle-earth",
   "lotr.dimension.MiddleEarth.east": "Rhûn",
   "lotr.dimension.MiddleEarth.south": "Harad",
@@ -509,5 +515,9 @@
   "lotr.faction.rel.ENEMY": "Enemies",
   "lotr.faction.rel.FRIEND": "Friends",
   "lotr.faction.rel.MORTAL_ENEMY": "Mortal Enemies",
-  "lotr.faction.rel.NEUTRAL": "Neutral"
+  "lotr.faction.rel.NEUTRAL": "Neutral",
+  "lotr.general": "The Lord of the Rings",
+  "lotr.gui.factions.pledge": "Pledge Allegiance",
+  "lotr.gui.factions.pledged": "Pledged",
+  "lotr.gui.factions.title": "Factions"
 }

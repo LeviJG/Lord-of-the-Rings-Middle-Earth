@@ -22,7 +22,7 @@ import net.minecraft.network.codec.StreamCodec;
  * Persistence and networking are handled by the two codecs below, so no
  * manual NBT read/write or packet class is needed (unlike the original).
  * The map is (de)serialized keyed by faction code name, matching the old
- * "AlignmentMap"/"AlignF" concept, so the data model stays faithful.
+ * "AlignmentMap"/"AlignF" concept, so the datagen model stays faithful.
  * NOTE: the broader pledge system (cooldowns, broken pledges, enemy limits)
  * is intentionally NOT modeled yet — only the pledgeFaction reference the
  * alignment math needs. Expand this record when the pledge slice is ported.
