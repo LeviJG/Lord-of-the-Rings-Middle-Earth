@@ -21,5 +21,6 @@ public class LOTRDataGenerator implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = generator.createPack();
         pack.addProvider(LOTRModelProvider::new);
         pack.addProvider(LOTRBlockLootProvider::new);
+        pack.addProvider(LOTRBlockTagProvider::new);
     }
 }

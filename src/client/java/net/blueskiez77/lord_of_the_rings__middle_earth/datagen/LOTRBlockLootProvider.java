@@ -22,6 +22,12 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
 
     @Override
     public void generate() {
+        dropSelf(LOTRBlocks.COPPER_ORE);
+        dropSelf(LOTRBlocks.TIN_ORE);
+        dropSelf(LOTRBlocks.SILVER_ORE);
         dropSelf(LOTRBlocks.MITHRIL_ORE);
+        dropSelf(LOTRBlocks.SALT_ORE);
+        dropSelf(LOTRBlocks.SALTPETER_ORE);
+        dropSelf(LOTRBlocks.SULFUR_ORE);
     }
 }
