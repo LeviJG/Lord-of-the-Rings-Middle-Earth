@@ -9,7 +9,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 
 import net.minecraft.core.HolderLookup;
 
-/** Block loot tables: every cube block drops itself. */
+/** Block loot tables: every block drops itself. */
 public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
 
     public LOTRBlockLootProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
@@ -204,5 +204,44 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         dropSelf(LOTRBlocks.WOOD_ELVEN_GOLD_BRICK);
         dropSelf(LOTRBlocks.WOOD_ELVEN_MOSSY_BRICK);
         dropSelf(LOTRBlocks.WOOD_ELVEN_SILVER_BRICK);
+        dropSelf(LOTRBlocks.ALMOND_PLANKS);
+        dropSelf(LOTRBlocks.APPLE_PLANKS);
+        dropSelf(LOTRBlocks.ASPEN_PLANKS);
+        dropSelf(LOTRBlocks.BANANA_PLANKS);
+        dropSelf(LOTRBlocks.BAOBAB_PLANKS);
+        dropSelf(LOTRBlocks.BEECH_PLANKS);
+        dropSelf(LOTRBlocks.CEDAR_PLANKS);
+        dropSelf(LOTRBlocks.CHARRED_PLANKS);
+        dropSelf(LOTRBlocks.CHERRY_PLANKS);
+        dropSelf(LOTRBlocks.CHESTNUT_PLANKS);
+        dropSelf(LOTRBlocks.CYPRESS_PLANKS);
+        dropSelf(LOTRBlocks.DATE_PALM_PLANKS);
+        dropSelf(LOTRBlocks.DRAGON_PLANKS);
+        dropSelf(LOTRBlocks.FIR_PLANKS);
+        dropSelf(LOTRBlocks.GREEN_OAK_PLANKS);
+        dropSelf(LOTRBlocks.HOLLY_PLANKS);
+        dropSelf(LOTRBlocks.KANUKA_PLANKS);
+        dropSelf(LOTRBlocks.LAIRELOSSE_PLANKS);
+        dropSelf(LOTRBlocks.LARCH_PLANKS);
+        dropSelf(LOTRBlocks.LEBETHRON_PLANKS);
+        dropSelf(LOTRBlocks.LEMON_PLANKS);
+        dropSelf(LOTRBlocks.LIME_PLANKS);
+        dropSelf(LOTRBlocks.MAHOGANY_PLANKS);
+        dropSelf(LOTRBlocks.MALLORN_PLANKS);
+        dropSelf(LOTRBlocks.MANGO_PLANKS);
+        dropSelf(LOTRBlocks.MANGROVE_PLANKS);
+        dropSelf(LOTRBlocks.MAPLE_PLANKS);
+        dropSelf(LOTRBlocks.MIRK_OAK_PLANKS);
+        dropSelf(LOTRBlocks.OLIVE_PLANKS);
+        dropSelf(LOTRBlocks.ORANGE_PLANKS);
+        dropSelf(LOTRBlocks.PALM_PLANKS);
+        dropSelf(LOTRBlocks.PEAR_PLANKS);
+        dropSelf(LOTRBlocks.PINE_PLANKS);
+        dropSelf(LOTRBlocks.PLUM_PLANKS);
+        dropSelf(LOTRBlocks.POMEGRANATE_PLANKS);
+        dropSelf(LOTRBlocks.REDWOOD_PLANKS);
+        dropSelf(LOTRBlocks.ROTTEN_PLANKS);
+        dropSelf(LOTRBlocks.SHIRE_PINE_PLANKS);
+        dropSelf(LOTRBlocks.WILLOW_PLANKS);
     }
 }

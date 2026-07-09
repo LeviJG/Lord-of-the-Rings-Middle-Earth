@@ -12,11 +12,7 @@ import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.world.level.block.Block;
 
-/**
- * Generates blockstates, block models, and item models.
- * createTrivialCube does NOT auto-generate the block-item model in 26.1,
- * so trivialCubeWithItem also calls registerSimpleItemModel.
- */
+/** Blockstates, block models, item models. */
 public class LOTRModelProvider extends FabricModelProvider {
 
     public LOTRModelProvider(FabricPackOutput output) {
@@ -211,6 +207,45 @@ public class LOTRModelProvider extends FabricModelProvider {
         trivialCubeWithItem(generators, LOTRBlocks.WOOD_ELVEN_GOLD_BRICK);
         trivialCubeWithItem(generators, LOTRBlocks.WOOD_ELVEN_MOSSY_BRICK);
         trivialCubeWithItem(generators, LOTRBlocks.WOOD_ELVEN_SILVER_BRICK);
+        trivialCubeWithItem(generators, LOTRBlocks.ALMOND_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.APPLE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.ASPEN_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.BANANA_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.BAOBAB_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.BEECH_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.CEDAR_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.CHARRED_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.CHERRY_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.CHESTNUT_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.CYPRESS_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.DATE_PALM_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.DRAGON_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.FIR_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.GREEN_OAK_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.HOLLY_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.KANUKA_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.LAIRELOSSE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.LARCH_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.LEBETHRON_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.LEMON_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.LIME_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.MAHOGANY_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.MALLORN_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.MANGO_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.MANGROVE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.MAPLE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.MIRK_OAK_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.OLIVE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.ORANGE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.PALM_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.PEAR_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.PINE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.PLUM_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.POMEGRANATE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.REDWOOD_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.ROTTEN_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.SHIRE_PINE_PLANKS);
+        trivialCubeWithItem(generators, LOTRBlocks.WILLOW_PLANKS);
     }
 
     /** cube_all block model + blockstate, plus a block-item model parenting it. */

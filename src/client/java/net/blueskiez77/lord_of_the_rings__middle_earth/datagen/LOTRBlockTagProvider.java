@@ -12,9 +12,8 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 
 /**
- * Mining tags: everything is pickaxe-mineable; tier splits stone vs iron.
- * Precious/magical materials (mithril, galvorn, gulduril, quendite, naurite,
- * morgul, gems) require iron; ordinary stone/brick requires stone.
+ * Mining tags. Stone-like blocks are pickaxe-mineable with a stone or iron
+ * tier requirement; planks are axe-mineable and join the vanilla planks tag.
  */
 public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
@@ -214,10 +213,53 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
                 LOTRBlocks.SAPPHIRE_BLOCK,
                 LOTRBlocks.SAPPHIRE_ORE
         };
+        Block[] planks = {
+                LOTRBlocks.ALMOND_PLANKS,
+                LOTRBlocks.APPLE_PLANKS,
+                LOTRBlocks.ASPEN_PLANKS,
+                LOTRBlocks.BANANA_PLANKS,
+                LOTRBlocks.BAOBAB_PLANKS,
+                LOTRBlocks.BEECH_PLANKS,
+                LOTRBlocks.CEDAR_PLANKS,
+                LOTRBlocks.CHARRED_PLANKS,
+                LOTRBlocks.CHERRY_PLANKS,
+                LOTRBlocks.CHESTNUT_PLANKS,
+                LOTRBlocks.CYPRESS_PLANKS,
+                LOTRBlocks.DATE_PALM_PLANKS,
+                LOTRBlocks.DRAGON_PLANKS,
+                LOTRBlocks.FIR_PLANKS,
+                LOTRBlocks.GREEN_OAK_PLANKS,
+                LOTRBlocks.HOLLY_PLANKS,
+                LOTRBlocks.KANUKA_PLANKS,
+                LOTRBlocks.LAIRELOSSE_PLANKS,
+                LOTRBlocks.LARCH_PLANKS,
+                LOTRBlocks.LEBETHRON_PLANKS,
+                LOTRBlocks.LEMON_PLANKS,
+                LOTRBlocks.LIME_PLANKS,
+                LOTRBlocks.MAHOGANY_PLANKS,
+                LOTRBlocks.MALLORN_PLANKS,
+                LOTRBlocks.MANGO_PLANKS,
+                LOTRBlocks.MANGROVE_PLANKS,
+                LOTRBlocks.MAPLE_PLANKS,
+                LOTRBlocks.MIRK_OAK_PLANKS,
+                LOTRBlocks.OLIVE_PLANKS,
+                LOTRBlocks.ORANGE_PLANKS,
+                LOTRBlocks.PALM_PLANKS,
+                LOTRBlocks.PEAR_PLANKS,
+                LOTRBlocks.PINE_PLANKS,
+                LOTRBlocks.PLUM_PLANKS,
+                LOTRBlocks.POMEGRANATE_PLANKS,
+                LOTRBlocks.REDWOOD_PLANKS,
+                LOTRBlocks.ROTTEN_PLANKS,
+                LOTRBlocks.SHIRE_PINE_PLANKS,
+                LOTRBlocks.WILLOW_PLANKS
+        };
 
         var pickaxe = valueLookupBuilder(BlockTags.MINEABLE_WITH_PICKAXE);
         var stone = valueLookupBuilder(BlockTags.NEEDS_STONE_TOOL);
         var iron = valueLookupBuilder(BlockTags.NEEDS_IRON_TOOL);
+        var axe = valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE);
+        var planksTag = valueLookupBuilder(BlockTags.PLANKS);
 
         for (Block b : stoneTier) {
             pickaxe.add(b);
@@ -226,6 +268,10 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         for (Block b : ironTier) {
             pickaxe.add(b);
             iron.add(b);
+        }
+        for (Block b : planks) {
+            axe.add(b);
+            planksTag.add(b);
         }
     }
 }

@@ -14,18 +14,18 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 
 /**
- * Central block registry. Batch: 180 simple cube_all blocks
- * (ores, storage blocks, faction bricks, rocks, clay tiles, sands).
- *
- * All use registerCube: cube_all model, requires correct tool, stone sound.
- * Mining tiers are assigned in LOTRBlockTagProvider (stone vs iron).
+ * Central block registry.
+ *  - registerCube:   solid stone-like cube_all (ores, bricks, rocks, storage blocks)
+ *  - registerPlanks: wooden cube_all (wood sound, flammable, axe-mineable)
+ * Mining tags are assigned in LOTRBlockTagProvider.
  */
 public final class LOTRBlocks {
 
-    // --- Ores (batch 1, kept) ---
+    // --- Ores ---
     public static final Block TIN_ORE = registerCube("tin_ore", 3.0f, 5.0f);
     public static final Block SILVER_ORE = registerCube("silver_ore", 3.0f, 5.0f);
     public static final Block MITHRIL_ORE = registerCube("mithril_ore", 4.0f, 10.0f);
@@ -33,7 +33,7 @@ public final class LOTRBlocks {
     public static final Block SALTPETER_ORE = registerCube("saltpeter_ore", 3.0f, 5.0f);
     public static final Block SULFUR_ORE = registerCube("sulfur_ore", 3.0f, 5.0f);
 
-    // --- Batch 2: cube_all blocks ---
+    // --- Stone-like cube blocks ---
     public static final Block AMBER_BLOCK = registerCube("amber_block", 5.0f, 6.0f);
     public static final Block AMBER_ORE = registerCube("amber_ore", 3.0f, 5.0f);
     public static final Block AMETHYST_BLOCK = registerCube("amethyst_block", 5.0f, 6.0f);
@@ -215,10 +215,51 @@ public final class LOTRBlocks {
     public static final Block WOOD_ELVEN_MOSSY_BRICK = registerCube("wood_elven_mossy_brick", 1.5f, 6.0f);
     public static final Block WOOD_ELVEN_SILVER_BRICK = registerCube("wood_elven_silver_brick", 1.5f, 6.0f);
 
+    // --- Wooden planks ---
+    public static final Block ALMOND_PLANKS = registerPlanks("almond_planks");
+    public static final Block APPLE_PLANKS = registerPlanks("apple_planks");
+    public static final Block ASPEN_PLANKS = registerPlanks("aspen_planks");
+    public static final Block BANANA_PLANKS = registerPlanks("banana_planks");
+    public static final Block BAOBAB_PLANKS = registerPlanks("baobab_planks");
+    public static final Block BEECH_PLANKS = registerPlanks("beech_planks");
+    public static final Block CEDAR_PLANKS = registerPlanks("cedar_planks");
+    public static final Block CHARRED_PLANKS = registerPlanks("charred_planks");
+    public static final Block CHERRY_PLANKS = registerPlanks("cherry_planks");
+    public static final Block CHESTNUT_PLANKS = registerPlanks("chestnut_planks");
+    public static final Block CYPRESS_PLANKS = registerPlanks("cypress_planks");
+    public static final Block DATE_PALM_PLANKS = registerPlanks("date_palm_planks");
+    public static final Block DRAGON_PLANKS = registerPlanks("dragon_planks");
+    public static final Block FIR_PLANKS = registerPlanks("fir_planks");
+    public static final Block GREEN_OAK_PLANKS = registerPlanks("green_oak_planks");
+    public static final Block HOLLY_PLANKS = registerPlanks("holly_planks");
+    public static final Block KANUKA_PLANKS = registerPlanks("kanuka_planks");
+    public static final Block LAIRELOSSE_PLANKS = registerPlanks("lairelosse_planks");
+    public static final Block LARCH_PLANKS = registerPlanks("larch_planks");
+    public static final Block LEBETHRON_PLANKS = registerPlanks("lebethron_planks");
+    public static final Block LEMON_PLANKS = registerPlanks("lemon_planks");
+    public static final Block LIME_PLANKS = registerPlanks("lime_planks");
+    public static final Block MAHOGANY_PLANKS = registerPlanks("mahogany_planks");
+    public static final Block MALLORN_PLANKS = registerPlanks("mallorn_planks");
+    public static final Block MANGO_PLANKS = registerPlanks("mango_planks");
+    public static final Block MANGROVE_PLANKS = registerPlanks("mangrove_planks");
+    public static final Block MAPLE_PLANKS = registerPlanks("maple_planks");
+    public static final Block MIRK_OAK_PLANKS = registerPlanks("mirk_oak_planks");
+    public static final Block OLIVE_PLANKS = registerPlanks("olive_planks");
+    public static final Block ORANGE_PLANKS = registerPlanks("orange_planks");
+    public static final Block PALM_PLANKS = registerPlanks("palm_planks");
+    public static final Block PEAR_PLANKS = registerPlanks("pear_planks");
+    public static final Block PINE_PLANKS = registerPlanks("pine_planks");
+    public static final Block PLUM_PLANKS = registerPlanks("plum_planks");
+    public static final Block POMEGRANATE_PLANKS = registerPlanks("pomegranate_planks");
+    public static final Block REDWOOD_PLANKS = registerPlanks("redwood_planks");
+    public static final Block ROTTEN_PLANKS = registerPlanks("rotten_planks");
+    public static final Block SHIRE_PINE_PLANKS = registerPlanks("shire_pine_planks");
+    public static final Block WILLOW_PLANKS = registerPlanks("willow_planks");
+
     private LOTRBlocks() {
     }
 
-    /** Standard solid cube: cube_all model, requires correct tool, stone sound. */
+    /** Solid stone-like cube: requires correct tool, stone sound. */
     private static Block registerCube(String name, float hardness, float resistance) {
         return register(name, Block::new,
                 BlockBehaviour.Properties.of()
@@ -226,6 +267,18 @@ public final class LOTRBlocks {
                         .requiresCorrectToolForDrops()
                         .strength(hardness, resistance)
                         .sound(SoundType.STONE),
+                true);
+    }
+
+    /** Wooden planks: wood sound, flammable, axe-mineable, no tool required. */
+    private static Block registerPlanks(String name) {
+        return register(name, Block::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.WOOD)
+                        .instrument(NoteBlockInstrument.BASS)
+                        .strength(2.0f, 3.0f)
+                        .sound(SoundType.WOOD)
+                        .ignitedByLava(),
                 true);
     }
 
