@@ -11,10 +11,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 
-/**
- * Mining tags. Stone-like blocks are pickaxe-mineable with a stone or iron
- * tier requirement; planks are axe-mineable and join the vanilla planks tag.
- */
+/** Mining + category tags. */
 public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
     public LOTRBlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
@@ -260,6 +257,11 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         var iron = valueLookupBuilder(BlockTags.NEEDS_IRON_TOOL);
         var axe = valueLookupBuilder(BlockTags.MINEABLE_WITH_AXE);
         var planksTag = valueLookupBuilder(BlockTags.PLANKS);
+        var hoe = valueLookupBuilder(BlockTags.MINEABLE_WITH_HOE);
+        var leavesTag = valueLookupBuilder(BlockTags.LEAVES);
+        var saplingsTag = valueLookupBuilder(BlockTags.SAPLINGS);
+        var trapdoorsTag = valueLookupBuilder(BlockTags.WOODEN_TRAPDOORS);
+        var doorsTag = valueLookupBuilder(BlockTags.WOODEN_DOORS);
 
         for (Block b : stoneTier) {
             pickaxe.add(b);
@@ -272,6 +274,28 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         for (Block b : planks) {
             axe.add(b);
             planksTag.add(b);
+        }
+        for (Block b : LOTRBlocks.ALL_LEAVES) {
+            hoe.add(b);
+            leavesTag.add(b);
+        }
+        for (Block b : LOTRBlocks.ALL_SAPLINGS) {
+            saplingsTag.add(b);
+        }
+        for (Block b : LOTRBlocks.ALL_TRAPDOORS) {
+            axe.add(b);
+            trapdoorsTag.add(b);
+        }
+        for (Block b : LOTRBlocks.ALL_DOORS) {
+            axe.add(b);
+            doorsTag.add(b);
+        }
+        // Bars need a pickaxe (metal); glass needs no tool.
+        for (Block b : LOTRBlocks.ALL_BARS) {
+            pickaxe.add(b);
+        }
+        for (Block b : LOTRBlocks.ALL_CHANDELIERS) {
+            pickaxe.add(b);
         }
     }
 }
