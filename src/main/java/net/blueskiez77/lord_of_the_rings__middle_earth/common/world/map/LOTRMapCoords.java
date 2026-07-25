@@ -4,7 +4,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map;
  * Map-pixel <-> world-block coordinate conversion, extracted from the
  * 1.7.10 LOTRWaypoint / LOTRGenLayerWorld classes. Worldgen is not ported,
  * but this conversion is still needed by control zones and the map UI.
- * scale = 2^7 = 128 world blocks per map pixel; origin pixel (810, 730) = world (0,0).
+ * scale = 2^7 = 128 world block per map pixel; origin pixel (810, 730) = world (0,0).
  */
 public final class LOTRMapCoords {
 

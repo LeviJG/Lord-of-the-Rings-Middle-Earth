@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
@@ -14,7 +16,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.LanternBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.TransparentBlock;
@@ -26,9 +27,11 @@ import net.minecraft.world.level.material.PushReaction;
 
 /**
  * Central block registry.
- *  - registerCube / Planks / Leaves / Sapling / Trapdoor / Door
- *  - registerBars:  pane-model bars (IronBarsBlock)
- *  - registerGlass: transparent cube, no occlusion
+ *
+ * Every registerX() helper appends the block it creates to the matching family
+ * list below. Datagen (models, loot, tags) then iterates those lists instead of
+ * naming all 443 blocks four separate times -- so adding a block here is the
+ * only edit needed for it to get a model, a loot table and a mining tag.
  *
  * NOTE: several blocks share a name with vanilla (birch/spruce/jungle/acacia/
  * dark_oak/cherry variants). They are namespaced (lotr:...) so no conflict.
@@ -37,195 +40,220 @@ import net.minecraft.world.level.material.PushReaction;
  */
 public final class LOTRBlocks {
 
+    /** Harvest tier for stone-like cubes; drives NEEDS_STONE_TOOL / NEEDS_IRON_TOOL. */
+    public enum Tier {
+        STONE, IRON
+    }
+
+    // ------------------------------------------------------------------
+    // Family lists.
+    //
+    // These MUST stay above the first block field. Java runs static
+    // initialisers in textual order, and every registerX() call below writes
+    // into one of these lists -- move them underneath and you get a
+    // NullPointerException the moment the class loads.
+    // ------------------------------------------------------------------
+    public static final List<Block> ALL_CUBES = new ArrayList<>();
+    public static final List<Block> CUBES_STONE_TIER = new ArrayList<>();
+    public static final List<Block> CUBES_IRON_TIER = new ArrayList<>();
+    public static final List<Block> ALL_PLANKS = new ArrayList<>();
+    public static final List<Block> ALL_LEAVES = new ArrayList<>();
+    public static final List<Block> ALL_SAPLINGS = new ArrayList<>();
+    public static final List<Block> ALL_TRAPDOORS = new ArrayList<>();
+    public static final List<Block> ALL_DOORS = new ArrayList<>();
+    public static final List<Block> ALL_BARS = new ArrayList<>();
+    public static final List<Block> ALL_CHANDELIERS = new ArrayList<>();
+    public static final List<Block> ALL_GLASS = new ArrayList<>();
+
     // --- Ores ---
-    public static final Block TIN_ORE = registerCube("tin_ore", 3.0f, 5.0f);
-    public static final Block SILVER_ORE = registerCube("silver_ore", 3.0f, 5.0f);
-    public static final Block MITHRIL_ORE = registerCube("mithril_ore", 4.0f, 10.0f);
-    public static final Block SALT_ORE = registerCube("salt_ore", 3.0f, 5.0f);
-    public static final Block SALTPETER_ORE = registerCube("saltpeter_ore", 3.0f, 5.0f);
-    public static final Block SULFUR_ORE = registerCube("sulfur_ore", 3.0f, 5.0f);
+    public static final Block TIN_ORE = registerCube("tin_ore", 3.0f, 5.0f, Tier.STONE);
+    public static final Block SILVER_ORE = registerCube("silver_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block MITHRIL_ORE = registerCube("mithril_ore", 4.0f, 10.0f, Tier.IRON);
+    public static final Block SALT_ORE = registerCube("salt_ore", 3.0f, 5.0f, Tier.STONE);
+    public static final Block SALTPETER_ORE = registerCube("saltpeter_ore", 3.0f, 5.0f, Tier.STONE);
+    public static final Block SULFUR_ORE = registerCube("sulfur_ore", 3.0f, 5.0f, Tier.STONE);
 
     // --- Stone-like cube blocks ---
-    public static final Block AMBER_BLOCK = registerCube("amber_block", 5.0f, 6.0f);
-    public static final Block AMBER_ORE = registerCube("amber_ore", 3.0f, 5.0f);
-    public static final Block AMETHYST_BLOCK = registerCube("amethyst_block", 5.0f, 6.0f);
-    public static final Block AMETHYST_ORE = registerCube("amethyst_ore", 3.0f, 5.0f);
-    public static final Block ANGMAR_BRICK = registerCube("angmar_brick", 1.5f, 6.0f);
-    public static final Block ANGMAR_CRACKED_BRICK = registerCube("angmar_cracked_brick", 1.5f, 6.0f);
-    public static final Block ANGMAR_SNOW_BRICK = registerCube("angmar_snow_brick", 1.5f, 6.0f);
-    public static final Block ARNOR_BRICK = registerCube("arnor_brick", 1.5f, 6.0f);
-    public static final Block ARNOR_CARVED_BRICK = registerCube("arnor_carved_brick", 1.5f, 6.0f);
-    public static final Block ARNOR_CRACKED_BRICK = registerCube("arnor_cracked_brick", 1.5f, 6.0f);
-    public static final Block ARNOR_MOSSY_BRICK = registerCube("arnor_mossy_brick", 1.5f, 6.0f);
-    public static final Block BLACK_GONDOR_BRICK = registerCube("black_gondor_brick", 1.5f, 6.0f);
-    public static final Block BLACK_GONDOR_CARVED_BRICK = registerCube("black_gondor_carved_brick", 1.5f, 6.0f);
-    public static final Block BLACK_UMBAR_CARVED_BRICK = registerCube("black_umbar_carved_brick", 1.5f, 6.0f);
-    public static final Block BLACK_URUK_STEEL_BLOCK = registerCube("black_uruk_steel_block", 5.0f, 6.0f);
-    public static final Block BLUE_CARVED_BRICK = registerCube("blue_carved_brick", 1.5f, 6.0f);
-    public static final Block BLUE_DWARF_STEEL_BLOCK = registerCube("blue_dwarf_steel_block", 5.0f, 6.0f);
-    public static final Block BLUE_ROCK = registerCube("blue_rock", 1.5f, 6.0f);
-    public static final Block BLUE_ROCK_BRICK = registerCube("blue_rock_brick", 1.5f, 6.0f);
-    public static final Block BONE_BLOCK = registerCube("bone_block", 5.0f, 6.0f);
-    public static final Block BRONZE_BLOCK = registerCube("bronze_block", 5.0f, 6.0f);
-    public static final Block CHALK = registerCube("chalk", 1.5f, 6.0f);
-    public static final Block CHALK_BRICK = registerCube("chalk_brick", 1.5f, 6.0f);
-    public static final Block CLAY_TILE = registerCube("clay_tile", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_BLACK = registerCube("clay_tile_dyed_black", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_BLUE = registerCube("clay_tile_dyed_blue", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_BROWN = registerCube("clay_tile_dyed_brown", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_CYAN = registerCube("clay_tile_dyed_cyan", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_GRAY = registerCube("clay_tile_dyed_gray", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_GREEN = registerCube("clay_tile_dyed_green", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_LIGHT_BLUE = registerCube("clay_tile_dyed_light_blue", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_LIME = registerCube("clay_tile_dyed_lime", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_MAGENTA = registerCube("clay_tile_dyed_magenta", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_ORANGE = registerCube("clay_tile_dyed_orange", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_PINK = registerCube("clay_tile_dyed_pink", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_PURPLE = registerCube("clay_tile_dyed_purple", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_RED = registerCube("clay_tile_dyed_red", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_SILVER = registerCube("clay_tile_dyed_silver", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_WHITE = registerCube("clay_tile_dyed_white", 1.5f, 6.0f);
-    public static final Block CLAY_TILE_DYED_YELLOW = registerCube("clay_tile_dyed_yellow", 1.5f, 6.0f);
-    public static final Block CORAL_BLOCK = registerCube("coral_block", 5.0f, 6.0f);
-    public static final Block DALE_BRICK = registerCube("dale_brick", 1.5f, 6.0f);
-    public static final Block DALE_CARVED_BRICK = registerCube("dale_carved_brick", 1.5f, 6.0f);
-    public static final Block DALE_CRACKED_BRICK = registerCube("dale_cracked_brick", 1.5f, 6.0f);
-    public static final Block DALE_MOSSY_BRICK = registerCube("dale_mossy_brick", 1.5f, 6.0f);
-    public static final Block DIAMOND_BLOCK = registerCube("diamond_block", 5.0f, 6.0f);
-    public static final Block DIAMOND_ORE = registerCube("diamond_ore", 3.0f, 5.0f);
-    public static final Block DOL_AMROTH_BRICK = registerCube("dol_amroth_brick", 1.5f, 6.0f);
-    public static final Block DOL_GULDUR_BRICK = registerCube("dol_guldur_brick", 1.5f, 6.0f);
-    public static final Block DOL_GULDUR_CARVED_BRICK = registerCube("dol_guldur_carved_brick", 1.5f, 6.0f);
-    public static final Block DOL_GULDUR_CRACKED_BRICK = registerCube("dol_guldur_cracked_brick", 1.5f, 6.0f);
-    public static final Block DOL_GULDUR_MOSSY_BRICK = registerCube("dol_guldur_mossy_brick", 1.5f, 6.0f);
-    public static final Block DORWINION_BRICK = registerCube("dorwinion_brick", 1.5f, 6.0f);
-    public static final Block DORWINION_CARVED_BRICK = registerCube("dorwinion_carved_brick", 1.5f, 6.0f);
-    public static final Block DORWINION_CRACKED_BRICK = registerCube("dorwinion_cracked_brick", 1.5f, 6.0f);
-    public static final Block DORWINION_FLOWERS_BRICK = registerCube("dorwinion_flowers_brick", 1.5f, 6.0f);
-    public static final Block DORWINION_MOSSY_BRICK = registerCube("dorwinion_mossy_brick", 1.5f, 6.0f);
-    public static final Block DWARF_STEEL_BLOCK = registerCube("dwarf_steel_block", 5.0f, 6.0f);
-    public static final Block DWARVEN_BRICK = registerCube("dwarven_brick", 1.5f, 6.0f);
-    public static final Block DWARVEN_CARVED_BRICK = registerCube("dwarven_carved_brick", 1.5f, 6.0f);
-    public static final Block DWARVEN_CRACKED_BRICK = registerCube("dwarven_cracked_brick", 1.5f, 6.0f);
-    public static final Block DWARVEN_GLOWING_BRICK = registerCube("dwarven_glowing_brick", 1.5f, 6.0f);
-    public static final Block DWARVEN_OBSIDIAN_BRICK = registerCube("dwarven_obsidian_brick", 1.5f, 6.0f);
-    public static final Block ELF_STEEL_BLOCK = registerCube("elf_steel_block", 5.0f, 6.0f);
-    public static final Block EMERALD_BLOCK = registerCube("emerald_block", 5.0f, 6.0f);
-    public static final Block EMERALD_ORE = registerCube("emerald_ore", 3.0f, 5.0f);
-    public static final Block GALADHRIM_BRICK = registerCube("galadhrim_brick", 1.5f, 6.0f);
-    public static final Block GALADHRIM_CARVED_BRICK = registerCube("galadhrim_carved_brick", 1.5f, 6.0f);
-    public static final Block GALADHRIM_CRACKED_BRICK = registerCube("galadhrim_cracked_brick", 1.5f, 6.0f);
-    public static final Block GALADHRIM_GOLD_BRICK = registerCube("galadhrim_gold_brick", 1.5f, 6.0f);
-    public static final Block GALADHRIM_MOSSY_BRICK = registerCube("galadhrim_mossy_brick", 1.5f, 6.0f);
-    public static final Block GALADHRIM_SILVER_BRICK = registerCube("galadhrim_silver_brick", 1.5f, 6.0f);
-    public static final Block GALVORN_BLOCK = registerCube("galvorn_block", 5.0f, 6.0f);
-    public static final Block GILDED_IRON_BLOCK = registerCube("gilded_iron_block", 5.0f, 6.0f);
-    public static final Block GLOWSTONE_ORE = registerCube("glowstone_ore", 3.0f, 5.0f);
-    public static final Block GONDOR_BRICK = registerCube("gondor_brick", 1.5f, 6.0f);
-    public static final Block GONDOR_CARVED_BRICK = registerCube("gondor_carved_brick", 1.5f, 6.0f);
-    public static final Block GONDOR_CRACKED_BRICK = registerCube("gondor_cracked_brick", 1.5f, 6.0f);
-    public static final Block GONDOR_MOSSY_BRICK = registerCube("gondor_mossy_brick", 1.5f, 6.0f);
-    public static final Block GONDOR_ROCK = registerCube("gondor_rock", 1.5f, 6.0f);
-    public static final Block GONDOR_RUSTIC_BRICK = registerCube("gondor_rustic_brick", 1.5f, 6.0f);
-    public static final Block GONDOR_RUSTIC_CRACKED_BRICK = registerCube("gondor_rustic_cracked_brick", 1.5f, 6.0f);
-    public static final Block GONDOR_RUSTIC_MOSSY_BRICK = registerCube("gondor_rustic_mossy_brick", 1.5f, 6.0f);
-    public static final Block GORAN_ROCK = registerCube("goran_rock", 1.5f, 6.0f);
-    public static final Block GRAVEL = registerCube("gravel", 0.6f, 0.6f);
-    public static final Block GULDURIL_BLOCK = registerCube("gulduril_block", 5.0f, 6.0f);
-    public static final Block GULDURIL_MORDOR_ORE = registerCube("gulduril_mordor_ore", 3.0f, 5.0f);
-    public static final Block GULDURIL_ORE = registerCube("gulduril_ore", 3.0f, 5.0f);
-    public static final Block HIGH_ELVEN_BRICK = registerCube("high_elven_brick", 1.5f, 6.0f);
-    public static final Block HIGH_ELVEN_CARVED_BRICK = registerCube("high_elven_carved_brick", 1.5f, 6.0f);
-    public static final Block HIGH_ELVEN_CRACKED_BRICK = registerCube("high_elven_cracked_brick", 1.5f, 6.0f);
-    public static final Block HIGH_ELVEN_GOLD_BRICK = registerCube("high_elven_gold_brick", 1.5f, 6.0f);
-    public static final Block HIGH_ELVEN_MOSSY_BRICK = registerCube("high_elven_mossy_brick", 1.5f, 6.0f);
-    public static final Block HIGH_ELVEN_SILVER_BRICK = registerCube("high_elven_silver_brick", 1.5f, 6.0f);
-    public static final Block MITHRIL_BLOCK = registerCube("mithril_block", 5.0f, 6.0f);
-    public static final Block MORDOR_BRICK = registerCube("mordor_brick", 1.5f, 6.0f);
-    public static final Block MORDOR_CARVED_BRICK = registerCube("mordor_carved_brick", 1.5f, 6.0f);
-    public static final Block MORDOR_CRACKED_BRICK = registerCube("mordor_cracked_brick", 1.5f, 6.0f);
-    public static final Block MORDOR_DIRT = registerCube("mordor_dirt", 0.5f, 0.5f);
-    public static final Block MORDOR_GRAVEL = registerCube("mordor_gravel", 0.6f, 0.6f);
-    public static final Block MORDOR_MOSS_ROCK = registerCube("mordor_moss_rock", 1.5f, 6.0f);
-    public static final Block MORDOR_ROCK = registerCube("mordor_rock", 1.5f, 6.0f);
-    public static final Block MOREDAIN_BRICK = registerCube("moredain_brick", 1.5f, 6.0f);
-    public static final Block MORGUL_IRON_MORDOR_ORE = registerCube("morgul_iron_mordor_ore", 3.0f, 5.0f);
-    public static final Block MORGUL_IRON_ORE = registerCube("morgul_iron_ore", 3.0f, 5.0f);
-    public static final Block MORGUL_STEEL_BLOCK = registerCube("morgul_steel_block", 5.0f, 6.0f);
-    public static final Block MORWAITH_CRACKED_BRICK = registerCube("morwaith_cracked_brick", 1.5f, 6.0f);
-    public static final Block NAURITE_BLOCK = registerCube("naurite_block", 5.0f, 6.0f);
-    public static final Block NAURITE_ORE = registerCube("naurite_ore", 3.0f, 5.0f);
-    public static final Block NEAR_HARAD_BRICK = registerCube("near_harad_brick", 1.5f, 6.0f);
-    public static final Block NEAR_HARAD_CARVED_BRICK = registerCube("near_harad_carved_brick", 1.5f, 6.0f);
-    public static final Block NEAR_HARAD_CRACKED_BRICK = registerCube("near_harad_cracked_brick", 1.5f, 6.0f);
-    public static final Block NEAR_HARAD_LAPIS_BRICK = registerCube("near_harad_lapis_brick", 1.5f, 6.0f);
-    public static final Block NEAR_HARAD_RED_BRICK = registerCube("near_harad_red_brick", 1.5f, 6.0f);
-    public static final Block NEAR_HARAD_RED_CARVED_BRICK = registerCube("near_harad_red_carved_brick", 1.5f, 6.0f);
-    public static final Block NEAR_HARAD_RED_CRACKED_BRICK = registerCube("near_harad_red_cracked_brick", 1.5f, 6.0f);
-    public static final Block OBSIDIAN_GRAVEL = registerCube("obsidian_gravel", 0.6f, 0.6f);
-    public static final Block OPAL_BLOCK = registerCube("opal_block", 5.0f, 6.0f);
-    public static final Block OPAL_ORE = registerCube("opal_ore", 3.0f, 5.0f);
-    public static final Block ORC_PLATING_IRON = registerCube("orc_plating_iron", 1.5f, 6.0f);
-    public static final Block ORC_PLATING_RUST = registerCube("orc_plating_rust", 1.5f, 6.0f);
-    public static final Block ORC_STEEL_BLOCK = registerCube("orc_steel_block", 5.0f, 6.0f);
-    public static final Block PEARL_BLOCK = registerCube("pearl_block", 5.0f, 6.0f);
-    public static final Block QUAGMIRE = registerCube("quagmire", 0.5f, 0.5f);
-    public static final Block QUENDITE_BLOCK = registerCube("quendite_block", 5.0f, 6.0f);
-    public static final Block QUENDITE_ORE = registerCube("quendite_ore", 3.0f, 5.0f);
-    public static final Block RED_BRICK_CRACKED = registerCube("red_brick_cracked", 1.5f, 6.0f);
-    public static final Block RED_BRICK_MOSSY = registerCube("red_brick_mossy", 1.5f, 6.0f);
-    public static final Block RED_CARVED_BRICK = registerCube("red_carved_brick", 1.5f, 6.0f);
-    public static final Block RED_CLAY = registerCube("red_clay", 0.5f, 0.5f);
-    public static final Block RED_ROCK = registerCube("red_rock", 1.5f, 6.0f);
-    public static final Block RED_ROCK_BRICK = registerCube("red_rock_brick", 1.5f, 6.0f);
-    public static final Block RED_SANDSTONE = registerCube("red_sandstone", 1.5f, 6.0f);
-    public static final Block RHUN_BRICK = registerCube("rhun_brick", 1.5f, 6.0f);
-    public static final Block RHUN_CARVED_BRICK = registerCube("rhun_carved_brick", 1.5f, 6.0f);
-    public static final Block RHUN_CRACKED_BRICK = registerCube("rhun_cracked_brick", 1.5f, 6.0f);
-    public static final Block RHUN_FLOWERS_BRICK = registerCube("rhun_flowers_brick", 1.5f, 6.0f);
-    public static final Block RHUN_GOLD_BRICK = registerCube("rhun_gold_brick", 1.5f, 6.0f);
-    public static final Block RHUN_MOSSY_BRICK = registerCube("rhun_mossy_brick", 1.5f, 6.0f);
-    public static final Block RHUN_RED_BRICK = registerCube("rhun_red_brick", 1.5f, 6.0f);
-    public static final Block RHUN_RED_CARVED_BRICK = registerCube("rhun_red_carved_brick", 1.5f, 6.0f);
-    public static final Block ROHAN_BRICK = registerCube("rohan_brick", 1.5f, 6.0f);
-    public static final Block ROHAN_CARVED_BRICK = registerCube("rohan_carved_brick", 1.5f, 6.0f);
-    public static final Block ROHAN_ROCK = registerCube("rohan_rock", 1.5f, 6.0f);
-    public static final Block RUBY_BLOCK = registerCube("ruby_block", 5.0f, 6.0f);
-    public static final Block RUBY_ORE = registerCube("ruby_ore", 3.0f, 5.0f);
-    public static final Block SALT_BLOCK = registerCube("salt_block", 5.0f, 6.0f);
-    public static final Block SALTPETER_BLOCK = registerCube("saltpeter_block", 5.0f, 6.0f);
-    public static final Block SAPPHIRE_BLOCK = registerCube("sapphire_block", 5.0f, 6.0f);
-    public static final Block SAPPHIRE_ORE = registerCube("sapphire_ore", 3.0f, 5.0f);
-    public static final Block SCORCHED_STONE = registerCube("scorched_stone", 1.5f, 6.0f);
-    public static final Block SILVER_BLOCK = registerCube("silver_block", 5.0f, 6.0f);
-    public static final Block SULFUR_BLOCK = registerCube("sulfur_block", 5.0f, 6.0f);
-    public static final Block TAUREDAIN_BRICK = registerCube("tauredain_brick", 1.5f, 6.0f);
-    public static final Block TAUREDAIN_CRACKED_BRICK = registerCube("tauredain_cracked_brick", 1.5f, 6.0f);
-    public static final Block TAUREDAIN_GOLD_BRICK = registerCube("tauredain_gold_brick", 1.5f, 6.0f);
-    public static final Block TAUREDAIN_MOSSY_BRICK = registerCube("tauredain_mossy_brick", 1.5f, 6.0f);
-    public static final Block TAUREDAIN_OBSIDIAN_BRICK = registerCube("tauredain_obsidian_brick", 1.5f, 6.0f);
-    public static final Block TIN_BLOCK = registerCube("tin_block", 5.0f, 6.0f);
-    public static final Block UMBAR_BRICK = registerCube("umbar_brick", 1.5f, 6.0f);
-    public static final Block UMBAR_CARVED_BRICK = registerCube("umbar_carved_brick", 1.5f, 6.0f);
-    public static final Block UMBAR_CRACKED_BRICK = registerCube("umbar_cracked_brick", 1.5f, 6.0f);
-    public static final Block URUK_BRICK = registerCube("uruk_brick", 1.5f, 6.0f);
-    public static final Block URUK_STEEL_BLOCK = registerCube("uruk_steel_block", 5.0f, 6.0f);
-    public static final Block UTUMNO_FIRE_BRICK = registerCube("utumno_fire_brick", 1.5f, 6.0f);
-    public static final Block UTUMNO_FIRE_TILE_BRICK = registerCube("utumno_fire_tile_brick", 1.5f, 6.0f);
-    public static final Block UTUMNO_ICE_BRICK = registerCube("utumno_ice_brick", 1.5f, 6.0f);
-    public static final Block UTUMNO_ICE_GLOWING_BRICK = registerCube("utumno_ice_glowing_brick", 1.5f, 6.0f);
-    public static final Block UTUMNO_ICE_TILE_BRICK = registerCube("utumno_ice_tile_brick", 1.5f, 6.0f);
-    public static final Block UTUMNO_OBSIDIAN_BRICK = registerCube("utumno_obsidian_brick", 1.5f, 6.0f);
-    public static final Block UTUMNO_OBSIDIAN_FIRE_BRICK = registerCube("utumno_obsidian_fire_brick", 1.5f, 6.0f);
-    public static final Block UTUMNO_OBSIDIAN_TILE_BRICK = registerCube("utumno_obsidian_tile_brick", 1.5f, 6.0f);
-    public static final Block WHITE_SAND = registerCube("white_sand", 0.6f, 0.6f);
-    public static final Block WHITE_SANDSTONE = registerCube("white_sandstone", 1.5f, 6.0f);
-    public static final Block WOOD_ELVEN_BRICK = registerCube("wood_elven_brick", 1.5f, 6.0f);
-    public static final Block WOOD_ELVEN_CARVED_BRICK = registerCube("wood_elven_carved_brick", 1.5f, 6.0f);
-    public static final Block WOOD_ELVEN_CRACKED_BRICK = registerCube("wood_elven_cracked_brick", 1.5f, 6.0f);
-    public static final Block WOOD_ELVEN_GOLD_BRICK = registerCube("wood_elven_gold_brick", 1.5f, 6.0f);
-    public static final Block WOOD_ELVEN_MOSSY_BRICK = registerCube("wood_elven_mossy_brick", 1.5f, 6.0f);
-    public static final Block WOOD_ELVEN_SILVER_BRICK = registerCube("wood_elven_silver_brick", 1.5f, 6.0f);
+    public static final Block AMBER_BLOCK = registerCube("amber_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block AMBER_ORE = registerCube("amber_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block AMETHYST_BLOCK = registerCube("amethyst_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block AMETHYST_ORE = registerCube("amethyst_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block ANGMAR_BRICK = registerCube("angmar_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ANGMAR_CRACKED_BRICK = registerCube("angmar_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ANGMAR_SNOW_BRICK = registerCube("angmar_snow_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ARNOR_BRICK = registerCube("arnor_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ARNOR_CARVED_BRICK = registerCube("arnor_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ARNOR_CRACKED_BRICK = registerCube("arnor_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ARNOR_MOSSY_BRICK = registerCube("arnor_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block BLACK_GONDOR_BRICK = registerCube("black_gondor_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block BLACK_GONDOR_CARVED_BRICK = registerCube("black_gondor_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block BLACK_UMBAR_CARVED_BRICK = registerCube("black_umbar_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block BLACK_URUK_STEEL_BLOCK = registerCube("black_uruk_steel_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block BLUE_CARVED_BRICK = registerCube("blue_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block BLUE_DWARF_STEEL_BLOCK = registerCube("blue_dwarf_steel_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block BLUE_ROCK = registerCube("blue_rock", 1.5f, 6.0f, Tier.STONE);
+    public static final Block BLUE_ROCK_BRICK = registerCube("blue_rock_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block BONE_BLOCK = registerCube("bone_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block BRONZE_BLOCK = registerCube("bronze_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block CHALK = registerCube("chalk", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CHALK_BRICK = registerCube("chalk_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE = registerCube("clay_tile", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_BLACK = registerCube("clay_tile_dyed_black", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_BLUE = registerCube("clay_tile_dyed_blue", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_BROWN = registerCube("clay_tile_dyed_brown", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_CYAN = registerCube("clay_tile_dyed_cyan", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_GRAY = registerCube("clay_tile_dyed_gray", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_GREEN = registerCube("clay_tile_dyed_green", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_LIGHT_BLUE = registerCube("clay_tile_dyed_light_blue", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_LIME = registerCube("clay_tile_dyed_lime", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_MAGENTA = registerCube("clay_tile_dyed_magenta", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_ORANGE = registerCube("clay_tile_dyed_orange", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_PINK = registerCube("clay_tile_dyed_pink", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_PURPLE = registerCube("clay_tile_dyed_purple", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_RED = registerCube("clay_tile_dyed_red", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_SILVER = registerCube("clay_tile_dyed_silver", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_WHITE = registerCube("clay_tile_dyed_white", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CLAY_TILE_DYED_YELLOW = registerCube("clay_tile_dyed_yellow", 1.5f, 6.0f, Tier.STONE);
+    public static final Block CORAL_BLOCK = registerCube("coral_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block DALE_BRICK = registerCube("dale_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DALE_CARVED_BRICK = registerCube("dale_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DALE_CRACKED_BRICK = registerCube("dale_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DALE_MOSSY_BRICK = registerCube("dale_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DIAMOND_BLOCK = registerCube("diamond_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block DIAMOND_ORE = registerCube("diamond_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block DOL_AMROTH_BRICK = registerCube("dol_amroth_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DOL_GULDUR_BRICK = registerCube("dol_guldur_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DOL_GULDUR_CARVED_BRICK = registerCube("dol_guldur_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DOL_GULDUR_CRACKED_BRICK = registerCube("dol_guldur_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DOL_GULDUR_MOSSY_BRICK = registerCube("dol_guldur_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DORWINION_BRICK = registerCube("dorwinion_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DORWINION_CARVED_BRICK = registerCube("dorwinion_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DORWINION_CRACKED_BRICK = registerCube("dorwinion_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DORWINION_FLOWERS_BRICK = registerCube("dorwinion_flowers_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DORWINION_MOSSY_BRICK = registerCube("dorwinion_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DWARF_STEEL_BLOCK = registerCube("dwarf_steel_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block DWARVEN_BRICK = registerCube("dwarven_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DWARVEN_CARVED_BRICK = registerCube("dwarven_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DWARVEN_CRACKED_BRICK = registerCube("dwarven_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DWARVEN_GLOWING_BRICK = registerCube("dwarven_glowing_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block DWARVEN_OBSIDIAN_BRICK = registerCube("dwarven_obsidian_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ELF_STEEL_BLOCK = registerCube("elf_steel_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block EMERALD_BLOCK = registerCube("emerald_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block EMERALD_ORE = registerCube("emerald_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block GALADHRIM_BRICK = registerCube("galadhrim_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GALADHRIM_CARVED_BRICK = registerCube("galadhrim_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GALADHRIM_CRACKED_BRICK = registerCube("galadhrim_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GALADHRIM_GOLD_BRICK = registerCube("galadhrim_gold_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GALADHRIM_MOSSY_BRICK = registerCube("galadhrim_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GALADHRIM_SILVER_BRICK = registerCube("galadhrim_silver_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GALVORN_BLOCK = registerCube("galvorn_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block GILDED_IRON_BLOCK = registerCube("gilded_iron_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block GLOWSTONE_ORE = registerCube("glowstone_ore", 3.0f, 5.0f, Tier.STONE);
+    public static final Block GONDOR_BRICK = registerCube("gondor_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GONDOR_CARVED_BRICK = registerCube("gondor_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GONDOR_CRACKED_BRICK = registerCube("gondor_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GONDOR_MOSSY_BRICK = registerCube("gondor_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GONDOR_ROCK = registerCube("gondor_rock", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GONDOR_RUSTIC_BRICK = registerCube("gondor_rustic_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GONDOR_RUSTIC_CRACKED_BRICK = registerCube("gondor_rustic_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GONDOR_RUSTIC_MOSSY_BRICK = registerCube("gondor_rustic_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GORAN_ROCK = registerCube("goran_rock", 1.5f, 6.0f, Tier.STONE);
+    public static final Block GRAVEL = registerCube("gravel", 0.6f, 0.6f, Tier.STONE);
+    public static final Block GULDURIL_BLOCK = registerCube("gulduril_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block GULDURIL_MORDOR_ORE = registerCube("gulduril_mordor_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block GULDURIL_ORE = registerCube("gulduril_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block HIGH_ELVEN_BRICK = registerCube("high_elven_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block HIGH_ELVEN_CARVED_BRICK = registerCube("high_elven_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block HIGH_ELVEN_CRACKED_BRICK = registerCube("high_elven_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block HIGH_ELVEN_GOLD_BRICK = registerCube("high_elven_gold_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block HIGH_ELVEN_MOSSY_BRICK = registerCube("high_elven_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block HIGH_ELVEN_SILVER_BRICK = registerCube("high_elven_silver_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block MITHRIL_BLOCK = registerCube("mithril_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block MORDOR_BRICK = registerCube("mordor_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block MORDOR_CARVED_BRICK = registerCube("mordor_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block MORDOR_CRACKED_BRICK = registerCube("mordor_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block MORDOR_DIRT = registerCube("mordor_dirt", 0.5f, 0.5f, Tier.STONE);
+    public static final Block MORDOR_GRAVEL = registerCube("mordor_gravel", 0.6f, 0.6f, Tier.STONE);
+    public static final Block MORDOR_MOSS_ROCK = registerCube("mordor_moss_rock", 1.5f, 6.0f, Tier.STONE);
+    public static final Block MORDOR_ROCK = registerCube("mordor_rock", 1.5f, 6.0f, Tier.STONE);
+    public static final Block MOREDAIN_BRICK = registerCube("moredain_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block MORGUL_IRON_MORDOR_ORE = registerCube("morgul_iron_mordor_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block MORGUL_IRON_ORE = registerCube("morgul_iron_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block MORGUL_STEEL_BLOCK = registerCube("morgul_steel_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block MORWAITH_CRACKED_BRICK = registerCube("morwaith_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block NAURITE_BLOCK = registerCube("naurite_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block NAURITE_ORE = registerCube("naurite_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block NEAR_HARAD_BRICK = registerCube("near_harad_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block NEAR_HARAD_CARVED_BRICK = registerCube("near_harad_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block NEAR_HARAD_CRACKED_BRICK = registerCube("near_harad_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block NEAR_HARAD_LAPIS_BRICK = registerCube("near_harad_lapis_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block NEAR_HARAD_RED_BRICK = registerCube("near_harad_red_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block NEAR_HARAD_RED_CARVED_BRICK = registerCube("near_harad_red_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block NEAR_HARAD_RED_CRACKED_BRICK = registerCube("near_harad_red_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block OBSIDIAN_GRAVEL = registerCube("obsidian_gravel", 0.6f, 0.6f, Tier.STONE);
+    public static final Block OPAL_BLOCK = registerCube("opal_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block OPAL_ORE = registerCube("opal_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block ORC_PLATING_IRON = registerCube("orc_plating_iron", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ORC_PLATING_RUST = registerCube("orc_plating_rust", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ORC_STEEL_BLOCK = registerCube("orc_steel_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block PEARL_BLOCK = registerCube("pearl_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block QUAGMIRE = registerCube("quagmire", 0.5f, 0.5f, Tier.STONE);
+    public static final Block QUENDITE_BLOCK = registerCube("quendite_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block QUENDITE_ORE = registerCube("quendite_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block RED_BRICK_CRACKED = registerCube("red_brick_cracked", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RED_BRICK_MOSSY = registerCube("red_brick_mossy", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RED_CARVED_BRICK = registerCube("red_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RED_CLAY = registerCube("red_clay", 0.5f, 0.5f, Tier.STONE);
+    public static final Block RED_ROCK = registerCube("red_rock", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RED_ROCK_BRICK = registerCube("red_rock_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RED_SANDSTONE = registerCube("red_sandstone", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RHUN_BRICK = registerCube("rhun_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RHUN_CARVED_BRICK = registerCube("rhun_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RHUN_CRACKED_BRICK = registerCube("rhun_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RHUN_FLOWERS_BRICK = registerCube("rhun_flowers_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RHUN_GOLD_BRICK = registerCube("rhun_gold_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RHUN_MOSSY_BRICK = registerCube("rhun_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RHUN_RED_BRICK = registerCube("rhun_red_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RHUN_RED_CARVED_BRICK = registerCube("rhun_red_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ROHAN_BRICK = registerCube("rohan_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ROHAN_CARVED_BRICK = registerCube("rohan_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block ROHAN_ROCK = registerCube("rohan_rock", 1.5f, 6.0f, Tier.STONE);
+    public static final Block RUBY_BLOCK = registerCube("ruby_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block RUBY_ORE = registerCube("ruby_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block SALT_BLOCK = registerCube("salt_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block SALTPETER_BLOCK = registerCube("saltpeter_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block SAPPHIRE_BLOCK = registerCube("sapphire_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block SAPPHIRE_ORE = registerCube("sapphire_ore", 3.0f, 5.0f, Tier.IRON);
+    public static final Block SCORCHED_STONE = registerCube("scorched_stone", 1.5f, 6.0f, Tier.STONE);
+    public static final Block SILVER_BLOCK = registerCube("silver_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block SULFUR_BLOCK = registerCube("sulfur_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block TAUREDAIN_BRICK = registerCube("tauredain_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block TAUREDAIN_CRACKED_BRICK = registerCube("tauredain_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block TAUREDAIN_GOLD_BRICK = registerCube("tauredain_gold_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block TAUREDAIN_MOSSY_BRICK = registerCube("tauredain_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block TAUREDAIN_OBSIDIAN_BRICK = registerCube("tauredain_obsidian_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block TIN_BLOCK = registerCube("tin_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block UMBAR_BRICK = registerCube("umbar_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UMBAR_CARVED_BRICK = registerCube("umbar_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UMBAR_CRACKED_BRICK = registerCube("umbar_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block URUK_BRICK = registerCube("uruk_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block URUK_STEEL_BLOCK = registerCube("uruk_steel_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block UTUMNO_FIRE_BRICK = registerCube("utumno_fire_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UTUMNO_FIRE_TILE_BRICK = registerCube("utumno_fire_tile_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UTUMNO_ICE_BRICK = registerCube("utumno_ice_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UTUMNO_ICE_GLOWING_BRICK = registerCube("utumno_ice_glowing_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UTUMNO_ICE_TILE_BRICK = registerCube("utumno_ice_tile_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UTUMNO_OBSIDIAN_BRICK = registerCube("utumno_obsidian_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UTUMNO_OBSIDIAN_FIRE_BRICK = registerCube("utumno_obsidian_fire_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block UTUMNO_OBSIDIAN_TILE_BRICK = registerCube("utumno_obsidian_tile_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block WHITE_SAND = registerCube("white_sand", 0.6f, 0.6f, Tier.STONE);
+    public static final Block WHITE_SANDSTONE = registerCube("white_sandstone", 1.5f, 6.0f, Tier.STONE);
+    public static final Block WOOD_ELVEN_BRICK = registerCube("wood_elven_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block WOOD_ELVEN_CARVED_BRICK = registerCube("wood_elven_carved_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block WOOD_ELVEN_CRACKED_BRICK = registerCube("wood_elven_cracked_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block WOOD_ELVEN_GOLD_BRICK = registerCube("wood_elven_gold_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block WOOD_ELVEN_MOSSY_BRICK = registerCube("wood_elven_mossy_brick", 1.5f, 6.0f, Tier.STONE);
+    public static final Block WOOD_ELVEN_SILVER_BRICK = registerCube("wood_elven_silver_brick", 1.5f, 6.0f, Tier.STONE);
 
     // --- Wooden planks ---
     public static final Block ALMOND_PLANKS = registerPlanks("almond_planks");
@@ -464,22 +492,22 @@ public final class LOTRBlocks {
     public static final Block WOOD_ELF_WOOD_BARS = registerBars("wood_elf_wood_bars");
 
     // --- Chandeliers (lantern-style hanging light) ---
-    public static final Block BLUE_DWARVEN_CHANDELIER = registerChandelier("blue_dwarven_chandelier");
-    public static final Block BRONZE_CHANDELIER = registerChandelier("bronze_chandelier");
-    public static final Block DWARVEN_CHANDELIER = registerChandelier("dwarven_chandelier");
-    public static final Block GOLD_CHANDELIER = registerChandelier("gold_chandelier");
-    public static final Block HIGH_ELVEN_CHANDELIER = registerChandelier("high_elven_chandelier");
-    public static final Block IRON_CHANDELIER = registerChandelier("iron_chandelier");
-    public static final Block MALLORN_BLUE_CHANDELIER = registerChandelier("mallorn_blue_chandelier");
-    public static final Block MALLORN_GOLD_CHANDELIER = registerChandelier("mallorn_gold_chandelier");
-    public static final Block MALLORN_GREEN_CHANDELIER = registerChandelier("mallorn_green_chandelier");
-    public static final Block MALLORN_SILVER_CHANDELIER = registerChandelier("mallorn_silver_chandelier");
-    public static final Block MITHRIL_CHANDELIER = registerChandelier("mithril_chandelier");
-    public static final Block MORGUL_CHANDELIER = registerChandelier("morgul_chandelier");
-    public static final Block ORC_CHANDELIER = registerChandelier("orc_chandelier");
-    public static final Block SILVER_CHANDELIER = registerChandelier("silver_chandelier");
-    public static final Block URUK_CHANDELIER = registerChandelier("uruk_chandelier");
-    public static final Block WOOD_ELVEN_CHANDELIER = registerChandelier("wood_elven_chandelier");
+    public static final Block BLUE_DWARVEN_CHANDELIER = registerChandelier("blue_dwarven_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block BRONZE_CHANDELIER = registerChandelier("bronze_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block DWARVEN_CHANDELIER = registerChandelier("dwarven_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block GOLD_CHANDELIER = registerChandelier("gold_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block HIGH_ELVEN_CHANDELIER = registerChandelier("high_elven_chandelier", LOTRChandelierBlock.ParticleStyle.HIGH_ELVEN);
+    public static final Block IRON_CHANDELIER = registerChandelier("iron_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block MALLORN_BLUE_CHANDELIER = registerChandelier("mallorn_blue_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_BLUE);
+    public static final Block MALLORN_GOLD_CHANDELIER = registerChandelier("mallorn_gold_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_GOLD);
+    public static final Block MALLORN_GREEN_CHANDELIER = registerChandelier("mallorn_green_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_GREEN);
+    public static final Block MALLORN_SILVER_CHANDELIER = registerChandelier("mallorn_silver_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_SILVER);
+    public static final Block MITHRIL_CHANDELIER = registerChandelier("mithril_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block MORGUL_CHANDELIER = registerChandelier("morgul_chandelier", LOTRChandelierBlock.ParticleStyle.MORGUL);
+    public static final Block ORC_CHANDELIER = registerChandelier("orc_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block SILVER_CHANDELIER = registerChandelier("silver_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block URUK_CHANDELIER = registerChandelier("uruk_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
+    public static final Block WOOD_ELVEN_CHANDELIER = registerChandelier("wood_elven_chandelier", LOTRChandelierBlock.ParticleStyle.WOOD_ELVEN);
 
     // --- Glass ---
     public static final Block BLACK_STAINED_GLASS = registerGlass("black_stained_glass");
@@ -503,29 +531,36 @@ public final class LOTRBlocks {
     private LOTRBlocks() {
     }
 
-    private static Block registerCube(String name, float hardness, float resistance) {
-        return register(name, Block::new,
+    // ------------------------------------------------------------------
+    // Family helpers
+    // ------------------------------------------------------------------
+
+    private static Block registerCube(String name, float hardness, float resistance, Tier tier) {
+        Block block = register(name, Block::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
                         .requiresCorrectToolForDrops()
                         .strength(hardness, resistance)
                         .sound(SoundType.STONE),
                 true);
+        ALL_CUBES.add(block);
+        (tier == Tier.IRON ? CUBES_IRON_TIER : CUBES_STONE_TIER).add(block);
+        return block;
     }
 
     private static Block registerPlanks(String name) {
-        return register(name, Block::new,
+        return track(ALL_PLANKS, register(name, Block::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.WOOD)
                         .instrument(NoteBlockInstrument.BASS)
                         .strength(2.0f, 3.0f)
                         .sound(SoundType.WOOD)
                         .ignitedByLava(),
-                true);
+                true));
     }
 
     private static Block registerLeaves(String name) {
-        return register(name, Block::new,
+        return track(ALL_LEAVES, register(name, Block::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
                         .strength(0.2f)
@@ -535,11 +570,11 @@ public final class LOTRBlocks {
                         .isViewBlocking((state, level, pos) -> false)
                         .ignitedByLava()
                         .pushReaction(PushReaction.DESTROY),
-                true);
+                true));
     }
 
     private static Block registerSapling(String name) {
-        return register(name, Block::new,
+        return track(ALL_SAPLINGS, register(name, Block::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
                         .noCollision()
@@ -547,11 +582,11 @@ public final class LOTRBlocks {
                         .sound(SoundType.GRASS)
                         .noOcclusion()
                         .pushReaction(PushReaction.DESTROY),
-                true);
+                true));
     }
 
     private static Block registerTrapdoor(String name) {
-        return register(name, props -> new TrapDoorBlock(BlockSetType.OAK, props),
+        return track(ALL_TRAPDOORS, register(name, props -> new TrapDoorBlock(BlockSetType.OAK, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.WOOD)
                         .instrument(NoteBlockInstrument.BASS)
@@ -560,11 +595,11 @@ public final class LOTRBlocks {
                         .noOcclusion()
                         .isValidSpawn((state, level, pos, type) -> false)
                         .ignitedByLava(),
-                true);
+                true));
     }
 
     private static Block registerDoor(String name) {
-        return register(name, props -> new DoorBlock(BlockSetType.OAK, props),
+        return track(ALL_DOORS, register(name, props -> new DoorBlock(BlockSetType.OAK, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.WOOD)
                         .instrument(NoteBlockInstrument.BASS)
@@ -573,42 +608,45 @@ public final class LOTRBlocks {
                         .noOcclusion()
                         .pushReaction(PushReaction.DESTROY)
                         .ignitedByLava(),
-                true);
+                true));
     }
 
     /** Metal/wood bars: pane model, connects to neighbours. */
     private static Block registerBars(String name) {
-        return register(name, IronBarsBlock::new,
+        return track(ALL_BARS, register(name, IronBarsBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.NONE)
                         .requiresCorrectToolForDrops()
                         .strength(5.0f, 6.0f)
                         .sound(SoundType.METAL)
                         .noOcclusion(),
-                true);
+                true));
     }
 
     /**
-     * Chandelier: hanging light source. The original used a bespoke model;
-     * vanilla LanternBlock is the closest supported equivalent (hangs from a
-     * ceiling or stands on a floor) and has a datagen helper.
+     * Chandelier: a crossed-quad light fixture that hangs from the ceiling.
+     *
+     * Ported from LOTRBlockChandelier (1.7.10): render type 1 (crossed
+     * squares), bounds 1/16..15/16 on X/Z and 3/16..16/16 on Y, null collision
+     * box, light level 0.9375 -> 15, hardness 0 / resistance 2, metal step
+     * sound, and it pops off if whatever it is hanging from goes away.
      */
-    private static Block registerChandelier(String name) {
-        return register(name, LanternBlock::new,
+    private static Block registerChandelier(String name, LOTRChandelierBlock.ParticleStyle style) {
+        return track(ALL_CHANDELIERS, register(name, props -> new LOTRChandelierBlock(style, props),
                 BlockBehaviour.Properties.of()
-                        .mapColor(MapColor.METAL)
-                        .requiresCorrectToolForDrops()
-                        .strength(3.5f)
-                        .sound(SoundType.LANTERN)
+                        .mapColor(MapColor.NONE)
+                        .noCollision()
+                        .strength(0.0f, 2.0f)
+                        .sound(SoundType.METAL)
                         .lightLevel(state -> 15)
                         .noOcclusion()
                         .pushReaction(PushReaction.DESTROY),
-                true);
+                true));
     }
 
     /** Glass / stained glass: transparent full cube. */
     private static Block registerGlass(String name) {
-        return register(name, TransparentBlock::new,
+        return track(ALL_GLASS, register(name, TransparentBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.NONE)
                         .instrument(NoteBlockInstrument.HAT)
@@ -619,7 +657,12 @@ public final class LOTRBlocks {
                         .isRedstoneConductor((state, level, pos) -> false)
                         .isSuffocating((state, level, pos) -> false)
                         .isViewBlocking((state, level, pos) -> false),
-                true);
+                true));
+    }
+
+    private static Block track(List<Block> family, Block block) {
+        family.add(block);
+        return block;
     }
 
     public static Block register(String name, Function<BlockBehaviour.Properties, Block> factory,
@@ -638,245 +681,6 @@ public final class LOTRBlocks {
         }
         return block;
     }
-
-    public static final Block[] ALL_LEAVES = {
-            ACACIA_LEAVES,
-            ALMOND_LEAVES,
-            APPLE_LEAVES,
-            ASPEN_LEAVES,
-            BANANA_LEAVES,
-            BAOBAB_LEAVES,
-            BEECH_LEAVES,
-            BIRCH_LEAVES,
-            CEDAR_LEAVES,
-            CHERRY_LEAVES,
-            CHESTNUT_LEAVES,
-            CYPRESS_LEAVES,
-            DARK_OAK_LEAVES,
-            DATE_PALM_LEAVES,
-            DRAGON_LEAVES,
-            FIR_LEAVES,
-            GREEN_OAK_LEAVES,
-            HOLLY_LEAVES,
-            JUNGLE_LEAVES,
-            KANUKA_LEAVES,
-            LAIRELOSSE_LEAVES,
-            LARCH_LEAVES,
-            LEBETHRON_LEAVES,
-            LEMON_LEAVES,
-            LIME_LEAVES,
-            MAHOGANY_LEAVES,
-            MALLORN_LEAVES,
-            MANGO_LEAVES,
-            MANGROVE_LEAVES,
-            MAPLE_LEAVES,
-            MIRK_OAK_LEAVES,
-            MIRK_OAK_RED_LEAVES,
-            OAK_LEAVES,
-            OLIVE_LEAVES,
-            ORANGE_LEAVES,
-            PALM_LEAVES,
-            PEAR_LEAVES,
-            PINE_LEAVES,
-            PLUM_LEAVES,
-            POMEGRANATE_LEAVES,
-            REDWOOD_LEAVES,
-            SHIRE_PINE_LEAVES,
-            SPRUCE_LEAVES,
-            WILLOW_LEAVES
-    };
-
-    public static final Block[] ALL_SAPLINGS = {
-            ALMOND_SAPLING,
-            APPLE_SAPLING,
-            ASPEN_SAPLING,
-            BANANA_SAPLING,
-            BAOBAB_SAPLING,
-            BEECH_SAPLING,
-            CEDAR_SAPLING,
-            CHERRY_SAPLING,
-            CHESTNUT_SAPLING,
-            CYPRESS_SAPLING,
-            DATE_PALM_SAPLING,
-            DRAGON_SAPLING,
-            FIR_SAPLING,
-            GREEN_OAK_SAPLING,
-            HOLLY_SAPLING,
-            KANUKA_SAPLING,
-            LAIRELOSSE_SAPLING,
-            LARCH_SAPLING,
-            LEBETHRON_SAPLING,
-            LEMON_SAPLING,
-            LIME_SAPLING,
-            MAHOGANY_SAPLING,
-            MALLORN_SAPLING,
-            MANGO_SAPLING,
-            MANGROVE_SAPLING,
-            MAPLE_SAPLING,
-            MIRK_OAK_RED_SAPLING,
-            MIRK_OAK_SAPLING,
-            OLIVE_SAPLING,
-            ORANGE_SAPLING,
-            PALM_SAPLING,
-            PEAR_SAPLING,
-            PINE_SAPLING,
-            PLUM_SAPLING,
-            POMEGRANATE_SAPLING,
-            REDWOOD_SAPLING,
-            SHIRE_PINE_SAPLING,
-            WILLOW_SAPLING
-    };
-
-    public static final Block[] ALL_TRAPDOORS = {
-            ACACIA_TRAPDOOR,
-            ALMOND_TRAPDOOR,
-            APPLE_TRAPDOOR,
-            ASPEN_TRAPDOOR,
-            BANANA_TRAPDOOR,
-            BAOBAB_TRAPDOOR,
-            BEECH_TRAPDOOR,
-            BIRCH_TRAPDOOR,
-            CEDAR_TRAPDOOR,
-            CHARRED_TRAPDOOR,
-            CHERRY_TRAPDOOR,
-            CHESTNUT_TRAPDOOR,
-            CYPRESS_TRAPDOOR,
-            DARK_OAK_TRAPDOOR,
-            DATE_PALM_TRAPDOOR,
-            DRAGON_TRAPDOOR,
-            FIR_TRAPDOOR,
-            GREEN_OAK_TRAPDOOR,
-            HOLLY_TRAPDOOR,
-            JUNGLE_TRAPDOOR,
-            KANUKA_TRAPDOOR,
-            LAIRELOSSE_TRAPDOOR,
-            LARCH_TRAPDOOR,
-            LEBETHRON_TRAPDOOR,
-            LEMON_TRAPDOOR,
-            LIME_TRAPDOOR,
-            MAHOGANY_TRAPDOOR,
-            MALLORN_TRAPDOOR,
-            MANGO_TRAPDOOR,
-            MANGROVE_TRAPDOOR,
-            MAPLE_TRAPDOOR,
-            MIRK_OAK_TRAPDOOR,
-            OLIVE_TRAPDOOR,
-            ORANGE_TRAPDOOR,
-            PALM_TRAPDOOR,
-            PEAR_TRAPDOOR,
-            PINE_TRAPDOOR,
-            PLUM_TRAPDOOR,
-            POMEGRANATE_TRAPDOOR,
-            REDWOOD_TRAPDOOR,
-            ROTTEN_TRAPDOOR,
-            SHIRE_PINE_TRAPDOOR,
-            SPRUCE_TRAPDOOR,
-            WILLOW_TRAPDOOR
-    };
-
-    public static final Block[] ALL_DOORS = {
-            ACACIA_DOOR,
-            ALMOND_DOOR,
-            APPLE_DOOR,
-            ASPEN_DOOR,
-            BANANA_DOOR,
-            BAOBAB_DOOR,
-            BEECH_DOOR,
-            BIRCH_DOOR,
-            CEDAR_DOOR,
-            CHARRED_DOOR,
-            CHERRY_DOOR,
-            CHESTNUT_DOOR,
-            CYPRESS_DOOR,
-            DARK_OAK_DOOR,
-            DATE_PALM_DOOR,
-            DRAGON_DOOR,
-            FIR_DOOR,
-            GREEN_OAK_DOOR,
-            HOLLY_DOOR,
-            JUNGLE_DOOR,
-            KANUKA_DOOR,
-            LAIRELOSSE_DOOR,
-            LARCH_DOOR,
-            LEBETHRON_DOOR,
-            LEMON_DOOR,
-            LIME_DOOR,
-            MAHOGANY_DOOR,
-            MALLORN_DOOR,
-            MANGO_DOOR,
-            MANGROVE_DOOR,
-            MAPLE_DOOR,
-            MIRK_OAK_DOOR,
-            OLIVE_DOOR,
-            ORANGE_DOOR,
-            PALM_DOOR,
-            PEAR_DOOR,
-            PINE_DOOR,
-            PLUM_DOOR,
-            POMEGRANATE_DOOR,
-            REDWOOD_DOOR,
-            ROTTEN_DOOR,
-            SHIRE_PINE_DOOR,
-            SPRUCE_DOOR,
-            WILLOW_DOOR
-    };
-
-    public static final Block[] ALL_BARS = {
-            BLUE_DWARF_BARS,
-            BRONZE_BARS,
-            DWARF_BARS,
-            GALADHRIM_BARS,
-            GALADHRIM_WOOD_BARS,
-            GOLD_BARS,
-            HIGH_ELF_BARS,
-            HIGH_ELF_WOOD_BARS,
-            MITHRIL_BARS,
-            ORC_STEEL_BARS,
-            REED_BARS,
-            SILVER_BARS,
-            URUK_BARS,
-            WOOD_ELF_BARS,
-            WOOD_ELF_WOOD_BARS
-    };
-
-    public static final Block[] ALL_CHANDELIERS = {
-            BLUE_DWARVEN_CHANDELIER,
-            BRONZE_CHANDELIER,
-            DWARVEN_CHANDELIER,
-            GOLD_CHANDELIER,
-            HIGH_ELVEN_CHANDELIER,
-            IRON_CHANDELIER,
-            MALLORN_BLUE_CHANDELIER,
-            MALLORN_GOLD_CHANDELIER,
-            MALLORN_GREEN_CHANDELIER,
-            MALLORN_SILVER_CHANDELIER,
-            MITHRIL_CHANDELIER,
-            MORGUL_CHANDELIER,
-            ORC_CHANDELIER,
-            SILVER_CHANDELIER,
-            URUK_CHANDELIER,
-            WOOD_ELVEN_CHANDELIER
-    };
-
-    public static final Block[] ALL_GLASS = {
-            BLACK_STAINED_GLASS,
-            BLUE_STAINED_GLASS,
-            BROWN_STAINED_GLASS,
-            CYAN_STAINED_GLASS,
-            GRAY_STAINED_GLASS,
-            GREEN_STAINED_GLASS,
-            LIGHT_BLUE_STAINED_GLASS,
-            LIME_STAINED_GLASS,
-            MAGENTA_STAINED_GLASS,
-            ORANGE_STAINED_GLASS,
-            PINK_STAINED_GLASS,
-            PURPLE_STAINED_GLASS,
-            RED_STAINED_GLASS,
-            SILVER_STAINED_GLASS,
-            WHITE_STAINED_GLASS,
-            YELLOW_STAINED_GLASS,
-            GLASS
-    };
 
     public static void init() {
     }

@@ -8,7 +8,7 @@ import net.fabricmc.api.ClientModInitializer;
  * Client entrypoint. Owns HUD, keybinds, screens.
  *
  * NOTE on leaves render layer: in 26.1 Minecraft automatically assigns the
- * ChunkSectionLayer per quad from the sprite's properties, so blocks with
+ * ChunkSectionLayer per quad from the sprite's properties, so block with
  * transparent pixels (our leaves) should get cutout rendering for free.
  * If leaves ever render opaque/black, register them explicitly:
  *

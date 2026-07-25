@@ -1,0 +1,29 @@
+{
+  "__comment": "Crossed-squares model for chandeliers. Equivalent to the 1.7.10 render type 1 with setBlockBounds(0.0625, 0.1875, 0.0625, 0.9375, 1.0, 0.9375): identical to vanilla block/cross except the quads start at y=3 instead of y=0, so the fixture hangs from the ceiling instead of standing on the floor.",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "#cross"
+  },
+  "elements": [
+    {
+      "from": [0.8, 3, 8],
+      "to": [15.2, 16, 8],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+      }
+    },
+    {
+      "from": [8, 3, 0.8],
+      "to": [8, 16, 15.2],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": -45, "rescale": true },
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+      }
+    }
+  ]
+}

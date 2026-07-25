@@ -4,7 +4,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRMapC
 
 /**
  * Faithful port of 1.7.10 lotr.common.fac.LOTRControlZone.
- * Circular territory zone (map pixels, cached in world blocks). Logic is
+ * Circular territory zone (map pixels, cached in world block). Logic is
  * identical to the original; only the coordinate conversion moved to
  * LOTRMapCoords. The waypoint-based constructor is deferred until waypoints port.
  */
