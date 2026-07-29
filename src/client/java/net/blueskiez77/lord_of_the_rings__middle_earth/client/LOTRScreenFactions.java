@@ -95,7 +95,7 @@ public class LOTRScreenFactions extends Screen {
     private void selectRow(int index) {
         if (index >= 0 && index < factions.size()) {
             selectedIndex = index;
-            LOTRAlignmentHud.setViewedFaction(factions.get(index));
+            //LOTRAlignmentHud.setViewedFaction(factions.get(index));
             updatePledgeButton();
         }
     }

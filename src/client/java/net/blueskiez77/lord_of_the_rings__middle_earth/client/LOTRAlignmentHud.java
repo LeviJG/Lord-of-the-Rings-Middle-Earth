@@ -1,3 +1,4 @@
+/*
 package net.blueskiez77.lord_of_the_rings__middle_earth.client;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
@@ -16,6 +17,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
+*/
 /**
  * On-screen alignment bar. Upgrades the earlier text-only readout into a real
  * progress bar toward the next rank, using the faithful rank-window math in
@@ -32,7 +34,8 @@ import net.minecraft.world.entity.player.Player;
  *    via .fill(x1, y1, x2, y2, argb). Colors are ARGB (0xFF......).
  *
  * Viewed faction is hardcoded to GONDOR until a selection system exists.
- */
+ *//*
+
 public final class LOTRAlignmentHud {
 
     private static final Identifier ID =
@@ -109,4 +112,4 @@ public final class LOTRAlignmentHud {
         }
         return String.format("%.1f", alignment);
     }
-}
+}*/

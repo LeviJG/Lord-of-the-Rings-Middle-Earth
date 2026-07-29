@@ -2,7 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 
 import java.util.Optional;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected.LOTRConnectedBorderType;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected.LOTRConnectedBorderTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
@@ -16,6 +17,7 @@ import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
+import net.minecraft.client.resources.model.sprite.Material;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 
@@ -60,7 +62,13 @@ public class LOTRModelProvider extends FabricModelProvider {
     @Override
     public void generateBlockStateModels(BlockModelGenerators generators) {
         // Solid cubes, planks, leaves and glass all use the same cube_all model.
-        LOTRBlocks.ALL_CUBES.forEach(b -> trivialCubeWithItem(generators, b));
+        //
+        // Connected-border blocks are skipped here and handled below: their
+        // world model is installed in code and their textures live in
+        // block/connected/, so the default block/<name> lookup would miss.
+        LOTRBlocks.ALL_CUBES.stream()
+                .filter(b -> !LOTRConnectedBorderTypes.has(b))
+                .forEach(b -> trivialCubeWithItem(generators, b));
         LOTRBlocks.ALL_PLANKS.forEach(b -> trivialCubeWithItem(generators, b));
         LOTRBlocks.ALL_LEAVES.forEach(b -> trivialCubeWithItem(generators, b));
         LOTRBlocks.ALL_GLASS.forEach(b -> trivialCubeWithItem(generators, b));
@@ -78,6 +86,28 @@ public class LOTRModelProvider extends FabricModelProvider {
         LOTRBlocks.ALL_BARS.forEach(generators::createBarsAndItem);
 
         LOTRBlocks.ALL_CHANDELIERS.forEach(b -> chandelier(generators, b));
+
+        LOTRConnectedBorderTypes.all().forEach((block, type) -> connectedBorder(generators, block, type));
+    }
+
+    /**
+     * Item model for a connected-border block.
+     *
+     * The world model is built in code (LOTRConnectedBorderModel), so nothing
+     * here needs to describe the border. What is needed is an item model, and it
+     * has to point at block/connected/<base>_base rather than the default
+     * block/<name>, so the family keeps ONE texture set.
+     *
+     * That matches the original: LOTRBlockOreStorage served its inventory icon
+     * from the same IIcon set as the world block (the noBase flag in
+     * getConnectedIconBlock existed for exactly this), so there was never a
+     * second copy of the texture to keep in sync.
+     */
+    private static void connectedBorder(BlockModelGenerators generators, Block block,
+                                        LOTRConnectedBorderType type) {
+        Identifier model = ModelTemplates.CUBE_ALL.create(
+                block, TextureMapping.cube(new Material(type.baseTexture())), generators.modelOutput);
+        generators.registerSimpleItemModel(block, model);
     }
 
     private static void trivialCubeWithItem(BlockModelGenerators generators, Block block) {

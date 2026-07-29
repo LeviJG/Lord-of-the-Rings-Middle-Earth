@@ -1,3 +1,4 @@
+/*
 package net.blueskiez77.lord_of_the_rings__middle_earth.client;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -12,6 +13,7 @@ import net.minecraft.resources.Identifier;
 
 import org.lwjgl.glfw.GLFW;
 
+*/
 /**
  * Registers the keybinding that opens the factions screen (default: L),
  * rebindable in Options > Controls under the mod's category.
@@ -21,7 +23,8 @@ import org.lwjgl.glfw.GLFW;
  *    keymapping.v1.KeyMappingHelper (registerKeyBinding -> registerKeyMapping).
  *  - On 1.21.9+ the KeyMapping category is a KeyMapping.Category object
  *    (registered by Identifier), not a translation-key string.
- */
+ *//*
+
 public final class LOTRKeyBindings {
 
     public static final KeyMapping.Category CATEGORY =
@@ -47,4 +50,4 @@ public final class LOTRKeyBindings {
             }
         });
     }
-}
+}*/

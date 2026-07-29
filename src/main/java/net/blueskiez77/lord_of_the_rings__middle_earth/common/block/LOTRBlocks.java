@@ -1,7 +1,9 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
@@ -64,6 +66,22 @@ public final class LOTRBlocks {
     public static final List<Block> ALL_BARS = new ArrayList<>();
     public static final List<Block> ALL_CHANDELIERS = new ArrayList<>();
     public static final List<Block> ALL_GLASS = new ArrayList<>();
+
+    /**
+     * Registry key for every block registered here.
+     *
+     * 26.2 moved data generation over to ids rather than raw Block instances
+     * (BlockIds/ItemIds vanilla-side, and valueLookupBuilder was removed from
+     * the Fabric tag provider as a result). register() already builds the key
+     * it needs, so recording it here means datagen can ask for it later without
+     * a registry round-trip.
+     */
+    private static final Map<Block, ResourceKey<Block>> BLOCK_KEYS = new LinkedHashMap<>();
+
+    /** The registry key a block was registered under. */
+    public static ResourceKey<Block> keyOf(Block block) {
+        return BLOCK_KEYS.get(block);
+    }
 
     // --- Ores ---
     public static final Block TIN_ORE = registerCube("tin_ore", 3.0f, 5.0f, Tier.STONE);
@@ -671,6 +689,7 @@ public final class LOTRBlocks {
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, name));
         Block block = factory.apply(properties.setId(blockKey));
         Registry.register(BuiltInRegistries.BLOCK, blockKey, block);
+        BLOCK_KEYS.put(block, blockKey);
 
         if (withItem) {
             ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM,
