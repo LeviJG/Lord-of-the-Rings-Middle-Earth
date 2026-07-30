@@ -20,7 +20,7 @@ import net.minecraft.world.level.block.Block;
  * textures live.
  *
  * TO ADD A FAMILY:
- *   1. Drop fourteen textures into assets/lotr/textures/block/connected/ --
+ *   1. Drop thirteen textures into assets/lotr/textures/block/ctm/ --
  *      &lt;base&gt;_base plus the twelve piece suffixes in
  *      LOTRConnectedBorder.Piece.
  *   2. Add one line to the static block below.

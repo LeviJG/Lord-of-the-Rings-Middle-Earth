@@ -65,7 +65,7 @@ public class LOTRModelProvider extends FabricModelProvider {
         //
         // Connected-border blocks are skipped here and handled below: their
         // world model is installed in code and their textures live in
-        // block/connected/, so the default block/<name> lookup would miss.
+        // block/ctm/, so the default block/<name> lookup would miss.
         LOTRBlocks.ALL_CUBES.stream()
                 .filter(b -> !LOTRConnectedBorderTypes.has(b))
                 .forEach(b -> trivialCubeWithItem(generators, b));
@@ -94,9 +94,11 @@ public class LOTRModelProvider extends FabricModelProvider {
      * Item model for a connected-border block.
      *
      * The world model is built in code (LOTRConnectedBorderModel), so nothing
-     * here needs to describe the border. What is needed is an item model, and it
-     * points at block/connected/<base>_item -- the base with its full frame
-     * composited on, which is how the block looks with no neighbours.
+     * here needs to describe the border. What is needed is an item model, and
+     * LOTRConnectedBorderType#itemTexture supplies the sprite: the composited
+     * no-neighbours combination, i.e. the base with its full frame drawn on.
+     * That is one of the 47 sprites the sprite source generates, NOT a shipped
+     * file -- there is no <base>_item.png to keep in sync.
      *
      * That matches the original: LOTRBlockOreStorage served its inventory icon
      * from the same IIcon set as the world block (the noBase flag in

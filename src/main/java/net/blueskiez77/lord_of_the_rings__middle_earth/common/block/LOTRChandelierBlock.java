@@ -141,7 +141,8 @@ public class LOTRChandelierBlock extends Block {
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         if (!canSurvive(state, level, pos)) {
-            dropResources(state, level, pos);
+            // destroyBlock(pos, true) already drops the block's resources -- an
+            // extra dropResources() call here would yield two chandeliers.
             level.destroyBlock(pos, true);
         }
     }
