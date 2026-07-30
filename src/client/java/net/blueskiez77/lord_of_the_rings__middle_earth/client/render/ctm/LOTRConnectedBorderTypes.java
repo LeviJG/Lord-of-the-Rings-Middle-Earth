@@ -1,4 +1,4 @@
-package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected;
+package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;

@@ -2,8 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 
 import java.util.Optional;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected.LOTRConnectedBorderType;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected.LOTRConnectedBorderTypes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRConnectedBorderType;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRConnectedBorderTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
@@ -95,8 +95,8 @@ public class LOTRModelProvider extends FabricModelProvider {
      *
      * The world model is built in code (LOTRConnectedBorderModel), so nothing
      * here needs to describe the border. What is needed is an item model, and it
-     * has to point at block/connected/<base>_base rather than the default
-     * block/<name>, so the family keeps ONE texture set.
+     * points at block/connected/<base>_item -- the base with its full frame
+     * composited on, which is how the block looks with no neighbours.
      *
      * That matches the original: LOTRBlockOreStorage served its inventory icon
      * from the same IIcon set as the world block (the noBase flag in
@@ -106,7 +106,7 @@ public class LOTRModelProvider extends FabricModelProvider {
     private static void connectedBorder(BlockModelGenerators generators, Block block,
                                         LOTRConnectedBorderType type) {
         Identifier model = ModelTemplates.CUBE_ALL.create(
-                block, TextureMapping.cube(new Material(type.baseTexture())), generators.modelOutput);
+                block, TextureMapping.cube(new Material(type.itemTexture())), generators.modelOutput);
         generators.registerSimpleItemModel(block, model);
     }
 

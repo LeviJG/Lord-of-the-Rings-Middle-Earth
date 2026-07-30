@@ -1,4 +1,4 @@
-package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected;
+package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 
@@ -24,7 +24,7 @@ import net.minecraft.world.level.block.state.BlockState;
 public record LOTRConnectedBorderType(String textureBaseName, Matcher matcher) {
 
     /** Where all connected-border textures live, relative to the assets root. */
-    public static final String TEXTURE_FOLDER = "block/connected/";
+    public static final String TEXTURE_FOLDER = "block/ctm/";
 
     /**
      * The modern equivalent of LOTRConnectedBlock#areBlocksConnected: decides
@@ -46,6 +46,31 @@ public record LOTRConnectedBorderType(String textureBaseName, Matcher matcher) {
         return new LOTRConnectedBorderType(textureBaseName,
                 (level, selfPos, selfState, otherPos, otherState) ->
                         otherState.is(selfState.getBlock()));
+    }
+
+    /**
+     * Full texture id for the inventory icon: the base with its full frame
+     * composited on, i.e. how the block looks with no neighbours.
+     *
+     * This is one of the 47 sprites the sprite source composites, so there is no
+     * shipped file to keep in sync -- exactly the combination the original's
+     * inventory icon used.
+     */
+    public Identifier itemTexture() {
+        return LOTRConnectedBorderSpriteSource.spriteFor(root(),
+                LOTRConnectedBorder.piecesFor(false, false, false, false, false, false, false, false));
+    }
+
+    /**
+     * The family root: folder + base name, with NO piece suffix.
+     *
+     * This is the id declared in atlases/blocks.json and the one the sprite
+     * source names its composited sprites from, so every lookup of a composited
+     * sprite must start here -- not from baseTexture(), which already carries
+     * the "_base" suffix.
+     */
+    public Identifier root() {
+        return Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, TEXTURE_FOLDER + textureBaseName);
     }
 
     /** Full texture id for the always-drawn background tile. */

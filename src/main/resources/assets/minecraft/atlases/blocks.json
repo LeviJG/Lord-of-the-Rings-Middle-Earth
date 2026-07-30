@@ -1,0 +1,9 @@
+{
+  "__comment": "One lotr:connected_border entry per family. 'base' is the family ROOT with no piece suffix: the source appends _base and the twelve piece suffixes itself when reading, and names its 47 composited sprites <root>_ctm_<mask>. The pieces are NOT listed here -- they are read as raw files, never sampled as sprites, so stitching them would waste atlas space.",
+  "sources": [
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/mithril_block"
+    }
+  ]
+}

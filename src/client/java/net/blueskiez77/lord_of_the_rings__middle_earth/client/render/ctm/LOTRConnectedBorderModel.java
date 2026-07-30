@@ -1,6 +1,5 @@
-package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected;
+package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm;
 
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,6 +31,10 @@ import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
  *   - which world block is "top-left"  -> faceUp/faceRight below
  *   - turning pieces into quads        -> this class
  *
+ * Each face draws ONE quad, using the sprite that the sprite source composited
+ * for that face's piece set -- the same one-quad-per-face approach the original
+ * used, and the reason there is no longer a depth offset here.
+ *
  * 26.2 notes: this is a BlockStateModel, not a BakedModel (which no longer
  * exists). FabricBlockStateModel is injected onto BlockStateModel via Mixin, so
  * emitQuads/createGeometryKey/materialFlags below are overrides even though
@@ -42,36 +45,24 @@ import net.fabricmc.fabric.api.client.renderer.v1.mesh.QuadEmitter;
  */
 public class LOTRConnectedBorderModel implements BlockStateModel {
 
-    /**
-     * How far outside the face the border overlays sit.
-     *
-     * DEVIATION FROM THE ORIGINAL, deliberately: 1.7.10 composited the base and
-     * its border pieces into a single image per neighbour combination
-     * (LOTRConnectedTextures#createConnectedIcons) and drew one quad per face.
-     * Doing that here would mean generating composites and stitching them onto
-     * the atlas. Layering separate quads is far simpler, but coplanar quads
-     * z-fight, so the overlays are nudged a fraction of a pixel outward.
-     *
-     * The pieces occupy almost disjoint pixels (an edge is one row, a corner a
-     * few pixels), so one shared offset is enough.
-     */
-    private static final float OVERLAY_DEPTH = -0.001f;
-
     private final LOTRConnectedBorderType type;
-    private final Material.Baked baseMaterial;
-    private final Map<LOTRConnectedBorder.Piece, Material.Baked> pieceMaterials;
+    private final Map<Set<LOTRConnectedBorder.Piece>, Material.Baked> composited;
+    private final Material.Baked isolatedMaterial;
     private final @BakedQuad.MaterialFlags int staticMaterialFlags;
 
     public LOTRConnectedBorderModel(LOTRConnectedBorderType type,
-                                    Material.Baked baseMaterial,
-                                    Map<LOTRConnectedBorder.Piece, Material.Baked> pieceMaterials) {
+                                    Map<Set<LOTRConnectedBorder.Piece>, Material.Baked> composited) {
         this.type = type;
-        this.baseMaterial = baseMaterial;
-        this.pieceMaterials = new EnumMap<>(pieceMaterials);
+        this.composited = Map.copyOf(composited);
 
-        @BakedQuad.MaterialFlags int flags = flagsOf(baseMaterial);
+        // Particle/fallback tile: the fully framed one, i.e. how the block looks
+        // standing alone. Matches what the original's inventory icon used.
+        this.isolatedMaterial = this.composited.get(
+                LOTRConnectedBorder.piecesFor(false, false, false, false, false, false, false, false));
 
-        for (Material.Baked material : pieceMaterials.values()) {
+        @BakedQuad.MaterialFlags int flags = 0;
+
+        for (Material.Baked material : this.composited.values()) {
             flags |= flagsOf(material);
         }
 
@@ -134,15 +125,12 @@ public class LOTRConnectedBorderModel implements BlockStateModel {
     public void emitQuads(QuadEmitter emitter, BlockAndTintGetter level, BlockPos pos, BlockState state,
                           RandomSource random, Predicate<@Nullable Direction> cullTest) {
         for (Direction face : Direction.values()) {
-            emitter.square(face, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f)
-                    .materialBake(baseMaterial, MutableQuadView.BAKE_LOCK_UV)
-                    .emit();
+            Material.Baked material = composited.getOrDefault(
+                    piecesFor(level, pos, state, face), isolatedMaterial);
 
-            for (LOTRConnectedBorder.Piece piece : piecesFor(level, pos, state, face)) {
-                emitter.square(face, 0.0f, 0.0f, 1.0f, 1.0f, OVERLAY_DEPTH)
-                        .materialBake(pieceMaterials.get(piece), MutableQuadView.BAKE_LOCK_UV)
-                        .emit();
-            }
+            emitter.square(face, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f)
+                    .materialBake(material, MutableQuadView.BAKE_LOCK_UV)
+                    .emit();
         }
     }
 
@@ -168,7 +156,7 @@ public class LOTRConnectedBorderModel implements BlockStateModel {
 
     @Override
     public Material.Baked particleMaterial() {
-        return baseMaterial;
+        return isolatedMaterial;
     }
 
     @Override

@@ -1,6 +1,7 @@
-package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected;
+package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm;
 
 import java.util.EnumSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
@@ -54,6 +55,44 @@ public final class LOTRConnectedBorder {
 
     /** Suffix of the always-drawn background tile. */
     public static final String BASE_SUFFIX = "base";
+
+    /**
+     * Every piece set the rules can actually produce.
+     *
+     * There are 256 neighbour configurations but only 47 distinct outcomes --
+     * the same 47 that the connected-texture format enumerates, and the same set
+     * the original built in IconElement.allCombos. One composited sprite is
+     * generated per entry.
+     */
+    public static Set<Set<Piece>> allCombinations() {
+        Set<Set<Piece>> combos = new LinkedHashSet<>();
+
+        for (int bits = 0; bits < 256; bits++) {
+            combos.add(piecesFor(
+                    (bits & 1) != 0, (bits & 2) != 0, (bits & 4) != 0, (bits & 8) != 0,
+                    (bits & 16) != 0, (bits & 32) != 0, (bits & 64) != 0, (bits & 128) != 0));
+        }
+
+        return combos;
+    }
+
+    /**
+     * Stable name for a piece set, used as the composited sprite's id suffix.
+     *
+     * A bitmask over Piece ordinals, so it is deterministic, independent of
+     * iteration order, and unique by construction. Joining ordinals with
+     * separators instead is not safe: the empty set and the set containing only
+     * ordinal 0 both render as "0".
+     */
+    public static String keyOf(Set<Piece> pieces) {
+        int mask = 0;
+
+        for (Piece piece : pieces) {
+            mask |= 1 << piece.ordinal();
+        }
+
+        return Integer.toString(mask);
+    }
 
     private LOTRConnectedBorder() {
     }

@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected.LOTRConnectedBorderPlugin;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRConnectedBorderPlugin;
 
 import net.fabricmc.api.ClientModInitializer;
 

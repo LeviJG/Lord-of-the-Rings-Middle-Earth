@@ -1,9 +1,11 @@
-package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.connected;
+package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm;
 
-import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import net.fabricmc.fabric.api.client.model.loading.v1.ModelLoadingPlugin;
+import net.fabricmc.fabric.api.client.rendering.v1.SpriteSourceRegistry;
 
 import net.minecraft.client.renderer.block.dispatch.BlockStateModel;
 import net.minecraft.client.resources.model.ModelBaker;
@@ -30,6 +32,8 @@ public final class LOTRConnectedBorderPlugin implements ModelLoadingPlugin {
     }
 
     public static void init() {
+        SpriteSourceRegistry.register(
+                LOTRConnectedBorderSpriteSource.ID, LOTRConnectedBorderSpriteSource.CODEC);
         ModelLoadingPlugin.register(new LOTRConnectedBorderPlugin());
     }
 
@@ -63,16 +67,18 @@ public final class LOTRConnectedBorderPlugin implements ModelLoadingPlugin {
 
         @Override
         public BlockStateModel bake(ModelBaker baker) {
-            Material.Baked base = baker.materials().get(new Material(type.baseTexture()), this);
+            // One material per composited combination. The sprite source has
+            // already generated these onto the atlas; here we just look each
+            // one up.
+            Map<Set<LOTRConnectedBorder.Piece>, Material.Baked> composited = new HashMap<>();
 
-            Map<LOTRConnectedBorder.Piece, Material.Baked> pieces =
-                    new EnumMap<>(LOTRConnectedBorder.Piece.class);
-
-            for (LOTRConnectedBorder.Piece piece : LOTRConnectedBorder.Piece.values()) {
-                pieces.put(piece, baker.materials().get(new Material(type.pieceTexture(piece)), this));
+            for (Set<LOTRConnectedBorder.Piece> pieces : LOTRConnectedBorder.allCombinations()) {
+                Material material = new Material(
+                        LOTRConnectedBorderSpriteSource.spriteFor(type.root(), pieces));
+                composited.put(pieces, baker.materials().get(material, this));
             }
 
-            return new LOTRConnectedBorderModel(type, base, pieces);
+            return new LOTRConnectedBorderModel(type, composited);
         }
 
         @Override
