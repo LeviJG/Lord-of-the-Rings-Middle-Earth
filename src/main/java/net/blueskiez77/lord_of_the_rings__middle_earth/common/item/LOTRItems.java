@@ -29,10 +29,13 @@ import net.minecraft.world.item.Item;
  */
 public final class LOTRItems {
 
+    // NOTE: athelas is NOT here. In the 1.7.10 source it is a Block
+    // (LOTRMod.athelas = new LOTRBlockFlower()), so it lives in LOTRBlocks and
+    // its BlockItem already claims the id lotr:athelas. Registering a separate
+    // Item under the same id is a duplicate-key crash on load.
+
     // First representative simple items (from the original mod's roster).
     public static final Item MITHRIL = register("mithril",
-            Item::new, new Item.Properties());
-    public static final Item ATHELAS = register("athelas",
             Item::new, new Item.Properties());
     public static final Item PIPEWEED = register("pipeweed",
             Item::new, new Item.Properties());

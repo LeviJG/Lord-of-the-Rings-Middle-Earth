@@ -1,14 +1,14 @@
 {
-  "__comment": "Crossed-squares model for chandeliers. Equivalent to the 1.7.10 render type 1 with setBlockBounds(0.0625, 0.1875, 0.0625, 0.9375, 1.0, 0.9375): identical to vanilla block/cross except the quads start at y=3 instead of y=0, so the fixture hangs from the ceiling instead of standing on the floor.",
+  "__comment": "Base crossed-squares model for chandeliers. Matches 1.7.10 render type 1 (RenderBlocks.renderCrossedSquares), which draws two 45-degree planes spanning 0.05..0.95 of the block -- 0.9 blocks wide -- over the FULL block height. Vanilla block/cross is the same geometry but adds rescale:true, which stretches the planes out to the full diagonal and renders ~11% larger; omitting it is what makes this match the original. The fixture appears to hang because the texture's bottom three rows are transparent, not because the quads are offset.",
   "ambientocclusion": false,
   "textures": {
     "particle": "#cross"
   },
   "elements": [
     {
-      "from": [0.8, 3, 8],
+      "from": [0.8, 0, 8],
       "to": [15.2, 16, 8],
-      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45 },
       "shade": false,
       "faces": {
         "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
@@ -16,13 +16,13 @@
       }
     },
     {
-      "from": [8, 3, 0.8],
+      "from": [8, 0, 0.8],
       "to": [8, 16, 15.2],
-      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": -45, "rescale": true },
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": -45 },
       "shade": false,
       "faces": {
-        "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
-        "south": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+        "west": { "uv": [0, 0, 16, 16], "texture": "#cross" },
+        "east": { "uv": [0, 0, 16, 16], "texture": "#cross" }
       }
     }
   ]

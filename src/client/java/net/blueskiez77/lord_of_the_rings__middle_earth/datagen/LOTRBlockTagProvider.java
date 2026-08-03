@@ -60,6 +60,17 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         var saplingsTag = builder(vanillaBlockTag("saplings"));
         var trapdoorsTag = builder(vanillaBlockTag("wooden_trapdoors"));
         var doorsTag = builder(vanillaBlockTag("wooden_doors"));
+        var smallFlowersTag = builder(vanillaBlockTag("small_flowers"));
+        var logsTag = builder(vanillaBlockTag("logs"));
+        var logsBurnTag = builder(vanillaBlockTag("logs_that_burn"));
+        var stairsTag = builder(vanillaBlockTag("stairs"));
+        var woodenStairsTag = builder(vanillaBlockTag("wooden_stairs"));
+        var slabsTag = builder(vanillaBlockTag("slabs"));
+        var woodenSlabsTag = builder(vanillaBlockTag("wooden_slabs"));
+        var fencesTag = builder(vanillaBlockTag("fences"));
+        var woodenFencesTag = builder(vanillaBlockTag("wooden_fences"));
+        var wallsTag = builder(vanillaBlockTag("walls"));
+        var fenceGatesTag = builder(vanillaBlockTag("fence_gates"));
 
         LOTRBlocks.CUBES_STONE_TIER.forEach(b -> {
             pickaxe.add(LOTRBlocks.keyOf(b));
@@ -78,6 +89,93 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
             leavesTag.add(LOTRBlocks.keyOf(b));
         });
         LOTRBlocks.ALL_SAPLINGS.forEach(b -> saplingsTag.add(LOTRBlocks.keyOf(b)));
+        // Flowers take no tool (instabreak), so they join no mineable tag --
+        // matching vanilla's own small flowers.
+        LOTRBlocks.ALL_FLOWERS.forEach(b -> smallFlowersTag.add(LOTRBlocks.keyOf(b)));
+
+        // Logs join the vanilla logs tags so they work in recipes and with
+        // anything that looks for wood. Beams are decorative and deliberately
+        // stay out of them -- they are not craftable into planks.
+        LOTRBlocks.ALL_LOGS.forEach(b -> {
+            axe.add(LOTRBlocks.keyOf(b));
+            logsTag.add(LOTRBlocks.keyOf(b));
+            logsBurnTag.add(LOTRBlocks.keyOf(b));
+        });
+        LOTRBlocks.ALL_BEAMS.forEach(b -> axe.add(LOTRBlocks.keyOf(b)));
+        LOTRBlocks.ALL_PILLARS.forEach(b -> {
+            pickaxe.add(LOTRBlocks.keyOf(b));
+            stone.add(LOTRBlocks.keyOf(b));
+        });
+
+        // Stairs inherit their base block's tool and tier, so mirror whichever
+        // tags the base sits in rather than assuming stone.
+        LOTRBlocks.ALL_STAIRS.forEach(st -> {
+            Block base = LOTRBlocks.STAIRS_BASE.get(st);
+            stairsTag.add(LOTRBlocks.keyOf(st));
+            if (LOTRBlocks.ALL_PLANKS.contains(base)) {
+                axe.add(LOTRBlocks.keyOf(st));
+                woodenStairsTag.add(LOTRBlocks.keyOf(st));
+            } else {
+                pickaxe.add(LOTRBlocks.keyOf(st));
+                if (LOTRBlocks.CUBES_IRON_TIER.contains(base)) {
+                    iron.add(LOTRBlocks.keyOf(st));
+                } else if (LOTRBlocks.CUBES_STONE_TIER.contains(base)) {
+                    stone.add(LOTRBlocks.keyOf(st));
+                }
+            }
+        });
+
+        LOTRBlocks.ALL_SLABS.forEach(sl -> {
+            Block base = LOTRBlocks.SLAB_BASE.get(sl);
+            slabsTag.add(LOTRBlocks.keyOf(sl));
+            if (LOTRBlocks.ALL_PLANKS.contains(base)) {
+                axe.add(LOTRBlocks.keyOf(sl));
+                woodenSlabsTag.add(LOTRBlocks.keyOf(sl));
+            } else {
+                pickaxe.add(LOTRBlocks.keyOf(sl));
+                if (LOTRBlocks.CUBES_IRON_TIER.contains(base)) {
+                    iron.add(LOTRBlocks.keyOf(sl));
+                } else if (LOTRBlocks.CUBES_STONE_TIER.contains(base)) {
+                    stone.add(LOTRBlocks.keyOf(sl));
+                }
+            }
+        });
+
+        LOTRBlocks.ALL_FENCES.forEach(f -> {
+            Block base = LOTRBlocks.FENCE_BASE.get(f);
+            fencesTag.add(LOTRBlocks.keyOf(f));
+            if (LOTRBlocks.ALL_PLANKS.contains(base)) {
+                axe.add(LOTRBlocks.keyOf(f));
+                woodenFencesTag.add(LOTRBlocks.keyOf(f));
+            } else {
+                pickaxe.add(LOTRBlocks.keyOf(f));
+            }
+        });
+
+        LOTRBlocks.ALL_WALLS.forEach(w -> {
+            Block base = LOTRBlocks.WALL_BASE.get(w);
+            wallsTag.add(LOTRBlocks.keyOf(w));
+            pickaxe.add(LOTRBlocks.keyOf(w));
+            if (LOTRBlocks.CUBES_IRON_TIER.contains(base)) {
+                iron.add(LOTRBlocks.keyOf(w));
+            } else if (LOTRBlocks.CUBES_STONE_TIER.contains(base)) {
+                stone.add(LOTRBlocks.keyOf(w));
+            }
+        });
+
+        // Smooth stone needs a pickaxe like the rock it is cut from; carpets
+        // take no tool, matching the original (no harvest level was set).
+        LOTRBlocks.ALL_COLUMNS.forEach(b -> {
+            pickaxe.add(LOTRBlocks.keyOf(b));
+            stone.add(LOTRBlocks.keyOf(b));
+        });
+
+        LOTRBlocks.ALL_CRAFTING_TABLES.forEach(b -> axe.add(LOTRBlocks.keyOf(b)));
+        LOTRBlocks.ALL_LADDERS.forEach(b -> axe.add(LOTRBlocks.keyOf(b)));
+        LOTRBlocks.ALL_GATES.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
+        LOTRBlocks.ALL_FENCE_GATES.forEach(b -> axe.add(LOTRBlocks.keyOf(b)));
+        LOTRBlocks.ALL_BUTTONS.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
+        LOTRBlocks.ALL_PRESSURE_PLATES.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
         LOTRBlocks.ALL_TRAPDOORS.forEach(b -> {
             axe.add(LOTRBlocks.keyOf(b));
             trapdoorsTag.add(LOTRBlocks.keyOf(b));

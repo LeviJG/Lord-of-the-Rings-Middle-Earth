@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth;
 
 import net.fabricmc.api.ModInitializer;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRCreativeTabs;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRAlignmentCommand;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
@@ -40,6 +41,9 @@ public class LOTRMod implements ModInitializer {
         // Register content.
         LOTRBlocks.init();
         LOTRItems.init();
+
+        // Creative tab. Must come after blocks and items exist.
+        LOTRCreativeTabs.init();
 
         // Register the /alignment test/dev command.
         LOTRAlignmentCommand.register();
