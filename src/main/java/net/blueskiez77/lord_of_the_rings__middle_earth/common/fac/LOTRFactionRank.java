@@ -2,12 +2,6 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.fac;
 
 import net.minecraft.network.chat.Component;
 
-/**
- * Faithful port of 1.7.10 lotr.common.fac.LOTRFactionRank.
- * A named alignment threshold within a faction. Ranks sort descending by alignment.
- * Changes: StatCollector -> Component.translatable; gendered-name methods take a
- * boolean useFeminineRanks until LOTRPlayerData ports; achievement/title hooks stubbed.
- */
 public class LOTRFactionRank implements Comparable<LOTRFactionRank> {
     public static final LOTRFactionRank RANK_NEUTRAL = new Dummy("lotr.faction.rank.neutral");
     public static final LOTRFactionRank RANK_ENEMY = new Dummy("lotr.faction.rank.enemy");

@@ -1,22 +1,11 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.fac;
 
-/**
- * Faithful port of the rank-window math from 1.7.10
- * LOTRTickHandlerClient.renderAlignmentBar (the first ~55 lines).
- *
- * Given a player's alignment with a faction, computes the window
- * [alignMin, alignMax] the bar currently spans (current rank threshold up to
- * the next rank), the ranks at each end, and 0..1 progress across that window.
- * Pure math, no rendering dependency, so it lives in the common source set.
- * The eventual textured bar can reuse the exact same values.
- */
 public final class LOTRAlignmentBar {
-
     public final float alignMin;
     public final float alignMax;
     public final LOTRFactionRank rankMin;
     public final LOTRFactionRank rankMax;
-    public final float progress; // 0..1 across [alignMin, alignMax]
+    public final float progress;
 
     private LOTRAlignmentBar(float alignMin, float alignMax, LOTRFactionRank rankMin,
                              LOTRFactionRank rankMax, float progress) {

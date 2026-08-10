@@ -7,13 +7,6 @@ import java.util.Map;
 
 import net.minecraft.network.chat.Component;
 
-/**
- * Faithful port of 1.7.10 lotr.common.fac.LOTRFactionRelations.
- * Relation logic (defaults, overrides, symmetric pair keys, UNALIGNED/HOSTILE
- * special cases) is 1:1. Disk persistence (load/save to faction_relations.dat)
- * and packet broadcasts are stubbed as TODO(port) until the level-datagen and
- * networking slices land. Old NBT format is documented in comments.
- */
 public class LOTRFactionRelations {
     public static final Map<FactionPair, Relation> defaultMap = new HashMap<>();
     public static final Map<FactionPair, Relation> overrideMap = new HashMap<>();
@@ -45,15 +38,11 @@ public class LOTRFactionRelations {
     }
 
     public static void load() {
-        // TODO(port): read overrides from faction_relations.dat once LOTRLevelData ports.
-        // Old format: root compound -> "Overrides" list; each entry has
-        // "FacPair1","FacPair2" (faction code names) and "Rel" (relation code name).
         overrideMap.clear();
         needsLoad = false;
     }
 
     public static void save() {
-        // TODO(port): write overrides to faction_relations.dat (format above).
         needsSave = false;
     }
 
@@ -74,7 +63,6 @@ public class LOTRFactionRelations {
         overrideMap.clear();
         if (!wasEmpty) {
             markDirty();
-            // TODO(port): broadcast reset packet to all players (networking slice).
         }
     }
 
@@ -107,7 +95,6 @@ public class LOTRFactionRelations {
                 overrideMap.put(key, relation);
             }
             markDirty();
-            // TODO(port): broadcast single-entry relation packet (networking slice).
         }
     }
 

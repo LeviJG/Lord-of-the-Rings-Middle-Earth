@@ -20,25 +20,12 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-/**
- * Faithful port of 1.7.10 lotr.common.fac.LOTRFaction.
- * Enum constants, fields, and all five constructors are verbatim from source.
- * TODO(port) markers flag deferred subsystems (banners, achievements, player
- * datagen, april-fools, custom dimension). Control-zone waypoint references are
- * inlined as map coordinates (commented wp:NAME) until waypoints are ported.
- */
 public enum LOTRFaction {
-
     HOBBIT(5885518, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(830, 745, 100), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_MAN)), BREE(11373426, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(925, 735, 50), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_MAN)), RANGER_NORTH(3823170, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1070, 760, 150), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_MAN)), BLUE_MOUNTAINS(6132172, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(650, 600, 125), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_DWARF)), HIGH_ELF(13035007, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(570, 770, 200), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_ELF)), GUNDABAD(9858132, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1160, 670, 150), EnumSet.of(FactionType.TYPE_ORC)), ANGMAR(7836023, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1080, 600, 125), EnumSet.of(FactionType.TYPE_ORC, FactionType.TYPE_TROLL)), WOOD_ELF(3774030, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1400, 640, 75), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_ELF)), DOL_GULDUR(3488580, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1380, 870, 100), EnumSet.of(FactionType.TYPE_ORC)), DALE(13535071, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1530, 670, 100), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_MAN)), DURINS_FOLK(4940162, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1650, 650, 125), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_DWARF)), LOTHLORIEN(15716696, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1230, 900, 75), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_ELF)), DUNLAND(11048079, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1090, 1030, 125), EnumSet.of(FactionType.TYPE_MAN)), ISENGARD(3356723, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1110, 1070, 50), EnumSet.of(FactionType.TYPE_ORC)), FANGORN(4831058, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1200, 1000, 75), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_TREE)), ROHAN(3508007, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1230, 1090, 150), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_MAN)), GONDOR(16382457, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1170, 1300, 300), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_MAN)), MORDOR(3481375, LOTRDimension.DimensionRegion.WEST, new LOTRMapRegion(1620, 1290, 225), EnumSet.of(FactionType.TYPE_ORC)), DORWINION(7155816, LOTRDimension.DimensionRegion.EAST, new LOTRMapRegion(1750, 900, 100), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_MAN, FactionType.TYPE_ELF)), RHUDEL(12882471, LOTRDimension.DimensionRegion.EAST, new LOTRMapRegion(1890, 980, 200), EnumSet.of(FactionType.TYPE_MAN)), NEAR_HARAD(11868955, LOTRDimension.DimensionRegion.SOUTH, new LOTRMapRegion(1400, 1730, 375), EnumSet.of(FactionType.TYPE_MAN)), MORWAITH(14266458, LOTRDimension.DimensionRegion.SOUTH, new LOTRMapRegion(1400, 2360, 450), EnumSet.of(FactionType.TYPE_MAN)), TAURETHRIM(3040066, LOTRDimension.DimensionRegion.SOUTH, new LOTRMapRegion(1250, 2870, 400), EnumSet.of(FactionType.TYPE_FREE, FactionType.TYPE_MAN)), HALF_TROLL(10388339, LOTRDimension.DimensionRegion.SOUTH, new LOTRMapRegion(1900, 2500, 200), EnumSet.of(FactionType.TYPE_MAN, FactionType.TYPE_TROLL)), DARK_HUORN(0, null, null, true, true, -1, null, null), RUFFIAN(0, null, null, true, true, 0, null, null), UTUMNO(3343616, LOTRDimension.UTUMNO, -66666, EnumSet.of(FactionType.TYPE_ORC)), HOSTILE(true, -1), UNALIGNED(false, 0);
 
     public static final Random factionRand = new Random();
     public static final int CONTROL_ZONE_EXTRA_RANGE = 50;
 
-    /**
-     * Codec keyed by faction code name (e.g. "GONDOR"), used by the alignment
-     * attachment for persistence. Faithful to the old NBT scheme, which also
-     * stored factions by codeName() rather than ordinal.
-     */
     public static final Codec<LOTRFaction> CODEC =
             Codec.STRING.xmap(LOTRFaction::forName, LOTRFaction::codeName);
 
@@ -47,14 +34,14 @@ public enum LOTRFaction {
     public Color factionColor;
     public final Map<Float, float[]> facRGBCache = new HashMap<>();
     public final Collection<FactionType> factionTypes = EnumSet.noneOf(FactionType.class);
-    public final Collection<String> factionBanners = new ArrayList<>(); // TODO(port): LOTRItemBanner.BannerType
+    public final Collection<String> factionBanners = new ArrayList<>();
     public boolean allowPlayer;
     public boolean allowEntityRegistry;
     public boolean hasFixedAlignment;
     public int fixedAlignment;
     public final List<LOTRFactionRank> ranksSortedDescending = new ArrayList<>();
     public LOTRFactionRank pledgeRank;
-    // TODO(port): achieveCategory was LOTRAchievement.Category (achievements unported)
+
     public LOTRMapRegion factionMapInfo;
     public final List<LOTRControlZone> controlZones = new ArrayList<>();
     public boolean isolationist;
@@ -104,7 +91,6 @@ public enum LOTRFaction {
     }
 
     public static boolean controlZonesEnabled(Level level) {
-        // TODO(port): was LOTRLevelData.enableAlignmentZones() && worldType != MiddleEarthClassic
         return true;
     }
 
@@ -194,7 +180,6 @@ public enum LOTRFaction {
     }
 
     private static boolean isAprilFools() {
-        // TODO(port): LOTRMod.isAprilFools() date check
         return false;
     }
 
@@ -362,123 +347,123 @@ public enum LOTRFaction {
         }
         HOBBIT.approvesWarCrimes = false;
         HOBBIT.isolationist = true;
-        HOBBIT.addControlZone(new LOTRControlZone(820.0, 730.0, 40 /* wp:BYWATER */));
-        HOBBIT.addControlZone(new LOTRControlZone(857.0, 734.0, 15 /* wp:BUCKLEBURY */));
-        HOBBIT.addControlZone(new LOTRControlZone(858.0, 747.0, 10 /* wp:HAYSEND */));
-        HOBBIT.addControlZone(new LOTRControlZone(796.0, 739.0, 35 /* wp:MICHEL_DELVING */));
-        HOBBIT.addControlZone(new LOTRControlZone(762.0, 745.0, 10 /* wp:GREENHOLM */));
-        HOBBIT.addControlZone(new LOTRControlZone(820.0, 765.0, 30 /* wp:LONGBOTTOM */));
-        HOBBIT.addControlZone(new LOTRControlZone(915.0, 734.0, 15 /* wp:BREE */));
+        HOBBIT.addControlZone(new LOTRControlZone(820.0, 730.0, 40 ));
+        HOBBIT.addControlZone(new LOTRControlZone(857.0, 734.0, 15 ));
+        HOBBIT.addControlZone(new LOTRControlZone(858.0, 747.0, 10 ));
+        HOBBIT.addControlZone(new LOTRControlZone(796.0, 739.0, 35 ));
+        HOBBIT.addControlZone(new LOTRControlZone(762.0, 745.0, 10 ));
+        HOBBIT.addControlZone(new LOTRControlZone(820.0, 765.0, 30 ));
+        HOBBIT.addControlZone(new LOTRControlZone(915.0, 734.0, 15 ));
         BREE.approvesWarCrimes = false;
-        BREE.addControlZone(new LOTRControlZone(915.0, 734.0, 25 /* wp:BREE */));
-        BREE.addControlZone(new LOTRControlZone(928.0, 728.0, 20 /* wp:ARCHET */));
-        BREE.addControlZone(new LOTRControlZone(950.0, 743.0, 15 /* wp:FORSAKEN_INN */));
+        BREE.addControlZone(new LOTRControlZone(915.0, 734.0, 25 ));
+        BREE.addControlZone(new LOTRControlZone(928.0, 728.0, 20 ));
+        BREE.addControlZone(new LOTRControlZone(950.0, 743.0, 15 ));
         RANGER_NORTH.approvesWarCrimes = false;
-        RANGER_NORTH.addControlZone(new LOTRControlZone(820.0, 730.0, 110 /* wp:BYWATER */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(883.0, 802.0, 60 /* wp:SARN_FORD */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(1088.0, 714.0, 110 /* wp:LAST_BRIDGE */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(915.0, 734.0, 100 /* wp:BREE */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(814.0, 661.0, 50 /* wp:ANNUMINAS */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(897.0, 652.0, 50 /* wp:FORNOST */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(1106.0, 589.0, 100 /* wp:MOUNT_GRAM */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(1010.0, 503.0, 60 /* wp:CARN_DUM */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(920.0, 810.0, 60 /* wp:GREENWAY_CROSSROADS */));
-        RANGER_NORTH.addControlZone(new LOTRControlZone(979.0, 878.0, 50 /* wp:THARBAD */));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(820.0, 730.0, 110 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(883.0, 802.0, 60 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(1088.0, 714.0, 110 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(915.0, 734.0, 100 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(814.0, 661.0, 50 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(897.0, 652.0, 50 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(1106.0, 589.0, 100 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(1010.0, 503.0, 60 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(920.0, 810.0, 60 ));
+        RANGER_NORTH.addControlZone(new LOTRControlZone(979.0, 878.0, 50 ));
         BLUE_MOUNTAINS.approvesWarCrimes = false;
-        BLUE_MOUNTAINS.addControlZone(new LOTRControlZone(622.0, 600.0, 40 /* wp:BELEGOST */));
-        BLUE_MOUNTAINS.addControlZone(new LOTRControlZone(626.0, 636.0, 40 /* wp:NOGROD */));
-        BLUE_MOUNTAINS.addControlZone(new LOTRControlZone(641.0, 671.0, 50 /* wp:THORIN_HALLS */));
+        BLUE_MOUNTAINS.addControlZone(new LOTRControlZone(622.0, 600.0, 40 ));
+        BLUE_MOUNTAINS.addControlZone(new LOTRControlZone(626.0, 636.0, 40 ));
+        BLUE_MOUNTAINS.addControlZone(new LOTRControlZone(641.0, 671.0, 50 ));
         BLUE_MOUNTAINS.addControlZone(new LOTRControlZone(695.0, 820.0, 80));
         HIGH_ELF.approvesWarCrimes = false;
-        HIGH_ELF.addControlZone(new LOTRControlZone(679.0, 729.0, 60 /* wp:MITHLOND_SOUTH */));
-        HIGH_ELF.addControlZone(new LOTRControlZone(526.0, 718.0, 80 /* wp:FORLOND */));
-        HIGH_ELF.addControlZone(new LOTRControlZone(605.0, 783.0, 80 /* wp:HARLOND */));
-        HIGH_ELF.addControlZone(new LOTRControlZone(1163.0, 723.0, 50 /* wp:FORD_BRUINEN */));
+        HIGH_ELF.addControlZone(new LOTRControlZone(679.0, 729.0, 60 ));
+        HIGH_ELF.addControlZone(new LOTRControlZone(526.0, 718.0, 80 ));
+        HIGH_ELF.addControlZone(new LOTRControlZone(605.0, 783.0, 80 ));
+        HIGH_ELF.addControlZone(new LOTRControlZone(1163.0, 723.0, 50 ));
         GUNDABAD.approvesWarCrimes = true;
-        GUNDABAD.addControlZone(new LOTRControlZone(1195.0, 592.0, 200 /* wp:MOUNT_GUNDABAD */));
-        GUNDABAD.addControlZone(new LOTRControlZone(1106.0, 589.0, 200 /* wp:MOUNT_GRAM */));
-        GUNDABAD.addControlZone(new LOTRControlZone(1220.0, 696.0, 150 /* wp:GOBLIN_TOWN */));
-        GUNDABAD.addControlZone(new LOTRControlZone(1166.0, 845.0, 100 /* wp:MOUNT_CARADHRAS */));
+        GUNDABAD.addControlZone(new LOTRControlZone(1195.0, 592.0, 200 ));
+        GUNDABAD.addControlZone(new LOTRControlZone(1106.0, 589.0, 200 ));
+        GUNDABAD.addControlZone(new LOTRControlZone(1220.0, 696.0, 150 ));
+        GUNDABAD.addControlZone(new LOTRControlZone(1166.0, 845.0, 100 ));
         ANGMAR.approvesWarCrimes = true;
-        ANGMAR.addControlZone(new LOTRControlZone(1010.0, 503.0, 75 /* wp:CARN_DUM */));
-        ANGMAR.addControlZone(new LOTRControlZone(1106.0, 589.0, 125 /* wp:MOUNT_GRAM */));
-        ANGMAR.addControlZone(new LOTRControlZone(1130.0, 703.0, 50 /* wp:THE_TROLLSHAWS */));
+        ANGMAR.addControlZone(new LOTRControlZone(1010.0, 503.0, 75 ));
+        ANGMAR.addControlZone(new LOTRControlZone(1106.0, 589.0, 125 ));
+        ANGMAR.addControlZone(new LOTRControlZone(1130.0, 703.0, 50 ));
         WOOD_ELF.approvesWarCrimes = false;
-        WOOD_ELF.addControlZone(new LOTRControlZone(1396.0, 650.0, 75 /* wp:ENCHANTED_RIVER */));
-        WOOD_ELF.addControlZone(new LOTRControlZone(1303.0, 655.0, 20 /* wp:FOREST_GATE */));
-        WOOD_ELF.addControlZone(new LOTRControlZone(1339.0, 894.0, 30 /* wp:DOL_GULDUR */));
+        WOOD_ELF.addControlZone(new LOTRControlZone(1396.0, 650.0, 75 ));
+        WOOD_ELF.addControlZone(new LOTRControlZone(1303.0, 655.0, 20 ));
+        WOOD_ELF.addControlZone(new LOTRControlZone(1339.0, 894.0, 30 ));
         DOL_GULDUR.approvesWarCrimes = true;
-        DOL_GULDUR.addControlZone(new LOTRControlZone(1339.0, 894.0, 125 /* wp:DOL_GULDUR */));
-        DOL_GULDUR.addControlZone(new LOTRControlZone(1396.0, 650.0, 75 /* wp:ENCHANTED_RIVER */));
+        DOL_GULDUR.addControlZone(new LOTRControlZone(1339.0, 894.0, 125 ));
+        DOL_GULDUR.addControlZone(new LOTRControlZone(1396.0, 650.0, 75 ));
         DALE.approvesWarCrimes = false;
-        DALE.addControlZone(new LOTRControlZone(1567.0, 680.0, 175 /* wp:DALE_CROSSROADS */));
+        DALE.addControlZone(new LOTRControlZone(1567.0, 680.0, 175 ));
         DURINS_FOLK.approvesWarCrimes = false;
-        DURINS_FOLK.addControlZone(new LOTRControlZone(1463.0, 609.0, 75 /* wp:EREBOR */));
-        DURINS_FOLK.addControlZone(new LOTRControlZone(1588.0, 608.0, 100 /* wp:WEST_PEAK */));
-        DURINS_FOLK.addControlZone(new LOTRControlZone(1729.0, 610.0, 75 /* wp:EAST_PEAK */));
-        DURINS_FOLK.addControlZone(new LOTRControlZone(1651.0, 690.0, 75 /* wp:REDWATER_FORD */));
-        DURINS_FOLK.addControlZone(new LOTRControlZone(1166.0, 845.0, 100 /* wp:MOUNT_CARADHRAS */));
-        DURINS_FOLK.addControlZone(new LOTRControlZone(1195.0, 592.0, 100 /* wp:MOUNT_GUNDABAD */));
-        DURINS_FOLK.addControlZone(new LOTRControlZone(1262.0, 554.0, 50 /* wp:DAINS_HALLS */));
+        DURINS_FOLK.addControlZone(new LOTRControlZone(1463.0, 609.0, 75 ));
+        DURINS_FOLK.addControlZone(new LOTRControlZone(1588.0, 608.0, 100 ));
+        DURINS_FOLK.addControlZone(new LOTRControlZone(1729.0, 610.0, 75 ));
+        DURINS_FOLK.addControlZone(new LOTRControlZone(1651.0, 690.0, 75 ));
+        DURINS_FOLK.addControlZone(new LOTRControlZone(1166.0, 845.0, 100 ));
+        DURINS_FOLK.addControlZone(new LOTRControlZone(1195.0, 592.0, 100 ));
+        DURINS_FOLK.addControlZone(new LOTRControlZone(1262.0, 554.0, 50 ));
         LOTHLORIEN.approvesWarCrimes = false;
-        LOTHLORIEN.addControlZone(new LOTRControlZone(1242.0, 902.0, 100 /* wp:CARAS_GALADHON */));
+        LOTHLORIEN.addControlZone(new LOTRControlZone(1242.0, 902.0, 100 ));
         DUNLAND.approvesWarCrimes = true;
-        DUNLAND.addControlZone(new LOTRControlZone(1070.0, 1027.0, 125 /* wp:SOUTH_DUNLAND */));
+        DUNLAND.addControlZone(new LOTRControlZone(1070.0, 1027.0, 125 ));
         ISENGARD.approvesWarCrimes = true;
-        ISENGARD.addControlZone(new LOTRControlZone(1102.0, 1061.5, 100 /* wp:ISENGARD */));
-        ISENGARD.addControlZone(new LOTRControlZone(1190.0, 1148.0, 50 /* wp:EDORAS */));
+        ISENGARD.addControlZone(new LOTRControlZone(1102.0, 1061.5, 100 ));
+        ISENGARD.addControlZone(new LOTRControlZone(1190.0, 1148.0, 50 ));
         FANGORN.approvesWarCrimes = false;
         FANGORN.isolationist = true;
         FANGORN.addControlZone(new LOTRControlZone(1180.0, 1005.0, 70));
         ROHAN.approvesWarCrimes = false;
-        ROHAN.addControlZone(new LOTRControlZone(1239.0, 1104.0, 150 /* wp:ENTWADE */));
-        ROHAN.addControlZone(new LOTRControlZone(1102.0, 1061.5, 100 /* wp:ISENGARD */));
+        ROHAN.addControlZone(new LOTRControlZone(1239.0, 1104.0, 150 ));
+        ROHAN.addControlZone(new LOTRControlZone(1102.0, 1061.5, 100 ));
         GONDOR.approvesWarCrimes = false;
-        GONDOR.addControlZone(new LOTRControlZone(1419.0, 1247.0, 200 /* wp:MINAS_TIRITH */));
-        GONDOR.addControlZone(new LOTRControlZone(1189.0, 1293.0, 125 /* wp:EDHELLOND */));
-        GONDOR.addControlZone(new LOTRControlZone(1045.0, 1273.0, 100 /* wp:GREEN_HILLS */));
-        GONDOR.addControlZone(new LOTRControlZone(1442.0, 1370.0, 150 /* wp:CROSSINGS_OF_POROS */));
-        GONDOR.addControlZone(new LOTRControlZone(1503.0, 1544.0, 75 /* wp:CROSSINGS_OF_HARAD */));
-        GONDOR.addControlZone(new LOTRControlZone(1214.0, 1689.0, 150 /* wp:UMBAR_CITY */));
+        GONDOR.addControlZone(new LOTRControlZone(1419.0, 1247.0, 200 ));
+        GONDOR.addControlZone(new LOTRControlZone(1189.0, 1293.0, 125 ));
+        GONDOR.addControlZone(new LOTRControlZone(1045.0, 1273.0, 100 ));
+        GONDOR.addControlZone(new LOTRControlZone(1442.0, 1370.0, 150 ));
+        GONDOR.addControlZone(new LOTRControlZone(1503.0, 1544.0, 75 ));
+        GONDOR.addControlZone(new LOTRControlZone(1214.0, 1689.0, 150 ));
         MORDOR.approvesWarCrimes = true;
-        MORDOR.addControlZone(new LOTRControlZone(1573.0, 1196.0, 500 /* wp:BARAD_DUR */));
+        MORDOR.addControlZone(new LOTRControlZone(1573.0, 1196.0, 500 ));
         DORWINION.approvesWarCrimes = false;
-        DORWINION.addControlZone(new LOTRControlZone(1758.0, 939.0, 175 /* wp:DORWINION_COURT */));
-        DORWINION.addControlZone(new LOTRControlZone(1657.0, 768.0, 30 /* wp:DALE_PORT */));
+        DORWINION.addControlZone(new LOTRControlZone(1758.0, 939.0, 175 ));
+        DORWINION.addControlZone(new LOTRControlZone(1657.0, 768.0, 30 ));
         RHUDEL.approvesWarCrimes = false;
-        RHUDEL.addControlZone(new LOTRControlZone(1867.0, 984.0, 175 /* wp:RHUN_CAPITAL */));
-        RHUDEL.addControlZone(new LOTRControlZone(1419.0, 1247.0, 100 /* wp:MINAS_TIRITH */));
-        RHUDEL.addControlZone(new LOTRControlZone(1464.0, 615.0, 50 /* wp:DALE_CITY */));
+        RHUDEL.addControlZone(new LOTRControlZone(1867.0, 984.0, 175 ));
+        RHUDEL.addControlZone(new LOTRControlZone(1419.0, 1247.0, 100 ));
+        RHUDEL.addControlZone(new LOTRControlZone(1464.0, 615.0, 50 ));
         NEAR_HARAD.approvesWarCrimes = false;
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1214.0, 1689.0, 200 /* wp:UMBAR_CITY */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1169.0, 1821.0, 150 /* wp:FERTILE_VALLEY */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1343.0, 1561.0, 60 /* wp:HARNEN_SEA_TOWN */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1447.0, 1558.0, 60 /* wp:HARNEN_RIVER_TOWN */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1563.0, 1611.0, 50 /* wp:DESERT_TOWN */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1141.0, 1976.0, 50 /* wp:SOUTH_DESERT_TOWN */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1640.0, 1922.0, 150 /* wp:GULF_CITY */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1503.0, 1544.0, 75 /* wp:CROSSINGS_OF_HARAD */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1442.0, 1370.0, 50 /* wp:CROSSINGS_OF_POROS */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1419.0, 1247.0, 50 /* wp:MINAS_TIRITH */));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1214.0, 1689.0, 200 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1169.0, 1821.0, 150 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1343.0, 1561.0, 60 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1447.0, 1558.0, 60 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1563.0, 1611.0, 50 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1141.0, 1976.0, 50 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1640.0, 1922.0, 150 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1503.0, 1544.0, 75 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1442.0, 1370.0, 50 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1419.0, 1247.0, 50 ));
         NEAR_HARAD.addControlZone(new LOTRControlZone(1210.0, 1340.0, 75));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1390.0, 1348.0, 75 /* wp:PELARGIR */));
-        NEAR_HARAD.addControlZone(new LOTRControlZone(1292.0, 1342.0, 75 /* wp:LINHIR */));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1390.0, 1348.0, 75 ));
+        NEAR_HARAD.addControlZone(new LOTRControlZone(1292.0, 1342.0, 75 ));
         MORWAITH.approvesWarCrimes = true;
-        MORWAITH.addControlZone(new LOTRControlZone(1462.0, 2452.0, 350 /* wp:GREAT_PLAINS_SOUTH */));
-        MORWAITH.addControlZone(new LOTRControlZone(1048.0, 2215.0, 170 /* wp:GREAT_PLAINS_WEST */));
-        MORWAITH.addControlZone(new LOTRControlZone(1637.0, 2176.0, 200 /* wp:GREAT_PLAINS_EAST */));
-        MORWAITH.addControlZone(new LOTRControlZone(1308.0, 2067.0, 75 /* wp:GREAT_PLAINS_NORTH */));
+        MORWAITH.addControlZone(new LOTRControlZone(1462.0, 2452.0, 350 ));
+        MORWAITH.addControlZone(new LOTRControlZone(1048.0, 2215.0, 170 ));
+        MORWAITH.addControlZone(new LOTRControlZone(1637.0, 2176.0, 200 ));
+        MORWAITH.addControlZone(new LOTRControlZone(1308.0, 2067.0, 75 ));
         TAURETHRIM.approvesWarCrimes = true;
-        TAURETHRIM.addControlZone(new LOTRControlZone(1380.0, 2861.0, 400 /* wp:JUNGLE_CITY_CAPITAL */));
-        TAURETHRIM.addControlZone(new LOTRControlZone(1834.0, 2523.0, 75 /* wp:OLD_JUNGLE_RUIN */));
+        TAURETHRIM.addControlZone(new LOTRControlZone(1380.0, 2861.0, 400 ));
+        TAURETHRIM.addControlZone(new LOTRControlZone(1834.0, 2523.0, 75 ));
         HALF_TROLL.approvesWarCrimes = true;
-        HALF_TROLL.addControlZone(new LOTRControlZone(1966.0, 2342.0, 100 /* wp:TROLL_ISLAND */));
-        HALF_TROLL.addControlZone(new LOTRControlZone(1897.0, 2605.0, 200 /* wp:BLOOD_RIVER */));
-        HALF_TROLL.addControlZone(new LOTRControlZone(1952.0, 2863.0, 100 /* wp:SHADOW_POINT */));
-        HALF_TROLL.addControlZone(new LOTRControlZone(1442.0, 1370.0, 40 /* wp:CROSSINGS_OF_POROS */));
-        HALF_TROLL.addControlZone(new LOTRControlZone(1621.0, 2673.0, 100 /* wp:HARADUIN_BRIDGE */));
+        HALF_TROLL.addControlZone(new LOTRControlZone(1966.0, 2342.0, 100 ));
+        HALF_TROLL.addControlZone(new LOTRControlZone(1897.0, 2605.0, 200 ));
+        HALF_TROLL.addControlZone(new LOTRControlZone(1952.0, 2863.0, 100 ));
+        HALF_TROLL.addControlZone(new LOTRControlZone(1442.0, 1370.0, 40 ));
+        HALF_TROLL.addControlZone(new LOTRControlZone(1621.0, 2673.0, 100 ));
         UTUMNO.approvesWarCrimes = true;
-        // TODO(port) achieveCategory: HOBBIT -> SHIRE
+
         HOBBIT.addRank(10.0f, "guest").makeAchievement().makeTitle();
         HOBBIT.addRank(100.0f, "friend").makeAchievement().makeTitle().setPledgeRank();
         HOBBIT.addRank(250.0f, "hayward").makeAchievement().makeTitle();
@@ -486,7 +471,7 @@ public enum LOTRFaction {
         HOBBIT.addRank(1000.0f, "shirriff").makeAchievement().makeTitle();
         HOBBIT.addRank(2000.0f, "chief").makeAchievement().makeTitle();
         HOBBIT.addRank(3000.0f, "thain").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: BREE -> BREE_LAND
+
         BREE.addRank(10.0f, "guest").makeAchievement().makeTitle();
         BREE.addRank(50.0f, "friend").makeAchievement().makeTitle();
         BREE.addRank(100.0f, "townsman").makeAchievement().makeTitle().setPledgeRank();
@@ -494,7 +479,7 @@ public enum LOTRFaction {
         BREE.addRank(500.0f, "champion").makeAchievement().makeTitle();
         BREE.addRank(1000.0f, "captain").makeAchievement().makeTitle();
         BREE.addRank(2000.0f, "master").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: RANGER_NORTH -> ERIADOR
+
         RANGER_NORTH.addRank(10.0f, "friend").makeAchievement().makeTitle();
         RANGER_NORTH.addRank(50.0f, "warden").makeAchievement().makeTitle();
         RANGER_NORTH.addRank(100.0f, "ranger").makeAchievement().makeTitle().setPledgeRank();
@@ -502,7 +487,7 @@ public enum LOTRFaction {
         RANGER_NORTH.addRank(500.0f, "roquen").makeAchievement().makeTitle();
         RANGER_NORTH.addRank(1000.0f, "champion").makeAchievement().makeTitle();
         RANGER_NORTH.addRank(2000.0f, "captain").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: BLUE_MOUNTAINS -> BLUE_MOUNTAINS
+
         BLUE_MOUNTAINS.addRank(10.0f, "guest").makeAchievement().makeTitle();
         BLUE_MOUNTAINS.addRank(50.0f, "friend").makeAchievement().makeTitle();
         BLUE_MOUNTAINS.addRank(100.0f, "warden").makeAchievement().makeTitle().setPledgeRank();
@@ -511,7 +496,7 @@ public enum LOTRFaction {
         BLUE_MOUNTAINS.addRank(1000.0f, "captain").makeAchievement().makeTitle();
         BLUE_MOUNTAINS.addRank(1500.0f, "noble").makeAchievement().makeTitle();
         BLUE_MOUNTAINS.addRank(3000.0f, "lord", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: HIGH_ELF -> LINDON
+
         HIGH_ELF.addRank(10.0f, "guest").makeAchievement().makeTitle();
         HIGH_ELF.addRank(50.0f, "friend").makeAchievement().makeTitle();
         HIGH_ELF.addRank(100.0f, "warrior").makeAchievement().makeTitle().setPledgeRank();
@@ -520,7 +505,7 @@ public enum LOTRFaction {
         HIGH_ELF.addRank(1000.0f, "noble").makeAchievement().makeTitle();
         HIGH_ELF.addRank(2000.0f, "commander").makeAchievement().makeTitle();
         HIGH_ELF.addRank(3000.0f, "lord", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: GUNDABAD -> ERIADOR
+
         GUNDABAD.addRank(10.0f, "thrall").makeAchievement().makeTitle();
         GUNDABAD.addRank(50.0f, "snaga").makeAchievement().makeTitle();
         GUNDABAD.addRank(100.0f, "raider").makeAchievement().makeTitle().setPledgeRank();
@@ -528,7 +513,7 @@ public enum LOTRFaction {
         GUNDABAD.addRank(500.0f, "scourge").makeAchievement().makeTitle();
         GUNDABAD.addRank(1000.0f, "warlord").makeAchievement().makeTitle();
         GUNDABAD.addRank(2000.0f, "chieftain").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: ANGMAR -> ANGMAR
+
         ANGMAR.addRank(10.0f, "thrall").makeAchievement().makeTitle();
         ANGMAR.addRank(50.0f, "servant").makeAchievement().makeTitle();
         ANGMAR.addRank(100.0f, "kinsman").makeAchievement().makeTitle().setPledgeRank();
@@ -536,7 +521,7 @@ public enum LOTRFaction {
         ANGMAR.addRank(500.0f, "champion").makeAchievement().makeTitle();
         ANGMAR.addRank(1000.0f, "warlord").makeAchievement().makeTitle();
         ANGMAR.addRank(2000.0f, "chieftain").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: WOOD_ELF -> MIRKWOOD
+
         WOOD_ELF.addRank(50.0f, "guest").makeAchievement().makeTitle();
         WOOD_ELF.addRank(100.0f, "friend").makeAchievement().makeTitle().setPledgeRank();
         WOOD_ELF.addRank(200.0f, "guard").makeAchievement().makeTitle();
@@ -544,7 +529,7 @@ public enum LOTRFaction {
         WOOD_ELF.addRank(1000.0f, "captain").makeAchievement().makeTitle();
         WOOD_ELF.addRank(2000.0f, "noble").makeAchievement().makeTitle();
         WOOD_ELF.addRank(3000.0f, "lord", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: DOL_GULDUR -> MIRKWOOD
+
         DOL_GULDUR.addRank(10.0f, "thrall").makeAchievement().makeTitle();
         DOL_GULDUR.addRank(50.0f, "servant").makeAchievement().makeTitle();
         DOL_GULDUR.addRank(100.0f, "brigand").makeAchievement().makeTitle().setPledgeRank();
@@ -552,7 +537,7 @@ public enum LOTRFaction {
         DOL_GULDUR.addRank(500.0f, "despoiler").makeAchievement().makeTitle();
         DOL_GULDUR.addRank(1000.0f, "captain").makeAchievement().makeTitle();
         DOL_GULDUR.addRank(2000.0f, "lieutenant").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: DALE -> DALE
+
         DALE.addRank(10.0f, "guest").makeAchievement().makeTitle();
         DALE.addRank(50.0f, "friend").makeAchievement().makeTitle();
         DALE.addRank(100.0f, "soldier").makeAchievement().makeTitle().setPledgeRank();
@@ -560,7 +545,7 @@ public enum LOTRFaction {
         DALE.addRank(500.0f, "captain").makeAchievement().makeTitle();
         DALE.addRank(1000.0f, "marshal").makeAchievement().makeTitle();
         DALE.addRank(2000.0f, "lord", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: DURINS_FOLK -> IRON_HILLS
+
         DURINS_FOLK.addRank(10.0f, "guest").makeAchievement().makeTitle();
         DURINS_FOLK.addRank(50.0f, "friend").makeAchievement().makeTitle();
         DURINS_FOLK.addRank(100.0f, "oathfriend").makeAchievement().makeTitle().setPledgeRank();
@@ -569,7 +554,7 @@ public enum LOTRFaction {
         DURINS_FOLK.addRank(1000.0f, "commander").makeAchievement().makeTitle();
         DURINS_FOLK.addRank(1500.0f, "lord", true).makeAchievement().makeTitle();
         DURINS_FOLK.addRank(3000.0f, "uzbad", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: LOTHLORIEN -> LOTHLORIEN
+
         LOTHLORIEN.addRank(10.0f, "guest").makeAchievement().makeTitle();
         LOTHLORIEN.addRank(50.0f, "friend").makeAchievement().makeTitle();
         LOTHLORIEN.addRank(100.0f, "warden").makeAchievement().makeTitle().setPledgeRank();
@@ -578,7 +563,7 @@ public enum LOTRFaction {
         LOTHLORIEN.addRank(1000.0f, "captain").makeAchievement().makeTitle();
         LOTHLORIEN.addRank(2000.0f, "noble").makeAchievement().makeTitle();
         LOTHLORIEN.addRank(3000.0f, "lord", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: DUNLAND -> DUNLAND
+
         DUNLAND.addRank(10.0f, "guest").makeAchievement().makeTitle();
         DUNLAND.addRank(50.0f, "kinsman").makeAchievement().makeTitle();
         DUNLAND.addRank(100.0f, "warrior").makeAchievement().makeTitle().setPledgeRank();
@@ -586,7 +571,7 @@ public enum LOTRFaction {
         DUNLAND.addRank(500.0f, "avenger").makeAchievement().makeTitle();
         DUNLAND.addRank(1000.0f, "warlord").makeAchievement().makeTitle();
         DUNLAND.addRank(2000.0f, "chieftain").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: ISENGARD -> ROHAN
+
         ISENGARD.addRank(10.0f, "thrall").makeAchievement().makeTitle();
         ISENGARD.addRank(50.0f, "snaga").makeAchievement().makeTitle();
         ISENGARD.addRank(100.0f, "soldier").makeAchievement().makeTitle().setPledgeRank();
@@ -595,13 +580,13 @@ public enum LOTRFaction {
         ISENGARD.addRank(1000.0f, "corporal").makeAchievement().makeTitle();
         ISENGARD.addRank(1500.0f, "hand").makeAchievement().makeTitle();
         ISENGARD.addRank(3000.0f, "captain").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: FANGORN -> FANGORN
+
         FANGORN.addRank(10.0f, "newcomer").makeAchievement().makeTitle();
         FANGORN.addRank(50.0f, "friend").makeAchievement().makeTitle();
         FANGORN.addRank(100.0f, "treeherd").makeAchievement().makeTitle().setPledgeRank();
         FANGORN.addRank(250.0f, "master").makeAchievement().makeTitle();
         FANGORN.addRank(500.0f, "elder").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: ROHAN -> ROHAN
+
         ROHAN.addRank(10.0f, "guest").makeAchievement().makeTitle();
         ROHAN.addRank(50.0f, "footman").makeAchievement().makeTitle();
         ROHAN.addRank(100.0f, "atarms").makeAchievement().makeTitle().setPledgeRank();
@@ -609,7 +594,7 @@ public enum LOTRFaction {
         ROHAN.addRank(500.0f, "esquire").makeAchievement().makeTitle();
         ROHAN.addRank(1000.0f, "captain").makeAchievement().makeTitle();
         ROHAN.addRank(2000.0f, "marshal").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: GONDOR -> GONDOR
+
         GONDOR.addRank(10.0f, "guest").makeAchievement().makeTitle();
         GONDOR.addRank(50.0f, "friend").makeAchievement().makeTitle();
         GONDOR.addRank(100.0f, "atarms").makeAchievement().makeTitle().setPledgeRank();
@@ -618,7 +603,7 @@ public enum LOTRFaction {
         GONDOR.addRank(1000.0f, "champion").makeAchievement().makeTitle();
         GONDOR.addRank(1500.0f, "captain").makeAchievement().makeTitle();
         GONDOR.addRank(3000.0f, "lord", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: MORDOR -> MORDOR
+
         MORDOR.addRank(10.0f, "thrall").makeAchievement().makeTitle();
         MORDOR.addRank(50.0f, "snaga").makeAchievement().makeTitle();
         MORDOR.addRank(100.0f, "brigand").makeAchievement().makeTitle().setPledgeRank();
@@ -627,7 +612,7 @@ public enum LOTRFaction {
         MORDOR.addRank(1000.0f, "captain").makeAchievement().makeTitle();
         MORDOR.addRank(1500.0f, "lieutenant").makeAchievement().makeTitle();
         MORDOR.addRank(3000.0f, "commander").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: DORWINION -> DORWINION
+
         DORWINION.addRank(10.0f, "guest").makeAchievement().makeTitle();
         DORWINION.addRank(50.0f, "vinehand").makeAchievement().makeTitle();
         DORWINION.addRank(100.0f, "merchant").makeAchievement().makeTitle().setPledgeRank();
@@ -636,7 +621,7 @@ public enum LOTRFaction {
         DORWINION.addRank(1000.0f, "master").makeAchievement().makeTitle();
         DORWINION.addRank(1500.0f, "chief").makeAchievement().makeTitle();
         DORWINION.addRank(3000.0f, "lord", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: RHUDEL -> RHUN
+
         RHUDEL.addRank(10.0f, "bondsman").makeAchievement().makeTitle();
         RHUDEL.addRank(50.0f, "levyman").makeAchievement().makeTitle();
         RHUDEL.addRank(100.0f, "clansman").makeAchievement().makeTitle().setPledgeRank();
@@ -645,7 +630,7 @@ public enum LOTRFaction {
         RHUDEL.addRank(1000.0f, "golden").makeAchievement().makeTitle();
         RHUDEL.addRank(1500.0f, "warlord").makeAchievement().makeTitle();
         RHUDEL.addRank(3000.0f, "chieftain").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: NEAR_HARAD -> NEAR_HARAD
+
         NEAR_HARAD.addRank(10.0f, "guest").makeAchievement().makeTitle();
         NEAR_HARAD.addRank(50.0f, "friend").makeAchievement().makeTitle();
         NEAR_HARAD.addRank(100.0f, "kinsman").makeAchievement().makeTitle().setPledgeRank();
@@ -654,7 +639,7 @@ public enum LOTRFaction {
         NEAR_HARAD.addRank(1000.0f, "serpentguard").makeAchievement().makeTitle();
         NEAR_HARAD.addRank(1500.0f, "warlord").makeAchievement().makeTitle();
         NEAR_HARAD.addRank(3000.0f, "prince", true).makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: MORWAITH -> FAR_HARAD_SAVANNAH
+
         MORWAITH.addRank(10.0f, "guest").makeAchievement().makeTitle();
         MORWAITH.addRank(50.0f, "friend").makeAchievement().makeTitle();
         MORWAITH.addRank(100.0f, "kinsman").makeAchievement().makeTitle().setPledgeRank();
@@ -662,7 +647,7 @@ public enum LOTRFaction {
         MORWAITH.addRank(500.0f, "warrior").makeAchievement().makeTitle();
         MORWAITH.addRank(1000.0f, "chief").makeAchievement().makeTitle();
         MORWAITH.addRank(3000.0f, "greatchief").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: TAURETHRIM -> FAR_HARAD_JUNGLE
+
         TAURETHRIM.addRank(10.0f, "guest").makeAchievement().makeTitle();
         TAURETHRIM.addRank(50.0f, "friend").makeAchievement().makeTitle();
         TAURETHRIM.addRank(100.0f, "forestman").makeAchievement().makeTitle().setPledgeRank();
@@ -670,7 +655,7 @@ public enum LOTRFaction {
         TAURETHRIM.addRank(500.0f, "champion").makeAchievement().makeTitle();
         TAURETHRIM.addRank(1000.0f, "warlord").makeAchievement().makeTitle();
         TAURETHRIM.addRank(3000.0f, "splendour").makeAchievement().makeTitle();
-        // TODO(port) achieveCategory: HALF_TROLL -> PERDOROGWAITH
+
         HALF_TROLL.addRank(10.0f, "guest").makeAchievement().makeTitle();
         HALF_TROLL.addRank(50.0f, "scavenger").makeAchievement().makeTitle();
         HALF_TROLL.addRank(100.0f, "kin").makeAchievement().makeTitle().setPledgeRank();
@@ -940,8 +925,6 @@ public enum LOTRFaction {
     }
 
     public boolean inControlZone(Level level, double d, double d1, double d2) {
-        // TODO(port): original also counted nearby faction NPCs (LOTRNPCSelectForInfluence)
-        // as extending the control zone. Restore when NPC entities are ported.
         return inDefinedControlZone(level, d, d1, d2);
     }
 
@@ -983,9 +966,6 @@ public enum LOTRFaction {
     }
 
     public boolean isFactionDimension(Level level) {
-        // TODO(port): was a check that the level is this faction's LOTR dimension.
-        // No custom dimension exists yet, so zones currently apply in any level.
-        // Revisit if/when the Middle-earth dimension is ported.
         return true;
     }
 
@@ -1059,4 +1039,3 @@ public enum LOTRFaction {
         TYPE_FREE, TYPE_ELF, TYPE_MAN, TYPE_DWARF, TYPE_ORC, TYPE_TROLL, TYPE_TREE
     }
 }
-

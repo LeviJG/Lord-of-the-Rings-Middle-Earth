@@ -25,41 +25,26 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-/**
- * Blockstates, block models, item models.
- *
- * Everything is driven off the family lists in LOTRBlocks, so a block only ever
- * needs registering in one place.
- *
- * Which generators emit the ITEM model too (learned the hard way):
- *   createTrivialCube            -> NO  (needs registerSimpleItemModel)
- *   createNonTemplateModelBlock  -> NO  (needs registerSimpleFlatItemModel)
- *   createCrossBlockWithDefaultItem -> YES (the "WithDefaultItem" suffix)
- *   createTrapdoor               -> YES
- *   createDoor                   -> YES (points at assets/<ns>/textures/item/<n>.png)
- * Adding a redundant item-model call throws
- * "IllegalStateException: Duplicate model definition".
- */
+// Blockstates, block models, item models. Everything is driven off the family lists in LOTRBlocks, so a block only ever needs registering in one place. Which generators emit the ITEM model too (learned the hard way): createTrivialCube            -> NO  (needs registerSimpleItemModel) createNonTemplateModelBlock  -> NO  (needs registerSimpleFlatItemModel) createCrossBlockWithDefaultItem -> YES (the "WithDefaultItem" suffix) createTrapdoor               -> YES createDoor                   -> YES (points at assets/<ns>/textures/item/<n>.png) Adding a redundant item-model call throws "IllegalStateException: Duplicate model definition".
 public class LOTRModelProvider extends FabricModelProvider {
-
-    /**
-     * Chandelier model: crossed quads with the block's own texture.
-     *
-     * Parented to vanilla minecraft:block/cross, which defines both crossed
-     * planes correctly and carries the item display transforms -- so each
-     * generated model renders both beams in-world AND produces a proper flat
-     * inventory icon. The template fills the "cross" texture slot per block.
-     *
-     * Parented at lotr:block/chandelier rather than vanilla's block/cross: the
-     * two are identical except vanilla adds rescale:true, which stretches the
-     * planes to the full block diagonal and draws ~11% larger than 1.7.10's
-     * renderCrossedSquares did. The fixture hangs because the texture's bottom
-     * three rows are transparent, so the quads still span the full height.
-     */
     private static final ModelTemplate CHANDELIER = new ModelTemplate(
             Optional.of(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "block/chandelier")),
             Optional.empty(),
             TextureSlot.CROSS);
+
+    // True for blocks textured as a column: <name>_side plus <name>_top, with no bare <name>.png. Anything cut from one of these has to map its faces by hand rather than using TextureMapping.cube().
+
+    private static Block texOf(Block block) {
+        return LOTRBlocks.TEXTURE_SOURCE.getOrDefault(block, block);
+    }
+
+    private static boolean isColumnTextured(Block base) {
+        return LOTRBlocks.ALL_PILLARS.contains(base)
+                || LOTRBlocks.ALL_LOGS.contains(base)
+                || LOTRBlocks.ALL_BEAMS.contains(base)
+                || LOTRBlocks.ALL_COLUMNS.contains(base)
+                || LOTRBlocks.ALL_SOIL_COLUMNS.contains(base);
+    }
 
     public LOTRModelProvider(FabricPackOutput output) {
         super(output);
@@ -67,11 +52,6 @@ public class LOTRModelProvider extends FabricModelProvider {
 
     @Override
     public void generateBlockStateModels(BlockModelGenerators generators) {
-        // Solid cubes, planks, leaves and glass all use the same cube_all model.
-        //
-        // Connected-border blocks are skipped here and handled below: their
-        // world model is installed in code and their textures live in
-        // block/ctm/, so the default block/<name> lookup would miss.
         LOTRBlocks.ALL_CUBES.stream()
                 .filter(b -> !LOTRConnectedBorderTypes.has(b))
                 .forEach(b -> trivialCubeWithItem(generators, b));
@@ -79,37 +59,30 @@ public class LOTRModelProvider extends FabricModelProvider {
         LOTRBlocks.ALL_LEAVES.forEach(b -> trivialCubeWithItem(generators, b));
         LOTRBlocks.ALL_GLASS.forEach(b -> trivialCubeWithItem(generators, b));
 
-        // Saplings and flowers (cross model). NOT_TINTED because the LOTR art is
-        // already coloured, unlike vanilla's greyscale foliage.
         LOTRBlocks.ALL_SAPLINGS.forEach(b ->
                 generators.createCrossBlockWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED));
         LOTRBlocks.ALL_FLOWERS.forEach(b ->
                 generators.createCrossBlockWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED));
 
-        // Logs, beams and pillars are all axis-rotatable columns.
-        // TexturedModel.COLUMN takes <name>_side for the shaft and <name>_top
-        // for the cut end -- the same convention vanilla uses for quartz_pillar.
-        //
-        // createAxisAlignedPillarBlock emits the blockstate and block model but
-        // NOT the item model, so register that too. (If datagen ever throws
         // "Duplicate model definition for lotr:item/<name>", it started emitting
-        // one and this line should go.)
+
         List.of(LOTRBlocks.ALL_LOGS, LOTRBlocks.ALL_BEAMS, LOTRBlocks.ALL_PILLARS)
                 .forEach(family -> family.forEach(b -> {
                     generators.createAxisAlignedPillarBlock(b, TexturedModel.COLUMN);
                     generators.registerSimpleItemModel(b, ModelLocationUtils.getModelLocation(b));
                 }));
 
-        // Stairs. Each one borrows the texture of the block it was cut from,
-        // which is recorded in LOTRBlocks.STAIRS_BASE.
-        //
-        // Built explicitly rather than via generators.family(base).stairs(...):
-        // family() re-emits the base block's own model, and since we have
         // already generated that above it would throw "Duplicate model
-        // definition".
+
         LOTRBlocks.ALL_STAIRS.forEach(stairs -> {
             Block base = LOTRBlocks.STAIRS_BASE.get(stairs);
-            TextureMapping tex = TextureMapping.cube(base);
+            Block texBase = texOf(base);
+            TextureMapping tex = isColumnTextured(base)
+                    ? new TextureMapping()
+                    .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(texBase, "_top"))
+                    .put(TextureSlot.TOP, TextureMapping.getBlockTexture(texBase, "_top"))
+                    .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(texBase, "_side"))
+                    : TextureMapping.cube(texBase);
             Identifier inner = ModelTemplates.STAIRS_INNER.create(stairs, tex, generators.modelOutput);
             Identifier straight = ModelTemplates.STAIRS_STRAIGHT.create(stairs, tex, generators.modelOutput);
             Identifier outer = ModelTemplates.STAIRS_OUTER.create(stairs, tex, generators.modelOutput);
@@ -120,11 +93,20 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(stairs, straight);
         });
 
-        // Slabs. The double-slab state reuses the base block's own model rather
         // than generating a duplicate full cube.
         LOTRBlocks.ALL_SLABS.forEach(slab -> {
             Block base = LOTRBlocks.SLAB_BASE.get(slab);
-            TextureMapping tex = TextureMapping.cube(base);
+
+            // <name>_top -- there is no bare <name>.png -- so a slab cut from
+
+            // .cube() would point at a file that does not exist.
+            Block texBase = texOf(base);
+            TextureMapping tex = isColumnTextured(base)
+                    ? new TextureMapping()
+                    .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(texBase, "_top"))
+                    .put(TextureSlot.TOP, TextureMapping.getBlockTexture(texBase, "_top"))
+                    .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(texBase, "_side"))
+                    : TextureMapping.cube(texBase);
             Identifier bottom = ModelTemplates.SLAB_BOTTOM.create(slab, tex, generators.modelOutput);
             Identifier top = ModelTemplates.SLAB_TOP.create(slab, tex, generators.modelOutput);
             Identifier full = ModelLocationUtils.getModelLocation(base);
@@ -135,8 +117,6 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(slab, bottom);
         });
 
-        // Fences and walls. Both are multipart blockstates (post + one arm per
-        // connected side) and, like stairs and slabs, borrow the base texture.
         LOTRBlocks.ALL_FENCES.forEach(fence -> {
             Block base = LOTRBlocks.FENCE_BASE.get(fence);
             TextureMapping tex = TextureMapping.defaultTexture(base);
@@ -151,11 +131,15 @@ public class LOTRModelProvider extends FabricModelProvider {
 
         LOTRBlocks.ALL_WALLS.forEach(wall -> {
             Block base = LOTRBlocks.WALL_BASE.get(wall);
-            // WALL_POST/LOW_SIDE/TALL_SIDE declare a slot named #wall, which
-            // TextureMapping.defaultTexture (slot #texture) does not fill.
-            // columnWithWall fills #wall (plus #texture/#side/#end, which these
-            // templates simply ignore -- only missing slots are an error).
-            TextureMapping tex = TextureMapping.columnWithWall(base);
+
+            // Column-textured bases (bone) have no bare texture, so #wall has
+
+            // NOTE FOR LEVI: TextureSlot.WALL is the one name here I could not
+
+            TextureMapping tex = isColumnTextured(base)
+                    ? new TextureMapping().put(TextureSlot.WALL,
+                    TextureMapping.getBlockTexture(texOf(base), "_side"))
+                    : TextureMapping.columnWithWall(texOf(base));
             Identifier post = ModelTemplates.WALL_POST.create(wall, tex, generators.modelOutput);
             Identifier low = ModelTemplates.WALL_LOW_SIDE.create(wall, tex, generators.modelOutput);
             Identifier tall = ModelTemplates.WALL_TALL_SIDE.create(wall, tex, generators.modelOutput);
@@ -167,19 +151,33 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(wall, inv);
         });
 
-        // Smooth stone: distinct top texture, no axis property. Same
-        // <name>_side / <name>_top pair the columns use.
         // createTrivialBlock(block, provider) does not exist here, so both of
-        // these build their model explicitly and hand it to createSimpleBlock.
+
         LOTRBlocks.ALL_COLUMNS.forEach(b -> {
             Identifier model = ModelTemplates.CUBE_COLUMN.create(
-                    b, TextureMapping.column(b), generators.modelOutput);
+                    b, TextureMapping.column(texOf(b)), generators.modelOutput);
             generators.blockStateOutput.accept(
                     BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
             generators.registerSimpleItemModel(b, model);
         });
 
-        // Crafting tables: <name>_side on all four sides, <name>_top on the lid.
+        LOTRBlocks.ALL_BOTTOM_TOP.forEach(b -> {
+            Identifier model = ModelTemplates.CUBE_BOTTOM_TOP.create(
+                    b, TextureMapping.cubeBottomTop(b), generators.modelOutput);
+            generators.blockStateOutput.accept(
+                    BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
+            generators.registerSimpleItemModel(b, model);
+        });
+
+        LOTRBlocks.ALL_SOIL_COLUMNS.forEach(b -> {
+            Block texSource = LOTRBlocks.SOIL_COLUMN_TEXTURE.getOrDefault(b, b);
+            Identifier model = ModelTemplates.CUBE_COLUMN.create(
+                    b, TextureMapping.column(texSource), generators.modelOutput);
+            generators.blockStateOutput.accept(
+                    BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
+            generators.registerSimpleItemModel(b, model);
+        });
+
         LOTRBlocks.ALL_CRAFTING_TABLES.forEach(b -> {
             Identifier model = ModelTemplates.CUBE_TOP.create(
                     b, TextureMapping.cubeTop(b), generators.modelOutput);
@@ -188,7 +186,6 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(b, model);
         });
 
-        // Vines: multipart, one face per side. Ladders: a single flat model.
         LOTRBlocks.ALL_VINES.forEach(b -> generators.createMultiface(b));
         generators.createTrivialCube(LOTRBlocks.WEB_UNGOLIANT);
         generators.registerSimpleItemModel(LOTRBlocks.WEB_UNGOLIANT,
@@ -200,10 +197,11 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(b, model);
         });
 
-        // Gates: plain cubes for now (see LOTRBlocks#registerGate).
-        // Fence gates: same texture as the matching fence.
         LOTRBlocks.ALL_FENCE_GATES.forEach(gate -> {
-            TextureMapping tex = TextureMapping.defaultTexture(gate);
+            // which does not exist -- gates borrow the plank texture like
+
+            Block base = LOTRBlocks.FENCE_GATE_BASE.get(gate);
+            TextureMapping tex = TextureMapping.defaultTexture(base);
             Identifier open = ModelTemplates.FENCE_GATE_OPEN.create(gate, tex, generators.modelOutput);
             Identifier closed = ModelTemplates.FENCE_GATE_CLOSED.create(gate, tex, generators.modelOutput);
             Identifier wallOpen = ModelTemplates.FENCE_GATE_WALL_OPEN.create(gate, tex, generators.modelOutput);
@@ -215,20 +213,32 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(gate, closed);
         });
 
-        // Buttons and pressure plates: reuse the base block's texture.
-        LOTRBlocks.ALL_BUTTONS.forEach(generators::createButton);
-        LOTRBlocks.ALL_PRESSURE_PLATES.forEach(generators::createPressurePlate);
-
-        // Crops. CropBlock has eight ages but the original art has three or
-        // four stages, so several ages share a texture.
-        LOTRBlocks.ALL_CROPS.forEach(crop -> {
-            int stages = LOTRBlocks.CROP_STAGES.get(crop);
-            int[] ageToModel = new int[8];
-            for (int age = 0; age < 8; age++) {
-                ageToModel[age] = Math.min(age * stages / 8, stages - 1);
-            }
-            generators.createCropBlock(crop, BlockStateProperties.AGE_7, ageToModel);
+        LOTRBlocks.ALL_BUTTONS.forEach(button -> {
+            Block base = LOTRBlocks.BUTTON_BASE.get(button);
+            TextureMapping tex = TextureMapping.defaultTexture(base);
+            Identifier unpressed = ModelTemplates.BUTTON.create(button, tex, generators.modelOutput);
+            Identifier pressed = ModelTemplates.BUTTON_PRESSED.create(button, tex, generators.modelOutput);
+            generators.blockStateOutput.accept(BlockModelGenerators.createButton(button,
+                    BlockModelGenerators.plainVariant(unpressed),
+                    BlockModelGenerators.plainVariant(pressed)));
+            Identifier inv = ModelTemplates.BUTTON_INVENTORY.create(button, tex, generators.modelOutput);
+            generators.registerSimpleItemModel(button, inv);
         });
+
+        LOTRBlocks.ALL_PRESSURE_PLATES.forEach(plate -> {
+            Block base = LOTRBlocks.PRESSURE_PLATE_BASE.get(plate);
+            TextureMapping tex = TextureMapping.defaultTexture(base);
+            Identifier up = ModelTemplates.PRESSURE_PLATE_UP.create(plate, tex, generators.modelOutput);
+            Identifier down = ModelTemplates.PRESSURE_PLATE_DOWN.create(plate, tex, generators.modelOutput);
+            generators.blockStateOutput.accept(BlockModelGenerators.createPressurePlate(plate,
+                    BlockModelGenerators.plainVariant(up),
+                    BlockModelGenerators.plainVariant(down)));
+            generators.registerSimpleItemModel(plate, up);
+        });
+
+        final int[] ageToModel = {0, 0, 1, 1, 2, 2, 2, 3};
+        LOTRBlocks.ALL_CROPS.forEach(crop ->
+                generators.createCropBlock(crop, BlockStateProperties.AGE_7, ageToModel));
 
         LOTRBlocks.ALL_BUSHES.forEach(b ->
                 generators.createCrossBlockWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED));
@@ -236,6 +246,42 @@ public class LOTRModelProvider extends FabricModelProvider {
         LOTRBlocks.ALL_GATES.forEach(b -> {
             generators.createTrivialCube(b);
             generators.registerSimpleItemModel(b, ModelLocationUtils.getModelLocation(b));
+        });
+
+        LOTRBlocks.ALL_PATHS.forEach(b -> {
+            var tex = TextureMapping.getBlockTexture(b);
+            TextureMapping mapping = new TextureMapping()
+                    .put(TextureSlot.TOP, tex)
+                    .put(TextureSlot.SIDE, tex);
+            Identifier model = ModelTemplates.CUBE_TOP.create(b, mapping, generators.modelOutput);
+            generators.blockStateOutput.accept(
+                    BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
+            generators.registerSimpleItemModel(b, model);
+        });
+
+        LOTRBlocks.ALL_FARMLAND.forEach(b -> {
+            TextureMapping mapping = new TextureMapping()
+                    .put(TextureSlot.DIRT, TextureMapping.getBlockTexture(LOTRBlocks.MUD))
+                    .put(TextureSlot.TOP, TextureMapping.getBlockTexture(b));
+            Identifier dry = ModelTemplates.FARMLAND.create(b, mapping, generators.modelOutput);
+            generators.blockStateOutput.accept(
+                    BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(dry)));
+            generators.registerSimpleItemModel(b, dry);
+        });
+
+        LOTRBlocks.ALL_RAILS.forEach(b -> {
+            TextureMapping mapping = new TextureMapping()
+                    .put(TextureSlot.RAIL, TextureMapping.getBlockTexture(b));
+            Identifier flat = ModelTemplates.RAIL_FLAT.create(b, mapping, generators.modelOutput);
+            generators.blockStateOutput.accept(
+                    BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(flat)));
+
+            // which does not exist -- hence the blank hotbar icon.
+            Identifier itemModel = ModelTemplates.FLAT_ITEM.create(
+                    ModelLocationUtils.getModelLocation(b.asItem()),
+                    TextureMapping.layer0(b),
+                    generators.modelOutput);
+            generators.registerSimpleItemModel(b, itemModel);
         });
 
         LOTRBlocks.ALL_CARPETS.forEach(b -> {
@@ -246,16 +292,11 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(b, model);
         });
 
-        // Torches. createNormalTorch emits both the standing and wall models
-        // plus the blockstates; the flat inventory icon comes from the torch's
-        // own block texture.
         LOTRBlocks.ALL_TORCHES.forEach(torch ->
                 generators.createNormalTorch(torch, LOTRBlocks.TORCH_WALL.get(torch)));
 
         LOTRBlocks.ALL_TRAPDOORS.forEach(generators::createTrapdoor);
 
-        // createDoor emits blockstate, all block models, AND the item model,
-        // which points at assets/lotr/textures/item/<n>.png
         LOTRBlocks.ALL_DOORS.forEach(generators::createDoor);
 
         LOTRBlocks.ALL_BARS.forEach(generators::createBarsAndItem);
@@ -265,21 +306,6 @@ public class LOTRModelProvider extends FabricModelProvider {
         LOTRConnectedBorderTypes.all().forEach((block, type) -> connectedBorder(generators, block, type));
     }
 
-    /**
-     * Item model for a connected-border block.
-     *
-     * The world model is built in code (LOTRConnectedBorderModel), so nothing
-     * here needs to describe the border. What is needed is an item model, and
-     * LOTRConnectedBorderType#itemTexture supplies the sprite: the composited
-     * no-neighbours combination, i.e. the base with its full frame drawn on.
-     * That is one of the 47 sprites the sprite source generates, NOT a shipped
-     * file -- there is no <base>_item.png to keep in sync.
-     *
-     * That matches the original: LOTRBlockOreStorage served its inventory icon
-     * from the same IIcon set as the world block (the noBase flag in
-     * getConnectedIconBlock existed for exactly this), so there was never a
-     * second copy of the texture to keep in sync.
-     */
     private static void connectedBorder(BlockModelGenerators generators, Block block,
                                         LOTRConnectedBorderType type) {
         Identifier model = ModelTemplates.CUBE_ALL.create(
@@ -292,26 +318,12 @@ public class LOTRModelProvider extends FabricModelProvider {
         generators.registerSimpleItemModel(block, ModelLocationUtils.getModelLocation(block));
     }
 
-    /**
-     * Chandeliers are static (no blockstate properties), so a single variant
-     * pointing at the cross model is all the blockstate needs.
-     *
-     * The item is backed by that same block model (as the cubes are), NOT a
-     * flat item model: the textures live in textures/block/, and a flat item
-     * model would look for textures/item/<name>.png, which does not exist ->
-     * blank icon. Pointing the item at the block model renders the 3D cross in
-     * the inventory, the way vanilla torches and lanterns show.
-     */
+    // Chandeliers are static (no blockstate properties), so a single variant pointing at the cross model is all the blockstate needs. The item is backed by that same block model (as the cubes are), NOT a flat item model: the textures live in textures/block/, and a flat item model would look for textures/item/<name>.png, which does not exist -> blank icon. Pointing the item at the block model renders the 3D cross in the inventory, the way vanilla torches and lanterns show.
     private static void chandelier(BlockModelGenerators generators, Block block) {
         Identifier model = CHANDELIER.create(block, TextureMapping.cross(block), generators.modelOutput);
         generators.blockStateOutput.accept(
                 BlockModelGenerators.createSimpleBlock(block, BlockModelGenerators.plainVariant(model)));
 
-        // Flat 2D inventory icon, not the block model. Backing the item with the
-        // crossed-squares model renders it at full block scale, which is far too
-        // large in hand and on the ground; 1.7.10 drew render-type-1 blocks as a
-        // flat icon too. layer0 points at the BLOCK texture (there is no
-        // textures/item/<name>.png), exactly as vanilla's flower items do.
         Identifier itemModel = ModelTemplates.FLAT_ITEM.create(
                 ModelLocationUtils.getModelLocation(block.asItem()),
                 TextureMapping.layer0(block),

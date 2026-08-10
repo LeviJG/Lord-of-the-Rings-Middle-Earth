@@ -8,12 +8,7 @@ import java.util.List;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.minecraft.network.chat.Component;
 
-/**
- * Minimal faithful port of 1.7.10 lotr.common.LOTRDimension.
- * DELIBERATELY REDUCED: worldgen dropped, so WorldProvider classes, dimension
- * registration/IDs, biome lists, and achievement categories are omitted. What
- * remains is what factions/alignment/map need: identities, regions, faction lists.
- */
+// Minimal faithful port of 1.7.10 lotr.common.LOTRDimension. DELIBERATELY REDUCED: worldgen dropped, so WorldProvider classes, dimension registration/IDs, biome lists, and achievement categories are omitted. What remains is what factions/alignment/map need: identities, regions, faction lists.
 public enum LOTRDimension {
     MIDDLE_EARTH("MiddleEarth", 100, EnumSet.of(DimensionRegion.WEST, DimensionRegion.EAST, DimensionRegion.SOUTH)),
     UTUMNO("Utumno", 500, EnumSet.of(DimensionRegion.REG_UTUMNO));

@@ -9,26 +9,8 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 
-/**
- * Registers the per-player alignment Data Attachment and provides the
- * accessor API the rest of the mod calls. This replaces the alignment
- * get/set surface of the 1.7.10 LOTRPlayerData god-object.
- *
- * The attachment is:
- *  - persistent (survives server restart) via LOTRAlignmentData.CODEC
- *  - synced to the owning client via LOTRAlignmentData.STREAM_CODEC
- *    (targetOnly: a player only needs their own alignment for the HUD)
- *  - copyOnDeath (alignment shouldn't reset when you die and respawn)
- *
- * Because LOTRAlignmentData is immutable, setters read-modify-write:
- * fetch current, produce a new record, store it. Storing re-triggers sync.
- *
- * The complex addAlignment(...) behavior (control-zone multipliers, penalty
- * scaling, conquest bonuses) is deliberately NOT here yet — this slice is
- * storage + simple get/set. That logic ports on top of this in a later slice.
- */
+// Registers the per-player alignment Data Attachment and provides the accessor API the rest of the mod calls. This replaces the alignment get/set surface of the 1.7.10 LOTRPlayerData god-object. The attachment is: - persistent (survives server restart) via LOTRAlignmentData.CODEC - synced to the owning client via LOTRAlignmentData.STREAM_CODEC (targetOnly: a player only needs their own alignment for the HUD) - copyOnDeath (alignment shouldn't reset when you die and respawn) Because LOTRAlignmentData is immutable, setters read-modify-write: fetch current, produce a new record, store it. Storing re-triggers sync. The complex addAlignment(...) behavior (control-zone multipliers, penalty scaling, conquest bonuses) is deliberately NOT here yet — this slice is storage + simple get/set. That logic ports on top of this in a later slice.
 public final class LOTRPlayerAlignments {
-
     public static final AttachmentType<LOTRAlignmentData> ALIGNMENT_DATA =
             AttachmentRegistry.create(
                     Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "alignment_data"),
@@ -41,7 +23,6 @@ public final class LOTRPlayerAlignments {
     private LOTRPlayerAlignments() {
     }
 
-    /** Force class-load so the static attachment registers. Called from mod init. */
     public static void init() {
     }
 
@@ -68,25 +49,6 @@ public final class LOTRPlayerAlignments {
         setAlignment(player, faction, getAlignment(player, faction) + delta);
     }
 
-    /**
-     * The full alignment-change logic ported from LOTRPlayerData.addAlignment.
-     * Applies an AlignmentBonus source to a faction and propagates it across
-     * the relation graph:
-     *  - a kill grants alignment to every faction that's an enemy of the victim
-     *    (scaled by control-zone proximity, halved past pledge rank if unpledged),
-     *    and costs alignment with every ally of the victim (penalty scaled by
-     *    current standing);
-     *  - a non-kill bonus applies directly to the single faction.
-     *
-     * Returns the per-faction map of actual changes applied (for popups later).
-     *
-     * DEFERRED vs original (TODO(port)):
-     *  - conquest grid (LOTRConquestGrid.onConquestKill + FactionData.addConquest)
-     *  - pledge enemy-limit clamp (checkBonusForPledgeEnemyLimit) — needs the
-     *    full pledge system; currently a no-op pass-through
-     *  - the client bonus packet (sendAlignmentBonusPacket) — the attachment
-     *    already syncs values; the floating "+5 Gondor" popup is a later slice
-     */
     public static LOTRAlignmentBonusMap addAlignment(Player player,
                                                      LOTRAlignmentValues.AlignmentBonus source,
                                                      LOTRFaction faction) {
@@ -112,7 +74,6 @@ public final class LOTRPlayerAlignments {
                         factionBonusMap.put(bonusFaction, factionBonus);
                     }
                 }
-                // TODO(port): conquest grid handling for pledged faction kills
             }
             for (LOTRFaction penaltyFaction : faction.getPenaltiesForKilling()) {
                 if (!penaltyFaction.isPlayableAlignmentFaction() || source.killByHiredUnit) {
@@ -141,11 +102,6 @@ public final class LOTRPlayerAlignments {
         return factionBonusMap;
     }
 
-    /**
-     * Faithful port of LOTRPlayerData.checkBonusForPledgeEnemyLimit.
-     * While pledged, you cannot raise alignment with your pledge-faction's
-     * mortal enemies past the enemy limit (0). Clamps the bonus accordingly.
-     */
     private static float checkBonusForPledgeEnemyLimit(Player player, LOTRFaction faction, float bonus) {
         if (isPledgeEnemyAlignmentLimited(player, faction)) {
             float alignment = getAlignment(player, faction);
@@ -159,8 +115,6 @@ public final class LOTRPlayerAlignments {
         return bonus;
     }
 
-    // --- Pledge system (faithful port of the pledge core in LOTRPlayerData) ---
-
     public static boolean doesFactionPreventPledge(LOTRFaction pledgeFac, LOTRFaction otherFac) {
         return pledgeFac.isMortalEnemy(otherFac);
     }
@@ -170,7 +124,6 @@ public final class LOTRPlayerAlignments {
         return pledge != null && doesFactionPreventPledge(pledge, faction);
     }
 
-    /** Enemy alignment is capped at 0 while pledged to one of their mortal enemies. */
     public static float getPledgeEnemyAlignmentLimit(Player player, LOTRFaction faction) {
         return 0.0f;
     }
@@ -212,11 +165,6 @@ public final class LOTRPlayerAlignments {
         player.setAttached(ALIGNMENT_DATA, get(player).withPledgeFaction(faction));
     }
 
-    /**
-     * Attempt to pledge to a faction, enforcing the pledge rules. Returns true
-     * if the pledge succeeded, false if requirements weren't met. This is the
-     * gameplay entry point; setPledgeFaction is the unchecked/admin setter.
-     */
     public static boolean pledgeTo(Player player, LOTRFaction faction) {
         if (!canPledgeTo(player, faction)) {
             return false;

@@ -14,21 +14,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
-/**
- * The factions menu: a paged list of playable factions showing the player's
- * standing (alignment bar + rank) with each, and a pledge button for the
- * selected faction. Modern replacement for LOTRGuiFactions.
- *
- * Each faction row is a transparent Button widget rather than a custom
- * mouseClicked override, because the 26.1 mouseClicked signature changed;
- * letting widgets own their clicks avoids the signature entirely and is the
- * idiomatic 26.1 approach.
- *
- * Rendering is texture-free (primitive fill/text), same as the HUD bar.
- * 26.1: override extractRenderState(GuiGraphicsExtractor, mouseX, mouseY, delta).
- */
 public class LOTRScreenFactions extends Screen {
-
     private static final int ROW_HEIGHT = 24;
     private static final int LIST_TOP = 40;
     private static final int ROW_HALF_WIDTH = 130;
@@ -83,7 +69,7 @@ public class LOTRScreenFactions extends Screen {
             }
             int rowY = LIST_TOP + i * ROW_HEIGHT;
             int rowIndex = index;
-            // Transparent clickable row; visuals are drawn in extractRenderState.
+
             Button row = Button.builder(Component.empty(), btn -> selectRow(rowIndex))
                     .bounds(width / 2 - ROW_HALF_WIDTH, rowY, ROW_HALF_WIDTH * 2, ROW_HEIGHT - 2)
                     .build();
@@ -95,7 +81,7 @@ public class LOTRScreenFactions extends Screen {
     private void selectRow(int index) {
         if (index >= 0 && index < factions.size()) {
             selectedIndex = index;
-            //LOTRAlignmentHud.setViewedFaction(factions.get(index));
+
             updatePledgeButton();
         }
     }
@@ -120,7 +106,7 @@ public class LOTRScreenFactions extends Screen {
             return;
         }
         LOTRFaction faction = factions.get(selectedIndex);
-        // Client-side reflection of state; a real pledge needs a server packet (deferred).
+
         if (LOTRPlayerAlignments.canPledgeTo(player, faction)) {
             LOTRPlayerAlignments.setPledgeFaction(player, faction);
             updatePledgeButton();

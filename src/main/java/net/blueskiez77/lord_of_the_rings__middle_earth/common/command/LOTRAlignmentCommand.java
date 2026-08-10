@@ -17,21 +17,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 
-/**
- * Developer/testing command for the alignment system. This is the harness
- * that makes the (otherwise invisible) faction storage observable:
- *   /alignment get <faction>
- *   /alignment set <faction> <value>
- *   /alignment add <faction> <amount>
- *   /alignment list
- * Faction is a string argument matched via LOTRFaction.forName, with tab
- * suggestions for every playable faction. Requires op (permission level 2),
- * matching how the original mod gated alignment cheats.
- * Later this graduates into the real /fac or GUI controls, but as a test
- * harness it's the fastest way to verify persistence + client sync work.
- */
 public final class LOTRAlignmentCommand {
-
     private static final SuggestionProvider<CommandSourceStack> FACTION_SUGGESTIONS =
             (context, builder) -> SharedSuggestionProvider.suggest(
                     LOTRFaction.getPlayableAlignmentFactionNames(), builder);
