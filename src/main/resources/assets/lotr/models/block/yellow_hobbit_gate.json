@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:block/gate_panel",
+  "textures": {
+    "all": "lotr:block/yellow_hobbit_gate"
+  }
+}
