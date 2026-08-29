@@ -16,6 +16,14 @@ public final class LOTRConnectedBorderTypes {
         register(LOTRBlocks.MITHRIL_BLOCK, LOTRConnectedBorderType.sameBlock("mithril_block"));
 
         register(LOTRBlocks.DAUB, LOTRConnectedBorderType.sameBlock("daub"));
+        // LOTRBlockCobblebrick connected unconditionally -- it had one subtype.
+        register(LOTRBlocks.DRYSTONE, LOTRConnectedBorderType.sameBlock("drystone"));
+        // brick metas 8/9/10 -- the trimmed dwarven set. LOTRBlockBrick.getIcon
+        // guards on those three metas and no other brick, which is why the plain
+        // dwarven brick stays flat.
+        register(LOTRBlocks.DWARVEN_SILVER_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_silver_brick"));
+        register(LOTRBlocks.DWARVEN_GOLD_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_gold_brick"));
+        register(LOTRBlocks.DWARVEN_MITHRIL_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_mithril_brick"));
     }
 
     private LOTRConnectedBorderTypes() {

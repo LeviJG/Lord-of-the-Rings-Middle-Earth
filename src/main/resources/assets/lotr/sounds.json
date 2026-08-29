@@ -1,0 +1,26 @@
+{
+  "block.gate.open": {
+    "category": "block",
+    "sounds": [
+      "lotr:block/gate/open"
+    ]
+  },
+  "block.gate.close": {
+    "category": "block",
+    "sounds": [
+      "lotr:block/gate/close"
+    ]
+  },
+  "block.gate.stone_open": {
+    "category": "block",
+    "sounds": [
+      "lotr:block/gate/stone_open"
+    ]
+  },
+  "block.gate.stone_close": {
+    "category": "block",
+    "sounds": [
+      "lotr:block/gate/stone_close"
+    ]
+  }
+}

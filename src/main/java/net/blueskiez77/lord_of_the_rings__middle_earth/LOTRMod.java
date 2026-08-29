@@ -3,7 +3,11 @@ package net.blueskiez77.lord_of_the_rings__middle_earth;
 import net.fabricmc.api.ModInitializer;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRCreativeTabs;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockBehaviours;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRPackets;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRRecipeTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRAlignmentCommand;
@@ -32,11 +36,21 @@ public class LOTRMod implements ModInitializer {
         LOTRRecipeTypes.init();
         LOTRMenus.init();
 
+        // Before blocks: LOTRGateBlock resolves its open/close sounds from
+        // these the first time a gate is used, and they must exist by then.
+        LOTRSounds.init();
+
         LOTRBlocks.init();
+        LOTRBlockEntities.init();
+        LOTRBlockBehaviours.init();
         LOTRItems.init();
 
         // Creative tab. Must come after blocks and items exist.
         LOTRCreativeTabs.init();
+
+        // Payload types must be registered on both sides and before any
+        // handler, so this runs here rather than in the client initializer.
+        LOTRPackets.init();
 
         LOTRAlignmentCommand.register();
 

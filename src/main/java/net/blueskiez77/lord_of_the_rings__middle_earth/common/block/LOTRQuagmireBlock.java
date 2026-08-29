@@ -4,6 +4,7 @@ import com.mojang.serialization.MapCodec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,9 +25,15 @@ public class LOTRQuagmireBlock extends Block {
         return CODEC;
     }
 
-    // NOTE FOR LEVI: this is the one signature I could not verify against 26.2.
-
-    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity) {
+    // Matches WebBlock exactly: entityInside gained a trailing boolean in 26.2.
+    // Without it this silently becomes a dead method and quagmire loses its
+    // stickiness, which is what had happened.
+    @Override
+    protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
+                                InsideBlockEffectApplier effectApplier, boolean isPrecise) {
+        // Cobweb's own vector. LOTRBlockQuagmire called entity.setInWeb() with
+        // no modifiers, so the Weaving branch WebBlock has is deliberately not
+        // copied -- quagmire slowed everything equally.
         entity.makeStuckInBlock(state, STUCK_SPEED);
     }
 }

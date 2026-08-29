@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricBlockLootSubProvider;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
     public LOTRBlockLootProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
@@ -20,8 +21,12 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
     public void generate() {
         LOTRBlocks.ALL_GLASS.forEach(this::dropWhenSilkTouch);
 
-        LOTRBlocks.ALL_PATHS.forEach(this::dropSelf);
-        LOTRBlocks.ALL_FARMLAND.forEach(this::dropSelf);
+        // Farmland has no item of its own. Vanilla farmland drops dirt; the LOTR
+        // one is tilled mud, so it drops mud.
+        // Vanilla dirt path and farmland both drop dirt, with no silk-touch
+        // special case. The LOTR pair are worked mud, so they drop mud.
+        LOTRBlocks.ALL_FARMLAND.forEach(b -> dropOther(b, LOTRBlocks.MUD));
+        dropOther(LOTRBlocks.DIRT_PATH_MUD, LOTRBlocks.MUD);
         LOTRBlocks.ALL_RAILS.forEach(this::dropSelf);
 
         // NOTE: crops deliberately have no loot table. They should drop their
@@ -57,6 +62,11 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
                 LOTRBlocks.ALL_PRESSURE_PLATES);
 
         dropSelf(LOTRBlocks.WEB_UNGOLIANT);
+
+        // In no family list, because its models are hand-written rather than
+        // generated -- so it needs its loot table naming explicitly.
+        dropSelf(LOTRBlocks.BEACON_OF_GONDOR);
+        dropSelf(LOTRBlocks.HOBBIT_OVEN);
 
         LOTRBlocks.TORCH_WALL.forEach((torch, wall) -> dropOther(wall, torch));
 

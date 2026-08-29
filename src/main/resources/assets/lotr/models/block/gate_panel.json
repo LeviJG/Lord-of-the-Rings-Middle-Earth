@@ -1,0 +1,22 @@
+{
+  "__comment": "Item model shape for gates: a 4/16-thick panel centred on the z axis, matching LOTRBlockGate.setBlockBoundsForItemRender (which set direction 4 before rendering the inventory icon). Blocks in the world do NOT use this -- LOTRGateModel builds their geometry in code so it can pick a connected sprite per face. This is the item icon only. The parent is what supplies the display transforms: without it the model inherits none, so vanilla falls back to identity and the panel renders at full unscaled block size in the hand, on the ground and in the GUI. block/block carries the standard set and adds no geometry of its own.",
+  "parent": "minecraft:block/block",
+  "textures": {
+    "all": "#all",
+    "particle": "#all"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 6],
+      "to": [16, 16, 10],
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#all" },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#all" },
+        "east":  { "uv": [6, 0, 10, 16], "texture": "#all" },
+        "west":  { "uv": [6, 0, 10, 16], "texture": "#all" },
+        "up":    { "uv": [0, 6, 16, 10], "texture": "#all" },
+        "down":  { "uv": [0, 6, 16, 10], "texture": "#all" }
+      }
+    }
+  ]
+}

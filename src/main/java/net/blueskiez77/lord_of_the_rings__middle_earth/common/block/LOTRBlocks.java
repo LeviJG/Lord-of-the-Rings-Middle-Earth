@@ -1,51 +1,49 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import java.util.ArrayList;
-import java.util.Locale;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.CarpetBlock;
-import net.minecraft.world.level.block.CraftingTableBlock;
+import net.minecraft.world.level.block.ColoredFallingBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DirtPathBlock;
-import net.minecraft.world.level.block.FarmlandBlock;
-import net.minecraft.util.ColorRGBA;
-import net.minecraft.world.level.block.ColoredFallingBlock;
-import net.minecraft.world.level.block.PoweredRailBlock;
-import net.minecraft.world.level.block.ButtonBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.VineBlock;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
+import net.minecraft.world.level.block.FenceGateBlock;
+import net.minecraft.world.level.block.IronBarsBlock;
+import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.PoweredRailBlock;
+import net.minecraft.world.level.block.PressurePlateBlock;
+import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TorchBlock;
-import net.minecraft.world.level.block.WallTorchBlock;
-import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.TransparentBlock;
+import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.UntintedParticleLeavesBlock;
+import net.minecraft.world.level.block.VineBlock;
+import net.minecraft.world.level.block.WallBlock;
+import net.minecraft.world.level.block.WallTorchBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
@@ -92,6 +90,14 @@ public final class LOTRBlocks {
     public static final Map<Block, Block> TEXTURE_SOURCE = new LinkedHashMap<>();
 
     public static final List<Block> CUBES_COLUMN_TEXTURED = new ArrayList<>();
+    /** Gulduril bricks. They carry a block entity purely to drive the glow renderer. */
+    public static final List<Block> ALL_GULDURIL = new ArrayList<>();
+    /** Dart traps. Face texture on the facing side, base brick on the other five. */
+    public static final List<Block> ALL_DART_TRAPS = new ArrayList<>();
+    /** Forges and ovens: <name>_front / _side / _top, plus _active when lit. */
+    public static final List<Block> ALL_FORGES = new ArrayList<>();
+    /** Dart trap -> the brick it borrows its five plain faces from. */
+    public static final Map<Block, Block> DART_TRAP_BASE = new LinkedHashMap<>();
 
     public static final List<Block> ALL_BOTTOM_TOP = new ArrayList<>();
     public static final List<Block> ALL_TORCHES = new ArrayList<>();
@@ -143,24 +149,24 @@ public final class LOTRBlocks {
     public static final Block SALTPETER_ORE = registerCube("saltpeter_ore", 3.0f, 3.0f, Tier.STONE);
     public static final Block SULFUR_ORE = registerCube("sulfur_ore", 3.0f, 3.0f, Tier.STONE);
 
-    public static final Block AMBER_BLOCK = registerCube("amber_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block AMBER_BLOCK = registerCube("amber_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block AMBER_ORE = registerCube("amber_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block ANGMAR_BRICK = registerCube("angmar_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block ANGMAR_CRACKED_BRICK = registerCube("angmar_cracked_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_ANGMAR_BRICK = registerCube("cracked_angmar_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block ANGMAR_SNOW_BRICK = registerCube("angmar_snow_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block ARNOR_BRICK = registerCube("arnor_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block ARNOR_CARVED_BRICK = registerCube("arnor_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block ARNOR_CRACKED_BRICK = registerCube("arnor_cracked_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block ARNOR_MOSSY_BRICK = registerCube("arnor_mossy_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block BLACK_GONDOR_BRICK = registerCube("black_gondor_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block BLACK_GONDOR_CARVED_BRICK = registerCube("black_gondor_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block BLACK_UMBAR_CARVED_BRICK = registerCube("black_umbar_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block BLACK_URUK_STEEL_BLOCK = registerCube("black_uruk_steel_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block CARVED_ARNOR_BRICK = registerCube("carved_arnor_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_ARNOR_BRICK = registerCube("cracked_arnor_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block MOSSY_ARNOR_BRICK = registerCube("mossy_arnor_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block NUMENOREAN_BRICK = registerCube("numenorean_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_NUMENOREAN_BRICK = registerCube("carved_numenorean_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_BLACK_UMBAR_BRICK = registerCube("carved_black_umbar_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block BLACK_URUK_STEEL_BLOCK = registerCube("black_uruk_steel_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
     public static final Block BLUE_CARVED_BRICK = registerCube("blue_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block BLUE_DWARF_STEEL_BLOCK = registerCube("blue_dwarf_steel_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block BLUE_DWARF_STEEL_BLOCK = registerCube("blue_dwarf_steel_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
     public static final Block BLUE_ROCK = registerCube("blue_rock", 1.5f, 6.0f, Tier.NONE);
     public static final Block BLUE_ROCK_BRICK = registerCube("blue_rock_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block BRONZE_BLOCK = registerCube("bronze_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block BRONZE_BLOCK = registerCube("bronze_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
     public static final Block CHALK = registerCube("chalk", 1.5f, 6.0f, Tier.NONE);
     public static final Block CHALK_BRICK = registerCube("chalk_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block CLAY_TILE = registerCube("clay_tile", 1.5f, 6.0f, Tier.NONE);
@@ -186,65 +192,80 @@ public final class LOTRBlocks {
     public static final Block DALE_MOSSY_BRICK = registerCube("dale_mossy_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block DOL_AMROTH_BRICK = registerCube("dol_amroth_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block DOL_GULDUR_BRICK = registerCube("dol_guldur_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DOL_GULDUR_CARVED_BRICK = registerCube("dol_guldur_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DOL_GULDUR_CRACKED_BRICK = registerCube("dol_guldur_cracked_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DOL_GULDUR_MOSSY_BRICK = registerCube("dol_guldur_mossy_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_DOL_GULDUR_BRICK = registerCube("carved_dol_guldur_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_DOL_GULDUR_BRICK = registerCube("cracked_dol_guldur_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block MOSSY_DOL_GULDUR_BRICK = registerCube("mossy_dol_guldur_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block DORWINION_BRICK = registerCube("dorwinion_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DORWINION_CARVED_BRICK = registerCube("dorwinion_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DORWINION_CRACKED_BRICK = registerCube("dorwinion_cracked_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_DORWINION_BRICK = registerCube("carved_dorwinion_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_DORWINION_BRICK = registerCube("cracked_dorwinion_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block DORWINION_FLOWERS_BRICK = registerCube("dorwinion_flowers_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DORWINION_MOSSY_BRICK = registerCube("dorwinion_mossy_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DWARF_STEEL_BLOCK = registerCube("dwarf_steel_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block MOSSY_DORWINION_BRICK = registerCube("mossy_dorwinion_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block DWARF_STEEL_BLOCK = registerCube("dwarf_steel_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
     public static final Block DWARVEN_BRICK = registerCube("dwarven_brick", 1.5f, 6.0f, Tier.NONE);
 
     public static final Block DWARVEN_SILVER_BRICK = registerCube("dwarven_silver_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block DWARVEN_GOLD_BRICK = registerCube("dwarven_gold_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block DWARVEN_MITHRIL_BRICK = registerCube("dwarven_mithril_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DWARVEN_CARVED_BRICK = registerCube("dwarven_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DWARVEN_CRACKED_BRICK = registerCube("dwarven_cracked_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DWARVEN_GLOWING_BRICK = registerCube("dwarven_glowing_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block DWARVEN_OBSIDIAN_BRICK = registerCube("dwarven_obsidian_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block ELF_STEEL_BLOCK = registerCube("elf_steel_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block CARVED_DWARVEN_BRICK = registerCube("carved_dwarven_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_DWARVEN_BRICK = registerCube("cracked_dwarven_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block GLOWING_DWARVEN_BRICK = registerCube("glowing_dwarven_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block OBSIDIAN_DWARVEN_BRICK = registerCube("obsidian_dwarven_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block ELF_STEEL_BLOCK = registerCube("elf_steel_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block GALADHRIM_BRICK = registerCube("galadhrim_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GALADHRIM_CARVED_BRICK = registerCube("galadhrim_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GALADHRIM_CRACKED_BRICK = registerCube("galadhrim_cracked_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_GALADHRIM_BRICK = registerCube("carved_galadhrim_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_GALADHRIM_BRICK = registerCube("cracked_galadhrim_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block GALADHRIM_GOLD_BRICK = registerCube("galadhrim_gold_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GALADHRIM_MOSSY_BRICK = registerCube("galadhrim_mossy_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block MOSSY_GALADHRIM_BRICK = registerCube("mossy_galadhrim_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block GALADHRIM_SILVER_BRICK = registerCube("galadhrim_silver_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GALVORN_BLOCK = registerCube("galvorn_block", 5.0f, 6.0f, Tier.IRON);
-    public static final Block GILDED_IRON_BLOCK = registerCube("gilded_iron_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block GALVORN_BLOCK = registerCube("galvorn_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
+    public static final Block GILDED_IRON_BLOCK = registerCube("gilded_iron_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
     public static final Block GLOWSTONE_ORE = registerCube("glowstone_ore", 3.0f, 3.0f, Tier.STONE);
     public static final Block GONDOR_BRICK = registerCube("gondor_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GONDOR_CARVED_BRICK = registerCube("gondor_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GONDOR_CRACKED_BRICK = registerCube("gondor_cracked_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GONDOR_MOSSY_BRICK = registerCube("gondor_mossy_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_GONDOR_BRICK = registerCube("carved_gondor_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_GONDOR_BRICK = registerCube("cracked_gondor_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block MOSSY_GONDOR_BRICK = registerCube("mossy_gondor_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block GONDOR_ROCK = registerCube("gondor_rock", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GONDOR_RUSTIC_BRICK = registerCube("gondor_rustic_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GONDOR_RUSTIC_CRACKED_BRICK = registerCube("gondor_rustic_cracked_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GONDOR_RUSTIC_MOSSY_BRICK = registerCube("gondor_rustic_mossy_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block GULDURIL_BLOCK = registerCube("gulduril_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block GONDOR_COBBLEBRICK = registerCube("gondor_cobblebrick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_GONDOR_COBBLEBRICK = registerCube("cracked_gondor_cobblebrick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block MOSSY_GONDOR_COBBLEBRICK = registerCube("mossy_gondor_cobblebrick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block GULDURIL_BLOCK = registerCube("gulduril_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
+
     public static final Block GULDURIL_MORDOR_ORE = registerCube("gulduril_mordor_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block GULDURIL_ORE = registerCube("gulduril_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block HIGH_ELVEN_BRICK = registerCube("high_elven_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block HIGH_ELVEN_CARVED_BRICK = registerCube("high_elven_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block HIGH_ELVEN_CRACKED_BRICK = registerCube("high_elven_cracked_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_HIGH_ELVEN_BRICK = registerCube("carved_high_elven_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_HIGH_ELVEN_BRICK = registerCube("cracked_high_elven_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block HIGH_ELVEN_GOLD_BRICK = registerCube("high_elven_gold_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block HIGH_ELVEN_MOSSY_BRICK = registerCube("high_elven_mossy_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block MOSSY_HIGH_ELVEN_BRICK = registerCube("mossy_high_elven_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block HIGH_ELVEN_SILVER_BRICK = registerCube("high_elven_silver_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block MITHRIL_BLOCK = registerCube("mithril_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block MITHRIL_BLOCK = registerCube("mithril_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block MORDOR_BRICK = registerCube("mordor_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block MORDOR_CARVED_BRICK = registerCube("mordor_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block MORDOR_CRACKED_BRICK = registerCube("mordor_cracked_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_MORDOR_BRICK = registerCube("carved_mordor_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_MORDOR_BRICK = registerCube("cracked_mordor_brick", 1.5f, 6.0f, Tier.NONE);
+    // Gulduril bricks have no textures of their own: LOTRBlockGuldurilBrick was
+    // a base brick with a glowing crystal overlay, so each borrows the brick it
+    // was cut from via TEXTURE_SOURCE. Light 0.75 -> 11, hardness 3.0,
+    // resistance 10.0 legacy -> 6.0 modern.
+    public static final Block GULDURIL_MORDOR_BRICK = registerGulduril("gulduril_mordor_brick");
+    public static final Block GULDURIL_CRACKED_MORDOR_BRICK = registerGulduril("gulduril_cracked_mordor_brick");
+    public static final Block GULDURIL_ANGMAR_BRICK = registerGulduril("gulduril_angmar_brick");
+    public static final Block GULDURIL_CRACKED_ANGMAR_BRICK = registerGulduril("gulduril_cracked_angmar_brick");
+    public static final Block GULDURIL_DOL_GULDUR_BRICK = registerGulduril("gulduril_dol_guldur_brick");
+    public static final Block GULDURIL_CRACKED_DOL_GULDUR_BRICK = registerGulduril("gulduril_cracked_dol_guldur_brick");
+    public static final Block GULDURIL_GONDOR_BRICK = registerGulduril("gulduril_gondor_brick");
+    public static final Block GULDURIL_MOSSY_GONDOR_BRICK = registerGulduril("gulduril_mossy_gondor_brick");
+    public static final Block GULDURIL_CRACKED_GONDOR_BRICK = registerGulduril("gulduril_cracked_gondor_brick");
+    public static final Block GULDURIL_NUMENOREAN_BRICK = registerGulduril("gulduril_numenorean_brick");
     public static final Block MORDOR_DIRT = registerSoil("mordor_dirt", 0.5f, 0.3f, SoundType.GRAVEL);
     public static final Block MORDOR_GRAVEL = registerFalling("mordor_gravel", 0.6f, 0xFF3A3A3A);
     public static final Block MORDOR_MOSS_ROCK = registerCube("mordor_moss_rock", 1.5f, 6.0f, Tier.NONE);
     public static final Block MORDOR_ROCK = registerCubeColumn("mordor_rock", 1.5f, 6.0f, Tier.NONE);
-    public static final Block MOREDAIN_BRICK = registerCube("moredain_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block MORWAITH_BRICK = registerCube("morwaith_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block MORGUL_IRON_MORDOR_ORE = registerCube("morgul_iron_mordor_ore", 3.0f, 3.0f, Tier.STONE);
     public static final Block MORGUL_IRON_ORE = registerCube("morgul_iron_ore", 3.0f, 3.0f, Tier.STONE);
-    public static final Block MORGUL_STEEL_BLOCK = registerCubeColumn("morgul_steel_block", 5.0f, 6.0f, Tier.IRON);
-    public static final Block MORWAITH_CRACKED_BRICK = registerCube("morwaith_cracked_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block NAURITE_BLOCK = registerCube("naurite_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block MORGUL_STEEL_BLOCK = registerCubeColumn("morgul_steel_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
+    public static final Block CRACKED_MORWAITH_BRICK = registerCube("cracked_morwaith_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block NAURITE_BLOCK = registerCube("naurite_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block NAURITE_ORE = registerCube("naurite_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block NEAR_HARAD_BRICK = registerCube("near_harad_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block NEAR_HARAD_CARVED_BRICK = registerCube("near_harad_carved_brick", 1.5f, 6.0f, Tier.NONE);
@@ -254,12 +275,12 @@ public final class LOTRBlocks {
     public static final Block NEAR_HARAD_RED_CARVED_BRICK = registerCube("near_harad_red_carved_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block NEAR_HARAD_RED_CRACKED_BRICK = registerCube("near_harad_red_cracked_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block OBSIDIAN_GRAVEL = registerFalling("obsidian_gravel", 0.6f, 0xFF1B1B22);
-    public static final Block OPAL_BLOCK = registerCube("opal_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block OPAL_BLOCK = registerCube("opal_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block OPAL_ORE = registerCube("opal_ore", 3.0f, 3.0f, Tier.IRON);
-    public static final Block ORC_PLATING_IRON = registerCube("orc_plating_iron", 1.5f, 6.0f, Tier.NONE);
-    public static final Block ORC_PLATING_RUST = registerCube("orc_plating_rust", 1.5f, 6.0f, Tier.NONE);
-    public static final Block ORC_STEEL_BLOCK = registerCubeColumn("orc_steel_block", 5.0f, 6.0f, Tier.STONE);
-    public static final Block PEARL_BLOCK = registerCube("pearl_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block ORC_PLATING_IRON = registerCube("orc_plating_iron", 3.0f, 6.0f, Tier.NONE, SoundType.METAL);
+    public static final Block ORC_PLATING_RUST = registerCube("orc_plating_rust", 3.0f, 6.0f, Tier.NONE, SoundType.METAL);
+    public static final Block ORC_STEEL_BLOCK = registerCubeColumn("orc_steel_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
+    public static final Block PEARL_BLOCK = registerCube("pearl_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
 
     public static final Block QUAGMIRE = track(ALL_CUBES, track(SHOVEL_MINEABLE, register("quagmire",
             LOTRQuagmireBlock::new,
@@ -270,7 +291,7 @@ public final class LOTRBlocks {
                     .noCollision()
                     .noOcclusion(),
             true)));
-    public static final Block QUENDITE_BLOCK = registerCube("quendite_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block QUENDITE_BLOCK = registerCube("quendite_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block QUENDITE_ORE = registerCube("quendite_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block RED_BRICK_CRACKED = registerCube("red_brick_cracked", 1.5f, 6.0f, Tier.NONE);
     public static final Block RED_BRICK_MOSSY = registerCube("red_brick_mossy", 1.5f, 6.0f, Tier.NONE);
@@ -287,42 +308,71 @@ public final class LOTRBlocks {
     public static final Block RHUN_RED_BRICK = registerCube("rhun_red_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block RHUN_RED_CARVED_BRICK = registerCube("rhun_red_carved_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block ROHAN_BRICK = registerCubeColumn("rohan_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block ROHAN_CARVED_BRICK = registerCube("rohan_carved_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_ROHAN_BRICK = registerCube("carved_rohan_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block ROHAN_ROCK = registerCube("rohan_rock", 1.5f, 6.0f, Tier.NONE);
-    public static final Block RUBY_BLOCK = registerCube("ruby_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block RUBY_BLOCK = registerCube("ruby_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block RUBY_ORE = registerCube("ruby_ore", 3.0f, 3.0f, Tier.IRON);
-    public static final Block SALT_BLOCK = registerCube("salt_block", 5.0f, 6.0f, Tier.STONE);
-    public static final Block SALTPETER_BLOCK = registerCube("saltpeter_block", 5.0f, 6.0f, Tier.STONE);
-    public static final Block SAPPHIRE_BLOCK = registerCube("sapphire_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block SALT_BLOCK = registerCube("salt_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
+    public static final Block SALTPETER_BLOCK = registerCube("saltpeter_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
+    public static final Block SAPPHIRE_BLOCK = registerCube("sapphire_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block SAPPHIRE_ORE = registerCube("sapphire_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block SCORCHED_STONE = registerCube("scorched_stone", 1.5f, 6.0f, Tier.NONE);
-    public static final Block SILVER_BLOCK = registerCube("silver_block", 5.0f, 6.0f, Tier.IRON);
+    // utumnoPillar 0/1/2. Column-textured like every other pillar.
+    public static final Block FIRE_UTUMNO_PILLAR = registerPillar("fire_utumno_pillar");
+    public static final Block ICE_UTUMNO_PILLAR = registerPillar("ice_utumno_pillar");
+    public static final Block OBSIDIAN_UTUMNO_PILLAR = registerPillar("obsidian_utumno_pillar");
+    public static final Block SILVER_BLOCK = registerCube("silver_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block TAUREDAIN_BRICK = registerCube("tauredain_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block TAUREDAIN_CRACKED_BRICK = registerCube("tauredain_cracked_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block TAUREDAIN_GOLD_BRICK = registerCube("tauredain_gold_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block TAUREDAIN_MOSSY_BRICK = registerCube("tauredain_mossy_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block TAUREDAIN_OBSIDIAN_BRICK = registerCube("tauredain_obsidian_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block TIN_BLOCK = registerCube("tin_block", 5.0f, 6.0f, Tier.STONE);
+    public static final Block TAUREDAIN_DART_TRAP = registerDartTrap("tauredain_dart_trap", TAUREDAIN_BRICK);
+    public static final Block GOLD_TAUREDAIN_DART_TRAP = registerDartTrap("gold_tauredain_dart_trap", TAUREDAIN_GOLD_BRICK);
+    public static final Block OBSIDIAN_TAUREDAIN_DART_TRAP = registerDartTrap("obsidian_tauredain_dart_trap", TAUREDAIN_OBSIDIAN_BRICK);
+
+    // Forges. Four blocks, one block entity, thirteen slots -- see LOTRForgeBlockEntity.
+    public static final Block DWARVEN_FORGE = registerForge("dwarven_forge");
+    public static final Block ELVEN_FORGE = registerForge("elven_forge");
+    public static final Block ORC_FORGE = registerForge("orc_forge");
+    public static final Block ALLOY_FORGE = registerForge("alloy_forge");
+
+    // Beacon of Gondor. Custom geometry, so it joins no family list: its
+    // blockstate, models and item model are hand-written under
+    // src/main/resources/assets/lotr/, not generated.
+    public static final Block BEACON_OF_GONDOR = registerBeacon("beacon_of_gondor");
+
+    // Hobbit oven. Nineteen slots, nine cook lanes -- see
+    // LOTRHobbitOvenBlockEntity. Light 13 while lit, as in the original.
+    public static final Block HOBBIT_OVEN = registerHobbitOven("hobbit_oven");
+
+    public static final Block TIN_BLOCK = registerCube("tin_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
     public static final Block UMBAR_BRICK = registerCube("umbar_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block UMBAR_CARVED_BRICK = registerCube("umbar_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block UMBAR_CRACKED_BRICK = registerCube("umbar_cracked_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_UMBAR_BRICK = registerCube("carved_umbar_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_UMBAR_BRICK = registerCube("cracked_umbar_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block URUK_BRICK = registerCube("uruk_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block URUK_STEEL_BLOCK = registerCubeColumn("uruk_steel_block", 5.0f, 6.0f, Tier.STONE);
-    public static final Block UTUMNO_FIRE_BRICK = registerCube("utumno_fire_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block URUK_STEEL_BLOCK = registerCubeColumn("uruk_steel_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
+    public static final Block FIRE_UTUMNO_BRICK = registerCube("fire_utumno_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block UTUMNO_FIRE_TILE_BRICK = registerCube("utumno_fire_tile_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block UTUMNO_ICE_BRICK = registerCube("utumno_ice_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block UTUMNO_ICE_GLOWING_BRICK = registerCube("utumno_ice_glowing_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block ICE_UTUMNO_BRICK = registerCube("ice_utumno_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block GLOWING_ICE_UTUMNO_BRICK = registerCube("glowing_ice_utumno_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block UTUMNO_ICE_TILE_BRICK = registerCube("utumno_ice_tile_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block UTUMNO_OBSIDIAN_BRICK = registerCube("utumno_obsidian_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block OBSIDIAN_UTUMNO_BRICK = registerCube("obsidian_utumno_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block UTUMNO_OBSIDIAN_FIRE_BRICK = registerCube("utumno_obsidian_fire_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block UTUMNO_OBSIDIAN_TILE_BRICK = registerCube("utumno_obsidian_tile_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block UTUMNO_FIRE_TILE_BRICK_WALL = registerWall("utumno_fire_tile_brick_wall", UTUMNO_FIRE_TILE_BRICK);
+    public static final Block UTUMNO_ICE_TILE_BRICK_WALL = registerWall("utumno_ice_tile_brick_wall", UTUMNO_ICE_TILE_BRICK);
+    public static final Block UTUMNO_OBSIDIAN_TILE_BRICK_WALL = registerWall("utumno_obsidian_tile_brick_wall", UTUMNO_OBSIDIAN_TILE_BRICK);
+    public static final Block UTUMNO_FIRE_TILE_BRICK_SLAB = registerSlab("utumno_fire_tile_brick_slab", UTUMNO_FIRE_TILE_BRICK);
+    public static final Block UTUMNO_ICE_TILE_BRICK_SLAB = registerSlab("utumno_ice_tile_brick_slab", UTUMNO_ICE_TILE_BRICK);
+    public static final Block UTUMNO_OBSIDIAN_TILE_BRICK_SLAB = registerSlab("utumno_obsidian_tile_brick_slab", UTUMNO_OBSIDIAN_TILE_BRICK);
     public static final Block WHITE_SAND = registerFalling("white_sand", 0.6f, 0xFFE6E0CF);
     public static final Block WHITE_SANDSTONE = registerBottomTop("white_sandstone", 0.8f, 0.8f);
     public static final Block WOOD_ELVEN_BRICK = registerCube("wood_elven_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block WOOD_ELVEN_CARVED_BRICK = registerCube("wood_elven_carved_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block WOOD_ELVEN_CRACKED_BRICK = registerCube("wood_elven_cracked_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_WOOD_ELVEN_BRICK = registerCube("carved_wood_elven_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CRACKED_WOOD_ELVEN_BRICK = registerCube("cracked_wood_elven_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block WOOD_ELVEN_GOLD_BRICK = registerCube("wood_elven_gold_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block WOOD_ELVEN_MOSSY_BRICK = registerCube("wood_elven_mossy_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block MOSSY_WOOD_ELVEN_BRICK = registerCube("mossy_wood_elven_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block WOOD_ELVEN_SILVER_BRICK = registerCube("wood_elven_silver_brick", 1.5f, 6.0f, Tier.NONE);
 
     // --- Soft blocks (no tool required; original set no harvest level) ---
@@ -332,19 +382,24 @@ public final class LOTRBlocks {
     public static final Block THATCH_REED = registerSoftBlock("thatch_reed", 0.5f, SoundType.GRASS);
     public static final Block THATCH_THATCH = registerSoftBlock("thatch_thatch", 0.5f, SoundType.GRASS);
 
-    public static final Block RED_SANDSTONE = registerBottomTop("red_sandstone", 0.8f, 0.8f);
-    public static final Block DIAMOND_BLOCK = registerCube("diamond_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block DIAMOND_BLOCK = registerCube("diamond_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block AMETHYST_ORE = registerCube("amethyst_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block DIAMOND_ORE = registerCube("diamond_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block EMERALD_ORE = registerCube("emerald_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block MUD = track(SHOVEL_MINEABLE, registerSoftBlock("mud", 0.5f, SoundType.GRAVEL));
+    // mud.1 and dirtPath.1 -- the jungle variants.
+    public static final Block BARREN_JUNGLE_MUD = track(SHOVEL_MINEABLE, registerSoftBlock("barren_jungle_mud", 0.5f, SoundType.GRAVEL));
+    static {
+        // mud.1 shared mud.0's single icon in the original.
+        TEXTURE_SOURCE.put(BARREN_JUNGLE_MUD, MUD);
+    }
     public static final Block MUD_BRICK = registerCube("mud_brick", 1.5f, 6.0f, Tier.NONE);
-    public static final Block TOPAZ_BLOCK = registerCube("topaz_block", 5.0f, 6.0f, Tier.IRON);
-    public static final Block AMETHYST_BLOCK = registerCube("amethyst_block", 5.0f, 6.0f, Tier.IRON);
-    public static final Block CORAL_BLOCK = registerCube("coral_block", 5.0f, 6.0f, Tier.IRON);
-    public static final Block EMERALD_BLOCK = registerCube("emerald_block", 5.0f, 6.0f, Tier.IRON);
+    public static final Block TOPAZ_BLOCK = registerCube("topaz_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
+    public static final Block AMETHYST_BLOCK = registerCube("amethyst_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
+    public static final Block CORAL_BLOCK = registerCube("coral_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
+    public static final Block EMERALD_BLOCK = registerCube("emerald_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block TOPAZ_ORE = registerCube("topaz_ore", 3.0f, 3.0f, Tier.IRON);
-    public static final Block UTUMNO_BURNING_BRICK = registerCube("utumno_burning_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block BURNING_UTUMNO_BRICK = registerCube("burning_utumno_brick", 1.5f, 6.0f, Tier.NONE);
 
     public static final Block SMOOTH_MORDOR_ROCK = registerColumn("smooth_mordor_rock");
     public static final Block SMOOTH_GONDOR_ROCK = registerColumn("smooth_gondor_rock");
@@ -352,7 +407,7 @@ public final class LOTRBlocks {
     public static final Block SMOOTH_BLUE_ROCK = registerColumn("smooth_blue_rock");
     public static final Block SMOOTH_RED_ROCK = registerColumn("smooth_red_rock");
     public static final Block SMOOTH_CHALK = registerColumn("smooth_chalk");
-    public static final Block GONDOR_COBBLEBRICK = registerCube("gondor_cobblebrick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block DRYSTONE = registerCube("drystone", 1.5f, 6.0f, Tier.NONE);
 
     public static final Block HIGH_ELVEN_WALL_TORCH = registerWallTorch("high_elven_wall_torch");
     public static final Block HIGH_ELVEN_TORCH = registerTorch("high_elven_torch", HIGH_ELVEN_WALL_TORCH);
@@ -363,11 +418,11 @@ public final class LOTRBlocks {
     public static final Block MALLORN_WALL_TORCH = registerWallTorch("mallorn_wall_torch");
     public static final Block MALLORN_TORCH = registerTorch("mallorn_torch", MALLORN_WALL_TORCH);
     public static final Block MALLORN_BLUE_WALL_TORCH = registerWallTorch("mallorn_blue_wall_torch");
-    public static final Block MALLORN_BLUE_TORCH = registerTorch("mallorn_blue_torch", MALLORN_BLUE_WALL_TORCH);
+    public static final Block BLUE_MALLORN_TORCH = registerTorch("blue_mallorn_torch", MALLORN_BLUE_WALL_TORCH);
     public static final Block MALLORN_GOLD_WALL_TORCH = registerWallTorch("mallorn_gold_wall_torch");
     public static final Block MALLORN_GOLD_TORCH = registerTorch("mallorn_gold_torch", MALLORN_GOLD_WALL_TORCH);
     public static final Block MALLORN_GREEN_WALL_TORCH = registerWallTorch("mallorn_green_wall_torch");
-    public static final Block MALLORN_GREEN_TORCH = registerTorch("mallorn_green_torch", MALLORN_GREEN_WALL_TORCH);
+    public static final Block GREEN_MALLORN_TORCH = registerTorch("green_mallorn_torch", MALLORN_GREEN_WALL_TORCH);
 
     public static final Block ANGMAR_CRAFTING_TABLE = registerCraftingTable("angmar_crafting_table");
     public static final Block BLUE_DWARVEN_CRAFTING_TABLE = registerCraftingTable("blue_dwarven_crafting_table");
@@ -405,7 +460,7 @@ public final class LOTRBlocks {
     public static final Block TALL_GRASS_WHEAT = registerFlower("tall_grass_wheat");
 
     public static final Block IVY = registerVine("ivy");
-    public static final Block IVY_RED = registerVine("ivy_red");
+    public static final Block RED_IVY = registerVine("red_ivy");
     public static final Block MIRK_VINES = registerVine("mirk_vines");
     public static final Block WILLOW_VINES = registerVine("willow_vines");
 
@@ -435,31 +490,30 @@ public final class LOTRBlocks {
     public static final Block DAUB = registerSoftBlock("daub", 1.0f, SoundType.GRASS);
 
     public static final Block WASTE_BLOCK = track(SHOVEL_MINEABLE, registerSoftBlock("waste_block", 0.5f, SoundType.SAND));
-    public static final Block MARZIPAN_CHOCOLATE = registerSoftBlock("marzipan_chocolate", 0.5f, SoundType.WOOL);
     public static final Block TREASURE_COPPER = registerSoftBlock("treasure_copper", 3.0f, SoundType.METAL);
     public static final Block TREASURE_GOLD = registerSoftBlock("treasure_gold", 3.0f, SoundType.METAL);
     public static final Block TREASURE_SILVER = registerSoftBlock("treasure_silver", 3.0f, SoundType.METAL);
 
-    public static final Block DOL_AMROTH_GATE = registerGate("dol_amroth_gate");
-    public static final Block DWARVEN_GATE = registerGate("dwarven_gate");
-    public static final Block ELVEN_GATE = registerGate("elven_gate");
-    public static final Block GOLD_GATE = registerGate("gold_gate");
-    public static final Block GONDOR_GATE = registerGate("gondor_gate");
-    public static final Block HIGH_ELVEN_GATE = registerGate("high_elven_gate");
-    public static final Block HOBBIT_BLUE_GATE = registerGate("hobbit_blue_gate");
-    public static final Block HOBBIT_GREEN_GATE = registerGate("hobbit_green_gate");
-    public static final Block HOBBIT_RED_GATE = registerGate("hobbit_red_gate");
-    public static final Block HOBBIT_YELLOW_GATE = registerGate("hobbit_yellow_gate");
-    public static final Block MITHRIL_GATE = registerGate("mithril_gate");
-    public static final Block NEAR_HARAD_GATE = registerGate("near_harad_gate");
-    public static final Block ORC_GATE = registerGate("orc_gate");
-    public static final Block RHUN_GATE = registerGate("rhun_gate");
-    public static final Block ROHAN_GATE = registerGate("rohan_gate");
-    public static final Block SILVER_GATE = registerGate("silver_gate");
-    public static final Block TAUREDAIN_GATE = registerGate("tauredain_gate");
-    public static final Block URUK_GATE = registerGate("uruk_gate");
-    public static final Block WOOD_ELVEN_GATE = registerGate("wood_elven_gate");
-    public static final Block WOODEN_GATE = registerGate("wooden_gate");
+    public static final Block DOL_AMROTH_GATE = registerWoodenGate("dol_amroth_gate");
+    public static final Block DWARVEN_GATE = registerStoneGate("dwarven_gate");
+    public static final Block ELVEN_GATE = registerWoodenGate("elven_gate");
+    public static final Block GOLD_GATE = registerMetalGate("gold_gate");
+    public static final Block GONDOR_GATE = registerWoodenGate("gondor_gate");
+    public static final Block HIGH_ELVEN_GATE = registerWoodenGate("high_elven_gate");
+    public static final Block BLUE_HOBBIT_GATE = registerWoodenGate("blue_hobbit_gate");
+    public static final Block GREEN_HOBBIT_GATE = registerWoodenGate("green_hobbit_gate");
+    public static final Block RED_HOBBIT_GATE = registerWoodenGate("red_hobbit_gate");
+    public static final Block YELLOW_HOBBIT_GATE = registerWoodenGate("yellow_hobbit_gate");
+    public static final Block MITHRIL_GATE = registerMetalGate("mithril_gate");
+    public static final Block NEAR_HARAD_GATE = registerWoodenGate("near_harad_gate");
+    public static final Block ORC_GATE = registerMetalGate("orc_gate");
+    public static final Block RHUN_GATE = registerWoodenGate("rhun_gate");
+    public static final Block ROHAN_GATE = registerWoodenGate("rohan_gate");
+    public static final Block SILVER_GATE = registerMetalGate("silver_gate");
+    public static final Block TAUREDAIN_GATE = registerWoodenGate("tauredain_gate");
+    public static final Block URUK_GATE = registerMetalGate("uruk_gate");
+    public static final Block WOOD_ELVEN_GATE = registerWoodenGate("wood_elven_gate");
+    public static final Block WOODEN_GATE = registerWoodenGate("wooden_gate");
 
     public static final Block FLAX_CROP = registerCrop("flax_crop", 4);
     public static final Block LEEK_CROP = registerCrop("leek_crop", 4);
@@ -483,14 +537,16 @@ public final class LOTRBlocks {
     public static final Block WEB_UNGOLIANT = registerWeb("web_ungoliant");
     public static final Block ROPE = registerLadder("rope");
 
-    public static final Block GATE_BRONZE_BARS = registerBars("gate_bronze_bars");
-    public static final Block GATE_IRON_BARS = registerBars("gate_iron_bars");
-    public static final Block GATE_WOODEN_CROSS = registerBars("gate_wooden_cross");
+    // LOTRMod: createMetal(false), createMetal(false), createWooden(false).
+    // These are gates you open, not decorative bars -- registering them as
+    // IronBarsBlock left three of the mod's gates unopenable.
+    public static final Block GATE_BRONZE_BARS = registerMetalGate("gate_bronze_bars", false);
+    public static final Block GATE_IRON_BARS = registerMetalGate("gate_iron_bars", false);
+    public static final Block GATE_WOODEN_CROSS = registerWoodenGate("gate_wooden_cross", false);
 
     public static final Block MECHANISED_RAIL = registerRail("mechanised_rail");
     public static final Block UTUMNO_RETURN_PORTAL_BASE = registerSoftBlock("utumno_return_portal_base", 50.0f, SoundType.STONE);
     public static final Block UTUMNO_RETURN_LIGHT = registerSoftBlock("utumno_return_light", 0.3f, SoundType.GLASS);
-    public static final Block DIRT_PATH_DIRT = registerPath("dirt_path_dirt");
     public static final Block DIRT_PATH_MUD = registerPath("dirt_path_mud");
     public static final Block MUD_FARMLAND = registerFarmland("mud_farmland");
 
@@ -641,9 +697,9 @@ public final class LOTRBlocks {
     public static final Block SHIRE_HEATHER = registerFlower("shire_heather");
     public static final Block SIMBELMYNE = registerFlower("simbelmyne");
     public static final Block HARAD_FLOWER_DAISY = registerFlower("harad_flower_daisy");
-    public static final Block HARAD_FLOWER_PINK = registerFlower("harad_flower_pink");
-    public static final Block HARAD_FLOWER_RED = registerFlower("harad_flower_red");
-    public static final Block HARAD_FLOWER_YELLOW = registerFlower("harad_flower_yellow");
+    public static final Block PINK_HARAD_FLOWER = registerFlower("pink_harad_flower");
+    public static final Block RED_HARAD_FLOWER = registerFlower("red_harad_flower");
+    public static final Block YELLOW_HARAD_FLOWER = registerFlower("yellow_harad_flower");
     public static final Block RHUN_FLOWER_CHRYS_BLUE = registerFlower("rhun_flower_chrys_blue");
     public static final Block RHUN_FLOWER_CHRYS_ORANGE = registerFlower("rhun_flower_chrys_orange");
     public static final Block RHUN_FLOWER_CHRYS_PINK = registerFlower("rhun_flower_chrys_pink");
@@ -754,22 +810,22 @@ public final class LOTRBlocks {
     public static final Block WILLOW_BEAM = registerBeam("willow_beam");
 
     public static final Block ANGMAR_PILLAR = registerPillar("angmar_pillar");
-    public static final Block ARNOR_CRACKED_PILLAR = registerPillar("arnor_cracked_pillar");
+    public static final Block CRACKED_ARNOR_PILLAR = registerPillar("cracked_arnor_pillar");
     public static final Block ARNOR_PILLAR = registerPillar("arnor_pillar");
-    public static final Block BLACK_GONDOR_PILLAR = registerPillar("black_gondor_pillar");
+    public static final Block NUMENOREAN_PILLAR = registerPillar("numenorean_pillar");
     public static final Block BLUE_ROCK_PILLAR = registerPillar("blue_rock_pillar");
     public static final Block BRICK_PILLAR = registerPillar("brick_pillar");
     public static final Block CHALK_PILLAR = registerPillar("chalk_pillar");
     public static final Block DALE_PILLAR = registerPillar("dale_pillar");
     public static final Block DOL_GULDUR_PILLAR = registerPillar("dol_guldur_pillar");
-    public static final Block DORWINION_MOSSY_PILLAR = registerPillar("dorwinion_mossy_pillar");
+    public static final Block MOSSY_DORWINION_PILLAR = registerPillar("mossy_dorwinion_pillar");
     public static final Block DORWINION_PILLAR = registerPillar("dorwinion_pillar");
-    public static final Block DWARVEN_CRACKED_PILLAR = registerPillar("dwarven_cracked_pillar");
+    public static final Block CRACKED_DWARVEN_PILLAR = registerPillar("cracked_dwarven_pillar");
     public static final Block DWARVEN_PILLAR = registerPillar("dwarven_pillar");
-    public static final Block GALADHRIM_CRACKED_PILLAR = registerPillar("galadhrim_cracked_pillar");
+    public static final Block CRACKED_GALADHRIM_PILLAR = registerPillar("cracked_galadhrim_pillar");
     public static final Block GALADHRIM_PILLAR = registerPillar("galadhrim_pillar");
     public static final Block GONDOR_PILLAR = registerPillar("gondor_pillar");
-    public static final Block HIGH_ELVEN_CRACKED_PILLAR = registerPillar("high_elven_cracked_pillar");
+    public static final Block CRACKED_HIGH_ELVEN_PILLAR = registerPillar("cracked_high_elven_pillar");
     public static final Block HIGH_ELVEN_PILLAR = registerPillar("high_elven_pillar");
     public static final Block MORDOR_PILLAR = registerPillar("mordor_pillar");
     public static final Block NEAR_HARAD_PILLAR = registerPillar("near_harad_pillar");
@@ -784,7 +840,7 @@ public final class LOTRBlocks {
     public static final Block TAUREDAIN_PILLAR = registerPillar("tauredain_pillar");
     public static final Block UMBAR_PILLAR = registerPillar("umbar_pillar");
     public static final Block URUK_PILLAR = registerPillar("uruk_pillar");
-    public static final Block WOOD_ELVEN_CRACKED_PILLAR = registerPillar("wood_elven_cracked_pillar");
+    public static final Block CRACKED_WOOD_ELVEN_PILLAR = registerPillar("cracked_wood_elven_pillar");
     public static final Block WOOD_ELVEN_PILLAR = registerPillar("wood_elven_pillar");
 
     public static final Block CHERRY_TRAPDOOR = registerTrapdoor("cherry_trapdoor");
@@ -889,10 +945,10 @@ public final class LOTRBlocks {
     public static final Block GOLD_CHANDELIER = registerChandelier("gold_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
     public static final Block HIGH_ELVEN_CHANDELIER = registerChandelier("high_elven_chandelier", LOTRChandelierBlock.ParticleStyle.HIGH_ELVEN);
     public static final Block IRON_CHANDELIER = registerChandelier("iron_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block MALLORN_BLUE_CHANDELIER = registerChandelier("mallorn_blue_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_BLUE);
+    public static final Block BLUE_MALLORN_CHANDELIER = registerChandelier("blue_mallorn_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_BLUE);
     public static final Block MALLORN_GOLD_CHANDELIER = registerChandelier("mallorn_gold_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_GOLD);
-    public static final Block MALLORN_GREEN_CHANDELIER = registerChandelier("mallorn_green_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_GREEN);
-    public static final Block MALLORN_SILVER_CHANDELIER = registerChandelier("mallorn_silver_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_SILVER);
+    public static final Block GREEN_MALLORN_CHANDELIER = registerChandelier("green_mallorn_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_GREEN);
+    public static final Block SILVER_MALLORN_CHANDELIER = registerChandelier("silver_mallorn_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_SILVER);
     public static final Block MITHRIL_CHANDELIER = registerChandelier("mithril_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
     public static final Block MORGUL_CHANDELIER = registerChandelier("morgul_chandelier", LOTRChandelierBlock.ParticleStyle.MORGUL);
     public static final Block ORC_CHANDELIER = registerChandelier("orc_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
@@ -920,17 +976,17 @@ public final class LOTRBlocks {
 
     public static final Block ALMOND_STAIRS = registerStairs("almond_stairs", ALMOND_PLANKS);
     public static final Block ANGMAR_BRICK_STAIRS = registerStairs("angmar_brick_stairs", ANGMAR_BRICK);
-    public static final Block ANGMAR_CRACKED_BRICK_STAIRS = registerStairs("angmar_cracked_brick_stairs", ANGMAR_CRACKED_BRICK);
+    public static final Block CRACKED_ANGMAR_BRICK_STAIRS = registerStairs("cracked_angmar_brick_stairs", CRACKED_ANGMAR_BRICK);
     public static final Block ANGMAR_SNOW_BRICK_STAIRS = registerStairs("angmar_snow_brick_stairs", ANGMAR_SNOW_BRICK);
     public static final Block APPLE_STAIRS = registerStairs("apple_stairs", APPLE_PLANKS);
     public static final Block ARNOR_BRICK_STAIRS = registerStairs("arnor_brick_stairs", ARNOR_BRICK);
-    public static final Block ARNOR_CRACKED_BRICK_STAIRS = registerStairs("arnor_cracked_brick_stairs", ARNOR_CRACKED_BRICK);
-    public static final Block ARNOR_MOSSY_BRICK_STAIRS = registerStairs("arnor_mossy_brick_stairs", ARNOR_MOSSY_BRICK);
+    public static final Block CRACKED_ARNOR_BRICK_STAIRS = registerStairs("cracked_arnor_brick_stairs", CRACKED_ARNOR_BRICK);
+    public static final Block MOSSY_ARNOR_BRICK_STAIRS = registerStairs("mossy_arnor_brick_stairs", MOSSY_ARNOR_BRICK);
     public static final Block ASPEN_STAIRS = registerStairs("aspen_stairs", ASPEN_PLANKS);
     public static final Block BANANA_STAIRS = registerStairs("banana_stairs", BANANA_PLANKS);
     public static final Block BAOBAB_STAIRS = registerStairs("baobab_stairs", BAOBAB_PLANKS);
     public static final Block BEECH_STAIRS = registerStairs("beech_stairs", BEECH_PLANKS);
-    public static final Block BLACK_GONDOR_BRICK_STAIRS = registerStairs("black_gondor_brick_stairs", BLACK_GONDOR_BRICK);
+    public static final Block NUMENOREAN_BRICK_STAIRS = registerStairs("numenorean_brick_stairs", NUMENOREAN_BRICK);
     public static final Block BLUE_ROCK_BRICK_STAIRS = registerStairs("blue_rock_brick_stairs", BLUE_ROCK_BRICK);
     public static final Block BLUE_ROCK_STAIRS = registerStairs("blue_rock_stairs", BLUE_ROCK);
     public static final Block CEDAR_STAIRS = registerStairs("cedar_stairs", CEDAR_PLANKS);
@@ -951,7 +1007,6 @@ public final class LOTRBlocks {
     public static final Block CLAY_TILE_DYED_PINK_STAIRS = registerStairs("clay_tile_dyed_pink_stairs", CLAY_TILE_DYED_PINK);
     public static final Block CLAY_TILE_DYED_PURPLE_STAIRS = registerStairs("clay_tile_dyed_purple_stairs", CLAY_TILE_DYED_PURPLE);
     public static final Block CLAY_TILE_DYED_RED_STAIRS = registerStairs("clay_tile_dyed_red_stairs", CLAY_TILE_DYED_RED);
-    public static final Block CLAY_TILE_DYED_SILVER_STAIRS = registerStairs("clay_tile_dyed_silver_stairs", CLAY_TILE_DYED_SILVER);
     public static final Block CLAY_TILE_DYED_WHITE_STAIRS = registerStairs("clay_tile_dyed_white_stairs", CLAY_TILE_DYED_WHITE);
     public static final Block CLAY_TILE_DYED_YELLOW_STAIRS = registerStairs("clay_tile_dyed_yellow_stairs", CLAY_TILE_DYED_YELLOW);
     public static final Block CLAY_TILE_STAIRS = registerStairs("clay_tile_stairs", CLAY_TILE);
@@ -962,31 +1017,31 @@ public final class LOTRBlocks {
     public static final Block DATE_PALM_STAIRS = registerStairs("date_palm_stairs", DATE_PALM_PLANKS);
     public static final Block DOL_AMROTH_BRICK_STAIRS = registerStairs("dol_amroth_brick_stairs", DOL_AMROTH_BRICK);
     public static final Block DOL_GULDUR_BRICK_STAIRS = registerStairs("dol_guldur_brick_stairs", DOL_GULDUR_BRICK);
-    public static final Block DOL_GULDUR_CRACKED_BRICK_STAIRS = registerStairs("dol_guldur_cracked_brick_stairs", DOL_GULDUR_CRACKED_BRICK);
-    public static final Block DOL_GULDUR_MOSSY_BRICK_STAIRS = registerStairs("dol_guldur_mossy_brick_stairs", DOL_GULDUR_MOSSY_BRICK);
+    public static final Block CRACKED_DOL_GULDUR_BRICK_STAIRS = registerStairs("cracked_dol_guldur_brick_stairs", CRACKED_DOL_GULDUR_BRICK);
+    public static final Block MOSSY_DOL_GULDUR_BRICK_STAIRS = registerStairs("mossy_dol_guldur_brick_stairs", MOSSY_DOL_GULDUR_BRICK);
     public static final Block DORWINION_BRICK_STAIRS = registerStairs("dorwinion_brick_stairs", DORWINION_BRICK);
-    public static final Block DORWINION_CRACKED_BRICK_STAIRS = registerStairs("dorwinion_cracked_brick_stairs", DORWINION_CRACKED_BRICK);
+    public static final Block CRACKED_DORWINION_BRICK_STAIRS = registerStairs("cracked_dorwinion_brick_stairs", CRACKED_DORWINION_BRICK);
     public static final Block DORWINION_FLOWERS_BRICK_STAIRS = registerStairs("dorwinion_flowers_brick_stairs", DORWINION_FLOWERS_BRICK);
-    public static final Block DORWINION_MOSSY_BRICK_STAIRS = registerStairs("dorwinion_mossy_brick_stairs", DORWINION_MOSSY_BRICK);
+    public static final Block MOSSY_DORWINION_BRICK_STAIRS = registerStairs("mossy_dorwinion_brick_stairs", MOSSY_DORWINION_BRICK);
     public static final Block DRAGON_STAIRS = registerStairs("dragon_stairs", DRAGON_PLANKS);
     public static final Block DWARVEN_BRICK_STAIRS = registerStairs("dwarven_brick_stairs", DWARVEN_BRICK);
-    public static final Block DWARVEN_CRACKED_BRICK_STAIRS = registerStairs("dwarven_cracked_brick_stairs", DWARVEN_CRACKED_BRICK);
-    public static final Block DWARVEN_OBSIDIAN_BRICK_STAIRS = registerStairs("dwarven_obsidian_brick_stairs", DWARVEN_OBSIDIAN_BRICK);
+    public static final Block CRACKED_DWARVEN_BRICK_STAIRS = registerStairs("cracked_dwarven_brick_stairs", CRACKED_DWARVEN_BRICK);
+    public static final Block OBSIDIAN_DWARVEN_BRICK_STAIRS = registerStairs("obsidian_dwarven_brick_stairs", OBSIDIAN_DWARVEN_BRICK);
     public static final Block FIR_STAIRS = registerStairs("fir_stairs", FIR_PLANKS);
     public static final Block GALADHRIM_BRICK_STAIRS = registerStairs("galadhrim_brick_stairs", GALADHRIM_BRICK);
-    public static final Block GALADHRIM_CRACKED_BRICK_STAIRS = registerStairs("galadhrim_cracked_brick_stairs", GALADHRIM_CRACKED_BRICK);
-    public static final Block GALADHRIM_MOSSY_BRICK_STAIRS = registerStairs("galadhrim_mossy_brick_stairs", GALADHRIM_MOSSY_BRICK);
+    public static final Block CRACKED_GALADHRIM_BRICK_STAIRS = registerStairs("cracked_galadhrim_brick_stairs", CRACKED_GALADHRIM_BRICK);
+    public static final Block MOSSY_GALADHRIM_BRICK_STAIRS = registerStairs("mossy_galadhrim_brick_stairs", MOSSY_GALADHRIM_BRICK);
     public static final Block GONDOR_BRICK_STAIRS = registerStairs("gondor_brick_stairs", GONDOR_BRICK);
-    public static final Block GONDOR_CRACKED_BRICK_STAIRS = registerStairs("gondor_cracked_brick_stairs", GONDOR_CRACKED_BRICK);
-    public static final Block GONDOR_MOSSY_BRICK_STAIRS = registerStairs("gondor_mossy_brick_stairs", GONDOR_MOSSY_BRICK);
+    public static final Block CRACKED_GONDOR_BRICK_STAIRS = registerStairs("cracked_gondor_brick_stairs", CRACKED_GONDOR_BRICK);
+    public static final Block MOSSY_GONDOR_BRICK_STAIRS = registerStairs("mossy_gondor_brick_stairs", MOSSY_GONDOR_BRICK);
     public static final Block GONDOR_ROCK_STAIRS = registerStairs("gondor_rock_stairs", GONDOR_ROCK);
-    public static final Block GONDOR_RUSTIC_BRICK_STAIRS = registerStairs("gondor_rustic_brick_stairs", GONDOR_RUSTIC_BRICK);
-    public static final Block GONDOR_RUSTIC_CRACKED_BRICK_STAIRS = registerStairs("gondor_rustic_cracked_brick_stairs", GONDOR_RUSTIC_CRACKED_BRICK);
-    public static final Block GONDOR_RUSTIC_MOSSY_BRICK_STAIRS = registerStairs("gondor_rustic_mossy_brick_stairs", GONDOR_RUSTIC_MOSSY_BRICK);
+    public static final Block GONDOR_COBBLEBRICK_STAIRS = registerStairs("gondor_cobblebrick_stairs", GONDOR_COBBLEBRICK);
+    public static final Block CRACKED_GONDOR_COBBLEBRICK_STAIRS = registerStairs("cracked_gondor_cobblebrick_stairs", CRACKED_GONDOR_COBBLEBRICK);
+    public static final Block MOSSY_GONDOR_COBBLEBRICK_STAIRS = registerStairs("mossy_gondor_cobblebrick_stairs", MOSSY_GONDOR_COBBLEBRICK);
     public static final Block GREEN_OAK_STAIRS = registerStairs("green_oak_stairs", GREEN_OAK_PLANKS);
     public static final Block HIGH_ELVEN_BRICK_STAIRS = registerStairs("high_elven_brick_stairs", HIGH_ELVEN_BRICK);
-    public static final Block HIGH_ELVEN_CRACKED_BRICK_STAIRS = registerStairs("high_elven_cracked_brick_stairs", HIGH_ELVEN_CRACKED_BRICK);
-    public static final Block HIGH_ELVEN_MOSSY_BRICK_STAIRS = registerStairs("high_elven_mossy_brick_stairs", HIGH_ELVEN_MOSSY_BRICK);
+    public static final Block CRACKED_HIGH_ELVEN_BRICK_STAIRS = registerStairs("cracked_high_elven_brick_stairs", CRACKED_HIGH_ELVEN_BRICK);
+    public static final Block MOSSY_HIGH_ELVEN_BRICK_STAIRS = registerStairs("mossy_high_elven_brick_stairs", MOSSY_HIGH_ELVEN_BRICK);
     public static final Block HOLLY_STAIRS = registerStairs("holly_stairs", HOLLY_PLANKS);
     public static final Block KANUKA_STAIRS = registerStairs("kanuka_stairs", KANUKA_PLANKS);
     public static final Block LAIRELOSSE_STAIRS = registerStairs("lairelosse_stairs", LAIRELOSSE_PLANKS);
@@ -1001,10 +1056,10 @@ public final class LOTRBlocks {
     public static final Block MAPLE_STAIRS = registerStairs("maple_stairs", MAPLE_PLANKS);
     public static final Block MIRK_OAK_STAIRS = registerStairs("mirk_oak_stairs", MIRK_OAK_PLANKS);
     public static final Block MORDOR_BRICK_STAIRS = registerStairs("mordor_brick_stairs", MORDOR_BRICK);
-    public static final Block MORDOR_CRACKED_BRICK_STAIRS = registerStairs("mordor_cracked_brick_stairs", MORDOR_CRACKED_BRICK);
+    public static final Block CRACKED_MORDOR_BRICK_STAIRS = registerStairs("cracked_mordor_brick_stairs", CRACKED_MORDOR_BRICK);
     public static final Block MORDOR_ROCK_STAIRS = registerStairs("mordor_rock_stairs", MORDOR_ROCK);
-    public static final Block MOREDAIN_BRICK_STAIRS = registerStairs("moredain_brick_stairs", MOREDAIN_BRICK);
-    public static final Block MORWAITH_CRACKED_BRICK_STAIRS = registerStairs("morwaith_cracked_brick_stairs", MORWAITH_CRACKED_BRICK);
+    public static final Block MORWAITH_BRICK_STAIRS = registerStairs("morwaith_brick_stairs", MORWAITH_BRICK);
+    public static final Block CRACKED_MORWAITH_BRICK_STAIRS = registerStairs("cracked_morwaith_brick_stairs", CRACKED_MORWAITH_BRICK);
     public static final Block MUD_BRICK_STAIRS = registerStairs("mud_brick_stairs", MUD_BRICK);
     public static final Block NEAR_HARAD_BRICK_STAIRS = registerStairs("near_harad_brick_stairs", NEAR_HARAD_BRICK);
     public static final Block NEAR_HARAD_CRACKED_BRICK_STAIRS = registerStairs("near_harad_cracked_brick_stairs", NEAR_HARAD_CRACKED_BRICK);
@@ -1040,19 +1095,19 @@ public final class LOTRBlocks {
     public static final Block THATCH_REED_STAIRS = registerStairs("thatch_reed_stairs", THATCH_REED);
     public static final Block THATCH_THATCH_STAIRS = registerStairs("thatch_thatch_stairs", THATCH_THATCH);
     public static final Block UMBAR_BRICK_STAIRS = registerStairs("umbar_brick_stairs", UMBAR_BRICK);
-    public static final Block UMBAR_CRACKED_BRICK_STAIRS = registerStairs("umbar_cracked_brick_stairs", UMBAR_CRACKED_BRICK);
+    public static final Block CRACKED_UMBAR_BRICK_STAIRS = registerStairs("cracked_umbar_brick_stairs", CRACKED_UMBAR_BRICK);
     public static final Block URUK_BRICK_STAIRS = registerStairs("uruk_brick_stairs", URUK_BRICK);
-    public static final Block UTUMNO_FIRE_BRICK_STAIRS = registerStairs("utumno_fire_brick_stairs", UTUMNO_FIRE_BRICK);
+    public static final Block FIRE_UTUMNO_BRICK_STAIRS = registerStairs("fire_utumno_brick_stairs", FIRE_UTUMNO_BRICK);
     public static final Block UTUMNO_FIRE_TILE_BRICK_STAIRS = registerStairs("utumno_fire_tile_brick_stairs", UTUMNO_FIRE_TILE_BRICK);
-    public static final Block UTUMNO_ICE_BRICK_STAIRS = registerStairs("utumno_ice_brick_stairs", UTUMNO_ICE_BRICK);
+    public static final Block ICE_UTUMNO_BRICK_STAIRS = registerStairs("ice_utumno_brick_stairs", ICE_UTUMNO_BRICK);
     public static final Block UTUMNO_ICE_TILE_BRICK_STAIRS = registerStairs("utumno_ice_tile_brick_stairs", UTUMNO_ICE_TILE_BRICK);
-    public static final Block UTUMNO_OBSIDIAN_BRICK_STAIRS = registerStairs("utumno_obsidian_brick_stairs", UTUMNO_OBSIDIAN_BRICK);
+    public static final Block OBSIDIAN_UTUMNO_BRICK_STAIRS = registerStairs("obsidian_utumno_brick_stairs", OBSIDIAN_UTUMNO_BRICK);
     public static final Block UTUMNO_OBSIDIAN_TILE_BRICK_STAIRS = registerStairs("utumno_obsidian_tile_brick_stairs", UTUMNO_OBSIDIAN_TILE_BRICK);
     public static final Block WHITE_SANDSTONE_STAIRS = registerStairs("white_sandstone_stairs", WHITE_SANDSTONE);
     public static final Block WILLOW_STAIRS = registerStairs("willow_stairs", WILLOW_PLANKS);
     public static final Block WOOD_ELVEN_BRICK_STAIRS = registerStairs("wood_elven_brick_stairs", WOOD_ELVEN_BRICK);
-    public static final Block WOOD_ELVEN_CRACKED_BRICK_STAIRS = registerStairs("wood_elven_cracked_brick_stairs", WOOD_ELVEN_CRACKED_BRICK);
-    public static final Block WOOD_ELVEN_MOSSY_BRICK_STAIRS = registerStairs("wood_elven_mossy_brick_stairs", WOOD_ELVEN_MOSSY_BRICK);
+    public static final Block CRACKED_WOOD_ELVEN_BRICK_STAIRS = registerStairs("cracked_wood_elven_brick_stairs", CRACKED_WOOD_ELVEN_BRICK);
+    public static final Block MOSSY_WOOD_ELVEN_BRICK_STAIRS = registerStairs("mossy_wood_elven_brick_stairs", MOSSY_WOOD_ELVEN_BRICK);
 
     // Stairs cut from an existing block. Takes its properties from the base block, so a brick stair is as tough as its brick and a wooden stair burns like its planks -- which is what the 1.7.10 LOTRBlockStairs(block, meta) constructor did. The base is recorded in STAIRS_BASE so datagen can find the texture to use. NOTE: these fields must be declared AFTER every base block, since they dereference them during static init.
     private static Block registerStairs(String name, Block base) {
@@ -1064,18 +1119,19 @@ public final class LOTRBlocks {
     }
 
     public static final Block CHERRY_STAIRS = registerStairs("cherry_stairs", CHERRY_PLANKS);
-    public static final Block RED_SANDSTONE_STAIRS = registerStairs("red_sandstone_stairs", RED_SANDSTONE);
-    public static final Block GONDOR_COBBLEBRICK_STAIRS = registerStairs("gondor_cobblebrick_stairs", GONDOR_COBBLEBRICK);
+    public static final Block DRYSTONE_STAIRS = registerStairs("drystone_stairs", DRYSTONE);
     public static final Block BONE_STAIRS = registerStairs("bone_stairs", BONE_BLOCK);
+    public static final Block CLAY_TILE_DYED_SILVER_STAIRS = registerStairs("clay_tile_dyed_silver_stairs", CLAY_TILE_DYED_SILVER);
+    public static final Block CRACKED_STONE_BRICK_STAIRS = registerStairs("cracked_stone_brick_stairs", Blocks.CRACKED_STONE_BRICKS);
 
     public static final Block ANGMAR_BRICK_SLAB = registerSlab("angmar_brick_slab", ANGMAR_BRICK);
-    public static final Block ANGMAR_CRACKED_BRICK_SLAB = registerSlab("angmar_cracked_brick_slab", ANGMAR_CRACKED_BRICK);
+    public static final Block CRACKED_ANGMAR_BRICK_SLAB = registerSlab("cracked_angmar_brick_slab", CRACKED_ANGMAR_BRICK);
     public static final Block ANGMAR_PILLAR_SLAB = registerSlab("angmar_pillar_slab", ANGMAR_PILLAR);
     public static final Block ANGMAR_SNOW_BRICK_SLAB = registerSlab("angmar_snow_brick_slab", ANGMAR_SNOW_BRICK);
     public static final Block ARNOR_BRICK_SLAB = registerSlab("arnor_brick_slab", ARNOR_BRICK);
-    public static final Block ARNOR_CRACKED_BRICK_SLAB = registerSlab("arnor_cracked_brick_slab", ARNOR_CRACKED_BRICK);
-    public static final Block ARNOR_CRACKED_PILLAR_SLAB = registerSlab("arnor_cracked_pillar_slab", ARNOR_CRACKED_PILLAR);
-    public static final Block ARNOR_MOSSY_BRICK_SLAB = registerSlab("arnor_mossy_brick_slab", ARNOR_MOSSY_BRICK);
+    public static final Block CRACKED_ARNOR_BRICK_SLAB = registerSlab("cracked_arnor_brick_slab", CRACKED_ARNOR_BRICK);
+    public static final Block CRACKED_ARNOR_PILLAR_SLAB = registerSlab("cracked_arnor_pillar_slab", CRACKED_ARNOR_PILLAR);
+    public static final Block MOSSY_ARNOR_BRICK_SLAB = registerSlab("mossy_arnor_brick_slab", MOSSY_ARNOR_BRICK);
     public static final Block ARNOR_PILLAR_SLAB = registerSlab("arnor_pillar_slab", ARNOR_PILLAR);
     public static final Block BLUE_ROCK_BRICK_SLAB = registerSlab("blue_rock_brick_slab", BLUE_ROCK_BRICK);
     public static final Block BLUE_ROCK_PILLAR_SLAB = registerSlab("blue_rock_pillar_slab", BLUE_ROCK_PILLAR);
@@ -1106,42 +1162,42 @@ public final class LOTRBlocks {
     public static final Block DALE_PILLAR_SLAB = registerSlab("dale_pillar_slab", DALE_PILLAR);
     public static final Block DOL_AMROTH_BRICK_SLAB = registerSlab("dol_amroth_brick_slab", DOL_AMROTH_BRICK);
     public static final Block DOL_GULDUR_BRICK_SLAB = registerSlab("dol_guldur_brick_slab", DOL_GULDUR_BRICK);
-    public static final Block DOL_GULDUR_CRACKED_BRICK_SLAB = registerSlab("dol_guldur_cracked_brick_slab", DOL_GULDUR_CRACKED_BRICK);
-    public static final Block DOL_GULDUR_MOSSY_BRICK_SLAB = registerSlab("dol_guldur_mossy_brick_slab", DOL_GULDUR_MOSSY_BRICK);
+    public static final Block CRACKED_DOL_GULDUR_BRICK_SLAB = registerSlab("cracked_dol_guldur_brick_slab", CRACKED_DOL_GULDUR_BRICK);
+    public static final Block MOSSY_DOL_GULDUR_BRICK_SLAB = registerSlab("mossy_dol_guldur_brick_slab", MOSSY_DOL_GULDUR_BRICK);
     public static final Block DOL_GULDUR_PILLAR_SLAB = registerSlab("dol_guldur_pillar_slab", DOL_GULDUR_PILLAR);
     public static final Block DORWINION_BRICK_SLAB = registerSlab("dorwinion_brick_slab", DORWINION_BRICK);
-    public static final Block DORWINION_CRACKED_BRICK_SLAB = registerSlab("dorwinion_cracked_brick_slab", DORWINION_CRACKED_BRICK);
+    public static final Block CRACKED_DORWINION_BRICK_SLAB = registerSlab("cracked_dorwinion_brick_slab", CRACKED_DORWINION_BRICK);
     public static final Block DORWINION_FLOWERS_BRICK_SLAB = registerSlab("dorwinion_flowers_brick_slab", DORWINION_FLOWERS_BRICK);
-    public static final Block DORWINION_MOSSY_BRICK_SLAB = registerSlab("dorwinion_mossy_brick_slab", DORWINION_MOSSY_BRICK);
-    public static final Block DORWINION_MOSSY_PILLAR_SLAB = registerSlab("dorwinion_mossy_pillar_slab", DORWINION_MOSSY_PILLAR);
+    public static final Block MOSSY_DORWINION_BRICK_SLAB = registerSlab("mossy_dorwinion_brick_slab", MOSSY_DORWINION_BRICK);
+    public static final Block MOSSY_DORWINION_PILLAR_SLAB = registerSlab("mossy_dorwinion_pillar_slab", MOSSY_DORWINION_PILLAR);
     public static final Block DORWINION_PILLAR_SLAB = registerSlab("dorwinion_pillar_slab", DORWINION_PILLAR);
     public static final Block DWARVEN_BRICK_SLAB = registerSlab("dwarven_brick_slab", DWARVEN_BRICK);
-    public static final Block DWARVEN_CRACKED_BRICK_SLAB = registerSlab("dwarven_cracked_brick_slab", DWARVEN_CRACKED_BRICK);
-    public static final Block DWARVEN_CRACKED_PILLAR_SLAB = registerSlab("dwarven_cracked_pillar_slab", DWARVEN_CRACKED_PILLAR);
-    public static final Block DWARVEN_OBSIDIAN_BRICK_SLAB = registerSlab("dwarven_obsidian_brick_slab", DWARVEN_OBSIDIAN_BRICK);
+    public static final Block CRACKED_DWARVEN_BRICK_SLAB = registerSlab("cracked_dwarven_brick_slab", CRACKED_DWARVEN_BRICK);
+    public static final Block CRACKED_DWARVEN_PILLAR_SLAB = registerSlab("cracked_dwarven_pillar_slab", CRACKED_DWARVEN_PILLAR);
+    public static final Block OBSIDIAN_DWARVEN_BRICK_SLAB = registerSlab("obsidian_dwarven_brick_slab", OBSIDIAN_DWARVEN_BRICK);
     public static final Block DWARVEN_PILLAR_SLAB = registerSlab("dwarven_pillar_slab", DWARVEN_PILLAR);
     public static final Block GALADHRIM_BRICK_SLAB = registerSlab("galadhrim_brick_slab", GALADHRIM_BRICK);
-    public static final Block GALADHRIM_CRACKED_BRICK_SLAB = registerSlab("galadhrim_cracked_brick_slab", GALADHRIM_CRACKED_BRICK);
-    public static final Block GALADHRIM_CRACKED_PILLAR_SLAB = registerSlab("galadhrim_cracked_pillar_slab", GALADHRIM_CRACKED_PILLAR);
-    public static final Block GALADHRIM_MOSSY_BRICK_SLAB = registerSlab("galadhrim_mossy_brick_slab", GALADHRIM_MOSSY_BRICK);
+    public static final Block CRACKED_GALADHRIM_BRICK_SLAB = registerSlab("cracked_galadhrim_brick_slab", CRACKED_GALADHRIM_BRICK);
+    public static final Block CRACKED_GALADHRIM_PILLAR_SLAB = registerSlab("cracked_galadhrim_pillar_slab", CRACKED_GALADHRIM_PILLAR);
+    public static final Block MOSSY_GALADHRIM_BRICK_SLAB = registerSlab("mossy_galadhrim_brick_slab", MOSSY_GALADHRIM_BRICK);
     public static final Block GALADHRIM_PILLAR_SLAB = registerSlab("galadhrim_pillar_slab", GALADHRIM_PILLAR);
     public static final Block GONDOR_BRICK_SLAB = registerSlab("gondor_brick_slab", GONDOR_BRICK);
-    public static final Block GONDOR_CRACKED_BRICK_SLAB = registerSlab("gondor_cracked_brick_slab", GONDOR_CRACKED_BRICK);
-    public static final Block GONDOR_MOSSY_BRICK_SLAB = registerSlab("gondor_mossy_brick_slab", GONDOR_MOSSY_BRICK);
+    public static final Block CRACKED_GONDOR_BRICK_SLAB = registerSlab("cracked_gondor_brick_slab", CRACKED_GONDOR_BRICK);
+    public static final Block MOSSY_GONDOR_BRICK_SLAB = registerSlab("mossy_gondor_brick_slab", MOSSY_GONDOR_BRICK);
     public static final Block GONDOR_PILLAR_SLAB = registerSlab("gondor_pillar_slab", GONDOR_PILLAR);
     public static final Block GONDOR_ROCK_SLAB = registerSlab("gondor_rock_slab", GONDOR_ROCK);
     public static final Block HIGH_ELVEN_BRICK_SLAB = registerSlab("high_elven_brick_slab", HIGH_ELVEN_BRICK);
-    public static final Block HIGH_ELVEN_CRACKED_BRICK_SLAB = registerSlab("high_elven_cracked_brick_slab", HIGH_ELVEN_CRACKED_BRICK);
-    public static final Block HIGH_ELVEN_CRACKED_PILLAR_SLAB = registerSlab("high_elven_cracked_pillar_slab", HIGH_ELVEN_CRACKED_PILLAR);
-    public static final Block HIGH_ELVEN_MOSSY_BRICK_SLAB = registerSlab("high_elven_mossy_brick_slab", HIGH_ELVEN_MOSSY_BRICK);
+    public static final Block CRACKED_HIGH_ELVEN_BRICK_SLAB = registerSlab("cracked_high_elven_brick_slab", CRACKED_HIGH_ELVEN_BRICK);
+    public static final Block CRACKED_HIGH_ELVEN_PILLAR_SLAB = registerSlab("cracked_high_elven_pillar_slab", CRACKED_HIGH_ELVEN_PILLAR);
+    public static final Block MOSSY_HIGH_ELVEN_BRICK_SLAB = registerSlab("mossy_high_elven_brick_slab", MOSSY_HIGH_ELVEN_BRICK);
     public static final Block HIGH_ELVEN_PILLAR_SLAB = registerSlab("high_elven_pillar_slab", HIGH_ELVEN_PILLAR);
     public static final Block MORDOR_BRICK_SLAB = registerSlab("mordor_brick_slab", MORDOR_BRICK);
-    public static final Block MORDOR_CRACKED_BRICK_SLAB = registerSlab("mordor_cracked_brick_slab", MORDOR_CRACKED_BRICK);
+    public static final Block CRACKED_MORDOR_BRICK_SLAB = registerSlab("cracked_mordor_brick_slab", CRACKED_MORDOR_BRICK);
     public static final Block MORDOR_DIRT_SLAB = registerSlab("mordor_dirt_slab", MORDOR_DIRT);
     public static final Block MORDOR_GRAVEL_SLAB = registerSlab("mordor_gravel_slab", MORDOR_GRAVEL);
     public static final Block MORDOR_PILLAR_SLAB = registerSlab("mordor_pillar_slab", MORDOR_PILLAR);
     public static final Block MORDOR_ROCK_SLAB = registerSlab("mordor_rock_slab", MORDOR_ROCK);
-    public static final Block MORWAITH_CRACKED_BRICK_SLAB = registerSlab("morwaith_cracked_brick_slab", MORWAITH_CRACKED_BRICK);
+    public static final Block CRACKED_MORWAITH_BRICK_SLAB = registerSlab("cracked_morwaith_brick_slab", CRACKED_MORWAITH_BRICK);
     public static final Block MUD_BRICK_SLAB = registerSlab("mud_brick_slab", MUD_BRICK);
     public static final Block NEAR_HARAD_BRICK_SLAB = registerSlab("near_harad_brick_slab", NEAR_HARAD_BRICK);
     public static final Block NEAR_HARAD_CRACKED_BRICK_SLAB = registerSlab("near_harad_cracked_brick_slab", NEAR_HARAD_CRACKED_BRICK);
@@ -1172,19 +1228,19 @@ public final class LOTRBlocks {
     public static final Block TAUREDAIN_PILLAR_SLAB = registerSlab("tauredain_pillar_slab", TAUREDAIN_PILLAR);
     public static final Block THATCH_THATCH_SLAB = registerSlab("thatch_thatch_slab", THATCH_THATCH);
     public static final Block UMBAR_BRICK_SLAB = registerSlab("umbar_brick_slab", UMBAR_BRICK);
-    public static final Block UMBAR_CRACKED_BRICK_SLAB = registerSlab("umbar_cracked_brick_slab", UMBAR_CRACKED_BRICK);
+    public static final Block CRACKED_UMBAR_BRICK_SLAB = registerSlab("cracked_umbar_brick_slab", CRACKED_UMBAR_BRICK);
     public static final Block UMBAR_PILLAR_SLAB = registerSlab("umbar_pillar_slab", UMBAR_PILLAR);
     public static final Block URUK_BRICK_SLAB = registerSlab("uruk_brick_slab", URUK_BRICK);
     public static final Block URUK_PILLAR_SLAB = registerSlab("uruk_pillar_slab", URUK_PILLAR);
-    public static final Block UTUMNO_FIRE_BRICK_SLAB = registerSlab("utumno_fire_brick_slab", UTUMNO_FIRE_BRICK);
-    public static final Block UTUMNO_ICE_BRICK_SLAB = registerSlab("utumno_ice_brick_slab", UTUMNO_ICE_BRICK);
-    public static final Block UTUMNO_OBSIDIAN_BRICK_SLAB = registerSlab("utumno_obsidian_brick_slab", UTUMNO_OBSIDIAN_BRICK);
+    public static final Block FIRE_UTUMNO_BRICK_SLAB = registerSlab("fire_utumno_brick_slab", FIRE_UTUMNO_BRICK);
+    public static final Block ICE_UTUMNO_BRICK_SLAB = registerSlab("ice_utumno_brick_slab", ICE_UTUMNO_BRICK);
+    public static final Block OBSIDIAN_UTUMNO_BRICK_SLAB = registerSlab("obsidian_utumno_brick_slab", OBSIDIAN_UTUMNO_BRICK);
     public static final Block WHITE_SAND_SLAB = registerSlab("white_sand_slab", WHITE_SAND);
     public static final Block WHITE_SANDSTONE_SLAB = registerSlab("white_sandstone_slab", WHITE_SANDSTONE);
     public static final Block WOOD_ELVEN_BRICK_SLAB = registerSlab("wood_elven_brick_slab", WOOD_ELVEN_BRICK);
-    public static final Block WOOD_ELVEN_CRACKED_BRICK_SLAB = registerSlab("wood_elven_cracked_brick_slab", WOOD_ELVEN_CRACKED_BRICK);
-    public static final Block WOOD_ELVEN_CRACKED_PILLAR_SLAB = registerSlab("wood_elven_cracked_pillar_slab", WOOD_ELVEN_CRACKED_PILLAR);
-    public static final Block WOOD_ELVEN_MOSSY_BRICK_SLAB = registerSlab("wood_elven_mossy_brick_slab", WOOD_ELVEN_MOSSY_BRICK);
+    public static final Block CRACKED_WOOD_ELVEN_BRICK_SLAB = registerSlab("cracked_wood_elven_brick_slab", CRACKED_WOOD_ELVEN_BRICK);
+    public static final Block CRACKED_WOOD_ELVEN_PILLAR_SLAB = registerSlab("cracked_wood_elven_pillar_slab", CRACKED_WOOD_ELVEN_PILLAR);
+    public static final Block MOSSY_WOOD_ELVEN_BRICK_SLAB = registerSlab("mossy_wood_elven_brick_slab", MOSSY_WOOD_ELVEN_BRICK);
     public static final Block WOOD_ELVEN_PILLAR_SLAB = registerSlab("wood_elven_pillar_slab", WOOD_ELVEN_PILLAR);
 
     // Slab cut from an existing block. One modern SlabBlock replaces the 1.7.10 single/double pair, since SlabType covers bottom, top and double. Like stairs, these must be declared AFTER every base block.
@@ -1196,7 +1252,6 @@ public final class LOTRBlocks {
         return slab;
     }
 
-    public static final Block RED_SANDSTONE_SLAB = registerSlab("red_sandstone_slab", RED_SANDSTONE);
     // Cut from vanilla gravel: lotr:gravel was removed as a duplicate. */
     public static final Block GRAVEL_SLAB = registerSlab("gravel_slab", Blocks.GRAVEL);
 
@@ -1212,7 +1267,7 @@ public final class LOTRBlocks {
 
     public static final Block SMOOTH_CHALK_SLAB = registerSlab("smooth_chalk_slab", SMOOTH_CHALK);
 
-    public static final Block GONDOR_COBBLEBRICK_SLAB = registerSlab("gondor_cobblebrick_slab", GONDOR_COBBLEBRICK);
+    public static final Block DRYSTONE_SLAB = registerSlab("drystone_slab", DRYSTONE);
 
     public static final Block SHIRE_PINE_FENCE = registerFence("shire_pine_fence", SHIRE_PINE_PLANKS);
     public static final Block MALLORN_FENCE = registerFence("mallorn_fence", MALLORN_PLANKS);
@@ -1256,31 +1311,31 @@ public final class LOTRBlocks {
     public static final Block MORDOR_BRICK_WALL = registerWall("mordor_brick_wall", MORDOR_BRICK);
     public static final Block GONDOR_ROCK_WALL = registerWall("gondor_rock_wall", GONDOR_ROCK);
     public static final Block GONDOR_BRICK_WALL = registerWall("gondor_brick_wall", GONDOR_BRICK);
-    public static final Block GONDOR_MOSSY_BRICK_WALL = registerWall("gondor_mossy_brick_wall", GONDOR_MOSSY_BRICK);
-    public static final Block GONDOR_CRACKED_BRICK_WALL = registerWall("gondor_cracked_brick_wall", GONDOR_CRACKED_BRICK);
+    public static final Block MOSSY_GONDOR_BRICK_WALL = registerWall("mossy_gondor_brick_wall", MOSSY_GONDOR_BRICK);
+    public static final Block CRACKED_GONDOR_BRICK_WALL = registerWall("cracked_gondor_brick_wall", CRACKED_GONDOR_BRICK);
     public static final Block ROHAN_BRICK_WALL = registerWall("rohan_brick_wall", ROHAN_BRICK);
     public static final Block DWARVEN_BRICK_WALL = registerWall("dwarven_brick_wall", DWARVEN_BRICK);
     public static final Block ROHAN_ROCK_WALL = registerWall("rohan_rock_wall", ROHAN_ROCK);
-    public static final Block MORDOR_CRACKED_BRICK_WALL = registerWall("mordor_cracked_brick_wall", MORDOR_CRACKED_BRICK);
+    public static final Block CRACKED_MORDOR_BRICK_WALL = registerWall("cracked_mordor_brick_wall", CRACKED_MORDOR_BRICK);
     public static final Block GALADHRIM_BRICK_WALL = registerWall("galadhrim_brick_wall", GALADHRIM_BRICK);
-    public static final Block GALADHRIM_MOSSY_BRICK_WALL = registerWall("galadhrim_mossy_brick_wall", GALADHRIM_MOSSY_BRICK);
-    public static final Block GALADHRIM_CRACKED_BRICK_WALL = registerWall("galadhrim_cracked_brick_wall", GALADHRIM_CRACKED_BRICK);
+    public static final Block MOSSY_GALADHRIM_BRICK_WALL = registerWall("mossy_galadhrim_brick_wall", MOSSY_GALADHRIM_BRICK);
+    public static final Block CRACKED_GALADHRIM_BRICK_WALL = registerWall("cracked_galadhrim_brick_wall", CRACKED_GALADHRIM_BRICK);
     public static final Block BLUE_ROCK_WALL = registerWall("blue_rock_wall", BLUE_ROCK);
     public static final Block BLUE_ROCK_BRICK_WALL = registerWall("blue_rock_brick_wall", BLUE_ROCK_BRICK);
     public static final Block NEAR_HARAD_BRICK_WALL = registerWall("near_harad_brick_wall", NEAR_HARAD_BRICK);
     public static final Block ANGMAR_BRICK_WALL = registerWall("angmar_brick_wall", ANGMAR_BRICK);
-    public static final Block ANGMAR_CRACKED_BRICK_WALL = registerWall("angmar_cracked_brick_wall", ANGMAR_CRACKED_BRICK);
+    public static final Block CRACKED_ANGMAR_BRICK_WALL = registerWall("cracked_angmar_brick_wall", CRACKED_ANGMAR_BRICK);
     public static final Block RED_ROCK_WALL = registerWall("red_rock_wall", RED_ROCK);
     public static final Block RED_ROCK_BRICK_WALL = registerWall("red_rock_brick_wall", RED_ROCK_BRICK);
     public static final Block ARNOR_BRICK_WALL = registerWall("arnor_brick_wall", ARNOR_BRICK);
-    public static final Block ARNOR_MOSSY_BRICK_WALL = registerWall("arnor_mossy_brick_wall", ARNOR_MOSSY_BRICK);
-    public static final Block ARNOR_CRACKED_BRICK_WALL = registerWall("arnor_cracked_brick_wall", ARNOR_CRACKED_BRICK);
+    public static final Block MOSSY_ARNOR_BRICK_WALL = registerWall("mossy_arnor_brick_wall", MOSSY_ARNOR_BRICK);
+    public static final Block CRACKED_ARNOR_BRICK_WALL = registerWall("cracked_arnor_brick_wall", CRACKED_ARNOR_BRICK);
     public static final Block URUK_BRICK_WALL = registerWall("uruk_brick_wall", URUK_BRICK);
     public static final Block DOL_GULDUR_BRICK_WALL = registerWall("dol_guldur_brick_wall", DOL_GULDUR_BRICK);
-    public static final Block DOL_GULDUR_CRACKED_BRICK_WALL = registerWall("dol_guldur_cracked_brick_wall", DOL_GULDUR_CRACKED_BRICK);
+    public static final Block CRACKED_DOL_GULDUR_BRICK_WALL = registerWall("cracked_dol_guldur_brick_wall", CRACKED_DOL_GULDUR_BRICK);
     public static final Block HIGH_ELVEN_BRICK_WALL = registerWall("high_elven_brick_wall", HIGH_ELVEN_BRICK);
-    public static final Block HIGH_ELVEN_MOSSY_BRICK_WALL = registerWall("high_elven_mossy_brick_wall", HIGH_ELVEN_MOSSY_BRICK);
-    public static final Block HIGH_ELVEN_CRACKED_BRICK_WALL = registerWall("high_elven_cracked_brick_wall", HIGH_ELVEN_CRACKED_BRICK);
+    public static final Block MOSSY_HIGH_ELVEN_BRICK_WALL = registerWall("mossy_high_elven_brick_wall", MOSSY_HIGH_ELVEN_BRICK);
+    public static final Block CRACKED_HIGH_ELVEN_BRICK_WALL = registerWall("cracked_high_elven_brick_wall", CRACKED_HIGH_ELVEN_BRICK);
     public static final Block DOL_AMROTH_BRICK_WALL = registerWall("dol_amroth_brick_wall", DOL_AMROTH_BRICK);
     public static final Block NEAR_HARAD_CRACKED_BRICK_WALL = registerWall("near_harad_cracked_brick_wall", NEAR_HARAD_CRACKED_BRICK);
     public static final Block NEAR_HARAD_RED_BRICK_WALL = registerWall("near_harad_red_brick_wall", NEAR_HARAD_RED_BRICK);
@@ -1290,8 +1345,8 @@ public final class LOTRBlocks {
     public static final Block MUD_BRICK_WALL = registerWall("mud_brick_wall", MUD_BRICK);
     public static final Block DALE_BRICK_WALL = registerWall("dale_brick_wall", DALE_BRICK);
     public static final Block DORWINION_BRICK_WALL = registerWall("dorwinion_brick_wall", DORWINION_BRICK);
-    public static final Block DORWINION_MOSSY_BRICK_WALL = registerWall("dorwinion_mossy_brick_wall", DORWINION_MOSSY_BRICK);
-    public static final Block DORWINION_CRACKED_BRICK_WALL = registerWall("dorwinion_cracked_brick_wall", DORWINION_CRACKED_BRICK);
+    public static final Block MOSSY_DORWINION_BRICK_WALL = registerWall("mossy_dorwinion_brick_wall", MOSSY_DORWINION_BRICK);
+    public static final Block CRACKED_DORWINION_BRICK_WALL = registerWall("cracked_dorwinion_brick_wall", CRACKED_DORWINION_BRICK);
     public static final Block DORWINION_FLOWERS_BRICK_WALL = registerWall("dorwinion_flowers_brick_wall", DORWINION_FLOWERS_BRICK);
     public static final Block WHITE_SANDSTONE_WALL = registerWall("white_sandstone_wall", WHITE_SANDSTONE);
     public static final Block RHUN_BRICK_WALL = registerWall("rhun_brick_wall", RHUN_BRICK);
@@ -1300,18 +1355,17 @@ public final class LOTRBlocks {
     public static final Block TAUREDAIN_CRACKED_BRICK_WALL = registerWall("tauredain_cracked_brick_wall", TAUREDAIN_CRACKED_BRICK);
     public static final Block TAUREDAIN_GOLD_BRICK_WALL = registerWall("tauredain_gold_brick_wall", TAUREDAIN_GOLD_BRICK);
     public static final Block TAUREDAIN_OBSIDIAN_BRICK_WALL = registerWall("tauredain_obsidian_brick_wall", TAUREDAIN_OBSIDIAN_BRICK);
-    public static final Block DWARVEN_CRACKED_BRICK_WALL = registerWall("dwarven_cracked_brick_wall", DWARVEN_CRACKED_BRICK);
-    public static final Block DWARVEN_OBSIDIAN_BRICK_WALL = registerWall("dwarven_obsidian_brick_wall", DWARVEN_OBSIDIAN_BRICK);
+    public static final Block CRACKED_DWARVEN_BRICK_WALL = registerWall("cracked_dwarven_brick_wall", CRACKED_DWARVEN_BRICK);
+    public static final Block OBSIDIAN_DWARVEN_BRICK_WALL = registerWall("obsidian_dwarven_brick_wall", OBSIDIAN_DWARVEN_BRICK);
     public static final Block RHUN_MOSSY_BRICK_WALL = registerWall("rhun_mossy_brick_wall", RHUN_MOSSY_BRICK);
     public static final Block RHUN_CRACKED_BRICK_WALL = registerWall("rhun_cracked_brick_wall", RHUN_CRACKED_BRICK);
     public static final Block RHUN_FLOWERS_BRICK_WALL = registerWall("rhun_flowers_brick_wall", RHUN_FLOWERS_BRICK);
     public static final Block RHUN_RED_BRICK_WALL = registerWall("rhun_red_brick_wall", RHUN_RED_BRICK);
     public static final Block DALE_MOSSY_BRICK_WALL = registerWall("dale_mossy_brick_wall", DALE_MOSSY_BRICK);
     public static final Block DALE_CRACKED_BRICK_WALL = registerWall("dale_cracked_brick_wall", DALE_CRACKED_BRICK);
-    public static final Block RED_SANDSTONE_WALL = registerWall("red_sandstone_wall", RED_SANDSTONE);
-    public static final Block UTUMNO_FIRE_BRICK_WALL = registerWall("utumno_fire_brick_wall", UTUMNO_FIRE_BRICK);
-    public static final Block UTUMNO_ICE_BRICK_WALL = registerWall("utumno_ice_brick_wall", UTUMNO_ICE_BRICK);
-    public static final Block UTUMNO_OBSIDIAN_BRICK_WALL = registerWall("utumno_obsidian_brick_wall", UTUMNO_OBSIDIAN_BRICK);
+    public static final Block FIRE_UTUMNO_BRICK_WALL = registerWall("fire_utumno_brick_wall", FIRE_UTUMNO_BRICK);
+    public static final Block ICE_UTUMNO_BRICK_WALL = registerWall("ice_utumno_brick_wall", ICE_UTUMNO_BRICK);
+    public static final Block OBSIDIAN_UTUMNO_BRICK_WALL = registerWall("obsidian_utumno_brick_wall", OBSIDIAN_UTUMNO_BRICK);
     public static final Block CLAY_TILE_DYED_WHITE_WALL = registerWall("clay_tile_dyed_white_wall", CLAY_TILE_DYED_WHITE);
     public static final Block CLAY_TILE_DYED_ORANGE_WALL = registerWall("clay_tile_dyed_orange_wall", CLAY_TILE_DYED_ORANGE);
     public static final Block CLAY_TILE_DYED_MAGENTA_WALL = registerWall("clay_tile_dyed_magenta_wall", CLAY_TILE_DYED_MAGENTA);
@@ -1327,11 +1381,12 @@ public final class LOTRBlocks {
     public static final Block CLAY_TILE_DYED_GREEN_WALL = registerWall("clay_tile_dyed_green_wall", CLAY_TILE_DYED_GREEN);
     public static final Block CLAY_TILE_DYED_RED_WALL = registerWall("clay_tile_dyed_red_wall", CLAY_TILE_DYED_RED);
     public static final Block CLAY_TILE_DYED_BLACK_WALL = registerWall("clay_tile_dyed_black_wall", CLAY_TILE_DYED_BLACK);
+    public static final Block CLAY_TILE_DYED_SILVER_WALL = registerWall("clay_tile_dyed_silver_wall", CLAY_TILE_DYED_SILVER);
     public static final Block UMBAR_BRICK_WALL = registerWall("umbar_brick_wall", UMBAR_BRICK);
-    public static final Block UMBAR_CRACKED_BRICK_WALL = registerWall("umbar_cracked_brick_wall", UMBAR_CRACKED_BRICK);
+    public static final Block CRACKED_UMBAR_BRICK_WALL = registerWall("cracked_umbar_brick_wall", CRACKED_UMBAR_BRICK);
     public static final Block ANGMAR_SNOW_BRICK_WALL = registerWall("angmar_snow_brick_wall", ANGMAR_SNOW_BRICK);
-    public static final Block DOL_GULDUR_MOSSY_BRICK_WALL = registerWall("dol_guldur_mossy_brick_wall", DOL_GULDUR_MOSSY_BRICK);
-    public static final Block MORWAITH_CRACKED_BRICK_WALL = registerWall("morwaith_cracked_brick_wall", MORWAITH_CRACKED_BRICK);
+    public static final Block MOSSY_DOL_GULDUR_BRICK_WALL = registerWall("mossy_dol_guldur_brick_wall", MOSSY_DOL_GULDUR_BRICK);
+    public static final Block CRACKED_MORWAITH_BRICK_WALL = registerWall("cracked_morwaith_brick_wall", CRACKED_MORWAITH_BRICK);
 
     // Fence cut from an existing block. Must be declared AFTER every base. */
     private static Block registerFence(String name, Block base) {
@@ -1350,8 +1405,24 @@ public final class LOTRBlocks {
         WALL_BASE.put(wall, base);
         return wall;
     }
-    public static final Block GONDOR_COBBLEBRICK_WALL = registerWall("gondor_cobblebrick_wall", GONDOR_COBBLEBRICK);
+    public static final Block DRYSTONE_WALL = registerWall("drystone_wall", DRYSTONE);
     public static final Block BONE_WALL = registerWall("bone_wall", BONE_BLOCK);
+    public static final Block SCORCHED_STONE_WALL = registerWall("scorched_stone_wall", SCORCHED_STONE);
+    public static final Block MORWAITH_BRICK_WALL = registerWall("morwaith_brick_wall", MORWAITH_BRICK);
+    public static final Block NUMENOREAN_BRICK_WALL = registerWall("numenorean_brick_wall", NUMENOREAN_BRICK);
+    public static final Block GONDOR_COBBLEBRICK_WALL = registerWall("gondor_cobblebrick_wall", GONDOR_COBBLEBRICK);
+    public static final Block CLAY_TILE_WALL = registerWall("clay_tile_wall", CLAY_TILE);
+    public static final Block RED_BRICK_MOSSY_WALL = registerWall("red_brick_mossy_wall", RED_BRICK_MOSSY);
+    public static final Block RED_BRICK_CRACKED_WALL = registerWall("red_brick_cracked_wall", RED_BRICK_CRACKED);
+    public static final Block WOOD_ELVEN_BRICK_WALL = registerWall("wood_elven_brick_wall", WOOD_ELVEN_BRICK);
+    public static final Block MOSSY_WOOD_ELVEN_BRICK_WALL = registerWall("mossy_wood_elven_brick_wall", MOSSY_WOOD_ELVEN_BRICK);
+    public static final Block CRACKED_WOOD_ELVEN_BRICK_WALL = registerWall("cracked_wood_elven_brick_wall", CRACKED_WOOD_ELVEN_BRICK);
+    public static final Block MOSSY_GONDOR_COBBLEBRICK_WALL = registerWall("mossy_gondor_cobblebrick_wall", MOSSY_GONDOR_COBBLEBRICK);
+    public static final Block CRACKED_GONDOR_COBBLEBRICK_WALL = registerWall("cracked_gondor_cobblebrick_wall", CRACKED_GONDOR_COBBLEBRICK);
+    // Vanilla-adjacent walls it does NOT have: no plain stone wall, and no
+    // cracked stone brick, mossy brick or cracked brick wall.
+    public static final Block STONE_WALL = registerWall("stone_wall", Blocks.STONE);
+    public static final Block CRACKED_STONE_BRICK_WALL = registerWall("cracked_stone_brick_wall", Blocks.CRACKED_STONE_BRICKS);
 
     public static final Block CHERRY_SLAB = registerSlab("cherry_slab", CHERRY_PLANKS);
     public static final Block ALMOND_SLAB = registerSlab("almond_slab", ALMOND_PLANKS);
@@ -1393,6 +1464,29 @@ public final class LOTRBlocks {
     public static final Block SHIRE_PINE_SLAB = registerSlab("shire_pine_slab", SHIRE_PINE_PLANKS);
     public static final Block WILLOW_SLAB = registerSlab("willow_slab", WILLOW_PLANKS);
     public static final Block BONE_SLAB = registerSlab("bone_slab", BONE_BLOCK);
+    public static final Block SCORCHED_STONE_SLAB = registerSlab("scorched_stone_slab", SCORCHED_STONE);
+    public static final Block MORWAITH_BRICK_SLAB = registerSlab("morwaith_brick_slab", MORWAITH_BRICK);
+    public static final Block NUMENOREAN_BRICK_SLAB = registerSlab("numenorean_brick_slab", NUMENOREAN_BRICK);
+    public static final Block NUMENOREAN_PILLAR_SLAB = registerSlab("numenorean_pillar_slab", NUMENOREAN_PILLAR);
+    public static final Block GONDOR_COBBLEBRICK_SLAB = registerSlab("gondor_cobblebrick_slab", GONDOR_COBBLEBRICK);
+    public static final Block MOSSY_GONDOR_COBBLEBRICK_SLAB = registerSlab("mossy_gondor_cobblebrick_slab", MOSSY_GONDOR_COBBLEBRICK);
+    public static final Block CRACKED_GONDOR_COBBLEBRICK_SLAB = registerSlab("cracked_gondor_cobblebrick_slab", CRACKED_GONDOR_COBBLEBRICK);
+    public static final Block FIRE_UTUMNO_PILLAR_SLAB = registerSlab("fire_utumno_pillar_slab", FIRE_UTUMNO_PILLAR);
+    public static final Block ICE_UTUMNO_PILLAR_SLAB = registerSlab("ice_utumno_pillar_slab", ICE_UTUMNO_PILLAR);
+    public static final Block OBSIDIAN_UTUMNO_PILLAR_SLAB = registerSlab("obsidian_utumno_pillar_slab", OBSIDIAN_UTUMNO_PILLAR);
+    public static final Block TAUR_GOLD_PILLAR_SLAB = registerSlab("taur_gold_pillar_slab", TAUR_GOLD_PILLAR);
+    public static final Block TAUR_OBSIDIAN_PILLAR_SLAB = registerSlab("taur_obsidian_pillar_slab", TAUR_OBSIDIAN_PILLAR);
+    public static final Block CLAY_TILE_DYED_SILVER_SLAB = registerSlab("clay_tile_dyed_silver_slab", CLAY_TILE_DYED_SILVER);
+    public static final Block THATCH_REED_SLAB = registerSlab("thatch_reed_slab", THATCH_REED);
+    public static final Block BARREN_JUNGLE_MUD_SLAB = registerSlab("barren_jungle_mud_slab", BARREN_JUNGLE_MUD);
+    public static final Block RED_BRICK_MOSSY_SLAB = registerSlab("red_brick_mossy_slab", RED_BRICK_MOSSY);
+    public static final Block RED_BRICK_CRACKED_SLAB = registerSlab("red_brick_cracked_slab", RED_BRICK_CRACKED);
+    public static final Block DIRT_PATH_MUD_SLAB = registerSlab("dirt_path_mud_slab", DIRT_PATH_MUD);
+    public static final Block CRACKED_STONE_BRICK_SLAB = registerSlab("cracked_stone_brick_slab", Blocks.CRACKED_STONE_BRICKS);
+    public static final Block SAND_SLAB = registerSlab("sand_slab", Blocks.SAND);
+    public static final Block RED_SAND_SLAB = registerSlab("red_sand_slab", Blocks.RED_SAND);
+    public static final Block DIRT_SLAB = registerSlab("dirt_slab", Blocks.DIRT);
+    public static final Block DIRT_PATH_SLAB = registerSlab("dirt_path_slab", Blocks.DIRT_PATH);
 
     public static final Block ALMOND_FENCE_GATE = registerFenceGate("almond_fence_gate", ALMOND_PLANKS);
     public static final Block APPLE_FENCE_GATE = registerFenceGate("apple_fence_gate", APPLE_PLANKS);
@@ -1512,13 +1606,67 @@ public final class LOTRBlocks {
                 true));
     }
 
-    private static Block registerGate(String name) {
-        return track(ALL_GATES, register(name, Block::new,
+    // Gates. LOTRMod built these with LOTRBlockGate.createWooden/createStone/
+    // createMetal, which differed only in hardness, resistance and sound --
+    // and the sound is what LOTRGateBlock reads back to pick its open/close
+    // effect, so the three stay distinct rather than collapsing into one.
+    //
+    // The boolean is the ct flag from those same calls: true for the faction
+    // gates, whose art ships as thirteen connected-texture pieces, false for
+    // the three that are a single flat sprite.
+    private static Block registerWoodenGate(String name) {
+        return registerWoodenGate(name, true);
+    }
+
+    private static Block registerStoneGate(String name) {
+        return registerStoneGate(name, true);
+    }
+
+    private static Block registerMetalGate(String name) {
+        return registerMetalGate(name, true);
+    }
+
+    private static Block registerWoodenGate(String name, boolean connectedTextures) {
+        return track(ALL_GATES, register(name, props -> new LOTRGateBlock(connectedTextures, props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.WOOD)
+                        .strength(4.0f, 5.0f)
+                        .sound(SoundType.WOOD)
+                        .noOcclusion()
+                        // A gate is a multiblock: a piston shoving one panel
+                        // out of a wall would silently break the flood fill
+                        // for the rest.
+                        .pushReaction(PushReaction.BLOCK),
+                true));
+    }
+
+    private static Block registerStoneGate(String name, boolean connectedTextures) {
+        return track(ALL_GATES, register(name, props -> new LOTRGateBlock(connectedTextures, props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .requiresCorrectToolForDrops()
+                        .strength(4.0f, 10.0f)
+                        .sound(SoundType.STONE)
+                        .noOcclusion()
+                        // A gate is a multiblock: a piston shoving one panel
+                        // out of a wall would silently break the flood fill
+                        // for the rest.
+                        .pushReaction(PushReaction.BLOCK),
+                true));
+    }
+
+    private static Block registerMetalGate(String name, boolean connectedTextures) {
+        return track(ALL_GATES, register(name, props -> new LOTRGateBlock(connectedTextures, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.METAL)
                         .requiresCorrectToolForDrops()
-                        .strength(5.0f, 6.0f)
-                        .sound(SoundType.METAL),
+                        .strength(4.0f, 10.0f)
+                        .sound(SoundType.METAL)
+                        .noOcclusion()
+                        // A gate is a multiblock: a piston shoving one panel
+                        // out of a wall would silently break the flood fill
+                        // for the rest.
+                        .pushReaction(PushReaction.BLOCK),
                 true));
     }
 
@@ -1552,7 +1700,7 @@ public final class LOTRBlocks {
 
     // Crop with growth stages. CropBlock always has eight ages, but the 1.7.10 crops shipped only three or four stage textures -- CROP_STAGES records how many, and datagen maps several ages onto each texture. Registered WITH an item even though vanilla crops have none. Datagen's createCropBlock emits an item model, and with no item every crop resolves to minecraft:item/air -- six crops then collide on the same model id and datagen dies with "Duplicate model definition". Giving each crop a BlockItem keeps the ids distinct; it also makes them placeable for testing until the seed items exist.
     private static Block registerCrop(String name, int stages) {
-        Block crop = register(name, CropBlock::new,
+        Block crop = register(name, LOTRCropBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
                         .noCollision()
@@ -1616,7 +1764,7 @@ public final class LOTRBlocks {
     }
 
     private static Block registerFarmland(String name) {
-        return track(SHOVEL_MINEABLE, track(ALL_FARMLAND, register(name, FarmlandBlock::new,
+        return track(SHOVEL_MINEABLE, track(ALL_FARMLAND, register(name, LOTRFarmlandBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.DIRT)
                         .randomTicks()
@@ -1689,18 +1837,101 @@ public final class LOTRBlocks {
     }
 
     private static Block registerCubeColumn(String name, float hardness, float resistance, Tier tier) {
-        Block block = registerCube(name, hardness, resistance, tier);
+        return registerCubeColumn(name, hardness, resistance, tier, SoundType.STONE);
+    }
+
+    private static Block registerCubeColumn(String name, float hardness, float resistance, Tier tier, SoundType sound) {
+        Block block = registerCube(name, hardness, resistance, tier, sound);
         CUBES_COLUMN_TEXTURED.add(block);
         return block;
     }
 
+    // A brick with a gulduril crystal in it. The glow is baked into an animated
+    // texture (16-frame strip + .mcmeta) rather than drawn by a block entity
+    // renderer, so a wall of these costs nothing per frame. Light 11 = the
+    // original's setLightLevel(0.75f).
+    // LOTRBlockDartTrap: Material.rock, hardness 4.0, stone sound. getIcon put
+    // <name>_face on the facing side and the base brick's texture elsewhere;
+    // brick4 metas 0/3/4 are the tauredain, gold and obsidian bricks.
+    // LOTRBlockForgeBase: Material.rock, hardness 4.0, stone sound.
+    private static Block registerForge(String name) {
+        return track(ALL_FORGES, track(CUBES_NO_TIER, register(name, LOTRForgeBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .requiresCorrectToolForDrops()
+                        .strength(4.0f, 6.0f)
+                        .sound(SoundType.STONE)
+                        .lightLevel(state -> state.getValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT) ? 13 : 0),
+                true)));
+    }
+
+    private static Block registerDartTrap(String name, Block base) {
+        Block block = register(name, LOTRDartTrapBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .requiresCorrectToolForDrops()
+                        .strength(4.0f, 6.0f)
+                        .sound(SoundType.STONE),
+                true);
+        ALL_DART_TRAPS.add(block);
+        CUBES_NO_TIER.add(block);
+        DART_TRAP_BASE.put(block, base);
+        return block;
+    }
+
+    private static Block registerHobbitOven(String name) {
+        return register(name, LOTRHobbitOvenBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .strength(3.5f)
+                        .sound(SoundType.STONE)
+                        .lightLevel(state -> state.getValue(LOTRHobbitOvenBlock.LIT) ? 13 : 0),
+                true);
+    }
+
+    private static Block registerBeacon(String name) {
+        return register(name, LOTRBeaconBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.WOOD)
+                        .strength(0.0f, 5.0f)
+                        .sound(SoundType.WOOD)
+                        // isFullyLit() drove getLightValue in the original. A
+                        // blockstate light level cannot ask the block entity,
+                        // so FULLY_LIT -- set a hundred ticks after ignition --
+                        // is the flag that carries it.
+                        .lightLevel(state -> state.getValue(LOTRBeaconBlock.FULLY_LIT) ? 15 : 0)
+                        .noOcclusion(),
+                true);
+    }
+
+    private static Block registerGulduril(String name) {
+        Block block = register(name, Block::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .requiresCorrectToolForDrops()
+                        .strength(3.0f, 6.0f)
+                        .lightLevel(state -> 11)
+                        .sound(SoundType.STONE),
+                true);
+        ALL_CUBES.add(block);
+        CUBES_NO_TIER.add(block);
+        ALL_GULDURIL.add(block);
+        return block;
+    }
+
     private static Block registerCube(String name, float hardness, float resistance, Tier tier) {
+        return registerCube(name, hardness, resistance, tier, SoundType.STONE);
+    }
+
+    // LOTRBlockOreStorageBase set soundTypeMetal, so every metal and gem
+    // storage block rings rather than clacks -- same as vanilla's iron block.
+    private static Block registerCube(String name, float hardness, float resistance, Tier tier, SoundType sound) {
         Block block = register(name, Block::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
                         .requiresCorrectToolForDrops()
                         .strength(hardness, resistance)
-                        .sound(SoundType.STONE),
+                        .sound(sound),
                 true);
         ALL_CUBES.add(block);
         switch (tier) {
@@ -1731,8 +1962,19 @@ public final class LOTRBlocks {
                 true));
     }
 
+    // LeavesBlock, not a plain Block: it brings decay when the supporting log
+    // is gone, the DISTANCE/PERSISTENT properties, particle and sound handling,
+    // and shears/hoe harvesting. A plain Block gave none of that.
+    // LeavesBlock is abstract in 26.2. ParticleLeavesBlock is the untinted
+    // concrete subclass; vanilla uses TintedParticleLeavesBlock for oak and the
+    // rest, but LOTRBlockLeavesBase.colorMultiplier returned 0xFFFFFF, so LOTR
+    // leaves are deliberately NOT biome-tinted -- mallorn stays gold.
+    // 0.01F is vanilla's particle chance.
+    // NOTE FOR LEVI: if the constructor arity differs, Ctrl-click
+    // ParticleLeavesBlock and paste it; only this one line changes.
     private static Block registerLeaves(String name) {
-        return track(ALL_LEAVES, register(name, Block::new,
+        return track(ALL_LEAVES, register(name,
+                props -> new UntintedParticleLeavesBlock(0.01F, ParticleTypes.FALLING_SPORE_BLOSSOM, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
                         .strength(0.2f)
@@ -1740,8 +1982,7 @@ public final class LOTRBlocks {
                         .sound(SoundType.GRASS)
                         .noOcclusion()
                         .isViewBlocking((state, level, pos) -> false)
-                        .ignitedByLava()
-                        .pushReaction(PushReaction.DESTROY),
+                        .isSuffocating((state, level, pos) -> false),
                 true));
     }
 
@@ -1768,7 +2009,7 @@ public final class LOTRBlocks {
     }
 
     private static Block registerPillar(String name) {
-        return track(ALL_PILLARS, register(name, RotatedPillarBlock::new,
+        return track(ALL_PILLARS, register(name, LOTRPillarBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
                         .requiresCorrectToolForDrops()
@@ -1834,7 +2075,11 @@ public final class LOTRBlocks {
                         .requiresCorrectToolForDrops()
                         .strength(5.0f, 6.0f)
                         .sound(SoundType.METAL)
-                        .noOcclusion(),
+                        .noOcclusion()
+                        // A gate is a multiblock: a piston shoving one panel
+                        // out of a wall would silently break the flood fill
+                        // for the rest.
+                        .pushReaction(PushReaction.BLOCK),
                 true));
     }
 

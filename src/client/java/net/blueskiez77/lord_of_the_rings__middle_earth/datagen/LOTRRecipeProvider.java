@@ -12,8 +12,12 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeCategory;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.CookingBookCategory;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
@@ -43,6 +47,7 @@ public class LOTRRecipeProvider extends FabricRecipeProvider {
             planksFromLogs();
             beamsFromLogs();
             smoothStone();
+            charcoal();
             cutFromBase();
         }
 
@@ -77,6 +82,15 @@ public class LOTRRecipeProvider extends FabricRecipeProvider {
                     verticalStack(beam, 3, log, 3);
                 }
             });
+        }
+
+        // Vanilla smelts any log to charcoal: 0.15 xp, 200 ticks, MISC.
+        private void charcoal() {
+            LOTRBlocks.ALL_LOGS.forEach(log ->
+                    SimpleCookingRecipeBuilder.smelting(Ingredient.of(log), RecipeCategory.MISC,
+                                    CookingBookCategory.MISC, Items.CHARCOAL, 0.15F, 200)
+                            .unlockedBy(getHasName(log), has(log))
+                            .save(output, id(log) + "_to_charcoal"));
         }
 
         private void smoothStone() {

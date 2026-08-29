@@ -1,6 +1,146 @@
 {
   "sources": [
-    { "type": "lotr:connected_border", "base": "lotr:block/ctm/mithril_block" },
-    { "type": "lotr:connected_border", "base": "lotr:block/ctm/daub" }
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/mithril_block"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/daub"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/drystone"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/dwarven_silver_brick"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/dwarven_gold_brick"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/dwarven_mithril_brick"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/blue_hobbit_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/dol_amroth_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/dwarven_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/elven_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/gate_bronze_bars",
+      "no_base": true,
+      "slice_from": "lotr:block/gate_bronze_bars"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/gate_iron_bars",
+      "no_base": true,
+      "slice_from": "lotr:block/gate_iron_bars"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/gate_wooden_cross",
+      "no_base": true,
+      "slice_from": "lotr:block/gate_wooden_cross"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/gold_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/gondor_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/green_hobbit_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/high_elven_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/mithril_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/near_harad_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/orc_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/red_hobbit_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/rhun_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/rohan_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/silver_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/tauredain_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/uruk_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/wood_elven_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/wooden_gate",
+      "no_base": true
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/yellow_hobbit_gate",
+      "no_base": true
+    }
   ]
 }

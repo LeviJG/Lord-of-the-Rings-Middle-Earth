@@ -25,15 +25,27 @@ public final class LOTRCreativeTabs {
             BuiltInRegistries.CREATIVE_MODE_TAB.key(),
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "blocks"));
 
+    public static final ResourceKey<CreativeModeTab> UTILITIES_KEY = ResourceKey.create(
+            BuiltInRegistries.CREATIVE_MODE_TAB.key(),
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "utilities"));
+
+    // Tabs sort by id, not by registration order, so the scaffolding tab is
+    // named zz_everything to keep it last: blocks, utilities, zz_everything.
     public static final ResourceKey<CreativeModeTab> EVERYTHING_KEY = ResourceKey.create(
             BuiltInRegistries.CREATIVE_MODE_TAB.key(),
-            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "everything"));
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "zz_everything"));
 
     // Blocks that sit in ALL_CUBES for registration convenience but belonged to a different tab in 1.7.10, so they must not appear in this one. The Utumno return portal pieces are a third case: the original never called setCreativeTab on them at all, so they were creative-unobtainable by design.
+    // Blocks kept out of BOTH tabs. The bone block duplicates vanilla's, so it
+    // stays registered (recipes and its stairs, slab and wall reference it) but
+    // is not offered in creative -- take vanilla's instead.
+    private static Set<Block> hiddenEverywhere() {
+        return new LinkedHashSet<>(List.of(LOTRBlocks.BONE_BLOCK));
+    }
+
     private static Set<Block> cubesFromOtherTabs() {
         return new LinkedHashSet<>(List.of(
                 LOTRBlocks.KEBAB_BLOCK,
-                LOTRBlocks.MARZIPAN_CHOCOLATE,
                 LOTRBlocks.TREASURE_COPPER,
                 LOTRBlocks.TREASURE_GOLD,
                 LOTRBlocks.TREASURE_SILVER,
@@ -42,17 +54,22 @@ public final class LOTRCreativeTabs {
     }
 
     public static final CreativeModeTab BLOCKS = FabricCreativeModeTab.builder()
-            .icon(() -> new ItemStack(LOTRBlocks.MALLORN_PLANKS))
+            .icon(() -> new ItemStack(LOTRBlocks.HIGH_ELVEN_BRICK))
             .title(Component.translatable("creativeTab.lotr.blocks"))
             .displayItems((params, output) -> {
                 Set<Block> skip = cubesFromOtherTabs();
+                skip.addAll(hiddenEverywhere());
 
                 LOTRBlocks.ALL_CUBES.forEach(b -> {
                     if (!skip.contains(b)) {
                         output.accept(b);
                     }
                 });
-                LOTRBlocks.ALL_COLUMNS.forEach(output::accept);
+                LOTRBlocks.ALL_COLUMNS.forEach(b -> {
+                    if (!skip.contains(b)) {
+                        output.accept(b);
+                    }
+                });
                 LOTRBlocks.ALL_SOIL_COLUMNS.forEach(output::accept);
                 LOTRBlocks.ALL_BOTTOM_TOP.forEach(output::accept);
                 LOTRBlocks.ALL_PILLARS.forEach(output::accept);
@@ -64,14 +81,43 @@ public final class LOTRCreativeTabs {
                 LOTRBlocks.ALL_WALLS.forEach(output::accept);
                 LOTRBlocks.ALL_GLASS.forEach(output::accept);
                 LOTRBlocks.ALL_PATHS.forEach(output::accept);
+                LOTRBlocks.ALL_FARMLAND.forEach(output::accept);
+            })
+            .build();
+
+    // tabUtil in the original: things you interact with rather than build from.
+    // Membership taken from the classes that called
+    // setCreativeTab(LOTRCreativeTabs.tabUtil). Ladders, torches and
+    // chandeliers are NOT here -- those were tabDeco; buttons and pressure
+    // plates were tabMisc.
+    public static final CreativeModeTab UTILITIES = FabricCreativeModeTab.builder()
+            .icon(() -> new ItemStack(LOTRBlocks.DWARVEN_FORGE))
+            .title(Component.translatable("creativeTab.lotr.utilities"))
+            .displayItems((params, output) -> {
+                LOTRBlocks.ALL_FORGES.forEach(output::accept);
+                LOTRBlocks.ALL_CRAFTING_TABLES.forEach(output::accept);
+                LOTRBlocks.ALL_DART_TRAPS.forEach(output::accept);
+                LOTRBlocks.ALL_DOORS.forEach(output::accept);
+                LOTRBlocks.ALL_TRAPDOORS.forEach(output::accept);
+                LOTRBlocks.ALL_FENCE_GATES.forEach(output::accept);
+                LOTRBlocks.ALL_GATES.forEach(output::accept);
+                // LOTRBlockBeacon called setCreativeTab(tabUtil).
+                output.accept(LOTRBlocks.BEACON_OF_GONDOR);
+                // LOTRBlockHobbitOven called setCreativeTab(tabUtil) too.
+                output.accept(LOTRBlocks.HOBBIT_OVEN);
             })
             .build();
 
     public static final CreativeModeTab EVERYTHING = FabricCreativeModeTab.builder()
             .icon(() -> new ItemStack(LOTRBlocks.MITHRIL_BLOCK))
-            .title(Component.translatable("creativeTab.lotr.everything"))
+            .title(Component.translatable("creativeTab.lotr.zz_everything"))
             .displayItems((params, output) -> {
-                LOTRBlocks.ALL_BLOCKS.forEach(output::accept);
+                Set<Block> hidden = hiddenEverywhere();
+                LOTRBlocks.ALL_BLOCKS.forEach(b -> {
+                    if (!hidden.contains(b)) {
+                        output.accept(b);
+                    }
+                });
                 output.accept(LOTRItems.MITHRIL);
                 output.accept(LOTRItems.PIPEWEED);
             })
@@ -83,6 +129,7 @@ public final class LOTRCreativeTabs {
     // Called from mod init. Must run AFTER blocks and items are registered. */
     public static void init() {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, BLOCKS_KEY, BLOCKS);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, UTILITIES_KEY, UTILITIES);
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, EVERYTHING_KEY, EVERYTHING);
     }
 }
