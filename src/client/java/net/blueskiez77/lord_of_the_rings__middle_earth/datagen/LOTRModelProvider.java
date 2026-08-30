@@ -421,8 +421,15 @@ public class LOTRModelProvider extends FabricModelProvider {
         // used to occupy. Two source roots claiming one asset path is a
         // processResources duplicate, and the model here is an item icon
         // rather than the block, so it gets its own name either way.
+        //
+        // The dwarven doors are the exception: they fill their whole cube, so
+        // setBlockBoundsForItemRender gave them a full block and getIcon(int,
+        // int) gave them plain stone. Their icon is therefore an ordinary
+        // cube_all in stone -- indistinguishable from a stone block in the
+        // hotbar, which is the point of a hidden door.
         LOTRGateBorders.all().forEach(gate -> {
-            Identifier model = GATE_PANEL.createWithSuffix(gate, "_inventory",
+            ModelTemplate template = gate.isFullBlock() ? ModelTemplates.CUBE_ALL : GATE_PANEL;
+            Identifier model = template.createWithSuffix(gate, "_inventory",
                     new TextureMapping().put(TextureSlot.ALL, new Material(LOTRGateBorders.itemTexture(gate))),
                     generators.modelOutput);
             generators.registerSimpleItemModel(gate, model);

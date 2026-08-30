@@ -49,6 +49,27 @@ public class LOTRRecipeProvider extends FabricRecipeProvider {
             smoothStone();
             charcoal();
             cutFromBase();
+            dwarvenDoors();
+        }
+
+        /**
+         * LOTRRecipes: {@code new ShapedOreRecipe(dwarvenDoor, "XX","XX","XX",
+         * 'X', Blocks.stone)}. Six stone in a 2x3 slab, which is the door's own
+         * silhouette.
+         *
+         * <p>The ithildin door's recipe -- the same shape with an ithildin item
+         * at the centre-right -- is NOT emitted: the ithildin item does not
+         * exist in the port yet, so there is nothing to key the 'Y' slot to.
+         * It belongs here the moment that item lands.
+         */
+        private void dwarvenDoors() {
+            shaped(RecipeCategory.REDSTONE, LOTRBlocks.DWARVEN_DOOR)
+                    .pattern("XX")
+                    .pattern("XX")
+                    .pattern("XX")
+                    .define('X', Blocks.STONE)
+                    .unlockedBy(getHasName(Blocks.STONE), has(Blocks.STONE))
+                    .save(output);
         }
 
         private void planksFromLogs() {

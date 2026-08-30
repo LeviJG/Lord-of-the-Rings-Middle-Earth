@@ -55,8 +55,11 @@ public class LOTRGateModel implements BlockStateModel {
     /** Composited over nothing: any open gate. */
     private final Map<Set<LOTRConnectedBorder.Piece>, Material.Baked> withoutBase;
 
-    /** The untouched sprite, for a closed gate that has no connected art. */
-    private final Material.Baked flat;
+    /**
+     * The untouched sprite, for a closed gate that has no connected art --
+     * and null for the gates that have it, which never draw one.
+     */
+    private final Material.@Nullable Baked flat;
 
     private final Material.Baked particle;
 
@@ -68,7 +71,7 @@ public class LOTRGateModel implements BlockStateModel {
     public LOTRGateModel(LOTRGateBlock block,
                          Map<Set<LOTRConnectedBorder.Piece>, Material.Baked> withBase,
                          Map<Set<LOTRConnectedBorder.Piece>, Material.Baked> withoutBase,
-                         Material.Baked flat) {
+                         Material.@Nullable Baked flat) {
         this.block = block;
         this.withBase = Map.copyOf(withBase);
         this.withoutBase = Map.copyOf(withoutBase);
@@ -77,8 +80,9 @@ public class LOTRGateModel implements BlockStateModel {
         Set<LOTRConnectedBorder.Piece> isolated =
                 LOTRConnectedBorder.piecesFor(false, false, false, false, false, false, false, false);
         this.particle = block.hasConnectedTextures() ? this.withBase.get(isolated) : flat;
+        assert this.particle != null : "gate has neither connected art nor a flat sprite";
 
-        @BakedQuad.MaterialFlags int flags = flagsOf(flat);
+        @BakedQuad.MaterialFlags int flags = flat == null ? 0 : flagsOf(flat);
 
         for (Material.Baked material : this.withBase.values()) {
             flags |= flagsOf(material);
@@ -123,9 +127,17 @@ public class LOTRGateModel implements BlockStateModel {
                 continue;
             }
 
-            // No cull face: a quarter-block panel is inset from every side of
-            // its own cube, so nothing it draws may be hidden by a neighbour.
-            emitter.cullFace(null);
+            // Only a quad lying FLUSH with its cube face may be hidden by the
+            // neighbour on that side; one inset from the boundary is visible
+            // whatever sits next to it. A quarter-block panel is inset on the
+            // two broad faces only -- it still spans the full cube on the other
+            // four -- and a full-block door is flush on all six.
+            //
+            // This is what lets skipRendering() do its job. Passing null here
+            // unconditionally meant no gate face was ever culled, so the frame
+            // was drawn on every seam inside an opened multi-block gate instead
+            // of only around its outside edge.
+            emitter.cullFace(isFlush(face, box) ? face : null);
             emitter.nominalFace(face);
             corners(emitter, face, box);
             // BAKE_LOCK_UV derives the texture coordinates from the vertex
@@ -144,6 +156,18 @@ public class LOTRGateModel implements BlockStateModel {
         Set<LOTRConnectedBorder.Piece> pieces = piecesFor(level, pos, state, face);
         Map<Set<LOTRConnectedBorder.Piece>, Material.Baked> source = open ? withoutBase : withBase;
         return source.get(pieces);
+    }
+
+    /** Whether the box touches the cube boundary on this face. */
+    private static boolean isFlush(Direction face, AABB box) {
+        return switch (face) {
+            case DOWN -> box.minY <= 0.0;
+            case UP -> box.maxY >= 1.0;
+            case NORTH -> box.minZ <= 0.0;
+            case SOUTH -> box.maxZ >= 1.0;
+            case WEST -> box.minX <= 0.0;
+            case EAST -> box.maxX >= 1.0;
+        };
     }
 
     /**

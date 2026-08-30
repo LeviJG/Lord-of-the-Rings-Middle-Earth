@@ -69,8 +69,14 @@ public final class LOTRConnectedBorderPlugin implements ModelLoadingPlugin {
                         new Material(LOTRConnectedBorderSpriteSource.spriteFor(root, pieces, false)), this));
             }
 
-            Material.Baked flat = baker.materials().get(
-                    new Material(LOTRGateBorders.flatTexture(gate)), this);
+            // ONLY the gates with no connected art have a flat sprite. The
+            // other twenty never draw one -- LOTRGateModel reaches for it only
+            // when hasConnectedTextures() is false -- and resolving it anyway
+            // asked the baker for lotr:block/<gate>, which does not exist, so
+            // every connected gate logged a "Missing textures in model" warning
+            // at load.
+            Material.Baked flat = gate.hasConnectedTextures() ? null
+                    : baker.materials().get(new Material(LOTRGateBorders.flatTexture(gate)), this);
 
             return new LOTRGateModel(gate, withBase, withoutBase, flat);
         }

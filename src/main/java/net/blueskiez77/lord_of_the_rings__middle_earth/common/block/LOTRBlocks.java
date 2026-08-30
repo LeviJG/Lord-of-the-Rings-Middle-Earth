@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
@@ -105,6 +106,13 @@ public final class LOTRBlocks {
     public static final List<Block> ALL_VINES = new ArrayList<>();
     public static final List<Block> ALL_LADDERS = new ArrayList<>();
     public static final List<Block> ALL_GATES = new ArrayList<>();
+    /** The three troll totem parts. Rendered by a block entity renderer, so no models are generated. */
+    public static final List<Block> ALL_TROLL_TOTEMS = new ArrayList<>();
+    /** The two kebab stands. Drawn by a block entity renderer, so no models. */
+    public static final List<Block> ALL_KEBAB_STANDS = new ArrayList<>();
+    /** The mod's own chests. Drawn by a block entity renderer, so no models. */
+    public static final List<Block> ALL_CHESTS = new ArrayList<>();
+    public static final List<Block> ALL_BEDS = new ArrayList<>();
     public static final List<Block> ALL_BUSHES = new ArrayList<>();
     public static final List<Block> ALL_CROPS = new ArrayList<>();
 
@@ -514,6 +522,114 @@ public final class LOTRBlocks {
     public static final Block URUK_GATE = registerMetalGate("uruk_gate");
     public static final Block WOOD_ELVEN_GATE = registerWoodenGate("wood_elven_gate");
     public static final Block WOODEN_GATE = registerWoodenGate("wooden_gate");
+
+    // The two dwarven doors. Both are full cubes of plain stone that vanish
+    // into a wall until opened, so unlike the gates above they get no
+    // .noOcclusion() -- a closed one really is a solid block.
+    // LOTRBlockChest. Three of them, differing only in texture and material:
+    // the casket and the box are wood at hardness 2.5, the basket is cloth at
+    // 0.5. None of them pair into double chests.
+    public static final Block LEBETHRON_CASKET = registerChest("lebethron_casket", "lebethron",
+            MapColor.WOOD, 2.5f, SoundType.WOOD);
+    public static final Block REED_BASKET = registerChest("reed_basket", "basket",
+            MapColor.SAND, 0.5f, SoundType.WOOL);
+    public static final Block MALLORN_BOX = registerChest("mallorn_box", "mallorn",
+            MapColor.WOOD, 2.5f, SoundType.WOOD);
+    // The odd one out: stone rather than wood, hardness 3.0.
+    public static final Block ANCIENT_HARADRIC_CHEST = registerChest("ancient_haradric_chest",
+            "ancient_harad", MapColor.STONE, 3.0f, SoundType.STONE);
+    // chestStone: LOTRBlockChest(Material.rock, ...), hardness 3.0, stone step
+    // sound -- the same rock build as the Haradric chest, in plain grey.
+    public static final Block STONE_CHEST = registerChest("stone_chest", "stone",
+            MapColor.STONE, 3.0f, SoundType.STONE);
+
+    // LOTRBlockKebabStand: Material.circuits, hardness 0, resistance 1, wood
+    // step sound -- it breaks instantly and blocks nothing. The variant string
+    // picks the renderer's texture: "" wooden, "sand" for Harad.
+    // LOTRBlockMillstone: Material.rock, hardness 4.0, stone step sound. It has
+    // no facing -- the original registers only a side and a top icon.
+    public static final Block MILLSTONE = register("millstone", LOTRMillstoneBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(4.0f)
+                    .sound(SoundType.STONE),
+            true);
+
+    // LOTRBlockBed. Eight beds, vanilla behaviour throughout; the only thing
+    // that varies is the upholstery and the planks on the underside, which the
+    // original took from bedBottomBlock/bedBottomMetadata. The 1.7.10 ids are
+    // in brackets where they differ from the display name.
+    public static final Block GALADHRIM_BED = registerBed("galadhrim_bed");   // elvenBed
+    public static final Block WOOD_ELVEN_BED = registerBed("wood_elven_bed");
+    public static final Block HIGH_ELVEN_BED = registerBed("high_elven_bed");
+    public static final Block DWARVEN_BED = registerBed("dwarven_bed");
+    public static final Block ORC_BED = registerBed("orc_bed");
+    public static final Block LION_FUR_BED = registerBed("lion_fur_bed");     // lionBed
+    public static final Block FUR_BED = registerBed("fur_bed");               // wargFurBed
+    public static final Block STRAW_BED = registerBed("straw_bed");
+
+    // LOTRBlockOrcChain: Material.circuits, hardness 1.0, metal step sound. It
+    // hangs from the ceiling, it is climbable, and chandeliers hang off it.
+    public static final Block ORC_CHAIN = register("orc_chain", LOTROrcChainBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .strength(1.0f)
+                    .sound(SoundType.CHAIN)
+                    // The chain keeps a hair-thin collision box of its own
+                    // (getCollisionBoundingBoxFromPool), so this is noOcclusion
+                    // rather than noCollision.
+                    .noOcclusion(),
+            true);
+
+    public static final Block KEBAB_STAND = registerKebabStand("kebab_stand", "");
+    public static final Block KEBAB_STAND_SAND = registerKebabStand("kebab_stand_sand", "sand");
+
+    // LOTRBlockEntJar: Material.clay, hardness 1.0, glass step sound. It needs
+    // a solid block underneath and drops when that goes.
+    public static final Block ENT_JAR = register("ent_jar", LOTREntJarBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.CLAY)
+                    .strength(1.0f)
+                    .sound(SoundType.GLASS)
+                    .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY),
+            true);
+
+    // The troll totem, one block per part. LOTRBlockTrollTotem: Material.rock
+    // with default hardness -- it never called setHardness, so it keeps Block's
+    // 0 hardness and breaks instantly, as in 1.7.10.
+    public static final Block TROLL_TOTEM_HEAD = registerTrollTotem("troll_totem_head", LOTRTrollTotemBlock.Part.HEAD);
+    public static final Block TROLL_TOTEM_BODY = registerTrollTotem("troll_totem_body", LOTRTrollTotemBlock.Part.BODY);
+    public static final Block TROLL_TOTEM_BASE = registerTrollTotem("troll_totem_base", LOTRTrollTotemBlock.Part.BASE);
+
+    // LOTRBlockCommandTable: Material.iron, hardness 2.5, metal step sound.
+    // Its plank tabletop overhangs the block on every side, so it must not
+    // occlude and its neighbours must keep drawing their faces.
+    // LOTRBlockUnsmeltery extends LOTRBlockForgeBase: Material.rock, hardness
+    // 4.0, stone sound -- the same numbers registerForge uses. Its cauldron is
+    // drawn by a block entity renderer, so the block itself never occludes.
+    public static final Block UNSMELTERY = track(CUBES_NO_TIER, register("unsmeltery", LOTRUnsmelteryBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .requiresCorrectToolForDrops()
+                    .strength(4.0f, 6.0f)
+                    .sound(SoundType.STONE)
+                    .noOcclusion()
+                    .lightLevel(state -> state.getValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT) ? 13 : 0),
+            true));
+
+    public static final Block TABLE_OF_COMMAND = register("table_of_command", LOTRTableOfCommandBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.METAL)
+                    .requiresCorrectToolForDrops()
+                    .strength(2.5f)
+                    .sound(SoundType.METAL)
+                    .noOcclusion(),
+            true);
+
+    public static final Block DWARVEN_DOOR = registerDwarvenDoor("dwarven_door", LOTRDwarvenDoorBlock::new);
+    public static final Block ITHILDIN_DWARVEN_DOOR =
+            registerDwarvenDoor("ithildin_dwarven_door", LOTRIthildinDwarvenDoorBlock::new);
 
     public static final Block FLAX_CROP = registerCrop("flax_crop", 4);
     public static final Block LEEK_CROP = registerCrop("leek_crop", 4);
@@ -1670,6 +1786,78 @@ public final class LOTRBlocks {
                 true));
     }
 
+    /**
+     * LOTRBlockGateDwarven: Material.rock, hardness 4, resistance 10, stone
+     * sound -- createStone's numbers -- plus setFullBlock(). It still joins
+     * ALL_GATES so the connected-border plugin gives it the gate model and
+     * datagen gives it a gate item icon; it is the shape and the stone skin
+     * that differ, not the machinery.
+     */
+    private static Block registerDwarvenDoor(String name,
+                                             Function<BlockBehaviour.Properties, Block> factory) {
+        return track(ALL_GATES, register(name, factory,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .requiresCorrectToolForDrops()
+                        .strength(4.0f, 10.0f)
+                        .sound(SoundType.STONE)
+                        // A gate is a multiblock: a piston shoving one panel
+                        // out of a wall would silently break the flood fill
+                        // for the rest.
+                        .pushReaction(PushReaction.BLOCK),
+                true));
+    }
+
+    /**
+     * Beds are hardness 0.2 with a wood step sound, and LOTRItemBed set
+     * maxStackSize 1 -- a bed is two blocks, so a stack of them would place
+     * wrong.
+     */
+    private static Block registerBed(String name) {
+        return track(ALL_BEDS, register(name, LOTRBedBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.WOOL)
+                        .strength(0.2f)
+                        .sound(SoundType.WOOD)
+                        .noOcclusion(),
+                item -> item.stacksTo(1)));
+    }
+
+    private static Block registerChest(String name, String variant, MapColor color,
+                                       float hardness, SoundType sound) {
+        return track(ALL_CHESTS, register(name, props -> new LOTRChestBlock(variant, props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(color)
+                        .strength(hardness)
+                        .sound(sound)
+                        .noOcclusion(),
+                true));
+    }
+
+    private static Block registerKebabStand(String name, String variant) {
+        return track(ALL_KEBAB_STANDS, register(name, props -> new LOTRKebabStandBlock(variant, props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.WOOD)
+                        .strength(0.0f, 1.0f)
+                        .sound(SoundType.WOOD)
+                        .noOcclusion()
+                        .noCollision()
+                        .pushReaction(PushReaction.DESTROY),
+                true));
+    }
+
+    private static Block registerTrollTotem(String name, LOTRTrollTotemBlock.Part part) {
+        return track(ALL_TROLL_TOTEMS, register(name, props -> new LOTRTrollTotemBlock(part, props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .sound(SoundType.STONE)
+                        .noOcclusion()
+                        // A totem is a three-block object; a piston pulling one
+                        // part out would leave a broken idol behind.
+                        .pushReaction(PushReaction.BLOCK),
+                true));
+    }
+
     private static Block registerFenceGate(String name, Block base) {
         Block gate = track(ALL_FENCE_GATES, register(name, props -> new FenceGateBlock(net.minecraft.world.level.block.state.properties.WoodType.OAK, props),
                 BlockBehaviour.Properties.ofFullCopy(base), true));
@@ -2117,7 +2305,19 @@ public final class LOTRBlocks {
     }
 
     public static Block register(String name, Function<BlockBehaviour.Properties, Block> factory,
+                                 BlockBehaviour.Properties properties,
+                                 UnaryOperator<Item.Properties> itemProperties) {
+        return register(name, factory, properties, true, itemProperties);
+    }
+
+    public static Block register(String name, Function<BlockBehaviour.Properties, Block> factory,
                                  BlockBehaviour.Properties properties, boolean withItem) {
+        return register(name, factory, properties, withItem, UnaryOperator.identity());
+    }
+
+    private static Block register(String name, Function<BlockBehaviour.Properties, Block> factory,
+                                  BlockBehaviour.Properties properties, boolean withItem,
+                                  UnaryOperator<Item.Properties> itemProperties) {
         ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, name));
         Block block = factory.apply(properties.setId(blockKey));
@@ -2130,8 +2330,8 @@ public final class LOTRBlocks {
         if (withItem) {
             ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM,
                     Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, name));
-            BlockItem blockItem = new BlockItem(block,
-                    new Item.Properties().setId(itemKey).useBlockDescriptionPrefix());
+            BlockItem blockItem = new BlockItem(block, itemProperties.apply(
+                    new Item.Properties().setId(itemKey).useBlockDescriptionPrefix()));
             Registry.register(BuiltInRegistries.ITEM, itemKey, blockItem);
         }
         return block;

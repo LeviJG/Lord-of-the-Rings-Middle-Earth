@@ -82,6 +82,23 @@ public class LOTRForgeBlock extends AbstractFurnaceBlock {
             level.playLocalSound(x, y, z, SoundEvents.FURNACE_FIRE_CRACKLE, SoundSource.BLOCKS, 1.0F, 1.0F, false);
         }
 
+        flameFront(state, level, pos, random);
+    }
+
+    /**
+     * LOTRBlockForgeBase.randomDisplayTick: smoke and flame at the mouth of the
+     * fire, half a block out along FACING, at a random height in the lower six
+     * sixteenths and jittered sideways.
+     *
+     * <p>The LAVA particles are an ADDITION -- the original had none. They are
+     * the sparks that pop off hot metal, and they arc and fall on their own, so
+     * a lit forge throws a few rather than just glowing.
+     */
+    public static void flameFront(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        double x = pos.getX() + 0.5;
+        double y = pos.getY();
+        double z = pos.getZ() + 0.5;
+
         Direction facing = state.getValue(FACING);
         Direction.Axis axis = facing.getAxis();
         double edge = 0.52;
@@ -92,6 +109,13 @@ public class LOTRForgeBlock extends AbstractFurnaceBlock {
 
         level.addParticle(ParticleTypes.SMOKE, x + dx, y + dy, z + dz, 0.0, 0.0, 0.0);
         level.addParticle(ParticleTypes.FLAME, x + dx, y + dy, z + dz, 0.0, 0.0, 0.0);
+
+        // Sparks, thrown clear of the fire's mouth. Sparingly -- LAVA
+        // particles are large and long-lived, so one in four ticks reads as a
+        // working forge rather than an eruption.
+        if (random.nextInt(4) == 0) {
+            level.addParticle(ParticleTypes.LAVA, x + dx, y + dy, z + dz, 0.0, 0.0, 0.0);
+        }
     }
 
     // Mirrors createFurnaceTicker's shape: server side only, and the ServerLevel

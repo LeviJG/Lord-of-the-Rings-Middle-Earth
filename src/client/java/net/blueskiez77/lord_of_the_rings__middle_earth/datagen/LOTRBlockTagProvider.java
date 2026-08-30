@@ -174,6 +174,10 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
             climbable.add(LOTRBlocks.keyOf(b));
         });
         LOTRBlocks.ALL_VINES.forEach(b -> climbable.add(LOTRBlocks.keyOf(b)));
+        // LOTRBlockOrcChain.isLadder returns true unconditionally: a hanging
+        // chain is a climbable shaft.
+        climbable.add(LOTRBlocks.keyOf(LOTRBlocks.ORC_CHAIN));
+        pickaxe.add(LOTRBlocks.keyOf(LOTRBlocks.ORC_CHAIN));
         LOTRBlocks.ALL_GATES.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
         LOTRBlocks.ALL_FENCE_GATES.forEach(b -> axe.add(LOTRBlocks.keyOf(b)));
         LOTRBlocks.ALL_BUTTONS.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));

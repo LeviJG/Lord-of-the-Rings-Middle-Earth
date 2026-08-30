@@ -5,13 +5,23 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBeaconScre
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCraftingScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRForgeScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHobbitOvenScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMillstoneScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnsmelteryScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRChestRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTREntJarRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRKebabStandRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRIthildinDoorRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRTrollTotemRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRUnsmelteryRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRConnectedBorderPlugin;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBeaconBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBeaconBlockEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 
 import net.minecraft.client.Minecraft;
@@ -30,12 +40,39 @@ public class LOTRModClient implements ClientModInitializer {
 
         LOTRConnectedBorderPlugin.init();
 
-        // could not verify. Fabric also exposes BlockEntityRendererFactories;
-        // if this does not resolve, that is the alternative. The renderer
-        // itself does not change either way.
+        // Block entity renderers, for the two things that cannot be baked into
+        // a static model. The ithildin engraving's brightness depends on the
+        // player's distance and the time of day; LOTRClientProxy bound it the
+        // same way.
+        BlockEntityRendererRegistry.register(
+                LOTRBlockEntities.DWARVEN_DOOR, LOTRIthildinDoorRenderer::new);
+
+        // The Ent Jar's liquid level: a surface quad whose height and tint come
+        // from the block entity, so it cannot live in a static model either.
+        BlockEntityRendererRegistry.register(
+                LOTRBlockEntities.ENT_JAR, LOTREntJarRenderer::new);
+
+        // The troll totem draws nothing in the chunk mesh at all -- its blocks
+        // are RenderShape.INVISIBLE and the whole idol is this model.
+        BlockEntityRendererRegistry.register(
+                LOTRBlockEntities.TROLL_TOTEM, LOTRTrollTotemRenderer::new);
+
+        // The unsmeltery's cauldron, which sways while it works.
+        BlockEntityRendererRegistry.register(
+                LOTRBlockEntities.UNSMELTERY, LOTRUnsmelteryRenderer::new);
+
+        // The kebab stand, and the meat turning on its spit.
+        BlockEntityRendererRegistry.register(
+                LOTRBlockEntities.KEBAB_STAND, LOTRKebabStandRenderer::new);
+
+        // The mod's chests: vanilla's chest model wearing their own textures.
+        BlockEntityRendererRegistry.register(
+                LOTRBlockEntities.CHEST, LOTRChestRenderer::new);
 
         MenuScreens.register(LOTRMenus.FORGE, LOTRForgeScreen::new);
         MenuScreens.register(LOTRMenus.HOBBIT_OVEN, LOTRHobbitOvenScreen::new);
+        MenuScreens.register(LOTRMenus.UNSMELTERY, LOTRUnsmelteryScreen::new);
+        MenuScreens.register(LOTRMenus.MILLSTONE, LOTRMillstoneScreen::new);
 
         for (LOTRCraftingTable table : LOTRCraftingTable.values()) {
             MenuScreens.register(LOTRMenus.forTable(table), LOTRCraftingScreen::new);

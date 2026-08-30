@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
@@ -51,12 +52,28 @@ public final class LOTRGateBorders {
     }
 
     /**
+     * Gates whose flat sprite is not {@code lotr:block/<name>}. The two dwarven
+     * doors wear vanilla stone so that a closed one is invisible in a stone
+     * wall: LOTRBlockGateDwarven.getIcon returned
+     * {@code Blocks.stone.getIcon(side, 0)} while closed, and registered its
+     * border pieces from that same texture's name.
+     */
+    private static final Map<String, Identifier> FLAT_TEXTURE_OVERRIDES = Map.of(
+            "dwarven_door", Identifier.withDefaultNamespace("block/stone"),
+            "ithildin_dwarven_door", Identifier.withDefaultNamespace("block/stone"));
+
+    /**
      * The plain, unframed sprite. Only the non-connected gates draw it -- it is
      * what LOTRBlockGate.getIcon returned as {@code blockIcon} for a closed
      * gate with no connected art.
      */
     public static Identifier flatTexture(Block gate) {
-        return Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "block/" + name(gate));
+        String name = name(gate);
+        Identifier override = FLAT_TEXTURE_OVERRIDES.get(name);
+        if (override != null) {
+            return override;
+        }
+        return Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "block/" + name);
     }
 
     /**

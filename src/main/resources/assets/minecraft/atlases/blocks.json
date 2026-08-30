@@ -69,6 +69,18 @@
     },
     {
       "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/dwarven_door",
+      "no_base": true,
+      "slice_from": "minecraft:block/stone"
+    },
+    {
+      "type": "lotr:connected_border",
+      "base": "lotr:block/ctm/ithildin_dwarven_door",
+      "no_base": true,
+      "slice_from": "minecraft:block/stone"
+    },
+    {
+      "type": "lotr:connected_border",
       "base": "lotr:block/ctm/gondor_gate",
       "no_base": true
     },
@@ -141,6 +153,106 @@
       "type": "lotr:connected_border",
       "base": "lotr:block/ctm/yellow_hobbit_gate",
       "no_base": true
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_1x1_0_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_1x2_0_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_1x2_0_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x2_0_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x2_0_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x2_1_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x2_1_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x3_0_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x3_0_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x3_0_2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x3_1_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x3_1_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_2x3_1_2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_0_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_0_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_0_2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_0_3"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_1_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_1_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_1_2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_1_3"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_2_0"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_2_1"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_2_2"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "lotr:block/ithildin_dwarven_door_glow_3x4_2_3"
     }
   ]
 }

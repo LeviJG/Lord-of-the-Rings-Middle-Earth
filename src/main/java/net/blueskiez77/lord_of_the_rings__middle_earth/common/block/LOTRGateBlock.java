@@ -59,15 +59,9 @@ import org.jspecify.annotations.Nullable;
 // reads it back off the block -- but it lives on the block, exactly as it did
 // in 1.7.10, so there is one place that says which gates are which.
 //
-// This covers the createWooden/createStone/createMetal gates only, which is
-// every gate the port currently registers. LOTRBlockGate had two subclasses
-// that are NOT ported yet: LOTRBlockGateDwarven (the "Dwarven Door" -- ct off,
-// setFullBlock(), and vanilla stone for its closed faces) and
-// LOTRBlockGateDwarvenIthildin (that plus a tile entity tracking the door's
-// size and glow icons). Porting the first will need the setFullBlock branches
-// back -- a Shapes.block() case in shapeFor, the look-direction case in
-// getStateForPlacement, and the "!fullBlockGate || open" guard the original
-// had in shouldSideBeRendered.
+// LOTRBlockGate's two subclasses are LOTRDwarvenDoorBlock and
+// LOTRIthildinDwarvenDoorBlock, which differ mainly in filling their whole cube
+// -- see isFullBlock() below for what that changes.
 public class LOTRGateBlock extends Block {
 
     public static final MapCodec<LOTRGateBlock> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
@@ -115,10 +109,20 @@ public class LOTRGateBlock extends Block {
     // ------------------------------------------------------------- placement
 
     /**
+     * LOTRBlockGate.setFullBlock. The dwarven doors fill their whole cube
+     * instead of standing as a quarter-block panel, which changes the shape,
+     * the placement rule and the face culling below. It was a mutable field set
+     * by a subclass constructor in 1.7.10; here the subclass just says so.
+     */
+    public boolean isFullBlock() {
+        return false;
+    }
+
+    /**
      * LOTRItemGate.placeBlockAt. Clicking a floor or ceiling gives a gate
      * facing the way the player does; looking sharply up or down gives a
      * horizontal panel; otherwise the gate turns to sit across the face that
-     * was clicked.
+     * was clicked -- rotated LEFT for a thin panel, reversed for a full block.
      */
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -130,17 +134,22 @@ public class LOTRGateBlock extends Block {
         if (clicked.getAxis() == Direction.Axis.Y) {
             facing = context.getHorizontalDirection();
         } else if (pitch < -40.0F || pitch > 40.0F) {
-            // LOTRItemGate went off which HALF of the face was clicked (its f1),
-            // so the panel lands on the edge you actually pointed at; pitch
-            // alone gets that wrong whenever you place low on a block while
-            // looking down at it.
-            double hitY = context.getClickLocation().y - context.getClickedPos().getY();
-            facing = hitY > 0.5 ? Direction.DOWN : Direction.UP;
+            // A full-block gate went off the look direction. A thin panel went
+            // off which HALF of the face was clicked (LOTRItemGate's f1), so
+            // the panel lands on the edge you actually pointed at; pitch alone
+            // gets that wrong whenever you place low on a block while looking
+            // down at it.
+            if (isFullBlock()) {
+                facing = pitch > 0.0F ? Direction.DOWN : Direction.UP;
+            } else {
+                double hitY = context.getClickLocation().y - context.getClickedPos().getY();
+                facing = hitY > 0.5 ? Direction.DOWN : Direction.UP;
+            }
         } else {
             // Direction.rotateLeft in 1.7.10 is counter-clockwise seen from
             // above. getClockWise() is the opposite turn, which left every gate
             // placed against a wall at ninety degrees to where it belonged.
-            facing = clicked.getCounterClockWise();
+            facing = isFullBlock() ? clicked.getOpposite() : clicked.getCounterClockWise();
         }
         return defaultBlockState().setValue(FACING, facing).setValue(OPEN, false);
     }
@@ -358,6 +367,9 @@ public class LOTRGateBlock extends Block {
 
     /** LOTRBlockGate.setBlockBoundsForDirection. */
     public VoxelShape shapeFor(Direction facing) {
+        if (isFullBlock()) {
+            return Shapes.block();
+        }
         double half = THICKNESS / 2.0;
         return switch (facing) {
             // A down-facing panel hugs the ceiling, an up-facing one the floor.
@@ -397,20 +409,38 @@ public class LOTRGateBlock extends Block {
      * (e.g. Block.shouldRenderFace) that expect a state's actual footprint,
      * not a lie about it; the light behaviour comes from the flag, not from
      * hollowing the shape out.
+     *
+     * <p>The full-block doors are the exception, and were in 1.7.10 too:
+     * setFullBlock() also set {@code lightOpacity = 255}, unconditionally and
+     * regardless of whether the door was open. Consulting the occlusion shape
+     * for those reproduces it, since their shape is a full cube in both states.
      */
     @Override
     protected boolean useShapeForLightOcclusion(BlockState state) {
-        return false;
+        return isFullBlock();
     }
 
+    /**
+     * An OPEN gate occludes nothing. This matters only to the full-block
+     * doors -- the thin panels are declared .noOcclusion() and never occlude
+     * either way -- but for those it matters a great deal: this shape is
+     * cached per state and drives BOTH the neighbour face culling in
+     * Block.shouldRenderFace AND getLightBlock. Returning the full cube for an
+     * open door told the chunk mesher that the walls and floor around it were
+     * still hidden, so an opened door became a hole you could see through the
+     * world by.
+     */
     @Override
     protected VoxelShape getOcclusionShape(BlockState state) {
+        if (state.getValue(OPEN)) {
+            return Shapes.empty();
+        }
         return shapeFor(state.getValue(FACING));
     }
 
     @Override
     protected boolean propagatesSkylightDown(BlockState state) {
-        return true;
+        return !isFullBlock() || state.getValue(OPEN);
     }
 
     /**
@@ -421,6 +451,12 @@ public class LOTRGateBlock extends Block {
      */
     @Override
     protected boolean skipRendering(BlockState state, BlockState neighbour, Direction side) {
+        // "if (!fullBlockGate || openThis)": a CLOSED full-block door is an
+        // ordinary solid cube and culls by the normal rules; only once it opens
+        // does the gate-seam logic apply to it.
+        if (isFullBlock() && !state.getValue(OPEN)) {
+            return false;
+        }
         if (neighbour.getBlock() instanceof LOTRGateBlock other) {
             Direction facing = state.getValue(FACING);
             Direction otherFacing = neighbour.getValue(FACING);

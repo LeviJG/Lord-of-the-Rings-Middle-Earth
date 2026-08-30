@@ -3,6 +3,9 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import net.minecraft.world.level.block.BedBlock;
+import net.minecraft.world.level.block.state.properties.BedPart;
+
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -67,6 +70,19 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         // generated -- so it needs its loot table naming explicitly.
         dropSelf(LOTRBlocks.BEACON_OF_GONDOR);
         dropSelf(LOTRBlocks.HOBBIT_OVEN);
+        dropSelf(LOTRBlocks.ENT_JAR);
+        dropSelf(LOTRBlocks.TABLE_OF_COMMAND);
+        dropSelf(LOTRBlocks.UNSMELTERY);
+        dropSelf(LOTRBlocks.MILLSTONE);
+        dropSelf(LOTRBlocks.ORC_CHAIN);
+        // getItemDropped returned null for the head half, so a bed drops one
+        // item, not two -- vanilla's own beds use exactly this condition.
+        LOTRBlocks.ALL_BEDS.forEach(bed -> add(bed,
+                createSinglePropConditionTable(bed, BedBlock.PART, BedPart.FOOT)));
+        LOTRBlocks.ALL_KEBAB_STANDS.forEach(this::dropSelf);
+        LOTRBlocks.ALL_CHESTS.forEach(this::dropSelf);
+        // damageDropped(i) = i & 3: each part dropped its own kind.
+        LOTRBlocks.ALL_TROLL_TOTEMS.forEach(this::dropSelf);
 
         LOTRBlocks.TORCH_WALL.forEach((torch, wall) -> dropOther(wall, torch));
 

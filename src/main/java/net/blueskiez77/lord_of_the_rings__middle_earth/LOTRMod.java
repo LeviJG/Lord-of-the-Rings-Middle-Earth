@@ -6,6 +6,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRCreativeTabs;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockBehaviours;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRMillstoneRecipes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRPackets;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
@@ -43,6 +44,7 @@ public class LOTRMod implements ModInitializer {
         LOTRBlocks.init();
         LOTRBlockEntities.init();
         LOTRBlockBehaviours.init();
+        LOTRMillstoneRecipes.createRecipes();
         LOTRItems.init();
 
         // Creative tab. Must come after blocks and items exist.

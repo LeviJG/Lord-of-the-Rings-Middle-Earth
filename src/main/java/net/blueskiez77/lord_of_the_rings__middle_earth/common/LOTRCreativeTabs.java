@@ -87,24 +87,69 @@ public final class LOTRCreativeTabs {
 
     // tabUtil in the original: things you interact with rather than build from.
     // Membership taken from the classes that called
-    // setCreativeTab(LOTRCreativeTabs.tabUtil). Ladders, torches and
-    // chandeliers are NOT here -- those were tabDeco; buttons and pressure
-    // plates were tabMisc.
+    // setCreativeTab(LOTRCreativeTabs.tabUtil) -- sixteen block classes and one
+    // item class, LOTRItemBed. Ladders, torches and chandeliers are NOT here --
+    // those were tabDeco; buttons and pressure plates were tabMisc.
+    //
+    // The ORDER, unlike the membership, is not the original's. 1.7.10 had no
+    // ordering of its own: a creative tab simply listed its blocks in
+    // registration order, so tabUtil came out interleaved by whatever order
+    // LOTRMod happened to construct things in. The grouping below is ours,
+    // arranged by what a block is FOR rather than by what class it came from,
+    // so that scanning the tab is quicker.
     public static final CreativeModeTab UTILITIES = FabricCreativeModeTab.builder()
             .icon(() -> new ItemStack(LOTRBlocks.DWARVEN_FORGE))
             .title(Component.translatable("creativeTab.lotr.utilities"))
             .displayItems((params, output) -> {
-                LOTRBlocks.ALL_FORGES.forEach(output::accept);
+                // --- Crafting -------------------------------------------
+                // One table per culture, so this is the longest run in the
+                // tab and the one most often reached for. It goes first.
                 LOTRBlocks.ALL_CRAFTING_TABLES.forEach(output::accept);
-                LOTRBlocks.ALL_DART_TRAPS.forEach(output::accept);
+
+                // --- Processing -----------------------------------------
+                // Everything that consumes an input and gives back something
+                // else, roughly hottest first: forges, then the two ovens,
+                // then the grinder, then the spits.
+                LOTRBlocks.ALL_FORGES.forEach(output::accept);
+                // LOTRBlockHobbitOven called setCreativeTab(tabUtil) too.
+                output.accept(LOTRBlocks.HOBBIT_OVEN);
+                output.accept(LOTRBlocks.UNSMELTERY);
+                // LOTRBlockMillstone also called setCreativeTab(tabUtil).
+                output.accept(LOTRBlocks.MILLSTONE);
+                LOTRBlocks.ALL_KEBAB_STANDS.forEach(output::accept);
+
+                // --- Storage --------------------------------------------
+                LOTRBlocks.ALL_CHESTS.forEach(output::accept);
+
+                // --- Furnishing -----------------------------------------
+                // The beds reach tabUtil through their item rather than their
+                // block: LOTRItemBed's constructor is what sets the tab.
+                LOTRBlocks.ALL_BEDS.forEach(output::accept);
+                // LOTRBlockOrcChain, likewise tabUtil -- a fixture you hang
+                // from a ceiling, and what chandeliers hang from.
+                output.accept(LOTRBlocks.ORC_CHAIN);
+
+                // --- Openings -------------------------------------------
+                // Every way through a wall, smallest to largest: doors and
+                // trapdoors, then fence gates, then the multi-block gates.
                 LOTRBlocks.ALL_DOORS.forEach(output::accept);
                 LOTRBlocks.ALL_TRAPDOORS.forEach(output::accept);
                 LOTRBlocks.ALL_FENCE_GATES.forEach(output::accept);
                 LOTRBlocks.ALL_GATES.forEach(output::accept);
-                // LOTRBlockBeacon called setCreativeTab(tabUtil).
+
+                // --- Defence --------------------------------------------
+                LOTRBlocks.ALL_DART_TRAPS.forEach(output::accept);
+
+                // --- One of a kind --------------------------------------
+                // The set pieces, last because you place one and never need
+                // another. LOTRBlockBeacon, LOTRBlockEntJar,
+                // LOTRBlockCommandTable and LOTRBlockTrollTotem all called
+                // setCreativeTab(tabUtil); the totem listed its three metas in
+                // getSubBlocks, which is ALL_TROLL_TOTEMS.
                 output.accept(LOTRBlocks.BEACON_OF_GONDOR);
-                // LOTRBlockHobbitOven called setCreativeTab(tabUtil) too.
-                output.accept(LOTRBlocks.HOBBIT_OVEN);
+                output.accept(LOTRBlocks.TABLE_OF_COMMAND);
+                output.accept(LOTRBlocks.ENT_JAR);
+                LOTRBlocks.ALL_TROLL_TOTEMS.forEach(output::accept);
             })
             .build();
 
@@ -120,6 +165,7 @@ public final class LOTRCreativeTabs {
                 });
                 output.accept(LOTRItems.MITHRIL);
                 output.accept(LOTRItems.PIPEWEED);
+                output.accept(LOTRItems.KEBAB);
             })
             .build();
 
