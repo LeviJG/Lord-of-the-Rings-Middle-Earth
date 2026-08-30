@@ -7,4 +7,5 @@ out/
 run/
 src/main/generated/
 old mod
-/tools
+tools
+docs
