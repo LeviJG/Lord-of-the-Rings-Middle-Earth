@@ -1,0 +1,9 @@
+{
+  "parent": "lotr:block/template_lotr_bed_foot",
+  "textures": {
+    "top": "lotr:block/fur_bed_foot_top",
+    "side": "lotr:block/fur_bed_foot_side",
+    "end": "lotr:block/fur_bed_foot_end",
+    "bottom": "minecraft:block/oak_planks"
+  }
+}

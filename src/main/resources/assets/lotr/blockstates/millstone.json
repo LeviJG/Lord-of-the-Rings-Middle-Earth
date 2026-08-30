@@ -1,0 +1,7 @@
+{
+  "__comment": "Metadata bit 8 in the original picked the animated running texture over the still one; here that is the lit property.",
+  "variants": {
+    "lit=false": {"model": "lotr:block/millstone"},
+    "lit=true": {"model": "lotr:block/millstone_active"}
+  }
+}

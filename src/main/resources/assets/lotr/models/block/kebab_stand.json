@@ -1,0 +1,6 @@
+{
+  "__comment": "The stand is RenderShape.INVISIBLE and drawn by LOTRKebabStandRenderer. This model exists only so the blockstate resolves and break particles have a texture -- LOTRBlockKebabStand.getIcon returned vanilla planks for exactly that.",
+  "textures": {
+    "particle": "minecraft:block/oak_planks"
+  }
+}

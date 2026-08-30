@@ -1,0 +1,12 @@
+{
+  "variants": {
+    "facing=north,lit=false": {"model": "lotr:block/unsmeltery"},
+    "facing=north,lit=true":  {"model": "lotr:block/unsmeltery"},
+    "facing=south,lit=false": {"model": "lotr:block/unsmeltery"},
+    "facing=south,lit=true":  {"model": "lotr:block/unsmeltery"},
+    "facing=west,lit=false":  {"model": "lotr:block/unsmeltery"},
+    "facing=west,lit=true":   {"model": "lotr:block/unsmeltery"},
+    "facing=east,lit=false":  {"model": "lotr:block/unsmeltery"},
+    "facing=east,lit=true":   {"model": "lotr:block/unsmeltery"}
+  }
+}

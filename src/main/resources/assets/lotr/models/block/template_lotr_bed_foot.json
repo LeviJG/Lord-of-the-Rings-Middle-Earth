@@ -1,0 +1,73 @@
+{
+  "__comment": "LOTRBlockBed drew a bed as an ordinary 0..9/16 block, not through a renderer, so there are no legs and no entity sheet -- just the six 1.7.10 icons. The 0,7..16,16 UVs are what RenderBlocks derives from the box height, and they line up with the art, whose top seven rows are blank. The joining face is left out: it is always against the other half of the bed. The top is turned 270 degrees because the 1.7.10 art is laid out along the texture x axis -- each half's leg stub marks its outer end -- while an up face's u runs along world X and the bed lies along Z. The side and end faces need no such turn: their u already follows the length. The west face reverses its u to mirror the shared side icon: with the same UVs on both X faces one of the two necessarily reads back to front, and it is this one. It parents to block/template_bed, not block/block, for the display transforms: a bed item is two blocks long and needs the smaller, differently angled gui pose vanilla beds use.",
+  "parent": "minecraft:block/template_bed",
+  "textures": {
+    "particle": "#top"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        9,
+        16
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#top",
+          "rotation": 270
+        },
+        "east": {
+          "uv": [
+            0,
+            7,
+            16,
+            16
+          ],
+          "texture": "#side",
+          "cullface": "east"
+        },
+        "west": {
+          "uv": [
+            16,
+            7,
+            0,
+            16
+          ],
+          "texture": "#side",
+          "cullface": "west"
+        },
+        "south": {
+          "uv": [
+            0,
+            7,
+            16,
+            16
+          ],
+          "texture": "#end",
+          "cullface": "south"
+        }
+      }
+    }
+  ]
+}

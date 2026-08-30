@@ -1,0 +1,8 @@
+{
+  "variants": {
+    "facing=north": {"model": "lotr:block/kebab_stand"},
+    "facing=south": {"model": "lotr:block/kebab_stand"},
+    "facing=west":  {"model": "lotr:block/kebab_stand"},
+    "facing=east":  {"model": "lotr:block/kebab_stand"}
+  }
+}

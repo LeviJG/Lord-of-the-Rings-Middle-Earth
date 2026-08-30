@@ -1,0 +1,10 @@
+{
+  "__comment": "Vanilla's own chests.json is a directory source over entity/chest, which does scan every namespace -- so in principle these are stitched already. Naming them explicitly costs nothing, is what the ithildin glow sprites do on the block atlas, and removes any doubt that lotr:entity/chest/* is actually on the chest sheet where Sheets.CHEST_MAPPER looks for it.",
+  "sources": [
+    {"type": "minecraft:single", "resource": "lotr:entity/chest/lebethron"},
+    {"type": "minecraft:single", "resource": "lotr:entity/chest/basket"},
+    {"type": "minecraft:single", "resource": "lotr:entity/chest/mallorn"},
+    {"type": "minecraft:single", "resource": "lotr:entity/chest/ancient_harad"},
+    {"type": "minecraft:single", "resource": "lotr:entity/chest/stone"}
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "lotr:block/millstone_top_active",
+    "side": "lotr:block/millstone_side_active"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "__comment": "LOTRBlockKebabStand.getItemIconName() returned the block's own texture name, so the item was a flat 2D sprite in the original too -- not a 3D render like the totem's.",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lotr:item/kebab_stand"
+  }
+}

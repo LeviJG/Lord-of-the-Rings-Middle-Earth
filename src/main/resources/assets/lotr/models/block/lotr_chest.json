@@ -1,0 +1,6 @@
+{
+  "__comment": "The mod's chests are RenderShape.INVISIBLE and drawn by LOTRChestRenderer from vanilla's chest model. This exists only so the blockstates resolve and break particles have a texture, as LOTRBlockChest.getIcon returned its base block's for the same reason.",
+  "textures": {
+    "particle": "minecraft:block/oak_planks"
+  }
+}

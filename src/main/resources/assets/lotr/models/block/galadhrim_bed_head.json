@@ -1,0 +1,9 @@
+{
+  "parent": "lotr:block/template_lotr_bed_head",
+  "textures": {
+    "top": "lotr:block/galadhrim_bed_head_top",
+    "side": "lotr:block/galadhrim_bed_head_side",
+    "end": "lotr:block/galadhrim_bed_head_end",
+    "bottom": "lotr:block/mallorn_planks"
+  }
+}

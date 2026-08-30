@@ -1,0 +1,17 @@
+{
+  "__comment": "getIcon's four cases. A chandelier below counts as chain below, so the pair draws as one hanging run.",
+  "variants": {
+    "chain_above=true,chain_below=true": {
+      "model": "lotr:block/orc_chain_mid"
+    },
+    "chain_above=true,chain_below=false": {
+      "model": "lotr:block/orc_chain_bottom"
+    },
+    "chain_above=false,chain_below=true": {
+      "model": "lotr:block/orc_chain_top"
+    },
+    "chain_above=false,chain_below=false": {
+      "model": "lotr:block/orc_chain_single"
+    }
+  }
+}

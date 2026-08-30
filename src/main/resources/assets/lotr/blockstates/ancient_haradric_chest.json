@@ -1,0 +1,6 @@
+{
+  "__comment": "Like vanilla's chest.json: one variant regardless of facing/type/waterlogged, because the block is INVISIBLE-rendered and the model never changes.",
+  "variants": {
+    "": {"model": "lotr:block/lotr_chest"}
+  }
+}

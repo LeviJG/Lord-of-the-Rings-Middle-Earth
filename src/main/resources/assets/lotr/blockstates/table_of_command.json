@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "lotr:block/table_of_command"
+    }
+  }
+}

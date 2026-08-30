@@ -1,0 +1,6 @@
+{
+  "__comment": "The totem is RenderShape.INVISIBLE and drawn entirely by LOTRTrollTotemRenderer. This model exists only so the blockstate resolves and so break/step particles have a texture, exactly as LOTRBlockTrollTotem.getIcon returned vanilla stone for the same purpose.",
+  "textures": {
+    "particle": "minecraft:block/stone"
+  }
+}

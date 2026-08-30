@@ -1,0 +1,6 @@
+{
+  "__comment": "The unsmeltery is RenderShape.INVISIBLE and drawn by LOTRUnsmelteryRenderer. This model exists only so the blockstate resolves and break particles have a texture -- the original's getIcon returned vanilla cobblestone for exactly that purpose.",
+  "textures": {
+    "particle": "minecraft:block/cobblestone"
+  }
+}

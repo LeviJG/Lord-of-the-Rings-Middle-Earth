@@ -1,0 +1,9 @@
+{
+  "parent": "lotr:block/template_lotr_bed_head",
+  "textures": {
+    "top": "lotr:block/lion_fur_bed_head_top",
+    "side": "lotr:block/lion_fur_bed_head_side",
+    "end": "lotr:block/lion_fur_bed_head_end",
+    "bottom": "minecraft:block/oak_planks"
+  }
+}

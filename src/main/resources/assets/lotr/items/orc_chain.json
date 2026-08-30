@@ -1,0 +1,7 @@
+{
+  "__comment": "LOTRBlockOrcChain.getItemIconName returned the block's base texture name, so in the inventory and on the ground the chain is a flat icon of its own, not one of the four connected block sprites.",
+  "model": {
+    "type": "minecraft:model",
+    "model": "lotr:item/orc_chain"
+  }
+}

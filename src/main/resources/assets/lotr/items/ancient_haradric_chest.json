@@ -1,0 +1,11 @@
+{
+  "__comment": "Vanilla's items/chest.json, minus the christmas case. The base MUST be minecraft:item/chest -- that is item/template_chest, which carries the display transforms that make a chest render as a 3D block in the inventory. minecraft:block/chest is particle-only and gives a flat icon.",
+  "model": {
+    "type": "minecraft:special",
+    "base": "minecraft:item/chest",
+    "model": {
+      "type": "minecraft:chest",
+      "texture": "lotr:ancient_harad"
+    }
+  }
+}
