@@ -1,0 +1,6 @@
+{
+  "__comment": "The block is RenderShape.INVISIBLE, so every state maps to an empty model; the block entity renderer draws the rack.",
+  "variants": {
+    "": { "model": "minecraft:block/air" }
+  }
+}

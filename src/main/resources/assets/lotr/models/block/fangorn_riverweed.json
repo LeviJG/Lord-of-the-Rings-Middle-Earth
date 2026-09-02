@@ -1,0 +1,17 @@
+{
+    "__comment": "vanilla block/lily_pad without the tint index. LOTRBlockFangornRiverweed overrode colorMultiplier, getBlockColor and getRenderColor to all return 0xFFFFFF, so the riverweed keeps its own colour instead of taking the vanilla pad's green.",
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "lotr:block/fangorn_riverweed",
+        "texture": "lotr:block/fangorn_riverweed"
+    },
+    "elements": [
+        {   "from": [  0, 0.25,  0 ],
+            "to":   [ 16, 0.25, 16 ],
+            "faces": {
+                "down": { "uv": [ 0, 16, 16, 0 ], "texture": "#texture" },
+                "up":   { "uv": [ 0, 0, 16, 16 ], "texture": "#texture" }
+            }
+        }
+    ]
+}

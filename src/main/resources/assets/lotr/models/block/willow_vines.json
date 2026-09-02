@@ -1,0 +1,43 @@
+{
+  "__comment": "vanilla block/vine without the tint index: LOTRBlockVine overrode colorMultiplier, getBlockColor and getRenderColor to all return 0xFFFFFF, so LOTR vines keep their own colour.",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "lotr:block/willow_vines",
+    "vine": "lotr:block/willow_vines"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0.8
+      ],
+      "to": [
+        16,
+        16,
+        0.8
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "texture": "#vine"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#vine"
+        }
+      }
+    }
+  ]
+}

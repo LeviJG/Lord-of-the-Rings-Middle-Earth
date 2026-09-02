@@ -1,0 +1,61 @@
+{
+  "__comment": "LOTRRenderBlocks.renderClover: a half-scale stem cross plus 3 flat petals, spread 120 degrees apart around the centre, as the original's rotateAroundY(petal / petalCount * 2pi) put them. Biome-grass tinted, as LOTRBlockClover.colorMultiplier returned getBiomeGrassColor. 26.2 dropped the old restriction that an element rotation had to be one of 0/22.5/45 degrees -- CuboidModelElement.Deserializer now reads any float angle, and also accepts an x/y/z Euler triple -- so the exact 120 and 240 can be written directly.",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "lotr:block/clover_petal",
+    "stem": "lotr:block/clover_stem",
+    "petal": "lotr:block/clover_petal"
+  },
+  "elements": [
+    {
+      "from": [4, 0, 8],
+      "to": [12, 8, 8],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "shade": false,
+      "faces": {
+        "north": { "uv": [0, 0, 16, 16], "texture": "#stem", "tintindex": 0 },
+        "south": { "uv": [0, 0, 16, 16], "texture": "#stem", "tintindex": 0 }
+      }
+    },
+    {
+      "from": [8, 0, 4],
+      "to": [8, 8, 12],
+      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45, "rescale": true },
+      "shade": false,
+      "faces": {
+        "west": { "uv": [0, 0, 16, 16], "texture": "#stem", "tintindex": 0 },
+        "east": { "uv": [0, 0, 16, 16], "texture": "#stem", "tintindex": 0 }
+      }
+    },
+    {
+      "from": [4, 4.0, 4],
+      "to": [12, 4.0, 12],
+      "shade": false,
+      "faces": {
+        "up": { "uv": [0, 0, 16, 16], "texture": "#petal", "tintindex": 0, "rotation": 0 },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#petal", "tintindex": 0, "rotation": 0 }
+      }
+    },
+    {
+      "from": [4, 4.04, 4],
+      "to": [12, 4.04, 12],
+      "shade": false,
+      "faces": {
+        "up": { "uv": [0, 0, 16, 16], "texture": "#petal", "tintindex": 0, "rotation": 0 },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#petal", "tintindex": 0, "rotation": 0 }
+      },
+      "rotation": { "origin": [8, 4.04, 8], "axis": "y", "angle": 120 }
+    },
+    {
+      "from": [4, 4.08, 4],
+      "to": [12, 4.08, 12],
+      "shade": false,
+      "faces": {
+        "up": { "uv": [0, 0, 16, 16], "texture": "#petal", "tintindex": 0, "rotation": 0 },
+        "down": { "uv": [0, 0, 16, 16], "texture": "#petal", "tintindex": 0, "rotation": 0 }
+      },
+      "rotation": { "origin": [8, 4.08, 8], "axis": "y", "angle": 240 }
+    }
+  ]
+}

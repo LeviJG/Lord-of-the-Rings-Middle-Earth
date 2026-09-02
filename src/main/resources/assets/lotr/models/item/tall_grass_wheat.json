@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lotr:block/tall_grass_wheat",
+    "layer1": "lotr:block/tall_grass_wheat_overlay"
+  }
+}

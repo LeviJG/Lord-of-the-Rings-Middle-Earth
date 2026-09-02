@@ -1,0 +1,7 @@
+{
+  "__comment": "LOTRBlockWeaponRack.getItemIconName returned the block's own sprite. The block has no model of its own to show -- it is INVISIBLE and drawn by its renderer -- so the item is a flat icon.",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lotr:item/weapon_rack"
+  }
+}

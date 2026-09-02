@@ -1,0 +1,7 @@
+{
+  "__comment": "LOTRBlockRope.getItemIconName returned its own icon: items/rope.png is a coiled rope, not the hanging strand the block sprite draws.",
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lotr:item/rope"
+  }
+}

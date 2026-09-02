@@ -1,0 +1,22 @@
+{
+  "__comment": "The bare grapevine post. LOTRBlockGrapevine drew it with renderStandardBlock at setBlockBoundsForItemRender's bounds (f = 0.125), so it is a 4x4 post running the full height of the block -- not a cross, which is what the port had been generating.",
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "lotr:block/grapevine",
+    "post": "lotr:block/grapevine"
+  },
+  "elements": [
+    {
+      "from": [ 6, 0, 6 ],
+      "to": [ 10, 16, 10 ],
+      "faces": {
+        "down":  { "uv": [ 6, 6, 10, 10 ], "texture": "#post", "cullface": "down" },
+        "up":    { "uv": [ 6, 6, 10, 10 ], "texture": "#post", "cullface": "up" },
+        "north": { "uv": [ 6, 0, 10, 16 ], "texture": "#post" },
+        "south": { "uv": [ 6, 0, 10, 16 ], "texture": "#post" },
+        "west":  { "uv": [ 6, 0, 10, 16 ], "texture": "#post" },
+        "east":  { "uv": [ 6, 0, 10, 16 ], "texture": "#post" }
+      }
+    }
+  ]
+}

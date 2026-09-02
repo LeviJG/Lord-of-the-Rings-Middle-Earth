@@ -1,0 +1,59 @@
+{
+    "__comment": "vanilla block/tinted_cross, plus a second, untinted cross carrying #overlay. LOTRRenderBlocks.renderGrass drew exactly this: the grass icon in the biome grass colour, then the overlay icon over the same crossed squares in white. Coplanar quads z-fight in a modern chunk mesh, so each overlay plane is nudged 0.02 off the base plane and shows only the face pointing away from it.",
+    "ambientocclusion": false,
+    "textures": {
+        "particle": "#cross"
+    },
+    "elements": [
+        {   "from": [ 0.8, 0, 8 ],
+            "to": [ 15.2, 16, 8 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 },
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 }
+            }
+        },
+        {   "from": [ 8, 0, 0.8 ],
+            "to": [ 8, 16, 15.2 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 },
+                "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#cross", "tintindex": 0 }
+            }
+        },
+        {   "from": [ 0.8, 0, 8.02 ],
+            "to": [ 15.2, 16, 8.02 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay" }
+            }
+        },
+        {   "from": [ 0.8, 0, 7.98 ],
+            "to": [ 15.2, 16, 7.98 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "north": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay" }
+            }
+        },
+        {   "from": [ 8.02, 0, 0.8 ],
+            "to": [ 8.02, 16, 15.2 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "east": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay" }
+            }
+        },
+        {   "from": [ 7.98, 0, 0.8 ],
+            "to": [ 7.98, 16, 15.2 ],
+            "rotation": { "origin": [ 8, 8, 8 ], "axis": "y", "angle": 45, "rescale": true },
+            "shade": false,
+            "faces": {
+                "west": { "uv": [ 0, 0, 16, 16 ], "texture": "#overlay" }
+            }
+        }
+    ]
+}

@@ -1,0 +1,79 @@
+{
+  "__comment": "LOTRRenderBlocks.renderRope: a 2x2 cord one pixel off the wall, and on the topmost length a 4x4x4 knot with the cord stopping short beneath it.",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "lotr:block/hithlain_ladder",
+    "texture": "lotr:block/hithlain_ladder"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        0,
+        15
+      ],
+      "to": [
+        9,
+        16,
+        16
+      ],
+      "shade": false,
+      "faces": {
+        "north": {
+          "uv": [
+            7,
+            0,
+            9,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "south": {
+          "uv": [
+            7,
+            0,
+            9,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "west": {
+          "uv": [
+            15,
+            0,
+            16,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "east": {
+          "uv": [
+            15,
+            0,
+            16,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "up": {
+          "uv": [
+            7,
+            15,
+            9,
+            16
+          ],
+          "texture": "#texture"
+        },
+        "down": {
+          "uv": [
+            7,
+            15,
+            9,
+            16
+          ],
+          "texture": "#texture"
+        }
+      }
+    }
+  ]
+}

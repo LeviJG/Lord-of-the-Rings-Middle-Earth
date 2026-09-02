@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "lotr:block/fangorn_riverweed" },
+      { "model": "lotr:block/fangorn_riverweed", "y": 90 },
+      { "model": "lotr:block/fangorn_riverweed", "y": 180 },
+      { "model": "lotr:block/fangorn_riverweed", "y": 270 }
+    ]
+  }
+}

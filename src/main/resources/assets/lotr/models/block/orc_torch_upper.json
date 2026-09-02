@@ -1,0 +1,80 @@
+{
+  "__comment": "LOTRBlockDoubleTorch.setBlockBoundsBasedOnState: a 2x2 post. Meta 0 (the lower half) is full height, meta 1 (the head) only reaches 0.5. renderDoubleTorch draws it with renderStandardBlock -- it is a square post, not a cross.",
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "lotr:block/orc_torch_top",
+    "torch": "lotr:block/orc_torch_top"
+  },
+  "elements": [
+    {
+      "from": [
+        7,
+        0,
+        7
+      ],
+      "to": [
+        9,
+        8,
+        9
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#torch",
+          "cullface": "down"
+        },
+        "up": {
+          "uv": [
+            7,
+            7,
+            9,
+            9
+          ],
+          "texture": "#torch"
+        },
+        "north": {
+          "uv": [
+            7,
+            8,
+            9,
+            16
+          ],
+          "texture": "#torch"
+        },
+        "south": {
+          "uv": [
+            7,
+            8,
+            9,
+            16
+          ],
+          "texture": "#torch"
+        },
+        "west": {
+          "uv": [
+            7,
+            8,
+            9,
+            16
+          ],
+          "texture": "#torch"
+        },
+        "east": {
+          "uv": [
+            7,
+            8,
+            9,
+            16
+          ],
+          "texture": "#torch"
+        }
+      }
+    }
+  ]
+}

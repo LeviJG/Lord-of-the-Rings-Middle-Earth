@@ -1,0 +1,6 @@
+{
+  "__comment": "LOTRBlockBanner is INVISIBLE in the chunk mesh -- LOTRBannerRenderer draws it. This exists only to name a break particle, as minecraft:block/banner does.",
+  "textures": {
+    "particle": "minecraft:block/oak_planks"
+  }
+}

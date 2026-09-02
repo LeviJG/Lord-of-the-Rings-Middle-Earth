@@ -1,0 +1,7 @@
+{
+  "__comment": "A picture of the post itself. 1.7.10 rendered the item with the same renderStandardBlock geometry, so the inventory icon is the 3D post rather than a flat sprite.",
+  "model": {
+    "type": "minecraft:model",
+    "model": "lotr:block/grapevine"
+  }
+}

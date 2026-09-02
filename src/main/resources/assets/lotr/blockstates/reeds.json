@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "top=true": {
+      "model": "lotr:block/reeds_top"
+    },
+    "top=false": {
+      "model": "lotr:block/reeds_mid"
+    }
+  }
+}

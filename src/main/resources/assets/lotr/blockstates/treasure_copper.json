@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "layers=1": {
+      "model": "lotr:block/treasure_copper_height2"
+    },
+    "layers=2": {
+      "model": "lotr:block/treasure_copper_height4"
+    },
+    "layers=3": {
+      "model": "lotr:block/treasure_copper_height6"
+    },
+    "layers=4": {
+      "model": "lotr:block/treasure_copper_height8"
+    },
+    "layers=5": {
+      "model": "lotr:block/treasure_copper_height10"
+    },
+    "layers=6": {
+      "model": "lotr:block/treasure_copper_height12"
+    },
+    "layers=7": {
+      "model": "lotr:block/treasure_copper_height14"
+    },
+    "layers=8": {
+      "model": "lotr:block/treasure_copper_height16"
+    }
+  }
+}

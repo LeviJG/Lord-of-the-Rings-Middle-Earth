@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "has_corn=true": {
+      "model": "lotr:block/corn_stalk_corn"
+    },
+    "has_corn=false": {
+      "model": "lotr:block/corn_stalk"
+    }
+  }
+}
