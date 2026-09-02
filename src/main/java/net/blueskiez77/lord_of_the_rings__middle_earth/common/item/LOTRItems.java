@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import java.util.function.Function;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRTrophyType;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -11,6 +12,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
 
 public final class LOTRItems {
     // Item under the same id is a duplicate-key crash on load.
@@ -30,6 +32,40 @@ public final class LOTRItems {
     public static final Item KEBAB = register("kebab",
             Item::new, new Item.Properties()
                     .food(new FoodProperties(8, 0.8f, false)));
+
+    // LOTRItemTrollStatue: places a stone troll. Stack size 1, as it was --
+    // outfit and head count live in the stack, so two statues are rarely alike.
+    public static final Item TROLL_STATUE = register("troll_statue",
+            LOTRTrollStatueItem::new, new Item.Properties().stacksTo(1));
+
+    // LOTRItemBossTrophy's two subtypes, one item each. Stack size 1, as it was.
+    public static final Item MOUNTAIN_TROLL_CHIEFTAIN_TROPHY = register(
+            LOTRTrophyType.MOUNTAIN_TROLL_CHIEFTAIN.itemName(),
+            props -> new LOTRBossTrophyItem(LOTRTrophyType.MOUNTAIN_TROLL_CHIEFTAIN, props),
+            new Item.Properties().stacksTo(1));
+    public static final Item MALLORN_ENT_TROPHY = register(
+            LOTRTrophyType.MALLORN_ENT.itemName(),
+            props -> new LOTRBossTrophyItem(LOTRTrophyType.MALLORN_ENT, props),
+            new Item.Properties().stacksTo(1));
+
+    /** The item a given trophy entity gives back when it is knocked down. */
+    public static Item trophyItem(LOTRTrophyType type) {
+        return type == LOTRTrophyType.MALLORN_ENT
+                ? MALLORN_ENT_TROPHY
+                : MOUNTAIN_TROLL_CHIEFTAIN_TROPHY;
+    }
+
+    /**
+     * One of the two forms a treasure pile is carried in -- the two-pixel carpet
+     * at one layer, or the full block at eight. Called from LOTRBlocks while the
+     * piles are being built; see registerTreasurePile for why the order of the
+     * two calls matters.
+     */
+    public static Item registerTreasurePileItem(Block pile, String name, int layers) {
+        return register(name,
+                props -> new LOTRTreasurePileItem(pile, layers, props),
+                new Item.Properties());
+    }
 
     private LOTRItems() {
     }

@@ -5,23 +5,34 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREntityTags;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAnimalJarItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.PlaceOnWaterBlockItem;
+import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.item.DyeColor;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTreasurePileItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.WebBlock;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.ColoredFallingBlock;
@@ -50,6 +61,7 @@ import net.minecraft.world.level.block.state.properties.BlockSetType;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 public final class LOTRBlocks {
     // Mining tier, i.e. which needs_*_tool tag the block joins. NONE means pickaxe-mineable with no needs_* tag at all -- a wooden pickaxe suffices. That is what vanilla stone, stone bricks and bone blocks use, and it also matches the original: only sixteen blocks in 1.7.10 ever called setHarvestLevel, and everything else defaulted to level 0. Rock and brick families therefore take NONE, not STONE.
@@ -69,9 +81,18 @@ public final class LOTRBlocks {
     public static final List<Block> ALL_PLANKS = new ArrayList<>();
     public static final List<Block> ALL_LEAVES = new ArrayList<>();
     public static final List<Block> ALL_SAPLINGS = new ArrayList<>();
+
+    // Which sapling a leaf block drops. Every LOTR leaf has a sapling of the
+    // same species, so the pairing is by name: <x>_leaves -> <x>_sapling.
+    // Filled by pairLeavesWithSaplings() once both lists are populated.
+    public static final Map<Block, Block> LEAVES_SAPLING = new LinkedHashMap<>();
     public static final List<Block> ALL_TRAPDOORS = new ArrayList<>();
     public static final List<Block> ALL_DOORS = new ArrayList<>();
     public static final List<Block> ALL_BARS = new ArrayList<>();
+    public static final List<Block> ALL_GLASS_PANES = new ArrayList<>();
+
+    // Which glass block a pane wears the texture of.
+    public static final Map<Block, Block> GLASS_PANE_BASE = new LinkedHashMap<>();
     public static final List<Block> ALL_CHANDELIERS = new ArrayList<>();
     public static final List<Block> ALL_GLASS = new ArrayList<>();
     public static final List<Block> ALL_FLOWERS = new ArrayList<>();
@@ -102,6 +123,20 @@ public final class LOTRBlocks {
 
     public static final List<Block> ALL_BOTTOM_TOP = new ArrayList<>();
     public static final List<Block> ALL_TORCHES = new ArrayList<>();
+    public static final List<Block> ALL_DOUBLE_TORCHES = new ArrayList<>();
+    public static final List<Block> ALL_BIRD_CAGES = new ArrayList<>();
+    // Cages and jars together: everything backed by an animal-jar block entity.
+    public static final List<Block> ALL_ANIMAL_JARS = new ArrayList<>();
+    public static final List<Block> ALL_BANNERS = new ArrayList<>();
+    public static final List<Block> ALL_TREASURE_PILES = new ArrayList<>();
+    /** Each treasure pile to its two-pixel carpet item; see registerTreasurePile. */
+    public static final Map<Block, Item> TREASURE_PILE_CARPETS = new LinkedHashMap<>();
+    /** Each treasure pile to its full-block item, which is also its asItem(). */
+    public static final Map<Block, Item> TREASURE_PILE_BLOCKS = new LinkedHashMap<>();
+    public static final List<Block> ALL_WALL_BANNERS = new ArrayList<>();
+    /** Each standing banner to the wall form its item falls back to. */
+    public static final Map<Block, Block> BANNER_WALL_FORM = new LinkedHashMap<>();
+    public static final List<Block> ALL_CLOVERS = new ArrayList<>();
     public static final List<Block> ALL_CRAFTING_TABLES = new ArrayList<>();
     public static final List<Block> ALL_VINES = new ArrayList<>();
     public static final List<Block> ALL_LADDERS = new ArrayList<>();
@@ -417,20 +452,137 @@ public final class LOTRBlocks {
     public static final Block SMOOTH_CHALK = registerColumn("smooth_chalk");
     public static final Block DRYSTONE = registerCube("drystone", 1.5f, 6.0f, Tier.NONE);
 
-    public static final Block HIGH_ELVEN_WALL_TORCH = registerWallTorch("high_elven_wall_torch");
-    public static final Block HIGH_ELVEN_TORCH = registerTorch("high_elven_torch", HIGH_ELVEN_WALL_TORCH);
-    public static final Block WOOD_ELVEN_WALL_TORCH = registerWallTorch("wood_elven_wall_torch");
-    public static final Block WOOD_ELVEN_TORCH = registerTorch("wood_elven_torch", WOOD_ELVEN_WALL_TORCH);
-    public static final Block MORGUL_WALL_TORCH = registerWallTorch("morgul_wall_torch");
-    public static final Block MORGUL_TORCH = registerTorch("morgul_torch", MORGUL_WALL_TORCH);
-    public static final Block MALLORN_WALL_TORCH = registerWallTorch("mallorn_wall_torch");
-    public static final Block MALLORN_TORCH = registerTorch("mallorn_torch", MALLORN_WALL_TORCH);
-    public static final Block MALLORN_BLUE_WALL_TORCH = registerWallTorch("mallorn_blue_wall_torch");
-    public static final Block BLUE_MALLORN_TORCH = registerTorch("blue_mallorn_torch", MALLORN_BLUE_WALL_TORCH);
-    public static final Block MALLORN_GOLD_WALL_TORCH = registerWallTorch("mallorn_gold_wall_torch");
-    public static final Block MALLORN_GOLD_TORCH = registerTorch("mallorn_gold_torch", MALLORN_GOLD_WALL_TORCH);
-    public static final Block MALLORN_GREEN_WALL_TORCH = registerWallTorch("mallorn_green_wall_torch");
-    public static final Block GREEN_MALLORN_TORCH = registerTorch("green_mallorn_torch", MALLORN_GREEN_WALL_TORCH);
+    public static final Block ORC_TORCH = registerDoubleTorch("orc_torch");
+    // lotr:tauredainDoubleTorch, the "Taurethrim Torch". Registered exactly as
+    // the orc torch is -- both were a bare new LOTRBlockDoubleTorch() in
+    // LOTRMod, differing only in their sprites.
+    public static final Block TAUREDAIN_DOUBLE_TORCH = registerDoubleTorch("tauredain_double_torch");
+
+    public static final Block BRONZE_BIRD_CAGE = registerBirdCage("bronze_bird_cage", SoundType.METAL);
+    public static final Block IRON_BIRD_CAGE = registerBirdCage("iron_bird_cage", SoundType.METAL);
+    public static final Block SILVER_BIRD_CAGE = registerBirdCage("silver_bird_cage", SoundType.METAL);
+    public static final Block GOLD_BIRD_CAGE = registerBirdCage("gold_bird_cage", SoundType.METAL);
+    public static final Block WOODEN_BIRD_CAGE = registerBirdCage("wooden_bird_cage", SoundType.WOOD);
+    public static final Block BUTTERFLY_JAR = registerButterflyJar("butterfly_jar");
+
+    // LOTRMod: new LOTRBlockWeaponRack(). Material.circuits, hardness 0.5,
+    // resistance 1.0, wooden footsteps.
+
+    // LOTRItemBanner.BannerType, one standing and one wall block each. Vanilla's
+    // banner blocks do the placing and the rotating; see LOTRBannerBlock.
+    public static final Block GONDOR_WALL_BANNER = registerWallBanner("gondor_wall_banner", LOTRBannerType.GONDOR);
+    public static final Block GONDOR_BANNER = registerBanner("gondor_banner", LOTRBannerType.GONDOR, GONDOR_WALL_BANNER);
+    public static final Block ROHAN_WALL_BANNER = registerWallBanner("rohan_wall_banner", LOTRBannerType.ROHAN);
+    public static final Block ROHAN_BANNER = registerBanner("rohan_banner", LOTRBannerType.ROHAN, ROHAN_WALL_BANNER);
+    public static final Block MORDOR_WALL_BANNER = registerWallBanner("mordor_wall_banner", LOTRBannerType.MORDOR);
+    public static final Block MORDOR_BANNER = registerBanner("mordor_banner", LOTRBannerType.MORDOR, MORDOR_WALL_BANNER);
+    public static final Block LOTHLORIEN_WALL_BANNER = registerWallBanner("lothlorien_wall_banner", LOTRBannerType.LOTHLORIEN);
+    public static final Block LOTHLORIEN_BANNER = registerBanner("lothlorien_banner", LOTRBannerType.LOTHLORIEN, LOTHLORIEN_WALL_BANNER);
+    public static final Block MIRKWOOD_WALL_BANNER = registerWallBanner("mirkwood_wall_banner", LOTRBannerType.MIRKWOOD);
+    public static final Block MIRKWOOD_BANNER = registerBanner("mirkwood_banner", LOTRBannerType.MIRKWOOD, MIRKWOOD_WALL_BANNER);
+    public static final Block DUNLAND_WALL_BANNER = registerWallBanner("dunland_wall_banner", LOTRBannerType.DUNLAND);
+    public static final Block DUNLAND_BANNER = registerBanner("dunland_banner", LOTRBannerType.DUNLAND, DUNLAND_WALL_BANNER);
+    public static final Block ISENGARD_WALL_BANNER = registerWallBanner("isengard_wall_banner", LOTRBannerType.ISENGARD);
+    public static final Block ISENGARD_BANNER = registerBanner("isengard_banner", LOTRBannerType.ISENGARD, ISENGARD_WALL_BANNER);
+    public static final Block DURIN_WALL_BANNER = registerWallBanner("durin_wall_banner", LOTRBannerType.DURIN);
+    public static final Block DURIN_BANNER = registerBanner("durin_banner", LOTRBannerType.DURIN, DURIN_WALL_BANNER);
+    public static final Block ANGMAR_WALL_BANNER = registerWallBanner("angmar_wall_banner", LOTRBannerType.ANGMAR);
+    public static final Block ANGMAR_BANNER = registerBanner("angmar_banner", LOTRBannerType.ANGMAR, ANGMAR_WALL_BANNER);
+    public static final Block NEAR_HARAD_WALL_BANNER = registerWallBanner("near_harad_wall_banner", LOTRBannerType.NEAR_HARAD);
+    public static final Block NEAR_HARAD_BANNER = registerBanner("near_harad_banner", LOTRBannerType.NEAR_HARAD, NEAR_HARAD_WALL_BANNER);
+    public static final Block HIGH_ELF_WALL_BANNER = registerWallBanner("high_elf_wall_banner", LOTRBannerType.HIGH_ELF);
+    public static final Block HIGH_ELF_BANNER = registerBanner("high_elf_banner", LOTRBannerType.HIGH_ELF, HIGH_ELF_WALL_BANNER);
+    public static final Block BLUE_MOUNTAINS_WALL_BANNER = registerWallBanner("blue_mountains_wall_banner", LOTRBannerType.BLUE_MOUNTAINS);
+    public static final Block BLUE_MOUNTAINS_BANNER = registerBanner("blue_mountains_banner", LOTRBannerType.BLUE_MOUNTAINS, BLUE_MOUNTAINS_WALL_BANNER);
+    public static final Block RANGER_WALL_BANNER = registerWallBanner("ranger_wall_banner", LOTRBannerType.RANGER);
+    public static final Block RANGER_BANNER = registerBanner("ranger_banner", LOTRBannerType.RANGER, RANGER_WALL_BANNER);
+    public static final Block DOL_GULDUR_WALL_BANNER = registerWallBanner("dol_guldur_wall_banner", LOTRBannerType.DOL_GULDUR);
+    public static final Block DOL_GULDUR_BANNER = registerBanner("dol_guldur_banner", LOTRBannerType.DOL_GULDUR, DOL_GULDUR_WALL_BANNER);
+    public static final Block GUNDABAD_WALL_BANNER = registerWallBanner("gundabad_wall_banner", LOTRBannerType.GUNDABAD);
+    public static final Block GUNDABAD_BANNER = registerBanner("gundabad_banner", LOTRBannerType.GUNDABAD, GUNDABAD_WALL_BANNER);
+    public static final Block HALF_TROLL_WALL_BANNER = registerWallBanner("half_troll_wall_banner", LOTRBannerType.HALF_TROLL);
+    public static final Block HALF_TROLL_BANNER = registerBanner("half_troll_banner", LOTRBannerType.HALF_TROLL, HALF_TROLL_WALL_BANNER);
+    public static final Block DOL_AMROTH_WALL_BANNER = registerWallBanner("dol_amroth_wall_banner", LOTRBannerType.DOL_AMROTH);
+    public static final Block DOL_AMROTH_BANNER = registerBanner("dol_amroth_banner", LOTRBannerType.DOL_AMROTH, DOL_AMROTH_WALL_BANNER);
+    public static final Block MOREDAIN_WALL_BANNER = registerWallBanner("moredain_wall_banner", LOTRBannerType.MOREDAIN);
+    public static final Block MOREDAIN_BANNER = registerBanner("moredain_banner", LOTRBannerType.MOREDAIN, MOREDAIN_WALL_BANNER);
+    public static final Block TAUREDAIN_WALL_BANNER = registerWallBanner("tauredain_wall_banner", LOTRBannerType.TAUREDAIN);
+    public static final Block TAUREDAIN_BANNER = registerBanner("tauredain_banner", LOTRBannerType.TAUREDAIN, TAUREDAIN_WALL_BANNER);
+    public static final Block DALE_WALL_BANNER = registerWallBanner("dale_wall_banner", LOTRBannerType.DALE);
+    public static final Block DALE_BANNER = registerBanner("dale_banner", LOTRBannerType.DALE, DALE_WALL_BANNER);
+    public static final Block DORWINION_WALL_BANNER = registerWallBanner("dorwinion_wall_banner", LOTRBannerType.DORWINION);
+    public static final Block DORWINION_BANNER = registerBanner("dorwinion_banner", LOTRBannerType.DORWINION, DORWINION_WALL_BANNER);
+    public static final Block HOBBIT_WALL_BANNER = registerWallBanner("hobbit_wall_banner", LOTRBannerType.HOBBIT);
+    public static final Block HOBBIT_BANNER = registerBanner("hobbit_banner", LOTRBannerType.HOBBIT, HOBBIT_WALL_BANNER);
+    public static final Block ANORIEN_WALL_BANNER = registerWallBanner("anorien_wall_banner", LOTRBannerType.ANORIEN);
+    public static final Block ANORIEN_BANNER = registerBanner("anorien_banner", LOTRBannerType.ANORIEN, ANORIEN_WALL_BANNER);
+    public static final Block ITHILIEN_WALL_BANNER = registerWallBanner("ithilien_wall_banner", LOTRBannerType.ITHILIEN);
+    public static final Block ITHILIEN_BANNER = registerBanner("ithilien_banner", LOTRBannerType.ITHILIEN, ITHILIEN_WALL_BANNER);
+    public static final Block LOSSARNACH_WALL_BANNER = registerWallBanner("lossarnach_wall_banner", LOTRBannerType.LOSSARNACH);
+    public static final Block LOSSARNACH_BANNER = registerBanner("lossarnach_banner", LOTRBannerType.LOSSARNACH, LOSSARNACH_WALL_BANNER);
+    public static final Block LEBENNIN_WALL_BANNER = registerWallBanner("lebennin_wall_banner", LOTRBannerType.LEBENNIN);
+    public static final Block LEBENNIN_BANNER = registerBanner("lebennin_banner", LOTRBannerType.LEBENNIN, LEBENNIN_WALL_BANNER);
+    public static final Block PELARGIR_WALL_BANNER = registerWallBanner("pelargir_wall_banner", LOTRBannerType.PELARGIR);
+    public static final Block PELARGIR_BANNER = registerBanner("pelargir_banner", LOTRBannerType.PELARGIR, PELARGIR_WALL_BANNER);
+    public static final Block BLACKROOT_VALE_WALL_BANNER = registerWallBanner("blackroot_vale_wall_banner", LOTRBannerType.BLACKROOT_VALE);
+    public static final Block BLACKROOT_VALE_BANNER = registerBanner("blackroot_vale_banner", LOTRBannerType.BLACKROOT_VALE, BLACKROOT_VALE_WALL_BANNER);
+    public static final Block PINNATH_GELIN_WALL_BANNER = registerWallBanner("pinnath_gelin_wall_banner", LOTRBannerType.PINNATH_GELIN);
+    public static final Block PINNATH_GELIN_BANNER = registerBanner("pinnath_gelin_banner", LOTRBannerType.PINNATH_GELIN, PINNATH_GELIN_WALL_BANNER);
+    public static final Block MINAS_MORGUL_WALL_BANNER = registerWallBanner("minas_morgul_wall_banner", LOTRBannerType.MINAS_MORGUL);
+    public static final Block MINAS_MORGUL_BANNER = registerBanner("minas_morgul_banner", LOTRBannerType.MINAS_MORGUL, MINAS_MORGUL_WALL_BANNER);
+    public static final Block BLACK_URUK_WALL_BANNER = registerWallBanner("black_uruk_wall_banner", LOTRBannerType.BLACK_URUK);
+    public static final Block BLACK_URUK_BANNER = registerBanner("black_uruk_banner", LOTRBannerType.BLACK_URUK, BLACK_URUK_WALL_BANNER);
+    public static final Block GONDOR_STEWARD_WALL_BANNER = registerWallBanner("gondor_steward_wall_banner", LOTRBannerType.GONDOR_STEWARD);
+    public static final Block GONDOR_STEWARD_BANNER = registerBanner("gondor_steward_banner", LOTRBannerType.GONDOR_STEWARD, GONDOR_STEWARD_WALL_BANNER);
+    public static final Block NAN_UNGOL_WALL_BANNER = registerWallBanner("nan_ungol_wall_banner", LOTRBannerType.NAN_UNGOL);
+    public static final Block NAN_UNGOL_BANNER = registerBanner("nan_ungol_banner", LOTRBannerType.NAN_UNGOL, NAN_UNGOL_WALL_BANNER);
+    public static final Block RHUDAUR_WALL_BANNER = registerWallBanner("rhudaur_wall_banner", LOTRBannerType.RHUDAUR);
+    public static final Block RHUDAUR_BANNER = registerBanner("rhudaur_banner", LOTRBannerType.RHUDAUR, RHUDAUR_WALL_BANNER);
+    public static final Block LAMEDON_WALL_BANNER = registerWallBanner("lamedon_wall_banner", LOTRBannerType.LAMEDON);
+    public static final Block LAMEDON_BANNER = registerBanner("lamedon_banner", LOTRBannerType.LAMEDON, LAMEDON_WALL_BANNER);
+    public static final Block RHUN_WALL_BANNER = registerWallBanner("rhun_wall_banner", LOTRBannerType.RHUN);
+    public static final Block RHUN_BANNER = registerBanner("rhun_banner", LOTRBannerType.RHUN, RHUN_WALL_BANNER);
+    public static final Block RIVENDELL_WALL_BANNER = registerWallBanner("rivendell_wall_banner", LOTRBannerType.RIVENDELL);
+    public static final Block RIVENDELL_BANNER = registerBanner("rivendell_banner", LOTRBannerType.RIVENDELL, RIVENDELL_WALL_BANNER);
+    public static final Block ESGAROTH_WALL_BANNER = registerWallBanner("esgaroth_wall_banner", LOTRBannerType.ESGAROTH);
+    public static final Block ESGAROTH_BANNER = registerBanner("esgaroth_banner", LOTRBannerType.ESGAROTH, ESGAROTH_WALL_BANNER);
+    public static final Block UMBAR_WALL_BANNER = registerWallBanner("umbar_wall_banner", LOTRBannerType.UMBAR);
+    public static final Block UMBAR_BANNER = registerBanner("umbar_banner", LOTRBannerType.UMBAR, UMBAR_WALL_BANNER);
+    public static final Block HARAD_NOMAD_WALL_BANNER = registerWallBanner("harad_nomad_wall_banner", LOTRBannerType.HARAD_NOMAD);
+    public static final Block HARAD_NOMAD_BANNER = registerBanner("harad_nomad_banner", LOTRBannerType.HARAD_NOMAD, HARAD_NOMAD_WALL_BANNER);
+    public static final Block HARAD_GULF_WALL_BANNER = registerWallBanner("harad_gulf_wall_banner", LOTRBannerType.HARAD_GULF);
+    public static final Block HARAD_GULF_BANNER = registerBanner("harad_gulf_banner", LOTRBannerType.HARAD_GULF, HARAD_GULF_WALL_BANNER);
+    public static final Block BREE_WALL_BANNER = registerWallBanner("bree_wall_banner", LOTRBannerType.BREE);
+    public static final Block BREE_BANNER = registerBanner("bree_banner", LOTRBannerType.BREE, BREE_WALL_BANNER);
+
+    public static final Block WEAPON_RACK = register("weapon_rack", LOTRWeaponRackBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD)
+                    .strength(0.5f, 1.0f)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY),
+            // Stack of one. LOTRItemBlockWeaponRack did NOT limit its stack --
+            // racks stacked to 64 in 1.7.10 -- so this is a deliberate change.
+            item -> item.stacksTo(1));
+
+    public static final Block CLOVER = registerClover("clover", true);
+    public static final Block FOUR_LEAF_CLOVER = registerClover("four_leaf_clover", false);
+
+    public static final Block HIGH_ELVEN_WALL_TORCH = registerWallTorch("high_elven_wall_torch", LOTRGlowStyle.ELVEN_GLOW);
+    public static final Block HIGH_ELVEN_TORCH = registerTorch("high_elven_torch", HIGH_ELVEN_WALL_TORCH, LOTRGlowStyle.ELVEN_GLOW);
+    public static final Block WOOD_ELVEN_WALL_TORCH = registerWallTorch("wood_elven_wall_torch", LOTRGlowStyle.WOOD_ELVEN_TORCH);
+    public static final Block WOOD_ELVEN_TORCH = registerTorch("wood_elven_torch", WOOD_ELVEN_WALL_TORCH, LOTRGlowStyle.WOOD_ELVEN_TORCH);
+    public static final Block MORGUL_WALL_TORCH = registerWallTorch("morgul_wall_torch", LOTRGlowStyle.MORGUL);
+    public static final Block MORGUL_TORCH = registerTorch("morgul_torch", MORGUL_WALL_TORCH, LOTRGlowStyle.MORGUL);
+    public static final Block MALLORN_WALL_TORCH = registerWallTorch("mallorn_wall_torch", LOTRGlowStyle.MALLORN_SILVER);
+    public static final Block MALLORN_TORCH = registerTorch("mallorn_torch", MALLORN_WALL_TORCH, LOTRGlowStyle.MALLORN_SILVER);
+    public static final Block MALLORN_BLUE_WALL_TORCH = registerWallTorch("mallorn_blue_wall_torch", LOTRGlowStyle.MALLORN_BLUE);
+    public static final Block BLUE_MALLORN_TORCH = registerTorch("blue_mallorn_torch", MALLORN_BLUE_WALL_TORCH, LOTRGlowStyle.MALLORN_BLUE);
+    public static final Block MALLORN_GOLD_WALL_TORCH = registerWallTorch("mallorn_gold_wall_torch", LOTRGlowStyle.MALLORN_GOLD);
+    public static final Block MALLORN_GOLD_TORCH = registerTorch("mallorn_gold_torch", MALLORN_GOLD_WALL_TORCH, LOTRGlowStyle.MALLORN_GOLD);
+    public static final Block MALLORN_GREEN_WALL_TORCH = registerWallTorch("mallorn_green_wall_torch", LOTRGlowStyle.MALLORN_GREEN);
+    public static final Block GREEN_MALLORN_TORCH = registerTorch("green_mallorn_torch", MALLORN_GREEN_WALL_TORCH, LOTRGlowStyle.MALLORN_GREEN);
 
     public static final Block ANGMAR_CRAFTING_TABLE = registerCraftingTable("angmar_crafting_table");
     public static final Block BLUE_DWARVEN_CRAFTING_TABLE = registerCraftingTable("blue_dwarven_crafting_table");
@@ -460,19 +612,49 @@ public final class LOTRBlocks {
     public static final Block URUK_CRAFTING_TABLE = registerCraftingTable("uruk_crafting_table");
     public static final Block WOOD_ELVEN_CRAFTING_TABLE = registerCraftingTable("wood_elven_crafting_table");
 
-    public static final Block TALL_GRASS_FERNSPROUT = registerFlower("tall_grass_fernsprout");
-    public static final Block TALL_GRASS_FLOWER = registerFlower("tall_grass_flower");
-    public static final Block TALL_GRASS_NETTLE = registerFlower("tall_grass_nettle");
-    public static final Block TALL_GRASS_SHORT = registerFlower("tall_grass_short");
-    public static final Block TALL_GRASS_THISTLE = registerFlower("tall_grass_thistle");
-    public static final Block TALL_GRASS_WHEAT = registerFlower("tall_grass_wheat");
+    // LOTRBlockTallGrass, the one plant family the original biome-tinted:
+    // colorMultiplier returned the biome grass colour, so the six textures are
+    // greyscale and are coloured at render time. Everything else in ALL_FLOWERS
+    // is painted in its texture -- arid grass and Mordor scrub included, which
+    // is why they are not here.
+    public static final List<Block> GRASS_TINTED = new ArrayList<>();
+
+    // The three of those that also had a second, untinted overlay icon --
+    // LOTRBlockTallGrass.grassOverlay = {false, true, true, true, false, false}
+    // over {short, flower, wheat, thistle, nettle, fernsprout}.
+    public static final List<Block> GRASS_TINTED_WITH_OVERLAY = new ArrayList<>();
+
+    public static final Block TALL_GRASS_FERNSPROUT = registerGrass("tall_grass_fernsprout", LOTRPlantBlock.Ground.SOIL);
+    public static final Block TALL_GRASS_FLOWER = registerGrass("tall_grass_flower", LOTRPlantBlock.Ground.SOIL);
+    public static final Block TALL_GRASS_NETTLE = registerGrass("tall_grass_nettle", LOTRPlantBlock.Ground.SOIL, LOTRPlantBlock.Sting.NETTLE);
+    public static final Block TALL_GRASS_SHORT = registerGrass("tall_grass_short", LOTRPlantBlock.Ground.SOIL);
+    public static final Block TALL_GRASS_THISTLE = registerGrass("tall_grass_thistle", LOTRPlantBlock.Ground.SOIL, LOTRPlantBlock.Sting.THISTLE);
+    public static final Block TALL_GRASS_WHEAT = registerGrass("tall_grass_wheat", LOTRPlantBlock.Ground.SOIL);
+
+    // ALL_FLOWERS is a registration bucket, not a statement that everything in
+    // it is a flower: the grasses, the stalks and the riverweed live there too,
+    // and must stay out of #minecraft:small_flowers.
+    public static final List<Block> NOT_SMALL_FLOWERS = new ArrayList<>();
+
+    // Reeds, dried reeds and corn: plants that occupy a stack of blocks, have
+    // their own hand-written models, and take a flat inventory icon of their own
+    // rather than a picture of one segment.
+    public static final List<Block> ALL_COLUMN_PLANTS = new ArrayList<>();
+
+    static {
+        // LOTRBlockClover.colorMultiplier returned getBiomeGrassColor too.
+        GRASS_TINTED.addAll(ALL_CLOVERS);
+        GRASS_TINTED.addAll(List.of(TALL_GRASS_SHORT, TALL_GRASS_FLOWER, TALL_GRASS_WHEAT,
+                TALL_GRASS_THISTLE, TALL_GRASS_NETTLE, TALL_GRASS_FERNSPROUT));
+        GRASS_TINTED_WITH_OVERLAY.addAll(List.of(TALL_GRASS_FLOWER, TALL_GRASS_WHEAT, TALL_GRASS_THISTLE));
+    }
 
     public static final Block IVY = registerVine("ivy");
     public static final Block RED_IVY = registerVine("red_ivy");
     public static final Block MIRK_VINES = registerVine("mirk_vines");
     public static final Block WILLOW_VINES = registerVine("willow_vines");
 
-    public static final Block HITHLAIN_LADDER = registerLadder("hithlain_ladder");
+    public static final Block HITHLAIN_LADDER = registerRope("hithlain_ladder", true, true);
     public static final Block MALLORN_LADDER = registerLadder("mallorn_ladder");
 
     // faces 0/1, sideIcon otherwise). Material.ground, no harvest level set.
@@ -498,9 +680,12 @@ public final class LOTRBlocks {
     public static final Block DAUB = registerSoftBlock("daub", 1.0f, SoundType.GRASS);
 
     public static final Block WASTE_BLOCK = track(SHOVEL_MINEABLE, registerSoftBlock("waste_block", 0.5f, SoundType.SAND));
-    public static final Block TREASURE_COPPER = registerSoftBlock("treasure_copper", 3.0f, SoundType.METAL);
-    public static final Block TREASURE_GOLD = registerSoftBlock("treasure_gold", 3.0f, SoundType.METAL);
-    public static final Block TREASURE_SILVER = registerSoftBlock("treasure_silver", 3.0f, SoundType.METAL);
+    // LOTRBlockTreasurePile, NOT a plain cube: eight layer heights, the
+    // shallowest of them carpet-thin. They were registered as full blocks here
+    // by mistake.
+    public static final Block TREASURE_COPPER = registerTreasurePile("treasure_copper");
+    public static final Block TREASURE_GOLD = registerTreasurePile("treasure_gold");
+    public static final Block TREASURE_SILVER = registerTreasurePile("treasure_silver");
 
     public static final Block DOL_AMROTH_GATE = registerWoodenGate("dol_amroth_gate");
     public static final Block DWARVEN_GATE = registerStoneGate("dwarven_gate");
@@ -645,13 +830,13 @@ public final class LOTRBlocks {
     public static final Block BERRY_BUSH_RASPBERRY = registerBush("berry_bush_raspberry");
     public static final Block BERRY_BUSH_WILDBERRY = registerBush("berry_bush_wildberry");
 
-    public static final Block CORN_STALK = registerFlower("corn_stalk");
-    public static final Block GRAPEVINE = registerFlower("grapevine");
-    public static final Block REEDS = registerFlower("reeds");
-    public static final Block DRIED_REEDS = registerFlower("dried_reeds");
-    public static final Block FANGORN_RIVERWEED = registerFlower("fangorn_riverweed");
+    public static final Block CORN_STALK = registerCorn("corn_stalk");
+    public static final Block GRAPEVINE = registerStalk("grapevine", LOTRPlantBlock.Shape.POST, LOTRPlantBlock.Ground.STURDY_OR_SELF);
+    public static final Block REEDS = registerReed("reeds", true);
+    public static final Block DRIED_REEDS = registerReed("dried_reeds", false);
+    public static final Block FANGORN_RIVERWEED = registerRiverweed("fangorn_riverweed");
     public static final Block WEB_UNGOLIANT = registerWeb("web_ungoliant");
-    public static final Block ROPE = registerLadder("rope");
+    public static final Block ROPE = registerRope("rope", false, false);
 
     // LOTRMod: createMetal(false), createMetal(false), createWooden(false).
     // These are gates you open, not decorative bars -- registering them as
@@ -801,16 +986,16 @@ public final class LOTRBlocks {
     public static final Block WILLOW_SAPLING = registerSapling("willow_sapling");
 
     public static final Block ASPHODEL = registerFlower("asphodel");
-    public static final Block ATHELAS = registerFlower("athelas");
+    public static final Block ATHELAS = registerFlower("athelas", LOTRPlantBlock.Shape.BROAD);
     public static final Block BLUEBELL = registerFlower("bluebell");
     public static final Block DWARF_HERB = registerFlower("dwarf_herb");
     public static final Block ELANOR = registerFlower("elanor");
-    public static final Block FLAX_PLANT = registerFlower("flax_plant");
-    public static final Block LAVENDER = registerFlower("lavender");
+    public static final Block FLAX_PLANT = registerFlower("flax_plant", LOTRPlantBlock.Shape.MEDIUM);
+    public static final Block LAVENDER = registerFlower("lavender", LOTRPlantBlock.Shape.BROAD);
     public static final Block MARIGOLD = registerFlower("marigold");
-    public static final Block MORGUL_FLOWER = registerFlower("morgul_flower");
+    public static final Block MORGUL_FLOWER = registerFlower("morgul_flower", LOTRPlantBlock.Shape.WIDE, LOTRPlantBlock.Ground.SOIL_OR_MORDOR);
     public static final Block NIPHREDIL = registerFlower("niphredil");
-    public static final Block SHIRE_HEATHER = registerFlower("shire_heather");
+    public static final Block SHIRE_HEATHER = registerFlower("shire_heather", LOTRPlantBlock.Shape.BROAD);
     public static final Block SIMBELMYNE = registerFlower("simbelmyne");
     public static final Block HARAD_FLOWER_DAISY = registerFlower("harad_flower_daisy");
     public static final Block PINK_HARAD_FLOWER = registerFlower("pink_harad_flower");
@@ -822,20 +1007,20 @@ public final class LOTRBlocks {
     public static final Block RHUN_FLOWER_CHRYS_WHITE = registerFlower("rhun_flower_chrys_white");
     public static final Block RHUN_FLOWER_CHRYS_YELLOW = registerFlower("rhun_flower_chrys_yellow");
 
-    public static final Block ARID_GRASS = registerFlower("arid_grass");
-    public static final Block BLACKROOT = registerFlower("blackroot");
-    public static final Block CORRUPT_MALLORN = registerFlower("corrupt_mallorn");
-    public static final Block DEAD_MARSH_PLANT = registerFlower("dead_marsh_plant");
-    public static final Block FANGORN_PLANT_BROWN = registerFlower("fangorn_plant_brown");
-    public static final Block FANGORN_PLANT_GOLD = registerFlower("fangorn_plant_gold");
-    public static final Block FANGORN_PLANT_GREEN = registerFlower("fangorn_plant_green");
-    public static final Block FANGORN_PLANT_RED = registerFlower("fangorn_plant_red");
-    public static final Block FANGORN_PLANT_SILVER = registerFlower("fangorn_plant_silver");
-    public static final Block FANGORN_PLANT_YELLOW = registerFlower("fangorn_plant_yellow");
-    public static final Block MORDOR_GRASS = registerFlower("mordor_grass");
-    public static final Block MORDOR_THORN = registerFlower("mordor_thorn");
-    public static final Block MORGUL_SHROOM = registerFlower("morgul_shroom");
-    public static final Block PIPEWEED_PLANT = registerFlower("pipeweed_plant");
+    public static final Block ARID_GRASS = registerGrass("arid_grass", LOTRPlantBlock.Ground.SOIL_OR_SAND);
+    public static final Block BLACKROOT = registerFlower("blackroot", LOTRPlantBlock.Shape.WIDE);
+    public static final Block CORRUPT_MALLORN = registerFlower("corrupt_mallorn", LOTRPlantBlock.Shape.GRASS);
+    public static final Block DEAD_MARSH_PLANT = registerFlower("dead_marsh_plant", LOTRPlantBlock.Shape.GRASS);
+    public static final Block FANGORN_PLANT_BROWN = registerFlower("fangorn_plant_brown", LOTRPlantBlock.Shape.MEDIUM);
+    public static final Block FANGORN_PLANT_GOLD = registerFlower("fangorn_plant_gold", LOTRPlantBlock.Shape.MEDIUM);
+    public static final Block FANGORN_PLANT_GREEN = registerFlower("fangorn_plant_green", LOTRPlantBlock.Shape.MEDIUM);
+    public static final Block FANGORN_PLANT_RED = registerFlower("fangorn_plant_red", LOTRPlantBlock.Shape.MEDIUM);
+    public static final Block FANGORN_PLANT_SILVER = registerFlower("fangorn_plant_silver", LOTRPlantBlock.Shape.MEDIUM);
+    public static final Block FANGORN_PLANT_YELLOW = registerFlower("fangorn_plant_yellow", LOTRPlantBlock.Shape.MEDIUM);
+    public static final Block MORDOR_GRASS = registerGrass("mordor_grass", LOTRPlantBlock.Ground.MORDOR);
+    public static final Block MORDOR_THORN = registerGrass("mordor_thorn", LOTRPlantBlock.Ground.MORDOR, LOTRPlantBlock.Sting.THORN);
+    public static final Block MORGUL_SHROOM = registerFlower("morgul_shroom", LOTRPlantBlock.Shape.SHROOM, LOTRPlantBlock.Ground.MORDOR);
+    public static final Block PIPEWEED_PLANT = registerFlower("pipeweed_plant", LOTRPlantBlock.Shape.GRASS);
 
     public static final Block CHERRY_LOG = registerLog("cherry_log");
     public static final Block ALMOND_LOG = registerLog("almond_log");
@@ -1055,22 +1240,22 @@ public final class LOTRBlocks {
     public static final Block WOOD_ELF_BARS = registerBars("wood_elf_bars");
     public static final Block WOOD_ELF_WOOD_BARS = registerBars("wood_elf_wood_bars");
 
-    public static final Block BLUE_DWARVEN_CHANDELIER = registerChandelier("blue_dwarven_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block BRONZE_CHANDELIER = registerChandelier("bronze_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block DWARVEN_CHANDELIER = registerChandelier("dwarven_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block GOLD_CHANDELIER = registerChandelier("gold_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block HIGH_ELVEN_CHANDELIER = registerChandelier("high_elven_chandelier", LOTRChandelierBlock.ParticleStyle.HIGH_ELVEN);
-    public static final Block IRON_CHANDELIER = registerChandelier("iron_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block BLUE_MALLORN_CHANDELIER = registerChandelier("blue_mallorn_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_BLUE);
-    public static final Block MALLORN_GOLD_CHANDELIER = registerChandelier("mallorn_gold_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_GOLD);
-    public static final Block GREEN_MALLORN_CHANDELIER = registerChandelier("green_mallorn_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_GREEN);
-    public static final Block SILVER_MALLORN_CHANDELIER = registerChandelier("silver_mallorn_chandelier", LOTRChandelierBlock.ParticleStyle.MALLORN_SILVER);
-    public static final Block MITHRIL_CHANDELIER = registerChandelier("mithril_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block MORGUL_CHANDELIER = registerChandelier("morgul_chandelier", LOTRChandelierBlock.ParticleStyle.MORGUL);
-    public static final Block ORC_CHANDELIER = registerChandelier("orc_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block SILVER_CHANDELIER = registerChandelier("silver_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block URUK_CHANDELIER = registerChandelier("uruk_chandelier", LOTRChandelierBlock.ParticleStyle.FLAME);
-    public static final Block WOOD_ELVEN_CHANDELIER = registerChandelier("wood_elven_chandelier", LOTRChandelierBlock.ParticleStyle.WOOD_ELVEN);
+    public static final Block BLUE_DWARVEN_CHANDELIER = registerChandelier("blue_dwarven_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block BRONZE_CHANDELIER = registerChandelier("bronze_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block DWARVEN_CHANDELIER = registerChandelier("dwarven_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block GOLD_CHANDELIER = registerChandelier("gold_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block HIGH_ELVEN_CHANDELIER = registerChandelier("high_elven_chandelier", LOTRGlowStyle.ELVEN_GLOW_STEADY);
+    public static final Block IRON_CHANDELIER = registerChandelier("iron_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block BLUE_MALLORN_CHANDELIER = registerChandelier("blue_mallorn_chandelier", LOTRGlowStyle.MALLORN_BLUE);
+    public static final Block MALLORN_GOLD_CHANDELIER = registerChandelier("mallorn_gold_chandelier", LOTRGlowStyle.MALLORN_GOLD);
+    public static final Block GREEN_MALLORN_CHANDELIER = registerChandelier("green_mallorn_chandelier", LOTRGlowStyle.MALLORN_GREEN);
+    public static final Block SILVER_MALLORN_CHANDELIER = registerChandelier("silver_mallorn_chandelier", LOTRGlowStyle.MALLORN_SILVER);
+    public static final Block MITHRIL_CHANDELIER = registerChandelier("mithril_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block MORGUL_CHANDELIER = registerChandelier("morgul_chandelier", LOTRGlowStyle.MORGUL);
+    public static final Block ORC_CHANDELIER = registerChandelier("orc_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block SILVER_CHANDELIER = registerChandelier("silver_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block URUK_CHANDELIER = registerChandelier("uruk_chandelier", LOTRGlowStyle.FLAME);
+    public static final Block WOOD_ELVEN_CHANDELIER = registerChandelier("wood_elven_chandelier", LOTRGlowStyle.WOOD_ELVEN_CHANDELIER);
 
     public static final Block BLACK_STAINED_GLASS = registerGlass("black_stained_glass");
     public static final Block BLUE_STAINED_GLASS = registerGlass("blue_stained_glass");
@@ -1089,6 +1274,24 @@ public final class LOTRBlocks {
     public static final Block WHITE_STAINED_GLASS = registerGlass("white_stained_glass");
     public static final Block YELLOW_STAINED_GLASS = registerGlass("yellow_stained_glass");
     public static final Block GLASS = registerGlass("glass");
+
+    public static final Block BLACK_STAINED_GLASS_PANE = registerGlassPane("black_stained_glass_pane", BLACK_STAINED_GLASS);
+    public static final Block BLUE_STAINED_GLASS_PANE = registerGlassPane("blue_stained_glass_pane", BLUE_STAINED_GLASS);
+    public static final Block BROWN_STAINED_GLASS_PANE = registerGlassPane("brown_stained_glass_pane", BROWN_STAINED_GLASS);
+    public static final Block CYAN_STAINED_GLASS_PANE = registerGlassPane("cyan_stained_glass_pane", CYAN_STAINED_GLASS);
+    public static final Block GRAY_STAINED_GLASS_PANE = registerGlassPane("gray_stained_glass_pane", GRAY_STAINED_GLASS);
+    public static final Block GREEN_STAINED_GLASS_PANE = registerGlassPane("green_stained_glass_pane", GREEN_STAINED_GLASS);
+    public static final Block LIGHT_BLUE_STAINED_GLASS_PANE = registerGlassPane("light_blue_stained_glass_pane", LIGHT_BLUE_STAINED_GLASS);
+    public static final Block LIME_STAINED_GLASS_PANE = registerGlassPane("lime_stained_glass_pane", LIME_STAINED_GLASS);
+    public static final Block MAGENTA_STAINED_GLASS_PANE = registerGlassPane("magenta_stained_glass_pane", MAGENTA_STAINED_GLASS);
+    public static final Block ORANGE_STAINED_GLASS_PANE = registerGlassPane("orange_stained_glass_pane", ORANGE_STAINED_GLASS);
+    public static final Block PINK_STAINED_GLASS_PANE = registerGlassPane("pink_stained_glass_pane", PINK_STAINED_GLASS);
+    public static final Block PURPLE_STAINED_GLASS_PANE = registerGlassPane("purple_stained_glass_pane", PURPLE_STAINED_GLASS);
+    public static final Block RED_STAINED_GLASS_PANE = registerGlassPane("red_stained_glass_pane", RED_STAINED_GLASS);
+    public static final Block SILVER_STAINED_GLASS_PANE = registerGlassPane("silver_stained_glass_pane", SILVER_STAINED_GLASS);
+    public static final Block WHITE_STAINED_GLASS_PANE = registerGlassPane("white_stained_glass_pane", WHITE_STAINED_GLASS);
+    public static final Block YELLOW_STAINED_GLASS_PANE = registerGlassPane("yellow_stained_glass_pane", YELLOW_STAINED_GLASS);
+    public static final Block GLASS_PANE = registerGlassPane("glass_pane", GLASS);
 
     public static final Block ALMOND_STAIRS = registerStairs("almond_stairs", ALMOND_PLANKS);
     public static final Block ANGMAR_BRICK_STAIRS = registerStairs("angmar_brick_stairs", ANGMAR_BRICK);
@@ -1661,29 +1864,124 @@ public final class LOTRBlocks {
                 true));
     }
 
-    private static Block registerWallTorch(String name) {
-        return register(name, props -> new WallTorchBlock(ParticleTypes.FLAME, props),
-                BlockBehaviour.Properties.of()
-                        .noCollision()
-                        .instabreak()
-                        .lightLevel(state -> 14)
-                        .sound(SoundType.WOOD)
-                        .pushReaction(PushReaction.DESTROY),
-                false);
+    private static Block registerWallTorch(String name, LOTRGlowStyle glow) {
+        return register(name, props -> new LOTRWallTorchBlock(glow, props),
+                torchProperties(), false);
     }
 
-    private static Block registerTorch(String name, Block wallVariant) {
-        Block torch = register(name, props -> new TorchBlock(ParticleTypes.FLAME, props),
-                BlockBehaviour.Properties.of()
-                        .noCollision()
-                        .instabreak()
-                        .lightLevel(state -> 14)
-                        .sound(SoundType.WOOD)
-                        .pushReaction(PushReaction.DESTROY),
-                true);
+    // The item is a StandingAndWallBlockItem, not a plain BlockItem: that is
+    // what lets a torch be put on the SIDE of a block. With a plain BlockItem
+    // the wall variants were registered but unreachable -- every LOTR torch
+    // could only be stood on top of something.
+    private static Block registerTorch(String name, Block wallVariant, LOTRGlowStyle glow) {
+        Block torch = register(name, props -> new LOTRTorchBlock(glow, props),
+                torchProperties(), true, UnaryOperator.identity(),
+                (block, props) -> new StandingAndWallBlockItem(
+                        block, wallVariant, Direction.DOWN, props));
         ALL_TORCHES.add(torch);
         TORCH_WALL.put(torch, wallVariant);
         return torch;
+    }
+
+    // LOTRMod: new LOTRBlockDoubleTorch(). Two blocks tall, no wall form.
+    // LOTRBlockBanner / LOTRItemBanner: cloth on a post, hardness 1.0, wooden
+    // footsteps and no collision box -- the original's banner entity had none
+    // and you could walk through it. The DyeColor is vanilla's, unused by the
+    // renderer; WHITE for all of them until something in the port actually
+    // asks a banner for a colour.
+    private static BlockBehaviour.Properties bannerProperties() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.WOOD)
+                .noCollision()
+                .strength(1.0f)
+                .sound(SoundType.WOOD)
+                .ignitedByLava();
+    }
+
+    private static Block registerBanner(String name, LOTRBannerType type, Block wallForm) {
+        Block banner = track(ALL_BANNERS, register(name,
+                props -> new LOTRBannerBlock(type, DyeColor.WHITE, props),
+                bannerProperties(), true, props -> props.stacksTo(16),
+                (block, props) -> new StandingAndWallBlockItem(block, wallForm, Direction.DOWN, props)));
+        BANNER_WALL_FORM.put(banner, wallForm);
+        return banner;
+    }
+
+    /** No item: the standing banner's StandingAndWallBlockItem places both. */
+    private static Block registerWallBanner(String name, LOTRBannerType type) {
+        return track(ALL_WALL_BANNERS, register(name,
+                props -> new LOTRWallBannerBlock(type, DyeColor.WHITE, props),
+                bannerProperties(),
+                false));
+    }
+
+    private static Block registerDoubleTorch(String name) {
+        return track(ALL_DOUBLE_TORCHES, register(name, LOTRDoubleTorchBlock::new,
+                torchProperties(), true));
+    }
+
+    // LOTRBlockBirdCage / LOTRBlockBirdCageWood: Material.glass, hardness 0.5,
+    // metal footsteps, a full cube with its own top, side and base sprites.
+    // Stack size 1 and a LOTRAnimalJarItem: a cage carrying a bird cannot
+    // stack with an empty one, and the item is what catches the bird.
+    private static Block registerBirdCage(String name, SoundType sound) {
+        return track(ALL_ANIMAL_JARS, track(ALL_BIRD_CAGES, register(name, LOTRAnimalJarBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.METAL)
+                        .strength(0.5f)
+                        .sound(sound)
+                        .noOcclusion()
+                        .isViewBlocking((state, level, pos) -> false)
+                        .isSuffocating((state, level, pos) -> false),
+                true, props -> props.stacksTo(1),
+                (block, props) -> new LOTRAnimalJarItem(
+                        block, LOTREntityTags.BIRD_CAGE_CATCHABLE, props))));
+    }
+
+    // LOTRBlockButterflyJar: a glass pot on the same animal-jar machinery as
+    // the bird cages, with its own squat shape and its own quarry.
+    private static Block registerButterflyJar(String name) {
+        return track(ALL_ANIMAL_JARS, register(name,
+                // setBlockBounds(0.1875, 0, 0.1875, 0.8125, 0.75, 0.8125). Built here
+                // rather than held in a static field: a constant declared below
+                // this call would still be null when the block registers.
+                props -> new LOTRAnimalJarBlock(Block.box(3.0, 0.0, 3.0, 13.0, 12.0, 13.0), props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.NONE)
+                        .instabreak()
+                        .sound(SoundType.GLASS)
+                        .noOcclusion()
+                        .isViewBlocking((state, level, pos) -> false)
+                        .isSuffocating((state, level, pos) -> false),
+                true, props -> props.stacksTo(1),
+                (block, props) -> new LOTRAnimalJarItem(
+                        block, LOTREntityTags.BUTTERFLY_JAR_CATCHABLE, props)));
+    }
+
+
+    // LOTRBlockClover: a LOTRBlockFlower with setBlockBounds(0.2, 0, 0.2, 0.8,
+    // 0.4, 0.8), biome-grass-tinted like the tall grasses. Ordinary clover is
+    // replaceable, the four-leaf one deliberately is not -- isReplaceable
+    // returned meta != 1, so you cannot build over the lucky one by accident.
+    private static Block registerClover(String name, boolean replaceable) {
+        BlockBehaviour.Properties props = plantProperties()
+                .offsetType(BlockBehaviour.OffsetType.XZ);
+        if (replaceable) {
+            props = props.replaceable();
+        }
+        return track(ALL_CLOVERS, track(ALL_FLOWERS, register(name,
+                p -> new LOTRPlantBlock(LOTRPlantBlock.Shape.CLOVER,
+                        LOTRPlantBlock.Ground.SOIL, p),
+                props, true)));
+    }
+
+    private static BlockBehaviour.Properties torchProperties() {
+        return BlockBehaviour.Properties.of()
+                .noCollision()
+                .instabreak()
+                .lightLevel(state -> 14)
+                .sound(SoundType.WOOD)
+                .pushReaction(PushReaction.DESTROY);
     }
 
     private static Block registerCraftingTable(String name) {
@@ -1713,13 +2011,30 @@ public final class LOTRBlocks {
 
     private static Block registerLadder(String name) {
         return track(ALL_LADDERS, register(name, LadderBlock::new,
-                BlockBehaviour.Properties.of()
-                        .forceSolidOff()
-                        .strength(0.4f)
-                        .sound(SoundType.LADDER)
-                        .noOcclusion()
-                        .pushReaction(PushReaction.DESTROY),
-                true));
+                ladderProperties().sound(SoundType.LADDER), true));
+    }
+
+    // A rope is a ladder that can also hang from another rope. `canRetract` is
+    // what separated the two in 1.7.10 -- plain rope was new LOTRBlockRope(false)
+    // -- and the elven rope adds LOTRBlockHithlainRope's glow and its bite.
+    private static Block registerRope(String name, boolean canRetract, boolean elven) {
+        BlockBehaviour.Properties props = ladderProperties().sound(SoundType.WOOL);
+        if (elven) {
+            // setLightLevel(0.375f) -> light 6.
+            props = props.lightLevel(state -> 6);
+        }
+        return track(ALL_LADDERS, register(name,
+                p -> new LOTRRopeBlock(canRetract, elven, p), props, true));
+    }
+
+    private static BlockBehaviour.Properties ladderProperties() {
+        // No forceSolidOff(): it is deprecated in 26.2 and nothing in vanilla
+        // sets it any more. A ladder is noOcclusion with a thin shape, so it
+        // already reads as non-solid without the legacy override.
+        return BlockBehaviour.Properties.of()
+                .strength(0.4f)
+                .noOcclusion()
+                .pushReaction(PushReaction.DESTROY);
     }
 
     // Gates. LOTRMod built these with LOTRBlockGate.createWooden/createStone/
@@ -1902,23 +2217,37 @@ public final class LOTRBlocks {
         return crop;
     }
 
+    // LOTRBlockBerryBush: a full-cube block drawn like leaves, hardness 0.4,
+    // grass footsteps, and solid enough to stand on -- the original never
+    // removed its collision box. randomTicks is what ripens the berries.
     private static Block registerBush(String name) {
-        return track(ALL_BUSHES, register(name, Block::new,
+        return track(ALL_BUSHES, register(name, LOTRBerryBushBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
-                        .noCollision()
-                        .strength(0.2f)
-                        .sound(SoundType.SWEET_BERRY_BUSH)
+                        .strength(0.4f)
+                        .randomTicks()
+                        .sound(SoundType.GRASS)
                         .noOcclusion()
+                        .isViewBlocking((state, level, pos) -> false)
+                        .isSuffocating((state, level, pos) -> false)
+                        .ignitedByLava()
                         .pushReaction(PushReaction.DESTROY),
                 true));
     }
 
+    // LOTRMod: new BlockWeb(). It IS vanilla's cobweb, so it gets vanilla's
+    // class AND vanilla's properties -- WebBlock is what slows anything walking
+    // into it, requiresCorrectToolForDrops is what makes shears or a sword the
+    // way to collect it, and strength 4.0 is vanilla's. The original's
+    // setHardness(2.0f) and setLightOpacity(2) are not carried over: matching
+    // vanilla is the behaviour that was asked for.
     private static Block registerWeb(String name) {
-        return register(name, Block::new,
+        return register(name, WebBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.WOOL)
+                        .forceSolidOn()
                         .noCollision()
+                        .requiresCorrectToolForDrops()
                         .strength(4.0f)
                         .noOcclusion()
                         .pushReaction(PushReaction.DESTROY),
@@ -1973,12 +2302,20 @@ public final class LOTRBlocks {
                 true));
     }
 
+    // noOcclusion matters more than it looks: without it the block UNDER the
+    // carpet culls its own top face, and since the carpet is only one pixel
+    // thick you end up looking straight through the floor. LOTRBlockMordorMoss
+    // and LOTRBlockThatchFloor both returned false from isOpaqueCube for the
+    // same reason.
     private static Block registerCarpet(String name, float hardness) {
         return track(ALL_CARPETS, register(name, CarpetBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
                         .strength(hardness)
-                        .sound(SoundType.GRASS),
+                        .sound(SoundType.GRASS)
+                        .noOcclusion()
+                        .isViewBlocking((state, level, pos) -> false)
+                        .isSuffocating((state, level, pos) -> false),
                 true));
     }
 
@@ -2130,6 +2467,43 @@ public final class LOTRBlocks {
         return block;
     }
 
+    // LOTRBlockTreasurePile: Material.circuits and hardness 0, so it breaks
+    // instantly and never blocks a piston. The original gave it its own
+    // "lotr:treasure" step sound, which the port has no sound event for yet;
+    // metal is the nearest vanilla has.
+    /**
+     * One block per metal, and TWO items for it: getSubBlocks offered metadata 0
+     * and metadata 7, a two-pixel scatter and the full block, both under the one
+     * name.
+     *
+     * <p>Registration ORDER matters and is not incidental. A BlockItem enters
+     * itself into Item.BY_BLOCK on construction, so the last one built for a
+     * block is the one Block.asItem() answers with. The carpet is therefore
+     * registered first and the whole block second, leaving asItem() -- and with
+     * it pick-block, and anything that hands a Block where an Item is wanted --
+     * pointing at the full block. Building them the other way round is what made
+     * the creative tab add the carpet twice and crash.
+     */
+    private static Block registerTreasurePile(String name) {
+        Block pile = track(ALL_TREASURE_PILES, register(name, LOTRTreasurePileBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.METAL)
+                        .instabreak()
+                        .sound(SoundType.METAL)
+                        .noOcclusion()
+                        .pushReaction(PushReaction.DESTROY),
+                false));
+        // register(withItem = false) skips ALL_BLOCKS as well as the item, and
+        // the catch-all EVERYTHING tab walks that list.
+        ALL_BLOCKS.add(pile);
+
+        TREASURE_PILE_CARPETS.put(pile,
+                LOTRItems.registerTreasurePileItem(pile, name + "_carpet", 1));
+        TREASURE_PILE_BLOCKS.put(pile,
+                LOTRItems.registerTreasurePileItem(pile, name, LOTRTreasurePileBlock.MAX_LAYERS));
+        return pile;
+    }
+
     private static Block registerSoftBlock(String name, float hardness, SoundType sound) {
         return track(ALL_CUBES, register(name, Block::new,
                 BlockBehaviour.Properties.of()
@@ -2169,8 +2543,19 @@ public final class LOTRBlocks {
                         .randomTicks()
                         .sound(SoundType.GRASS)
                         .noOcclusion()
+                        // The remaining five come from vanilla's
+                        // Blocks.leavesProperties(), which our copy was missing.
+                        // Without them LOTR leaves smothered players, blocked
+                        // redstone, would not burn in lava, survived pistons and
+                        // spawned any mob that fits -- none of which matches
+                        // either vanilla leaves or BlockLeaves in 1.7.10.
+                        .isValidSpawn((state, level, pos, type) ->
+                                type == EntityTypes.OCELOT || type == EntityTypes.PARROT)
                         .isViewBlocking((state, level, pos) -> false)
-                        .isSuffocating((state, level, pos) -> false),
+                        .isSuffocating((state, level, pos) -> false)
+                        .isRedstoneConductor((state, level, pos) -> false)
+                        .ignitedByLava()
+                        .pushReaction(PushReaction.DESTROY),
                 true));
     }
 
@@ -2206,28 +2591,109 @@ public final class LOTRBlocks {
                 true));
     }
 
+    // A real SaplingBlock, not a plain Block: LOTRBlockSaplingBase extended
+    // BlockSapling in 1.7.10, and only the vanilla class brings the STAGE
+    // property, the "must stand on dirt" survival check and BonemealableBlock.
+    // randomTicks() is what lets SaplingBlock.randomTick run at all. The tree
+    // features are not ported yet, so each gets a placeholder grower -- see
+    // LOTRSaplingBlock.
     private static Block registerSapling(String name) {
-        return track(ALL_SAPLINGS, register(name, Block::new,
+        return track(ALL_SAPLINGS, register(name,
+                props -> new LOTRSaplingBlock(LOTRSaplingBlock.placeholderGrower(name), props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
                         .noCollision()
+                        .randomTicks()
                         .instabreak()
                         .sound(SoundType.GRASS)
-                        .noOcclusion()
                         .pushReaction(PushReaction.DESTROY),
                 true));
     }
 
     private static Block registerFlower(String name) {
-        return track(ALL_FLOWERS, register(name, Block::new,
+        return registerFlower(name, LOTRPlantBlock.Shape.FLOWER);
+    }
+
+    private static Block registerFlower(String name, LOTRPlantBlock.Shape shape) {
+        return registerFlower(name, shape, LOTRPlantBlock.Ground.SOIL);
+    }
+
+    // A LOTRBlockFlower: the shape is its setBlockBounds/setFlowerBounds call
+    // and the ground its canBlockStay override, both from 1.7.10. XZ offset
+    // because LOTRRenderBlocks.renderFlowerBlock jittered a flower's position
+    // by up to 0.15 in x and z from a hash of its coordinates -- that is
+    // exactly what OffsetType.XZ does.
+    private static Block registerFlower(String name, LOTRPlantBlock.Shape shape,
+            LOTRPlantBlock.Ground ground) {
+        return track(ALL_FLOWERS, register(name, props -> new LOTRPlantBlock(shape, ground, props),
+                plantProperties().offsetType(BlockBehaviour.OffsetType.XZ),
+                true));
+    }
+
+    // A LOTRBlockGrass. Two things separate it from a flower: renderGrass
+    // jittered y as well as x and z (OffsetType.XYZ), and isReplaceable
+    // returned true, so you can build straight through it.
+    private static Block registerGrass(String name, LOTRPlantBlock.Ground ground) {
+        return registerGrass(name, ground, LOTRPlantBlock.Sting.NONE);
+    }
+
+    private static Block registerGrass(String name, LOTRPlantBlock.Ground ground,
+            LOTRPlantBlock.Sting sting) {
+        return track(ALL_FLOWERS, register(name,
+                props -> new LOTRPlantBlock(LOTRPlantBlock.Shape.GRASS, ground, sting, props),
+                plantProperties()
+                        .replaceable()
+                        .offsetType(BlockBehaviour.OffsetType.XYZ),
+                true));
+    }
+
+    // Reeds: a column rooted on the bed under shallow water. `grows` is false
+    // for the dried reeds, matching LOTRBlockReedDry.canReedGrow. A plain
+    // BlockItem, deliberately -- PlaceOnWaterBlockItem places on TOP of the
+    // water, which is where the 1.7.10 reeds sat but not where these do.
+    private static Block registerReed(String name, boolean grows) {
+        return track(ALL_FLOWERS, track(ALL_COLUMN_PLANTS, register(name,
+                props -> new LOTRReedBlock(grows, props),
+                plantProperties().randomTicks(), true)));
+    }
+
+    private static Block registerCorn(String name) {
+        return track(ALL_FLOWERS, track(ALL_COLUMN_PLANTS, register(name, LOTRCornBlock::new,
+                plantProperties().randomTicks(), true)));
+    }
+
+    // Corn, reeds and the grapevine post: full-height columns that grow upward,
+    // drawn by their own renderers in 1.7.10 with no positional jitter.
+    private static Block registerStalk(String name, LOTRPlantBlock.Shape shape,
+            LOTRPlantBlock.Ground ground) {
+        return track(ALL_FLOWERS, register(name,
+                props -> new LOTRPlantBlock(shape, ground, props),
+                plantProperties(), true));
+    }
+
+    // Fangorn riverweed, the mod's one lily pad.
+    // Riverweed keeps its collision box: a lily pad is something you stand on,
+    // and vanilla's does not set noCollision. plantProperties() does, so the
+    // riverweed builds its own.
+    private static Block registerRiverweed(String name) {
+        return track(ALL_FLOWERS, register(name, LOTRRiverweedBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
-                        .noCollision()
                         .instabreak()
-                        .sound(SoundType.GRASS)
+                        .sound(SoundType.LILY_PAD)
                         .noOcclusion()
                         .pushReaction(PushReaction.DESTROY),
-                true));
+                PlaceOnWaterBlockItem::new));
+    }
+
+    private static BlockBehaviour.Properties plantProperties() {
+        return BlockBehaviour.Properties.of()
+                .mapColor(MapColor.PLANT)
+                .noCollision()
+                .instabreak()
+                .sound(SoundType.GRASS)
+                .noOcclusion()
+                .pushReaction(PushReaction.DESTROY);
     }
 
     private static Block registerTrapdoor(String name) {
@@ -2256,6 +2722,22 @@ public final class LOTRBlocks {
                 true));
     }
 
+    // LOTRBlockGlassPane / LOTRBlockStainedGlassPane. Vanilla's own panes are
+    // IronBarsBlock too -- the class is shared, only the properties differ:
+    // glass breaks instantly, rings like glass, and needs no tool.
+    private static Block registerGlassPane(String name, Block glass) {
+        Block pane = track(ALL_GLASS_PANES, register(name, IronBarsBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.NONE)
+                        .strength(0.3f)
+                        .sound(SoundType.GLASS)
+                        .noOcclusion()
+                        .pushReaction(PushReaction.DESTROY),
+                true));
+        GLASS_PANE_BASE.put(pane, glass);
+        return pane;
+    }
+
     private static Block registerBars(String name) {
         return track(ALL_BARS, register(name, IronBarsBlock::new,
                 BlockBehaviour.Properties.of()
@@ -2271,7 +2753,7 @@ public final class LOTRBlocks {
                 true));
     }
 
-    private static Block registerChandelier(String name, LOTRChandelierBlock.ParticleStyle style) {
+    private static Block registerChandelier(String name, LOTRGlowStyle style) {
         return track(ALL_CHANDELIERS, register(name, props -> new LOTRChandelierBlock(style, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.NONE)
@@ -2315,9 +2797,28 @@ public final class LOTRBlocks {
         return register(name, factory, properties, withItem, UnaryOperator.identity());
     }
 
+    // Register with a BlockItem other than a plain one. The water plants need
+    // PlaceOnWaterBlockItem: a fluid is not a clickable surface, so a plain
+    // BlockItem right-clicked at water does nothing at all -- which is why the
+    // reeds and the riverweed could not be placed. It raycasts into the fluid
+    // and puts the block on its surface; vanilla's lily pad uses it, and
+    // LOTRItemWaterPlant was the 1.7.10 equivalent.
+    private static Block register(String name, Function<BlockBehaviour.Properties, Block> factory,
+                                  BlockBehaviour.Properties properties,
+                                  BiFunction<Block, Item.Properties, BlockItem> itemFactory) {
+        return register(name, factory, properties, true, UnaryOperator.identity(), itemFactory);
+    }
+
     private static Block register(String name, Function<BlockBehaviour.Properties, Block> factory,
                                   BlockBehaviour.Properties properties, boolean withItem,
                                   UnaryOperator<Item.Properties> itemProperties) {
+        return register(name, factory, properties, withItem, itemProperties, BlockItem::new);
+    }
+
+    private static Block register(String name, Function<BlockBehaviour.Properties, Block> factory,
+                                  BlockBehaviour.Properties properties, boolean withItem,
+                                  UnaryOperator<Item.Properties> itemProperties,
+                                  BiFunction<Block, Item.Properties, BlockItem> itemFactory) {
         ResourceKey<Block> blockKey = ResourceKey.create(Registries.BLOCK,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, name));
         Block block = factory.apply(properties.setId(blockKey));
@@ -2330,13 +2831,42 @@ public final class LOTRBlocks {
         if (withItem) {
             ResourceKey<Item> itemKey = ResourceKey.create(Registries.ITEM,
                     Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, name));
-            BlockItem blockItem = new BlockItem(block, itemProperties.apply(
-                    new Item.Properties().setId(itemKey).useBlockDescriptionPrefix()));
+            Item.Properties props = itemProperties.apply(
+                    new Item.Properties().setId(itemKey).useBlockDescriptionPrefix());
+            BlockItem blockItem = itemFactory.apply(block, props);
             Registry.register(BuiltInRegistries.ITEM, itemKey, blockItem);
         }
         return block;
     }
 
+    // Runs after every field above is initialised, so it also covers datagen,
+    // which touches LOTRBlocks without going through init().
+    static {
+        pairLeavesWithSaplings();
+        NOT_SMALL_FLOWERS.addAll(GRASS_TINTED);
+        NOT_SMALL_FLOWERS.addAll(List.of(ARID_GRASS, MORDOR_GRASS, MORDOR_THORN,
+                CORN_STALK, REEDS, DRIED_REEDS, GRAPEVINE, FANGORN_RIVERWEED,
+                DEAD_MARSH_PLANT, CORRUPT_MALLORN, MORGUL_SHROOM));
+    }
+
     public static void init() {
+    }
+
+    // <x>_leaves -> <x>_sapling. Every leaf block in the mod has a matching
+    // sapling, so a missing pair means one of the two lists has drifted and the
+    // leaf would silently drop nothing -- hence the hard failure.
+    private static void pairLeavesWithSaplings() {
+        Map<String, Block> saplingsByStem = new LinkedHashMap<>();
+        ALL_SAPLINGS.forEach(sapling -> saplingsByStem.put(
+                keyOf(sapling).identifier().getPath().replaceAll("_sapling$", ""), sapling));
+
+        for (Block leaves : ALL_LEAVES) {
+            String stem = keyOf(leaves).identifier().getPath().replaceAll("_leaves$", "");
+            Block sapling = saplingsByStem.get(stem);
+            if (sapling == null) {
+                throw new IllegalStateException("No sapling registered for leaves " + stem);
+            }
+            LEAVES_SAPLING.put(leaves, sapling);
+        }
     }
 }

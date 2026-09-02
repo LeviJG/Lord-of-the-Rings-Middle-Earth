@@ -7,6 +7,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRConnectedBorderType;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRConnectedBorderTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRGateBorders;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBerryBushBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
@@ -16,6 +17,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRPillarBlock;
 import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
@@ -222,12 +224,49 @@ public class LOTRModelProvider extends FabricModelProvider {
         });
         LOTRBlocks.ALL_PLANKS.forEach(b -> trivialCubeWithItem(generators, b));
         LOTRBlocks.ALL_LEAVES.forEach(b -> trivialCubeWithItem(generators, b));
-        LOTRBlocks.ALL_GLASS.forEach(b -> trivialCubeWithItem(generators, b));
+        // NOT trivialCubeWithItem: createGlassBlocks below emits the glass cube
+        // AND its pane together, so doing the cube here as well would throw a
+        // duplicate model definition.
 
         LOTRBlocks.ALL_SAPLINGS.forEach(b ->
                 generators.createCrossBlockWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED));
-        LOTRBlocks.ALL_FLOWERS.forEach(b ->
-                generators.createCrossBlockWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED));
+        // The six tall grasses are greyscale in the texture sheet and take the
+        // biome grass colour at render time, exactly as LOTRBlockTallGrass's
+        // colorMultiplier did -- so they need the tinted cross, not the plain
+        // one, and an item model that carries a constant grass tint.
+        //
+        // Three of them (flowery grass, wheatgrass, thistle) also had a second,
+        // untinted overlay icon in 1.7.10 for their flowers, seed heads and
+        // bristles. A generated model cannot express two stacked crosses, so
+        // those three are hand-written under src/main/resources and skipped
+        // here; see lotr:block/tinted_cross_overlay.
+        LOTRBlocks.ALL_FLOWERS.forEach(b -> {
+            // Hand-written under src/main/resources: the three overlay grasses,
+            // the reeds and corn (whose models depend on where they sit in
+            // their column), the riverweed (a flat pad) and the grapevine post
+            // (a 4x4 post) and the clovers (a stem plus stacked flat petals)
+            // -- none of which are plain crosses.
+            if (LOTRBlocks.GRASS_TINTED_WITH_OVERLAY.contains(b)
+                    || LOTRBlocks.ALL_COLUMN_PLANTS.contains(b)
+                    || b == LOTRBlocks.FANGORN_RIVERWEED
+                    || b == LOTRBlocks.GRAPEVINE
+                    || LOTRBlocks.ALL_CLOVERS.contains(b)) {
+                return;
+            }
+            if (LOTRBlocks.GRASS_TINTED.contains(b)) {
+                // Block model tinted, and the ITEM model tinted too -- the
+                // default item model carries no tint, so the inventory icon
+                // would stay grey. Vanilla's own short_grass item does exactly
+                // this: a flat sprite with a constant grass colour at
+                // temperature 0.5 / downfall 1.0.
+                generators.createCrossBlock(b, BlockModelGenerators.PlantType.TINTED);
+                generators.registerSimpleTintedItemModel(b,
+                        generators.createFlatItemModelWithBlockTexture(b.asItem(), b),
+                        new GrassColorSource(0.5F, 1.0F));
+                return;
+            }
+            generators.createCrossBlockWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED);
+        });
 
         // "Duplicate model definition for lotr:item/<name>", it started emitting
 
@@ -351,11 +390,28 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(b, model);
         });
 
+        // createMultiface writes the multipart blockstate but NOT the model it
+        // points at -- vanilla's block/vine is hand-written. All four LOTR vines
+        // were referring to a model that did not exist, so they drew nothing.
+        // The models are hand-written under src/main/resources to match; only
+        // the blockstate is generated here.
         LOTRBlocks.ALL_VINES.forEach(b -> generators.createMultiface(b));
-        generators.createTrivialCube(LOTRBlocks.WEB_UNGOLIANT);
-        generators.registerSimpleItemModel(LOTRBlocks.WEB_UNGOLIANT,
-                ModelLocationUtils.getModelLocation(LOTRBlocks.WEB_UNGOLIANT));
+        // Ungoliant's web is vanilla's cobweb: a cross, not a cube, with a flat
+        // sprite for the item. createTrivialCube was drawing it as a solid
+        // block of web.
+        generators.createCrossBlock(LOTRBlocks.WEB_UNGOLIANT,
+                BlockModelGenerators.PlantType.NOT_TINTED);
+        generators.registerSimpleFlatItemModel(LOTRBlocks.WEB_UNGOLIANT);
         LOTRBlocks.ALL_LADDERS.forEach(b -> {
+            // The two ropes' item models are hand-written: LOTRBlockRope
+            // overrode getItemIconName, and items/rope.png and
+            // items/hithlainLadder.png are coiled ropes rather than the hanging
+            // strand their block sprites draw. Their blockstates and block
+            // models are hand-written too -- a rope is a cord with a knot, not
+            // the flat panel a ladder is.
+            if (b == LOTRBlocks.ROPE || b == LOTRBlocks.HITHLAIN_LADDER) {
+                return;
+            }
             Identifier model = ModelTemplates.FLAT_ITEM.create(
                     ModelLocationUtils.getModelLocation(b.asItem()),
                     TextureMapping.layer0(b), generators.modelOutput);
@@ -405,8 +461,31 @@ public class LOTRModelProvider extends FabricModelProvider {
         LOTRBlocks.ALL_CROPS.forEach(crop ->
                 generators.createCropBlock(crop, BlockStateProperties.AGE_7, ageToModel));
 
-        LOTRBlocks.ALL_BUSHES.forEach(b ->
-                generators.createCrossBlockWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED));
+        // Berry bushes are full cubes drawn like leaves, not crosses -- 1.7.10
+        // never overrode getRenderType on LOTRBlockBerryBush. Two textures per
+        // bush, picked by HAS_BERRIES: <name> when ripe, <name>_bare when not.
+        // The weapon rack has no block model at all -- it is RenderShape.INVISIBLE
+        // and drawn entirely by its block entity renderer. Only the item needs
+        // a model, and that is hand-written too.
+        //
+        // Bird cages and the butterfly jar are hand-written under src/main/resources: renderBirdCage
+        // builds them out of thin walls with every face drawn, plus the post
+        // and finial on the lid, none of which a cube template can express.
+
+        LOTRBlocks.ALL_BUSHES.forEach(b -> {
+            Identifier ripe = ModelTemplates.CUBE_ALL.create(b,
+                    TextureMapping.cube(TextureMapping.getBlockTexture(b)), generators.modelOutput);
+            Identifier bare = ModelTemplates.CUBE_ALL.createWithSuffix(b, "_bare",
+                    TextureMapping.cube(TextureMapping.getBlockTexture(b, "_bare")),
+                    generators.modelOutput);
+            generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(b)
+                    .with(PropertyDispatch.initial(LOTRBerryBushBlock.HAS_BERRIES)
+                            .select(true, BlockModelGenerators.plainVariant(ripe))
+                            .select(false, BlockModelGenerators.plainVariant(bare))));
+            // A bush in the inventory is bare: LOTRBlockBerryBush.getDrops
+            // always handed back setHasBerries(meta, false).
+            generators.registerSimpleItemModel(b, bare);
+        });
 
         // Gates get no blockstate and no block model at all: LOTRConnectedBorderPlugin
         // registers a resolver for them, which replaces blockstate loading, and
@@ -502,6 +581,14 @@ public class LOTRModelProvider extends FabricModelProvider {
         LOTRBlocks.ALL_DOORS.forEach(generators::createDoor);
 
         LOTRBlocks.ALL_BARS.forEach(generators::createBarsAndItem);
+
+        // Glass panes wear the matching glass block's texture on their faces and
+        // glass_pane_top on the exposed edge, the way vanilla's do. The item is
+        // a flat sprite of the glass, not a picture of the pane.
+        LOTRBlocks.ALL_GLASS_PANES.forEach(pane -> {
+            Block glass = LOTRBlocks.GLASS_PANE_BASE.get(pane);
+            generators.createGlassBlocks(glass, pane);
+        });
 
         LOTRBlocks.ALL_CHANDELIERS.forEach(b -> chandelier(generators, b));
 

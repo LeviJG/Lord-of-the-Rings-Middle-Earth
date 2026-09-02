@@ -3,12 +3,14 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockTags;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 
 import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
@@ -18,6 +20,12 @@ import net.minecraft.world.level.block.Block;
 public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
     public LOTRBlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
         super(output, registriesFuture);
+    }
+
+
+    /** A vanilla block's registry key, without going through the deprecated builtInRegistryHolder. */
+    private static ResourceKey<Block> vanillaBlockKey(String name) {
+        return ResourceKey.create(Registries.BLOCK, Identifier.withDefaultNamespace(name));
     }
 
     private static TagKey<Block> vanillaBlockTag(String path) {
@@ -61,6 +69,43 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
                         LOTRBlocks.THATCH_THATCH_SLAB, LOTRBlocks.THATCH_FLOOR)
                 .forEach(b -> hoe.add(LOTRBlocks.keyOf(b)));
 
+        // Ground the mod's plants grow on. In 1.7.10 a plant asked
+        // below.canSustainPlant(...), which the LOTR soils answered yes to
+        // because they extended the vanilla dirt, grass and sand classes.
+        // Modern VegetationBlock asks #supports_vegetation instead, so the LOTR
+        // soils have to be put into the vanilla tags that feed it -- otherwise
+        // nothing would grow anywhere in Middle-earth.
+        var dirtTag = builder(vanillaBlockTag("dirt"));
+        var grassBlocksTag = builder(vanillaBlockTag("grass_blocks"));
+        var mudTag = builder(vanillaBlockTag("mud"));
+        var sandTag = builder(vanillaBlockTag("sand"));
+        var mordorSurfaceTag = builder(LOTRBlockTags.MORDOR_SURFACE);
+
+        List.of(LOTRBlocks.MORDOR_DIRT, LOTRBlocks.RED_CLAY)
+                .forEach(b -> dirtTag.add(LOTRBlocks.keyOf(b)));
+        List.of(LOTRBlocks.MUD_GRASS, LOTRBlocks.QUENDITE_GRASS)
+                .forEach(b -> grassBlocksTag.add(LOTRBlocks.keyOf(b)));
+        List.of(LOTRBlocks.MUD, LOTRBlocks.BARREN_JUNGLE_MUD)
+                .forEach(b -> mudTag.add(LOTRBlocks.keyOf(b)));
+        List.of(LOTRBlocks.WHITE_SAND)
+                .forEach(b -> sandTag.add(LOTRBlocks.keyOf(b)));
+
+        // The bed reeds root in, under the shallow water they stand in: the
+        // soils and sands a real reed grows out of, plus clay.
+        var reedBed = builder(LOTRBlockTags.REEDS_PLANTABLE_ON);
+        reedBed.addTag(vanillaBlockTag("dirt"));
+        reedBed.addTag(vanillaBlockTag("mud"));
+        reedBed.addTag(vanillaBlockTag("sand"));
+        reedBed.add(vanillaBlockKey("clay"));
+        reedBed.add(vanillaBlockKey("gravel"));
+        List.of(LOTRBlocks.RED_CLAY, LOTRBlocks.QUAGMIRE)
+                .forEach(b -> reedBed.add(LOTRBlocks.keyOf(b)));
+
+        // LOTRBiomeGenMordor.isSurfaceMordorBlock, the whole of it: rock with
+        // meta 0 (Mordor rock), Mordor dirt and Mordor gravel.
+        List.of(LOTRBlocks.MORDOR_ROCK, LOTRBlocks.MORDOR_DIRT, LOTRBlocks.MORDOR_GRAVEL)
+                .forEach(b -> mordorSurfaceTag.add(LOTRBlocks.keyOf(b)));
+
         LOTRBlocks.ALL_RAILS.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
 
         LOTRBlocks.CUBES_NO_TIER.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
@@ -87,7 +132,13 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         });
         LOTRBlocks.ALL_SAPLINGS.forEach(b -> saplingsTag.add(LOTRBlocks.keyOf(b)));
 
-        LOTRBlocks.ALL_FLOWERS.forEach(b -> smallFlowersTag.add(LOTRBlocks.keyOf(b)));
+        // #small_flowers is for actual flowers -- it is what bees, flower pots
+        // and suspicious stew look at. ALL_FLOWERS is a registration bucket that
+        // also holds the grasses, the corn, reeds, the grapevine post and the
+        // riverweed, none of which are flowers, so it is filtered here.
+        LOTRBlocks.ALL_FLOWERS.stream()
+                .filter(b -> !LOTRBlocks.NOT_SMALL_FLOWERS.contains(b))
+                .forEach(b -> smallFlowersTag.add(LOTRBlocks.keyOf(b)));
 
         // anything that looks for wood. Beams are decorative and deliberately
 

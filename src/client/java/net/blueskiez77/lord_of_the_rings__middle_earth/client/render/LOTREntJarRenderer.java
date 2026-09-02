@@ -15,7 +15,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.SpriteGetter;
 import net.minecraft.client.resources.model.sprite.SpriteId;
@@ -83,7 +83,7 @@ public class LOTREntJarRenderer
         // A jar holding a draught would take the draught's colour here. Nothing
         // can put a draught in one yet, so every jar is a water jar; when
         // LOTRItemEntDraught lands this is where its icon colour is sampled.
-        state.sprite = sprites.get(new SpriteId(TextureAtlas.LOCATION_BLOCKS, WATER_STILL));
+        state.sprite = sprites.get(new SpriteId(AtlasIds.BLOCKS, WATER_STILL));
         state.tint = ARGB.opaque(BiomeColors.getAverageWaterColor(tinted, jar.getBlockPos()));
     }
 
@@ -101,7 +101,7 @@ public class LOTREntJarRenderer
         int tint = state.tint;
 
         collector.submitCustomGeometry(poseStack,
-                RenderTypes.entityTranslucent(TextureAtlas.LOCATION_BLOCKS),
+                RenderTypes.entityTranslucent(AtlasIds.BLOCKS),
                 (pose, consumer) -> surface(pose, consumer, sprite, y, tint, light));
     }
 

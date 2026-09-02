@@ -12,6 +12,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBl
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRRecipeTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRAlignmentCommand;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -28,7 +29,7 @@ public class LOTRMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("The Lord of the Rings mod (Fabric 26.1.2 port) initializing...");
+        LOGGER.info("The Lord of the Rings mod (Fabric 26.2 port) initializing...");
 
         LOTRFaction.initAllProperties();
 
@@ -46,6 +47,9 @@ public class LOTRMod implements ModInitializer {
         LOTRBlockBehaviours.init();
         LOTRMillstoneRecipes.createRecipes();
         LOTRItems.init();
+
+        // After items: the troll statue item names the entity type it places.
+        LOTREntities.init();
 
         // Creative tab. Must come after blocks and items exist.
         LOTRCreativeTabs.init();

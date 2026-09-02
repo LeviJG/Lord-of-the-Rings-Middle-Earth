@@ -17,7 +17,7 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.data.AtlasIds;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.SpriteGetter;
 import net.minecraft.client.resources.model.sprite.SpriteId;
@@ -103,7 +103,7 @@ public class LOTRIthildinDoorRenderer
     private TextureAtlasSprite spriteFor(DoorSize size, int x, int y) {
         Identifier texture = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE,
                 "block/ithildin_dwarven_door_glow_" + size.doorName() + "_" + x + "_" + y);
-        return sprites.get(new SpriteId(TextureAtlas.LOCATION_BLOCKS, texture));
+        return sprites.get(new SpriteId(AtlasIds.BLOCKS, texture));
     }
 
     @Override
@@ -126,7 +126,7 @@ public class LOTRIthildinDoorRenderer
         Direction right = state.across;
 
         collector.submitCustomGeometry(poseStack,
-                RenderTypes.entityTranslucentEmissive(TextureAtlas.LOCATION_BLOCKS),
+                RenderTypes.entityTranslucentEmissive(AtlasIds.BLOCKS),
                 (customPose, consumer) -> quad(customPose, consumer, face, right, sprite, alpha));
     }
 

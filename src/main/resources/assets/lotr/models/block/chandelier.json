@@ -1,28 +1,94 @@
 {
-  "__comment": "Base crossed-squares model for chandeliers. Matches 1.7.10 render type 1 (RenderBlocks.renderCrossedSquares), which draws two 45-degree planes spanning 0.05..0.95 of the block -- 0.9 blocks wide -- over the FULL block height. Vanilla block/cross is the same geometry but adds rescale:true, which stretches the planes out to the full diagonal and renders ~11% larger; omitting it is what makes this match the original. The fixture appears to hang because the texture's bottom three rows are transparent, not because the quads are offset.",
+  "__comment": "Crossed-squares model for chandeliers, matching 1.7.10 render type 1 (RenderBlocks.drawCrossedSquares). That method draws each plane corner to corner of a 0.9-wide square -- endpoints at 0.05 and 0.95 in BOTH x and z -- which is what rescale:true reproduces. Without it the planes only reach 0.18..0.82 and the chandelier comes out about 30% small, which is why the candle flames appeared to spawn far outside the candles: randomDisplayTick puts them at 0.13/0.87, just off the corners of the full-size model. The fixture appears to hang because the texture's bottom rows are transparent, not because the quads are offset.",
   "ambientocclusion": false,
   "textures": {
     "particle": "#cross"
   },
   "elements": [
     {
-      "from": [0.8, 0, 8],
-      "to": [15.2, 16, 8],
-      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": 45 },
+      "from": [
+        0.8,
+        0,
+        8
+      ],
+      "to": [
+        15.2,
+        16,
+        8
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
       "shade": false,
       "faces": {
-        "north": { "uv": [0, 0, 16, 16], "texture": "#cross" },
-        "south": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross"
+        }
       }
     },
     {
-      "from": [8, 0, 0.8],
-      "to": [8, 16, 15.2],
-      "rotation": { "origin": [8, 8, 8], "axis": "y", "angle": -45 },
+      "from": [
+        8,
+        0,
+        0.8
+      ],
+      "to": [
+        8,
+        16,
+        15.2
+      ],
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
       "shade": false,
       "faces": {
-        "west": { "uv": [0, 0, 16, 16], "texture": "#cross" },
-        "east": { "uv": [0, 0, 16, 16], "texture": "#cross" }
+        "west": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross"
+        },
+        "east": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#cross"
+        }
       }
     }
   ]

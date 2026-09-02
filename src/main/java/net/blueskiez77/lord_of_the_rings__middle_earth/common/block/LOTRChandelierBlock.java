@@ -4,8 +4,6 @@ import com.mojang.serialization.MapCodec;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
@@ -20,41 +18,15 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class LOTRChandelierBlock extends Block {
     public static final MapCodec<LOTRChandelierBlock> CODEC = simpleCodec(
-            props -> new LOTRChandelierBlock(ParticleStyle.FLAME, props));
+            props -> new LOTRChandelierBlock(LOTRGlowStyle.FLAME, props));
 
     private static final VoxelShape SHAPE = Block.box(1.0, 3.0, 1.0, 15.0, 16.0, 15.0);
 
-    public enum ParticleStyle {
-        FLAME(ParticleTypes.SMOKE, ParticleTypes.FLAME),
+    private final LOTRGlowStyle glow;
 
-        MALLORN_SILVER(ParticleTypes.END_ROD, null),
-
-        MALLORN_BLUE(ParticleTypes.SOUL_FIRE_FLAME, null),
-
-        MALLORN_GOLD(ParticleTypes.ELECTRIC_SPARK, null),
-
-        MALLORN_GREEN(ParticleTypes.HAPPY_VILLAGER, null),
-
-        WOOD_ELVEN(ParticleTypes.CHERRY_LEAVES, null),
-
-        HIGH_ELVEN(ParticleTypes.END_ROD, null),
-
-        MORGUL(ParticleTypes.PORTAL, null);
-
-        private final ParticleOptions primary;
-        private final ParticleOptions secondary;
-
-        ParticleStyle(ParticleOptions primary, ParticleOptions secondary) {
-            this.primary = primary;
-            this.secondary = secondary;
-        }
-    }
-
-    private final ParticleStyle particleStyle;
-
-    public LOTRChandelierBlock(ParticleStyle particleStyle, Properties properties) {
+    public LOTRChandelierBlock(LOTRGlowStyle glow, Properties properties) {
         super(properties);
-        this.particleStyle = particleStyle;
+        this.glow = glow;
     }
 
     @Override
@@ -96,20 +68,15 @@ public class LOTRChandelierBlock extends Block {
 
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        // The four candle positions, straight out of randomDisplayTick. The
+        // style applies its own vertical nudge on top of these.
         double near = 0.13;
         double far = 1.0 - near;
         double height = 0.6875;
 
-        spawn(level, pos.getX() + near, pos.getY() + height, pos.getZ() + near);
-        spawn(level, pos.getX() + far, pos.getY() + height, pos.getZ() + far);
-        spawn(level, pos.getX() + near, pos.getY() + height, pos.getZ() + far);
-        spawn(level, pos.getX() + far, pos.getY() + height, pos.getZ() + near);
-    }
-
-    private void spawn(Level level, double x, double y, double z) {
-        level.addParticle(particleStyle.primary, x, y, z, 0.0, 0.0, 0.0);
-        if (particleStyle.secondary != null) {
-            level.addParticle(particleStyle.secondary, x, y, z, 0.0, 0.0, 0.0);
-        }
+        glow.spawn(level, random, pos.getX() + near, pos.getY() + height, pos.getZ() + near);
+        glow.spawn(level, random, pos.getX() + far, pos.getY() + height, pos.getZ() + far);
+        glow.spawn(level, random, pos.getX() + near, pos.getY() + height, pos.getZ() + far);
+        glow.spawn(level, random, pos.getX() + far, pos.getY() + height, pos.getZ() + near);
     }
 }

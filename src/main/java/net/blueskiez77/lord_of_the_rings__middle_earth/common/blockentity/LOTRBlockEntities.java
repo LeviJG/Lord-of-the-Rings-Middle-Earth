@@ -24,6 +24,9 @@ public final class LOTRBlockEntities {
     public static BlockEntityType<LOTRKebabStandBlockEntity> KEBAB_STAND;
     public static BlockEntityType<LOTRChestBlockEntity> CHEST;
     public static BlockEntityType<LOTRMillstoneBlockEntity> MILLSTONE;
+    public static BlockEntityType<LOTRAnimalJarBlockEntity> ANIMAL_JAR;
+    public static BlockEntityType<LOTRWeaponRackBlockEntity> WEAPON_RACK;
+    public static BlockEntityType<LOTRBannerBlockEntity> BANNER;
 
     private LOTRBlockEntities() {
     }
@@ -33,6 +36,26 @@ public final class LOTRBlockEntities {
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "forge"),
                 new BlockEntityType<>(LOTRForgeBlockEntity::new,
                         Set.copyOf(LOTRBlocks.ALL_FORGES)));
+
+        // Both banner forms, all forty-two of each: the block entity is only
+        // there to get them a renderer.
+        BANNER = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "banner"),
+                new BlockEntityType<>(LOTRBannerBlockEntity::new,
+                        java.util.stream.Stream.concat(
+                                LOTRBlocks.ALL_BANNERS.stream(),
+                                LOTRBlocks.ALL_WALL_BANNERS.stream())
+                                .collect(java.util.stream.Collectors.toUnmodifiableSet())));
+
+        WEAPON_RACK = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "weapon_rack"),
+                new BlockEntityType<>(LOTRWeaponRackBlockEntity::new,
+                        Set.of(LOTRBlocks.WEAPON_RACK)));
+
+        ANIMAL_JAR = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "animal_jar"),
+                new BlockEntityType<>(LOTRAnimalJarBlockEntity::new,
+                        Set.copyOf(LOTRBlocks.ALL_ANIMAL_JARS)));
 
         DART_TRAP = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "dart_trap"),
