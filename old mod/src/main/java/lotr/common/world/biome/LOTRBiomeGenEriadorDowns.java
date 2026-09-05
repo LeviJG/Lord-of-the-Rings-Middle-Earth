@@ -1,0 +1,41 @@
+package lotr.common.world.biome;
+
+import lotr.common.world.biome.variant.LOTRBiomeVariant;
+import lotr.common.world.feature.LOTRWorldGenBoulder;
+import net.minecraft.block.BlockFalling;
+import net.minecraft.init.Blocks;
+import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenerator;
+
+import java.util.Random;
+
+public class LOTRBiomeGenEriadorDowns extends LOTRBiomeGenEriador {
+	public WorldGenerator boulderGen = new LOTRWorldGenBoulder(Blocks.stone, 0, 1, 4);
+
+	public LOTRBiomeGenEriadorDowns(int i, boolean major) {
+		super(i, major);
+		clearBiomeVariants();
+		addBiomeVariantSet(LOTRBiomeVariant.SET_MOUNTAINS);
+		decorator.grassPerChunk = 5;
+		decorator.doubleGrassPerChunk = 1;
+	}
+
+	@Override
+	public void decorate(World world, Random random, int i, int k) {
+        BlockFalling.fallInstantly = true;
+		super.decorate(world, random, i, k);
+		if (random.nextInt(24) == 0) {
+			for (int l = 0; l < 3; ++l) {
+				int i1 = i + random.nextInt(16) + 8;
+				int k1 = k + random.nextInt(16) + 8;
+				boulderGen.generate(world, random, i1, world.getHeightValue(i1, k1), k1);
+			}
+		}
+        BlockFalling.fallInstantly = false;
+	}
+
+	@Override
+	public float getTreeIncreaseChance() {
+		return 0.25f;
+	}
+}

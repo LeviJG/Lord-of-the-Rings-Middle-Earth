@@ -6,6 +6,5 @@ out/
 *.iml
 run/
 src/main/generated/
-old mod
 tools
 docs
