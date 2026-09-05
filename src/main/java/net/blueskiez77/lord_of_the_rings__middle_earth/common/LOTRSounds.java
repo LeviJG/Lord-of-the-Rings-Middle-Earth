@@ -18,6 +18,21 @@ public final class LOTRSounds {
     public static final SoundEvent GATE_STONE_OPEN = register("block.gate.stone_open");
     public static final SoundEvent GATE_STONE_CLOSE = register("block.gate.stone_close");
 
+    /**
+     * The Horn of Command's blow, "lotr:item.horn".
+     *
+     * <p>It MUST be here and not only in sounds.json. sounds.json is a client
+     * resource that maps a name to its ogg; the sound_event REGISTRY is what a
+     * datapack can point at, and data/lotr/instrument/command_horn.json points
+     * at this one. Adding the sound to sounds.json alone left the instrument
+     * unable to resolve it, which failed the whole registry load and stopped any
+     * world from opening.
+     */
+    public static final SoundEvent ITEM_HORN = register("item.horn");
+
+    /** The crack of the balrog whip, "lotr:item.balrog_whip". */
+    public static final SoundEvent ITEM_BALROG_WHIP = register("item.balrog_whip");
+
     private LOTRSounds() {
     }
 

@@ -28,6 +28,9 @@ import net.minecraft.world.item.StandingAndWallBlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.component.ItemLore;
+import net.minecraft.network.chat.Component;
+import net.minecraft.core.component.DataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTreasurePileItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.minecraft.world.entity.EntityTypes;
@@ -129,6 +132,7 @@ public final class LOTRBlocks {
     public static final List<Block> ALL_ANIMAL_JARS = new ArrayList<>();
     public static final List<Block> ALL_BANNERS = new ArrayList<>();
     public static final List<Block> ALL_TREASURE_PILES = new ArrayList<>();
+    public static final List<Block> ALL_ORC_BOMBS = new ArrayList<>();
     /** Each treasure pile to its two-pixel carpet item; see registerTreasurePile. */
     public static final Map<Block, Item> TREASURE_PILE_CARPETS = new LinkedHashMap<>();
     /** Each treasure pile to its full-block item, which is also its asItem(). */
@@ -453,6 +457,38 @@ public final class LOTRBlocks {
     public static final Block DRYSTONE = registerCube("drystone", 1.5f, 6.0f, Tier.NONE);
 
     public static final Block ORC_TORCH = registerDoubleTorch("orc_torch");
+
+    // LOTRBlockOrcBomb, metadata 0/1/2 of one block in 1.7.10. The strength is
+    // the blast radius and the fuse length; see LOTROrcBombBlock.
+    // Registration order is getSubBlocks' order -- the three plain strengths,
+    // then the three fire ones -- because the creative tab walks this list.
+    // LOTRBlockRhunFire, the flame a broken jar leaves. No item: it is placed by
+    // the jar and by nothing else.
+    public static final Block KHAMULS_FIRE = register("khamuls_fire",
+            LOTRKhamulsFireBlock::new, LOTRKhamulsFireBlock.fireProperties(), false);
+
+    // LOTRBlockRhunFireJar, "Khamûl's Fire": hardness 0.5, stone footsteps, and
+    // it falls. Registered before the bombs so it sits with them in the tab.
+    public static final Block KHAMULS_FIRE_JAR = register("khamuls_fire_jar",
+            LOTRKhamulsFireJarBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(0.5f)
+                    .sound(SoundType.STONE)
+                    .noOcclusion()
+                    .randomTicks()
+                    .pushReaction(PushReaction.DESTROY),
+            // tile.lotr.rhunFire.warning, "Extremely volatile" -- the line the
+            // original put under the name to warn what handling one means.
+            true, props -> props.component(DataComponents.LORE, new ItemLore(List.of(
+                    Component.translatable("block.lotr.khamuls_fire_jar.warning")))));
+
+    public static final Block ORC_BOMB = registerOrcBomb("orc_bomb", 0, false);
+    public static final Block DOUBLE_STRENGTH_ORC_BOMB = registerOrcBomb("double_strength_orc_bomb", 1, false);
+    public static final Block TRIPLE_STRENGTH_ORC_BOMB = registerOrcBomb("triple_strength_orc_bomb", 2, false);
+    public static final Block ORC_FIRE_BOMB = registerOrcBomb("orc_fire_bomb", 0, true);
+    public static final Block DOUBLE_STRENGTH_ORC_FIRE_BOMB = registerOrcBomb("double_strength_orc_fire_bomb", 1, true);
+    public static final Block TRIPLE_STRENGTH_ORC_FIRE_BOMB = registerOrcBomb("triple_strength_orc_fire_bomb", 2, true);
     // lotr:tauredainDoubleTorch, the "Taurethrim Torch". Registered exactly as
     // the orc torch is -- both were a bare new LOTRBlockDoubleTorch() in
     // LOTRMod, differing only in their sprites.
@@ -2471,6 +2507,39 @@ public final class LOTRBlocks {
     // instantly and never blocks a piston. The original gave it its own
     // "lotr:treasure" step sound, which the port has no sound event for yet;
     // metal is the nearest vanilla has.
+    // LOTRBlockOrcBomb: Material.iron, hardness 3, resistance 0 -- it is no
+    // more blast-proof than air, because a blast is meant to set it off rather
+    // than be soaked up by it.
+    private static Block registerOrcBomb(String name, int strengthLevel, boolean fire) {
+        // LOTRItemOrcBomb.addInformation put up to two lines under the name --
+        // "Double Strength" or "Triple Strength", then "Fire" -- since all six
+        // shared the one name "Orc Bomb" and the lines are the only thing
+        // telling them apart in a hand. They are a default LORE component here
+        // rather than a tooltip override, because Item.appendHoverText is
+        // deprecated and this never varies per stack.
+        List<Component> lines = new ArrayList<>();
+        if (strengthLevel == 1) {
+            lines.add(Component.translatable("block.lotr.orc_bomb.double_strength"));
+        } else if (strengthLevel == 2) {
+            lines.add(Component.translatable("block.lotr.orc_bomb.triple_strength"));
+        }
+        if (fire) {
+            lines.add(Component.translatable("block.lotr.orc_bomb.fire"));
+        }
+        UnaryOperator<Item.Properties> lore = lines.isEmpty()
+                ? UnaryOperator.identity()
+                : props -> props.component(DataComponents.LORE, new ItemLore(List.copyOf(lines)));
+
+        return track(ALL_ORC_BOMBS, register(name,
+                props -> new LOTROrcBombBlock(strengthLevel, fire, props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.METAL)
+                        .strength(3.0f, 0.0f)
+                        .sound(SoundType.METAL)
+                        .noOcclusion(),
+                true, lore));
+    }
+
     /**
      * One block per metal, and TWO items for it: getSubBlocks offered metadata 0
      * and metadata 7, a two-pixel scatter and the full block, both under the one

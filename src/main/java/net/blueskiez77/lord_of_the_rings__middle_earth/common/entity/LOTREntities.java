@@ -38,6 +38,66 @@ public final class LOTREntities {
                     .clientTrackingRange(10)
                     .updateInterval(3));
 
+    /**
+     * LOTREntityOrcBomb. Sized like vanilla's primed TNT, which it extends; the
+     * fuse and blast come from the bomb block it carries.
+     */
+    public static final EntityType<LOTROrcBombEntity> ORC_BOMB = register("orc_bomb",
+            EntityType.Builder.<LOTROrcBombEntity>of(LOTROrcBombEntity::new, MobCategory.MISC)
+                    .sized(0.98f, 0.98f)
+                    .clientTrackingRange(10)
+                    .updateInterval(10));
+
+    /**
+     * LOTREntityThrowingAxe, setSize(0.5f, 0.5f) -- an arrow's footprint, which
+     * is what it is built on. Tracked like an arrow too: close range, and a
+     * slow update interval, since its flight is worked out the same way on both
+     * sides.
+     */
+    public static final EntityType<LOTRThrowingAxeEntity> THROWING_AXE = register("throwing_axe",
+            EntityType.Builder.<LOTRThrowingAxeEntity>of(LOTRThrowingAxeEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(20));
+
+    /**
+     * LOTREntityCrossbowBolt, setSize(0.5f, 0.5f) -- an arrow's, which it is
+     * built on and tracked like.
+     */
+    public static final EntityType<LOTRCrossbowBoltEntity> CROSSBOW_BOLT = register("crossbow_bolt",
+            EntityType.Builder.<LOTRCrossbowBoltEntity>of(LOTRCrossbowBoltEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(20));
+
+    /**
+     * LOTREntityPebble, an EntityThrowable and so setSize(0.25f, 0.25f) -- the
+     * size vanilla gives a snowball, which is what it is built on.
+     */
+    public static final EntityType<LOTRPebbleEntity> PEBBLE = register("pebble",
+            EntityType.Builder.<LOTRPebbleEntity>of(LOTRPebbleEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
+
+    /**
+     * A thrown LOTR trident. Sized and tracked as vanilla's is; it exists so
+     * the projectile gets a renderer of its own rather than vanilla's fixed
+     * trident model. See LOTRThrownTridentEntity.
+     */
+    public static final EntityType<LOTRThrownTridentEntity> THROWN_TRIDENT = register("thrown_trident",
+            EntityType.Builder.<LOTRThrownTridentEntity>of(LOTRThrownTridentEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(20));
+
+    /** LOTREntityDart, sized and tracked as an arrow, which it is built on. */
+    public static final EntityType<LOTRDartEntity> DART = register("dart",
+            EntityType.Builder.<LOTRDartEntity>of(LOTRDartEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(20));
+
     private LOTREntities() {
     }
 

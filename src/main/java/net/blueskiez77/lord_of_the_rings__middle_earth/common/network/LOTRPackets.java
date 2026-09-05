@@ -6,6 +6,10 @@ import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCommandHornItem;
 
 /**
  * The port's first networking. Payload types must be registered on BOTH sides
@@ -24,6 +28,27 @@ public final class LOTRPackets {
     public static void init() {
         PayloadTypeRegistry.serverboundPlay()
                 .register(LOTRBeaconEditPayload.TYPE, LOTRBeaconEditPayload.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay()
+                .register(LOTRHornModePayload.TYPE, LOTRHornModePayload.STREAM_CODEC);
+
+        // LOTRGuiHornSelect's choice, applied to whichever hand holds a horn.
+        ServerPlayNetworking.registerGlobalReceiver(LOTRHornModePayload.TYPE, (payload, context) -> {
+            ServerPlayer player = context.player();
+            context.server().execute(() -> {
+                LOTRCommandHornItem.Mode[] modes = LOTRCommandHornItem.Mode.values();
+                if (payload.mode() < 0 || payload.mode() >= modes.length) {
+                    return;
+                }
+                for (InteractionHand hand : InteractionHand.values()) {
+                    ItemStack stack = player.getItemInHand(hand);
+                    if (stack.getItem() instanceof LOTRCommandHornItem) {
+                        LOTRCommandHornItem.setMode(stack, modes[payload.mode()]);
+                        LOTRCommandHornItem.setSquadron(stack, payload.squadron());
+                        return;
+                    }
+                }
+            });
+        });
 
         ServerPlayNetworking.registerGlobalReceiver(LOTRBeaconEditPayload.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();

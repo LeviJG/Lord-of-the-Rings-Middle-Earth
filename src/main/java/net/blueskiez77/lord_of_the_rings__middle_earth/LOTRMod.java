@@ -14,6 +14,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRRecipeT
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRAlignmentCommand;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+
+import net.minecraft.world.level.block.DispenserBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -50,6 +52,16 @@ public class LOTRMod implements ModInitializer {
 
         // After items: the troll statue item names the entity type it places.
         LOTREntities.init();
+
+        // LOTRDispenseCrossbowBolt. The bolt is an ArrowItem, so vanilla's own
+        // projectile dispense behaviour already knows how to throw it -- the
+        // dispenser just has to be told the item is one, which 1.7.10 did from
+        // LOTRItemCrossbowBolt's constructor.
+        DispenserBlock.registerProjectileBehavior(LOTRItems.CROSSBOW_BOLT);
+        // LOTRDispensePebble, the same way.
+        DispenserBlock.registerProjectileBehavior(LOTRItems.PEBBLE);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.TAURETHRIM_DART);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_TAURETHRIM_DART);
 
         // Creative tab. Must come after blocks and items exist.
         LOTRCreativeTabs.init();

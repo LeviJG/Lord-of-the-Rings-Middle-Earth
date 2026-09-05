@@ -7,6 +7,21 @@
     "minecraft:crossbow",
     "minecraft:trident",
     "minecraft:fishing_rod",
-    "minecraft:mace"
+    "minecraft:mace",
+    "lotr:dwarven_throwing_axe",
+    "lotr:bronze_throwing_axe",
+    "lotr:iron_throwing_axe",
+    "lotr:uruk_crossbow",
+    "lotr:iron_crossbow",
+    "lotr:mithril_crossbow",
+    "lotr:mirkwood_bow",
+    "lotr:sling",
+    "lotr:command_sword",
+    "lotr:harad_bow",
+    "lotr:blue_dwarven_throwing_axe",
+    "lotr:rohirric_bow",
+    "lotr:gondor_bow",
+    "lotr:lindon_bow",
+    "lotr:taurethrim_blowgun"
   ]
 }

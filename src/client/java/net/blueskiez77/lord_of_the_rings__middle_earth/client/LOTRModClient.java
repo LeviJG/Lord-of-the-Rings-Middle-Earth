@@ -3,17 +3,23 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.client;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBeaconScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCraftingScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHornSelectScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRForgeScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHobbitOvenScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMillstoneScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnsmelteryScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRAnimalJarRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRArmorRenderers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRBannerRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRBossTrophyRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRChestRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRCrossbowBoltRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRDartRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTREntJarRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRKebabStandRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRStoneTrollRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrowingAxeRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrownTridentRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRIthildinDoorRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRTrollTotemRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRUnsmelteryRenderer;
@@ -25,17 +31,21 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBe
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCommandHornItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
+import net.fabricmc.fabric.api.event.player.UseItemCallback;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSources;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.client.renderer.entity.ThrownItemRenderer;
+import net.minecraft.client.renderer.entity.TntRenderer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.block.state.BlockState;
@@ -99,6 +109,10 @@ public class LOTRModClient implements ClientModInitializer {
         BlockEntityRenderers.register(
                 LOTRBlockEntities.CHEST, LOTRChestRenderer::new);
 
+        // Helmets whose crests and wings are geometry the vanilla armour model
+        // does not have. See LOTRArmorRenderers.
+        LOTRArmorRenderers.init();
+
         // Faction banners. Vanilla's banner renderer draws a base colour and a
         // pattern list; these are one texture apiece, so they need their own.
         BlockEntityRenderers.register(
@@ -107,8 +121,45 @@ public class LOTRModClient implements ClientModInitializer {
         // Boss trophies: the chieftain's skulls and the mallorn ent's trunk.
         EntityRenderers.register(LOTREntities.BOSS_TROPHY, LOTRBossTrophyRenderer::new);
 
-        // The stone troll: the port's first entity renderer.
+        // The orc bomb rides on vanilla's TNT renderer: it draws the block
+        // state the entity carries, which is the bomb block, so the swelling
+        // and the white flash come free and correct.
+        EntityRenderers.register(LOTREntities.ORC_BOMB, TntRenderer::new);
+
+        // The stone troll, which draws nothing without one.
         EntityRenderers.register(LOTREntities.STONE_TROLL, LOTRStoneTrollRenderer::new);
+
+        // A thrown axe draws its own item sprite, tumbling.
+        EntityRenderers.register(LOTREntities.THROWING_AXE, LOTRThrowingAxeRenderer::new);
+
+        // And a bolt is drawn exactly as an arrow is; see LOTRCrossbowBoltRenderer.
+        EntityRenderers.register(LOTREntities.CROSSBOW_BOLT, LOTRCrossbowBoltRenderer::new);
+
+        // A pebble is drawn as a snowball is -- its own item sprite, billboarded
+        // at the camera -- so vanilla's thrown-item renderer serves as it is.
+        EntityRenderers.register(LOTREntities.PEBBLE, ThrownItemRenderer::new);
+
+        // A thrown LOTR trident, which needs a renderer of its own so it is not
+        // drawn as a vanilla one. See LOTRThrownTridentRenderer.
+        EntityRenderers.register(LOTREntities.THROWN_TRIDENT, LOTRThrownTridentRenderer::new);
+
+        // A blowgun dart, drawn as its own sprite; see LOTRDartRenderer.
+        EntityRenderers.register(LOTREntities.DART, LOTRDartRenderer::new);
+
+        // A plain Horn of Command opens its selection screen instead of being
+        // blown. Opened client-side, the way the beacon's naming dialog is, so
+        // no client class leaks into the common source set; the choice travels
+        // back as LOTRHornModePayload.
+        UseItemCallback.EVENT.register((player, level, hand) -> {
+            ItemStack held = player.getItemInHand(hand);
+            if (level.isClientSide()
+                    && held.getItem() instanceof LOTRCommandHornItem
+                    && LOTRCommandHornItem.getMode(held) == LOTRCommandHornItem.Mode.SELECT) {
+                Minecraft.getInstance().setScreenAndShow(new LOTRHornSelectScreen(held));
+                return InteractionResult.SUCCESS;
+            }
+            return InteractionResult.PASS;
+        });
 
         MenuScreens.register(LOTRMenus.FORGE, LOTRForgeScreen::new);
         MenuScreens.register(LOTRMenus.HOBBIT_OVEN, LOTRHobbitOvenScreen::new);

@@ -22,5 +22,17 @@
     "sounds": [
       "lotr:block/gate/stone_close"
     ]
+  },
+  "item.horn": {
+    "category": "player",
+    "sounds": [
+      "lotr:item/horn"
+    ]
+  },
+  "item.balrog_whip": {
+    "category": "player",
+    "sounds": [
+      "lotr:item/balrog_whip"
+    ]
   }
 }

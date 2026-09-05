@@ -149,6 +149,11 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         LOTRBlocks.ALL_ANIMAL_JARS.forEach(this::dropSelf);
         dropSelf(LOTRBlocks.WEAPON_RACK);
 
+        // Mined by hand an orc bomb comes back whole; caught in a blast it does
+        // not drop at all, which is LOTROrcBombBlock.dropFromExplosion's job.
+        LOTRBlocks.ALL_ORC_BOMBS.forEach(this::dropSelf);
+        dropSelf(LOTRBlocks.KHAMULS_FIRE_JAR);
+
         // Treasure piles drop one item per layer, the way vanilla's snow layers
         // do -- see the divergence note on LOTRTreasurePileBlock.
         LOTRBlocks.ALL_TREASURE_PILES.forEach(pile -> add(pile, this::treasurePileDrops));

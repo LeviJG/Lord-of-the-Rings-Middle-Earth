@@ -11,6 +11,9 @@ base {
 }
 
 loom {
+    // See src/main/resources/lotr.accesswidener for what and why.
+    accessWidenerPath = file("src/main/resources/lotr.accesswidener")
+
     splitEnvironmentSourceSets()
 
     mods {
