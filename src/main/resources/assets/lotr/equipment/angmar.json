@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:angmar"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:angmar"
+      }
+    ]
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "sound_event": "lotr:item.horn",
+  "use_duration": 2.0,
+  "range": 256.0,
+  "description": {
+    "translate": "item.lotr.command_horn.sound"
+  }
+}

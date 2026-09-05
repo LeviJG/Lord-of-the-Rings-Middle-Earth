@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:gold_trimmed_dwarven"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:gold_trimmed_dwarven"
+      }
+    ]
+  }
+}

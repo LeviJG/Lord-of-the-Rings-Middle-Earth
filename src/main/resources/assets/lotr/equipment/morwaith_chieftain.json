@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:morwaith_chieftain"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:morwaith_chieftain"
+      }
+    ]
+  }
+}

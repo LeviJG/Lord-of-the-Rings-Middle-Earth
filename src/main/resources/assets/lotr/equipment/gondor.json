@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:gondor"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:gondor"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "lotr:gondor"
+      }
+    ]
+  }
+}

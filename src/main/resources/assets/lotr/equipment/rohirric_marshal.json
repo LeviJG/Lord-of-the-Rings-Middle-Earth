@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:rohirric_marshal"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:rohirric_marshal"
+      }
+    ]
+  }
+}

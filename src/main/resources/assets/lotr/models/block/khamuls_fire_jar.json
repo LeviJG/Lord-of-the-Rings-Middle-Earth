@@ -1,0 +1,277 @@
+{
+  "__comment": "LOTRRenderBlocks.renderRhunFireJar, stage for stage: base, neck, lid, cap, a crossed crown and a crossed handle. renderAllFaces was on, so nothing is culled.",
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "lotr:block/khamuls_fire_base_side",
+    "base_side": "lotr:block/khamuls_fire_base_side",
+    "base_top": "lotr:block/khamuls_fire_base_top",
+    "base_bottom": "lotr:block/khamuls_fire_base_bottom",
+    "neck_side": "lotr:block/khamuls_fire_neck_side",
+    "lid_side": "lotr:block/khamuls_fire_lid_side",
+    "lid_top": "lotr:block/khamuls_fire_lid_top",
+    "lid_bottom": "lotr:block/khamuls_fire_lid_bottom",
+    "cap_side": "lotr:block/khamuls_fire_cap_side",
+    "cap_top": "lotr:block/khamuls_fire_cap_top",
+    "cap_bottom": "lotr:block/khamuls_fire_cap_bottom",
+    "crown_side": "lotr:block/khamuls_fire_crown_side",
+    "handle_side": "lotr:block/khamuls_fire_handle_side"
+  },
+  "elements": [
+    {
+      "from": [
+        2.0,
+        0.0,
+        2.0
+      ],
+      "to": [
+        14.0,
+        8.0,
+        14.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#base_side"
+        },
+        "south": {
+          "texture": "#base_side"
+        },
+        "west": {
+          "texture": "#base_side"
+        },
+        "east": {
+          "texture": "#base_side"
+        },
+        "up": {
+          "texture": "#base_top"
+        },
+        "down": {
+          "texture": "#base_bottom"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        8.0,
+        5.0
+      ],
+      "to": [
+        11.0,
+        11.0,
+        11.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#neck_side"
+        },
+        "south": {
+          "texture": "#neck_side"
+        },
+        "west": {
+          "texture": "#neck_side"
+        },
+        "east": {
+          "texture": "#neck_side"
+        },
+        "up": {
+          "texture": "#neck_side"
+        },
+        "down": {
+          "texture": "#neck_side"
+        }
+      }
+    },
+    {
+      "from": [
+        4.0,
+        11.0,
+        4.0
+      ],
+      "to": [
+        12.0,
+        13.0,
+        12.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#lid_side"
+        },
+        "south": {
+          "texture": "#lid_side"
+        },
+        "west": {
+          "texture": "#lid_side"
+        },
+        "east": {
+          "texture": "#lid_side"
+        },
+        "up": {
+          "texture": "#lid_top"
+        },
+        "down": {
+          "texture": "#lid_bottom"
+        }
+      }
+    },
+    {
+      "from": [
+        5.0,
+        13.0,
+        5.0
+      ],
+      "to": [
+        11.0,
+        14.0,
+        11.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#cap_side"
+        },
+        "south": {
+          "texture": "#cap_side"
+        },
+        "west": {
+          "texture": "#cap_side"
+        },
+        "east": {
+          "texture": "#cap_side"
+        },
+        "up": {
+          "texture": "#cap_top"
+        },
+        "down": {
+          "texture": "#cap_bottom"
+        }
+      }
+    },
+    {
+      "from": [
+        6.0,
+        14.0,
+        8.0
+      ],
+      "to": [
+        10.0,
+        16.0,
+        8.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#crown_side"
+        },
+        "south": {
+          "texture": "#crown_side"
+        },
+        "west": {
+          "texture": "#crown_side"
+        },
+        "east": {
+          "texture": "#crown_side"
+        },
+        "up": {
+          "texture": "#crown_side"
+        },
+        "down": {
+          "texture": "#crown_side"
+        }
+      }
+    },
+    {
+      "from": [
+        8.0,
+        14.0,
+        6.0
+      ],
+      "to": [
+        8.0,
+        16.0,
+        10.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#crown_side"
+        },
+        "south": {
+          "texture": "#crown_side"
+        },
+        "west": {
+          "texture": "#crown_side"
+        },
+        "east": {
+          "texture": "#crown_side"
+        },
+        "up": {
+          "texture": "#crown_side"
+        },
+        "down": {
+          "texture": "#crown_side"
+        }
+      }
+    },
+    {
+      "from": [
+        0.0,
+        0.0,
+        8.0
+      ],
+      "to": [
+        16.0,
+        16.0,
+        8.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#handle_side"
+        },
+        "south": {
+          "texture": "#handle_side"
+        },
+        "west": {
+          "texture": "#handle_side"
+        },
+        "east": {
+          "texture": "#handle_side"
+        },
+        "up": {
+          "texture": "#handle_side"
+        },
+        "down": {
+          "texture": "#handle_side"
+        }
+      }
+    },
+    {
+      "from": [
+        8.0,
+        0.0,
+        0.0
+      ],
+      "to": [
+        8.0,
+        16.0,
+        16.0
+      ],
+      "faces": {
+        "north": {
+          "texture": "#handle_side"
+        },
+        "south": {
+          "texture": "#handle_side"
+        },
+        "west": {
+          "texture": "#handle_side"
+        },
+        "east": {
+          "texture": "#handle_side"
+        },
+        "up": {
+          "texture": "#handle_side"
+        },
+        "down": {
+          "texture": "#handle_side"
+        }
+      }
+    }
+  ]
+}

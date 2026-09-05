@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/bow",
+  "textures": {
+    "layer0": "lotr:item/galadhrim_bow_pulling_1"
+  }
+}

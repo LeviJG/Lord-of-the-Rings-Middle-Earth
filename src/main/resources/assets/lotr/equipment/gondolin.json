@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:gondolin"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:gondolin"
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:mithril"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:mithril"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "lotr:mithril"
+      }
+    ]
+  }
+}

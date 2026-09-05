@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:dol_amroth_winged_body"
+      }
+    ]
+  }
+}

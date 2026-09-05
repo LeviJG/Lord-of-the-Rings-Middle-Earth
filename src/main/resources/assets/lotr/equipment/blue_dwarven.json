@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:blue_dwarven"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:blue_dwarven"
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:dol_amroth"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:dol_amroth"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "lotr:dol_amroth"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:half_troll"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:half_troll"
+      }
+    ]
+  }
+}

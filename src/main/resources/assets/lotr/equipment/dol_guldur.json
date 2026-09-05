@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:dol_guldur"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:dol_guldur"
+      }
+    ]
+  }
+}

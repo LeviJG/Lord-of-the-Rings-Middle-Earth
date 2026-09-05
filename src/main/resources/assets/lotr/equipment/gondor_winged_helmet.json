@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:gondor_winged_helmet"
+      }
+    ]
+  }
+}

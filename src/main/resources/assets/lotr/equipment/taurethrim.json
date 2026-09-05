@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:taurethrim"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:taurethrim"
+      }
+    ]
+  }
+}

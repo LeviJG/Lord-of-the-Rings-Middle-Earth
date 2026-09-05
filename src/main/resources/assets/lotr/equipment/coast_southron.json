@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:coast_southron"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:coast_southron"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "lotr:coast_southron"
+      }
+    ]
+  }
+}

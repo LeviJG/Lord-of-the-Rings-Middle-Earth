@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lotr:item/warhorn_base",
+    "layer1": "lotr:item/warhorn_overlay"
+  }
+}

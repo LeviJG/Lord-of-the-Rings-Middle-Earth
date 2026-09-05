@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:uruk"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:uruk"
+      }
+    ]
+  }
+}

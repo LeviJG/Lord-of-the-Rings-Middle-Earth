@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:golden_taurethrim_helmet"
+      }
+    ]
+  }
+}

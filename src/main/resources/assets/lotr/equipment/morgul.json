@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:morgul"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:morgul"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "lotr:morgul"
+      }
+    ]
+  }
+}

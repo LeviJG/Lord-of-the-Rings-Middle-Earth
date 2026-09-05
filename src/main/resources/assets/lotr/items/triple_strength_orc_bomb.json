@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "lotr:item/triple_strength_orc_bomb",
+    "tints": [
+      {
+        "type": "minecraft:constant",
+        "value": 7829367
+      }
+    ]
+  }
+}

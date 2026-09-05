@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/template_fire_side",
+  "textures": {
+    "fire": "lotr:block/khamuls_fire_1",
+    "particle": "lotr:block/khamuls_fire_1"
+  }
+}

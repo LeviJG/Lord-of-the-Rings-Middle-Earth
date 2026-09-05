@@ -1,0 +1,18 @@
+accessWidener	v2	official
+
+# PrimedTnt keeps its igniter in a private EntityReference and offers no setter:
+# the only way in is its (Level, x, y, z, LivingEntity) constructor, which
+# hardcodes EntityType.TNT and so is useless to a subclass. LOTROrcBombEntity
+# needs it so that a bomb's kills are credited to whoever lit it, exactly as
+# LOTREntityOrcBomb's EntityTNTPrimed super-constructor did in 1.7.10.
+accessible	field	net/minecraft/world/entity/item/PrimedTnt	owner	Lnet/minecraft/world/entity/EntityReference;
+mutable	field	net/minecraft/world/entity/item/PrimedTnt	owner	Lnet/minecraft/world/entity/EntityReference;
+
+# ThrownTrident keeps its loyalty level and its foil flag in two private synched
+# accessors, and works the loyalty out in a private method. LOTRThrownTridentEntity
+# needs all three: it cannot reach ThrownTrident's throwing constructor, which
+# hardcodes EntityType.TRIDENT, so it sets the same synched data itself. Without
+# these a LOTR trident would return to nobody and never shimmer.
+accessible	field	net/minecraft/world/entity/projectile/arrow/ThrownTrident	ID_LOYALTY	Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible	field	net/minecraft/world/entity/projectile/arrow/ThrownTrident	ID_FOIL	Lnet/minecraft/network/syncher/EntityDataAccessor;
+accessible	method	net/minecraft/world/entity/projectile/arrow/ThrownTrident	getLoyaltyFromItem	(Lnet/minecraft/world/item/ItemStack;)B

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/crossbow",
+  "textures": {
+    "layer0": "lotr:item/uruk_crossbow_pulling_0"
+  }
+}

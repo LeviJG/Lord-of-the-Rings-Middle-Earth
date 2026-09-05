@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:rohirric"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:rohirric"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "lotr:rohirric"
+      }
+    ]
+  }
+}

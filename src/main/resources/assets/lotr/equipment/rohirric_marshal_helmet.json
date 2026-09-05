@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:rohirric_marshal_helmet"
+      }
+    ]
+  }
+}

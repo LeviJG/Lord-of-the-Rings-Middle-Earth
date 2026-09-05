@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:gemsbok_hide"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:gemsbok_hide"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:dunlending"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:dunlending"
+      }
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:galadhrim"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:galadhrim"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "lotr:galadhrim"
+      }
+    ]
+  }
+}
