@@ -12,16 +12,12 @@ import net.fabricmc.fabric.api.datagen.v1.provider.FabricRecipeProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.recipes.RecipeCategory;
-import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.CookingBookCategory;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 
-// Crafting recipes for the blocks tab. Every recipe here is mechanical -- derived from the family lists in LOTRBlocks rather than transcribed one at a time -- because the original was mechanical too. LOTRRecipes.java has ~366 block recipes and they all reduce to a handful of shapes, every one identical to its vanilla equivalent: 4 planks   <- 1 log                       shapeless 3 beams    <- 3 logs                      X / X / X 2 smooth   <- 2 rock                      X / X 6 slabs    <- 3 base                      XXX 4 stairs   <- 6 base                      X.. / XX. / XXX 6 walls    <- 6 base                      XXX / XXX SCOPE -- deliberately not covered yet: - Pillars. They look like they should follow the vertical-three shape from their matching brick, but in 1.7.10 almost every pillar was crafted from plain vanilla stone regardless of appearance. Deriving angmar_pillar <- angmar_brick would invent a recipe the mod never had. - Brick recipes (4 bricks <- 4 rock). Not derivable from names: dwarven brick comes from blue rock, not any "dwarven rock", and several bricks have no rock source. Wants a BRICK_BASE map in LOTRBlocks. - Faction gating. In 1.7.10 the faction brick stairs/slabs/walls lived in per-faction lists and could only be crafted at that faction's table. Everything here goes on the vanilla table. That is a design decision still to be settled, not an oversight.
+// Crafting recipes for the blocks tab. Every recipe here is mechanical -- derived from the family lists in LOTRBlocks rather than transcribed one at a time -- because the original was mechanical too. LOTRRecipes.java has ~366 block recipes and they all reduce to a handful of shapes, every one identical to its vanilla equivalent: 4 planks   <- 1 log                       shapeless 3 beams    <- 3 logs                      X / X / X 2 smooth   <- 2 rock                      X / X 6 slabs    <- 3 base                      XXX 4 stairs   <- 6 base                      X.. / XX. / XXX 6 walls    <- 6 base                      XXX / XXX SCOPE -- deliberately not covered yet: - Pillars. They look like they should follow the vertical-three shape from their matching brick, but in 1.7.10 almost every pillar was crafted from plain vanilla stone regardless of appearance. Deriving angmar_pillar <- angmar_brick would invent a recipe the mod never had. - Brick recipes. Not derivable from names: most faction bricks come from plain vanilla stone, not a matching rock. These, and every other one-off recipe, are transcribed in LOTRTranscribedRecipes instead. - Faction gating. In 1.7.10 the faction brick stairs/slabs/walls lived in per-faction lists and could only be crafted at that faction's table. Every family member in LOTRTranscribedRecipes.FACTION_ONLY is skipped here and made at its table instead.
 public class LOTRRecipeProvider extends FabricRecipeProvider {
     public LOTRRecipeProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registryLookup) {
         super(output, registryLookup);
@@ -47,36 +43,15 @@ public class LOTRRecipeProvider extends FabricRecipeProvider {
             planksFromLogs();
             beamsFromLogs();
             smoothStone();
-            charcoal();
             cutFromBase();
-            dwarvenDoors();
-        }
-
-        /**
-         * LOTRRecipes: {@code new ShapedOreRecipe(dwarvenDoor, "XX","XX","XX",
-         * 'X', Blocks.stone)}. Six stone in a 2x3 slab, which is the door's own
-         * silhouette.
-         *
-         * <p>The ithildin door's recipe -- the same shape with an ithildin item
-         * at the centre-right -- is NOT emitted: the ithildin item does not
-         * exist in the port yet, so there is nothing to key the 'Y' slot to.
-         * It belongs here the moment that item lands.
-         */
-        private void dwarvenDoors() {
-            shaped(RecipeCategory.REDSTONE, LOTRBlocks.DWARVEN_DOOR)
-                    .pattern("XX")
-                    .pattern("XX")
-                    .pattern("XX")
-                    .define('X', Blocks.STONE)
-                    .unlockedBy(getHasName(Blocks.STONE), has(Blocks.STONE))
-                    .save(output);
+            new LOTRTranscribedRecipes(registries, output).buildRecipes();
         }
 
         private void planksFromLogs() {
             Map<String, Block> logsByStem = stems(LOTRBlocks.ALL_LOGS, "_log");
             LOTRBlocks.ALL_PLANKS.forEach(planks -> {
                 Block log = logsByStem.get(stem(planks, "_planks"));
-                if (log == null) {
+                if (log == null || factionOnly(planks)) {
                     return;
                 }
                 shapeless(RecipeCategory.BUILDING_BLOCKS, planks, 4)
@@ -99,19 +74,10 @@ public class LOTRRecipeProvider extends FabricRecipeProvider {
             LOTRBlocks.ALL_BEAMS.forEach(beam -> {
                 String stem = stem(beam, "_beam");
                 Block log = logsByStem.getOrDefault(stem, vanillaLogs.get(stem));
-                if (log != null) {
+                if (log != null && !factionOnly(beam)) {
                     verticalStack(beam, 3, log, 3);
                 }
             });
-        }
-
-        // Vanilla smelts any log to charcoal: 0.15 xp, 200 ticks, MISC.
-        private void charcoal() {
-            LOTRBlocks.ALL_LOGS.forEach(log ->
-                    SimpleCookingRecipeBuilder.smelting(Ingredient.of(log), RecipeCategory.MISC,
-                                    CookingBookCategory.MISC, Items.CHARCOAL, 0.15F, 200)
-                            .unlockedBy(getHasName(log), has(log))
-                            .save(output, id(log) + "_to_charcoal"));
         }
 
         private void smoothStone() {
@@ -122,36 +88,53 @@ public class LOTRRecipeProvider extends FabricRecipeProvider {
                     return;
                 }
                 Block base = byId.get(id.substring("smooth_".length()));
-                if (base != null) {
+                if (base != null && !factionOnly(smooth)) {
                     verticalStack(smooth, 2, base, 2);
                 }
             });
         }
 
         private void cutFromBase() {
-            LOTRBlocks.SLAB_BASE.forEach((slab, base) ->
-                    shaped(RecipeCategory.BUILDING_BLOCKS, slab, 6)
-                            .pattern("XXX")
-                            .define('X', base)
-                            .unlockedBy(getHasName(base), has(base))
-                            .save(output));
+            LOTRBlocks.SLAB_BASE.forEach((slab, base) -> {
+                if (factionOnly(slab)) {
+                    return;
+                }
+                shaped(RecipeCategory.BUILDING_BLOCKS, slab, 6)
+                        .pattern("XXX")
+                        .define('X', base)
+                        .unlockedBy(getHasName(base), has(base))
+                        .save(output);
+            });
 
-            LOTRBlocks.STAIRS_BASE.forEach((stairs, base) ->
-                    shaped(RecipeCategory.BUILDING_BLOCKS, stairs, 4)
-                            .pattern("X  ")
-                            .pattern("XX ")
-                            .pattern("XXX")
-                            .define('X', base)
-                            .unlockedBy(getHasName(base), has(base))
-                            .save(output));
+            LOTRBlocks.STAIRS_BASE.forEach((stairs, base) -> {
+                if (factionOnly(stairs)) {
+                    return;
+                }
+                shaped(RecipeCategory.BUILDING_BLOCKS, stairs, 4)
+                        .pattern("X  ")
+                        .pattern("XX ")
+                        .pattern("XXX")
+                        .define('X', base)
+                        .unlockedBy(getHasName(base), has(base))
+                        .save(output);
+            });
 
-            LOTRBlocks.WALL_BASE.forEach((wall, base) ->
-                    shaped(RecipeCategory.BUILDING_BLOCKS, wall, 6)
-                            .pattern("XXX")
-                            .pattern("XXX")
-                            .define('X', base)
-                            .unlockedBy(getHasName(base), has(base))
-                            .save(output));
+            LOTRBlocks.WALL_BASE.forEach((wall, base) -> {
+                if (factionOnly(wall)) {
+                    return;
+                }
+                shaped(RecipeCategory.BUILDING_BLOCKS, wall, 6)
+                        .pattern("XXX")
+                        .pattern("XXX")
+                        .define('X', base)
+                        .unlockedBy(getHasName(base), has(base))
+                        .save(output);
+            });
+        }
+
+        // Crafted only at a faction table in 1.7.10; LOTRTranscribedRecipes emits those recipes instead.
+        private static boolean factionOnly(Block block) {
+            return LOTRTranscribedRecipes.FACTION_ONLY.contains(BuiltInRegistries.BLOCK.getKey(block));
         }
 
         private void verticalStack(Block result, int count, Block ingredient, int rows) {

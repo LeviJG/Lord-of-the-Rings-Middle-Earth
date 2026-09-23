@@ -1,12 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -34,22 +34,13 @@ import org.jspecify.annotations.Nullable;
  * blocks now, so the damage value has nothing left to select and the linear
  * scan in {@code getMillingResult} becomes a map lookup.
  *
- * <p><b>The cracked-brick entries are derived, not listed.</b> The original
- * spells out thirty-odd {@code addCrackedBricks} calls by metadata. Every one
- * of them is the same rule -- a brick grinds into its own cracked form -- so
- * this walks the block registry instead and pairs {@code lotr:x_brick} with
- * {@code lotr:cracked_x_brick} (and the same for pillars) wherever both exist.
- * New brick families are then covered the moment they are registered, and no
- * entry can name a block that has not been ported yet.
- *
  * <p><b>Red sandstone is vanilla's.</b> {@code LOTRMod.redSandstone} existed
  * because 1.7.10 had no red sandstone; modern Minecraft does, so it grinds to
  * vanilla red sand.
  *
  * <p><b>{@code addCrackedBricks} also registered a furnace recipe</b>
- * ({@code GameRegistry.addSmelting(itemstack, result, 0.1f)}) so bricks could
- * be cracked in a furnace as well as a millstone. That belongs in the recipe
- * datagen, not here -- see docs/TODO-millstone.md.
+ * ({@code GameRegistry.addSmelting(itemstack, result, 0.1f)}). Those are
+ * emitted by LOTRTranscribedRecipes from {@link #crackedBricks()}.
  */
 public final class LOTRMillstoneRecipes {
 
@@ -96,34 +87,59 @@ public final class LOTRMillstoneRecipes {
 
         addRecipe(Blocks.STONE, Blocks.COBBLESTONE);
         addRecipe(Blocks.COBBLESTONE, Blocks.GRAVEL, 1, 0.75f);
+        addRecipe(LOTRBlocks.MORDOR_ROCK, LOTRBlocks.MORDOR_GRAVEL, 1, 0.75f);
 
         // Gravel is the gamble: three times in four you grind it away to
         // nothing, which is why flint is worth having a millstone for.
         addRecipe(Blocks.GRAVEL, Items.FLINT, 1, 0.25f);
         addRecipe(LOTRBlocks.MORDOR_GRAVEL, Items.FLINT, 1, 0.25f);
+        // NOT ported: obsidianGravel -> obsidianShard. The shard item does not exist yet.
+        addRecipe(LOTRBlocks.SALT_ORE, LOTRItems.SALT);
 
         addRecipe(Blocks.SANDSTONE, Blocks.SAND, 2, 1.0f);
         addRecipe(Blocks.RED_SANDSTONE, Blocks.RED_SAND, 2, 1.0f);
         addRecipe(LOTRBlocks.WHITE_SANDSTONE, LOTRBlocks.WHITE_SAND, 2, 1.0f);
 
-        addRecipe(Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS);
-
-        addCrackedPairs();
+        crackedBricks().forEach(LOTRMillstoneRecipes::addRecipe);
     }
 
     /**
-     * Pair every {@code lotr:<name>} with {@code lotr:cracked_<name>}, which
-     * covers the original's whole addCrackedBricks list plus the pillars.
+     * The original's addCrackedBricks list, in its order. Each pair was BOTH a
+     * certain millstone grind and a furnace recipe (0.1 xp); the furnace half is
+     * emitted by the recipe datagen from this same map.
+     *
+     * <p>Explicit rather than derived from names: the port's cracked blocks are
+     * not all named cracked_&lt;x&gt; (dale_cracked_brick, rhun_cracked_brick,
+     * ...), and a name rule also swept in slabs, stairs and walls, which the
+     * original never cracked.
      */
-    private static void addCrackedPairs() {
-        for (Identifier id : BuiltInRegistries.BLOCK.keySet()) {
-            if (!"lotr".equals(id.getNamespace()) || id.getPath().startsWith("cracked_")) {
-                continue;
-            }
-            Identifier crackedId =
-                    Identifier.fromNamespaceAndPath(id.getNamespace(), "cracked_" + id.getPath());
-            BuiltInRegistries.BLOCK.getOptional(crackedId)
-                    .ifPresent(cracked -> addRecipe(BuiltInRegistries.BLOCK.getValue(id), cracked));
-        }
+    public static Map<ItemLike, ItemLike> crackedBricks() {
+        Map<ItemLike, ItemLike> pairs = new LinkedHashMap<>();
+        pairs.put(Blocks.BRICKS, LOTRBlocks.RED_BRICK_CRACKED);
+        pairs.put(Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS);
+        pairs.put(LOTRBlocks.MORDOR_BRICK, LOTRBlocks.CRACKED_MORDOR_BRICK);
+        pairs.put(LOTRBlocks.GONDOR_BRICK, LOTRBlocks.CRACKED_GONDOR_BRICK);
+        pairs.put(LOTRBlocks.DWARVEN_BRICK, LOTRBlocks.CRACKED_DWARVEN_BRICK);
+        pairs.put(LOTRBlocks.GALADHRIM_BRICK, LOTRBlocks.CRACKED_GALADHRIM_BRICK);
+        pairs.put(LOTRBlocks.NEAR_HARAD_BRICK, LOTRBlocks.NEAR_HARAD_CRACKED_BRICK);
+        pairs.put(LOTRBlocks.ANGMAR_BRICK, LOTRBlocks.CRACKED_ANGMAR_BRICK);
+        pairs.put(LOTRBlocks.ARNOR_BRICK, LOTRBlocks.CRACKED_ARNOR_BRICK);
+        pairs.put(LOTRBlocks.DOL_GULDUR_BRICK, LOTRBlocks.CRACKED_DOL_GULDUR_BRICK);
+        pairs.put(LOTRBlocks.HIGH_ELVEN_BRICK, LOTRBlocks.CRACKED_HIGH_ELVEN_BRICK);
+        pairs.put(LOTRBlocks.WOOD_ELVEN_BRICK, LOTRBlocks.CRACKED_WOOD_ELVEN_BRICK);
+        pairs.put(LOTRBlocks.MORWAITH_BRICK, LOTRBlocks.CRACKED_MORWAITH_BRICK);
+        pairs.put(LOTRBlocks.NEAR_HARAD_RED_BRICK, LOTRBlocks.NEAR_HARAD_RED_CRACKED_BRICK);
+        pairs.put(LOTRBlocks.TAUREDAIN_BRICK, LOTRBlocks.TAUREDAIN_CRACKED_BRICK);
+        pairs.put(LOTRBlocks.DALE_BRICK, LOTRBlocks.DALE_CRACKED_BRICK);
+        pairs.put(LOTRBlocks.DORWINION_BRICK, LOTRBlocks.CRACKED_DORWINION_BRICK);
+        pairs.put(LOTRBlocks.GONDOR_COBBLEBRICK, LOTRBlocks.CRACKED_GONDOR_COBBLEBRICK);
+        pairs.put(LOTRBlocks.RHUN_BRICK, LOTRBlocks.RHUN_CRACKED_BRICK);
+        pairs.put(LOTRBlocks.UMBAR_BRICK, LOTRBlocks.CRACKED_UMBAR_BRICK);
+        pairs.put(LOTRBlocks.DWARVEN_PILLAR, LOTRBlocks.CRACKED_DWARVEN_PILLAR);
+        pairs.put(LOTRBlocks.GALADHRIM_PILLAR, LOTRBlocks.CRACKED_GALADHRIM_PILLAR);
+        pairs.put(LOTRBlocks.HIGH_ELVEN_PILLAR, LOTRBlocks.CRACKED_HIGH_ELVEN_PILLAR);
+        pairs.put(LOTRBlocks.WOOD_ELVEN_PILLAR, LOTRBlocks.CRACKED_WOOD_ELVEN_PILLAR);
+        pairs.put(LOTRBlocks.ARNOR_PILLAR, LOTRBlocks.CRACKED_ARNOR_PILLAR);
+        return pairs;
     }
 }

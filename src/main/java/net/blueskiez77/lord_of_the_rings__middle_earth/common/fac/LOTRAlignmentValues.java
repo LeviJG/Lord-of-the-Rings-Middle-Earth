@@ -1,5 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.fac;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
+
 import net.minecraft.util.Mth;
 
 public final class LOTRAlignmentValues {
@@ -12,6 +19,43 @@ public final class LOTRAlignmentValues {
     public static final AlignmentBonus PICKPOCKET_PENALTY = new AlignmentBonus(-1.0f, "lotr.alignment.pickpocket");
 
     private LOTRAlignmentValues() {
+    }
+
+    /**
+     * formatAlignForDisplay: one decimal place, thousands grouped, and a '+' on
+     * anything not negative. The original read its separator characters from
+     * two lang keys; the port has neither key, so it keeps the defaults those
+     * keys fell back to, ',' and '.'.
+     */
+    public static String formatAlignForDisplay(float alignment) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        symbols.setGroupingSeparator(',');
+        String s = new DecimalFormat(",##0.0", symbols).format(alignment);
+        if (s.isEmpty() || s.charAt(0) != '-') {
+            s = "+" + s;
+        }
+        return s;
+    }
+
+    /**
+     * notifyAlignmentNotHighEnough, all three overloads in one: "You need at
+     * least +1.0 X (or Y, or Z) alignment to perform this action", with the
+     * number in yellow.
+     */
+    public static void notifyAlignmentNotHighEnough(Player player, float alignmentRequired, LOTRFaction... factions) {
+        Component required = Component.literal(formatAlignForDisplay(alignmentRequired)).withStyle(ChatFormatting.YELLOW);
+        Object[] args = new Object[factions.length + 1];
+        args[0] = required;
+        for (int i = 0; i < factions.length; ++i) {
+            args[i + 1] = factions[i].factionName();
+        }
+        String key = switch (factions.length) {
+            case 1 -> "chat.lotr.insufficientAlignment";
+            case 2 -> "chat.lotr.insufficientAlignment2";
+            default -> "chat.lotr.insufficientAlignment3";
+        };
+        player.sendSystemMessage(Component.translatable(key, args));
     }
 
     public static AlignmentBonus createPledgePenalty(float alignPenalty) {

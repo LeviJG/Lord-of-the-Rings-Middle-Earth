@@ -33,6 +33,47 @@ public final class LOTRItems {
     public static final Item PIPEWEED = register("pipeweed",
             Item::new, new Item.Properties());
 
+    // Ore products. Each of these is what a LOTR ore drops when broken without
+    // Silk Touch, and what the matching storage block is nine of.
+    // LOTRItemWithAnvilNameColor (naurite): no behaviour beyond the anvil name
+    // colour, which the port does not have.
+    public static final Item NAURITE = register("naurite",
+            Item::new, new Item.Properties());
+    public static final Item QUENDITE_CRYSTAL = register("quendite_crystal",
+            LOTRQuenditeCrystalItem::new, new Item.Properties());
+    public static final Item GULDURIL_CRYSTAL = register("gulduril_crystal",
+            LOTRGuldurilCrystalItem::new, new Item.Properties());
+    public static final Item SULFUR = register("sulfur",
+            Item::new, new Item.Properties());
+    public static final Item SALTPETER = register("saltpeter",
+            Item::new, new Item.Properties());
+    // LOTRItemSalt sat in tabFood, not tabMaterials.
+    public static final Item SALT = register("salt",
+            LOTRSaltItem::new, new Item.Properties());
+
+    // LOTRItemGem / LOTRItemGemWithAnvilNameColor: plain items. Pearl and coral
+    // are the two without an anvil colour; that colour is not ported for any.
+    public static final Item TOPAZ = register("topaz",
+            Item::new, new Item.Properties());
+    public static final Item AMETHYST = register("amethyst",
+            Item::new, new Item.Properties());
+    public static final Item SAPPHIRE = register("sapphire",
+            Item::new, new Item.Properties());
+    public static final Item RUBY = register("ruby",
+            Item::new, new Item.Properties());
+    public static final Item AMBER = register("amber",
+            Item::new, new Item.Properties());
+    public static final Item DIAMOND = register("diamond",
+            Item::new, new Item.Properties());
+    public static final Item PEARL = register("pearl",
+            Item::new, new Item.Properties());
+    public static final Item CORAL = register("coral",
+            Item::new, new Item.Properties());
+    public static final Item OPAL = register("opal",
+            Item::new, new Item.Properties());
+    public static final Item EMERALD = register("emerald",
+            Item::new, new Item.Properties());
+
     // LOTRItemKebab: new LOTRItemKebab(8, 0.8f, true) -- heal 8, saturation
     // 0.8, and wolves will eat it. It is what the kebab stand turns raw meat
     // into, so the stand needs it registered.

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDartItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,13 +39,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 // and a living entity stands in the line of fire, the trap dispenses and waits
 // twenty ticks.
 //
-// AMMO: anything with a registered dispense behaviour, i.e. anything a vanilla
-// dispenser would launch rather than merely drop. Arrows work today. This
-// deliberately does NOT depend on an item tag any more -- the earlier version
-// gated on lotr:dart_trap_ammo, and an unloaded tag is indistinguishable from
-// an empty one, which is a silent failure mode. When LOTRItemDart exists,
-// register a ProjectileDispenseBehavior for it (DispenserBlock
-// .registerProjectileBehavior(item)) and it becomes valid ammo automatically.
+// AMMO: darts only, as in LOTRTileEntityDartTrap.updateEntity -- it took the
+// dispenser's random non-empty slot (func_146017_i) and fired only if that
+// stack was a LOTRItemDart. Anything else in the trap just sits there, and a
+// tick that happens to pick it fires nothing.
 public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
 
     /** LOTRTileEntityDartTrap: fireCooldown = 20 after every shot. */
@@ -67,9 +65,8 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
         return true;
     };
 
-    // Temporary. Flip to false once the trap is confirmed working; it logs at
-    // most once per second per trap.
-    public static final boolean DEBUG = true;
+    // Diagnostic logging, at most once per second per trap. Off in normal play.
+    public static final boolean DEBUG = false;
 
     private int fireCooldown;
     private long lastDebugTick = Long.MIN_VALUE;
@@ -108,7 +105,7 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
 
         int slot = trap.pickAmmoSlot(level.getRandom());
         if (slot < 0) {
-            trap.debug(level, pos, "no ammo (nothing here has a dispense behaviour)");
+            trap.debug(level, pos, "no dart in the picked slot");
             return;
         }
 
@@ -148,25 +145,13 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
         trap.fireCooldown = FIRE_COOLDOWN;
     }
 
-    /**
-     * DispenserBlockEntity.getRandomSlot, restricted to items a dispenser would
-     * actually launch. Vanilla's version picks any non-empty slot, so a trap
-     * holding one arrow and eight cobblestone would usually pick the
-     * cobblestone and spit it on the floor.
-     */
+    // func_146017_i is DispenserBlockEntity.getRandomSlot: any non-empty slot, uniformly. The dart check comes after the pick, not before, exactly as in the original.
     private int pickAmmoSlot(RandomSource random) {
-        int chosen = -1;
-        int odds = 1;
-        for (int i = 0; i < getContainerSize(); ++i) {
-            ItemStack stack = getItem(i);
-            if (stack.isEmpty()) {
-                continue;
-            }
-            if (DispenserBlock.DISPENSER_REGISTRY.containsKey(stack.getItem()) && random.nextInt(odds++) == 0) {
-                chosen = i;
-            }
+        int slot = getRandomSlot(random);
+        if (slot < 0 || !(getItem(slot).getItem() instanceof LOTRDartItem)) {
+            return -1;
         }
-        return chosen;
+        return slot;
     }
 
     /**

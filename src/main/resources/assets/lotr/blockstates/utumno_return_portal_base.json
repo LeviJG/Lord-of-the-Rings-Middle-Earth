@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "sacrifice=0": {
+      "model": "lotr:block/utumno_return_portal_base_height1"
+    },
+    "sacrifice=1": {
+      "model": "lotr:block/utumno_return_portal_base_height2"
+    },
+    "sacrifice=2": {
+      "model": "lotr:block/utumno_return_portal_base_height3"
+    },
+    "sacrifice=3": {
+      "model": "lotr:block/utumno_return_portal_base_height4"
+    },
+    "sacrifice=4": {
+      "model": "lotr:block/utumno_return_portal_base_height5"
+    },
+    "sacrifice=5": {
+      "model": "lotr:block/utumno_return_portal_base_height6"
+    },
+    "sacrifice=6": {
+      "model": "lotr:block/utumno_return_portal_base_height7"
+    },
+    "sacrifice=7": {
+      "model": "lotr:block/utumno_return_portal_base_height8"
+    },
+    "sacrifice=8": {
+      "model": "lotr:block/utumno_return_portal_base_height9"
+    },
+    "sacrifice=9": {
+      "model": "lotr:block/utumno_return_portal_base_height10"
+    },
+    "sacrifice=10": {
+      "model": "lotr:block/utumno_return_portal_base_height11"
+    },
+    "sacrifice=11": {
+      "model": "lotr:block/utumno_return_portal_base_height12"
+    },
+    "sacrifice=12": {
+      "model": "lotr:block/utumno_return_portal_base_height13"
+    },
+    "sacrifice=13": {
+      "model": "lotr:block/utumno_return_portal_base_height14"
+    },
+    "sacrifice=14": {
+      "model": "lotr:block/utumno_return_portal_base_height15"
+    },
+    "sacrifice=15": {
+      "model": "lotr:block/utumno_return_portal_base_height16"
+    }
+  }
+}
