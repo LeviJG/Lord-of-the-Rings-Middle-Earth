@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
  * {@code 20 / drawTicks} before handing them back makes a 16-tick pull reach
  * full power at 16, with vanilla's curve otherwise untouched.
  */
-public class LOTRBowItem extends BowItem implements LOTRModifiable {
+public class LOTRBowItem extends BowItem {
 
     /** Vanilla's full draw, and the original's default bowPullTime. */
     private static final int STANDARD_DRAW_TICKS = 20;
@@ -48,13 +48,6 @@ public class LOTRBowItem extends BowItem implements LOTRModifiable {
 
     public float getVelocityFactor() {
         return this.velocityFactor;
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, net.minecraft.server.level.ServerLevel level,
-            net.minecraft.world.entity.Entity holder, net.minecraft.world.entity.EquipmentSlot slot) {
-        super.inventoryTick(stack, level, holder, slot);
-        rollModifiersOnce(stack, level, holder);
     }
 
     @Override

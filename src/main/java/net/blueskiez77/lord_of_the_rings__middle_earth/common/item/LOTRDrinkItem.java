@@ -25,7 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 /**
@@ -47,10 +46,11 @@ import net.minecraft.world.level.Level;
  *
  * <p>Used on a block, a drink is set down there as a vessel block (tryPlaceMug).
  *
- * <p>NOT ported: the achievements, drinking by NPCs, and poisoning -- the bottle
- * of poison is not in the port yet.
+ * <p>Poisoning is LOTRPoisonedDrinks'.
+ *
+ * <p>NOT ported: the achievements and drinking by NPCs.
  */
-public class LOTRDrinkItem extends Item {
+public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
 
     public static final String[] STRENGTH_NAMES = {"weak", "light", "moderate", "strong", "potent"};
     private static final float[] STRENGTHS = {0.25f, 0.5f, 1.0f, 2.0f, 3.0f};
@@ -189,6 +189,18 @@ public class LOTRDrinkItem extends Item {
         return result;
     }
 
+    /**
+     * LOTRRecipesPoisonDrinks named the crafting player as the poisoner; the
+     * recipe cannot see them, so the result names them as it is taken.
+     */
+    @Override
+    public void onCraftedBy(ItemStack stack, Player player) {
+        super.onCraftedBy(stack, player);
+        if (LOTRPoisonedDrinks.isPoisoned(stack) && !stack.has(LOTRDataComponents.POISONER)) {
+            stack.set(LOTRDataComponents.POISONER, player.getUUID());
+        }
+    }
+
     private void drink(ItemStack stack, Level level, Player player) {
         float strength = strength(stack);
         float foodStrength = foodStrength(stack);
@@ -250,8 +262,7 @@ public class LOTRDrinkItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
-            Consumer<Component> builder, TooltipFlag flag) {
+    public void addTooltip(ItemStack stack, Item.TooltipContext context, Consumer<Component> builder, TooltipFlag flag) {
         if (!this.brewable) {
             return;
         }

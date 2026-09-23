@@ -3,6 +3,8 @@
     "#minecraft:swords",
     "#minecraft:axes",
     "#minecraft:hoes",
+    "#minecraft:shovels",
+    "#minecraft:pickaxes",
     "minecraft:bow",
     "minecraft:crossbow",
     "minecraft:trident",
@@ -37,6 +39,21 @@
     "lotr:blue_dwarven_hoe",
     "lotr:dol_guldur_hoe",
     "lotr:taurethrim_hoe",
-    "lotr:rivendell_hoe"
+    "lotr:rivendell_hoe",
+    "lotr:mallorn_bow",
+    "lotr:galadhrim_bow",
+    "lotr:orc_bow",
+    "lotr:dale_bow",
+    "lotr:gundabad_uruk_bow",
+    "lotr:blackroot_bow",
+    "lotr:black_uruk_bow",
+    "lotr:utumno_bow",
+    "lotr:ranger_bow",
+    "lotr:rhunic_bow",
+    "lotr:dorwinion_elven_bow",
+    "lotr:rivendell_bow",
+    "lotr:dunlending_trident",
+    "lotr:pelargir_trident",
+    "lotr:bronze_crossbow"
   ]
 }

@@ -51,7 +51,35 @@ public final class LOTRDataComponents {
     /** LOTRItemBarrel's "LOTRBarrelData": a barrel's contents, carried as an item. */
     public static final DataComponentType<net.minecraft.world.item.component.CustomData> BARREL_DATA = register("barrel_data",
             b -> b.persistent(net.minecraft.world.item.component.CustomData.CODEC)
-                    .networkSynchronized(net.minecraft.world.item.component.CustomData.STREAM_CODEC));
+                    .networkSynchronized(ByteBufCodecs.COMPOUND_TAG.map(
+                            net.minecraft.world.item.component.CustomData::of,
+                            net.minecraft.world.item.component.CustomData::copyTag)));
+
+    /** LOTRPoisonedDrinks' "PoisonDrink": the drink has had poison stirred in. */
+    public static final DataComponentType<Boolean> POISON_DRINK = register("poison_drink",
+            b -> b.persistent(com.mojang.serialization.Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+
+    /** LOTRPoisonedDrinks' "PoisonerUUID": who poisoned it, the one player who can tell. */
+    public static final DataComponentType<java.util.UUID> POISONER = register("poisoner",
+            b -> b.persistent(net.minecraft.core.UUIDUtil.CODEC).networkSynchronized(net.minecraft.core.UUIDUtil.STREAM_CODEC));
+
+    /** LOTRItemDaleCracker's emptyMeta bit: an unsealed cracker, ready to be filled. */
+    public static final DataComponentType<Boolean> CRACKER_EMPTY = register("cracker_empty",
+            b -> b.persistent(com.mojang.serialization.Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));
+
+    /** LOTRItemDaleCracker's "SealingPlayer": who filled and sealed it. */
+    public static final DataComponentType<String> CRACKER_SEALER = register("cracker_sealer",
+            b -> b.persistent(com.mojang.serialization.Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
+    /**
+     * LOTRItemDaleCracker's "CustomCracker": what a player sealed inside. Its own
+     * component rather than vanilla's CONTAINER, whose tooltip would give the
+     * surprise away.
+     */
+    public static final DataComponentType<net.minecraft.world.item.component.ItemContainerContents> CRACKER_CONTENTS =
+            register("cracker_contents", b -> b
+                    .persistent(net.minecraft.world.item.component.ItemContainerContents.CODEC)
+                    .networkSynchronized(net.minecraft.world.item.component.ItemContainerContents.STREAM_CODEC));
 
     private LOTRDataComponents() {
     }

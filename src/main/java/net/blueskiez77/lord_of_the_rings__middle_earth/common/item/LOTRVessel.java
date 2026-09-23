@@ -143,7 +143,7 @@ public enum LOTRVessel implements StringRepresentable {
         if (isWaterBottle(stack)) {
             ItemStack water = new ItemStack(LOTRItems.WATER, stack.getCount());
             water.set(LOTRDataComponents.VESSEL, BOTTLE);
-            return water;
+            return LOTRPoisonedDrinks.copyPoison(stack, water);
         }
         return stack;
     }
@@ -155,7 +155,8 @@ public enum LOTRVessel implements StringRepresentable {
     public ItemStack fill(ItemStack drink) {
         ItemStack result = equivalentDrink(drink).copy();
         if (this == BOTTLE && result.is(LOTRItems.WATER)) {
-            return PotionContents.createItemStack(Items.POTION, Potions.WATER).copyWithCount(result.getCount());
+            return LOTRPoisonedDrinks.copyPoison(result,
+                    PotionContents.createItemStack(Items.POTION, Potions.WATER).copyWithCount(result.getCount()));
         }
         result.set(LOTRDataComponents.VESSEL, this);
         return result;

@@ -13,7 +13,6 @@ import java.util.function.Consumer;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
@@ -42,7 +41,7 @@ import net.minecraft.world.level.Level;
  * overlay alone, which is the two-render-pass trick the original used, said in
  * the way 26.2 says it.
  */
-public class LOTRWarhornItem extends Item {
+public class LOTRWarhornItem extends Item implements LOTRTooltipItem {
 
     /** The original's own key. It also read "HornFaction" as a legacy fallback. */
     private static final String TAG_INVASION = "InvasionType";
@@ -85,8 +84,7 @@ public class LOTRWarhornItem extends Item {
 
     /** addInformation: the warband it calls. */
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
-            Consumer<Component> builder, TooltipFlag flag) {
+    public void addTooltip(ItemStack stack, Item.TooltipContext context, Consumer<Component> builder, TooltipFlag flag) {
         builder.accept(getInvasion(stack).invasionName());
     }
 

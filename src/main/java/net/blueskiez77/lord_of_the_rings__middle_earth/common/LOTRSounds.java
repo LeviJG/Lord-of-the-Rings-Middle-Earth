@@ -39,9 +39,16 @@ public final class LOTRSounds {
 
     /** A vessel dipped in water, "lotr:item.mug_fill". */
     public static final SoundEvent ITEM_MUG_FILL = register("item.mug_fill");
+    /** A blowgun dart leaving the pipe, "lotr:item.dart". */
+    public static final SoundEvent ITEM_DART = register("item.dart");
 
     /** A plate smashing, "lotr:block.plate.break". */
     public static final SoundEvent BLOCK_PLATE_BREAK = register("block.plate.break");
+
+    /** LOTRBlockTreasurePile.soundTypeTreasure: coins shifting underfoot. */
+    public static final SoundEvent BLOCK_TREASURE_BREAK = register("block.treasure.break");
+    public static final SoundEvent BLOCK_TREASURE_STEP = register("block.treasure.step");
+    public static final SoundEvent BLOCK_TREASURE_PLACE = register("block.treasure.place");
 
     private LOTRSounds() {
     }

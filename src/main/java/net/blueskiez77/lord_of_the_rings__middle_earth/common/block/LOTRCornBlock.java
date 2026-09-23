@@ -2,9 +2,13 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -17,6 +21,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -34,8 +39,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  *
  * <p>{@link #HAS_CORN} is the original's metadata bit 8: a stalk with a stalk
  * below it eventually grows an ear, which changes its texture. Harvesting the
- * ear by hand is NOT wired up -- the corn ITEM is not ported yet, so there is
- * nothing for it to give.
+ * ear by hand (onBlockActivated) strips it and drops one cob, two a quarter of
+ * the time, as getCornDrops did; breaking a ripe stalk drops the same through
+ * its loot table.
  */
 public class LOTRCornBlock extends VegetationBlock implements BonemealableBlock {
     public static final MapCodec<LOTRCornBlock> CODEC = simpleCodec(LOTRCornBlock::new);
@@ -74,6 +80,24 @@ public class LOTRCornBlock extends VegetationBlock implements BonemealableBlock 
     @Override
     protected boolean mayPlaceOn(BlockState below, BlockGetter level, BlockPos belowPos) {
         return below.is(this) || below.getBlock() instanceof FarmlandBlock;
+    }
+
+    // LOTRBlockCorn.onBlockActivated: whatever the player holds, a ripe ear
+    // comes off in their hand.
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
+            BlockHitResult hitResult) {
+        if (!state.getValue(HAS_CORN)) {
+            return InteractionResult.PASS;
+        }
+        if (!level.isClientSide()) {
+            level.setBlock(pos, state.setValue(HAS_CORN, false), Block.UPDATE_ALL);
+            int corns = level.getRandom().nextInt(4) == 0 ? 2 : 1;
+            for (int i = 0; i < corns; i++) {
+                popResource(level, pos, new ItemStack(LOTRItems.CORN));
+            }
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override

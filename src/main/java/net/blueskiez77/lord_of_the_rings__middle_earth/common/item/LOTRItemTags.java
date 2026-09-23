@@ -12,7 +12,9 @@ public final class LOTRItemTags {
     /**
      * What a weapon rack will hold. LOTRTileEntityWeaponRack.canAcceptItem
      * asked LOTRWeaponStats.isMeleeWeapon or isRangedWeapon, plus hoes and
-     * fishing rods. LOTRWeaponStats is not ported, so the answer lives in a tag
+     * fishing rods. isMeleeWeapon looked for the shared weapon-damage modifier,
+     * which every 1.7.10 tool carried too, so pickaxes and shovels belong here.
+     * LOTRWeaponStats is not ported, so the answer lives in a tag
      * -- which also means the mod's own weapons only have to be added to it
      * once, rather than taught to a stats table.
      */
@@ -112,9 +114,8 @@ public final class LOTRItemTags {
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_morgul_tools"));
 
     /**
-     * What mends a Wood-elven Scout's kit: elf steel and leather. Only the
-     * leather is ported, so this names it directly and picks the elf steel up
-     * through the wood-elven tag when that ingot arrives.
+     * What mends a Wood-elven Scout's kit: elf steel and leather --
+     * WOOD_ELVEN_SCOUT.setCraftingItems(elfSteel, leather).
      */
     public static final TagKey<Item> REPAIRS_WOOD_ELVEN_SCOUT_ARMOR = TagKey.create(
             Registries.ITEM,
@@ -465,6 +466,25 @@ public final class LOTRItemTags {
     public static final TagKey<Item> REPAIRS_SLING = TagKey.create(
             Registries.ITEM,
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_sling"));
+
+    /** LOTRItemBlowgun.getIsRepairable took reeds, and nothing else -- not its material's. */
+    public static final TagKey<Item> REPAIRS_BLOWGUN = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_blowgun"));
+
+    /** LOTRItemCrossbow.getIsRepairable: the material's repair item, or ItemBow's string. */
+    public static final TagKey<Item> REPAIRS_URUK_CROSSBOW = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_uruk_crossbow"));
+    public static final TagKey<Item> REPAIRS_IRON_CROSSBOW = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_iron_crossbow"));
+    public static final TagKey<Item> REPAIRS_MITHRIL_CROSSBOW = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_mithril_crossbow"));
+    public static final TagKey<Item> REPAIRS_BRONZE_CROSSBOW = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_bronze_crossbow"));
 
     private LOTRItemTags() {
     }

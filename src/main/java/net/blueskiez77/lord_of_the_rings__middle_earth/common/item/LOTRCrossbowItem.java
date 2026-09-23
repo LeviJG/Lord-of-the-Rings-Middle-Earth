@@ -44,7 +44,7 @@ import org.jspecify.annotations.Nullable;
  * mod's own item.crossbow and item.crossbowLoad oggs are still in
  * {@code old mod/}, unported, if that trade stops being worth it.
  */
-public class LOTRCrossbowItem extends CrossbowItem implements LOTRModifiable {
+public class LOTRCrossbowItem extends CrossbowItem {
 
     /** getInvBoltSlot: a bolt, and never an arrow or a rocket. */
     private static final Predicate<ItemStack> BOLTS_ONLY =
@@ -72,16 +72,21 @@ public class LOTRCrossbowItem extends CrossbowItem implements LOTRModifiable {
     /**
      * The properties every LOTR crossbow shares.
      *
+     * <p>{@code repairs} is the material's repair item AND string:
+     * getIsRepairable checked the material and then fell back to ItemBow's,
+     * which took string.
+     *
      * <p>Enchantability is the original's own formula rather than the
      * material's raw figure: LOTRItemCrossbow overrode getItemEnchantability to
      * {@code 1 + enchantability / 5}, so an iron crossbow sits at 3 and a
      * mithril one at 2 -- a crossbow is a machine, and a poor thing to enchant.
      */
-    public static Item.Properties properties(ToolMaterial material) {
+    public static Item.Properties properties(ToolMaterial material,
+            net.minecraft.tags.TagKey<Item> repairs) {
         return new Item.Properties()
                 .stacksTo(1)
                 .durability((int) (material.durability() * DURABILITY_FACTOR))
-                .repairable(material.repairItems())
+                .repairable(repairs)
                 .enchantable(1 + material.enchantmentValue() / 5);
     }
 
@@ -91,13 +96,6 @@ public class LOTRCrossbowItem extends CrossbowItem implements LOTRModifiable {
      * LOTRItemCrossbow extended ItemBow. The melee families have nothing to act
      * on here and the ranged ones are not ported.
      */
-    @Override
-    public void inventoryTick(ItemStack stack, net.minecraft.server.level.ServerLevel level,
-            net.minecraft.world.entity.Entity holder,
-            net.minecraft.world.entity.EquipmentSlot slot) {
-        super.inventoryTick(stack, level, holder, slot);
-        rollModifiersOnce(stack, level, holder);
-    }
 
     @Override
     public Predicate<ItemStack> getSupportedHeldProjectiles() {

@@ -2,9 +2,14 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +18,7 @@ import net.minecraft.world.level.block.FarmlandBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.tags.BlockTags;
 
 /**
@@ -27,9 +33,9 @@ import net.minecraft.tags.BlockTags;
  * random tick at a rate from getGrowthFactor, and bone meal ripens it outright
  * one time in three, matching func_149853_b.
  *
- * <p>Harvesting is NOT wired up. In 1.7.10 right-clicking a ripe bush stripped
- * the berries and dropped 1-4 of the matching berry item; none of the six berry
- * items are ported yet, so there is nothing to hand over.
+ * <p>Right-clicking a ripe bush strips it and drops one to four of its berry,
+ * as onBlockActivated did; breaking a ripe bush drops them through its loot
+ * table instead.
  */
 public class LOTRBerryBushBlock extends Block implements BonemealableBlock {
     public static final MapCodec<LOTRBerryBushBlock> CODEC = simpleCodec(LOTRBerryBushBlock::new);
@@ -49,6 +55,43 @@ public class LOTRBerryBushBlock extends Block implements BonemealableBlock {
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(HAS_BERRIES);
+    }
+
+    /** getBerryDrops' switch on the berry type. */
+    private Item berry() {
+        if (this == LOTRBlocks.BERRY_BUSH_BLUEBERRY) {
+            return LOTRItems.BLUEBERRIES;
+        }
+        if (this == LOTRBlocks.BERRY_BUSH_BLACKBERRY) {
+            return LOTRItems.BLACKBERRIES;
+        }
+        if (this == LOTRBlocks.BERRY_BUSH_RASPBERRY) {
+            return LOTRItems.RASPBERRIES;
+        }
+        if (this == LOTRBlocks.BERRY_BUSH_CRANBERRY) {
+            return LOTRItems.CRANBERRIES;
+        }
+        if (this == LOTRBlocks.BERRY_BUSH_ELDERBERRY) {
+            return LOTRItems.ELDERBERRIES;
+        }
+        return LOTRItems.WILDBERRIES;
+    }
+
+    /** onBlockActivated: whatever is in hand, a ripe bush gives up its berries. */
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
+            BlockHitResult hitResult) {
+        if (!state.getValue(HAS_BERRIES)) {
+            return InteractionResult.PASS;
+        }
+        level.setBlock(pos, state.setValue(HAS_BERRIES, false), Block.UPDATE_ALL);
+        if (!level.isClientSide()) {
+            int berries = 1 + level.getRandom().nextInt(4);
+            for (int i = 0; i < berries; i++) {
+                popResource(level, pos, new ItemStack(berry()));
+            }
+        }
+        return InteractionResult.SUCCESS;
     }
 
     @Override
@@ -81,12 +124,20 @@ public class LOTRBerryBushBlock extends Block implements BonemealableBlock {
      * a bush on soil in light 9 or better counts the soil in the 3x3 under and
      * around it, scoring 1 for soil and 3 for wet soil (neighbours at a quarter
      * weight), halves the result if another bush is adjacent, triples it while
-     * it rains, and divides by 150.
+     * it rains, and divides by 150. In poorer light it falls back to the light
+     * level over 2000.
      */
     private float growthChance(Level level, BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
-        if (!below.is(BlockTags.SUPPORTS_VEGETATION) || level.getMaxLocalRawBrightness(pos.above()) < 9) {
+        if (!below.is(BlockTags.SUPPORTS_VEGETATION)) {
             return 0.0F;
+        }
+        int light = level.getMaxLocalRawBrightness(pos.above());
+        if (light < 9) {
+            // The fallback for soil that would take a sapling: the light alone,
+            // over 2000, tripled while it rains.
+            float growth = light / 2000.0F;
+            return level.isRaining() ? growth * 3.0F : growth;
         }
 
         float growth = 1.0F;

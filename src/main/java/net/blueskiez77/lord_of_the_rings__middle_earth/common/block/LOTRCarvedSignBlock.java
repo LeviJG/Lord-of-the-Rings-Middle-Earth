@@ -95,7 +95,13 @@ public class LOTRCarvedSignBlock extends BaseEntityBlock {
         return (BlockEntityTicker<T>) (BlockEntityTicker<LOTRCarvedSignBlockEntity>) LOTRCarvedSignBlockEntity::clientTick;
     }
 
-    /** BlockSign's wall check: the block it is carved into must still be solid. */
+    /**
+     * BlockSign's wall check: the block it is carved into must still be solid.
+     * isSolid is Material.isSolid's successor and what vanilla's WallSignBlock
+     * still uses; it is deprecated with no replacement, and isFaceSturdy would
+     * change which blocks can hold a sign.
+     */
+    @SuppressWarnings("deprecation")
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return level.getBlockState(pos.relative(state.getValue(FACING).getOpposite())).isSolid();

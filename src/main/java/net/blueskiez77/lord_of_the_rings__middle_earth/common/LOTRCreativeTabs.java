@@ -11,7 +11,6 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmokingPi
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTrollStatueItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRWarhornItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTrollStatueItem;
 
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 
@@ -192,12 +191,6 @@ public final class LOTRCreativeTabs {
                 output.accept(LOTRBlocks.TABLE_OF_COMMAND);
                 output.accept(LOTRBlocks.ENT_JAR);
                 LOTRBlocks.ALL_TROLL_TOTEMS.forEach(output::accept);
-                // LOTRItemTrollStatue's getSubItems: three outfits, each with one
-                // head or two.
-                for (int outfit = 0; outfit < LOTRTrollStatueItem.OUTFIT_COUNT; outfit++) {
-                    output.accept(LOTRTrollStatueItem.stack(outfit, false));
-                    output.accept(LOTRTrollStatueItem.stack(outfit, true));
-                }
             })
             .build();
 
@@ -648,11 +641,15 @@ public final class LOTRCreativeTabs {
                 output.accept(LOTRItems.OBSIDIAN_KEY_SHAFT);
                 output.accept(LOTRItems.OBSIDIAN_KEY_PIN);
                 output.accept(LOTRItems.TAURETHRIM_AMULET);
-                output.accept(LOTRItems.RED_DALISH_CRACKER);
-                output.accept(LOTRItems.BLUE_DALISH_CRACKER);
-                output.accept(LOTRItems.GREEN_DALISH_CRACKER);
-                output.accept(LOTRItems.SILVER_DALISH_CRACKER);
-                output.accept(LOTRItems.GOLD_DALISH_CRACKER);
+                // getSubItems: each colour sealed, then unsealed.
+                for (net.minecraft.world.item.Item cracker : java.util.List.of(LOTRItems.RED_DALISH_CRACKER,
+                        LOTRItems.BLUE_DALISH_CRACKER, LOTRItems.GREEN_DALISH_CRACKER,
+                        LOTRItems.SILVER_DALISH_CRACKER, LOTRItems.GOLD_DALISH_CRACKER)) {
+                    output.accept(cracker);
+                    ItemStack unsealed = new ItemStack(cracker);
+                    unsealed.set(net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents.CRACKER_EMPTY, true);
+                    output.accept(unsealed);
+                }
                 output.accept(LOTRItems.MYSTERY_WEB);
                 output.accept(LOTRItems.EXPLODING_TERMITE);
                 output.accept(LOTRItems.CONKER);

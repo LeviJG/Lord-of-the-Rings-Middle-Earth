@@ -41,6 +41,14 @@
       "lotr:item/mug_fill"
     ]
   },
+  "item.dart": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:item/dart1",
+      "lotr:item/dart2",
+      "lotr:item/dart3"
+    ]
+  },
   "block.plate.break": {
     "category": "block",
     "sounds": [
@@ -57,6 +65,28 @@
     "category": "neutral",
     "sounds": [
       "lotr:item/gandalf_fireball"
+    ]
+  },
+  "block.treasure.break": {
+    "category": "block",
+    "sounds": [
+      "lotr:block/treasure/break1",
+      "lotr:block/treasure/break2",
+      "lotr:block/treasure/break3"
+    ]
+  },
+  "block.treasure.step": {
+    "category": "block",
+    "sounds": [
+      "lotr:block/treasure/step1",
+      "lotr:block/treasure/step2",
+      "lotr:block/treasure/step3"
+    ]
+  },
+  "block.treasure.place": {
+    "category": "block",
+    "sounds": [
+      "lotr:block/treasure/place1"
     ]
   }
 }

@@ -61,6 +61,8 @@ public class LOTRMod implements ModInitializer {
 
         LOTRBlocks.ALL_PLATES.forEach(plate -> DispenserBlock.registerProjectileBehavior(plate.asItem()));
         net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVanillaVessels.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers.init();
 
         LOTRCreativeTabs.init();
 

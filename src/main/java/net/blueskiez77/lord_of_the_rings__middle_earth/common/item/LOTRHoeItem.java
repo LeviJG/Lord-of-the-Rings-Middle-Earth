@@ -1,9 +1,5 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.item.HoeItem;
@@ -16,7 +12,7 @@ import net.minecraft.world.item.HoeItem;
  * swing speed is vanilla's, which rises with the tier: a stone-tier hoe -2.0,
  * an iron-tier one -1.0, anything better 0.
  */
-public class LOTRHoeItem extends HoeItem implements LOTRModifiable {
+public class LOTRHoeItem extends HoeItem {
 
     public LOTRHoeItem(ToolMaterial material, Properties properties) {
         super(material, -material.attackDamageBonus(), speedFor(material), properties);
@@ -36,9 +32,4 @@ public class LOTRHoeItem extends HoeItem implements LOTRModifiable {
         return 0.0f;
     }
 
-    @Override
-    public void inventoryTick(ItemStack stack, ServerLevel level, Entity holder, EquipmentSlot slot) {
-        super.inventoryTick(stack, level, holder, slot);
-        rollModifiersOnce(stack, level, holder);
-    }
 }

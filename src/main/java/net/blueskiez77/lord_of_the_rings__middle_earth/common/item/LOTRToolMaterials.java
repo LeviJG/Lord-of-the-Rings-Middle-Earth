@@ -1343,7 +1343,7 @@ public final class LOTRToolMaterials {
      * at all -- a material that exists for exactly one weapon.
      */
     public static final ToolMaterial CHARRED_MALLORN = new ToolMaterial(
-            BlockTags.INCORRECT_FOR_STONE_TOOL, 1500, 4.0f, 4.5f, 15,
+            BlockTags.INCORRECT_FOR_WOODEN_TOOL, 1500, 0.0f, 4.5f, 15,
             LOTRItemTags.REPAIRS_CHARRED_MALLORN_MACE);
 
     public static final ResourceKey<EquipmentAsset> ROHIRRIC_MARSHAL_ASSET = ResourceKey.create(

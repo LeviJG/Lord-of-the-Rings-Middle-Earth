@@ -1,5 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRThrowingAxeItem;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.ProjectileWeaponItem;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -315,8 +318,11 @@ public class LOTRGateBlock extends Block {
 
     /**
      * Holding another gate block does NOT open the gate -- that is how you
-     * build one panel against another. The original also excluded ranged
-     * weapons, which the port has no equivalent for yet.
+     * build one panel against another -- and nor does a ranged weapon, so it
+     * can be drawn while standing at one. LOTRWeaponStats.isRangedWeapon was
+     * ItemBow (the crossbows and blowgun included), LOTRItemSpear and
+     * LOTRItemThrowingAxe; the port's spears are the ones carrying vanilla's
+     * kinetic-weapon component.
      */
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
@@ -324,6 +330,11 @@ public class LOTRGateBlock extends Block {
                                           BlockHitResult hitResult) {
         if (stack.getItem() instanceof BlockItem blockItem
                 && blockItem.getBlock() instanceof LOTRGateBlock) {
+            return InteractionResult.PASS;
+        }
+        if (stack.getItem() instanceof ProjectileWeaponItem
+                || stack.getItem() instanceof LOTRThrowingAxeItem
+                || stack.has(DataComponents.KINETIC_WEAPON)) {
             return InteractionResult.PASS;
         }
         if (!level.isClientSide()) {

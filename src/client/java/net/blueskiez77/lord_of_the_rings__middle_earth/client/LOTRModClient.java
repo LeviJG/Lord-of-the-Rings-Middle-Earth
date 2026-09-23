@@ -1,6 +1,15 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTooltipItem;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.core.component.DataComponents;
+import java.util.ArrayList;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPoisonedDrinks;
+import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBeaconScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCraftingScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHornSelectScreen;
@@ -67,6 +76,28 @@ public class LOTRModClient implements ClientModInitializer {
 
         // lotr:sneaking and lotr:swinging, which the pikes' item models pose by.
         LOTRItemModelProperties.init();
+
+        // The mod's items' own tooltip lines (their addInformation), put
+        // straight under the name where appendHoverText would have -- that
+        // method is deprecated in 26.2. A hidden tooltip stays hidden.
+        ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
+            if (stack.getItem() instanceof LOTRTooltipItem item && !lines.isEmpty()
+                    && !stack.getOrDefault(DataComponents.TOOLTIP_DISPLAY, TooltipDisplay.DEFAULT).hideTooltip()) {
+                List<Component> extra = new ArrayList<>();
+                item.addTooltip(stack, context, extra::add, flag);
+                lines.addAll(1, extra);
+            }
+        });
+
+        // LOTRTickHandlerClient's tooltip line: a poisoned drink says so, but
+        // only to the poisoner and to creative players.
+        ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
+            Player player = Minecraft.getInstance().player;
+            if (player != null && LOTRPoisonedDrinks.isPoisoned(stack)
+                    && LOTRPoisonedDrinks.canPlayerSeePoisoned(stack, player)) {
+                lines.add(Component.translatable("item.lotr.drink.poison").withStyle(ChatFormatting.DARK_GREEN));
+            }
+        });
 
         // The tall grasses are greyscale sprites tinted by biome, the way
         // LOTRBlockTallGrass.colorMultiplier returned getBiomeGrassColor. Their
@@ -209,6 +240,8 @@ public class LOTRModClient implements ClientModInitializer {
         MenuScreens.register(LOTRMenus.HOBBIT_OVEN, LOTRHobbitOvenScreen::new);
         MenuScreens.register(LOTRMenus.UNSMELTERY, LOTRUnsmelteryScreen::new);
         MenuScreens.register(LOTRMenus.MILLSTONE, LOTRMillstoneScreen::new);
+        MenuScreens.register(LOTRMenus.DALE_CRACKER,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRDaleCrackerScreen::new);
 
         for (LOTRCraftingTable table : LOTRCraftingTable.values()) {
             MenuScreens.register(LOTRMenus.forTable(table), LOTRCraftingScreen::new);

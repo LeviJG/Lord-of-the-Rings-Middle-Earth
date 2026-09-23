@@ -1,6 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPoisonedDrinks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRMugBlockEntity;
@@ -15,6 +17,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -53,7 +56,7 @@ import org.jspecify.annotations.Nullable;
  * <p>An empty vessel left out in the rain may fill with water (1 in 6000 a tick).
  * Everything draws in {@code LOTRMugRenderer}; the block has no model.
  *
- * <p>NOT ported: poisoning a drink here -- the bottle of poison is not ported.
+ * <p>A bottle of poison tipped into a standing drink poisons it (poisonMug).
  */
 public class LOTRMugBlock extends BaseEntityBlock {
     public static final MapCodec<LOTRMugBlock> CODEC =
@@ -163,6 +166,17 @@ public class LOTRMugBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
         if (!mug.isEmpty()) {
+            if (stack.is(LOTRItems.BOTTLE_OF_POISON) && LOTRPoisonedDrinks.canPoison(mugItem)
+                    && !LOTRPoisonedDrinks.isPoisoned(mugItem)) {
+                if (!level.isClientSide()) {
+                    LOTRPoisonedDrinks.poison(mugItem, player);
+                    mug.setMugItem(mugItem);
+                    if (!player.hasInfiniteMaterials()) {
+                        player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
+                    }
+                }
+                return InteractionResult.SUCCESS;
+            }
             ItemStack equivalent = LOTRVessel.equivalentDrink(mugItem);
             if (equivalent.getItem() instanceof LOTRDrinkItem drink && drink.canPlayerDrink(player)) {
                 if (!level.isClientSide()) {

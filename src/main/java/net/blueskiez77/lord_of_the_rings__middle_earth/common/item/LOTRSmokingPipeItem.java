@@ -17,7 +17,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 /**
@@ -28,7 +27,7 @@ import net.minecraft.world.level.Level;
  * 15 are the dye colours and 16 is the mithril-touched magic smoke, exactly as
  * LOTRRecipeHobbitPipe set them.
  */
-public class LOTRSmokingPipeItem extends Item {
+public class LOTRSmokingPipeItem extends Item implements LOTRTooltipItem {
     /** getMaxItemUseDuration */
     public static final int USE_DURATION = 40;
 
@@ -52,8 +51,7 @@ public class LOTRSmokingPipeItem extends Item {
 
     /** addInformation: the one line naming the smoke. */
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
-            Consumer<Component> builder, TooltipFlag flag) {
+    public void addTooltip(ItemStack stack, Item.TooltipContext context, Consumer<Component> builder, TooltipFlag flag) {
         builder.accept(Component.translatable("item.lotr.smoking_pipe.subtitle." + getSmokeColor(stack))
                 .withStyle(ChatFormatting.GRAY));
     }

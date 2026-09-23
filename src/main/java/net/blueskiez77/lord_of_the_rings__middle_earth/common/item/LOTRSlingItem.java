@@ -29,20 +29,13 @@ import net.minecraft.world.level.Level;
  * ThrowableItemProjectile rather than an arrow. Spending the pebble by hand is
  * the smaller and more honest fit.
  */
-public class LOTRSlingItem extends Item implements LOTRModifiable {
+public class LOTRSlingItem extends Item {
 
     /** setMaxDamage(250). */
     public static final int DURABILITY = 250;
 
     public LOTRSlingItem(Properties properties) {
         super(properties);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, ServerLevel level,
-            net.minecraft.world.entity.Entity holder, EquipmentSlot slot) {
-        super.inventoryTick(stack, level, holder, slot);
-        rollModifiersOnce(stack, level, holder);
     }
 
     /**

@@ -9,8 +9,6 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -44,7 +42,7 @@ import net.minecraft.world.item.component.ItemAttributeModifiers;
  * other blade in the mod -- six on vanilla iron, where a vanilla trident hits
  * for nine. The attack speed is vanilla's, since the swing and the throw are.
  */
-public class LOTRTridentItem extends TridentItem implements LOTRModifiable {
+public class LOTRTridentItem extends TridentItem {
 
     /** TridentItem.createAttributes' own figure. */
     private static final double ATTACK_SPEED = -2.9;
@@ -130,13 +128,6 @@ public class LOTRTridentItem extends TridentItem implements LOTRModifiable {
      * that component is vanilla's mounted-charge mechanic -- dismounts,
      * knockback and a damage multiplier the original's trident never had.
      */
-
-    @Override
-    public void inventoryTick(ItemStack stack, ServerLevel level, Entity holder,
-            EquipmentSlot slot) {
-        super.inventoryTick(stack, level, holder, slot);
-        rollModifiersOnce(stack, level, holder);
-    }
 
     /**
      * TridentItem.releaseUsing, reimplemented for one line's sake: the trident

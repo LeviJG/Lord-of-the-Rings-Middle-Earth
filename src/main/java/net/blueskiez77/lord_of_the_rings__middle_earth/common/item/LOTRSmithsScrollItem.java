@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.TooltipDisplay;
 
 import org.jspecify.annotations.Nullable;
 
@@ -22,7 +21,7 @@ import org.jspecify.annotations.Nullable;
  * <p>NOT ported: applying it. LOTR's anvil is not in the port, so a scroll
  * names its modifier and does nothing else yet.
  */
-public class LOTRSmithsScrollItem extends Item {
+public class LOTRSmithsScrollItem extends Item implements LOTRTooltipItem {
     public LOTRSmithsScrollItem(Properties properties) {
         super(properties);
     }
@@ -48,11 +47,10 @@ public class LOTRSmithsScrollItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
-            Consumer<Component> builder, TooltipFlag flag) {
+    public void addTooltip(ItemStack stack, Item.TooltipContext context, Consumer<Component> builder, TooltipFlag flag) {
         LOTRModifier modifier = getModifier(stack);
         if (modifier != null) {
-            builder.accept(Component.translatable(modifier.effect().descriptionKey(), modifier.formattedValue())
+            builder.accept(modifier.description(false).copy()
                     .withStyle(ChatFormatting.GRAY));
         }
     }

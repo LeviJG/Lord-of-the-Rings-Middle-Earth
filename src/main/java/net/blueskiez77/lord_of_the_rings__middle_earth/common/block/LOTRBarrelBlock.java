@@ -1,6 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPoisonedDrinks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBarrelBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
@@ -17,6 +19,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -46,8 +49,10 @@ import org.jspecify.annotations.Nullable;
  *   <li>anything else, or any other face, opens the barrel.</li>
  * </ul>
  *
- * <p>NOT ported: poisoning (no bottle of poison yet), and LOTRItemBarrel's
- * rideable barrel on water.
+ * <p>A bottle of poison used on any face poisons the drink inside
+ * (canPoisonBarrel / poisonBarrel) rather than opening it.
+ *
+ * <p>NOT ported: LOTRItemBarrel's rideable barrel on water.
  */
 public class LOTRBarrelBlock extends BaseEntityBlock {
     public static final MapCodec<LOTRBarrelBlock> CODEC = simpleCodec(LOTRBarrelBlock::new);
@@ -151,6 +156,15 @@ public class LOTRBarrelBlock extends BaseEntityBlock {
                     return InteractionResult.SUCCESS;
                 }
             }
+        }
+        if (stack.is(LOTRItems.BOTTLE_OF_POISON) && barrel.canPoisonBarrel()) {
+            if (!level.isClientSide()) {
+                barrel.poisonBarrel(player);
+                if (!player.hasInfiniteMaterials()) {
+                    player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
+                }
+            }
+            return InteractionResult.SUCCESS;
         }
         if (!level.isClientSide()) {
             player.openMenu(barrel);

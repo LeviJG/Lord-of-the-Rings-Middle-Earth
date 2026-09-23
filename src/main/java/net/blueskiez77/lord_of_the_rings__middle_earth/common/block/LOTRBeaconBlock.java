@@ -15,9 +15,9 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.player.Player;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMatchItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -137,10 +137,9 @@ public class LOTRBeaconBlock extends BaseEntityBlock {
         if (stack.isEmpty()) {
             return false;
         }
-        if (stack.is(Items.FLINT_AND_STEEL)) {
+        if (stack.is(Items.FLINT_AND_STEEL) || stack.getItem() instanceof LOTRMatchItem) {
             return true;
         }
-        // LOTRItemMatch is not ported yet; when it is, add it here.
         return stack.getItem() instanceof BlockItem blockItem
                 && blockItem.getBlock() instanceof TorchBlock;
     }
@@ -174,7 +173,7 @@ public class LOTRBeaconBlock extends BaseEntityBlock {
             ignite(level, pos, state);
             if (!player.isCreative()) {
                 if (stack.isDamageableItem()) {
-                    stack.hurtAndBreak(1, player, EquipmentSlot.MAINHAND);
+                    stack.hurtAndBreak(1, player, hand.asEquipmentSlot());
                 } else if (stack.getMaxStackSize() > 1) {
                     // The original only decremented stackable items: a torch is
                     // consumed, a one-off tool is not.

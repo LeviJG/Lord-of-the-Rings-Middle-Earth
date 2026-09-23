@@ -21,19 +21,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>{@code drinkMeta} is the Ent-draught subtype the jar holds, or -1 for
  * plain water -- the original packed the draught's item damage value straight
- * in. The port keeps the same field and the same sentinel, so the jar is a
- * water butt today and needs no migration when Ent-draughts arrive: the value
- * is already saved and synced.
- *
- * <p>UNPORTED, and all of it hangs off one missing item. In 1.7.10 the full
- * cycle was: rain or a bucket fills the jar with water; right-clicking it with
- * a Fangorn herb WHILE STANDING IN THE FANGORN BIOME converts the whole jar to
- * the matching Ent-draught; then bowls draw draughts out one at a time. That
- * needs {@code LOTRItemEntDraught} (seven subtypes), the seven Fangorn herbs of
- * {@code LOTREntJarRecipes}, and {@code LOTRBiomeGenFangorn}. None exist here
- * yet, so {@link #fillFromBowl} and {@link #brew} are written and unused rather
- * than omitted -- they are the exact bodies the original had, waiting on a
- * caller.
+ * in, and the port keeps the same field and sentinel.
  */
 public class LOTREntJarBlockEntity extends BlockEntity {
 
@@ -99,8 +87,6 @@ public class LOTREntJarBlockEntity extends BlockEntity {
      * LOTRTileEntityEntJar.fillFromBowl. Pours one bowl of a draught in: it
      * either starts an empty jar off on that draught or tops up a jar already
      * holding the same one. Mixing two draughts is refused.
-     *
-     * <p>Unused until the Ent-draught item exists -- see the class comment.
      */
     public boolean fillFromBowl(int draughtMeta) {
         if (drinkMeta == WATER && drinkAmount == 0) {
@@ -122,8 +108,6 @@ public class LOTREntJarBlockEntity extends BlockEntity {
      * draught, keeping its level. LOTRBlockEntJar did this inline, gated on the
      * player standing in Fangorn and on the held item matching an
      * LOTREntJarRecipes entry.
-     *
-     * <p>Unused until the Ent-draught item exists -- see the class comment.
      */
     public boolean brew(int draughtMeta) {
         if (drinkMeta != WATER || drinkAmount <= 0) {

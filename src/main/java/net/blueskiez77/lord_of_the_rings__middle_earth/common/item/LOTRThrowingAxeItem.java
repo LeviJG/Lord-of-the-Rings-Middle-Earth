@@ -9,7 +9,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
@@ -29,8 +28,8 @@ import net.minecraft.world.level.Level;
  *
  * <p>It carries LOTR modifiers like the rest of the tab -- the damage and
  * knockback families, exactly the two LOTREnchantmentType.THROWING_AXE is named
- * on -- plus the durability ones. Only knockback and durability actually bite;
- * see the note on LOTRModifier.Kind.THROWING_AXE for why, which is the
+ * on -- plus the durability ones. Only knockback and durability change the
+ * throw; see the note on LOTRThrowingAxeEntity for why, which is the
  * original's behaviour rather than a gap here.
  *
  * <p>NOT ported: LOTRDispenseThrowingAxe, which let a dispenser throw one. The
@@ -38,7 +37,7 @@ import net.minecraft.world.level.Level;
  * on DispenserBlock's registry at mod init; it wants doing alongside the other
  * dispenser behaviours the port has yet to bring over, not on its own here.
  */
-public class LOTRThrowingAxeItem extends Item implements LOTRModifiable {
+public class LOTRThrowingAxeItem extends Item {
 
     /**
      * The speed the axe leaves the hand at.
@@ -52,7 +51,6 @@ public class LOTRThrowingAxeItem extends Item implements LOTRModifiable {
 
     /** What the original threw at, which the damage and the arc are pinned to. */
     public static final float ORIGINAL_THROW_VELOCITY = 3.0f;
-
 
     /** setThrowableHeading's f1: the same scatter the original threw with. */
     public static final float THROW_INACCURACY = 1.0f;
@@ -91,13 +89,6 @@ public class LOTRThrowingAxeItem extends Item implements LOTRModifiable {
     public float getThrownBaseDamage() {
         return (this.material.attackDamageBonus() + 4.0f) * 0.5f
                 * (ORIGINAL_THROW_VELOCITY / THROW_VELOCITY);
-    }
-
-    @Override
-    public void inventoryTick(ItemStack stack, ServerLevel level,
-            net.minecraft.world.entity.Entity holder, EquipmentSlot slot) {
-        super.inventoryTick(stack, level, holder, slot);
-        rollModifiersOnce(stack, level, holder);
     }
 
     /**

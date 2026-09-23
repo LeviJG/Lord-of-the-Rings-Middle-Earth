@@ -33,47 +33,6 @@ public final class LOTRItems {
     public static final Item PIPEWEED = register("pipeweed",
             Item::new, new Item.Properties());
 
-    // Ore products. Each of these is what a LOTR ore drops when broken without
-    // Silk Touch, and what the matching storage block is nine of.
-    // LOTRItemWithAnvilNameColor (naurite): no behaviour beyond the anvil name
-    // colour, which the port does not have.
-    public static final Item NAURITE = register("naurite",
-            Item::new, new Item.Properties());
-    public static final Item QUENDITE_CRYSTAL = register("quendite_crystal",
-            LOTRQuenditeCrystalItem::new, new Item.Properties());
-    public static final Item GULDURIL_CRYSTAL = register("gulduril_crystal",
-            LOTRGuldurilCrystalItem::new, new Item.Properties());
-    public static final Item SULFUR = register("sulfur",
-            Item::new, new Item.Properties());
-    public static final Item SALTPETER = register("saltpeter",
-            Item::new, new Item.Properties());
-    // LOTRItemSalt sat in tabFood, not tabMaterials.
-    public static final Item SALT = register("salt",
-            LOTRSaltItem::new, new Item.Properties());
-
-    // LOTRItemGem / LOTRItemGemWithAnvilNameColor: plain items. Pearl and coral
-    // are the two without an anvil colour; that colour is not ported for any.
-    public static final Item TOPAZ = register("topaz",
-            Item::new, new Item.Properties());
-    public static final Item AMETHYST = register("amethyst",
-            Item::new, new Item.Properties());
-    public static final Item SAPPHIRE = register("sapphire",
-            Item::new, new Item.Properties());
-    public static final Item RUBY = register("ruby",
-            Item::new, new Item.Properties());
-    public static final Item AMBER = register("amber",
-            Item::new, new Item.Properties());
-    public static final Item DIAMOND = register("diamond",
-            Item::new, new Item.Properties());
-    public static final Item PEARL = register("pearl",
-            Item::new, new Item.Properties());
-    public static final Item CORAL = register("coral",
-            Item::new, new Item.Properties());
-    public static final Item OPAL = register("opal",
-            Item::new, new Item.Properties());
-    public static final Item EMERALD = register("emerald",
-            Item::new, new Item.Properties());
-
     // LOTRItemKebab: new LOTRItemKebab(8, 0.8f, true) -- heal 8, saturation
     // 0.8, and wolves will eat it. It is what the kebab stand turns raw meat
     // into, so the stand needs it registered.
@@ -235,8 +194,8 @@ public final class LOTRItems {
                     .component(DataComponents.TOOL, new net.minecraft.world.item.component.Tool(
                             java.util.List.of(net.minecraft.world.item.component.Tool.Rule.minesAndDrops(
                                     net.minecraft.core.HolderSet.direct(
-                                            net.minecraft.world.level.block.Blocks.COBWEB.builtInRegistryHolder(),
-                                            net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.WEB_UNGOLIANT.builtInRegistryHolder()),
+                                            net.minecraft.core.registries.BuiltInRegistries.BLOCK.wrapAsHolder(net.minecraft.world.level.block.Blocks.COBWEB),
+                                            net.minecraft.core.registries.BuiltInRegistries.BLOCK.wrapAsHolder(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.WEB_UNGOLIANT)),
                                     15.0f)),
                             1.0f, 2, false)));
 
@@ -517,16 +476,16 @@ public final class LOTRItems {
     // mends it, and how fast the bolt leaves -- see LOTRCrossbowItem.
     public static final Item URUK_CROSSBOW = register("uruk_crossbow",
             props -> new LOTRCrossbowItem(LOTRToolMaterials.URUK, props),
-            LOTRCrossbowItem.properties(LOTRToolMaterials.URUK));
+            LOTRCrossbowItem.properties(LOTRToolMaterials.URUK, LOTRItemTags.REPAIRS_URUK_CROSSBOW));
 
     // Built on VANILLA iron, as the iron dagger and the iron throwing axe are.
     public static final Item IRON_CROSSBOW = register("iron_crossbow",
             props -> new LOTRCrossbowItem(ToolMaterial.IRON, props),
-            LOTRCrossbowItem.properties(ToolMaterial.IRON));
+            LOTRCrossbowItem.properties(ToolMaterial.IRON, LOTRItemTags.REPAIRS_IRON_CROSSBOW));
 
     public static final Item MITHRIL_CROSSBOW = register("mithril_crossbow",
             props -> new LOTRCrossbowItem(LOTRToolMaterials.MITHRIL, props),
-            LOTRCrossbowItem.properties(LOTRToolMaterials.MITHRIL));
+            LOTRCrossbowItem.properties(LOTRToolMaterials.MITHRIL, LOTRItemTags.REPAIRS_MITHRIL_CROSSBOW));
 
     // The Wood-elven Scout's leathers, registered just before the Mirkwood bow.
     public static final Item WOOD_ELVEN_SCOUT_HOOD = registerArmor("wood_elven_scout_hood",
@@ -993,7 +952,7 @@ public final class LOTRItems {
     // zero -- and this is the plainest crossbow of the four.
     public static final Item BRONZE_CROSSBOW = register("bronze_crossbow",
             props -> new LOTRCrossbowItem(LOTRToolMaterials.BRONZE, props),
-            LOTRCrossbowItem.properties(LOTRToolMaterials.BRONZE));
+            LOTRCrossbowItem.properties(LOTRToolMaterials.BRONZE, LOTRItemTags.REPAIRS_BRONZE_CROSSBOW));
 
     // LOTRItemConquestHorn, one item carrying a faction. See LOTRWarhornItem.
     public static final Item WARHORN = register("warhorn",
@@ -1242,7 +1201,7 @@ public final class LOTRItems {
     public static final Item TAURETHRIM_BLOWGUN = register("taurethrim_blowgun",
             LOTRBlowgunItem::new, new Item.Properties()
                     .durability(LOTRToolMaterials.TAURETHRIM.durability())
-                    .repairable(LOTRItemTags.REPAIRS_TAURETHRIM_TOOLS));
+                    .repairable(LOTRItemTags.REPAIRS_BLOWGUN));
     public static final Item TAURETHRIM_DART = register("taurethrim_dart",
             props -> new LOTRDartItem(false, props), new Item.Properties());
     public static final Item POISONED_TAURETHRIM_DART = register("poisoned_taurethrim_dart",
@@ -1551,8 +1510,9 @@ public final class LOTRItems {
             LOTRToolMaterials.BLACKROOT_ARMOR, ArmorType.LEGGINGS);
     public static final Item BLACKROOT_VALE_BOOTS = registerArmor("blackroot_vale_boots",
             LOTRToolMaterials.BLACKROOT_ARMOR, ArmorType.BOOTS);
+    // blackrootBow: setDrawTime(16).
     public static final Item BLACKROOT_BOW = register("blackroot_bow",
-            props -> new LOTRBowItem(20, 1.0f, props),
+            props -> new LOTRBowItem(16, 1.0f, props),
             bow(LOTRToolMaterials.BLACKROOT, LOTRItemTags.REPAIRS_BLACKROOT_BOW));
 
     // pikeGondor: 2.5 + 4 = 6.5.
@@ -1893,7 +1853,8 @@ public final class LOTRItems {
     public static final Item ANCIENT_LEGGINGS = register("ancient_leggings", Item::new, new Item.Properties());
     public static final Item ANCIENT_BOOTS = register("ancient_boots", Item::new, new Item.Properties());
     public static final Item DWARVEN_MARRIAGE_RING = register("dwarven_marriage_ring", Item::new, new Item.Properties());
-    public static final Item RED_BOOK = register("red_book", Item::new, new Item.Properties());
+    // LOTRItemRedBook: setMaxStackSize(1).
+    public static final Item RED_BOOK = register("red_book", Item::new, new Item.Properties().stacksTo(1));
     public static final Item KEY_OF_ICE = register("key_of_ice", Item::new, new Item.Properties());
     public static final Item KEY_OF_OBSIDIAN = register("key_of_obsidian", Item::new, new Item.Properties());
     public static final Item ICE_KEY_HANDLE = register("ice_key_handle", Item::new, new Item.Properties());
@@ -1903,14 +1864,15 @@ public final class LOTRItems {
     public static final Item OBSIDIAN_KEY_SHAFT = register("obsidian_key_shaft", Item::new, new Item.Properties());
     public static final Item OBSIDIAN_KEY_PIN = register("obsidian_key_pin", Item::new, new Item.Properties());
     public static final Item TAURETHRIM_AMULET = register("taurethrim_amulet", Item::new, new Item.Properties());
-    public static final Item RED_DALISH_CRACKER = register("red_dalish_cracker", Item::new, new Item.Properties());
-    public static final Item BLUE_DALISH_CRACKER = register("blue_dalish_cracker", Item::new, new Item.Properties());
-    public static final Item GREEN_DALISH_CRACKER = register("green_dalish_cracker", Item::new, new Item.Properties());
-    public static final Item SILVER_DALISH_CRACKER = register("silver_dalish_cracker", Item::new, new Item.Properties());
-    public static final Item GOLD_DALISH_CRACKER = register("gold_dalish_cracker", Item::new, new Item.Properties());
+    // LOTRItemDaleCracker's five colours, one to a stack.
+    public static final Item RED_DALISH_CRACKER = register("red_dalish_cracker", LOTRDaleCrackerItem::new, new Item.Properties().stacksTo(1));
+    public static final Item BLUE_DALISH_CRACKER = register("blue_dalish_cracker", LOTRDaleCrackerItem::new, new Item.Properties().stacksTo(1));
+    public static final Item GREEN_DALISH_CRACKER = register("green_dalish_cracker", LOTRDaleCrackerItem::new, new Item.Properties().stacksTo(1));
+    public static final Item SILVER_DALISH_CRACKER = register("silver_dalish_cracker", LOTRDaleCrackerItem::new, new Item.Properties().stacksTo(1));
+    public static final Item GOLD_DALISH_CRACKER = register("gold_dalish_cracker", LOTRDaleCrackerItem::new, new Item.Properties().stacksTo(1));
     public static final Item MYSTERY_WEB = register("mystery_web",
             props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity::new, 0.5f, props),
-            new Item.Properties().stacksTo(16));
+            new Item.Properties());
     public static final Item EXPLODING_TERMITE = register("exploding_termite",
             props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity::new, 1.5f, props),
             new Item.Properties().stacksTo(16));

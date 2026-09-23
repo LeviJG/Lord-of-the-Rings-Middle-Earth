@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPoisonedDrinks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRBarrelMenu;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem;
@@ -53,7 +54,6 @@ import org.jspecify.annotations.Nullable;
  * <p>Slot 9 holds up to sixteen drinks in one stack even though a drink stacks
  * to one; the count is the barrel's fill level, as the original's stackSize was.
  *
- * <p>NOT ported: poisoning the barrel -- the bottle of poison is not in the port.
  */
 public class LOTRBarrelBlockEntity extends BlockEntity implements WorldlyContainer, MenuProvider {
     public static final int SLOT_COUNT = 10;
@@ -134,6 +134,18 @@ public class LOTRBarrelBlockEntity extends BlockEntity implements WorldlyContain
     }
 
     /** consumeMugRefill: one drink poured off; an empty barrel is EMPTY again. */
+    /** canPoisonBarrel: something is in the barrel, and it is not poisoned yet. */
+    public boolean canPoisonBarrel() {
+        ItemStack drink = getItem(BARREL_SLOT);
+        return barrelMode != EMPTY && LOTRPoisonedDrinks.canPoison(drink) && !LOTRPoisonedDrinks.isPoisoned(drink);
+    }
+
+    public void poisonBarrel(Player poisoner) {
+        ItemStack drink = getItem(BARREL_SLOT);
+        LOTRPoisonedDrinks.poison(drink, poisoner);
+        setItem(BARREL_SLOT, drink);
+    }
+
     public void consumeMugRefill() {
         ItemStack brew = items.get(BARREL_SLOT);
         if (barrelMode == FULL && !brew.isEmpty()) {
@@ -193,17 +205,22 @@ public class LOTRBarrelBlockEntity extends BlockEntity implements WorldlyContain
                         changed = true;
                     } else {
                         barrel.barrelMode = FULL;
+                        changed = true;
                     }
                 }
             } else {
                 barrel.barrelMode = EMPTY;
+                changed = true;
             }
         } else {
             barrel.brewingTime = 0;
         }
         if (barrel.barrelMode == FULL && brew.isEmpty()) {
             barrel.barrelMode = EMPTY;
+            changed = true;
         }
+        // 1.7.10 re-saved loaded chunks on a timer; a modern chunk is only
+        // saved once marked, so a change of mode has to be marked as well.
         if (changed) {
             barrel.setChanged();
         }

@@ -93,7 +93,7 @@ public final class LOTRMillstoneRecipes {
         // nothing, which is why flint is worth having a millstone for.
         addRecipe(Blocks.GRAVEL, Items.FLINT, 1, 0.25f);
         addRecipe(LOTRBlocks.MORDOR_GRAVEL, Items.FLINT, 1, 0.25f);
-        // NOT ported: obsidianGravel -> obsidianShard. The shard item does not exist yet.
+        addRecipe(LOTRBlocks.OBSIDIAN_GRAVEL, LOTRItems.OBSIDIAN_SHARD);
         addRecipe(LOTRBlocks.SALT_ORE, LOTRItems.SALT);
 
         addRecipe(Blocks.SANDSTONE, Blocks.SAND, 2, 1.0f);

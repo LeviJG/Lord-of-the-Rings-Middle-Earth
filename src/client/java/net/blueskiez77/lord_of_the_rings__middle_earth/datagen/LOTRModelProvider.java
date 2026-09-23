@@ -9,6 +9,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRCon
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRGateBorders;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBerryBushBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
@@ -19,6 +20,7 @@ import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
 import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
@@ -555,13 +557,7 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(b, dry);
         });
 
-        // A powered rail needs a model per shape and a second set for the
-        // powered look -- createActiveRail is vanilla's own, and it reads the
-        // "_on" texture for the lit half.
-        // A powered rail needs a model per shape, and a second set for the lit
-        // look -- createActiveRail is vanilla's own, reading the "_on" texture
-        // for the powered half and emitting the flat item model too.
-        LOTRBlocks.ALL_RAILS.forEach(generators::createActiveRail);
+        mechanisedRails(generators);
 
         LOTRBlocks.ALL_CARPETS.forEach(b -> {
             Identifier model = ModelTemplates.CARPET.create(
@@ -634,27 +630,46 @@ public class LOTRModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerators generators) {
         generators.generateFlatItem(LOTRItems.MITHRIL, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.NAURITE, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.QUENDITE_CRYSTAL, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.GULDURIL_CRYSTAL, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.SULFUR, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.SALTPETER, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.SALT, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.TOPAZ, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.AMETHYST, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.SAPPHIRE, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.RUBY, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.AMBER, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.DIAMOND, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.PEARL, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.CORAL, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.OPAL, ModelTemplates.FLAT_ITEM);
-        generators.generateFlatItem(LOTRItems.EMERALD, ModelTemplates.FLAT_ITEM);
         generators.generateFlatItem(LOTRItems.PIPEWEED, ModelTemplates.FLAT_ITEM);
     }
 
     @Override
     public String getName() {
         return "LOTR Model Provider";
+    }
+
+    /**
+     * The two mechanised rails share one set of models: mechanised_rail and its
+     * raised pair for a stopped rail, and the "_on" set -- the animated
+     * texture -- for a running one. Unlike createActiveRail, the lit look
+     * follows isPowerOn rather than POWERED, so the on rail lights up with no
+     * signal and goes dark when one reaches it.
+     */
+    private static void mechanisedRails(BlockModelGenerators generators) {
+        Block source = LOTRBlocks.MECHANISED_RAIL;
+        MultiVariant flat = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "", ModelTemplates.RAIL_FLAT, TextureMapping::rail));
+        MultiVariant raisedNE = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "", ModelTemplates.RAIL_RAISED_NE, TextureMapping::rail));
+        MultiVariant raisedSW = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "", ModelTemplates.RAIL_RAISED_SW, TextureMapping::rail));
+        MultiVariant flatOn = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "_on", ModelTemplates.RAIL_FLAT, TextureMapping::rail));
+        MultiVariant raisedNEOn = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "_on", ModelTemplates.RAIL_RAISED_NE, TextureMapping::rail));
+        MultiVariant raisedSWOn = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "_on", ModelTemplates.RAIL_RAISED_SW, TextureMapping::rail));
+        generators.registerSimpleFlatItemModel(source);
+        for (Block block : LOTRBlocks.ALL_RAILS) {
+            LOTRMechanisedRailBlock rail = (LOTRMechanisedRailBlock) block;
+            generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(block)
+                    .with(PropertyDispatch.initial(BlockStateProperties.POWERED, BlockStateProperties.RAIL_SHAPE_STRAIGHT)
+                            .generate((powered, shape) -> {
+                                boolean on = rail.isPowerOn(rail.defaultBlockState().setValue(BlockStateProperties.POWERED, powered));
+                                return switch (shape) {
+                                    case NORTH_SOUTH -> on ? flatOn : flat;
+                                    case EAST_WEST -> (on ? flatOn : flat).with(BlockModelGenerators.Y_ROT_90);
+                                    case ASCENDING_EAST -> (on ? raisedNEOn : raisedNE).with(BlockModelGenerators.Y_ROT_90);
+                                    case ASCENDING_WEST -> (on ? raisedSWOn : raisedSW).with(BlockModelGenerators.Y_ROT_90);
+                                    case ASCENDING_NORTH -> on ? raisedNEOn : raisedNE;
+                                    case ASCENDING_SOUTH -> on ? raisedSWOn : raisedSW;
+                                    default -> throw new UnsupportedOperationException("Rail shape " + shape + " is not straight");
+                                };
+                            })));
+        }
     }
 }

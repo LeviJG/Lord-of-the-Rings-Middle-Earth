@@ -331,8 +331,8 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
             if (input.is(LOTRBlocks.MORGUL_IRON_ORE.asItem())) {
                 return new ItemStack(LOTRItems.ORC_STEEL_INGOT);
             }
-            // isWolfsFavoriteMeat
-            if (input.is(ItemTags.MEAT)) {
+            // isWolfsFavoriteMeat: whatever a wolf eats, the mod's own meats included.
+            if (input.is(ItemTags.WOLF_FOOD)) {
                 return new ItemStack(Items.ROTTEN_FLESH);
             }
         } else if (forge == LOTRBlocks.DWARVEN_FORGE) {

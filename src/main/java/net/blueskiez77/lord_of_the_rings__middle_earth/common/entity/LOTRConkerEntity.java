@@ -41,7 +41,9 @@ public class LOTRConkerEntity extends ThrowableItemProjectile {
     @Override
     protected void onHitEntity(EntityHitResult hit) {
         super.onHitEntity(hit);
-        hit.getEntity().hurt(damageSources().thrown(this, getOwner()), 1.0f);
+        if (level() instanceof ServerLevel server) {
+            hit.getEntity().hurtServer(server, damageSources().thrown(this, getOwner()), 1.0f);
+        }
     }
 
     @Override

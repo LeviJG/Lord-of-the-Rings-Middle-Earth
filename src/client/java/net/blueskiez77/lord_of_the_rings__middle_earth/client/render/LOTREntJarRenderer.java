@@ -30,8 +30,7 @@ import net.minecraft.world.phys.Vec3;
  * <p>The original drew it 3/8 of a block across, from 1/16 up at the very
  * bottom to 13/16 at the brim, and tinted it: biome water colour for water, or
  * a single pixel sampled out of the middle of an Ent-draught's item icon for a
- * draught. Only the water half is reachable in the port, so the draught branch
- * is marked below rather than written blind against an item that does not exist.
+ * draught.
  */
 public class LOTREntJarRenderer
         implements BlockEntityRenderer<LOTREntJarBlockEntity, LOTREntJarRenderState> {
@@ -51,6 +50,9 @@ public class LOTREntJarRenderer
 
     /** The original's {@code icon.getInterpolatedU(0..6)} on the water sprite. */
     private static final float WATER_UV_SPAN = 6.0f;
+
+    /** The draught icons, in LOTRItemEntDraught's order. */
+    private static final String[] DRAUGHT_COLORS = {"green", "brown", "gold", "yellow", "red", "silver", "blue"};
 
     private final SpriteGetter sprites;
 
@@ -80,11 +82,22 @@ public class LOTREntJarRenderer
         state.surfaceY = SURFACE_BASE
                 + SURFACE_RANGE * jar.getDrinkAmount() / LOTREntJarBlockEntity.MAX_CAPACITY;
 
-        // A jar holding a draught would take the draught's colour here. Nothing
-        // can put a draught in one yet, so every jar is a water jar; when
-        // LOTRItemEntDraught lands this is where its icon colour is sampled.
-        state.sprite = sprites.get(new SpriteId(AtlasIds.BLOCKS, WATER_STILL));
-        state.tint = ARGB.opaque(BiomeColors.getAverageWaterColor(tinted, jar.getBlockPos()));
+        if (jar.holdsWater()) {
+            state.atlas = AtlasIds.BLOCKS;
+            state.sprite = sprites.get(new SpriteId(AtlasIds.BLOCKS, WATER_STILL));
+            state.tint = ARGB.opaque(BiomeColors.getAverageWaterColor(tinted, jar.getBlockPos()));
+            state.uvFrom = 0.0f;
+            state.uvTo = WATER_UV_SPAN;
+        } else {
+            // The single texel at (7, 7) of the draught's own icon, untinted.
+            int draught = Math.clamp(jar.getDrinkMeta(), 0, DRAUGHT_COLORS.length - 1);
+            state.atlas = AtlasIds.ITEMS;
+            state.sprite = sprites.get(new SpriteId(AtlasIds.ITEMS,
+                    Identifier.fromNamespaceAndPath("lotr", "item/ent_draught_" + DRAUGHT_COLORS[draught])));
+            state.tint = 0xFFFFFFFF;
+            state.uvFrom = 7.0f;
+            state.uvTo = 8.0f;
+        }
     }
 
     @Override
@@ -99,10 +112,12 @@ public class LOTREntJarRenderer
         float y = state.surfaceY;
         int light = state.lightCoords;
         int tint = state.tint;
+        float uvFrom = state.uvFrom;
+        float uvTo = state.uvTo;
 
         collector.submitCustomGeometry(poseStack,
-                RenderTypes.entityTranslucent(AtlasIds.BLOCKS),
-                (pose, consumer) -> surface(pose, consumer, sprite, y, tint, light));
+                RenderTypes.entityTranslucent(state.atlas),
+                (pose, consumer) -> surface(pose, consumer, sprite, y, tint, light, uvFrom, uvTo));
     }
 
     /**
@@ -114,14 +129,14 @@ public class LOTREntJarRenderer
      * rather than something the block was trying to do.
      */
     private static void surface(PoseStack.Pose pose, VertexConsumer consumer, TextureAtlasSprite sprite,
-                                float y, int tint, int light) {
+                                float y, int tint, int light, float uvFrom, float uvTo) {
         float min = 0.5f - HALF_WIDTH;
         float max = 0.5f + HALF_WIDTH;
 
-        float u0 = sprite.getU0();
-        float u1 = sprite.getU(WATER_UV_SPAN / 16.0f);
-        float v0 = sprite.getV0();
-        float v1 = sprite.getV(WATER_UV_SPAN / 16.0f);
+        float u0 = sprite.getU(uvFrom / 16.0f);
+        float u1 = sprite.getU(uvTo / 16.0f);
+        float v0 = sprite.getV(uvFrom / 16.0f);
+        float v1 = sprite.getV(uvTo / 16.0f);
 
         int r = ARGB.red(tint);
         int g = ARGB.green(tint);

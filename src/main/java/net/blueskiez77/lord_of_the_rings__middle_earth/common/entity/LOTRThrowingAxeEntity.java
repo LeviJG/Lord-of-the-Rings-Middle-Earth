@@ -34,8 +34,7 @@ import net.minecraft.world.phys.Vec3;
  * <p>NOT ported: the mod's damage modifiers do not reach the thrown damage.
  * getRangedDamageMultiplier read the material and vanilla's bane enchantments
  * and nothing else, so a Keen axe hit for the same as a plain one; only the
- * knockback family changed the throw. That is reproduced rather than corrected
- * -- see LOTRModifier.Kind.THROWING_AXE.
+ * knockback family changed the throw. That is reproduced rather than corrected.
  */
 public class LOTRThrowingAxeEntity extends AbstractArrow {
 

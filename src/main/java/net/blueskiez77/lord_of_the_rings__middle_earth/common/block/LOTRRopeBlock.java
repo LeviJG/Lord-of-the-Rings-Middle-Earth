@@ -2,8 +2,11 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
@@ -214,17 +217,23 @@ public class LOTRRopeBlock extends LadderBlock {
 
     /**
      * LOTRBlockHithlainRope: a climber hostile to Lothlorien takes a half heart
-     * of magic damage every tick. The faction and alignment system is not ported
-     * yet, so nothing is hostile and nothing is hurt; the hook is here so the
-     * check has one place to go when factions land.
+     * of magic damage every tick -- a player by their Lothlorien alignment
+     * being negative, anything else by its NPC faction being a bad relation.
+     * The port has no NPCs yet, and every other mob was UNALIGNED to
+     * getNPCFaction, so only the player test can bite for now.
      */
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
             InsideBlockEffectApplier effects, boolean flag) {
-        if (!elven || level.isClientSide()
+        if (!elven || !(level instanceof ServerLevel server)
                 || !(entity instanceof LivingEntity living) || !living.onClimbable()) {
             return;
         }
-        // TODO: needs LOTRLevelData alignment / NPC factions to decide `harm`.
+        boolean harm = entity instanceof Player player
+                ? LOTRPlayerAlignments.getAlignment(player, LOTRFaction.LOTHLORIEN) < 0.0f
+                : LOTRFaction.UNALIGNED.isBadRelation(LOTRFaction.LOTHLORIEN);
+        if (harm) {
+            entity.hurtServer(server, server.damageSources().magic(), 1.0f);
+        }
     }
 }

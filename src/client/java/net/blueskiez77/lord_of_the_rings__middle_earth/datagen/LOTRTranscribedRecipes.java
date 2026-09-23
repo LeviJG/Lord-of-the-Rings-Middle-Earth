@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRFactionCraftingRecipe;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRFactionShapelessRecipe;
@@ -42,7 +41,7 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 //
 // A null table is GameRegistry.addRecipe / addShapelessRecipe -- the vanilla crafting table. A named table is that faction list; a recipe added through addRecipeTo(common*Recipes, ...) is repeated once per table in the group, exactly as LOTRCraftingTable.Groups lists them.
 //
-// Ingredients are ids, "#namespace:path" for tags. Ore dictionary names became tags where 26.2 has an equivalent (plankWood -> #minecraft:planks, logWood -> #minecraft:logs, dyeBlue -> #c:dyes/blue, ...); Blocks.wool with no metadata was a wildcard and is #minecraft:wool.
+// Ingredients are ids, "#namespace:path" for tags. Ore dictionary names became tags where 26.2 has an equivalent (plankWood -> #minecraft:planks, logWood -> #minecraft:logs, stickWood -> #lotr:sticks, dyeBlue -> #c:dyes/blue, ...); Blocks.wool with no metadata was a wildcard and is #minecraft:wool.
 //
 // NOT here, because the port does not have what they need yet: every recipe that uses a steel or alloy ingot (orc, uruk, elven, dwarven, blue dwarven, black uruk, morgul steel, bronze, copper, tin, silver, gilded iron, galvorn), mallorn sticks, gate gears, food and drink, the vessel/pouch/banner-pattern/dye/poison special recipe classes, and the recipes whose result is a block or item not yet ported.
 final class LOTRTranscribedRecipes extends RecipeProvider {
@@ -518,31 +517,32 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
 
     @Override
     public void buildRecipes() {
+        restoredRecipes();
         // LOTRRecipes.createAngmarRecipes
         shaped(ANGMAR, "angmar/angmar_brick", "lotr:angmar_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(ANGMAR, "angmar/angmar_crafting_table", "lotr:angmar_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:angmar_brick");
         shaped(ANGMAR, "angmar/angmar_brick_slab", "lotr:angmar_brick_slab", 6, rows("XXX"), 'X', "lotr:angmar_brick");
         shaped(ANGMAR, "angmar/angmar_brick_stairs", "lotr:angmar_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:angmar_brick");
         shaped(ANGMAR, "angmar/angmar_brick_wall", "lotr:angmar_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:angmar_brick");
-        shaped(ANGMAR, "angmar/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "minecraft:stick");
+        shaped(ANGMAR, "angmar/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "#lotr:sticks");
         shaped(ANGMAR, "angmar/cracked_angmar_brick_slab", "lotr:cracked_angmar_brick_slab", 6, rows("XXX"), 'X', "lotr:cracked_angmar_brick");
         shaped(ANGMAR, "angmar/cracked_angmar_brick_stairs", "lotr:cracked_angmar_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:cracked_angmar_brick");
         shaped(ANGMAR, "angmar/cracked_angmar_brick_wall", "lotr:cracked_angmar_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:cracked_angmar_brick");
         shaped(ANGMAR, "angmar/orc_forge", "lotr:orc_forge", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:angmar_brick");
-        shaped(ANGMAR, "angmar/angmar_banner", "lotr:angmar_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(ANGMAR, "angmar/angmar_banner", "lotr:angmar_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(ANGMAR, "angmar/angmar_pillar", "lotr:angmar_pillar", 3, rows("X", "X", "X"), 'X', "minecraft:stone");
         shaped(ANGMAR, "angmar/angmar_pillar_slab", "lotr:angmar_pillar_slab", 6, rows("XXX"), 'X', "lotr:angmar_pillar");
-        shaped(ANGMAR, "angmar/rhudaur_banner", "lotr:rhudaur_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "minecraft:stick");
+        shaped(ANGMAR, "angmar/rhudaur_banner", "lotr:rhudaur_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "#lotr:sticks");
         shapeless(ANGMAR, "angmar/angmar_snow_brick", "lotr:angmar_snow_brick", 1, "lotr:angmar_brick", "minecraft:snowball");
         shaped(ANGMAR, "angmar/angmar_snow_brick_slab", "lotr:angmar_snow_brick_slab", 6, rows("XXX"), 'X', "lotr:angmar_snow_brick");
         shaped(ANGMAR, "angmar/angmar_snow_brick_stairs", "lotr:angmar_snow_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:angmar_snow_brick");
         shaped(ANGMAR, "angmar/angmar_snow_brick_wall", "lotr:angmar_snow_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:angmar_snow_brick");
         // LOTRRecipes.createBlueMountainsRecipes
         shaped(BLUE_DWARVEN, "blue_dwarven/blue_dwarven_crafting_table", "lotr:blue_dwarven_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:blue_rock_brick");
-        shaped(BLUE_DWARVEN, "blue_dwarven/blue_mountains_banner", "lotr:blue_mountains_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(BLUE_DWARVEN, "blue_dwarven/blue_mountains_banner", "lotr:blue_mountains_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         // LOTRRecipes.createBreeRecipes
         shaped(BREE, "bree/bree_crafting_table", "lotr:bree_crafting_table", 1, rows("XX", "XX"), 'X', "#minecraft:planks");
-        shaped(BREE, "bree/bree_banner", "lotr:bree_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(BREE, "bree/bree_banner", "lotr:bree_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         // LOTRRecipes.createCommonDwarfRecipes
         shaped(DWARVEN, "dwarven/dwarven_brick", "lotr:dwarven_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(BLUE_DWARVEN, "blue_dwarven/dwarven_brick", "lotr:dwarven_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
@@ -583,14 +583,14 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(DWARVEN, "dwarven/obsidian_dwarven_brick_wall", "lotr:obsidian_dwarven_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:obsidian_dwarven_brick");
         shaped(BLUE_DWARVEN, "blue_dwarven/obsidian_dwarven_brick_wall", "lotr:obsidian_dwarven_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:obsidian_dwarven_brick");
         // LOTRRecipes.createCommonHighElfRecipes
-        shaped(HIGH_ELVEN, "high_elven/high_elven_torch", "lotr:high_elven_torch", 4, rows("X", "Y"), 'X', "lotr:quendite_crystal", 'Y', "minecraft:stick");
-        shaped(RIVENDELL, "rivendell/high_elven_torch", "lotr:high_elven_torch", 4, rows("X", "Y"), 'X', "lotr:quendite_crystal", 'Y', "minecraft:stick");
+        shaped(HIGH_ELVEN, "high_elven/high_elven_torch", "lotr:high_elven_torch", 4, rows("X", "Y"), 'X', "lotr:edhelvir", 'Y', "#lotr:sticks");
+        shaped(RIVENDELL, "rivendell/high_elven_torch", "lotr:high_elven_torch", 4, rows("X", "Y"), 'X', "lotr:edhelvir", 'Y', "#lotr:sticks");
         shaped(HIGH_ELVEN, "high_elven/high_elven_bed", "lotr:high_elven_bed", 1, rows("XXX", "YYY"), 'X', "#minecraft:wool", 'Y', "#minecraft:planks");
         shaped(RIVENDELL, "rivendell/high_elven_bed", "lotr:high_elven_bed", 1, rows("XXX", "YYY"), 'X', "#minecraft:wool", 'Y', "#minecraft:planks");
         shaped(HIGH_ELVEN, "high_elven/high_elven_brick", "lotr:high_elven_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(RIVENDELL, "rivendell/high_elven_brick", "lotr:high_elven_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
-        shapeless(HIGH_ELVEN, "high_elven/mossy_high_elven_brick", "lotr:mossy_high_elven_brick", 1, "lotr:high_elven_brick", "minecraft:vine");
-        shapeless(RIVENDELL, "rivendell/mossy_high_elven_brick", "lotr:mossy_high_elven_brick", 1, "lotr:high_elven_brick", "minecraft:vine");
+        shapeless(HIGH_ELVEN, "high_elven/mossy_high_elven_brick", "lotr:mossy_high_elven_brick", 1, "lotr:high_elven_brick", "#lotr:vines");
+        shapeless(RIVENDELL, "rivendell/mossy_high_elven_brick", "lotr:mossy_high_elven_brick", 1, "lotr:high_elven_brick", "#lotr:vines");
         shaped(HIGH_ELVEN, "high_elven/high_elven_brick_slab", "lotr:high_elven_brick_slab", 6, rows("XXX"), 'X', "lotr:high_elven_brick");
         shaped(RIVENDELL, "rivendell/high_elven_brick_slab", "lotr:high_elven_brick_slab", 6, rows("XXX"), 'X', "lotr:high_elven_brick");
         shaped(HIGH_ELVEN, "high_elven/mossy_high_elven_brick_slab", "lotr:mossy_high_elven_brick_slab", 6, rows("XXX"), 'X', "lotr:mossy_high_elven_brick");
@@ -619,17 +619,17 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(RIVENDELL, "rivendell/carved_high_elven_brick", "lotr:carved_high_elven_brick", 1, rows("XX", "XX"), 'X', "lotr:high_elven_brick");
         shaped(HIGH_ELVEN, "high_elven/elven_forge", "lotr:elven_forge", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:high_elven_brick");
         shaped(RIVENDELL, "rivendell/elven_forge", "lotr:elven_forge", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:high_elven_brick");
-        shaped(HIGH_ELVEN, "high_elven/high_elf_wood_bars", "lotr:high_elf_wood_bars", 8, rows("XXX", "XXX"), 'X', "minecraft:stick");
-        shaped(RIVENDELL, "rivendell/high_elf_wood_bars", "lotr:high_elf_wood_bars", 8, rows("XXX", "XXX"), 'X', "minecraft:stick");
+        shaped(HIGH_ELVEN, "high_elven/high_elf_wood_bars", "lotr:high_elf_wood_bars", 8, rows("XXX", "XXX"), 'X', "#lotr:sticks");
+        shaped(RIVENDELL, "rivendell/high_elf_wood_bars", "lotr:high_elf_wood_bars", 8, rows("XXX", "XXX"), 'X', "#lotr:sticks");
         shaped(HIGH_ELVEN, "high_elven/high_elven_gold_brick", "lotr:high_elven_gold_brick", 1, rows(" X ", "XYX", " X "), 'X', "minecraft:gold_nugget", 'Y', "lotr:high_elven_brick");
         shaped(RIVENDELL, "rivendell/high_elven_gold_brick", "lotr:high_elven_gold_brick", 1, rows(" X ", "XYX", " X "), 'X', "minecraft:gold_nugget", 'Y', "lotr:high_elven_brick");
         // LOTRRecipes.createCommonHobbitRecipes
         shaped(HOBBIT, "hobbit/hobbit_oven", "lotr:hobbit_oven", 1, rows("XXX", "X X", "XXX"), 'X', "minecraft:bricks");
         shaped(BREE, "bree/hobbit_oven", "lotr:hobbit_oven", 1, rows("XXX", "X X", "XXX"), 'X', "minecraft:bricks");
         // LOTRRecipes.createCommonMorgulRecipes
-        shaped(MORGUL, "morgul/morgul_torch", "lotr:morgul_torch", 4, rows("X", "Y"), 'X', "lotr:gulduril_crystal", 'Y', "minecraft:stick");
-        shaped(ANGMAR, "angmar/morgul_torch", "lotr:morgul_torch", 4, rows("X", "Y"), 'X', "lotr:gulduril_crystal", 'Y', "minecraft:stick");
-        shaped(DOL_GULDUR, "dol_guldur/morgul_torch", "lotr:morgul_torch", 4, rows("X", "Y"), 'X', "lotr:gulduril_crystal", 'Y', "minecraft:stick");
+        shaped(MORGUL, "morgul/morgul_torch", "lotr:morgul_torch", 4, rows("X", "Y"), 'X', "lotr:gulduril", 'Y', "#lotr:sticks");
+        shaped(ANGMAR, "angmar/morgul_torch", "lotr:morgul_torch", 4, rows("X", "Y"), 'X', "lotr:gulduril", 'Y', "#lotr:sticks");
+        shaped(DOL_GULDUR, "dol_guldur/morgul_torch", "lotr:morgul_torch", 4, rows("X", "Y"), 'X', "lotr:gulduril", 'Y', "#lotr:sticks");
         // LOTRRecipes.createCommonNearHaradRecipes
         shaped(NEAR_HARAD, "near_harad/near_harad_brick", "lotr:near_harad_brick", 4, rows("XX", "XX"), 'X', "minecraft:sandstone");
         shaped(UMBAR, "umbar/near_harad_brick", "lotr:near_harad_brick", 4, rows("XX", "XX"), 'X', "minecraft:sandstone");
@@ -688,12 +688,12 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(NEAR_HARAD, "near_harad/near_harad_lapis_brick", "lotr:near_harad_lapis_brick", 1, rows(" X ", "XYX", " X "), 'X', "minecraft:lapis_lazuli", 'Y', "lotr:near_harad_brick");
         shaped(UMBAR, "umbar/near_harad_lapis_brick", "lotr:near_harad_lapis_brick", 1, rows(" X ", "XYX", " X "), 'X', "minecraft:lapis_lazuli", 'Y', "lotr:near_harad_brick");
         shaped(GULF, "gulf/near_harad_lapis_brick", "lotr:near_harad_lapis_brick", 1, rows(" X ", "XYX", " X "), 'X', "minecraft:lapis_lazuli", 'Y', "lotr:near_harad_brick");
-        shaped(NEAR_HARAD, "near_harad/kebab_stand", "lotr:kebab_stand", 1, rows(" X ", " Y ", "ZZZ"), 'X', "#minecraft:planks", 'Y', "minecraft:stick", 'Z', "minecraft:cobblestone");
-        shaped(UMBAR, "umbar/kebab_stand", "lotr:kebab_stand", 1, rows(" X ", " Y ", "ZZZ"), 'X', "#minecraft:planks", 'Y', "minecraft:stick", 'Z', "minecraft:cobblestone");
-        shaped(GULF, "gulf/kebab_stand", "lotr:kebab_stand", 1, rows(" X ", " Y ", "ZZZ"), 'X', "#minecraft:planks", 'Y', "minecraft:stick", 'Z', "minecraft:cobblestone");
-        shaped(NEAR_HARAD, "near_harad/harad_bow", "lotr:harad_bow", 1, rows(" XY", "X Y", " XY"), 'X', "minecraft:stick", 'Y', "minecraft:string");
-        shaped(UMBAR, "umbar/harad_bow", "lotr:harad_bow", 1, rows(" XY", "X Y", " XY"), 'X', "minecraft:stick", 'Y', "minecraft:string");
-        shaped(GULF, "gulf/harad_bow", "lotr:harad_bow", 1, rows(" XY", "X Y", " XY"), 'X', "minecraft:stick", 'Y', "minecraft:string");
+        shaped(NEAR_HARAD, "near_harad/kebab_stand", "lotr:kebab_stand", 1, rows(" X ", " Y ", "ZZZ"), 'X', "#minecraft:planks", 'Y', "#lotr:sticks", 'Z', "minecraft:cobblestone");
+        shaped(UMBAR, "umbar/kebab_stand", "lotr:kebab_stand", 1, rows(" X ", " Y ", "ZZZ"), 'X', "#minecraft:planks", 'Y', "#lotr:sticks", 'Z', "minecraft:cobblestone");
+        shaped(GULF, "gulf/kebab_stand", "lotr:kebab_stand", 1, rows(" X ", " Y ", "ZZZ"), 'X', "#minecraft:planks", 'Y', "#lotr:sticks", 'Z', "minecraft:cobblestone");
+        shaped(NEAR_HARAD, "near_harad/harad_bow", "lotr:harad_bow", 1, rows(" XY", "X Y", " XY"), 'X', "#lotr:sticks", 'Y', "minecraft:string");
+        shaped(UMBAR, "umbar/harad_bow", "lotr:harad_bow", 1, rows(" XY", "X Y", " XY"), 'X', "#lotr:sticks", 'Y', "minecraft:string");
+        shaped(GULF, "gulf/harad_bow", "lotr:harad_bow", 1, rows(" XY", "X Y", " XY"), 'X', "#lotr:sticks", 'Y', "minecraft:string");
         // LOTRRecipes.createCommonNumenoreanRecipes
         shaped(GONDORIAN, "gondorian/numenorean_brick", "lotr:numenorean_brick", 4, rows("XX", "XX"), 'X', "lotr:mordor_rock");
         shaped(DOL_AMROTH, "dol_amroth/numenorean_brick", "lotr:numenorean_brick", 4, rows("XX", "XX"), 'X', "lotr:mordor_rock");
@@ -738,12 +738,12 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shapeless(DOL_GULDUR, "dol_guldur/triple_strength_orc_fire_bomb", "lotr:triple_strength_orc_fire_bomb", 1, "lotr:triple_strength_orc_bomb", "minecraft:lava_bucket");
         shapeless(GUNDABAD, "gundabad/triple_strength_orc_fire_bomb", "lotr:triple_strength_orc_fire_bomb", 1, "lotr:triple_strength_orc_bomb", "minecraft:lava_bucket");
         shapeless(HALF_TROLL, "half_troll/triple_strength_orc_fire_bomb", "lotr:triple_strength_orc_fire_bomb", 1, "lotr:triple_strength_orc_bomb", "minecraft:lava_bucket");
-        shaped(MORGUL, "morgul/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "minecraft:stick");
-        shaped(URUK, "uruk/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "minecraft:stick");
-        shaped(ANGMAR, "angmar/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "minecraft:stick");
-        shaped(DOL_GULDUR, "dol_guldur/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "minecraft:stick");
-        shaped(GUNDABAD, "gundabad/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "minecraft:stick");
-        shaped(HALF_TROLL, "half_troll/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "minecraft:stick");
+        shaped(MORGUL, "morgul/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "#lotr:sticks");
+        shaped(URUK, "uruk/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "#lotr:sticks");
+        shaped(ANGMAR, "angmar/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "#lotr:sticks");
+        shaped(DOL_GULDUR, "dol_guldur/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "#lotr:sticks");
+        shaped(GUNDABAD, "gundabad/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "#lotr:sticks");
+        shaped(HALF_TROLL, "half_troll/orc_skull_staff", "lotr:orc_skull_staff", 1, rows("X", "Y", "Y"), 'X', "minecraft:skeleton_skull", 'Y', "#lotr:sticks");
         shaped(MORGUL, "morgul/orc_plating_rust", "lotr:orc_plating_rust", 8, rows("XXX", "XYX", "XXX"), 'X', "lotr:orc_plating_iron", 'Y', "minecraft:water_bucket");
         shaped(URUK, "uruk/orc_plating_rust", "lotr:orc_plating_rust", 8, rows("XXX", "XYX", "XXX"), 'X', "lotr:orc_plating_iron", 'Y', "minecraft:water_bucket");
         shaped(ANGMAR, "angmar/orc_plating_rust", "lotr:orc_plating_rust", 8, rows("XXX", "XYX", "XXX"), 'X', "lotr:orc_plating_iron", 'Y', "minecraft:water_bucket");
@@ -752,15 +752,15 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(HALF_TROLL, "half_troll/orc_plating_rust", "lotr:orc_plating_rust", 8, rows("XXX", "XYX", "XXX"), 'X', "lotr:orc_plating_iron", 'Y', "minecraft:water_bucket");
         // LOTRRecipes.createDaleRecipes
         shaped(DALE, "dale/dale_crafting_table", "lotr:dale_crafting_table", 1, rows("XX", "XX"), 'X', "#minecraft:planks");
-        shaped(DALE, "dale/dale_banner", "lotr:dale_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(DALE, "dale/dale_banner", "lotr:dale_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(DALE, "dale/dale_brick", "lotr:dale_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(DALE, "dale/dale_brick_slab", "lotr:dale_brick_slab", 6, rows("XXX"), 'X', "lotr:dale_brick");
         shaped(DALE, "dale/dale_brick_stairs", "lotr:dale_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:dale_brick");
         shaped(DALE, "dale/dale_brick_wall", "lotr:dale_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:dale_brick");
         shaped(DALE, "dale/dale_pillar", "lotr:dale_pillar", 3, rows("X", "X", "X"), 'X', "minecraft:stone");
         shaped(DALE, "dale/dale_pillar_slab", "lotr:dale_pillar_slab", 6, rows("XXX"), 'X', "lotr:dale_pillar");
-        shaped(DALE, "dale/esgaroth_banner", "lotr:esgaroth_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "minecraft:cod");
-        shapeless(DALE, "dale/dale_mossy_brick", "lotr:dale_mossy_brick", 1, "lotr:dale_brick", "minecraft:vine");
+        shaped(DALE, "dale/esgaroth_banner", "lotr:esgaroth_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "minecraft:cod");
+        shapeless(DALE, "dale/dale_mossy_brick", "lotr:dale_mossy_brick", 1, "lotr:dale_brick", "#lotr:vines");
         shaped(DALE, "dale/dale_mossy_brick_slab", "lotr:dale_mossy_brick_slab", 6, rows("XXX"), 'X', "lotr:dale_mossy_brick");
         shaped(DALE, "dale/dale_mossy_brick_stairs", "lotr:dale_mossy_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:dale_mossy_brick");
         shaped(DALE, "dale/dale_mossy_brick_wall", "lotr:dale_mossy_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:dale_mossy_brick");
@@ -770,30 +770,30 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(DALE, "dale/dale_carved_brick", "lotr:dale_carved_brick", 1, rows("XX", "XX"), 'X', "lotr:dale_brick");
         // LOTRRecipes.createDolAmrothRecipes
         shaped(DOL_AMROTH, "dol_amroth/dol_amroth_crafting_table", "lotr:dol_amroth_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:gondor_rock");
-        shaped(DOL_AMROTH, "dol_amroth/dol_amroth_banner", "lotr:dol_amroth_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(DOL_AMROTH, "dol_amroth/dol_amroth_banner", "lotr:dol_amroth_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(DOL_AMROTH, "dol_amroth/dol_amroth_leggings", "lotr:dol_amroth_leggings", 1, rows("XXX", "X X", "X X"), 'X', "minecraft:iron_ingot");
         shaped(DOL_AMROTH, "dol_amroth/dol_amroth_boots", "lotr:dol_amroth_boots", 1, rows("X X", "X X"), 'X', "minecraft:iron_ingot");
-        shaped(DOL_AMROTH, "dol_amroth/dol_amroth_sword", "lotr:dol_amroth_sword", 1, rows("X", "X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
+        shaped(DOL_AMROTH, "dol_amroth/dol_amroth_sword", "lotr:dol_amroth_sword", 1, rows("X", "X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
         shaped(DOL_AMROTH, "dol_amroth/dol_amroth_horse_armor", "lotr:dol_amroth_horse_armor", 1, rows("X  ", "XYX", "XXX"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         shaped(DOL_AMROTH, "dol_amroth/dol_amroth_brick", "lotr:dol_amroth_brick", 4, rows("XX", "XX"), 'X', "lotr:gondor_rock");
         shaped(DOL_AMROTH, "dol_amroth/dol_amroth_brick_slab", "lotr:dol_amroth_brick_slab", 6, rows("XXX"), 'X', "lotr:dol_amroth_brick");
         shaped(DOL_AMROTH, "dol_amroth/dol_amroth_brick_stairs", "lotr:dol_amroth_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:dol_amroth_brick");
         shaped(DOL_AMROTH, "dol_amroth/dol_amroth_brick_wall", "lotr:dol_amroth_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:dol_amroth_brick");
-        shaped(DOL_AMROTH, "dol_amroth/dol_amroth_lance", "lotr:dol_amroth_lance", 1, rows("  X", " X ", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(DOL_AMROTH, "dol_amroth/gondor_bow", "lotr:gondor_bow", 1, rows(" XY", "X Y", " XY"), 'X', "minecraft:stick", 'Y', "minecraft:string");
+        shaped(DOL_AMROTH, "dol_amroth/dol_amroth_lance", "lotr:dol_amroth_lance", 1, rows("  X", " X ", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(DOL_AMROTH, "dol_amroth/gondor_bow", "lotr:gondor_bow", 1, rows(" XY", "X Y", " XY"), 'X', "#lotr:sticks", 'Y', "minecraft:string");
         // LOTRRecipes.createDolGuldurRecipes
         shaped(DOL_GULDUR, "dol_guldur/dol_guldur_brick", "lotr:dol_guldur_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(DOL_GULDUR, "dol_guldur/dol_guldur_crafting_table", "lotr:dol_guldur_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:dol_guldur_brick");
         shaped(DOL_GULDUR, "dol_guldur/dol_guldur_brick_slab", "lotr:dol_guldur_brick_slab", 6, rows("XXX"), 'X', "lotr:dol_guldur_brick");
         shaped(DOL_GULDUR, "dol_guldur/dol_guldur_brick_stairs", "lotr:dol_guldur_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:dol_guldur_brick");
         shaped(DOL_GULDUR, "dol_guldur/dol_guldur_brick_wall", "lotr:dol_guldur_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:dol_guldur_brick");
-        shaped(DOL_GULDUR, "dol_guldur/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "minecraft:stick");
+        shaped(DOL_GULDUR, "dol_guldur/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "#lotr:sticks");
         shaped(DOL_GULDUR, "dol_guldur/cracked_dol_guldur_brick_slab", "lotr:cracked_dol_guldur_brick_slab", 6, rows("XXX"), 'X', "lotr:cracked_dol_guldur_brick");
         shaped(DOL_GULDUR, "dol_guldur/cracked_dol_guldur_brick_stairs", "lotr:cracked_dol_guldur_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:cracked_dol_guldur_brick");
         shaped(DOL_GULDUR, "dol_guldur/cracked_dol_guldur_brick_wall", "lotr:cracked_dol_guldur_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:cracked_dol_guldur_brick");
         shaped(DOL_GULDUR, "dol_guldur/orc_forge", "lotr:orc_forge", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:dol_guldur_brick");
-        shaped(DOL_GULDUR, "dol_guldur/dol_guldur_banner", "lotr:dol_guldur_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
-        shapeless(DOL_GULDUR, "dol_guldur/mossy_dol_guldur_brick", "lotr:mossy_dol_guldur_brick", 1, "lotr:dol_guldur_brick", "minecraft:vine");
+        shaped(DOL_GULDUR, "dol_guldur/dol_guldur_banner", "lotr:dol_guldur_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
+        shapeless(DOL_GULDUR, "dol_guldur/mossy_dol_guldur_brick", "lotr:mossy_dol_guldur_brick", 1, "lotr:dol_guldur_brick", "#lotr:vines");
         shaped(DOL_GULDUR, "dol_guldur/carved_dol_guldur_brick", "lotr:carved_dol_guldur_brick", 1, rows("XX", "XX"), 'X', "lotr:dol_guldur_brick");
         shaped(DOL_GULDUR, "dol_guldur/mossy_dol_guldur_brick_slab", "lotr:mossy_dol_guldur_brick_slab", 6, rows("XXX"), 'X', "lotr:mossy_dol_guldur_brick");
         shaped(DOL_GULDUR, "dol_guldur/mossy_dol_guldur_brick_stairs", "lotr:mossy_dol_guldur_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:mossy_dol_guldur_brick");
@@ -802,13 +802,13 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(DOL_GULDUR, "dol_guldur/dol_guldur_pillar_slab", "lotr:dol_guldur_pillar_slab", 6, rows("XXX"), 'X', "lotr:dol_guldur_pillar");
         // LOTRRecipes.createDorwinionRecipes
         shaped(DORWINION, "dorwinion/dorwinion_crafting_table", "lotr:dorwinion_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:chalk");
-        shaped(DORWINION, "dorwinion/dorwinion_banner", "lotr:dorwinion_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(DORWINION, "dorwinion/dorwinion_banner", "lotr:dorwinion_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(DORWINION, "dorwinion/dorwinion_brick", "lotr:dorwinion_brick", 4, rows("XX", "XX"), 'X', "lotr:chalk");
         shaped(DORWINION, "dorwinion/dorwinion_brick_slab", "lotr:dorwinion_brick_slab", 6, rows("XXX"), 'X', "lotr:dorwinion_brick");
         shaped(DORWINION, "dorwinion/dorwinion_brick_stairs", "lotr:dorwinion_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:dorwinion_brick");
         shaped(DORWINION, "dorwinion/dorwinion_brick_wall", "lotr:dorwinion_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:dorwinion_brick");
         shaped(DORWINION, "dorwinion/elven_forge", "lotr:elven_forge", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:dorwinion_brick");
-        shapeless(DORWINION, "dorwinion/mossy_dorwinion_brick", "lotr:mossy_dorwinion_brick", 1, "lotr:dorwinion_brick", "minecraft:vine");
+        shapeless(DORWINION, "dorwinion/mossy_dorwinion_brick", "lotr:mossy_dorwinion_brick", 1, "lotr:dorwinion_brick", "#lotr:vines");
         shaped(DORWINION, "dorwinion/mossy_dorwinion_brick_slab", "lotr:mossy_dorwinion_brick_slab", 6, rows("XXX"), 'X', "lotr:mossy_dorwinion_brick");
         shaped(DORWINION, "dorwinion/mossy_dorwinion_brick_stairs", "lotr:mossy_dorwinion_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:mossy_dorwinion_brick");
         shaped(DORWINION, "dorwinion/mossy_dorwinion_brick_wall", "lotr:mossy_dorwinion_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:mossy_dorwinion_brick");
@@ -822,7 +822,7 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(DORWINION, "dorwinion/carved_dorwinion_brick", "lotr:carved_dorwinion_brick", 1, rows("XX", "XX"), 'X', "lotr:dorwinion_brick");
         shaped(DORWINION, "dorwinion/dorwinion_pillar", "lotr:dorwinion_pillar", 3, rows("X", "X", "X"), 'X', "lotr:chalk");
         shaped(DORWINION, "dorwinion/dorwinion_pillar_slab", "lotr:dorwinion_pillar_slab", 6, rows("XXX"), 'X', "lotr:dorwinion_pillar");
-        shapeless(DORWINION, "dorwinion/mossy_dorwinion_pillar", "lotr:mossy_dorwinion_pillar", 1, "lotr:dorwinion_pillar", "minecraft:vine");
+        shapeless(DORWINION, "dorwinion/mossy_dorwinion_pillar", "lotr:mossy_dorwinion_pillar", 1, "lotr:dorwinion_pillar", "#lotr:vines");
         shaped(DORWINION, "dorwinion/mossy_dorwinion_pillar_slab", "lotr:mossy_dorwinion_pillar_slab", 6, rows("XXX"), 'X', "lotr:mossy_dorwinion_pillar");
         // LOTRRecipes.createDunlendingRecipes
         shaped(DUNLENDING, "dunlending/dunlending_crafting_table", "lotr:dunlending_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "minecraft:cobblestone");
@@ -831,11 +831,11 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(DUNLENDING, "dunlending/dunlending_leggings", "lotr:dunlending_leggings", 1, rows("XXX", "Y Y", "X X"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         shaped(DUNLENDING, "dunlending/dunlending_boots", "lotr:dunlending_boots", 1, rows("Y Y", "X X"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         shaped(DUNLENDING, "dunlending/dunlending_club", "lotr:dunlending_club", 1, rows("X", "X", "X"), 'X', "#minecraft:planks");
-        shaped(DUNLENDING, "dunlending/dunlending_trident", "lotr:dunlending_trident", 1, rows(" XX", " YX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(DUNLENDING, "dunlending/dunland_banner", "lotr:dunland_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(DUNLENDING, "dunlending/dunlending_trident", "lotr:dunlending_trident", 1, rows(" XX", " YX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(DUNLENDING, "dunlending/dunland_banner", "lotr:dunland_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         // LOTRRecipes.createDwarvenRecipes
         shaped(DWARVEN, "dwarven/dwarven_crafting_table", "lotr:dwarven_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:dwarven_brick");
-        shaped(DWARVEN, "dwarven/durin_banner", "lotr:durin_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(DWARVEN, "dwarven/durin_banner", "lotr:durin_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(DWARVEN, "dwarven/gold_trimmed_dwarven_helmet", "lotr:gold_trimmed_dwarven_helmet", 1, rows("XXX", "XYX", "XXX"), 'X', "minecraft:gold_nugget", 'Y', "lotr:dwarven_helmet");
         shaped(DWARVEN, "dwarven/gold_trimmed_dwarven_chestplate", "lotr:gold_trimmed_dwarven_chestplate", 1, rows("XXX", "XYX", "XXX"), 'X', "minecraft:gold_nugget", 'Y', "lotr:dwarven_chestplate");
         shaped(DWARVEN, "dwarven/gold_trimmed_dwarven_leggings", "lotr:gold_trimmed_dwarven_leggings", 1, rows("XXX", "XYX", "XXX"), 'X', "minecraft:gold_nugget", 'Y', "lotr:dwarven_leggings");
@@ -846,7 +846,7 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(ELVEN, "elven/mallorn_stairs", "lotr:mallorn_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:mallorn_planks");
         shaped(ELVEN, "elven/elven_crafting_table", "lotr:elven_crafting_table", 1, rows("XX", "XX"), 'X', "lotr:mallorn_planks");
         shaped(ELVEN, "elven/galadhrim_brick", "lotr:galadhrim_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
-        shapeless(ELVEN, "elven/mossy_galadhrim_brick", "lotr:mossy_galadhrim_brick", 1, "lotr:galadhrim_brick", "minecraft:vine");
+        shapeless(ELVEN, "elven/mossy_galadhrim_brick", "lotr:mossy_galadhrim_brick", 1, "lotr:galadhrim_brick", "#lotr:vines");
         shaped(ELVEN, "elven/galadhrim_brick_slab", "lotr:galadhrim_brick_slab", 6, rows("XXX"), 'X', "lotr:galadhrim_brick");
         shaped(ELVEN, "elven/mossy_galadhrim_brick_slab", "lotr:mossy_galadhrim_brick_slab", 6, rows("XXX"), 'X', "lotr:mossy_galadhrim_brick");
         shaped(ELVEN, "elven/cracked_galadhrim_brick_slab", "lotr:cracked_galadhrim_brick_slab", 6, rows("XXX"), 'X', "lotr:cracked_galadhrim_brick");
@@ -878,7 +878,7 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(GONDORIAN, "gondorian/gondor_brick_stairs", "lotr:gondor_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:gondor_brick");
         shaped(GONDORIAN, "gondorian/gondor_rock_wall", "lotr:gondor_rock_wall", 6, rows("XXX", "XXX"), 'X', "lotr:gondor_rock");
         shaped(GONDORIAN, "gondorian/gondor_brick_wall", "lotr:gondor_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:gondor_brick");
-        shapeless(GONDORIAN, "gondorian/mossy_gondor_brick", "lotr:mossy_gondor_brick", 1, "lotr:gondor_brick", "minecraft:vine");
+        shapeless(GONDORIAN, "gondorian/mossy_gondor_brick", "lotr:mossy_gondor_brick", 1, "lotr:gondor_brick", "#lotr:vines");
         shaped(GONDORIAN, "gondorian/mossy_gondor_brick_slab", "lotr:mossy_gondor_brick_slab", 6, rows("XXX"), 'X', "lotr:mossy_gondor_brick");
         shaped(GONDORIAN, "gondorian/mossy_gondor_brick_stairs", "lotr:mossy_gondor_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:mossy_gondor_brick");
         shaped(GONDORIAN, "gondorian/mossy_gondor_brick_wall", "lotr:mossy_gondor_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:mossy_gondor_brick");
@@ -890,62 +890,62 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(GONDORIAN, "gondorian/gondor_chestplate", "lotr:gondor_chestplate", 1, rows("X X", "XXX", "XXX"), 'X', "minecraft:iron_ingot");
         shaped(GONDORIAN, "gondorian/gondor_leggings", "lotr:gondor_leggings", 1, rows("XXX", "X X", "X X"), 'X', "minecraft:iron_ingot");
         shaped(GONDORIAN, "gondorian/gondor_boots", "lotr:gondor_boots", 1, rows("X X", "X X"), 'X', "minecraft:iron_ingot");
-        shaped(GONDORIAN, "gondorian/gondor_sword", "lotr:gondor_sword", 1, rows("X", "X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(GONDORIAN, "gondorian/gondor_spear", "lotr:gondor_spear", 1, rows("  X", " Y ", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(GONDORIAN, "gondorian/gondor_dagger", "lotr:gondor_dagger", 1, rows("X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(GONDORIAN, "gondorian/gondor_warhammer", "lotr:gondor_warhammer", 1, rows("XYX", "XYX", " Y "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(GONDORIAN, "gondorian/gondor_bow", "lotr:gondor_bow", 1, rows(" XY", "X Y", " XY"), 'X', "minecraft:stick", 'Y', "minecraft:string");
-        shaped(GONDORIAN, "gondorian/gondor_winged_helmet", "lotr:gondor_winged_helmet", 1, rows("XYX"), 'X', "minecraft:feather", 'Y', "lotr:gondor_helmet");
-        shaped(GONDORIAN, "gondorian/gondor_banner", "lotr:gondor_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(GONDORIAN, "gondorian/gondor_sword", "lotr:gondor_sword", 1, rows("X", "X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(GONDORIAN, "gondorian/gondor_spear", "lotr:gondor_spear", 1, rows("  X", " Y ", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(GONDORIAN, "gondorian/gondor_dagger", "lotr:gondor_dagger", 1, rows("X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(GONDORIAN, "gondorian/gondor_warhammer", "lotr:gondor_warhammer", 1, rows("XYX", "XYX", " Y "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(GONDORIAN, "gondorian/gondor_bow", "lotr:gondor_bow", 1, rows(" XY", "X Y", " XY"), 'X', "#lotr:sticks", 'Y', "minecraft:string");
+        shaped(GONDORIAN, "gondorian/gondor_winged_helmet", "lotr:gondor_winged_helmet", 1, rows("XYX"), 'X', "#lotr:feathers", 'Y', "lotr:gondor_helmet");
+        shaped(GONDORIAN, "gondorian/gondor_banner", "lotr:gondor_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(GONDORIAN, "gondorian/gondor_horse_armor", "lotr:gondor_horse_armor", 1, rows("X  ", "XYX", "XXX"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         shaped(GONDORIAN, "gondorian/gondor_pillar", "lotr:gondor_pillar", 3, rows("X", "X", "X"), 'X', "lotr:gondor_rock");
         shaped(GONDORIAN, "gondorian/gondor_pillar_slab", "lotr:gondor_pillar_slab", 6, rows("XXX"), 'X', "lotr:gondor_pillar");
         shaped(GONDORIAN, "gondorian/gondor_rock_stairs", "lotr:gondor_rock_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:gondor_rock");
-        shaped(GONDORIAN, "gondorian/anorien_banner", "lotr:anorien_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "minecraft:gold_nugget");
-        shaped(GONDORIAN, "gondorian/lossarnach_banner", "lotr:lossarnach_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "minecraft:rose_bush");
-        shaped(GONDORIAN, "gondorian/pinnath_gelin_banner", "lotr:pinnath_gelin_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "#c:dyes/green");
-        shaped(GONDORIAN, "gondorian/lebennin_banner", "lotr:lebennin_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "#c:dyes/light_blue");
-        shaped(GONDORIAN, "gondorian/pelargir_banner", "lotr:pelargir_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "#c:dyes/cyan");
-        shaped(GONDORIAN, "gondorian/blackroot_vale_banner", "lotr:blackroot_vale_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "lotr:blackroot");
-        shaped(GONDORIAN, "gondorian/lamedon_banner", "lotr:lamedon_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "#c:dyes/blue");
+        shaped(GONDORIAN, "gondorian/anorien_banner", "lotr:anorien_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "minecraft:gold_nugget");
+        shaped(GONDORIAN, "gondorian/lossarnach_banner", "lotr:lossarnach_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "minecraft:rose_bush");
+        shaped(GONDORIAN, "gondorian/pinnath_gelin_banner", "lotr:pinnath_gelin_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "#c:dyes/green");
+        shaped(GONDORIAN, "gondorian/lebennin_banner", "lotr:lebennin_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "#c:dyes/light_blue");
+        shaped(GONDORIAN, "gondorian/pelargir_banner", "lotr:pelargir_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "#c:dyes/cyan");
+        shaped(GONDORIAN, "gondorian/blackroot_vale_banner", "lotr:blackroot_vale_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "lotr:blackroot");
+        shaped(GONDORIAN, "gondorian/lamedon_banner", "lotr:lamedon_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "#c:dyes/blue");
         shaped(GONDORIAN, "gondorian/gondor_cobblebrick", "lotr:gondor_cobblebrick", 4, rows("XY", "YX"), 'X', "lotr:gondor_rock", 'Y', "minecraft:cobblestone");
         shaped(GONDORIAN, "gondorian/gondor_cobblebrick_slab", "lotr:gondor_cobblebrick_slab", 6, rows("XXX"), 'X', "lotr:gondor_cobblebrick");
         shaped(GONDORIAN, "gondorian/gondor_cobblebrick_stairs", "lotr:gondor_cobblebrick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:gondor_cobblebrick");
         shaped(GONDORIAN, "gondorian/gondor_cobblebrick_wall", "lotr:gondor_cobblebrick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:gondor_cobblebrick");
-        shapeless(GONDORIAN, "gondorian/mossy_gondor_cobblebrick", "lotr:mossy_gondor_cobblebrick", 1, "lotr:gondor_cobblebrick", "minecraft:vine");
+        shapeless(GONDORIAN, "gondorian/mossy_gondor_cobblebrick", "lotr:mossy_gondor_cobblebrick", 1, "lotr:gondor_cobblebrick", "#lotr:vines");
         shaped(GONDORIAN, "gondorian/mossy_gondor_cobblebrick_slab", "lotr:mossy_gondor_cobblebrick_slab", 6, rows("XXX"), 'X', "lotr:mossy_gondor_cobblebrick");
         shaped(GONDORIAN, "gondorian/mossy_gondor_cobblebrick_stairs", "lotr:mossy_gondor_cobblebrick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:mossy_gondor_cobblebrick");
         shaped(GONDORIAN, "gondorian/mossy_gondor_cobblebrick_wall", "lotr:mossy_gondor_cobblebrick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:mossy_gondor_cobblebrick");
         shaped(GONDORIAN, "gondorian/cracked_gondor_cobblebrick_slab", "lotr:cracked_gondor_cobblebrick_slab", 6, rows("XXX"), 'X', "lotr:cracked_gondor_cobblebrick");
         shaped(GONDORIAN, "gondorian/cracked_gondor_cobblebrick_stairs", "lotr:cracked_gondor_cobblebrick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:cracked_gondor_cobblebrick");
         shaped(GONDORIAN, "gondorian/cracked_gondor_cobblebrick_wall", "lotr:cracked_gondor_cobblebrick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:cracked_gondor_cobblebrick");
-        shaped(GONDORIAN, "gondorian/gondor_steward_banner", "lotr:gondor_steward_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "#c:dyes/white");
+        shaped(GONDORIAN, "gondorian/gondor_steward_banner", "lotr:gondor_steward_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "#c:dyes/white");
         // LOTRRecipes.createGulfRecipes
         shaped(GULF, "gulf/gulf_crafting_table", "lotr:gulf_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "minecraft:sandstone");
-        shaped(GULF, "gulf/harad_gulf_banner", "lotr:harad_gulf_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(GULF, "gulf/harad_gulf_banner", "lotr:harad_gulf_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         // LOTRRecipes.createGundabadRecipes
         shaped(GUNDABAD, "gundabad/gundabad_crafting_table", "lotr:gundabad_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "minecraft:cobblestone");
-        shaped(GUNDABAD, "gundabad/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "minecraft:stick");
+        shaped(GUNDABAD, "gundabad/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "#lotr:sticks");
         shaped(GUNDABAD, "gundabad/orc_forge", "lotr:orc_forge", 1, rows("XXX", "X X", "XXX"), 'X', "minecraft:cobblestone");
-        shaped(GUNDABAD, "gundabad/gundabad_banner", "lotr:gundabad_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(GUNDABAD, "gundabad/gundabad_banner", "lotr:gundabad_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         // LOTRRecipes.createHalfTrollRecipes
         shaped(HALF_TROLL, "half_troll/half_troll_crafting_table", "lotr:half_troll_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "minecraft:cobblestone");
-        shaped(HALF_TROLL, "half_troll/half_troll_banner", "lotr:half_troll_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
-        shaped(HALF_TROLL, "half_troll/half_troll_scimitar", "lotr:half_troll_scimitar", 1, rows("X", "X", "Y"), 'X', "minecraft:flint", 'Y', "minecraft:stick");
-        shaped(HALF_TROLL, "half_troll/half_troll_battleaxe", "lotr:half_troll_battleaxe", 1, rows("XXX", "XYX", " Y "), 'X', "minecraft:flint", 'Y', "minecraft:stick");
-        shaped(HALF_TROLL, "half_troll/half_troll_dagger", "lotr:half_troll_dagger", 1, rows("X", "Y"), 'X', "minecraft:flint", 'Y', "minecraft:stick");
-        shaped(HALF_TROLL, "half_troll/half_troll_warhammer", "lotr:half_troll_warhammer", 1, rows("XYX", "XYX", " Y "), 'X', "minecraft:flint", 'Y', "minecraft:stick");
-        shaped(HALF_TROLL, "half_troll/half_troll_mace", "lotr:half_troll_mace", 1, rows(" XX", " XX", "Y  "), 'X', "minecraft:flint", 'Y', "minecraft:stick");
-        shaped(HALF_TROLL, "half_troll/half_troll_pike", "lotr:half_troll_pike", 1, rows("  X", " YX", "Y  "), 'X', "minecraft:flint", 'Y', "minecraft:stick");
+        shaped(HALF_TROLL, "half_troll/half_troll_banner", "lotr:half_troll_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
+        shaped(HALF_TROLL, "half_troll/half_troll_scimitar", "lotr:half_troll_scimitar", 1, rows("X", "X", "Y"), 'X', "minecraft:flint", 'Y', "#lotr:sticks");
+        shaped(HALF_TROLL, "half_troll/half_troll_battleaxe", "lotr:half_troll_battleaxe", 1, rows("XXX", "XYX", " Y "), 'X', "minecraft:flint", 'Y', "#lotr:sticks");
+        shaped(HALF_TROLL, "half_troll/half_troll_dagger", "lotr:half_troll_dagger", 1, rows("X", "Y"), 'X', "minecraft:flint", 'Y', "#lotr:sticks");
+        shaped(HALF_TROLL, "half_troll/half_troll_warhammer", "lotr:half_troll_warhammer", 1, rows("XYX", "XYX", " Y "), 'X', "minecraft:flint", 'Y', "#lotr:sticks");
+        shaped(HALF_TROLL, "half_troll/half_troll_mace", "lotr:half_troll_mace", 1, rows(" XX", " XX", "Y  "), 'X', "minecraft:flint", 'Y', "#lotr:sticks");
+        shaped(HALF_TROLL, "half_troll/half_troll_pike", "lotr:half_troll_pike", 1, rows("  X", " YX", "Y  "), 'X', "minecraft:flint", 'Y', "#lotr:sticks");
         // LOTRRecipes.createHighElvenRecipes
         shaped(HIGH_ELVEN, "high_elven/high_elven_crafting_table", "lotr:high_elven_crafting_table", 1, rows("XX", "XX"), 'X', "#minecraft:planks");
-        shaped(HIGH_ELVEN, "high_elven/high_elf_banner", "lotr:high_elf_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(HIGH_ELVEN, "high_elven/high_elf_banner", "lotr:high_elf_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         // LOTRRecipes.createHobbitRecipes
         shaped(HOBBIT, "hobbit/hobbit_crafting_table", "lotr:hobbit_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:wool", 'Y', "#minecraft:planks");
-        shaped(HOBBIT, "hobbit/hobbit_banner", "lotr:hobbit_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(HOBBIT, "hobbit/hobbit_banner", "lotr:hobbit_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         // LOTRRecipes.createMoredainRecipes
         shaped(MOREDAIN, "moredain/moredain_crafting_table", "lotr:moredain_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:red_clay");
-        shaped(MOREDAIN, "moredain/moredain_banner", "lotr:moredain_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(MOREDAIN, "moredain/moredain_banner", "lotr:moredain_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(MOREDAIN, "moredain/morwaith_brick", "lotr:morwaith_brick", 4, rows("XX", "XX"), 'X', "lotr:red_clay");
         shaped(MOREDAIN, "moredain/morwaith_brick_slab", "lotr:morwaith_brick_slab", 6, rows("XXX"), 'X', "lotr:morwaith_brick");
         shaped(MOREDAIN, "moredain/morwaith_brick_stairs", "lotr:morwaith_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:morwaith_brick");
@@ -963,31 +963,31 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(MORGUL, "morgul/mordor_brick_stairs", "lotr:mordor_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:mordor_brick");
         shaped(MORGUL, "morgul/mordor_rock_wall", "lotr:mordor_rock_wall", 6, rows("XXX", "XXX"), 'X', "lotr:mordor_rock");
         shaped(MORGUL, "morgul/mordor_brick_wall", "lotr:mordor_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:mordor_brick");
-        shaped(MORGUL, "morgul/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "lotr:naurite", 'Y', "minecraft:stick");
+        shaped(MORGUL, "morgul/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "lotr:durnor", 'Y', "#lotr:sticks");
         shaped(MORGUL, "morgul/cracked_mordor_brick_slab", "lotr:cracked_mordor_brick_slab", 6, rows("XXX"), 'X', "lotr:cracked_mordor_brick");
         shaped(MORGUL, "morgul/cracked_mordor_brick_stairs", "lotr:cracked_mordor_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:cracked_mordor_brick");
         shaped(MORGUL, "morgul/cracked_mordor_brick_wall", "lotr:cracked_mordor_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:cracked_mordor_brick");
         shaped(MORGUL, "morgul/orc_forge", "lotr:orc_forge", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:mordor_brick");
-        shaped(MORGUL, "morgul/mordor_banner", "lotr:mordor_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(MORGUL, "morgul/mordor_banner", "lotr:mordor_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(MORGUL, "morgul/mordor_pillar", "lotr:mordor_pillar", 3, rows("X", "X", "X"), 'X', "lotr:mordor_rock");
         shaped(MORGUL, "morgul/mordor_pillar_slab", "lotr:mordor_pillar_slab", 6, rows("XXX"), 'X', "lotr:mordor_pillar");
         shaped(MORGUL, "morgul/carved_mordor_brick", "lotr:carved_mordor_brick", 1, rows("XX", "XX"), 'X', "lotr:mordor_brick");
         shaped(MORGUL, "morgul/mordor_rock_stairs", "lotr:mordor_rock_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:mordor_rock");
-        shaped(MORGUL, "morgul/minas_morgul_banner", "lotr:minas_morgul_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "minecraft:skeleton_skull");
-        shaped(MORGUL, "morgul/nan_ungol_banner", "lotr:nan_ungol_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "minecraft:string");
+        shaped(MORGUL, "morgul/minas_morgul_banner", "lotr:minas_morgul_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "minecraft:skeleton_skull");
+        shaped(MORGUL, "morgul/nan_ungol_banner", "lotr:nan_ungol_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "minecraft:string");
         // LOTRRecipes.createNearHaradRecipes
         shaped(NEAR_HARAD, "near_harad/near_harad_crafting_table", "lotr:near_harad_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "minecraft:sandstone");
-        shaped(NEAR_HARAD, "near_harad/near_harad_banner", "lotr:near_harad_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
-        shaped(NEAR_HARAD, "near_harad/harad_nomad_banner", "lotr:harad_nomad_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks", 'A', "minecraft:sand");
+        shaped(NEAR_HARAD, "near_harad/near_harad_banner", "lotr:near_harad_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
+        shaped(NEAR_HARAD, "near_harad/harad_nomad_banner", "lotr:harad_nomad_banner", 1, rows("XA", "Y ", "Z "), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks", 'A', "minecraft:sand");
         // LOTRRecipes.createRangerRecipes
         shaped(RANGER, "ranger/ranger_crafting_table", "lotr:ranger_crafting_table", 1, rows("XX", "XX"), 'X', "#minecraft:planks");
-        shaped(RANGER, "ranger/ranger_banner", "lotr:ranger_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(RANGER, "ranger/ranger_banner", "lotr:ranger_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(RANGER, "ranger/arnor_brick", "lotr:arnor_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(RANGER, "ranger/arnor_brick_slab", "lotr:arnor_brick_slab", 6, rows("XXX"), 'X', "lotr:arnor_brick");
         shaped(RANGER, "ranger/arnor_brick_stairs", "lotr:arnor_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:arnor_brick");
         shaped(RANGER, "ranger/arnor_brick_wall", "lotr:arnor_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:arnor_brick");
         shaped(RANGER, "ranger/carved_arnor_brick", "lotr:carved_arnor_brick", 1, rows("XX", "XX"), 'X', "lotr:arnor_brick");
-        shapeless(RANGER, "ranger/mossy_arnor_brick", "lotr:mossy_arnor_brick", 1, "lotr:arnor_brick", "minecraft:vine");
+        shapeless(RANGER, "ranger/mossy_arnor_brick", "lotr:mossy_arnor_brick", 1, "lotr:arnor_brick", "#lotr:vines");
         shaped(RANGER, "ranger/mossy_arnor_brick_slab", "lotr:mossy_arnor_brick_slab", 6, rows("XXX"), 'X', "lotr:mossy_arnor_brick");
         shaped(RANGER, "ranger/mossy_arnor_brick_stairs", "lotr:mossy_arnor_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:mossy_arnor_brick");
         shaped(RANGER, "ranger/mossy_arnor_brick_wall", "lotr:mossy_arnor_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:mossy_arnor_brick");
@@ -1003,13 +1003,13 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(RANGER, "ranger/cracked_arnor_pillar_slab", "lotr:cracked_arnor_pillar_slab", 6, rows("XXX"), 'X', "lotr:cracked_arnor_pillar");
         // LOTRRecipes.createRhunRecipes
         shaped(RHUN, "rhun/rhun_crafting_table", "lotr:rhun_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:rhun_brick");
-        shaped(RHUN, "rhun/rhun_banner", "lotr:rhun_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(RHUN, "rhun/rhun_banner", "lotr:rhun_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(RHUN, "rhun/rhun_brick_slab", "lotr:rhun_brick_slab", 6, rows("XXX"), 'X', "lotr:rhun_brick");
         shaped(RHUN, "rhun/rhun_brick_stairs", "lotr:rhun_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:rhun_brick");
         shaped(RHUN, "rhun/rhun_brick_wall", "lotr:rhun_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:rhun_brick");
         shaped(RHUN, "rhun/rhun_carved_brick", "lotr:rhun_carved_brick", 1, rows("XX", "XX"), 'X', "lotr:rhun_brick");
         shaped(RHUN, "rhun/rhun_pillar_slab", "lotr:rhun_pillar_slab", 6, rows("XXX"), 'X', "lotr:rhun_pillar");
-        shapeless(RHUN, "rhun/rhun_mossy_brick", "lotr:rhun_mossy_brick", 1, "lotr:rhun_brick", "minecraft:vine");
+        shapeless(RHUN, "rhun/rhun_mossy_brick", "lotr:rhun_mossy_brick", 1, "lotr:rhun_brick", "#lotr:vines");
         shaped(RHUN, "rhun/rhun_mossy_brick_slab", "lotr:rhun_mossy_brick_slab", 6, rows("XXX"), 'X', "lotr:rhun_mossy_brick");
         shaped(RHUN, "rhun/rhun_mossy_brick_stairs", "lotr:rhun_mossy_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:rhun_mossy_brick");
         shaped(RHUN, "rhun/rhun_mossy_brick_wall", "lotr:rhun_mossy_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:rhun_mossy_brick");
@@ -1030,7 +1030,7 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(RHUN, "rhun/rhun_red_pillar_slab", "lotr:rhun_red_pillar_slab", 6, rows("XXX"), 'X', "lotr:rhun_red_pillar");
         // LOTRRecipes.createRivendellRecipes
         shaped(RIVENDELL, "rivendell/rivendell_crafting_table", "lotr:rivendell_crafting_table", 1, rows("XX", "XX"), 'X', "#minecraft:planks");
-        shaped(RIVENDELL, "rivendell/rivendell_banner", "lotr:rivendell_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(RIVENDELL, "rivendell/rivendell_banner", "lotr:rivendell_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         // LOTRRecipes.createRohirricRecipes
         shaped(ROHIRRIC, "rohirric/rohirric_crafting_table", "lotr:rohirric_crafting_table", 1, rows("XX", "XX"), 'X', "#minecraft:planks");
         shaped(ROHIRRIC, "rohirric/rohan_rock_slab", "lotr:rohan_rock_slab", 6, rows("XXX"), 'X', "lotr:rohan_rock");
@@ -1041,19 +1041,19 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(ROHIRRIC, "rohirric/rohan_brick_stairs", "lotr:rohan_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:rohan_brick");
         shaped(ROHIRRIC, "rohirric/rohan_rock_wall", "lotr:rohan_rock_wall", 6, rows("XXX", "XXX"), 'X', "lotr:rohan_rock");
         shaped(ROHIRRIC, "rohirric/rohan_brick_wall", "lotr:rohan_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:rohan_brick");
-        shaped(ROHIRRIC, "rohirric/rohirric_sword", "lotr:rohirric_sword", 1, rows("X", "X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(ROHIRRIC, "rohirric/rohirric_dagger", "lotr:rohirric_dagger", 1, rows("X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(ROHIRRIC, "rohirric/rohirric_spear", "lotr:rohirric_spear", 1, rows("  X", " Y ", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
+        shaped(ROHIRRIC, "rohirric/rohirric_sword", "lotr:rohirric_sword", 1, rows("X", "X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(ROHIRRIC, "rohirric/rohirric_dagger", "lotr:rohirric_dagger", 1, rows("X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(ROHIRRIC, "rohirric/rohirric_spear", "lotr:rohirric_spear", 1, rows("  X", " Y ", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
         shaped(ROHIRRIC, "rohirric/rohirric_coif", "lotr:rohirric_coif", 1, rows("XXX", "Y Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         shaped(ROHIRRIC, "rohirric/rohirric_hauberk", "lotr:rohirric_hauberk", 1, rows("X X", "YYY", "XXX"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         shaped(ROHIRRIC, "rohirric/rohirric_leggings", "lotr:rohirric_leggings", 1, rows("XXX", "Y Y", "X X"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         shaped(ROHIRRIC, "rohirric/rohirric_boots", "lotr:rohirric_boots", 1, rows("Y Y", "X X"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
-        shaped(ROHIRRIC, "rohirric/rohan_banner", "lotr:rohan_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
-        shaped(ROHIRRIC, "rohirric/rohirric_battleaxe", "lotr:rohirric_battleaxe", 1, rows("XXX", "XYX", " Y "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
+        shaped(ROHIRRIC, "rohirric/rohan_banner", "lotr:rohan_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
+        shaped(ROHIRRIC, "rohirric/rohirric_battleaxe", "lotr:rohirric_battleaxe", 1, rows("XXX", "XYX", " Y "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
         shaped(ROHIRRIC, "rohirric/rohirric_horse_armor", "lotr:rohirric_horse_armor", 1, rows("X  ", "XYX", "XXX"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         shaped(ROHIRRIC, "rohirric/rohan_pillar", "lotr:rohan_pillar", 3, rows("X", "X", "X"), 'X', "lotr:rohan_rock");
         shaped(ROHIRRIC, "rohirric/rohan_pillar_slab", "lotr:rohan_pillar_slab", 6, rows("XXX"), 'X', "lotr:rohan_pillar");
-        shaped(ROHIRRIC, "rohirric/rohirric_bow", "lotr:rohirric_bow", 1, rows(" XY", "X Y", " XY"), 'X', "minecraft:stick", 'Y', "minecraft:string");
+        shaped(ROHIRRIC, "rohirric/rohirric_bow", "lotr:rohirric_bow", 1, rows(" XY", "X Y", " XY"), 'X', "#lotr:sticks", 'Y', "minecraft:string");
         shaped(ROHIRRIC, "rohirric/rohirric_marshal_helmet", "lotr:rohirric_marshal_helmet", 1, rows(" X ", "YAY", " X "), 'X', "minecraft:gold_nugget", 'Y', "minecraft:leather", 'A', "lotr:rohirric_coif");
         shaped(ROHIRRIC, "rohirric/rohirric_marshal_chestplate", "lotr:rohirric_marshal_chestplate", 1, rows(" X ", "YAY", " X "), 'X', "minecraft:gold_nugget", 'Y', "minecraft:leather", 'A', "lotr:rohirric_hauberk");
         shaped(ROHIRRIC, "rohirric/rohirric_marshal_leggings", "lotr:rohirric_marshal_leggings", 1, rows(" X ", "YAY", " X "), 'X', "minecraft:gold_nugget", 'Y', "minecraft:leather", 'A', "lotr:rohirric_leggings");
@@ -1065,63 +1065,65 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         // LOTRRecipes.createSmeltingRecipes
         smelting("scorched_stone_from_smelting", "lotr:scorched_stone", "minecraft:stone", 0.1f);
         smelting("glass_from_smelting", "minecraft:glass", "lotr:white_sand", 0.1f);
-        smelting("naurite_from_smelting", "lotr:naurite", "lotr:naurite_ore", 1.0f);
-        smelting("quendite_crystal_from_smelting", "lotr:quendite_crystal", "lotr:quendite_ore", 1.0f);
+        smelting("naurite_from_smelting", "lotr:durnor", "lotr:naurite_ore", 1.0f);
+        smelting("quendite_crystal_from_smelting", "lotr:edhelvir", "lotr:quendite_ore", 1.0f);
         smelting("glowstone_dust_from_smelting", "minecraft:glowstone_dust", "lotr:glowstone_ore", 1.0f);
         smelting("sulfur_from_smelting", "lotr:sulfur", "lotr:sulfur_ore", 1.0f);
-        smelting("saltpeter_from_smelting", "lotr:saltpeter", "lotr:saltpeter_ore", 1.0f);
+        smelting("saltpeter_from_smelting", "lotr:niter", "lotr:saltpeter_ore", 1.0f);
         smelting("salt_from_smelting", "lotr:salt", "lotr:salt_ore", 1.0f);
         smelting("terracotta_from_smelting", "minecraft:terracotta", "lotr:red_clay", 0.35f);
         smelting("dried_reeds_from_smelting", "lotr:dried_reeds", "lotr:reeds", 0.25f);
         // LOTRRecipes.createStandardRecipes
-        shaped(null, "saddle", "minecraft:saddle", 1, rows("XXX", "Y Y"), 'X', "minecraft:leather", 'Y', "minecraft:iron_ingot");
+        shaped(null, "saddle_from_fur", "minecraft:saddle", 1, rows("XXX", "Y Y"), 'X', "lotr:fur", 'Y', "minecraft:iron_ingot");
+        shaped(null, "saddle_from_gemsbok_hide", "minecraft:saddle", 1, rows("XXX", "Y Y"), 'X', "lotr:gemsbok_hide", 'Y', "minecraft:iron_ingot");
         shapeless(null, "magenta_dye", "minecraft:magenta_dye", 1, "lotr:shire_heather");
         shapeless(null, "mithril", "lotr:mithril", 9, "lotr:mithril_block");
         shaped(null, "mithril_block", "lotr:mithril_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:mithril");
-        shaped(null, "iron_chandelier", "lotr:iron_chandelier", 2, rows(" X ", "YZY"), 'X', "minecraft:stick", 'Y', "minecraft:torch", 'Z', "minecraft:iron_ingot");
-        shaped(null, "gold_chandelier", "lotr:gold_chandelier", 2, rows(" X ", "YZY"), 'X', "minecraft:stick", 'Y', "minecraft:torch", 'Z', "minecraft:gold_ingot");
-        shaped(null, "mithril_sword", "lotr:mithril_sword", 1, rows("X", "X", "Y"), 'X', "lotr:mithril", 'Y', "minecraft:stick");
-        shaped(null, "mithril_spear", "lotr:mithril_spear", 1, rows("  X", " Y ", "Y  "), 'X', "lotr:mithril", 'Y', "minecraft:stick");
-        shaped(null, "mithril_chandelier", "lotr:mithril_chandelier", 2, rows(" X ", "YZY"), 'X', "minecraft:stick", 'Y', "minecraft:torch", 'Z', "lotr:mithril");
+        shaped(null, "iron_chandelier", "lotr:iron_chandelier", 2, rows(" X ", "YZY"), 'X', "#lotr:sticks", 'Y', "minecraft:torch", 'Z', "minecraft:iron_ingot");
+        shaped(null, "gold_chandelier", "lotr:gold_chandelier", 2, rows(" X ", "YZY"), 'X', "#lotr:sticks", 'Y', "minecraft:torch", 'Z', "minecraft:gold_ingot");
+        shaped(null, "mithril_sword", "lotr:mithril_sword", 1, rows("X", "X", "Y"), 'X', "lotr:mithril", 'Y', "#lotr:sticks");
+        shaped(null, "mithril_spear", "lotr:mithril_spear", 1, rows("  X", " Y ", "Y  "), 'X', "lotr:mithril", 'Y', "#lotr:sticks");
+        shaped(null, "mithril_chandelier", "lotr:mithril_chandelier", 2, rows(" X ", "YZY"), 'X', "#lotr:sticks", 'Y', "minecraft:torch", 'Z', "lotr:mithril");
         shaped(null, "hearth", "lotr:hearth", 3, rows("XXX", "YYY"), 'X', "#minecraft:coals", 'Y', "minecraft:brick");
-        shaped(null, "iron_dagger", "lotr:iron_dagger", 1, rows("X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(null, "mithril_dagger", "lotr:mithril_dagger", 1, rows("X", "Y"), 'X', "lotr:mithril", 'Y', "minecraft:stick");
-        shaped(null, "mithril_battleaxe", "lotr:mithril_battleaxe", 1, rows("XXX", "XYX", " Y "), 'X', "lotr:mithril", 'Y', "minecraft:stick");
-        shaped(null, "mithril_warhammer", "lotr:mithril_warhammer", 1, rows("XYX", "XYX", " Y "), 'X', "lotr:mithril", 'Y', "minecraft:stick");
-        shaped(null, "crossbow_bolt", "lotr:crossbow_bolt", 4, rows("X", "Y", "Z"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick", 'Z', "minecraft:feather");
-        shaped(null, "iron_crossbow", "lotr:iron_crossbow", 1, rows("XXY", "ZYX", "YZX"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick", 'Z', "minecraft:string");
-        shaped(null, "mithril_crossbow", "lotr:mithril_crossbow", 1, rows("XXY", "ZYX", "YZX"), 'X', "lotr:mithril", 'Y', "minecraft:stick", 'Z', "minecraft:string");
+        shaped(null, "iron_dagger", "lotr:iron_dagger", 1, rows("X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(null, "mithril_dagger", "lotr:mithril_dagger", 1, rows("X", "Y"), 'X', "lotr:mithril", 'Y', "#lotr:sticks");
+        shaped(null, "mithril_battleaxe", "lotr:mithril_battleaxe", 1, rows("XXX", "XYX", " Y "), 'X', "lotr:mithril", 'Y', "#lotr:sticks");
+        shaped(null, "mithril_warhammer", "lotr:mithril_warhammer", 1, rows("XYX", "XYX", " Y "), 'X', "lotr:mithril", 'Y', "#lotr:sticks");
+        shaped(null, "crossbow_bolt", "lotr:crossbow_bolt", 4, rows("X", "Y", "Z"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks", 'Z', "#lotr:feathers");
+        shaped(null, "crossbow_bolt_from_bronze", "lotr:crossbow_bolt", 4, rows("X", "Y", "Z"), 'X', "lotr:bronze_ingot", 'Y', "#lotr:sticks", 'Z', "#lotr:feathers");
+        shaped(null, "iron_crossbow", "lotr:iron_crossbow", 1, rows("XXY", "ZYX", "YZX"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks", 'Z', "minecraft:string");
+        shaped(null, "mithril_crossbow", "lotr:mithril_crossbow", 1, rows("XXY", "ZYX", "YZX"), 'X', "lotr:mithril", 'Y', "#lotr:sticks", 'Z', "minecraft:string");
         shapeless(null, "pebble", "lotr:pebble", 4, "minecraft:gravel");
-        shaped(null, "sling", "lotr:sling", 1, rows("XYX", "XZX", " X "), 'X', "minecraft:stick", 'Y', "minecraft:leather", 'Z', "minecraft:string");
-        shapeless(null, "naurite", "lotr:naurite", 9, "lotr:naurite_block");
-        shaped(null, "naurite_block", "lotr:naurite_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:naurite");
-        shapeless(null, "gulduril_crystal", "lotr:gulduril_crystal", 9, "lotr:gulduril_block");
-        shaped(null, "gulduril_block", "lotr:gulduril_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:gulduril_crystal");
-        shapeless(null, "quendite_crystal", "lotr:quendite_crystal", 9, "lotr:quendite_block");
-        shaped(null, "quendite_block", "lotr:quendite_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:quendite_crystal");
+        shaped(null, "sling", "lotr:sling", 1, rows("XYX", "XZX", " X "), 'X', "#lotr:sticks", 'Y', "minecraft:leather", 'Z', "minecraft:string");
+        shapeless(null, "naurite", "lotr:durnor", 9, "lotr:naurite_block");
+        shaped(null, "naurite_block", "lotr:naurite_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:durnor");
+        shapeless(null, "gulduril_crystal", "lotr:gulduril", 9, "lotr:gulduril_block");
+        shaped(null, "gulduril_block", "lotr:gulduril_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:gulduril");
+        shapeless(null, "quendite_crystal", "lotr:edhelvir", 9, "lotr:quendite_block");
+        shaped(null, "quendite_block", "lotr:quendite_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:edhelvir");
         shaped(null, "blue_rock_brick", "lotr:blue_rock_brick", 4, rows("XX", "XX"), 'X', "lotr:blue_rock");
-        shaped(null, "shire_pine_fence", "lotr:shire_pine_fence", 3, rows("XYX", "XYX"), 'X', "lotr:shire_pine_planks", 'Y', "minecraft:stick");
-        shaped(null, "mirk_oak_fence", "lotr:mirk_oak_fence", 3, rows("XYX", "XYX"), 'X', "lotr:mirk_oak_planks", 'Y', "minecraft:stick");
-        shaped(null, "charred_fence", "lotr:charred_fence", 3, rows("XYX", "XYX"), 'X', "lotr:charred_planks", 'Y', "minecraft:stick");
-        shaped(null, "apple_fence", "lotr:apple_fence", 3, rows("XYX", "XYX"), 'X', "lotr:apple_planks", 'Y', "minecraft:stick");
-        shaped(null, "pear_fence", "lotr:pear_fence", 3, rows("XYX", "XYX"), 'X', "lotr:pear_planks", 'Y', "minecraft:stick");
-        shaped(null, "cherry_fence", "lotr:cherry_fence", 3, rows("XYX", "XYX"), 'X', "lotr:cherry_planks", 'Y', "minecraft:stick");
-        shaped(null, "mango_fence", "lotr:mango_fence", 3, rows("XYX", "XYX"), 'X', "lotr:mango_planks", 'Y', "minecraft:stick");
-        shaped(null, "lebethron_fence", "lotr:lebethron_fence", 3, rows("XYX", "XYX"), 'X', "lotr:lebethron_planks", 'Y', "minecraft:stick");
-        shaped(null, "beech_fence", "lotr:beech_fence", 3, rows("XYX", "XYX"), 'X', "lotr:beech_planks", 'Y', "minecraft:stick");
-        shaped(null, "holly_fence", "lotr:holly_fence", 3, rows("XYX", "XYX"), 'X', "lotr:holly_planks", 'Y', "minecraft:stick");
-        shaped(null, "banana_fence", "lotr:banana_fence", 3, rows("XYX", "XYX"), 'X', "lotr:banana_planks", 'Y', "minecraft:stick");
-        shaped(null, "maple_fence", "lotr:maple_fence", 3, rows("XYX", "XYX"), 'X', "lotr:maple_planks", 'Y', "minecraft:stick");
-        shaped(null, "larch_fence", "lotr:larch_fence", 3, rows("XYX", "XYX"), 'X', "lotr:larch_planks", 'Y', "minecraft:stick");
-        shaped(null, "date_palm_fence", "lotr:date_palm_fence", 3, rows("XYX", "XYX"), 'X', "lotr:date_palm_planks", 'Y', "minecraft:stick");
-        shaped(null, "mangrove_fence", "lotr:mangrove_fence", 3, rows("XYX", "XYX"), 'X', "lotr:mangrove_planks", 'Y', "minecraft:stick");
+        shaped(null, "shire_pine_fence", "lotr:shire_pine_fence", 3, rows("XYX", "XYX"), 'X', "lotr:shire_pine_planks", 'Y', "#lotr:sticks");
+        shaped(null, "mirk_oak_fence", "lotr:mirk_oak_fence", 3, rows("XYX", "XYX"), 'X', "lotr:mirk_oak_planks", 'Y', "#lotr:sticks");
+        shaped(null, "charred_fence", "lotr:charred_fence", 3, rows("XYX", "XYX"), 'X', "lotr:charred_planks", 'Y', "#lotr:sticks");
+        shaped(null, "apple_fence", "lotr:apple_fence", 3, rows("XYX", "XYX"), 'X', "lotr:apple_planks", 'Y', "#lotr:sticks");
+        shaped(null, "pear_fence", "lotr:pear_fence", 3, rows("XYX", "XYX"), 'X', "lotr:pear_planks", 'Y', "#lotr:sticks");
+        shaped(null, "cherry_fence", "lotr:cherry_fence", 3, rows("XYX", "XYX"), 'X', "lotr:cherry_planks", 'Y', "#lotr:sticks");
+        shaped(null, "mango_fence", "lotr:mango_fence", 3, rows("XYX", "XYX"), 'X', "lotr:mango_planks", 'Y', "#lotr:sticks");
+        shaped(null, "lebethron_fence", "lotr:lebethron_fence", 3, rows("XYX", "XYX"), 'X', "lotr:lebethron_planks", 'Y', "#lotr:sticks");
+        shaped(null, "beech_fence", "lotr:beech_fence", 3, rows("XYX", "XYX"), 'X', "lotr:beech_planks", 'Y', "#lotr:sticks");
+        shaped(null, "holly_fence", "lotr:holly_fence", 3, rows("XYX", "XYX"), 'X', "lotr:holly_planks", 'Y', "#lotr:sticks");
+        shaped(null, "banana_fence", "lotr:banana_fence", 3, rows("XYX", "XYX"), 'X', "lotr:banana_planks", 'Y', "#lotr:sticks");
+        shaped(null, "maple_fence", "lotr:maple_fence", 3, rows("XYX", "XYX"), 'X', "lotr:maple_planks", 'Y', "#lotr:sticks");
+        shaped(null, "larch_fence", "lotr:larch_fence", 3, rows("XYX", "XYX"), 'X', "lotr:larch_planks", 'Y', "#lotr:sticks");
+        shaped(null, "date_palm_fence", "lotr:date_palm_fence", 3, rows("XYX", "XYX"), 'X', "lotr:date_palm_planks", 'Y', "#lotr:sticks");
+        shaped(null, "mangrove_fence", "lotr:mangrove_fence", 3, rows("XYX", "XYX"), 'X', "lotr:mangrove_planks", 'Y', "#lotr:sticks");
         shaped(null, "blue_rock_pillar", "lotr:blue_rock_pillar", 3, rows("X", "X", "X"), 'X', "lotr:blue_rock");
-        shapeless(null, "gunpowder", "minecraft:gunpowder", 2, "lotr:sulfur", "lotr:saltpeter", "minecraft:charcoal");
-        shapeless(null, "bone_meal", "minecraft:bone_meal", 2, "lotr:saltpeter", "minecraft:dirt");
+        shapeless(null, "gunpowder", "minecraft:gunpowder", 2, "lotr:sulfur", "lotr:niter", "minecraft:charcoal");
+        shapeless(null, "bone_meal", "minecraft:bone_meal", 2, "lotr:niter", "minecraft:dirt");
         shaped(null, "sulfur_block", "lotr:sulfur_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:sulfur");
-        shaped(null, "saltpeter_block", "lotr:saltpeter_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:saltpeter");
+        shaped(null, "saltpeter_block", "lotr:saltpeter_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:niter");
         shapeless(null, "sulfur", "lotr:sulfur", 9, "lotr:sulfur_block");
-        shapeless(null, "saltpeter", "lotr:saltpeter", 9, "lotr:saltpeter_block");
+        shapeless(null, "saltpeter", "lotr:niter", 9, "lotr:saltpeter_block");
         shaped(null, "red_rock_brick", "lotr:red_rock_brick", 4, rows("XX", "XX"), 'X', "lotr:red_rock");
         shaped(null, "red_rock_pillar", "lotr:red_rock_pillar", 3, rows("X", "X", "X"), 'X', "lotr:red_rock");
         shaped(null, "thatch_thatch", "lotr:thatch_thatch", 6, rows("XYX", "YXY", "XYX"), 'X', "minecraft:wheat", 'Y', "minecraft:dirt");
@@ -1130,43 +1132,43 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shapeless(null, "red_dye", "minecraft:red_dye", 1, "lotr:red_harad_flower");
         shapeless(null, "pink_dye", "minecraft:pink_dye", 1, "lotr:harad_flower_daisy");
         shapeless(null, "magenta_dye_2", "minecraft:magenta_dye", 1, "lotr:pink_harad_flower");
-        shaped(null, "chestnut_fence", "lotr:chestnut_fence", 3, rows("XYX", "XYX"), 'X', "lotr:chestnut_planks", 'Y', "minecraft:stick");
-        shaped(null, "baobab_fence", "lotr:baobab_fence", 3, rows("XYX", "XYX"), 'X', "lotr:baobab_planks", 'Y', "minecraft:stick");
-        shaped(null, "cedar_fence", "lotr:cedar_fence", 3, rows("XYX", "XYX"), 'X', "lotr:cedar_planks", 'Y', "minecraft:stick");
-        shaped(null, "fir_fence", "lotr:fir_fence", 3, rows("XYX", "XYX"), 'X', "lotr:fir_planks", 'Y', "minecraft:stick");
-        shaped(null, "pine_fence", "lotr:pine_fence", 3, rows("XYX", "XYX"), 'X', "lotr:pine_planks", 'Y', "minecraft:stick");
-        shaped(null, "lemon_fence", "lotr:lemon_fence", 3, rows("XYX", "XYX"), 'X', "lotr:lemon_planks", 'Y', "minecraft:stick");
-        shaped(null, "orange_fence", "lotr:orange_fence", 3, rows("XYX", "XYX"), 'X', "lotr:orange_planks", 'Y', "minecraft:stick");
-        shaped(null, "lime_fence", "lotr:lime_fence", 3, rows("XYX", "XYX"), 'X', "lotr:lime_planks", 'Y', "minecraft:stick");
-        shaped(null, "mahogany_fence", "lotr:mahogany_fence", 3, rows("XYX", "XYX"), 'X', "lotr:mahogany_planks", 'Y', "minecraft:stick");
-        shaped(null, "willow_fence", "lotr:willow_fence", 3, rows("XYX", "XYX"), 'X', "lotr:willow_planks", 'Y', "minecraft:stick");
-        shaped(null, "cypress_fence", "lotr:cypress_fence", 3, rows("XYX", "XYX"), 'X', "lotr:cypress_planks", 'Y', "minecraft:stick");
-        shaped(null, "olive_fence", "lotr:olive_fence", 3, rows("XYX", "XYX"), 'X', "lotr:olive_planks", 'Y', "minecraft:stick");
-        shaped(null, "aspen_fence", "lotr:aspen_fence", 3, rows("XYX", "XYX"), 'X', "lotr:aspen_planks", 'Y', "minecraft:stick");
-        shaped(null, "green_oak_fence", "lotr:green_oak_fence", 3, rows("XYX", "XYX"), 'X', "lotr:green_oak_planks", 'Y', "minecraft:stick");
-        shaped(null, "lairelosse_fence", "lotr:lairelosse_fence", 3, rows("XYX", "XYX"), 'X', "lotr:lairelosse_planks", 'Y', "minecraft:stick");
-        shaped(null, "almond_fence", "lotr:almond_fence", 3, rows("XYX", "XYX"), 'X', "lotr:almond_planks", 'Y', "minecraft:stick");
-        shaped(null, "iron_battleaxe", "lotr:iron_battleaxe", 1, rows("XXX", "XYX", " Y "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
+        shaped(null, "chestnut_fence", "lotr:chestnut_fence", 3, rows("XYX", "XYX"), 'X', "lotr:chestnut_planks", 'Y', "#lotr:sticks");
+        shaped(null, "baobab_fence", "lotr:baobab_fence", 3, rows("XYX", "XYX"), 'X', "lotr:baobab_planks", 'Y', "#lotr:sticks");
+        shaped(null, "cedar_fence", "lotr:cedar_fence", 3, rows("XYX", "XYX"), 'X', "lotr:cedar_planks", 'Y', "#lotr:sticks");
+        shaped(null, "fir_fence", "lotr:fir_fence", 3, rows("XYX", "XYX"), 'X', "lotr:fir_planks", 'Y', "#lotr:sticks");
+        shaped(null, "pine_fence", "lotr:pine_fence", 3, rows("XYX", "XYX"), 'X', "lotr:pine_planks", 'Y', "#lotr:sticks");
+        shaped(null, "lemon_fence", "lotr:lemon_fence", 3, rows("XYX", "XYX"), 'X', "lotr:lemon_planks", 'Y', "#lotr:sticks");
+        shaped(null, "orange_fence", "lotr:orange_fence", 3, rows("XYX", "XYX"), 'X', "lotr:orange_planks", 'Y', "#lotr:sticks");
+        shaped(null, "lime_fence", "lotr:lime_fence", 3, rows("XYX", "XYX"), 'X', "lotr:lime_planks", 'Y', "#lotr:sticks");
+        shaped(null, "mahogany_fence", "lotr:mahogany_fence", 3, rows("XYX", "XYX"), 'X', "lotr:mahogany_planks", 'Y', "#lotr:sticks");
+        shaped(null, "willow_fence", "lotr:willow_fence", 3, rows("XYX", "XYX"), 'X', "lotr:willow_planks", 'Y', "#lotr:sticks");
+        shaped(null, "cypress_fence", "lotr:cypress_fence", 3, rows("XYX", "XYX"), 'X', "lotr:cypress_planks", 'Y', "#lotr:sticks");
+        shaped(null, "olive_fence", "lotr:olive_fence", 3, rows("XYX", "XYX"), 'X', "lotr:olive_planks", 'Y', "#lotr:sticks");
+        shaped(null, "aspen_fence", "lotr:aspen_fence", 3, rows("XYX", "XYX"), 'X', "lotr:aspen_planks", 'Y', "#lotr:sticks");
+        shaped(null, "green_oak_fence", "lotr:green_oak_fence", 3, rows("XYX", "XYX"), 'X', "lotr:green_oak_planks", 'Y', "#lotr:sticks");
+        shaped(null, "lairelosse_fence", "lotr:lairelosse_fence", 3, rows("XYX", "XYX"), 'X', "lotr:lairelosse_planks", 'Y', "#lotr:sticks");
+        shaped(null, "almond_fence", "lotr:almond_fence", 3, rows("XYX", "XYX"), 'X', "lotr:almond_planks", 'Y', "#lotr:sticks");
+        shaped(null, "iron_battleaxe", "lotr:iron_battleaxe", 1, rows("XXX", "XYX", " Y "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
         shaped(null, "butterfly_jar", "lotr:butterfly_jar", 1, rows("X", "Y"), 'X', "#minecraft:planks", 'Y', "minecraft:glass");
         shaped(null, "blue_carved_brick", "lotr:blue_carved_brick", 1, rows("XX", "XX"), 'X', "lotr:blue_rock_brick");
         shaped(null, "red_carved_brick", "lotr:red_carved_brick", 1, rows("XX", "XX"), 'X', "lotr:red_rock_brick");
-        shaped(null, "bone_helmet", "lotr:bone_helmet", 1, rows("XXX", "X X"), 'X', "minecraft:bone");
-        shaped(null, "bone_chestplate", "lotr:bone_chestplate", 1, rows("X X", "XXX", "XXX"), 'X', "minecraft:bone");
-        shaped(null, "bone_leggings", "lotr:bone_leggings", 1, rows("XXX", "X X", "X X"), 'X', "minecraft:bone");
-        shaped(null, "bone_boots", "lotr:bone_boots", 1, rows("X X", "X X"), 'X', "minecraft:bone");
-        shaped(null, "unsmeltery", "lotr:unsmeltery", 1, rows("X X", "YXY", "ZZZ"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick", 'Z', "minecraft:cobblestone");
-        shaped(null, "iron_throwing_axe", "lotr:iron_throwing_axe", 1, rows(" X ", " YX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
+        shaped(null, "bone_helmet", "lotr:bone_helmet", 1, rows("XXX", "X X"), 'X', "#lotr:bones");
+        shaped(null, "bone_chestplate", "lotr:bone_chestplate", 1, rows("X X", "XXX", "XXX"), 'X', "#lotr:bones");
+        shaped(null, "bone_leggings", "lotr:bone_leggings", 1, rows("XXX", "X X", "X X"), 'X', "#lotr:bones");
+        shaped(null, "bone_boots", "lotr:bone_boots", 1, rows("X X", "X X"), 'X', "#lotr:bones");
+        shaped(null, "unsmeltery", "lotr:unsmeltery", 1, rows("X X", "YXY", "ZZZ"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks", 'Z', "minecraft:cobblestone");
+        shaped(null, "iron_throwing_axe", "lotr:iron_throwing_axe", 1, rows(" X ", " YX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
         shaped(null, "gold_bars", "lotr:gold_bars", 16, rows("XXX", "XXX"), 'X', "minecraft:gold_ingot");
         shaped(null, "mithril_bars", "lotr:mithril_bars", 16, rows("XXX", "XXX"), 'X', "lotr:mithril");
-        shaped(null, "rotten_fence", "lotr:rotten_fence", 3, rows("XYX", "XYX"), 'X', "lotr:rotten_planks", 'Y', "minecraft:stick");
+        shaped(null, "rotten_fence", "lotr:rotten_fence", 3, rows("XYX", "XYX"), 'X', "lotr:rotten_planks", 'Y', "#lotr:sticks");
         shaped(null, "alloy_forge", "lotr:alloy_forge", 1, rows("XXX", "X X", "XXX"), 'X', "#minecraft:stone_bricks");
         shaped(null, "thatch_reed", "lotr:thatch_reed", 4, rows("XX", "XX"), 'X', "lotr:dried_reeds");
-        shaped(null, "iron_pike", "lotr:iron_pike", 1, rows("  X", " YX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
+        shaped(null, "iron_pike", "lotr:iron_pike", 1, rows("  X", " YX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
         shaped(null, "reed_bars", "lotr:reed_bars", 16, rows("XXX", "XXX"), 'X', "lotr:thatch_reed");
         shaped(null, "paper", "minecraft:paper", 3, rows("XXX"), 'X', "lotr:reeds");
         shaped(null, "paper_2", "minecraft:paper", 3, rows("XXX"), 'X', "lotr:corn_stalk");
-        shaped(null, "weapon_rack", "lotr:weapon_rack", 1, rows("X X", "YYY"), 'X', "minecraft:stick", 'Y', "#minecraft:planks");
-        shaped(null, "waste_block", "lotr:waste_block", 4, rows("XY", "YZ"), 'X', "minecraft:rotten_flesh", 'Y', "minecraft:dirt", 'Z', "minecraft:bone");
+        shaped(null, "weapon_rack", "lotr:weapon_rack", 1, rows("X X", "YYY"), 'X', "#lotr:sticks", 'Y', "#minecraft:planks");
+        shaped(null, "waste_block", "lotr:waste_block", 4, rows("XY", "YZ"), 'X', "minecraft:rotten_flesh", 'Y', "minecraft:dirt", 'Z', "#lotr:bones");
         shaped(null, "chalk_brick", "lotr:chalk_brick", 4, rows("XX", "XX"), 'X', "lotr:chalk");
         shaped(null, "chalk_pillar", "lotr:chalk_pillar", 3, rows("X", "X", "X"), 'X', "lotr:chalk");
         shaped(null, "clay_tile", "lotr:clay_tile", 4, rows("XX", "XX"), 'X', "minecraft:terracotta");
@@ -1209,66 +1211,65 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shapeless(null, "light_gray_dye", "minecraft:light_gray_dye", 1, "lotr:fangorn_plant_silver");
         shaped(null, "brick_pillar", "lotr:brick_pillar", 3, rows("X", "X", "X"), 'X', "minecraft:bricks");
         shaped(null, "mud_brick", "lotr:mud_brick", 4, rows("XX", "XX"), 'X', "lotr:mud");
-        shapeless(null, "red_brick_mossy", "lotr:red_brick_mossy", 1, "minecraft:bricks", "minecraft:vine");
-        shaped(null, "grapevine", "lotr:grapevine", 1, rows("X", "X", "X"), 'X', "minecraft:stick");
-        shaped(null, "plum_fence", "lotr:plum_fence", 3, rows("XYX", "XYX"), 'X', "lotr:plum_planks", 'Y', "minecraft:stick");
-        shaped(null, "redwood_fence", "lotr:redwood_fence", 3, rows("XYX", "XYX"), 'X', "lotr:redwood_planks", 'Y', "minecraft:stick");
-        shaped(null, "pomegranate_fence", "lotr:pomegranate_fence", 3, rows("XYX", "XYX"), 'X', "lotr:pomegranate_planks", 'Y', "minecraft:stick");
-        shaped(null, "palm_fence", "lotr:palm_fence", 3, rows("XYX", "XYX"), 'X', "lotr:palm_planks", 'Y', "minecraft:stick");
-        shaped(null, "dragon_fence", "lotr:dragon_fence", 3, rows("XYX", "XYX"), 'X', "lotr:dragon_planks", 'Y', "minecraft:stick");
-        shaped(null, "kanuka_fence", "lotr:kanuka_fence", 3, rows("XYX", "XYX"), 'X', "lotr:kanuka_planks", 'Y', "minecraft:stick");
+        shapeless(null, "red_brick_mossy", "lotr:red_brick_mossy", 1, "minecraft:bricks", "#lotr:vines");
+        shaped(null, "grapevine", "lotr:grapevine", 1, rows("X", "X", "X"), 'X', "#lotr:sticks");
+        shaped(null, "plum_fence", "lotr:plum_fence", 3, rows("XYX", "XYX"), 'X', "lotr:plum_planks", 'Y', "#lotr:sticks");
+        shaped(null, "redwood_fence", "lotr:redwood_fence", 3, rows("XYX", "XYX"), 'X', "lotr:redwood_planks", 'Y', "#lotr:sticks");
+        shaped(null, "pomegranate_fence", "lotr:pomegranate_fence", 3, rows("XYX", "XYX"), 'X', "lotr:pomegranate_planks", 'Y', "#lotr:sticks");
+        shaped(null, "palm_fence", "lotr:palm_fence", 3, rows("XYX", "XYX"), 'X', "lotr:palm_planks", 'Y', "#lotr:sticks");
+        shaped(null, "dragon_fence", "lotr:dragon_fence", 3, rows("XYX", "XYX"), 'X', "lotr:dragon_planks", 'Y', "#lotr:sticks");
+        shaped(null, "kanuka_fence", "lotr:kanuka_fence", 3, rows("XYX", "XYX"), 'X', "lotr:kanuka_planks", 'Y', "#lotr:sticks");
         shaped(null, "white_sandstone", "lotr:white_sandstone", 1, rows("XX", "XX"), 'X', "lotr:white_sand");
         shaped(null, "reed_basket", "lotr:reed_basket", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:dried_reeds");
         shapeless(null, "orange_dye_2", "minecraft:orange_dye", 1, "lotr:marigold");
         shapeless(null, "orange_dye_3", "minecraft:orange_dye", 1, "lotr:rhun_flower_chrys_orange");
         shapeless(null, "pink_dye_2", "minecraft:pink_dye", 1, "lotr:rhun_flower_chrys_pink");
         shaped(null, "glowstone_ore", "lotr:glowstone_ore", 1, rows("XXX", "XYX", "XXX"), 'X', "minecraft:glowstone_dust", 'Y', "minecraft:stone");
-        shaped(null, "chiseled_stone_bricks", "minecraft:chiseled_stone_bricks", 1, rows("XX", "XX"), 'X', "minecraft:stone_bricks");
         shaped(null, "iron_bird_cage", "lotr:iron_bird_cage", 1, rows("YYY", "Y Y", "XXX"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:iron_bars");
         shaped(null, "gold_bird_cage", "lotr:gold_bird_cage", 1, rows("YYY", "Y Y", "XXX"), 'X', "minecraft:gold_ingot", 'Y', "lotr:gold_bars");
-        shaped(null, "wooden_bird_cage", "lotr:wooden_bird_cage", 1, rows("YYY", "Y Y", "XXX"), 'X', "#minecraft:planks", 'Y', "minecraft:stick");
-        shaped(null, "daub", "lotr:daub", 4, rows("XYX", "YXY", "XYX"), 'X', "minecraft:stick", 'Y', "minecraft:dirt");
+        shaped(null, "wooden_bird_cage", "lotr:wooden_bird_cage", 1, rows("YYY", "Y Y", "XXX"), 'X', "#minecraft:planks", 'Y', "#lotr:sticks");
+        shaped(null, "daub", "lotr:daub", 4, rows("XYX", "YXY", "XYX"), 'X', "#lotr:sticks", 'Y', "minecraft:dirt");
         shaped(null, "daub_2", "lotr:daub", 4, rows("XYX", "YXY", "XYX"), 'X', "lotr:dried_reeds", 'Y', "minecraft:dirt");
         shaped(null, "kebab_block", "lotr:kebab_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:kebab");
         shapeless(null, "kebab", "lotr:kebab", 9, "lotr:kebab_block");
         shaped(null, "salt_block", "lotr:salt_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:salt");
         shapeless(null, "salt", "lotr:salt", 9, "lotr:salt_block");
-        shaped(null, "shire_pine_fence_gate", "lotr:shire_pine_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:shire_pine_planks");
-        shaped(null, "mirk_oak_fence_gate", "lotr:mirk_oak_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:mirk_oak_planks");
-        shaped(null, "charred_fence_gate", "lotr:charred_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:charred_planks");
-        shaped(null, "apple_fence_gate", "lotr:apple_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:apple_planks");
-        shaped(null, "pear_fence_gate", "lotr:pear_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:pear_planks");
-        shaped(null, "cherry_fence_gate", "lotr:cherry_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:cherry_planks");
-        shaped(null, "mango_fence_gate", "lotr:mango_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:mango_planks");
-        shaped(null, "lebethron_fence_gate", "lotr:lebethron_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:lebethron_planks");
-        shaped(null, "beech_fence_gate", "lotr:beech_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:beech_planks");
-        shaped(null, "holly_fence_gate", "lotr:holly_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:holly_planks");
-        shaped(null, "banana_fence_gate", "lotr:banana_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:banana_planks");
-        shaped(null, "maple_fence_gate", "lotr:maple_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:maple_planks");
-        shaped(null, "larch_fence_gate", "lotr:larch_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:larch_planks");
-        shaped(null, "date_palm_fence_gate", "lotr:date_palm_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:date_palm_planks");
-        shaped(null, "mangrove_fence_gate", "lotr:mangrove_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:mangrove_planks");
-        shaped(null, "chestnut_fence_gate", "lotr:chestnut_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:chestnut_planks");
-        shaped(null, "baobab_fence_gate", "lotr:baobab_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:baobab_planks");
-        shaped(null, "cedar_fence_gate", "lotr:cedar_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:cedar_planks");
-        shaped(null, "fir_fence_gate", "lotr:fir_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:fir_planks");
-        shaped(null, "pine_fence_gate", "lotr:pine_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:pine_planks");
-        shaped(null, "lemon_fence_gate", "lotr:lemon_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:lemon_planks");
-        shaped(null, "orange_fence_gate", "lotr:orange_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:orange_planks");
-        shaped(null, "lime_fence_gate", "lotr:lime_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:lime_planks");
-        shaped(null, "mahogany_fence_gate", "lotr:mahogany_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:mahogany_planks");
-        shaped(null, "willow_fence_gate", "lotr:willow_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:willow_planks");
-        shaped(null, "cypress_fence_gate", "lotr:cypress_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:cypress_planks");
-        shaped(null, "olive_fence_gate", "lotr:olive_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:olive_planks");
-        shaped(null, "aspen_fence_gate", "lotr:aspen_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:aspen_planks");
-        shaped(null, "green_oak_fence_gate", "lotr:green_oak_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:green_oak_planks");
-        shaped(null, "lairelosse_fence_gate", "lotr:lairelosse_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:lairelosse_planks");
-        shaped(null, "almond_fence_gate", "lotr:almond_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:almond_planks");
-        shaped(null, "rotten_fence_gate", "lotr:rotten_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:rotten_planks");
-        shaped(null, "plum_fence_gate", "lotr:plum_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:plum_planks");
-        shaped(null, "redwood_fence_gate", "lotr:redwood_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:redwood_planks");
-        shaped(null, "pomegranate_fence_gate", "lotr:pomegranate_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:pomegranate_planks");
-        shaped(null, "millstone", "lotr:millstone", 1, rows("XYX", "XZX", "XXX"), 'X', "minecraft:cobblestone", 'Y', "minecraft:iron_ingot", 'Z', "minecraft:stick");
+        shaped(null, "shire_pine_fence_gate", "lotr:shire_pine_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:shire_pine_planks");
+        shaped(null, "mirk_oak_fence_gate", "lotr:mirk_oak_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:mirk_oak_planks");
+        shaped(null, "charred_fence_gate", "lotr:charred_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:charred_planks");
+        shaped(null, "apple_fence_gate", "lotr:apple_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:apple_planks");
+        shaped(null, "pear_fence_gate", "lotr:pear_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:pear_planks");
+        shaped(null, "cherry_fence_gate", "lotr:cherry_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:cherry_planks");
+        shaped(null, "mango_fence_gate", "lotr:mango_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:mango_planks");
+        shaped(null, "lebethron_fence_gate", "lotr:lebethron_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:lebethron_planks");
+        shaped(null, "beech_fence_gate", "lotr:beech_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:beech_planks");
+        shaped(null, "holly_fence_gate", "lotr:holly_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:holly_planks");
+        shaped(null, "banana_fence_gate", "lotr:banana_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:banana_planks");
+        shaped(null, "maple_fence_gate", "lotr:maple_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:maple_planks");
+        shaped(null, "larch_fence_gate", "lotr:larch_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:larch_planks");
+        shaped(null, "date_palm_fence_gate", "lotr:date_palm_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:date_palm_planks");
+        shaped(null, "mangrove_fence_gate", "lotr:mangrove_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:mangrove_planks");
+        shaped(null, "chestnut_fence_gate", "lotr:chestnut_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:chestnut_planks");
+        shaped(null, "baobab_fence_gate", "lotr:baobab_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:baobab_planks");
+        shaped(null, "cedar_fence_gate", "lotr:cedar_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:cedar_planks");
+        shaped(null, "fir_fence_gate", "lotr:fir_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:fir_planks");
+        shaped(null, "pine_fence_gate", "lotr:pine_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:pine_planks");
+        shaped(null, "lemon_fence_gate", "lotr:lemon_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:lemon_planks");
+        shaped(null, "orange_fence_gate", "lotr:orange_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:orange_planks");
+        shaped(null, "lime_fence_gate", "lotr:lime_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:lime_planks");
+        shaped(null, "mahogany_fence_gate", "lotr:mahogany_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:mahogany_planks");
+        shaped(null, "willow_fence_gate", "lotr:willow_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:willow_planks");
+        shaped(null, "cypress_fence_gate", "lotr:cypress_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:cypress_planks");
+        shaped(null, "olive_fence_gate", "lotr:olive_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:olive_planks");
+        shaped(null, "aspen_fence_gate", "lotr:aspen_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:aspen_planks");
+        shaped(null, "green_oak_fence_gate", "lotr:green_oak_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:green_oak_planks");
+        shaped(null, "lairelosse_fence_gate", "lotr:lairelosse_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:lairelosse_planks");
+        shaped(null, "almond_fence_gate", "lotr:almond_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:almond_planks");
+        shaped(null, "rotten_fence_gate", "lotr:rotten_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:rotten_planks");
+        shaped(null, "plum_fence_gate", "lotr:plum_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:plum_planks");
+        shaped(null, "redwood_fence_gate", "lotr:redwood_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:redwood_planks");
+        shaped(null, "pomegranate_fence_gate", "lotr:pomegranate_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:pomegranate_planks");
+        shaped(null, "millstone", "lotr:millstone", 1, rows("XYX", "XZX", "XXX"), 'X', "minecraft:cobblestone", 'Y', "lotr:bronze_ingot", 'Z', "#lotr:sticks");
         shapeless(null, "topaz", "lotr:topaz", 9, "lotr:topaz_block");
         shaped(null, "topaz_block", "lotr:topaz_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:topaz");
         shapeless(null, "amethyst", "lotr:amethyst", 9, "lotr:amethyst_block");
@@ -1340,10 +1341,9 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(null, "black_stained_glass_2", "lotr:black_stained_glass", 8, rows("XXX", "XYX", "XXX"), 'X', "lotr:glass", 'Y', "#c:dyes/black");
         shaped(null, "black_stained_glass_pane", "lotr:black_stained_glass_pane", 16, rows("XXX", "XXX"), 'X', "lotr:black_stained_glass");
         shaped(null, "rope", "lotr:rope", 3, rows("X", "X", "X"), 'X', "minecraft:string");
-        shaped(null, "palm_fence_gate", "lotr:palm_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:palm_planks");
-        shaped(null, "dragon_fence_gate", "lotr:dragon_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:dragon_planks");
+        shaped(null, "palm_fence_gate", "lotr:palm_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:palm_planks");
+        shaped(null, "dragon_fence_gate", "lotr:dragon_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:dragon_planks");
         shapeless(null, "red_dye_2", "minecraft:red_dye", 4, "lotr:dragon_log", "lotr:dragon_log");
-        shaped(null, "packed_ice", "minecraft:packed_ice", 1, rows("XX", "XX"), 'X', "minecraft:ice");
         shaped(null, "shire_pine_door", "lotr:shire_pine_door", 1, rows("XX", "XX", "XX"), 'X', "lotr:shire_pine_planks");
         shaped(null, "mirk_oak_door", "lotr:mirk_oak_door", 1, rows("XX", "XX", "XX"), 'X', "lotr:mirk_oak_planks");
         shaped(null, "charred_door", "lotr:charred_door", 1, rows("XX", "XX", "XX"), 'X', "lotr:charred_planks");
@@ -1382,9 +1382,9 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(null, "dragon_door", "lotr:dragon_door", 1, rows("XX", "XX", "XX"), 'X', "lotr:dragon_planks");
         shaped(null, "rotten_door", "lotr:rotten_door", 1, rows("XX", "XX", "XX"), 'X', "lotr:rotten_planks");
         shapeless(null, "dirt", "minecraft:dirt", 1, "minecraft:coarse_dirt", "minecraft:wheat_seeds");
-        shaped(null, "bone_block", "lotr:bone_block", 1, rows("XX", "XX"), 'X', "minecraft:bone");
+        shaped(null, "bone_block", "lotr:bone_block", 1, rows("XX", "XX"), 'X', "#lotr:bones");
         shapeless(null, "bone_meal_2", "minecraft:bone_meal", 8, "lotr:bone_block");
-        shaped(null, "kanuka_fence_gate", "lotr:kanuka_fence_gate", 1, rows("XYX", "XYX"), 'X', "minecraft:stick", 'Y', "lotr:kanuka_planks");
+        shaped(null, "kanuka_fence_gate", "lotr:kanuka_fence_gate", 1, rows("XYX", "XYX"), 'X', "#lotr:sticks", 'Y', "lotr:kanuka_planks");
         shaped(null, "kanuka_door", "lotr:kanuka_door", 1, rows("XX", "XX", "XX"), 'X', "lotr:kanuka_planks");
         shaped(null, "barren_jungle_mud", "lotr:barren_jungle_mud", 4, rows("XY", "YX"), 'X', "lotr:mud", 'Y', "minecraft:gravel");
         shapeless(null, "mud", "lotr:mud", 1, "lotr:barren_jungle_mud", "minecraft:wheat_seeds");
@@ -1434,12 +1434,12 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(null, "chainmail_boots", "minecraft:chainmail_boots", 1, rows("Y Y", "X X"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:iron_nugget");
         // LOTRRecipes.createTauredainRecipes
         shaped(TAUREDAIN, "tauredain/tauredain_crafting_table", "lotr:tauredain_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:tauredain_brick");
-        shaped(TAUREDAIN, "tauredain/tauredain_banner", "lotr:tauredain_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(TAUREDAIN, "tauredain/tauredain_banner", "lotr:tauredain_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(TAUREDAIN, "tauredain/tauredain_brick", "lotr:tauredain_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(TAUREDAIN, "tauredain/tauredain_brick_slab", "lotr:tauredain_brick_slab", 6, rows("XXX"), 'X', "lotr:tauredain_brick");
         shaped(TAUREDAIN, "tauredain/tauredain_brick_stairs", "lotr:tauredain_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:tauredain_brick");
         shaped(TAUREDAIN, "tauredain/tauredain_brick_wall", "lotr:tauredain_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:tauredain_brick");
-        shapeless(TAUREDAIN, "tauredain/tauredain_mossy_brick", "lotr:tauredain_mossy_brick", 1, "lotr:tauredain_brick", "minecraft:vine");
+        shapeless(TAUREDAIN, "tauredain/tauredain_mossy_brick", "lotr:tauredain_mossy_brick", 1, "lotr:tauredain_brick", "#lotr:vines");
         shaped(TAUREDAIN, "tauredain/tauredain_mossy_brick_slab", "lotr:tauredain_mossy_brick_slab", 6, rows("XXX"), 'X', "lotr:tauredain_mossy_brick");
         shaped(TAUREDAIN, "tauredain/tauredain_mossy_brick_stairs", "lotr:tauredain_mossy_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:tauredain_mossy_brick");
         shaped(TAUREDAIN, "tauredain/tauredain_mossy_brick_wall", "lotr:tauredain_mossy_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:tauredain_mossy_brick");
@@ -1453,11 +1453,11 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(TAUREDAIN, "tauredain/tauredain_obsidian_brick_slab", "lotr:tauredain_obsidian_brick_slab", 6, rows("XXX"), 'X', "lotr:tauredain_obsidian_brick");
         shaped(TAUREDAIN, "tauredain/tauredain_obsidian_brick_stairs", "lotr:tauredain_obsidian_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:tauredain_obsidian_brick");
         shaped(TAUREDAIN, "tauredain/tauredain_obsidian_brick_wall", "lotr:tauredain_obsidian_brick_wall", 6, rows("XXX", "XXX"), 'X', "lotr:tauredain_obsidian_brick");
-        shaped(TAUREDAIN, "tauredain/taurethrim_blowgun", "lotr:taurethrim_blowgun", 1, rows("XYY"), 'X', "minecraft:stick", 'Y', "lotr:reeds");
+        shaped(TAUREDAIN, "tauredain/taurethrim_blowgun", "lotr:taurethrim_blowgun", 1, rows("XYY"), 'X', "#lotr:sticks", 'Y', "lotr:reeds");
         shaped(TAUREDAIN, "tauredain/tauredain_dart_trap", "lotr:tauredain_dart_trap", 1, rows("XXX", "XYX", "XXX"), 'X', "lotr:tauredain_brick", 'Y', "lotr:taurethrim_blowgun");
         shaped(TAUREDAIN, "tauredain/tauredain_pillar", "lotr:tauredain_pillar", 3, rows("X", "X", "X"), 'X', "minecraft:stone");
         shaped(TAUREDAIN, "tauredain/tauredain_pillar_slab", "lotr:tauredain_pillar_slab", 6, rows("XXX"), 'X', "lotr:tauredain_pillar");
-        shaped(TAUREDAIN, "tauredain/tauredain_double_torch", "lotr:tauredain_double_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "minecraft:stick");
+        shaped(TAUREDAIN, "tauredain/tauredain_double_torch", "lotr:tauredain_double_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "#lotr:sticks");
         shaped(TAUREDAIN, "tauredain/gold_tauredain_dart_trap", "lotr:gold_tauredain_dart_trap", 1, rows("XXX", "XYX", "XXX"), 'X', "lotr:tauredain_gold_brick", 'Y', "lotr:taurethrim_blowgun");
         shaped(TAUREDAIN, "tauredain/obsidian_tauredain_dart_trap", "lotr:obsidian_tauredain_dart_trap", 1, rows("XXX", "XYX", "XXX"), 'X', "lotr:tauredain_obsidian_brick", 'Y', "lotr:taurethrim_blowgun");
         shaped(TAUREDAIN, "tauredain/taur_gold_pillar", "lotr:taur_gold_pillar", 3, rows("X", "X", "X"), 'X', "minecraft:gold_ingot");
@@ -1465,12 +1465,12 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(TAUREDAIN, "tauredain/taur_obsidian_pillar_slab", "lotr:taur_obsidian_pillar_slab", 6, rows("XXX"), 'X', "lotr:taur_obsidian_pillar");
         // LOTRRecipes.createUmbarRecipes
         shaped(UMBAR, "umbar/umbar_crafting_table", "lotr:umbar_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "minecraft:sandstone");
-        shaped(UMBAR, "umbar/umbar_banner", "lotr:umbar_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
-        shaped(UMBAR, "umbar/umbaric_scimitar", "lotr:umbaric_scimitar", 1, rows("X", "X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(UMBAR, "umbar/umbaric_dagger", "lotr:umbaric_dagger", 1, rows("X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(UMBAR, "umbar/umbaric_spear", "lotr:umbaric_spear", 1, rows("  X", " Y ", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(UMBAR, "umbar/umbaric_mace", "lotr:umbaric_mace", 1, rows(" XX", " XX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
-        shaped(UMBAR, "umbar/umbaric_poleaxe", "lotr:umbaric_poleaxe", 1, rows(" XX", " YX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:stick");
+        shaped(UMBAR, "umbar/umbar_banner", "lotr:umbar_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
+        shaped(UMBAR, "umbar/umbaric_scimitar", "lotr:umbaric_scimitar", 1, rows("X", "X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(UMBAR, "umbar/umbaric_dagger", "lotr:umbaric_dagger", 1, rows("X", "Y"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(UMBAR, "umbar/umbaric_spear", "lotr:umbaric_spear", 1, rows("  X", " Y ", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(UMBAR, "umbar/umbaric_mace", "lotr:umbaric_mace", 1, rows(" XX", " XX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        shaped(UMBAR, "umbar/umbaric_poleaxe", "lotr:umbaric_poleaxe", 1, rows(" XX", " YX", "Y  "), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
         shaped(UMBAR, "umbar/umbar_brick", "lotr:umbar_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(UMBAR, "umbar/umbar_brick_slab", "lotr:umbar_brick_slab", 6, rows("XXX"), 'X', "lotr:umbar_brick");
         shaped(UMBAR, "umbar/umbar_brick_stairs", "lotr:umbar_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:umbar_brick");
@@ -1485,9 +1485,9 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(UMBAR, "umbar/umbaric_horse_armor", "lotr:umbaric_horse_armor", 1, rows("X  ", "XYX", "XXX"), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
         // LOTRRecipes.createUrukRecipes
         shaped(URUK, "uruk/uruk_crafting_table", "lotr:uruk_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:uruk_brick");
-        shaped(URUK, "uruk/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "minecraft:stick");
+        shaped(URUK, "uruk/orc_torch", "lotr:orc_torch", 2, rows("X", "Y", "Y"), 'X', "#minecraft:coals", 'Y', "#lotr:sticks");
         shaped(URUK, "uruk/orc_forge", "lotr:orc_forge", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:uruk_brick");
-        shaped(URUK, "uruk/isengard_banner", "lotr:isengard_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(URUK, "uruk/isengard_banner", "lotr:isengard_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(URUK, "uruk/uruk_brick", "lotr:uruk_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(URUK, "uruk/uruk_brick_slab", "lotr:uruk_brick_slab", 6, rows("XXX"), 'X', "lotr:uruk_brick");
         shaped(URUK, "uruk/uruk_brick_stairs", "lotr:uruk_brick_stairs", 4, rows("X  ", "XX ", "XXX"), 'X', "lotr:uruk_brick");
@@ -1501,12 +1501,12 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(WOOD_ELVEN, "wood_elven/wood_elven_scout_tunic", "lotr:wood_elven_scout_tunic", 1, rows("X X", "XXX", "XXX"), 'X', "minecraft:leather");
         shaped(WOOD_ELVEN, "wood_elven/wood_elven_scout_leggings", "lotr:wood_elven_scout_leggings", 1, rows("XXX", "X X", "X X"), 'X', "minecraft:leather");
         shaped(WOOD_ELVEN, "wood_elven/wood_elven_scout_boots", "lotr:wood_elven_scout_boots", 1, rows("X X", "X X"), 'X', "minecraft:leather");
-        shaped(WOOD_ELVEN, "wood_elven/mirkwood_bow", "lotr:mirkwood_bow", 1, rows(" XY", "X Y", " XY"), 'X', "minecraft:stick", 'Y', "minecraft:string");
-        shaped(WOOD_ELVEN, "wood_elven/wood_elven_torch", "lotr:wood_elven_torch", 4, rows("X", "Y", "Z"), 'X', "lotr:mirk_oak_red_leaves", 'Y', "#minecraft:coals", 'Z', "minecraft:stick");
-        shaped(WOOD_ELVEN, "wood_elven/wood_elven_chandelier", "lotr:wood_elven_chandelier", 2, rows(" X ", "YZY"), 'X', "minecraft:stick", 'Y', "lotr:wood_elven_torch", 'Z', "#minecraft:planks");
-        shaped(WOOD_ELVEN, "wood_elven/mirkwood_banner", "lotr:mirkwood_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "minecraft:stick", 'Z', "#minecraft:planks");
+        shaped(WOOD_ELVEN, "wood_elven/mirkwood_bow", "lotr:mirkwood_bow", 1, rows(" XY", "X Y", " XY"), 'X', "#lotr:sticks", 'Y', "minecraft:string");
+        shaped(WOOD_ELVEN, "wood_elven/wood_elven_torch", "lotr:wood_elven_torch", 4, rows("X", "Y", "Z"), 'X', "lotr:mirk_oak_red_leaves", 'Y', "#minecraft:coals", 'Z', "#lotr:sticks");
+        shaped(WOOD_ELVEN, "wood_elven/wood_elven_chandelier", "lotr:wood_elven_chandelier", 2, rows(" X ", "YZY"), 'X', "#lotr:sticks", 'Y', "lotr:wood_elven_torch", 'Z', "#minecraft:planks");
+        shaped(WOOD_ELVEN, "wood_elven/mirkwood_banner", "lotr:mirkwood_banner", 1, rows("X", "Y", "Z"), 'X', "#minecraft:wool", 'Y', "#lotr:sticks", 'Z', "#minecraft:planks");
         shaped(WOOD_ELVEN, "wood_elven/wood_elven_brick", "lotr:wood_elven_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
-        shapeless(WOOD_ELVEN, "wood_elven/mossy_wood_elven_brick", "lotr:mossy_wood_elven_brick", 1, "lotr:wood_elven_brick", "minecraft:vine");
+        shapeless(WOOD_ELVEN, "wood_elven/mossy_wood_elven_brick", "lotr:mossy_wood_elven_brick", 1, "lotr:wood_elven_brick", "#lotr:vines");
         shaped(WOOD_ELVEN, "wood_elven/wood_elven_brick_slab", "lotr:wood_elven_brick_slab", 6, rows("XXX"), 'X', "lotr:wood_elven_brick");
         shaped(WOOD_ELVEN, "wood_elven/mossy_wood_elven_brick_slab", "lotr:mossy_wood_elven_brick_slab", 6, rows("XXX"), 'X', "lotr:mossy_wood_elven_brick");
         shaped(WOOD_ELVEN, "wood_elven/cracked_wood_elven_brick_slab", "lotr:cracked_wood_elven_brick_slab", 6, rows("XXX"), 'X', "lotr:cracked_wood_elven_brick");
@@ -1521,7 +1521,7 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(WOOD_ELVEN, "wood_elven/cracked_wood_elven_pillar_slab", "lotr:cracked_wood_elven_pillar_slab", 6, rows("XXX"), 'X', "lotr:cracked_wood_elven_pillar");
         shaped(WOOD_ELVEN, "wood_elven/carved_wood_elven_brick", "lotr:carved_wood_elven_brick", 1, rows("XX", "XX"), 'X', "lotr:wood_elven_brick");
         shaped(WOOD_ELVEN, "wood_elven/elven_forge", "lotr:elven_forge", 1, rows("XXX", "X X", "XXX"), 'X', "lotr:wood_elven_brick");
-        shaped(WOOD_ELVEN, "wood_elven/wood_elf_wood_bars", "lotr:wood_elf_wood_bars", 8, rows("XXX", "XXX"), 'X', "minecraft:stick");
+        shaped(WOOD_ELVEN, "wood_elven/wood_elf_wood_bars", "lotr:wood_elf_wood_bars", 8, rows("XXX", "XXX"), 'X', "#lotr:sticks");
         shaped(WOOD_ELVEN, "wood_elven/wood_elven_gold_brick", "lotr:wood_elven_gold_brick", 1, rows(" X ", "XYX", " X "), 'X', "minecraft:gold_nugget", 'Y', "lotr:wood_elven_brick");
         wildcardSmelting();
         crackedBrickSmelting();
@@ -1532,19 +1532,80 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         for (String rock : List.of("mordor_rock", "gondor_rock", "rohan_rock", "blue_rock", "red_rock", "chalk")) {
             smelting("scorched_stone_from_" + rock, "lotr:scorched_stone", "lotr:" + rock, 0.1f);
         }
-        smelting("gulduril_crystal_from_smelting", "lotr:gulduril_crystal", "lotr:gulduril_ore", 1.0f);
-        smelting("gulduril_crystal_from_smelting_mordor", "lotr:gulduril_crystal", "lotr:gulduril_mordor_ore", 1.0f);
+        smelting("gulduril_crystal_from_smelting", "lotr:gulduril", "lotr:gulduril_ore", 1.0f);
+        smelting("gulduril_crystal_from_smelting_mordor", "lotr:gulduril", "lotr:gulduril_mordor_ore", 1.0f);
     }
 
     // LOTRMillstoneRecipes.addCrackedBricks: every millstone cracking was also a furnace recipe at 0.1 xp.
+    // Vanilla already smelts its own stone bricks, so vanilla results are left to vanilla.
     private void crackedBrickSmelting() {
         LOTRMillstoneRecipes.crackedBricks().forEach((brick, cracked) -> {
+            if (BuiltInRegistries.ITEM.getKey(cracked.asItem()).getNamespace().equals("minecraft")) {
+                return;
+            }
             String name = BuiltInRegistries.ITEM.getKey(cracked.asItem()).getPath() + "_from_smelting";
             SimpleCookingRecipeBuilder.smelting(Ingredient.of(brick), RecipeCategory.BUILDING_BLOCKS,
                             CookingBookCategory.BLOCKS, cracked, 0.1f, 200)
                     .unlockedBy(getHasName(brick), has(brick))
                     .save(output, key(name));
         });
+    }
+
+    /**
+     * Recipes the transcription above was missing or had wrong, checked line
+     * by line against LOTRRecipes.
+     */
+    private void restoredRecipes() {
+        // brick4:6, the carved black brick, at both Numenorean tables that had it.
+        shaped(GONDORIAN, "gondorian/carved_black_umbar_brick", "lotr:carved_black_umbar_brick", 1, rows("XX", "XX"), 'X', "lotr:numenorean_brick");
+        shaped(DOL_AMROTH, "dol_amroth/carved_black_umbar_brick", "lotr:carved_black_umbar_brick", 1, rows("XX", "XX"), 'X', "lotr:numenorean_brick");
+        // dirtPath:0 from Blocks.dirt with no metadata: any of its three subtypes.
+        shaped(null, "dirt_path", "minecraft:dirt_path", 2, rows("XX"), 'X', "minecraft:dirt|minecraft:coarse_dirt|minecraft:podzol");
+        // createCommonNearHaradRecipes: the shish kebab on a skewer, corner to corner.
+        for (LOTRCraftingTable table : List.of(NEAR_HARAD, UMBAR, GULF)) {
+            shaped(table, table.getSerializedName() + "/shish_kebab", "lotr:shish_kebab", 2,
+                    rows("  X", " X ", "Y  "), 'X', "lotr:kebab", 'Y', "#lotr:sticks");
+        }
+        // addDyeableWoolRobeRecipes: each colour of wool gives the robe already
+        // dyed that colour -- EntitySheep.fleeceColorTable, white left undyed.
+        for (LOTRCraftingTable table : List.of(NEAR_HARAD, UMBAR, GULF)) {
+            woolRobes(table, "lotr:harad_turban", rows("XXX", "X X"));
+            woolRobes(table, "lotr:harad_robe", rows("X X", "XXX", "XXX"));
+            woolRobes(table, "lotr:harad_robe_leggings", rows("XXX", "X X", "X X"));
+            woolRobes(table, "lotr:harad_robe_shoes", rows("X X", "X X"));
+        }
+        woolRobes(RHUN, "lotr:kaftan", rows("X X", "XXX", "XXX"));
+        woolRobes(RHUN, "lotr:kaftan_leggings", rows("XXX", "X X", "X X"));
+    }
+
+    private static final String[] WOOL = {"white", "orange", "magenta", "light_blue", "yellow", "lime", "pink", "gray",
+            "light_gray", "cyan", "purple", "blue", "brown", "green", "red", "black"};
+    private static final float[][] FLEECE = {{1.0f, 1.0f, 1.0f}, {0.85f, 0.5f, 0.2f}, {0.7f, 0.3f, 0.85f}, {0.4f, 0.6f, 0.85f},
+            {0.9f, 0.9f, 0.2f}, {0.5f, 0.8f, 0.1f}, {0.95f, 0.5f, 0.65f}, {0.3f, 0.3f, 0.3f}, {0.6f, 0.6f, 0.6f},
+            {0.3f, 0.5f, 0.6f}, {0.5f, 0.25f, 0.7f}, {0.2f, 0.3f, 0.7f}, {0.4f, 0.3f, 0.2f}, {0.4f, 0.5f, 0.2f},
+            {0.6f, 0.2f, 0.2f}, {0.1f, 0.1f, 0.1f}};
+
+    private void woolRobes(LOTRCraftingTable table, String resultId, String[] rows) {
+        Item result = item(resultId);
+        String base = table.getSerializedName() + "/" + Identifier.parse(resultId).getPath();
+        for (int i = 0; i < WOOL.length; i++) {
+            String wool = "minecraft:" + WOOL[i] + "_wool";
+            float[] c = FLEECE[i];
+            net.minecraft.core.component.DataComponentPatch patch = net.minecraft.core.component.DataComponentPatch.EMPTY;
+            if (c[0] != 1.0f || c[1] != 1.0f || c[2] != 1.0f) {
+                int rgb = (int) (c[0] * 255.0f) << 16 | (int) (c[1] * 255.0f) << 8 | (int) (c[2] * 255.0f);
+                patch = net.minecraft.core.component.DataComponentPatch.builder()
+                        .set(net.minecraft.core.component.DataComponents.DYED_COLOR,
+                                new net.minecraft.world.item.component.DyedItemColor(rgb))
+                        .build();
+            }
+            LOTRFactionCraftingRecipe recipe = new LOTRFactionCraftingRecipe(
+                    RecipeBuilder.createCraftingCommonInfo(true),
+                    RecipeBuilder.createCraftingBookInfo(RecipeCategory.MISC, ""),
+                    table, ShapedRecipePattern.of(Map.of('X', ingredient(wool)), List.of(rows)),
+                    new ItemStackTemplate(BuiltInRegistries.ITEM.wrapAsHolder(result), 1, patch));
+            saveFaction(base + "_" + WOOL[i], recipe, RecipeCategory.MISC, wool);
+        }
     }
 
     private static String[] rows(String... rows) {
@@ -1560,18 +1621,25 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
     }
 
     private Ingredient ingredient(String id) {
+        if (id.contains("|")) {
+            // A 1.7.10 block given with no metadata matched every subtype; "a|b|c" lists them.
+            return Ingredient.of(java.util.Arrays.stream(id.split("\\|")).map(LOTRTranscribedRecipes::item)
+                    .toArray(Item[]::new));
+        }
         return id.startsWith("#")
                 ? tag(TagKey.create(Registries.ITEM, Identifier.parse(id.substring(1))))
                 : Ingredient.of(item(id));
     }
 
     private Criterion<?> unlock(String id) {
+        id = id.split("\\|")[0];
         return id.startsWith("#")
                 ? has(TagKey.create(Registries.ITEM, Identifier.parse(id.substring(1))))
                 : has(item(id));
     }
 
     private static String unlockName(String id) {
+        id = id.split("\\|")[0];
         return "has_" + Identifier.parse(id.startsWith("#") ? id.substring(1) : id).getPath().replace('/', '_');
     }
 
@@ -1579,8 +1647,15 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         return result instanceof BlockItem ? RecipeCategory.BUILDING_BLOCKS : RecipeCategory.MISC;
     }
 
+    /**
+     * The namespace these recipes have always been written under: the mod id
+     * in fabric.mod.json. Not LOTRMod.MOD_ID, which is now a display-style
+     * string with spaces in it and is not a valid namespace.
+     */
+    private static final String RECIPE_NAMESPACE = "lord_of_the_rings_-_middle_earth";
+
     private static ResourceKey<Recipe<?>> key(String name) {
-        return ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(LOTRMod.MOD_ID, name));
+        return ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(RECIPE_NAMESPACE, name));
     }
 
     // keyAndIngredients alternates a pattern character and an ingredient id, like the Object... tail of ShapedOreRecipe.

@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.blueskiez77.lord_of_the_rings__middle_earth.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "mixins": [
+    "LOTRAbstractMinecartMixin",
+    "LOTRBlockMixin",
+    "LOTREnchantmentHelperMixin",
+    "LOTRLivingEntityMixin",
+    "LOTRNewMinecartBehaviorMixin",
+    "LOTROldMinecartBehaviorMixin",
+    "LOTRPlayerMixin",
+    "LOTRProjectileWeaponItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

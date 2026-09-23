@@ -127,7 +127,7 @@ public class LOTRPlantBlock extends VegetationBlock {
         THISTLE(0.25F),
         NETTLE(0.25F),
         /**
-         * LOTRBlockMordorThorn: two hearts... a full heart, to anything not of
+         * LOTRBlockMordorThorn: 2.0 damage, a full heart, to anything not of
          * the Mordor faction, with no armour exemption at all.
          */
         THORN(2.0F);
@@ -173,8 +173,10 @@ public class LOTRPlantBlock extends VegetationBlock {
                     entity.hurtServer(server, LOTRDamageTypes.plantHurt(level), Sting.NETTLE.damage);
                 }
             }
-            // The original spared anything of the Mordor faction. The NPC
-            // faction system is not ported yet, so for now it pricks everything.
+            // LOTRBlockMordorThorn spared only entities whose getNPCFaction is
+            // MORDOR, which means Mordor NPCs. The port has none yet, and
+            // everything else (players included) was UNALIGNED, so it pricks
+            // everything -- exactly as the original did for these entities.
             case THORN -> entity.hurtServer(server, LOTRDamageTypes.plantHurt(level), Sting.THORN.damage);
             default -> {
             }

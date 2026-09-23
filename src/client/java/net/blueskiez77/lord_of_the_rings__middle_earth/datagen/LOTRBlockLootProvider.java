@@ -6,7 +6,6 @@ import java.util.concurrent.CompletableFuture;
 import net.minecraft.advancements.predicates.StatePropertiesPredicate;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.EmptyLootItem;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
@@ -96,6 +95,19 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
     }
 
     /**
+     * LOTRBlockOreGem.quantityDropped / quantityDroppedWithBonus: one or two,
+     * then {@code rand(fortune + 1)} more -- vanilla's uniform bonus with a
+     * multiplier of one, not the ore formula. Silk Touch gives the ore back.
+     */
+    private LootTable.Builder gemDrops(Block ore, Item gem) {
+        HolderLookup.RegistryLookup<Enchantment> enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
+        LootItem.Builder<?> item = LootItem.lootTableItem(gem)
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f)))
+                .apply(ApplyBonusCount.addUniformBonusCount(enchantments.getOrThrow(Enchantments.FORTUNE), 1));
+        return createSilkTouchDispatchTable(ore, applyExplosionDecay(ore, item));
+    }
+
+    /**
      * LOTRBlockLeavesBase.calcFortuneModifiedDropChance: one in {@code base},
      * less {@code 2 << fortune} per level, never under half the base.
      */
@@ -156,10 +168,6 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
      * LOTRChestContents.MARSH_REMAINS, one more half the time, and
      * nextInt(1 + 2 * fortune) more on top -- each pick a weighted entry with
      * its own stack size. Silk Touch keeps the block (Block.canSilkHarvest).
-     *
-     * <p>The silver coin and the four ancient item parts are not ported; they
-     * stay in the pool as empty picks of the same weight, so everything else
-     * turns up exactly as often as it did.
      */
     private LootTable.Builder remainsDrops(Block remains) {
         HolderLookup.RegistryLookup<Enchantment> enchantments = this.registries.lookupOrThrow(Registries.ENCHANTMENT);
@@ -192,15 +200,17 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
                 .add(LootItem.lootTableItem(LOTRItems.DWARF_BONE).setWeight(20)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 2.0f))))
                 .add(LootItem.lootTableItem(Items.SKELETON_SKULL).setWeight(25))
-                // the silver coin, one to sixteen of them
-                .add(EmptyLootItem.emptyItem().setWeight(25))
+                .add(LootItem.lootTableItem(LOTRItems.SILVER_COIN).setWeight(25)
+                        .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 16.0f))))
                 .add(LootItem.lootTableItem(LOTRItems.SILVER_NUGGET).setWeight(25)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 5.0f))))
                 .add(LootItem.lootTableItem(Items.GOLD_NUGGET).setWeight(25)
                         .apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0f, 5.0f))))
                 .add(LootItem.lootTableItem(LOTRItems.MITHRIL_NUGGET).setWeight(2))
-                // the ancient sword tip, blade and hilt (50 each) and armour plate (120)
-                .add(EmptyLootItem.emptyItem().setWeight(270));
+                .add(LootItem.lootTableItem(LOTRItems.ANCIENT_SWORD_TIP).setWeight(50))
+                .add(LootItem.lootTableItem(LOTRItems.ANCIENT_SWORD_BLADE).setWeight(50))
+                .add(LootItem.lootTableItem(LOTRItems.ANCIENT_SWORD_HILT).setWeight(50))
+                .add(LootItem.lootTableItem(LOTRItems.ANCIENT_ARMOR_PLATE).setWeight(120));
     }
 
     @Override
@@ -406,27 +416,24 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         // Ores that give up what they hold. These come AFTER the family pass on
         // purpose: add() replaces, and ALL_CUBES would otherwise have every one
         // drop itself. LOTRBlockOre.getItemDropped/quantityDropped: durnor, niter
-        // and sulfur one or two, edhelvir and gulduril one.
-        //
-        // The gem ores and the glowstone ore follow their vanilla counterparts
-        // rather than 1.7.10: one gem per ore like vanilla's diamond and emerald
-        // (the original's one-or-two, multiplied by Fortune, handed out far too
-        // many), and glowstone's own two-to-four capped at four.
+        // and sulfur one or two, edhelvir and gulduril one, glowstone dust two to
+        // five, all multiplied by the ore Fortune factor and glowstone capped at
+        // eight. LOTRBlockOreGem: one or two gems plus rand(fortune + 1).
         add(LOTRBlocks.NAURITE_ORE, oreDrops(LOTRBlocks.NAURITE_ORE, LOTRItems.DURNOR, 1, 2, 0));
         add(LOTRBlocks.QUENDITE_ORE, createOreDrop(LOTRBlocks.QUENDITE_ORE, LOTRItems.EDHELVIR));
         add(LOTRBlocks.GULDURIL_ORE, createOreDrop(LOTRBlocks.GULDURIL_ORE, LOTRItems.GULDURIL));
         add(LOTRBlocks.GULDURIL_MORDOR_ORE, createOreDrop(LOTRBlocks.GULDURIL_MORDOR_ORE, LOTRItems.GULDURIL));
         add(LOTRBlocks.SULFUR_ORE, oreDrops(LOTRBlocks.SULFUR_ORE, LOTRItems.SULFUR, 1, 2, 0));
         add(LOTRBlocks.SALTPETER_ORE, oreDrops(LOTRBlocks.SALTPETER_ORE, LOTRItems.NITER, 1, 2, 0));
-        add(LOTRBlocks.GLOWSTONE_ORE, oreDrops(LOTRBlocks.GLOWSTONE_ORE, Items.GLOWSTONE_DUST, 2, 4, 4));
-        add(LOTRBlocks.TOPAZ_ORE, createOreDrop(LOTRBlocks.TOPAZ_ORE, LOTRItems.TOPAZ));
-        add(LOTRBlocks.AMETHYST_ORE, createOreDrop(LOTRBlocks.AMETHYST_ORE, LOTRItems.AMETHYST));
-        add(LOTRBlocks.SAPPHIRE_ORE, createOreDrop(LOTRBlocks.SAPPHIRE_ORE, LOTRItems.SAPPHIRE));
-        add(LOTRBlocks.RUBY_ORE, createOreDrop(LOTRBlocks.RUBY_ORE, LOTRItems.RUBY));
-        add(LOTRBlocks.AMBER_ORE, createOreDrop(LOTRBlocks.AMBER_ORE, LOTRItems.AMBER));
-        add(LOTRBlocks.DIAMOND_ORE, createOreDrop(LOTRBlocks.DIAMOND_ORE, LOTRItems.DIAMOND));
-        add(LOTRBlocks.OPAL_ORE, createOreDrop(LOTRBlocks.OPAL_ORE, LOTRItems.OPAL));
-        add(LOTRBlocks.EMERALD_ORE, createOreDrop(LOTRBlocks.EMERALD_ORE, LOTRItems.EMERALD));
+        add(LOTRBlocks.GLOWSTONE_ORE, oreDrops(LOTRBlocks.GLOWSTONE_ORE, Items.GLOWSTONE_DUST, 2, 5, 8));
+        add(LOTRBlocks.TOPAZ_ORE, gemDrops(LOTRBlocks.TOPAZ_ORE, LOTRItems.TOPAZ));
+        add(LOTRBlocks.AMETHYST_ORE, gemDrops(LOTRBlocks.AMETHYST_ORE, LOTRItems.AMETHYST));
+        add(LOTRBlocks.SAPPHIRE_ORE, gemDrops(LOTRBlocks.SAPPHIRE_ORE, LOTRItems.SAPPHIRE));
+        add(LOTRBlocks.RUBY_ORE, gemDrops(LOTRBlocks.RUBY_ORE, LOTRItems.RUBY));
+        add(LOTRBlocks.AMBER_ORE, gemDrops(LOTRBlocks.AMBER_ORE, LOTRItems.AMBER));
+        add(LOTRBlocks.DIAMOND_ORE, gemDrops(LOTRBlocks.DIAMOND_ORE, LOTRItems.DIAMOND));
+        add(LOTRBlocks.OPAL_ORE, gemDrops(LOTRBlocks.OPAL_ORE, LOTRItems.OPAL));
+        add(LOTRBlocks.EMERALD_ORE, gemDrops(LOTRBlocks.EMERALD_ORE, LOTRItems.EMERALD));
         // LOTRBlockRedClay: four balls, as vanilla clay gives.
         add(LOTRBlocks.RED_CLAY, createSingleItemTableWithSilkTouch(LOTRBlocks.RED_CLAY,
                 LOTRItems.RED_CLAY_BALL, ConstantValue.exactly(4)));

@@ -245,6 +245,11 @@ public class LOTRKebabStandBlockEntity extends BlockEntity {
 
         if (stand.isCooking() != wasCooking || stand.isCooked() != wasCooked) {
             stand.sync();
+        } else if (stand.isCooking()) {
+            // Only the save, not the client: the original pushed an update on
+            // these two changes alone. But 1.7.10 re-saved loaded chunks on a
+            // timer, and a modern one is saved only once marked.
+            stand.setChanged();
         }
     }
 

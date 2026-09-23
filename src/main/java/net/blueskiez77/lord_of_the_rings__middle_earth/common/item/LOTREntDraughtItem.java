@@ -12,12 +12,13 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.PotionContents;
-import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.level.Level;
 
 /**
@@ -28,7 +29,7 @@ import net.minecraft.world.level.Level;
  * blue lets you breathe water. Anyone Fangorn counts an enemy is poisoned for
  * five seconds instead.
  */
-public class LOTREntDraughtItem extends Item {
+public class LOTREntDraughtItem extends Item implements LOTRTooltipItem {
 
     private record Draught(int heal, float saturation, List<MobEffectInstance> effects) {
     }
@@ -55,7 +56,7 @@ public class LOTREntDraughtItem extends Item {
         return stack;
     }
 
-    private static int index(ItemStack stack) {
+    public static int index(ItemStack stack) {
         return Mth.clamp(stack.getOrDefault(LOTRDataComponents.ENT_DRAUGHT, 0), 0, COUNT - 1);
     }
 
@@ -63,6 +64,19 @@ public class LOTREntDraughtItem extends Item {
     @Override
     public Component getName(ItemStack stack) {
         return Component.translatable(getDescriptionId() + "." + index(stack));
+    }
+
+    /**
+     * canPlayerDrink: a draught with an effect can always be drunk; one that is
+     * only food (or nothing at all) only by a player who can eat.
+     */
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        if (DRAUGHTS.get(index(stack)).effects().isEmpty() && !player.canEat(true)) {
+            return InteractionResult.FAIL;
+        }
+        return super.use(level, player, hand);
     }
 
     @Override
@@ -92,8 +106,7 @@ public class LOTREntDraughtItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Item.TooltipContext context, TooltipDisplay display,
-            Consumer<Component> builder, TooltipFlag flag) {
+    public void addTooltip(ItemStack stack, Item.TooltipContext context, Consumer<Component> builder, TooltipFlag flag) {
         PotionContents.addPotionTooltip(DRAUGHTS.get(index(stack)).effects(), builder, 1.0f, context.tickRate());
     }
 }

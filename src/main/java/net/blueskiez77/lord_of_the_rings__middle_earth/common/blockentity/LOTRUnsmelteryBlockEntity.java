@@ -1,5 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
+import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.equipment.Equippable;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ProjectileWeaponItem;
+import net.minecraft.world.item.CrossbowItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRThrowingAxeItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSlingItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -134,28 +143,126 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
     // ------------------------------------------------------------ unsmelting
 
     /**
-     * getEquipmentMaterial. The original branched over ItemTool, ItemSword,
-     * ItemArmor, LOTRItemCrossbow, LOTRItemThrowingAxe, LOTRItemMountArmor and
-     * then a hand-written list of odds and ends (buckets, rings, goblets).
+     * getEquipmentMaterial. The original asked tools, swords (every melee
+     * weapon was one), crossbows, throwing axes, armour and mount armour for
+     * their material's repair item, and knew a handful of odds and ends by
+     * name. Bows -- the blowgun among them -- and the sling were none of
+     * those, so nothing ever unsmelted them.
      *
-     * <p>All of that collapses into one component now: an item that can be
-     * repaired carries {@link DataComponents#REPAIRABLE}, listing what repairs
-     * it. That covers every vanilla tool and armour piece AND anything the port
-     * adds later, with no list to maintain.
+     * <p>The material is the first entry of the item's REPAIRABLE component,
+     * which is where the port keeps the material's repair item.
      */
     public static ItemStack getEquipmentMaterial(ItemStack stack) {
         if (stack.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack named = namedMaterial(stack);
+        if (!named.isEmpty()) {
+            return named;
+        }
+        if (!isEquipment(stack)) {
             return ItemStack.EMPTY;
         }
         Repairable repairable = stack.get(DataComponents.REPAIRABLE);
         if (repairable == null) {
             return ItemStack.EMPTY;
         }
-        // The first entry is the canonical one -- iron ingots for iron gear.
         for (Holder<Item> holder : repairable.items()) {
             return new ItemStack(holder.value());
         }
         return ItemStack.EMPTY;
+    }
+
+    /** ItemTool, ItemSword, LOTRItemCrossbow, LOTRItemThrowingAxe, ItemArmor, LOTRItemMountArmor. */
+    private static boolean isEquipment(ItemStack stack) {
+        Item item = stack.getItem();
+        if (item instanceof CrossbowItem || item instanceof LOTRThrowingAxeItem) {
+            return true;
+        }
+        if (item instanceof ProjectileWeaponItem || item instanceof LOTRSlingItem) {
+            return false;
+        }
+        // Every 1.7.10 tool and sword carried the shared weapon-damage modifier,
+        // which is what LOTRWeaponStats.isMeleeWeapon looked for too.
+        if (stack.has(DataComponents.TOOL) || stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS,
+                ItemAttributeModifiers.EMPTY).modifiers().stream()
+                .anyMatch(entry -> entry.modifier().is(Item.BASE_ATTACK_DAMAGE_ID))) {
+            return true;
+        }
+        Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+        return equippable != null && equippable.slot().isArmor();
+    }
+
+    /** The end of getEquipmentMaterial: the bucket, the rings and the goblets. */
+    private static ItemStack namedMaterial(ItemStack stack) {
+        if (stack.is(Items.BUCKET)) {
+            return new ItemStack(Items.IRON_INGOT);
+        }
+        if (stack.is(LOTRItems.SILVER_RING)) {
+            return new ItemStack(LOTRItems.SILVER_NUGGET);
+        }
+        if (stack.is(LOTRItems.GOLD_RING)) {
+            return new ItemStack(Items.GOLD_NUGGET);
+        }
+        if (stack.is(LOTRItems.MITHRIL_RING)) {
+            return new ItemStack(LOTRItems.MITHRIL_NUGGET);
+        }
+        if (stack.is(LOTRItems.GOLDEN_GOBLET)) {
+            return new ItemStack(Items.GOLD_INGOT);
+        }
+        if (stack.is(LOTRItems.SILVER_GOBLET)) {
+            return new ItemStack(LOTRItems.SILVER_INGOT);
+        }
+        if (stack.is(LOTRItems.COPPER_GOBLET)) {
+            return new ItemStack(LOTRItems.BRONZE_INGOT);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    private static @Nullable Map<Item, List<Item>> uncraftable;
+
+    /**
+     * LOTRRecipes.uncraftableUnsmeltingRecipes: gear no table makes -- found in
+     * ruins, dropped, or given -- with the grid it would have taken, so the
+     * unsmeltery still knows what is in it. Only the material in each grid is
+     * listed; the sticks and string beside it never come back anyway.
+     */
+    private static Map<Item, List<Item>> uncraftable() {
+        if (uncraftable == null) {
+            Map<Item, List<Item>> map = new HashMap<>();
+            Item iron = Items.IRON_INGOT;
+            Item elf = LOTRItems.ELVEN_STEEL_INGOT;
+            Item orc = LOTRItems.ORC_STEEL_INGOT;
+            Item gold = Items.GOLD_INGOT;
+            for (Object[] entry : new Object[][] {
+                    {LOTRItems.BARROW_BLADE, iron, 1},
+                    {LOTRItems.ARNOR_HELMET, iron, 5}, {LOTRItems.ARNOR_CHESTPLATE, iron, 8},
+                    {LOTRItems.ARNOR_LEGGINGS, iron, 7}, {LOTRItems.ARNOR_BOOTS, iron, 4},
+                    {LOTRItems.ARNOR_SWORD, iron, 2}, {LOTRItems.ARNOR_DAGGER, iron, 1},
+                    {LOTRItems.ARNOR_SPEAR, iron, 1},
+                    {LOTRItems.BLACK_NUMENOREAN_HELMET, iron, 5}, {LOTRItems.BLACK_NUMENOREAN_CHESTPLATE, iron, 8},
+                    {LOTRItems.BLACK_NUMENOREAN_LEGGINGS, iron, 7}, {LOTRItems.BLACK_NUMENOREAN_BOOTS, iron, 4},
+                    {LOTRItems.BLACK_NUMENOREAN_SWORD, iron, 2}, {LOTRItems.BLACK_NUMENOREAN_DAGGER, iron, 1},
+                    {LOTRItems.BLACK_NUMENOREAN_SPEAR, iron, 1}, {LOTRItems.BLACK_NUMENOREAN_MACE, iron, 4},
+                    {LOTRItems.GONDOLIN_HELMET, elf, 5}, {LOTRItems.GONDOLIN_CHESTPLATE, elf, 8},
+                    {LOTRItems.GONDOLIN_LEGGINGS, elf, 7}, {LOTRItems.GONDOLIN_BOOTS, elf, 4},
+                    {LOTRItems.GONDOLIN_SWORD, elf, 2},
+                    {LOTRItems.GOLDEN_TAURETHRIM_HELMET, gold, 5}, {LOTRItems.GOLDEN_TAURETHRIM_CHESTPLATE, gold, 8},
+                    {LOTRItems.GOLDEN_TAURETHRIM_LEGGINGS, gold, 7}, {LOTRItems.GOLDEN_TAURETHRIM_BOOTS, gold, 4},
+                    {LOTRItems.BLACKSMITH_HAMMER, iron, 4},
+                    {LOTRItems.OLD_HARADRIC_SACRIFICIAL_DAGGER, iron, 1},
+                    {LOTRItems.UTUMNO_HELMET, orc, 5}, {LOTRItems.UTUMNO_CHESTPLATE, orc, 8},
+                    {LOTRItems.UTUMNO_LEGGINGS, orc, 7}, {LOTRItems.UTUMNO_BOOTS, orc, 4},
+                    {LOTRItems.UTUMNO_SWORD, orc, 2}, {LOTRItems.UTUMNO_DAGGER, orc, 1},
+                    {LOTRItems.UTUMNO_SPEAR, orc, 1}, {LOTRItems.UTUMNO_BATTLEAXE, orc, 5},
+                    {LOTRItems.UTUMNO_WARHAMMER, orc, 4}, {LOTRItems.UTUMNO_PICKAXE, orc, 3}}) {
+                map.put((Item) entry[0], java.util.Collections.nCopies((Integer) entry[2], (Item) entry[1]));
+            }
+            // The Utumno bow was on the list too, but as a bow it was never
+            // offered to the unsmeltery in the first place.
+            uncraftable = map;
+        }
+        return uncraftable;
     }
 
     /**
@@ -186,6 +293,9 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
      * <p>SIMPLIFIED from the original, which also recursed into sub-recipes so
      * that an item crafted from iron BLOCKS counted nine ingots each. This
      * counts only direct ingredient matches. See docs/TODO-unsmeltery.md.
+     *
+     * <p>Gear with no crafting recipe at all falls back on
+     * {@link #uncraftable()}, as the original searched its uncraftable list last.
      */
     public int resourcesUsed(ItemStack stack, ItemStack material) {
         if (level == null || stack.isEmpty() || material.isEmpty()) {
@@ -218,6 +328,12 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
                 // something spreads its ingredients across all four.
                 matches /= Math.max(1, result.getCount());
                 best = Math.max(best, matches);
+            }
+        }
+        if (best == 0) {
+            List<Item> grid = uncraftable().get(stack.getItem());
+            if (grid != null) {
+                best = (int) grid.stream().filter(material::is).count();
             }
         }
         RESOURCE_COUNTS.put(key, best);

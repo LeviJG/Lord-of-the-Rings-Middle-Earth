@@ -12,6 +12,9 @@
     "XYX"
   ],
   "result": {
-    "id": "lotr:green_dalish_cracker"
+    "id": "lotr:green_dalish_cracker",
+    "components": {
+      "lotr:cracker_empty": true
+    }
   }
 }

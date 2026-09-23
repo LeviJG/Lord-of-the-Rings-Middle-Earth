@@ -48,5 +48,11 @@ public final class LOTRRecipeTypes {
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "faction_crafting_transmute"),
                 LOTRFactionTransmuteRecipe.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "smoking_pipe_dye"),
+                LOTRSmokingPipeDyeRecipe.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "poison_drink"),
+                LOTRPoisonDrinkRecipe.SERIALIZER);
     }
 }
