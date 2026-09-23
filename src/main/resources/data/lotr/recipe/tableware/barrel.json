@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "minecraft:iron_ingot",
+    "Z": "minecraft:bucket"
+  },
+  "pattern": [
+    "XXX",
+    "YZY",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:barrel"
+  }
+}

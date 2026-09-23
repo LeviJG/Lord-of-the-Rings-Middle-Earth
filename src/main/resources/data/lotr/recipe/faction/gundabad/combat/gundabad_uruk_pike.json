@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "gundabad",
+  "key": {
+    "X": "lotr:uruk_steel_ingot",
+    "Y": "#lotr:bones"
+  },
+  "pattern": [
+    "  X",
+    " YX",
+    "Y  "
+  ],
+  "result": {
+    "id": "lotr:gundabad_uruk_pike"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/pike_in_hand",
+  "textures": {
+    "layer0": "lotr:item/dwarven_pike_in_hand"
+  }
+}

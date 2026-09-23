@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "morgul",
+  "key": {
+    "X": "lotr:morgul_steel_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:morgul_blade"
+  }
+}

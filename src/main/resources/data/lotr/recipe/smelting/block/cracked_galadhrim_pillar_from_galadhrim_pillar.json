@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "blocks",
+  "cookingtime": 200,
+  "experience": 0.1,
+  "ingredient": "lotr:galadhrim_pillar",
+  "result": {
+    "id": "lotr:cracked_galadhrim_pillar"
+  }
+}

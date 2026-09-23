@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:apple_planks",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "XYX",
+    "XYX"
+  ],
+  "result": {
+    "id": "lotr:apple_fence",
+    "count": 3
+  }
+}

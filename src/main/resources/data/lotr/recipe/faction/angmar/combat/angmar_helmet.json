@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "angmar",
+  "key": {
+    "X": "lotr:orc_steel_ingot"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:angmar_helmet"
+  }
+}

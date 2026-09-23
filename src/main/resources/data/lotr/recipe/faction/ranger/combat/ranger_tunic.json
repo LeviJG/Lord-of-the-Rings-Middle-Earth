@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "ranger",
+  "key": {
+    "X": "minecraft:leather",
+    "Y": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "X X",
+    "YYY",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:ranger_tunic"
+  }
+}

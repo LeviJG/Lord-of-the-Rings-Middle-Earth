@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "food",
+  "experience": 0.35,
+  "ingredient": "lotr:raw_lion",
+  "result": {
+    "id": "lotr:cooked_lion"
+  }
+}

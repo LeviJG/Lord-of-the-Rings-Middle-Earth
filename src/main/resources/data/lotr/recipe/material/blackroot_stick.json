@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:blackroot"
+  ],
+  "result": {
+    "id": "lotr:blackroot_stick",
+    "count": 2
+  }
+}

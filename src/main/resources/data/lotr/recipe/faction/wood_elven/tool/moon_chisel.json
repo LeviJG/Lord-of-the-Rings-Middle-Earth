@@ -1,0 +1,10 @@
+{
+  "type": "lotr:faction_crafting_transmute",
+  "category": "equipment",
+  "table": "wood_elven",
+  "input": "lotr:chisel",
+  "material": "lotr:ithildin",
+  "result": {
+    "id": "lotr:moon_chisel"
+  }
+}

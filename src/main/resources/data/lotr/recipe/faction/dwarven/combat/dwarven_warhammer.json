@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dwarven",
+  "key": {
+    "X": "lotr:dwarven_steel_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "XYX",
+    "XYX",
+    " Y "
+  ],
+  "result": {
+    "id": "lotr:dwarven_warhammer"
+  }
+}

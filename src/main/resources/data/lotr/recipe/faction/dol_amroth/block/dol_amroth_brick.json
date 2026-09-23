@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "dol_amroth",
+  "key": {
+    "X": "lotr:gondor_rock"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:dol_amroth_brick",
+    "count": 4
+  }
+}

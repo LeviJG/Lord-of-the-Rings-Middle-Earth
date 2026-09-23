@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "blue_dwarven",
+  "key": {
+    "X": "minecraft:stone"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:dwarven_brick",
+    "count": 4
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#lotr:sticks",
+    "Y": "lotr:olive_planks"
+  },
+  "pattern": [
+    "XYX",
+    "XYX"
+  ],
+  "result": {
+    "id": "lotr:olive_fence_gate"
+  }
+}

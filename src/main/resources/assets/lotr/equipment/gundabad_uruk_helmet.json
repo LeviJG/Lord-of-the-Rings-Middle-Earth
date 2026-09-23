@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:gundabad_uruk_helmet"
+      }
+    ]
+  }
+}

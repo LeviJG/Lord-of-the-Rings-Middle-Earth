@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:amethyst_block"
+  ],
+  "result": {
+    "id": "lotr:amethyst",
+    "count": 9
+  }
+}

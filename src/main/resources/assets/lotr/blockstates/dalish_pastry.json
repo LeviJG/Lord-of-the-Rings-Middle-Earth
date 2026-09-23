@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "bites=0": {
+      "model": "lotr:block/dalish_pastry"
+    },
+    "bites=1": {
+      "model": "lotr:block/dalish_pastry_slice1"
+    },
+    "bites=2": {
+      "model": "lotr:block/dalish_pastry_slice2"
+    },
+    "bites=3": {
+      "model": "lotr:block/dalish_pastry_slice3"
+    },
+    "bites=4": {
+      "model": "lotr:block/dalish_pastry_slice4"
+    },
+    "bites=5": {
+      "model": "lotr:block/dalish_pastry_slice5"
+    }
+  }
+}

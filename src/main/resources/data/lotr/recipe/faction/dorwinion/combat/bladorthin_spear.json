@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dorwinion",
+  "key": {
+    "X": "lotr:dwarven_steel_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "  X",
+    " Y ",
+    "Y  "
+  ],
+  "result": {
+    "id": "lotr:bladorthin_spear"
+  }
+}

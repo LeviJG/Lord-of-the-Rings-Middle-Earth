@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "gondorian",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "#c:dyes/cyan"
+  },
+  "pattern": [
+    "XXX",
+    "XYX"
+  ],
+  "result": {
+    "id": "lotr:pelargir_helmet"
+  }
+}

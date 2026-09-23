@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dol_guldur",
+  "key": {
+    "X": "lotr:orc_steel_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "  X",
+    " Y ",
+    "Y  "
+  ],
+  "result": {
+    "id": "lotr:dol_guldur_spear"
+  }
+}

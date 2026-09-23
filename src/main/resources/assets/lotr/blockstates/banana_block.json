@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "lotr:block/banana_block"
+    },
+    "facing=east": {
+      "model": "lotr:block/banana_block",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "lotr:block/banana_block",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "lotr:block/banana_block",
+      "y": 270
+    }
+  }
+}

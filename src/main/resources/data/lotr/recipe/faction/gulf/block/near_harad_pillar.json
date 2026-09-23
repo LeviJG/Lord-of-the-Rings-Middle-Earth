@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "gulf",
+  "key": {
+    "X": "minecraft:sandstone"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:near_harad_pillar",
+    "count": 3
+  }
+}

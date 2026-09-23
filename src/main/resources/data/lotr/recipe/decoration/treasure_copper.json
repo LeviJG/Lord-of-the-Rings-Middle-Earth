@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:treasure_copper_carpet",
+    "lotr:treasure_copper_carpet",
+    "lotr:treasure_copper_carpet",
+    "lotr:treasure_copper_carpet",
+    "lotr:treasure_copper_carpet",
+    "lotr:treasure_copper_carpet",
+    "lotr:treasure_copper_carpet",
+    "lotr:treasure_copper_carpet"
+  ],
+  "result": {
+    "id": "lotr:treasure_copper"
+  }
+}

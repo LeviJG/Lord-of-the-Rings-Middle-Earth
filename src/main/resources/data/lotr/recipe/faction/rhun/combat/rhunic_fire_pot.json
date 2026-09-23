@@ -1,0 +1,19 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "rhun",
+  "key": {
+    "X": "lotr:gilded_iron_ingot",
+    "Y": "minecraft:gunpowder",
+    "Z": "lotr:durnor"
+  },
+  "pattern": [
+    "Z",
+    "Y",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:rhunic_fire_pot",
+    "count": 4
+  }
+}

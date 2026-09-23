@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "category": "equipment",
+  "input": "lotr:dol_amroth_dagger",
+  "material": "lotr:bottle_of_poison",
+  "result": {
+    "id": "lotr:poisoned_dol_amroth_dagger"
+  }
+}

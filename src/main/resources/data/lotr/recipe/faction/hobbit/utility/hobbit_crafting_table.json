@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "hobbit",
+  "key": {
+    "X": "#minecraft:wool",
+    "Y": "#minecraft:planks"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:hobbit_crafting_table"
+  }
+}

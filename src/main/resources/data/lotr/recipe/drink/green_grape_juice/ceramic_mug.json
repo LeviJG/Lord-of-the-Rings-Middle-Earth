@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:ceramic_mug",
+    "lotr:green_grapes",
+    "lotr:green_grapes",
+    "lotr:green_grapes"
+  ],
+  "result": {
+    "id": "lotr:green_grape_juice",
+    "components": {
+      "lotr:vessel": "ceramic_mug"
+    }
+  }
+}

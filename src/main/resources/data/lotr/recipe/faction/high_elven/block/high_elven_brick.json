@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "high_elven",
+  "key": {
+    "X": "minecraft:stone"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:high_elven_brick",
+    "count": 4
+  }
+}

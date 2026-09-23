@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "dorwinion",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "lotr:chalk"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:dorwinion_crafting_table"
+  }
+}

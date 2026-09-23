@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "YYY",
+    "Y Y",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:wooden_bird_cage"
+  }
+}

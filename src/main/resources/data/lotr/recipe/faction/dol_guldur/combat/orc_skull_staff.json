@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dol_guldur",
+  "key": {
+    "X": "minecraft:skeleton_skull",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:orc_skull_staff"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dorwinion",
+  "key": {
+    "X": "lotr:elven_steel_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:dorwinion_elven_sword"
+  }
+}

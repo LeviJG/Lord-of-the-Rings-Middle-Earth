@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "ranger",
+  "key": {
+    "X": "minecraft:leather"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:ranger_hood"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "high_elven",
+  "key": {
+    "X": "lotr:edhelvir",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:high_elven_torch",
+    "count": 4
+  }
+}

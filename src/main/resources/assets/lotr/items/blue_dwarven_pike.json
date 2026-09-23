@@ -1,0 +1,35 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [ "gui", "ground", "fixed", "on_shelf" ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/blue_dwarven_pike"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:condition",
+      "property": "lotr:swinging",
+      "on_true": {
+        "type": "minecraft:model",
+        "model": "lotr:item/blue_dwarven_pike_in_hand"
+      },
+      "on_false": {
+        "type": "minecraft:condition",
+        "property": "lotr:sneaking",
+        "on_true": {
+          "type": "minecraft:model",
+          "model": "lotr:item/blue_dwarven_pike_braced"
+        },
+        "on_false": {
+          "type": "minecraft:model",
+          "model": "lotr:item/blue_dwarven_pike_carried"
+        }
+      }
+    }
+  }
+}

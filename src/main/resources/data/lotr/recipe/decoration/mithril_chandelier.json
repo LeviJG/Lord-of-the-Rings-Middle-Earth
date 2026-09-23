@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#lotr:sticks",
+    "Y": "minecraft:torch",
+    "Z": "lotr:mithril"
+  },
+  "pattern": [
+    " X ",
+    "YZY"
+  ],
+  "result": {
+    "id": "lotr:mithril_chandelier",
+    "count": 2
+  }
+}

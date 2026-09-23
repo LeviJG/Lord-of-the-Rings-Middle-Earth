@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "elven",
+  "key": {
+    "X": "lotr:galadhrim_brick"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:carved_galadhrim_brick"
+  }
+}

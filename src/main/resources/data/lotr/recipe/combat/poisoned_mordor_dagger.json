@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "category": "equipment",
+  "input": "lotr:mordor_dagger",
+  "material": "lotr:bottle_of_poison",
+  "result": {
+    "id": "lotr:poisoned_mordor_dagger"
+  }
+}

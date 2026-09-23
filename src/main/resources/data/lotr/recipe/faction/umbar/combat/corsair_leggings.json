@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "umbar",
+  "key": {
+    "X": "lotr:bronze_ingot",
+    "Y": "minecraft:leather"
+  },
+  "pattern": [
+    "XXX",
+    "Y Y",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:corsair_leggings"
+  }
+}

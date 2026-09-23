@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "moredain",
+  "key": {
+    "X": "lotr:lion_fur"
+  },
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:morwaith_chieftain_boots"
+  }
+}

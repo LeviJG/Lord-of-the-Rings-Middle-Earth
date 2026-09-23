@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:rotten_flesh",
+    "lotr:salt"
+  ],
+  "result": {
+    "id": "lotr:suspicious_meat"
+  }
+}

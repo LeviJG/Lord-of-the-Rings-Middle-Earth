@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "umbar",
+  "key": {
+    "X": "#minecraft:wool"
+  },
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:harad_robe_shoes"
+  }
+}

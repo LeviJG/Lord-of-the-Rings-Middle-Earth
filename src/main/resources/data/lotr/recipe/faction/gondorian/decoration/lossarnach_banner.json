@@ -1,0 +1,19 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "gondorian",
+  "key": {
+    "A": "minecraft:rose_bush",
+    "X": "#minecraft:wool",
+    "Y": "#lotr:sticks",
+    "Z": "#minecraft:planks"
+  },
+  "pattern": [
+    "XA",
+    "Y ",
+    "Z "
+  ],
+  "result": {
+    "id": "lotr:lossarnach_banner"
+  }
+}

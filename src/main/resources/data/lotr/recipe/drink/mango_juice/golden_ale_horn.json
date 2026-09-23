@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:golden_ale_horn",
+    "lotr:mango",
+    "lotr:mango"
+  ],
+  "result": {
+    "id": "lotr:mango_juice",
+    "components": {
+      "lotr:vessel": "golden_ale_horn"
+    }
+  }
+}

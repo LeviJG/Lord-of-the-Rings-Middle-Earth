@@ -1,0 +1,20 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:harad_robes",
+        "dyeable": {
+          "color_when_undyed": 16777215
+        }
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:harad_robes",
+        "dyeable": {
+          "color_when_undyed": 16777215
+        }
+      }
+    ]
+  }
+}

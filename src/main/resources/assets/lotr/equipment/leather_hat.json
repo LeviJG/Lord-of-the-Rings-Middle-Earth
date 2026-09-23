@@ -1,0 +1,12 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:leather_hat",
+        "dyeable": {
+          "color_when_undyed": 16777215
+        }
+      }
+    ]
+  }
+}

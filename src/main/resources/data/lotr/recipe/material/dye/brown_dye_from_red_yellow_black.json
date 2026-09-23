@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "#c:dyes/red",
+    "#c:dyes/yellow",
+    "#c:dyes/black"
+  ],
+  "result": {
+    "id": "lotr:brown_dye",
+    "count": 3
+  }
+}

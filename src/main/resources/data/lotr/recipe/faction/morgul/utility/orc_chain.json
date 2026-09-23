@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "morgul",
+  "key": {
+    "X": "lotr:orc_steel_ingot"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:orc_chain",
+    "count": 8
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#lotr:arrow_tips",
+    "Y": "#lotr:sticks",
+    "Z": "#lotr:feathers"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Z"
+  ],
+  "result": {
+    "id": "minecraft:arrow",
+    "count": 4
+  }
+}

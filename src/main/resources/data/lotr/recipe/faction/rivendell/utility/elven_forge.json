@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "rivendell",
+  "key": {
+    "X": "lotr:high_elven_brick"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:elven_forge"
+  }
+}

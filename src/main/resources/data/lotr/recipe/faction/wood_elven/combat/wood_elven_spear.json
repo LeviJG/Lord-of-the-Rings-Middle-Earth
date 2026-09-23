@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "wood_elven",
+  "key": {
+    "X": "lotr:elven_steel_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "  X",
+    " Y ",
+    "Y  "
+  ],
+  "result": {
+    "id": "lotr:wood_elven_spear"
+  }
+}

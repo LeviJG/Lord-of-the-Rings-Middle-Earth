@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "uruk",
+  "key": {
+    "X": "lotr:uruk_steel_ingot",
+    "Y": "minecraft:leather"
+  },
+  "pattern": [
+    "X  ",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:isengard_warg_armor"
+  }
+}

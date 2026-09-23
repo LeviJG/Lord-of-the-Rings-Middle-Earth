@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/spear_in_hand",
+  "textures": {
+    "layer0": "lotr:item/black_numenorean_spear_in_hand"
+  }
+}

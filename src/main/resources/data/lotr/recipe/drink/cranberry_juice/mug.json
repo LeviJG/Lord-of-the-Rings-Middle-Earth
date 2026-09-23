@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:mug",
+    "lotr:cranberries",
+    "lotr:cranberries",
+    "lotr:cranberries"
+  ],
+  "result": {
+    "id": "lotr:cranberry_juice"
+  }
+}

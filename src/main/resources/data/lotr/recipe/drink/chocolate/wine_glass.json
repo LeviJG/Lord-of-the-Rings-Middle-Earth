@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "lotr:milk",
+      "components": {
+        "lotr:vessel": "wine_glass"
+      }
+    },
+    "minecraft:sugar",
+    "minecraft:cocoa_beans"
+  ],
+  "result": {
+    "id": "lotr:chocolate",
+    "components": {
+      "lotr:vessel": "wine_glass"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/lance_in_hand",
+  "textures": {
+    "layer0": "lotr:item/rohirric_lance_in_hand"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "values": [
+    "lotr:gammon",
+    "lotr:rabbit_stew",
+    "lotr:raw_lion",
+    "lotr:cooked_lion",
+    "lotr:raw_zebra",
+    "lotr:cooked_zebra",
+    "lotr:raw_rhino",
+    "lotr:cooked_rhino",
+    "lotr:torog_stew",
+    "lotr:raw_mutton",
+    "lotr:cooked_mutton",
+    "lotr:raw_venison",
+    "lotr:cooked_venison",
+    "lotr:raw_camel",
+    "lotr:cooked_camel",
+    "lotr:man_flesh",
+    "lotr:suspicious_meat",
+    "lotr:kebab"
+  ]
+}

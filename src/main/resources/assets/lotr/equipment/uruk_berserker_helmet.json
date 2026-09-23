@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:uruk_berserker_helmet"
+      }
+    ]
+  }
+}

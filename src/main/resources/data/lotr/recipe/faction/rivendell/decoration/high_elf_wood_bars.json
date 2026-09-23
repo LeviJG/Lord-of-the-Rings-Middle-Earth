@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "rivendell",
+  "key": {
+    "X": "#lotr:sticks"
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:high_elf_wood_bars",
+    "count": 8
+  }
+}

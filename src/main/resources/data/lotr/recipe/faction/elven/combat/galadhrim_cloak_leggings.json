@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "elven",
+  "key": {
+    "X": "lotr:hithlain"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:galadhrim_cloak_leggings"
+  }
+}

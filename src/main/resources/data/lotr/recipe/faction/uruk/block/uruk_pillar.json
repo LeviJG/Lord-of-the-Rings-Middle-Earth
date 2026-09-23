@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "uruk",
+  "key": {
+    "X": "minecraft:stone"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:uruk_pillar",
+    "count": 3
+  }
+}

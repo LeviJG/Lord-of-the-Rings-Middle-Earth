@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "moredain",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "lotr:red_clay"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:moredain_crafting_table"
+  }
+}

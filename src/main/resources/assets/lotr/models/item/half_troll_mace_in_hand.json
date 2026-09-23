@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/handheld_large",
+  "textures": {
+    "layer0": "lotr:item/half_troll_mace_in_hand"
+  }
+}

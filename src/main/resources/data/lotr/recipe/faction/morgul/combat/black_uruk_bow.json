@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "morgul",
+  "key": {
+    "X": "lotr:black_uruk_steel_ingot",
+    "Y": "minecraft:string"
+  },
+  "pattern": [
+    " XY",
+    "X Y",
+    " XY"
+  ],
+  "result": {
+    "id": "lotr:black_uruk_bow"
+  }
+}

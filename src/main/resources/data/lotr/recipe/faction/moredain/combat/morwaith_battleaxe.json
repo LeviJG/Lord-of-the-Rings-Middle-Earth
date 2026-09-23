@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "moredain",
+  "key": {
+    "X": "lotr:rhino_horn",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    " Y "
+  ],
+  "result": {
+    "id": "lotr:morwaith_battleaxe"
+  }
+}

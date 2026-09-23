@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "umbar",
+  "key": {
+    "X": "lotr:crossbow_bolt",
+    "Y": "lotr:bottle_of_poison"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:poisoned_crossbow_bolt",
+    "count": 4
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "tauredain",
+  "key": {
+    "X": [
+      "minecraft:coal",
+      "minecraft:charcoal"
+    ],
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:tauredain_double_torch",
+    "count": 2
+  }
+}

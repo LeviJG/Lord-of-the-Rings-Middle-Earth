@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:tin_ingot",
+    "Y": "#minecraft:planks"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:mug",
+    "count": 2
+  }
+}

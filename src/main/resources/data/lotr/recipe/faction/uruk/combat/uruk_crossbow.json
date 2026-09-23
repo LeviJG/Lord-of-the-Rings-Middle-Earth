@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "uruk",
+  "key": {
+    "X": "lotr:uruk_steel_ingot",
+    "Y": "#lotr:sticks",
+    "Z": "minecraft:string"
+  },
+  "pattern": [
+    "XXY",
+    "ZYX",
+    "YZX"
+  ],
+  "result": {
+    "id": "lotr:uruk_crossbow"
+  }
+}

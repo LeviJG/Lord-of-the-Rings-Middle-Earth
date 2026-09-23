@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#minecraft:logs"
+  },
+  "pattern": [
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:wooden_plate",
+    "count": 2
+  }
+}

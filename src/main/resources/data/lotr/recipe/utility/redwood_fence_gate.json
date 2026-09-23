@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "#lotr:sticks",
+    "Y": "lotr:redwood_planks"
+  },
+  "pattern": [
+    "XYX",
+    "XYX"
+  ],
+  "result": {
+    "id": "lotr:redwood_fence_gate"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "X": "lotr:glass",
+    "Y": "#c:dyes/magenta"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:magenta_stained_glass",
+    "count": 8
+  }
+}

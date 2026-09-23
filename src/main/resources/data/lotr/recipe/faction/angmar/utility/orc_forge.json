@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "angmar",
+  "key": {
+    "X": "lotr:angmar_brick"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:orc_forge"
+  }
+}

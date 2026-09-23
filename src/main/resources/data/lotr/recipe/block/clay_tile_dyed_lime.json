@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "X": "lotr:clay_tile",
+    "Y": "#c:dyes/lime"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:clay_tile_dyed_lime",
+    "count": 8
+  }
+}

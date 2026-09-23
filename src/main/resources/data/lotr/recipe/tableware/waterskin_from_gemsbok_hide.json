@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:gemsbok_hide",
+    "Y": "minecraft:string"
+  },
+  "pattern": [
+    " Y ",
+    "X X",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:waterskin",
+    "count": 2
+  }
+}

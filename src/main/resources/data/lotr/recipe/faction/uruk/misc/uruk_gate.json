@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "uruk",
+  "key": {
+    "X": "lotr:gate_gears",
+    "Y": "lotr:uruk_steel_ingot"
+  },
+  "pattern": [
+    "YYY",
+    "YXY",
+    "YYY"
+  ],
+  "result": {
+    "id": "lotr:uruk_gate",
+    "count": 4
+  }
+}

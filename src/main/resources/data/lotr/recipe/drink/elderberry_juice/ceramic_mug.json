@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:ceramic_mug",
+    "lotr:elderberries",
+    "lotr:elderberries",
+    "lotr:elderberries"
+  ],
+  "result": {
+    "id": "lotr:elderberry_juice",
+    "components": {
+      "lotr:vessel": "ceramic_mug"
+    }
+  }
+}

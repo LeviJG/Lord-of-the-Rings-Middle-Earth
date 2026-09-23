@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "minecraft:iron_nugget"
+  },
+  "pattern": [
+    "X X",
+    "YYY",
+    "XXX"
+  ],
+  "result": {
+    "id": "minecraft:chainmail_chestplate"
+  }
+}

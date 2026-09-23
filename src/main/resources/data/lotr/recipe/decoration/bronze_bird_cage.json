@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:bronze_ingot",
+    "Y": "lotr:bronze_bars"
+  },
+  "pattern": [
+    "YYY",
+    "Y Y",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:bronze_bird_cage"
+  }
+}

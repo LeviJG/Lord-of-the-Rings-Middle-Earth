@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "ranger",
+  "key": {
+    "X": "#minecraft:planks"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:ranger_crafting_table"
+  }
+}

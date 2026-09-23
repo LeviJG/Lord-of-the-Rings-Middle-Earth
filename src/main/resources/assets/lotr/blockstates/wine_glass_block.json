@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "lotr:block/vessel_particles"
+    },
+    "facing=east": {
+      "model": "lotr:block/vessel_particles"
+    },
+    "facing=south": {
+      "model": "lotr:block/vessel_particles"
+    },
+    "facing=west": {
+      "model": "lotr:block/vessel_particles"
+    }
+  }
+}

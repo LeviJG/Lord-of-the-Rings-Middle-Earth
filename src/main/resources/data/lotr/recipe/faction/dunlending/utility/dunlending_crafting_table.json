@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "dunlending",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "minecraft:cobblestone"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:dunlending_crafting_table"
+  }
+}

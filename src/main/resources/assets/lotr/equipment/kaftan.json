@@ -1,0 +1,20 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:kaftan",
+        "dyeable": {
+          "color_when_undyed": 16777215
+        }
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:kaftan",
+        "dyeable": {
+          "color_when_undyed": 16777215
+        }
+      }
+    ]
+  }
+}

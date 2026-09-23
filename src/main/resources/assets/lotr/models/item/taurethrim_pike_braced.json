@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/pike_braced",
+  "textures": {
+    "layer0": "lotr:item/taurethrim_pike_in_hand"
+  }
+}

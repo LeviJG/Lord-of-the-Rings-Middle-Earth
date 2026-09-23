@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "uruk",
+  "key": {
+    "X": "lotr:uruk_steel_ingot"
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:uruk_bars",
+    "count": 16
+  }
+}

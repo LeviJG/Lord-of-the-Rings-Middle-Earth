@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "experience": 0.35,
+  "ingredient": "lotr:tin_ore",
+  "result": {
+    "id": "lotr:tin_ingot"
+  }
+}

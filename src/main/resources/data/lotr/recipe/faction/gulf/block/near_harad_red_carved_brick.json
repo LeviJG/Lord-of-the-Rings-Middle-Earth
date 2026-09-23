@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "gulf",
+  "key": {
+    "X": "lotr:near_harad_red_brick"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:near_harad_red_carved_brick"
+  }
+}

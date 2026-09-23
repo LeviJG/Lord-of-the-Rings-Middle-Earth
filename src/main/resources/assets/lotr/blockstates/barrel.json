@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "lotr:block/barrel"
+    },
+    "facing=east": {
+      "model": "lotr:block/barrel",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "lotr:block/barrel",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "lotr:block/barrel",
+      "y": 270
+    }
+  }
+}

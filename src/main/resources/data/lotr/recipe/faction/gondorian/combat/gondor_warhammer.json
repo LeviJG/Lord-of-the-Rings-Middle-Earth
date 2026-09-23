@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "gondorian",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "XYX",
+    "XYX",
+    " Y "
+  ],
+  "result": {
+    "id": "lotr:gondor_warhammer"
+  }
+}

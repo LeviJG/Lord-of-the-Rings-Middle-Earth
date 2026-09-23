@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "X": [
+      "lotr:mud",
+      "lotr:barren_jungle_mud"
+    ]
+  },
+  "pattern": [
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:dirt_path_mud",
+    "count": 2
+  }
+}

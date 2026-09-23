@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:blackroot"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:blackroot"
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "ingredients": [
+    "minecraft:bricks",
+    "#lotr:vines"
+  ],
+  "result": {
+    "id": "lotr:red_brick_mossy"
+  }
+}

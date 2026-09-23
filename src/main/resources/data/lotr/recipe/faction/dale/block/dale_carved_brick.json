@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "dale",
+  "key": {
+    "X": "lotr:dale_brick"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:dale_carved_brick"
+  }
+}

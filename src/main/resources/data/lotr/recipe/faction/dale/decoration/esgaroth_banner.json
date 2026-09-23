@@ -1,0 +1,19 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "dale",
+  "key": {
+    "A": "minecraft:cod",
+    "X": "#minecraft:wool",
+    "Y": "#lotr:sticks",
+    "Z": "#minecraft:planks"
+  },
+  "pattern": [
+    "XA",
+    "Y ",
+    "Z "
+  ],
+  "result": {
+    "id": "lotr:esgaroth_banner"
+  }
+}

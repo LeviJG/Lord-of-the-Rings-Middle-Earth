@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "top": "lotr:block/berry_pie_top",
+    "bottom": "lotr:block/berry_pie_bottom",
+    "side": "lotr:block/berry_pie_side",
+    "inner": "lotr:block/berry_pie_inner",
+    "particle": "lotr:block/berry_pie_side"
+  },
+  "elements": [
+    {
+      "from": [
+        5.6667,
+        0,
+        1.0
+      ],
+      "to": [
+        15.0,
+        8.0,
+        15.0
+      ],
+      "faces": {
+        "down": {
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#inner"
+        },
+        "east": {
+          "texture": "#side"
+        }
+      }
+    }
+  ]
+}

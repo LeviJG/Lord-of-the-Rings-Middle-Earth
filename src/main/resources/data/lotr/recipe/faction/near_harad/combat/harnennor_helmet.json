@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "near_harad",
+  "key": {
+    "X": "lotr:bronze_ingot",
+    "Y": "minecraft:leather"
+  },
+  "pattern": [
+    "XXX",
+    "Y Y"
+  ],
+  "result": {
+    "id": "lotr:harnennor_helmet"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "dol_amroth",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "lotr:gondor_rock"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:dol_amroth_crafting_table"
+  }
+}

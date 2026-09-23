@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:smoking_pipe",
+    "#c:dyes/green"
+  ],
+  "result": {
+    "id": "lotr:smoking_pipe",
+    "components": {
+      "lotr:smoke_color": 13
+    }
+  }
+}

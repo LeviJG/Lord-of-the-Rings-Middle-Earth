@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:golden_goblet",
+    "lotr:green_grapes",
+    "lotr:green_grapes",
+    "lotr:green_grapes"
+  ],
+  "result": {
+    "id": "lotr:green_grape_juice",
+    "components": {
+      "lotr:vessel": "golden_goblet"
+    }
+  }
+}

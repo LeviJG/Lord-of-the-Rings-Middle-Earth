@@ -1,0 +1,12 @@
+{
+  "type": "lotr:faction_crafting_shapeless",
+  "category": "building",
+  "table": "high_elven",
+  "ingredients": [
+    "lotr:high_elven_brick",
+    "#lotr:vines"
+  ],
+  "result": {
+    "id": "lotr:mossy_high_elven_brick"
+  }
+}

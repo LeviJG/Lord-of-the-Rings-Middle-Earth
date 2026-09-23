@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "lotr:block/carved_sign"
+    },
+    "facing=south": {
+      "model": "lotr:block/carved_sign"
+    },
+    "facing=west": {
+      "model": "lotr:block/carved_sign"
+    },
+    "facing=east": {
+      "model": "lotr:block/carved_sign"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "rivendell",
+  "key": {
+    "X": "lotr:elven_steel_ingot"
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:high_elf_bars",
+    "count": 16
+  }
+}

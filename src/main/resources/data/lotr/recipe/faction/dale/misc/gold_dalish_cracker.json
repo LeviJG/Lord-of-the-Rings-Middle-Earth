@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "dale",
+  "key": {
+    "X": "minecraft:paper",
+    "Y": "minecraft:gunpowder",
+    "Z": "#c:dyes/yellow"
+  },
+  "pattern": [
+    " Z ",
+    "XYX"
+  ],
+  "result": {
+    "id": "lotr:gold_dalish_cracker"
+  }
+}

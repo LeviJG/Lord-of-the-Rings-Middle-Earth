@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:golden_ale_horn",
+    "lotr:pomegranate",
+    "lotr:pomegranate"
+  ],
+  "result": {
+    "id": "lotr:pomegranate_juice",
+    "components": {
+      "lotr:vessel": "golden_ale_horn"
+    }
+  }
+}

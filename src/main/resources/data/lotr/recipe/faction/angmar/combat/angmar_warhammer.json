@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "angmar",
+  "key": {
+    "X": "lotr:orc_steel_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "XYX",
+    "XYX",
+    " Y "
+  ],
+  "result": {
+    "id": "lotr:angmar_warhammer"
+  }
+}

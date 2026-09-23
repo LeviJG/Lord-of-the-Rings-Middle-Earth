@@ -1,0 +1,12 @@
+{
+  "type": "lotr:faction_crafting_shapeless",
+  "category": "building",
+  "table": "angmar",
+  "ingredients": [
+    "lotr:angmar_brick",
+    "minecraft:snowball"
+  ],
+  "result": {
+    "id": "lotr:angmar_snow_brick"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "angmar",
+  "key": {
+    "X": "minecraft:stone"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:angmar_brick",
+    "count": 4
+  }
+}

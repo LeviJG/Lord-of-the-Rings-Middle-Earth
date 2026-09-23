@@ -1,0 +1,14 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "dol_guldur",
+  "key": {
+    "X": "minecraft:wheat"
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:maggoty_bread"
+  }
+}

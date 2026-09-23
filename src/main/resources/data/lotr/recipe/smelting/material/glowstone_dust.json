@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "experience": 1.0,
+  "ingredient": "lotr:glowstone_ore",
+  "result": {
+    "id": "minecraft:glowstone_dust"
+  }
+}

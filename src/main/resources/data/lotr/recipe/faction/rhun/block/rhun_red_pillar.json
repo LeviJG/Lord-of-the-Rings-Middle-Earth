@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "rhun",
+  "key": {
+    "X": "lotr:red_rock"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:rhun_red_pillar",
+    "count": 3
+  }
+}

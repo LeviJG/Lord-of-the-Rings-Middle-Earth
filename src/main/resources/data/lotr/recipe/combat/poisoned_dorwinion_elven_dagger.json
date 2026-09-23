@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "category": "equipment",
+  "input": "lotr:dorwinion_elven_dagger",
+  "material": "lotr:bottle_of_poison",
+  "result": {
+    "id": "lotr:poisoned_dorwinion_elven_dagger"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:marchpane"
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:marchpane_block"
+  }
+}

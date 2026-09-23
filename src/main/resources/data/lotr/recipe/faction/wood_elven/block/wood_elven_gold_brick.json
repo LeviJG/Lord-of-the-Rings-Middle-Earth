@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "wood_elven",
+  "key": {
+    "X": "minecraft:gold_nugget",
+    "Y": "lotr:wood_elven_brick"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:wood_elven_gold_brick"
+  }
+}

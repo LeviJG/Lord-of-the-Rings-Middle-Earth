@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "minecraft:iron_block"
+  },
+  "pattern": [
+    "XXX",
+    " Y ",
+    "XXX"
+  ],
+  "result": {
+    "id": "minecraft:anvil"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "morgul",
+  "key": {
+    "X": "#minecraft:wool",
+    "Y": "#minecraft:planks"
+  },
+  "pattern": [
+    "XXX",
+    "YYY"
+  ],
+  "result": {
+    "id": "lotr:orc_bed"
+  }
+}

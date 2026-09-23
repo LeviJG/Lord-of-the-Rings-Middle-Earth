@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "blue_dwarven",
+  "key": {
+    "X": "lotr:dwarven_brick"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:carved_dwarven_brick"
+  }
+}

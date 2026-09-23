@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "uruk",
+  "key": {
+    "X": "lotr:uruk_steel_ingot"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:uruk_chestplate"
+  }
+}

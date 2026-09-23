@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:pipeweed_plant"
+  ],
+  "result": {
+    "id": "lotr:pipeweed_seeds",
+    "count": 2
+  }
+}

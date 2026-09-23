@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "elven",
+  "key": {
+    "X": "minecraft:gold_nugget",
+    "Y": "lotr:galadhrim_brick"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:galadhrim_gold_brick"
+  }
+}

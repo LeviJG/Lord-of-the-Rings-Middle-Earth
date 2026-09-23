@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "rhun",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "lotr:rhun_brick"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:rhun_crafting_table"
+  }
+}

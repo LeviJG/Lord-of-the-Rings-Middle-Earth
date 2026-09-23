@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "high_elven",
+  "key": {
+    "X": "lotr:high_elven_brick"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:carved_high_elven_brick"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "umbar",
+  "key": {
+    "X": "lotr:dried_reeds"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:nomad_tunic"
+  }
+}

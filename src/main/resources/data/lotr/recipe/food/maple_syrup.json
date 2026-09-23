@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:maple_log",
+    "minecraft:bowl"
+  ],
+  "result": {
+    "id": "lotr:maple_syrup"
+  }
+}

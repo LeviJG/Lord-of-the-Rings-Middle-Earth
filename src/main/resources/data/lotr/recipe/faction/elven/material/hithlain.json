@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "elven",
+  "key": {
+    "X": "minecraft:string"
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:hithlain",
+    "count": 3
+  }
+}

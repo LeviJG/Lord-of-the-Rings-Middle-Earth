@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "lotr:sulfur",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:sulfur_match",
+    "count": 4
+  }
+}

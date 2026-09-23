@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "uruk",
+  "key": {
+    "X": "minecraft:copper_ingot",
+    "Y": "minecraft:flint",
+    "Z": "lotr:uruk_steel_ingot"
+  },
+  "pattern": [
+    " X ",
+    "YZY",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:mechanism"
+  }
+}

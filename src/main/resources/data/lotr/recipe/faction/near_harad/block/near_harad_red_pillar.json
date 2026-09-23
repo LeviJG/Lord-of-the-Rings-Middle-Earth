@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "near_harad",
+  "key": {
+    "X": "minecraft:red_sandstone"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:near_harad_red_pillar",
+    "count": 3
+  }
+}

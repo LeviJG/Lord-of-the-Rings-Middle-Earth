@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:marchpane",
+    "minecraft:cocoa_beans"
+  ],
+  "result": {
+    "id": "lotr:chocolate_marchpane"
+  }
+}

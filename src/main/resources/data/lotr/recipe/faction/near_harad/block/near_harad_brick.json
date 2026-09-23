@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "near_harad",
+  "key": {
+    "X": "minecraft:sandstone"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:near_harad_brick",
+    "count": 4
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "wood_elven",
+  "key": {
+    "X": "lotr:galvorn_ingot"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:galvorn_leggings"
+  }
+}

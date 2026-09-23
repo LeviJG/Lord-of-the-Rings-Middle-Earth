@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:mug",
+    "lotr:elderberries",
+    "lotr:elderberries",
+    "lotr:elderberries"
+  ],
+  "result": {
+    "id": "lotr:elderberry_juice"
+  }
+}

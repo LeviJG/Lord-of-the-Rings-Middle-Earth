@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "gundabad",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "minecraft:cobblestone"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:gundabad_crafting_table"
+  }
+}

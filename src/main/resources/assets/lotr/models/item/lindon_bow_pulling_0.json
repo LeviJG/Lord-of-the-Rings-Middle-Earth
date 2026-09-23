@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/bow_large",
+  "textures": {
+    "layer0": "lotr:item/lindon_bow_pulling_0"
+  }
+}

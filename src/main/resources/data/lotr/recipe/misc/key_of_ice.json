@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:ice_key_handle",
+    "lotr:ice_key_shaft",
+    "lotr:ice_key_pin"
+  ],
+  "result": {
+    "id": "lotr:key_of_ice"
+  }
+}

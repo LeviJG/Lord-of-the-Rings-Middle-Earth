@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:mordor_rock"
+  },
+  "pattern": [
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:mordor_rock_pressure_plate"
+  }
+}

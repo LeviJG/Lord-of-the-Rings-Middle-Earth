@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "elven",
+  "key": {
+    "X": "lotr:mallorn_planks"
+  },
+  "pattern": [
+    "XX",
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:mallorn_door"
+  }
+}

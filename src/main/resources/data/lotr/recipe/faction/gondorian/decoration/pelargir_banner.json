@@ -1,0 +1,19 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "gondorian",
+  "key": {
+    "A": "#c:dyes/cyan",
+    "X": "#minecraft:wool",
+    "Y": "#lotr:sticks",
+    "Z": "#minecraft:planks"
+  },
+  "pattern": [
+    "XA",
+    "Y ",
+    "Z "
+  ],
+  "result": {
+    "id": "lotr:pelargir_banner"
+  }
+}

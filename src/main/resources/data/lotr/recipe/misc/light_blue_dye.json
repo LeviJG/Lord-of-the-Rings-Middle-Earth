@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:dwarf_herb"
+  ],
+  "result": {
+    "id": "minecraft:light_blue_dye"
+  }
+}

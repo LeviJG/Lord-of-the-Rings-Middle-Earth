@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dwarven",
+  "key": {
+    "X": "lotr:mithril_nugget",
+    "Y": "lotr:dwarven_chestplate"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:mithril_trimmed_dwarven_chestplate"
+  }
+}

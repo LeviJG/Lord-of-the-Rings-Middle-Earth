@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "dol_amroth",
+  "key": {
+    "X": "lotr:mordor_rock"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:numenorean_pillar",
+    "count": 3
+  }
+}

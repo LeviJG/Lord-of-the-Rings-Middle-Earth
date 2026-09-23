@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "umbar",
+  "key": {
+    "X": "minecraft:stone"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:umbar_pillar",
+    "count": 3
+  }
+}

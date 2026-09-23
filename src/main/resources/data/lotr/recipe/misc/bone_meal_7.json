@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:niter",
+    [
+      "minecraft:dirt",
+      "minecraft:coarse_dirt",
+      "minecraft:podzol"
+    ]
+  ],
+  "result": {
+    "id": "minecraft:bone_meal",
+    "count": 2
+  }
+}

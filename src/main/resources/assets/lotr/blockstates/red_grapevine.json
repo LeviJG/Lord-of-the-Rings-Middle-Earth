@@ -1,0 +1,28 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "lotr:block/red_grapevine"
+    },
+    "age=1": {
+      "model": "lotr:block/red_grapevine"
+    },
+    "age=2": {
+      "model": "lotr:block/red_grapevine"
+    },
+    "age=3": {
+      "model": "lotr:block/red_grapevine"
+    },
+    "age=4": {
+      "model": "lotr:block/red_grapevine"
+    },
+    "age=5": {
+      "model": "lotr:block/red_grapevine"
+    },
+    "age=6": {
+      "model": "lotr:block/red_grapevine"
+    },
+    "age=7": {
+      "model": "lotr:block/red_grapevine_ripe"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "rhun",
+  "key": {
+    "X": "lotr:gilded_iron_ingot"
+  },
+  "pattern": [
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:golden_rhunic_boots"
+  }
+}

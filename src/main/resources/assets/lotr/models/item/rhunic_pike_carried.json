@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/pike_carried",
+  "textures": {
+    "layer0": "lotr:item/rhunic_pike_in_hand"
+  }
+}

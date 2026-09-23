@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "minecraft:iron_bars"
+  },
+  "pattern": [
+    "YYY",
+    "Y Y",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:iron_bird_cage"
+  }
+}

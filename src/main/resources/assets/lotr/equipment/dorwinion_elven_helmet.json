@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:dorwinion_elven_helmet"
+      }
+    ]
+  }
+}

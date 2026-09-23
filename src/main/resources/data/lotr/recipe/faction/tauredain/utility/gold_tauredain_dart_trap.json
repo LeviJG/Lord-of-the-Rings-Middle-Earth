@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "tauredain",
+  "key": {
+    "X": "lotr:tauredain_gold_brick",
+    "Y": "lotr:taurethrim_blowgun"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:gold_tauredain_dart_trap"
+  }
+}

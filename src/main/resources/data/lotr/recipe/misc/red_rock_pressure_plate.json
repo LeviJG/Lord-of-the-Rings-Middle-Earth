@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:red_rock"
+  },
+  "pattern": [
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:red_rock_pressure_plate"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:gate_gears",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "YYY",
+    "YXY",
+    "YYY"
+  ],
+  "result": {
+    "id": "lotr:gate_wooden_cross",
+    "count": 4
+  }
+}

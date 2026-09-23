@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "experience": 1.0,
+  "ingredient": "lotr:saltpeter_ore",
+  "result": {
+    "id": "lotr:niter"
+  }
+}

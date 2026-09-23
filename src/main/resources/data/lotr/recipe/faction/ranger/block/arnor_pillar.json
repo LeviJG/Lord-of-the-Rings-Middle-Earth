@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "ranger",
+  "key": {
+    "X": "minecraft:stone"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:arnor_pillar",
+    "count": 3
+  }
+}

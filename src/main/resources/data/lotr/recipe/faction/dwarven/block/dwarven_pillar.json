@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "dwarven",
+  "key": {
+    "X": "minecraft:stone"
+  },
+  "pattern": [
+    "X",
+    "X",
+    "X"
+  ],
+  "result": {
+    "id": "lotr:dwarven_pillar",
+    "count": 3
+  }
+}

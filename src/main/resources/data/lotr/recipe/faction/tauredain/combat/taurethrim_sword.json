@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "tauredain",
+  "key": {
+    "X": "lotr:obsidian_shard",
+    "Y": "#lotr:sticks",
+    "Z": "#minecraft:planks"
+  },
+  "pattern": [
+    "XZX",
+    "XZX",
+    " Y "
+  ],
+  "result": {
+    "id": "lotr:taurethrim_sword"
+  }
+}

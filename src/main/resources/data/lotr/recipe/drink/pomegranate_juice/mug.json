@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:mug",
+    "lotr:pomegranate",
+    "lotr:pomegranate"
+  ],
+  "result": {
+    "id": "lotr:pomegranate_juice"
+  }
+}

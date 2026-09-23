@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "half_troll",
+  "key": {
+    "X": "lotr:gemsbok_hide",
+    "Y": "minecraft:string"
+  },
+  "pattern": [
+    "Y Y",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:half_troll_boots"
+  }
+}

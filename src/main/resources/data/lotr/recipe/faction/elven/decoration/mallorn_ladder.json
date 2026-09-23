@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "elven",
+  "key": {
+    "X": "lotr:mallorn_stick"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:mallorn_ladder",
+    "count": 3
+  }
+}

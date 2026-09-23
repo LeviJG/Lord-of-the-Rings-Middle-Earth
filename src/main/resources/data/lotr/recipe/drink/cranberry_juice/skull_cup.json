@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:skull_cup",
+    "lotr:cranberries",
+    "lotr:cranberries",
+    "lotr:cranberries"
+  ],
+  "result": {
+    "id": "lotr:cranberry_juice",
+    "components": {
+      "lotr:vessel": "skull_cup"
+    }
+  }
+}

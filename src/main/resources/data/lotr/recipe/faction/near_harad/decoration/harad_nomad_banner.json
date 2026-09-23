@@ -1,0 +1,22 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "near_harad",
+  "key": {
+    "A": [
+      "minecraft:sand",
+      "minecraft:red_sand"
+    ],
+    "X": "#minecraft:wool",
+    "Y": "#lotr:sticks",
+    "Z": "#minecraft:planks"
+  },
+  "pattern": [
+    "XA",
+    "Y ",
+    "Z "
+  ],
+  "result": {
+    "id": "lotr:harad_nomad_banner"
+  }
+}

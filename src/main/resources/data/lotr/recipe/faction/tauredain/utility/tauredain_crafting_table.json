@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "tauredain",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "lotr:tauredain_brick"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:tauredain_crafting_table"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "near_harad",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "#lotr:sticks",
+    "Z": "minecraft:cobblestone"
+  },
+  "pattern": [
+    " X ",
+    " Y ",
+    "ZZZ"
+  ],
+  "result": {
+    "id": "lotr:kebab_stand"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "high_elven",
+  "key": {
+    "X": "#minecraft:wool",
+    "Y": "#minecraft:planks"
+  },
+  "pattern": [
+    "XXX",
+    "YYY"
+  ],
+  "result": {
+    "id": "lotr:high_elven_bed"
+  }
+}

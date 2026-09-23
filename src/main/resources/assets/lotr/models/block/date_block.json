@@ -1,0 +1,44 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "top": "lotr:block/date_block_top",
+    "side": "lotr:block/date_block_side",
+    "bottom": "lotr:block/date_block_bottom",
+    "particle": "lotr:block/date_block_side"
+  },
+  "elements": [
+    {
+      "from": [
+        6,
+        5,
+        0
+      ],
+      "to": [
+        10,
+        11,
+        4
+      ],
+      "faces": {
+        "down": {
+          "texture": "#bottom"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#side"
+        },
+        "east": {
+          "texture": "#side"
+        }
+      }
+    }
+  ]
+}

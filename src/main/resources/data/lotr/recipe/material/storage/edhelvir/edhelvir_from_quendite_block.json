@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:quendite_block"
+  ],
+  "result": {
+    "id": "lotr:edhelvir",
+    "count": 9
+  }
+}

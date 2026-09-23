@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "gondorian",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "minecraft:leather",
+    "Z": "#c:dyes/blue"
+  },
+  "pattern": [
+    "YZY",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:lamedon_boots"
+  }
+}

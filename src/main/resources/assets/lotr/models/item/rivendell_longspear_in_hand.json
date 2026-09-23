@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/handheld_large2",
+  "textures": {
+    "layer0": "lotr:item/rivendell_longspear_in_hand"
+  }
+}

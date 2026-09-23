@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:dorwinion_elven"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:dorwinion_elven"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dwarven",
+  "key": {
+    "X": "lotr:dwarven_steel_ingot",
+    "Y": "minecraft:leather"
+  },
+  "pattern": [
+    "X  ",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:dwarven_boar_armor"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:pelargir"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:pelargir"
+      }
+    ]
+  }
+}

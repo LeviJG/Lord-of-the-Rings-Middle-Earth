@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dwarven",
+  "key": {
+    "X": "minecraft:gold_nugget",
+    "Y": "lotr:dwarven_helmet"
+  },
+  "pattern": [
+    "XXX",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:gold_trimmed_dwarven_helmet"
+  }
+}

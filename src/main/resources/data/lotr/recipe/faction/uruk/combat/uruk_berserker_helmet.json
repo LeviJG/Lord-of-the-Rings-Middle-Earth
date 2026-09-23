@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "uruk",
+  "key": {
+    "X": "lotr:uruk_steel_ingot",
+    "Y": "#c:dyes/white",
+    "Z": "lotr:uruk_helmet"
+  },
+  "pattern": [
+    "XYX",
+    " Z "
+  ],
+  "result": {
+    "id": "lotr:uruk_berserker_helmet"
+  }
+}

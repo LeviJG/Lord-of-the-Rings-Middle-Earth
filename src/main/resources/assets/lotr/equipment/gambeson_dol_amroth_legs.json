@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:gambeson_dol_amroth_legs"
+      }
+    ]
+  }
+}

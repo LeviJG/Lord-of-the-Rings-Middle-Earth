@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:pearl_block"
+  ],
+  "result": {
+    "id": "lotr:pearl",
+    "count": 9
+  }
+}

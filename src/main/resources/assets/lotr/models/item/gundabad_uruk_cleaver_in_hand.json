@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/handheld_large",
+  "textures": {
+    "layer0": "lotr:item/gundabad_uruk_cleaver_in_hand"
+  }
+}

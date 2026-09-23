@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "lotr:apple_crumble",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "bites": "0"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lotr:apple_crumble"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "lotr:blocks/apple_crumble"
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:wooden_cup",
+    "lotr:mango",
+    "lotr:mango"
+  ],
+  "result": {
+    "id": "lotr:mango_juice",
+    "components": {
+      "lotr:vessel": "wooden_cup"
+    }
+  }
+}

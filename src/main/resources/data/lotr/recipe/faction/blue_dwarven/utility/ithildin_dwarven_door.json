@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "blue_dwarven",
+  "key": {
+    "X": "minecraft:stone",
+    "Y": "lotr:ithildin"
+  },
+  "pattern": [
+    "XX",
+    "XY",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:ithildin_dwarven_door"
+  }
+}

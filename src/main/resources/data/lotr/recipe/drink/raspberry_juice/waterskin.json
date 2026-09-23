@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:waterskin",
+    "lotr:raspberries",
+    "lotr:raspberries",
+    "lotr:raspberries"
+  ],
+  "result": {
+    "id": "lotr:raspberry_juice",
+    "components": {
+      "lotr:vessel": "waterskin"
+    }
+  }
+}

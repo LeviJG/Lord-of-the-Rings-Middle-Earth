@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:treasure_gold_carpet",
+    "lotr:treasure_gold_carpet",
+    "lotr:treasure_gold_carpet",
+    "lotr:treasure_gold_carpet",
+    "lotr:treasure_gold_carpet",
+    "lotr:treasure_gold_carpet",
+    "lotr:treasure_gold_carpet",
+    "lotr:treasure_gold_carpet"
+  ],
+  "result": {
+    "id": "lotr:treasure_gold"
+  }
+}

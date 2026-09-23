@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "wood_elven",
+  "key": {
+    "X": "minecraft:leather"
+  },
+  "pattern": [
+    "XXX",
+    "X X",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:wood_elven_scout_leggings"
+  }
+}

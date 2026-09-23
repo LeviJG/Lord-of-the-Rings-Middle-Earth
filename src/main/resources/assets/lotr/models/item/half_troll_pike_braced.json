@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/pike_braced",
+  "textures": {
+    "layer0": "lotr:item/half_troll_pike_in_hand"
+  }
+}

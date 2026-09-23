@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:corn"
+  },
+  "pattern": [
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:corn_bread"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "rhun",
+  "key": {
+    "X": "minecraft:gold_nugget",
+    "Y": "lotr:rhun_brick"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:rhun_gold_brick"
+  }
+}

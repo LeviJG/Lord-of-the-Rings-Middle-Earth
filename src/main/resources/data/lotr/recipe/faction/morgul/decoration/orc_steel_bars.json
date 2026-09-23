@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "morgul",
+  "key": {
+    "X": "lotr:orc_steel_ingot"
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:orc_steel_bars",
+    "count": 16
+  }
+}

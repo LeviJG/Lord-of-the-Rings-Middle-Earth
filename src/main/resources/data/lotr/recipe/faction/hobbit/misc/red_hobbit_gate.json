@@ -1,0 +1,19 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "hobbit",
+  "key": {
+    "X": "lotr:gate_gears",
+    "Y": "#minecraft:planks",
+    "Z": "#c:dyes/red"
+  },
+  "pattern": [
+    "YYY",
+    "ZXZ",
+    "YYY"
+  ],
+  "result": {
+    "id": "lotr:red_hobbit_gate",
+    "count": 4
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "X": [
+      "minecraft:coal",
+      "minecraft:charcoal"
+    ],
+    "Y": "minecraft:brick"
+  },
+  "pattern": [
+    "XXX",
+    "YYY"
+  ],
+  "result": {
+    "id": "lotr:hearth",
+    "count": 3
+  }
+}

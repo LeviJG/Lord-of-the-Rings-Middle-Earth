@@ -1,0 +1,19 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:rivendell"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:rivendell"
+      }
+    ],
+    "horse_body": [
+      {
+        "texture": "lotr:rivendell"
+      }
+    ]
+  }
+}

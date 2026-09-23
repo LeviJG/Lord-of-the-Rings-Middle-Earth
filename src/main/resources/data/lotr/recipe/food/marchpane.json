@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:almond",
+    "lotr:almond",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "lotr:marchpane"
+  }
+}

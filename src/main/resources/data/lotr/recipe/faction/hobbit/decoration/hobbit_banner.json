@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "hobbit",
+  "key": {
+    "X": "#minecraft:wool",
+    "Y": "#lotr:sticks",
+    "Z": "#minecraft:planks"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Z"
+  ],
+  "result": {
+    "id": "lotr:hobbit_banner"
+  }
+}

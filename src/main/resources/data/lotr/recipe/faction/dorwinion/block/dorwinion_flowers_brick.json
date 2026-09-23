@@ -1,0 +1,12 @@
+{
+  "type": "lotr:faction_crafting_shapeless",
+  "category": "building",
+  "table": "dorwinion",
+  "ingredients": [
+    "lotr:dorwinion_brick",
+    "lotr:rhun_flower_chrys_pink"
+  ],
+  "result": {
+    "id": "lotr:dorwinion_flowers_brick"
+  }
+}

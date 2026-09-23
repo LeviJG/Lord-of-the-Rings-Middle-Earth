@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/pike_in_hand",
+  "textures": {
+    "layer0": "lotr:item/gundabad_uruk_pike_in_hand"
+  }
+}

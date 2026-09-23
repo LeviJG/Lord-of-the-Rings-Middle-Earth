@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "dwarven",
+  "key": {
+    "X": "minecraft:copper_ingot",
+    "Y": "minecraft:flint",
+    "Z": "lotr:dwarven_steel_ingot"
+  },
+  "pattern": [
+    " X ",
+    "YZY",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:mechanism"
+  }
+}

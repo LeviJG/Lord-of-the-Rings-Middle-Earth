@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        },
+        {
+          "block": "lotr:cherry_pie",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "bites": "0"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "lotr:cherry_pie"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "lotr:blocks/cherry_pie"
+}

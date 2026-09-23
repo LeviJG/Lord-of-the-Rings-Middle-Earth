@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "fabric:type": "fabric:components",
+      "base": "minecraft:potion",
+      "components": {
+        "minecraft:potion_contents": {
+          "potion": "minecraft:water"
+        }
+      }
+    },
+    "lotr:lemon",
+    "minecraft:sugar"
+  ],
+  "result": {
+    "id": "lotr:lemonade",
+    "components": {
+      "lotr:vessel": "bottle"
+    }
+  }
+}

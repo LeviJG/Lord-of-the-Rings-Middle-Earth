@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:block/block",
+  "ambientocclusion": false,
+  "textures": {
+    "top": "lotr:block/marchpane_block_top",
+    "bottom": "lotr:block/marchpane_block_bottom",
+    "side": "lotr:block/marchpane_block_side",
+    "inner": "lotr:block/marchpane_block_inner",
+    "particle": "lotr:block/marchpane_block_side"
+  },
+  "elements": [
+    {
+      "from": [
+        10.3333,
+        0,
+        1.0
+      ],
+      "to": [
+        15.0,
+        6.0,
+        15.0
+      ],
+      "faces": {
+        "down": {
+          "texture": "#bottom",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#top"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "west": {
+          "texture": "#inner"
+        },
+        "east": {
+          "texture": "#side"
+        }
+      }
+    }
+  ]
+}

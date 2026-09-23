@@ -1,0 +1,22 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "elven",
+  "key": {
+    "X": [
+      "minecraft:coal",
+      "minecraft:charcoal"
+    ],
+    "Y": "lotr:mallorn_stick",
+    "Z": "lotr:elanor"
+  },
+  "pattern": [
+    "Z",
+    "X",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:mallorn_gold_torch",
+    "count": 4
+  }
+}

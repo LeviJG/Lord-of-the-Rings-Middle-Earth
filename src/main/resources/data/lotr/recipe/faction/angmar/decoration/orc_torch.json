@@ -1,0 +1,21 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "angmar",
+  "key": {
+    "X": [
+      "minecraft:coal",
+      "minecraft:charcoal"
+    ],
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:orc_torch",
+    "count": 2
+  }
+}

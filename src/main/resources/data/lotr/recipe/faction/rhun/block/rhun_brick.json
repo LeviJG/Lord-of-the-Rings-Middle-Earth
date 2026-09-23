@@ -1,0 +1,19 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "rhun",
+  "key": {
+    "X": [
+      "minecraft:stone",
+      "minecraft:sandstone"
+    ]
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:rhun_brick",
+    "count": 4
+  }
+}

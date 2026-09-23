@@ -1,0 +1,12 @@
+{
+  "type": "lotr:faction_crafting_shapeless",
+  "category": "building",
+  "table": "dorwinion",
+  "ingredients": [
+    "lotr:dorwinion_pillar",
+    "#lotr:vines"
+  ],
+  "result": {
+    "id": "lotr:mossy_dorwinion_pillar"
+  }
+}

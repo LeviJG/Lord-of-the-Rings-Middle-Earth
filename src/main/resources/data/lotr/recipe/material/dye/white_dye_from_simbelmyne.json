@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:simbelmyne"
+  ],
+  "result": {
+    "id": "lotr:white_dye"
+  }
+}

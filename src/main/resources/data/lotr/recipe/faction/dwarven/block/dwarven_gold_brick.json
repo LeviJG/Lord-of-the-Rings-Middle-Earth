@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "dwarven",
+  "key": {
+    "X": "minecraft:gold_nugget",
+    "Y": "lotr:dwarven_brick"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:dwarven_gold_brick"
+  }
+}

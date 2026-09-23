@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "rohirric",
+  "key": {
+    "A": "lotr:rohirric_coif",
+    "X": "minecraft:gold_nugget",
+    "Y": "minecraft:leather"
+  },
+  "pattern": [
+    " X ",
+    "YAY",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:rohirric_marshal_helmet"
+  }
+}

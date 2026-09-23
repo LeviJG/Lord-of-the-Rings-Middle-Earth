@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/generated_large",
+  "textures": {
+    "layer0": "lotr:item/orc_torch_in_hand"
+  }
+}

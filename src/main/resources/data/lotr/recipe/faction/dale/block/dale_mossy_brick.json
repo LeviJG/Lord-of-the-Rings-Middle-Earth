@@ -1,0 +1,12 @@
+{
+  "type": "lotr:faction_crafting_shapeless",
+  "category": "building",
+  "table": "dale",
+  "ingredients": [
+    "lotr:dale_brick",
+    "#lotr:vines"
+  ],
+  "result": {
+    "id": "lotr:dale_mossy_brick"
+  }
+}

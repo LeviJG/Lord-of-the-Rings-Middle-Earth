@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "half_troll",
+  "key": {
+    "X": "minecraft:flint",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:half_troll_dagger"
+  }
+}

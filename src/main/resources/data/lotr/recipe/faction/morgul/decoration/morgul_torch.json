@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "morgul",
+  "key": {
+    "X": "lotr:gulduril",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:morgul_torch",
+    "count": 4
+  }
+}

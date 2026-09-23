@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "moredain",
+  "key": {
+    "X": "lotr:gemsbok_horn"
+  },
+  "pattern": [
+    "  X",
+    " X ",
+    "X  "
+  ],
+  "result": {
+    "id": "lotr:morwaith_spear"
+  }
+}

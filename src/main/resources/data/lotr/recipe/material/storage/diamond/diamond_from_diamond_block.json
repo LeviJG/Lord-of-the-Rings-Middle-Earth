@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:diamond_block"
+  ],
+  "result": {
+    "id": "lotr:diamond",
+    "count": 9
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "dol_amroth",
+  "key": {
+    "X": "lotr:gate_gears",
+    "Y": "#minecraft:planks",
+    "Z": "minecraft:iron_ingot"
+  },
+  "pattern": [
+    "ZYZ",
+    "YXY",
+    "ZYZ"
+  ],
+  "result": {
+    "id": "lotr:dol_amroth_gate",
+    "count": 4
+  }
+}

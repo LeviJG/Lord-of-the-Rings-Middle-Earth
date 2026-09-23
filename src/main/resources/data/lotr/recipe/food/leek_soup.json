@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:bowl",
+    "lotr:leek",
+    "lotr:leek",
+    "minecraft:potato"
+  ],
+  "result": {
+    "id": "lotr:leek_soup"
+  }
+}

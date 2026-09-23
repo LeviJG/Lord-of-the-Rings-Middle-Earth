@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:harad_flower_daisy"
+  ],
+  "result": {
+    "id": "minecraft:pink_dye"
+  }
+}

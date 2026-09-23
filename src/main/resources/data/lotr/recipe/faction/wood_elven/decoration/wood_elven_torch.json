@@ -1,0 +1,22 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "wood_elven",
+  "key": {
+    "X": "lotr:mirk_oak_red_leaves",
+    "Y": [
+      "minecraft:coal",
+      "minecraft:charcoal"
+    ],
+    "Z": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Z"
+  ],
+  "result": {
+    "id": "lotr:wood_elven_torch",
+    "count": 4
+  }
+}

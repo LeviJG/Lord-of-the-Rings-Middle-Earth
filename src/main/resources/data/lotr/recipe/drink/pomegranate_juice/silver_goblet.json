@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:silver_goblet",
+    "lotr:pomegranate",
+    "lotr:pomegranate"
+  ],
+  "result": {
+    "id": "lotr:pomegranate_juice",
+    "components": {
+      "lotr:vessel": "silver_goblet"
+    }
+  }
+}

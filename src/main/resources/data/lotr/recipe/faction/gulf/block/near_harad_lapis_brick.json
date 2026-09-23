@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "gulf",
+  "key": {
+    "X": "minecraft:lapis_lazuli",
+    "Y": "lotr:near_harad_brick"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:near_harad_lapis_brick"
+  }
+}

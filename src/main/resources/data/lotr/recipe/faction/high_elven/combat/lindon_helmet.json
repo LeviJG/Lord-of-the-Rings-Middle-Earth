@@ -1,0 +1,15 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "high_elven",
+  "key": {
+    "X": "lotr:elven_steel_ingot"
+  },
+  "pattern": [
+    "XXX",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:lindon_helmet"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:golden_goblet",
+    "#lotr:apples",
+    "#lotr:apples"
+  ],
+  "result": {
+    "id": "lotr:apple_juice",
+    "components": {
+      "lotr:vessel": "golden_goblet"
+    }
+  }
+}

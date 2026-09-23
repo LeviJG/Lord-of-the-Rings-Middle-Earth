@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "#lotr:sticks",
+    "Z": "minecraft:cobblestone"
+  },
+  "pattern": [
+    "X X",
+    "YXY",
+    "ZZZ"
+  ],
+  "result": {
+    "id": "lotr:unsmeltery"
+  }
+}

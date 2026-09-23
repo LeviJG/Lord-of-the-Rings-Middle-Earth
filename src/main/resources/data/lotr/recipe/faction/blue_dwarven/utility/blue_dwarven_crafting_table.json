@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "blue_dwarven",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "lotr:blue_rock_brick"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:blue_dwarven_crafting_table"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:saltpeter_block"
+  ],
+  "result": {
+    "id": "lotr:niter",
+    "count": 9
+  }
+}

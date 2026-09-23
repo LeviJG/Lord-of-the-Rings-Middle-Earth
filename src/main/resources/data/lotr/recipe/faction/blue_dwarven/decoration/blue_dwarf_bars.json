@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "blue_dwarven",
+  "key": {
+    "X": "lotr:blue_dwarven_steel_ingot"
+  },
+  "pattern": [
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:blue_dwarf_bars",
+    "count": 16
+  }
+}

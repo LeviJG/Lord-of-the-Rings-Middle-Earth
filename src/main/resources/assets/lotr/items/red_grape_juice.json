@@ -1,0 +1,97 @@
+{
+  "model": {
+    "type": "minecraft:select",
+    "property": "minecraft:component",
+    "component": "lotr:vessel",
+    "cases": [
+      {
+        "when": "mug",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_mug"
+        }
+      },
+      {
+        "when": "ceramic_mug",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_ceramic_mug"
+        }
+      },
+      {
+        "when": "golden_goblet",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_golden_goblet"
+        }
+      },
+      {
+        "when": "silver_goblet",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_silver_goblet"
+        }
+      },
+      {
+        "when": "copper_goblet",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_copper_goblet"
+        }
+      },
+      {
+        "when": "wooden_cup",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_wooden_cup"
+        }
+      },
+      {
+        "when": "skull_cup",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_skull_cup"
+        }
+      },
+      {
+        "when": "wine_glass",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_wine_glass"
+        }
+      },
+      {
+        "when": "bottle",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_bottle"
+        }
+      },
+      {
+        "when": "waterskin",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_waterskin"
+        }
+      },
+      {
+        "when": "ale_horn",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_ale_horn"
+        }
+      },
+      {
+        "when": "golden_ale_horn",
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/red_grape_juice_golden_ale_horn"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "lotr:item/red_grape_juice_mug"
+    }
+  }
+}

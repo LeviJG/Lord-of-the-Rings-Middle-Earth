@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "angmar",
+  "key": {
+    "X": "lotr:orc_steel_ingot",
+    "Y": "minecraft:string"
+  },
+  "pattern": [
+    " XY",
+    "X Y",
+    " XY"
+  ],
+  "result": {
+    "id": "lotr:orc_bow"
+  }
+}

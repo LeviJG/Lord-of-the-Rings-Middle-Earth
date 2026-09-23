@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "gondorian",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "lotr:gondor_rock"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:gondorian_crafting_table"
+  }
+}

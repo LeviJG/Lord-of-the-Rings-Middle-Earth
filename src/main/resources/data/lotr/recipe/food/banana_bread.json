@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "minecraft:wheat",
+    "Y": "lotr:banana"
+  },
+  "pattern": [
+    "XYX"
+  ],
+  "result": {
+    "id": "lotr:banana_bread"
+  }
+}

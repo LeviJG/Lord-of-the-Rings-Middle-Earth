@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "X": "lotr:bronze_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    " X ",
+    " YX",
+    "Y  "
+  ],
+  "result": {
+    "id": "lotr:bronze_throwing_axe"
+  }
+}

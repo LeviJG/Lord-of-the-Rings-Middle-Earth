@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:pinnath_gelin"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:pinnath_gelin"
+      }
+    ]
+  }
+}

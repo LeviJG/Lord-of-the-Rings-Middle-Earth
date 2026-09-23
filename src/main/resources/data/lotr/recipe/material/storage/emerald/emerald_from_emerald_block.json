@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:emerald_block"
+  ],
+  "result": {
+    "id": "lotr:emerald",
+    "count": 9
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "morgul",
+  "key": {
+    "X": "minecraft:arrow",
+    "Y": "lotr:bottle_of_poison"
+  },
+  "pattern": [
+    " X ",
+    "XYX",
+    " X "
+  ],
+  "result": {
+    "id": "lotr:poisoned_arrow",
+    "count": 4
+  }
+}

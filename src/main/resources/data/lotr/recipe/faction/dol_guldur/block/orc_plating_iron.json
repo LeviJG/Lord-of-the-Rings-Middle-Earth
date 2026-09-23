@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "dol_guldur",
+  "key": {
+    "X": "lotr:orc_steel_ingot"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:orc_plating_iron",
+    "count": 8
+  }
+}

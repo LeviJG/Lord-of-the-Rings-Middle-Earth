@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "gulf",
+  "key": {
+    "X": "lotr:kebab",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "  X",
+    " X ",
+    "Y  "
+  ],
+  "result": {
+    "id": "lotr:shish_kebab",
+    "count": 2
+  }
+}

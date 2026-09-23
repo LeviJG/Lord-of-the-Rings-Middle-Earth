@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:silver_goblet",
+    "lotr:blackberries",
+    "lotr:blackberries",
+    "lotr:blackberries"
+  ],
+  "result": {
+    "id": "lotr:blackberry_juice",
+    "components": {
+      "lotr:vessel": "silver_goblet"
+    }
+  }
+}

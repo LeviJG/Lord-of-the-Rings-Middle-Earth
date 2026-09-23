@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "gondorian",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "minecraft:leather",
+    "Z": "#c:dyes/green"
+  },
+  "pattern": [
+    "XZX",
+    "YYY",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:pinnath_gelin_chestplate"
+  }
+}

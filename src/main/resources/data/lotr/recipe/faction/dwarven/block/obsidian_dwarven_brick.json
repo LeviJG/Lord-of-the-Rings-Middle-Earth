@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "dwarven",
+  "key": {
+    "X": "lotr:obsidian_shard"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:obsidian_dwarven_brick",
+    "count": 4
+  }
+}

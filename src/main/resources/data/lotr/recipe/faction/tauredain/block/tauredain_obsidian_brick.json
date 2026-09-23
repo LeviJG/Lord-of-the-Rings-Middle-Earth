@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "tauredain",
+  "key": {
+    "X": "lotr:obsidian_shard"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:tauredain_obsidian_brick",
+    "count": 4
+  }
+}

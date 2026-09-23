@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:copper_goblet",
+    "lotr:red_grapes",
+    "lotr:red_grapes",
+    "lotr:red_grapes"
+  ],
+  "result": {
+    "id": "lotr:red_grape_juice",
+    "components": {
+      "lotr:vessel": "copper_goblet"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:gulf_harad_body"
+      }
+    ]
+  }
+}

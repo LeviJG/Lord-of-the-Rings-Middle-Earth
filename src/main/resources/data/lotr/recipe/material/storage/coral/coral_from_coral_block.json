@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "lotr:coral_block"
+  ],
+  "result": {
+    "id": "lotr:coral",
+    "count": 4
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "gulf",
+  "key": {
+    "X": "lotr:bronze_ingot",
+    "Y": "lotr:dried_reeds"
+  },
+  "pattern": [
+    "X X",
+    "YYY",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:gulfen_chestplate"
+  }
+}

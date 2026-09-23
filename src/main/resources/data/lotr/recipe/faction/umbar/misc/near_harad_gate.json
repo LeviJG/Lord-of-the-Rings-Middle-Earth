@@ -1,0 +1,19 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "umbar",
+  "key": {
+    "X": "lotr:gate_gears",
+    "Y": "#minecraft:planks",
+    "Z": "lotr:bronze_ingot"
+  },
+  "pattern": [
+    "ZYZ",
+    "YXY",
+    "ZYZ"
+  ],
+  "result": {
+    "id": "lotr:near_harad_gate",
+    "count": 4
+  }
+}

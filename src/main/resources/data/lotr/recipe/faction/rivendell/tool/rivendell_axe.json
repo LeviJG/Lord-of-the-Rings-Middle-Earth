@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "rivendell",
+  "key": {
+    "X": "lotr:elven_steel_ingot",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "XX",
+    "XY",
+    " Y"
+  ],
+  "result": {
+    "id": "lotr:rivendell_axe"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "dorwinion",
+  "key": {
+    "X": "lotr:chalk"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:dorwinion_brick",
+    "count": 4
+  }
+}

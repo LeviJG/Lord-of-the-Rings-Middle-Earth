@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "morgul",
+  "key": {
+    "X": "lotr:black_uruk_steel_ingot"
+  },
+  "pattern": [
+    "X X",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:black_uruk_chestplate"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "half_troll",
+  "key": {
+    "X": "#minecraft:planks",
+    "Y": "minecraft:cobblestone"
+  },
+  "pattern": [
+    "XX",
+    "YY"
+  ],
+  "result": {
+    "id": "lotr:half_troll_crafting_table"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "gondorian",
+  "key": {
+    "X": "lotr:gondor_rock"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:gondor_brick",
+    "count": 4
+  }
+}

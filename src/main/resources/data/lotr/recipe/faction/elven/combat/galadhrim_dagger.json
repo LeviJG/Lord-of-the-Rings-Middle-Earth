@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "elven",
+  "key": {
+    "X": "lotr:elven_steel_ingot",
+    "Y": "lotr:mallorn_stick"
+  },
+  "pattern": [
+    "X",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:galadhrim_dagger"
+  }
+}

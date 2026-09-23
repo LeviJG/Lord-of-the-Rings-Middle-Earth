@@ -1,0 +1,12 @@
+{
+  "type": "lotr:faction_crafting_shapeless",
+  "category": "equipment",
+  "table": "half_troll",
+  "ingredients": [
+    "lotr:double_strength_orc_bomb",
+    "minecraft:lava_bucket"
+  ],
+  "result": {
+    "id": "lotr:double_strength_orc_fire_bomb"
+  }
+}

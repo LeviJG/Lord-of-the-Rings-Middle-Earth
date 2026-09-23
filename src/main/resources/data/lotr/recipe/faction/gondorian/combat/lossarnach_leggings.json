@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "gondorian",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "minecraft:leather"
+  },
+  "pattern": [
+    "XXX",
+    "Y Y",
+    "X X"
+  ],
+  "result": {
+    "id": "lotr:lossarnach_leggings"
+  }
+}

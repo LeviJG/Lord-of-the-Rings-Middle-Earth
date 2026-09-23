@@ -1,0 +1,6 @@
+{
+  "parent": "lotr:item/pike_carried",
+  "textures": {
+    "layer0": "lotr:item/dol_guldur_spike_in_hand"
+  }
+}

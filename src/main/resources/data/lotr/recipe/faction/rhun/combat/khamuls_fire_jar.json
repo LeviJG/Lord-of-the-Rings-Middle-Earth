@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "rhun",
+  "key": {
+    "X": "lotr:gilded_iron_ingot",
+    "Y": "minecraft:gunpowder",
+    "Z": "lotr:durnor"
+  },
+  "pattern": [
+    "XYX",
+    "YZY",
+    "XYX"
+  ],
+  "result": {
+    "id": "lotr:khamuls_fire_jar"
+  }
+}

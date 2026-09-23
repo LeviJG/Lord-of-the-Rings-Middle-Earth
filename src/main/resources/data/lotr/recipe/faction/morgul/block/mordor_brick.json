@@ -1,0 +1,16 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "building",
+  "table": "morgul",
+  "key": {
+    "X": "lotr:mordor_rock"
+  },
+  "pattern": [
+    "XX",
+    "XX"
+  ],
+  "result": {
+    "id": "lotr:mordor_brick",
+    "count": 4
+  }
+}

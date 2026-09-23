@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "near_harad",
+  "key": {
+    "X": "lotr:bronze_ingot",
+    "Y": "minecraft:leather"
+  },
+  "pattern": [
+    "X  ",
+    "XYX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:coast_southron_horse_armor"
+  }
+}

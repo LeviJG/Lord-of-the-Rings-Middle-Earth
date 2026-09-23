@@ -1,0 +1,17 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "equipment",
+  "table": "dol_amroth",
+  "key": {
+    "X": "minecraft:iron_ingot",
+    "Y": "lotr:swan_feather"
+  },
+  "pattern": [
+    "YXY",
+    "XXX",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:dol_amroth_chestplate"
+  }
+}

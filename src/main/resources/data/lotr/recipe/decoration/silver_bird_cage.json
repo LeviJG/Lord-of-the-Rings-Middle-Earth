@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "X": "lotr:silver_ingot",
+    "Y": "lotr:silver_bars"
+  },
+  "pattern": [
+    "YYY",
+    "Y Y",
+    "XXX"
+  ],
+  "result": {
+    "id": "lotr:silver_bird_cage"
+  }
+}

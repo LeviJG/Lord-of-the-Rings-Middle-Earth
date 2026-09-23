@@ -1,0 +1,18 @@
+{
+  "type": "lotr:faction_crafting",
+  "category": "misc",
+  "table": "morgul",
+  "key": {
+    "X": "lotr:durnor",
+    "Y": "#lotr:sticks"
+  },
+  "pattern": [
+    "X",
+    "Y",
+    "Y"
+  ],
+  "result": {
+    "id": "lotr:orc_torch",
+    "count": 2
+  }
+}
