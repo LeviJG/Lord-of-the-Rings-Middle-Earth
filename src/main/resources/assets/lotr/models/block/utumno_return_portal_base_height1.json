@@ -1,0 +1,47 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "lotr:block/utumno_return_portal_base",
+    "side": "lotr:block/utumno_return_portal_base",
+    "top": "lotr:block/utumno_return_portal_base_top"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        1,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#side",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#side",
+          "cullface": "south"
+        },
+        "east": {
+          "texture": "#side",
+          "cullface": "east"
+        },
+        "west": {
+          "texture": "#side",
+          "cullface": "west"
+        },
+        "down": {
+          "texture": "#side",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#top"
+        }
+      }
+    }
+  ]
+}

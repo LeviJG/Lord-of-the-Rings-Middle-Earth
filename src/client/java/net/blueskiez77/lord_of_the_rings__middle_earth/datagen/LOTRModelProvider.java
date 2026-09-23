@@ -636,6 +636,22 @@ public class LOTRModelProvider extends FabricModelProvider {
     @Override
     public void generateItemModels(ItemModelGenerators generators) {
         generators.generateFlatItem(LOTRItems.MITHRIL, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.NAURITE, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.QUENDITE_CRYSTAL, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.GULDURIL_CRYSTAL, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.SULFUR, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.SALTPETER, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.SALT, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.TOPAZ, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.AMETHYST, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.SAPPHIRE, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.RUBY, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.AMBER, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.DIAMOND, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.PEARL, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.CORAL, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.OPAL, ModelTemplates.FLAT_ITEM);
+        generators.generateFlatItem(LOTRItems.EMERALD, ModelTemplates.FLAT_ITEM);
         generators.generateFlatItem(LOTRItems.PIPEWEED, ModelTemplates.FLAT_ITEM);
     }
 

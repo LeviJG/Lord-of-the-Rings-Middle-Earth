@@ -22,6 +22,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.ColorRGBA;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
@@ -41,6 +42,7 @@ import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.ColoredFallingBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DirtPathBlock;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
@@ -81,6 +83,8 @@ public final class LOTRBlocks {
     public static final List<Block> CUBES_IRON_TIER = new ArrayList<>();
     // Pickaxe-mineable, but no needs_*_tool tag: a wooden pickaxe works. */
     public static final List<Block> CUBES_NO_TIER = new ArrayList<>();
+    /** Ores whose loot table is an item, not the block: see registerOre. */
+    public static final List<Block> ORES_WITH_ITEM_DROPS = new ArrayList<>();
     public static final List<Block> ALL_PLANKS = new ArrayList<>();
     public static final List<Block> ALL_LEAVES = new ArrayList<>();
     public static final List<Block> ALL_SAPLINGS = new ArrayList<>();
@@ -193,11 +197,11 @@ public final class LOTRBlocks {
     public static final Block SILVER_ORE = registerCube("silver_ore", 3.0f, 3.0f, Tier.IRON);
     public static final Block MITHRIL_ORE = registerCube("mithril_ore", 4.0f, 6.0f, Tier.IRON);
     public static final Block SALT_ORE = registerCube("salt_ore", 3.0f, 3.0f, Tier.STONE);
-    public static final Block SALTPETER_ORE = registerCube("saltpeter_ore", 3.0f, 3.0f, Tier.STONE);
-    public static final Block SULFUR_ORE = registerCube("sulfur_ore", 3.0f, 3.0f, Tier.STONE);
+    public static final Block SALTPETER_ORE = registerOre("saltpeter_ore", Tier.STONE, 0, 0, 2);
+    public static final Block SULFUR_ORE = registerOre("sulfur_ore", Tier.STONE, 0, 0, 2);
 
     public static final Block AMBER_BLOCK = registerCube("amber_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
-    public static final Block AMBER_ORE = registerCube("amber_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block AMBER_ORE = registerOre("amber_ore", Tier.IRON, 0, 0, 2);
     public static final Block ANGMAR_BRICK = registerCube("angmar_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block CRACKED_ANGMAR_BRICK = registerCube("cracked_angmar_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block ANGMAR_SNOW_BRICK = registerCube("angmar_snow_brick", 1.5f, 6.0f, Tier.NONE);
@@ -266,7 +270,7 @@ public final class LOTRBlocks {
     public static final Block GALADHRIM_SILVER_BRICK = registerCube("galadhrim_silver_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block GALVORN_BLOCK = registerCube("galvorn_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block GILDED_IRON_BLOCK = registerCube("gilded_iron_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
-    public static final Block GLOWSTONE_ORE = registerCube("glowstone_ore", 3.0f, 3.0f, Tier.STONE);
+    public static final Block GLOWSTONE_ORE = registerOre("glowstone_ore", Tier.STONE, 11, 2, 4);
     public static final Block GONDOR_BRICK = registerCube("gondor_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block CARVED_GONDOR_BRICK = registerCube("carved_gondor_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block CRACKED_GONDOR_BRICK = registerCube("cracked_gondor_brick", 1.5f, 6.0f, Tier.NONE);
@@ -277,8 +281,8 @@ public final class LOTRBlocks {
     public static final Block MOSSY_GONDOR_COBBLEBRICK = registerCube("mossy_gondor_cobblebrick", 1.5f, 6.0f, Tier.NONE);
     public static final Block GULDURIL_BLOCK = registerCube("gulduril_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
 
-    public static final Block GULDURIL_MORDOR_ORE = registerCube("gulduril_mordor_ore", 3.0f, 3.0f, Tier.IRON);
-    public static final Block GULDURIL_ORE = registerCube("gulduril_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block GULDURIL_MORDOR_ORE = registerOre("gulduril_mordor_ore", Tier.IRON, 11, 2, 5);
+    public static final Block GULDURIL_ORE = registerOre("gulduril_ore", Tier.IRON, 11, 2, 5);
     public static final Block HIGH_ELVEN_BRICK = registerCube("high_elven_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block CARVED_HIGH_ELVEN_BRICK = registerCube("carved_high_elven_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block CRACKED_HIGH_ELVEN_BRICK = registerCube("cracked_high_elven_brick", 1.5f, 6.0f, Tier.NONE);
@@ -313,7 +317,7 @@ public final class LOTRBlocks {
     public static final Block MORGUL_STEEL_BLOCK = registerCubeColumn("morgul_steel_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block CRACKED_MORWAITH_BRICK = registerCube("cracked_morwaith_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block NAURITE_BLOCK = registerCube("naurite_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
-    public static final Block NAURITE_ORE = registerCube("naurite_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block NAURITE_ORE = registerOre("naurite_ore", Tier.IRON, 7, 0, 2);
     public static final Block NEAR_HARAD_BRICK = registerCube("near_harad_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block NEAR_HARAD_CARVED_BRICK = registerCube("near_harad_carved_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block NEAR_HARAD_CRACKED_BRICK = registerCube("near_harad_cracked_brick", 1.5f, 6.0f, Tier.NONE);
@@ -323,7 +327,7 @@ public final class LOTRBlocks {
     public static final Block NEAR_HARAD_RED_CRACKED_BRICK = registerCube("near_harad_red_cracked_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block OBSIDIAN_GRAVEL = registerFalling("obsidian_gravel", 0.6f, 0xFF1B1B22);
     public static final Block OPAL_BLOCK = registerCube("opal_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
-    public static final Block OPAL_ORE = registerCube("opal_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block OPAL_ORE = registerOre("opal_ore", Tier.IRON, 0, 0, 2);
     public static final Block ORC_PLATING_IRON = registerCube("orc_plating_iron", 3.0f, 6.0f, Tier.NONE, SoundType.METAL);
     public static final Block ORC_PLATING_RUST = registerCube("orc_plating_rust", 3.0f, 6.0f, Tier.NONE, SoundType.METAL);
     public static final Block ORC_STEEL_BLOCK = registerCubeColumn("orc_steel_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
@@ -339,7 +343,7 @@ public final class LOTRBlocks {
                     .noOcclusion(),
             true)));
     public static final Block QUENDITE_BLOCK = registerCube("quendite_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
-    public static final Block QUENDITE_ORE = registerCube("quendite_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block QUENDITE_ORE = registerOre("quendite_ore", Tier.IRON, 11, 2, 5);
     public static final Block RED_BRICK_CRACKED = registerCube("red_brick_cracked", 1.5f, 6.0f, Tier.NONE);
     public static final Block RED_BRICK_MOSSY = registerCube("red_brick_mossy", 1.5f, 6.0f, Tier.NONE);
     public static final Block RED_CARVED_BRICK = registerCube("red_carved_brick", 1.5f, 6.0f, Tier.NONE);
@@ -358,11 +362,12 @@ public final class LOTRBlocks {
     public static final Block CARVED_ROHAN_BRICK = registerCube("carved_rohan_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block ROHAN_ROCK = registerCube("rohan_rock", 1.5f, 6.0f, Tier.NONE);
     public static final Block RUBY_BLOCK = registerCube("ruby_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
-    public static final Block RUBY_ORE = registerCube("ruby_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block RUBY_ORE = registerOre("ruby_ore", Tier.IRON, 0, 0, 2);
     public static final Block SALT_BLOCK = registerCube("salt_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
+    public static final Block SULFUR_BLOCK = registerCube("sulfur_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
     public static final Block SALTPETER_BLOCK = registerCube("saltpeter_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
     public static final Block SAPPHIRE_BLOCK = registerCube("sapphire_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
-    public static final Block SAPPHIRE_ORE = registerCube("sapphire_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block SAPPHIRE_ORE = registerOre("sapphire_ore", Tier.IRON, 0, 0, 2);
     public static final Block SCORCHED_STONE = registerCube("scorched_stone", 1.5f, 6.0f, Tier.NONE);
     // utumnoPillar 0/1/2. Column-textured like every other pillar.
     public static final Block FIRE_UTUMNO_PILLAR = registerPillar("fire_utumno_pillar");
@@ -430,9 +435,9 @@ public final class LOTRBlocks {
     public static final Block THATCH_THATCH = registerSoftBlock("thatch_thatch", 0.5f, SoundType.GRASS);
 
     public static final Block DIAMOND_BLOCK = registerCube("diamond_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
-    public static final Block AMETHYST_ORE = registerCube("amethyst_ore", 3.0f, 3.0f, Tier.IRON);
-    public static final Block DIAMOND_ORE = registerCube("diamond_ore", 3.0f, 3.0f, Tier.IRON);
-    public static final Block EMERALD_ORE = registerCube("emerald_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block AMETHYST_ORE = registerOre("amethyst_ore", Tier.IRON, 0, 0, 2);
+    public static final Block DIAMOND_ORE = registerOre("diamond_ore", Tier.IRON, 0, 0, 2);
+    public static final Block EMERALD_ORE = registerOre("emerald_ore", Tier.IRON, 0, 0, 2);
     public static final Block MUD = track(SHOVEL_MINEABLE, registerSoftBlock("mud", 0.5f, SoundType.GRAVEL));
     // mud.1 and dirtPath.1 -- the jungle variants.
     public static final Block BARREN_JUNGLE_MUD = track(SHOVEL_MINEABLE, registerSoftBlock("barren_jungle_mud", 0.5f, SoundType.GRAVEL));
@@ -445,7 +450,7 @@ public final class LOTRBlocks {
     public static final Block AMETHYST_BLOCK = registerCube("amethyst_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block CORAL_BLOCK = registerCube("coral_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block EMERALD_BLOCK = registerCube("emerald_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
-    public static final Block TOPAZ_ORE = registerCube("topaz_ore", 3.0f, 3.0f, Tier.IRON);
+    public static final Block TOPAZ_ORE = registerOre("topaz_ore", Tier.IRON, 0, 0, 2);
     public static final Block BURNING_UTUMNO_BRICK = registerCube("burning_utumno_brick", 1.5f, 6.0f, Tier.NONE);
 
     public static final Block SMOOTH_MORDOR_ROCK = registerColumn("smooth_mordor_rock");
@@ -882,8 +887,30 @@ public final class LOTRBlocks {
     public static final Block GATE_WOODEN_CROSS = registerWoodenGate("gate_wooden_cross", false);
 
     public static final Block MECHANISED_RAIL = registerRail("mechanised_rail");
-    public static final Block UTUMNO_RETURN_PORTAL_BASE = registerSoftBlock("utumno_return_portal_base", 50.0f, SoundType.STONE);
-    public static final Block UTUMNO_RETURN_LIGHT = registerSoftBlock("utumno_return_light", 0.3f, SoundType.GLASS);
+    // LOTRBlockUtumnoReturnPortalBase: hardness -1 and resistance Float.MAX_VALUE, quantityDropped 0, not opaque.
+    public static final Block UTUMNO_RETURN_PORTAL_BASE = register("utumno_return_portal_base",
+            LOTRUtumnoReturnPortalBaseBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(-1.0f, 3600000.0f)
+                    .sound(SoundType.STONE)
+                    .lightLevel(LOTRUtumnoReturnPortalBaseBlock::lightLevel)
+                    .noOcclusion()
+                    .noLootTable()
+                    .pushReaction(PushReaction.BLOCK),
+            true);
+    // LOTRBlockUtumnoReturnLight: Material.circuits, hardness left at 0, setLightLevel(1.0f), no collision box, isReplaceable, drops nothing.
+    public static final Block UTUMNO_RETURN_LIGHT = register("utumno_return_light",
+            LOTRUtumnoReturnLightBlock::new,
+            BlockBehaviour.Properties.of()
+                    .noCollision()
+                    .instabreak()
+                    .replaceable()
+                    .lightLevel(state -> 15)
+                    .noOcclusion()
+                    .noLootTable()
+                    .pushReaction(PushReaction.DESTROY),
+            true);
     public static final Block DIRT_PATH_MUD = registerPath("dirt_path_mud");
     public static final Block MUD_FARMLAND = registerFarmland("mud_farmland");
 
@@ -1654,12 +1681,14 @@ public final class LOTRBlocks {
     public static final Block OLIVE_FENCE = registerFence("olive_fence", OLIVE_PLANKS);
     public static final Block ASPEN_FENCE = registerFence("aspen_fence", ASPEN_PLANKS);
     public static final Block GREEN_OAK_FENCE = registerFence("green_oak_fence", GREEN_OAK_PLANKS);
+    public static final Block LAIRELOSSE_FENCE = registerFence("lairelosse_fence", LAIRELOSSE_PLANKS);
     public static final Block ALMOND_FENCE = registerFence("almond_fence", ALMOND_PLANKS);
     public static final Block ROTTEN_FENCE = registerFence("rotten_fence", ROTTEN_PLANKS);
     public static final Block PLUM_FENCE = registerFence("plum_fence", PLUM_PLANKS);
     public static final Block REDWOOD_FENCE = registerFence("redwood_fence", REDWOOD_PLANKS);
     public static final Block POMEGRANATE_FENCE = registerFence("pomegranate_fence", POMEGRANATE_PLANKS);
     public static final Block PALM_FENCE = registerFence("palm_fence", PALM_PLANKS);
+    public static final Block DRAGON_FENCE = registerFence("dragon_fence", DRAGON_PLANKS);
     public static final Block KANUKA_FENCE = registerFence("kanuka_fence", KANUKA_PLANKS);
 
     public static final Block MORDOR_ROCK_WALL = registerWall("mordor_rock_wall", MORDOR_ROCK);
@@ -2477,6 +2506,33 @@ public final class LOTRBlocks {
         ALL_CUBES.add(block);
         CUBES_NO_TIER.add(block);
         ALL_GULDURIL.add(block);
+        return block;
+    }
+
+    /**
+     * An ore that drops something other than itself: LOTRBlockOre and
+     * LOTRBlockOreGem, hardness 3 / resistance 5 (3 in modern units). The drop
+     * table is in LOTRBlockLootProvider; the XP is DropExperienceBlock's, which
+     * like dropBlockAsItemWithChance gives none when the block itself comes
+     * back under Silk Touch. setLightLevel(f) was (int) (15 * f): 0.5 is 7,
+     * 0.75 is 11.
+     */
+    private static Block registerOre(String name, Tier tier, int light, int xpMin, int xpMax) {
+        Block block = register(name, props -> new DropExperienceBlock(UniformInt.of(xpMin, xpMax), props),
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.STONE)
+                        .requiresCorrectToolForDrops()
+                        .strength(3.0f, 3.0f)
+                        .sound(SoundType.STONE)
+                        .lightLevel(state -> light),
+                true);
+        ALL_CUBES.add(block);
+        ORES_WITH_ITEM_DROPS.add(block);
+        switch (tier) {
+            case IRON -> CUBES_IRON_TIER.add(block);
+            case STONE -> CUBES_STONE_TIER.add(block);
+            case NONE -> CUBES_NO_TIER.add(block);
+        }
         return block;
     }
 

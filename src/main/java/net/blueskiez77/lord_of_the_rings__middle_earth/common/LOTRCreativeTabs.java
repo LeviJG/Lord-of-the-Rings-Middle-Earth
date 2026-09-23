@@ -617,6 +617,22 @@ public final class LOTRCreativeTabs {
                 });
                 output.accept(LOTRItems.MITHRIL);
                 output.accept(LOTRItems.PIPEWEED);
+                output.accept(LOTRItems.NAURITE);
+                output.accept(LOTRItems.QUENDITE_CRYSTAL);
+                output.accept(LOTRItems.GULDURIL_CRYSTAL);
+                output.accept(LOTRItems.SULFUR);
+                output.accept(LOTRItems.SALTPETER);
+                output.accept(LOTRItems.SALT);
+                output.accept(LOTRItems.TOPAZ);
+                output.accept(LOTRItems.AMETHYST);
+                output.accept(LOTRItems.SAPPHIRE);
+                output.accept(LOTRItems.RUBY);
+                output.accept(LOTRItems.AMBER);
+                output.accept(LOTRItems.DIAMOND);
+                output.accept(LOTRItems.PEARL);
+                output.accept(LOTRItems.CORAL);
+                output.accept(LOTRItems.OPAL);
+                output.accept(LOTRItems.EMERALD);
                 output.accept(LOTRItems.KEBAB);
             })
             .build();

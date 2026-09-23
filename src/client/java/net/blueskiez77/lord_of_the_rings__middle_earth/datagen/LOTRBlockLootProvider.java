@@ -17,6 +17,17 @@ import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.BedPart;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.storage.loot.IntRange;
+import net.minecraft.world.level.storage.loot.functions.ApplyBonusCount;
+import net.minecraft.world.level.storage.loot.functions.LimitCount;
+import net.minecraft.world.level.storage.loot.functions.LootItemFunction;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRTreasurePileBlock;
 
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
@@ -59,6 +70,49 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         return LootItemBlockStatePropertyCondition.hasBlockStateProperties(pile)
                 .setProperties(StatePropertiesPredicate.Builder.properties()
                         .hasProperty(LOTRTreasurePileBlock.LAYERS, layers));
+    }
+
+    /**
+     * LOTRBlockOre.getItemDropped / quantityDropped / quantityDroppedWithBonus,
+     * and the same three from LOTRBlockOreGem. Silk Touch gives the ore back,
+     * as it did for any plain cube in 1.7.10.
+     *
+     * <p>LOTRBlockOre's Fortune: quantity * (max(rand(fortune + 2) - 1, 0) + 1),
+     * which is exactly vanilla's ore bonus. Glowstone ore then capped the total
+     * at 8. LOTRBlockOreGem's Fortune: quantity + rand(fortune + 1), vanilla's
+     * uniform bonus with a multiplier of 1.
+     */
+    private void oreDrops() {
+        HolderLookup.RegistryLookup<Enchantment> enchantments = registries.lookupOrThrow(Registries.ENCHANTMENT);
+        Holder<Enchantment> fortune = enchantments.getOrThrow(Enchantments.FORTUNE);
+
+        oreDrop(LOTRBlocks.NAURITE_ORE, LOTRItems.NAURITE, 1, 2, ApplyBonusCount.addOreBonusCount(fortune), false);
+        oreDrop(LOTRBlocks.QUENDITE_ORE, LOTRItems.QUENDITE_CRYSTAL, 1, 1, ApplyBonusCount.addOreBonusCount(fortune), false);
+        oreDrop(LOTRBlocks.GLOWSTONE_ORE, Items.GLOWSTONE_DUST, 2, 5, ApplyBonusCount.addOreBonusCount(fortune), true);
+        // LOTRBlockOreMordorVariant(false): both forms of gulduril ore give the crystal.
+        oreDrop(LOTRBlocks.GULDURIL_ORE, LOTRItems.GULDURIL_CRYSTAL, 1, 1, ApplyBonusCount.addOreBonusCount(fortune), false);
+        oreDrop(LOTRBlocks.GULDURIL_MORDOR_ORE, LOTRItems.GULDURIL_CRYSTAL, 1, 1, ApplyBonusCount.addOreBonusCount(fortune), false);
+        oreDrop(LOTRBlocks.SULFUR_ORE, LOTRItems.SULFUR, 1, 2, ApplyBonusCount.addOreBonusCount(fortune), false);
+        oreDrop(LOTRBlocks.SALTPETER_ORE, LOTRItems.SALTPETER, 1, 2, ApplyBonusCount.addOreBonusCount(fortune), false);
+
+        oreDrop(LOTRBlocks.TOPAZ_ORE, LOTRItems.TOPAZ, 1, 2, ApplyBonusCount.addUniformBonusCount(fortune, 1), false);
+        oreDrop(LOTRBlocks.AMETHYST_ORE, LOTRItems.AMETHYST, 1, 2, ApplyBonusCount.addUniformBonusCount(fortune, 1), false);
+        oreDrop(LOTRBlocks.SAPPHIRE_ORE, LOTRItems.SAPPHIRE, 1, 2, ApplyBonusCount.addUniformBonusCount(fortune, 1), false);
+        oreDrop(LOTRBlocks.RUBY_ORE, LOTRItems.RUBY, 1, 2, ApplyBonusCount.addUniformBonusCount(fortune, 1), false);
+        oreDrop(LOTRBlocks.AMBER_ORE, LOTRItems.AMBER, 1, 2, ApplyBonusCount.addUniformBonusCount(fortune, 1), false);
+        oreDrop(LOTRBlocks.DIAMOND_ORE, LOTRItems.DIAMOND, 1, 2, ApplyBonusCount.addUniformBonusCount(fortune, 1), false);
+        oreDrop(LOTRBlocks.OPAL_ORE, LOTRItems.OPAL, 1, 2, ApplyBonusCount.addUniformBonusCount(fortune, 1), false);
+        oreDrop(LOTRBlocks.EMERALD_ORE, LOTRItems.EMERALD, 1, 2, ApplyBonusCount.addUniformBonusCount(fortune, 1), false);
+    }
+
+    private void oreDrop(Block ore, Item item, int min, int max, LootItemFunction.Builder bonus, boolean capAtEight) {
+        LootItem.Builder<?> drop = LootItem.lootTableItem(item)
+                .apply(SetItemCountFunction.setCount(UniformGenerator.between(min, max)))
+                .apply(bonus);
+        if (capAtEight) {
+            drop = drop.apply(LimitCount.limitCount(IntRange.upperBound(8)));
+        }
+        add(ore, createSilkTouchDispatchTable(ore, applyExplosionDecay(ore, drop)));
     }
 
     @Override
@@ -194,7 +248,11 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
 
         LOTRBlocks.ALL_SLABS.forEach(b -> add(b, this::createSlabItemTable));
 
-        dropsSelf.forEach(family -> family.forEach(this::dropSelf));
+        dropsSelf.forEach(family -> family.stream()
+                .filter(b -> !LOTRBlocks.ORES_WITH_ITEM_DROPS.contains(b))
+                .forEach(this::dropSelf));
+
+        oreDrops();
 
         LOTRBlocks.ALL_DOORS.forEach(door -> add(door, createDoorTable(door)));
     }

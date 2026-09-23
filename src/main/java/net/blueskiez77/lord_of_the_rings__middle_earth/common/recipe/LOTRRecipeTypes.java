@@ -42,5 +42,8 @@ public final class LOTRRecipeTypes {
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "faction_crafting"),
                 LOTRFactionCraftingRecipe.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "faction_crafting_shapeless"),
+                LOTRFactionShapelessRecipe.SERIALIZER);
     }
 }
