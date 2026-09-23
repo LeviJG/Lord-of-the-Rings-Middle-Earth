@@ -17,28 +17,41 @@ import net.minecraft.resources.Identifier;
  * ArrowModel already has. So there is nothing to transcribe: point ArrowRenderer
  * at the same texture and it draws the same bolt.
  *
- * <p>The sheet holds two: the plain bolt on the top half, the poisoned one
- * underneath, which is what the original's yOffset picked between. Only the top
- * half is used until crossbowBoltPoisoned is ported.
+ * <p>The original's sheet held two bolts, the poisoned one ten pixels under the
+ * plain one, and yOffset picked between them. ArrowModel's UVs are fixed, so the
+ * poisoned bolt has that lower half on a sheet of its own.
  */
 public class LOTRCrossbowBoltRenderer
-        extends ArrowRenderer<LOTRCrossbowBoltEntity, ArrowRenderState> {
+        extends ArrowRenderer<LOTRCrossbowBoltEntity, LOTRCrossbowBoltRenderer.BoltRenderState> {
 
     /** Was lotr:item/crossbowBolt.png, which is not a legal texture path now. */
     private static final Identifier TEXTURE = Identifier.fromNamespaceAndPath(
             LOTRMod.NAMESPACE, "textures/entity/projectiles/crossbow_bolt.png");
+
+    private static final Identifier POISONED_TEXTURE = Identifier.fromNamespaceAndPath(
+            LOTRMod.NAMESPACE, "textures/entity/projectiles/crossbow_bolt_poisoned.png");
+
+    public static class BoltRenderState extends ArrowRenderState {
+        public boolean poisoned;
+    }
 
     public LOTRCrossbowBoltRenderer(EntityRendererProvider.Context context) {
         super(context);
     }
 
     @Override
-    public ArrowRenderState createRenderState() {
-        return new ArrowRenderState();
+    public BoltRenderState createRenderState() {
+        return new BoltRenderState();
     }
 
     @Override
-    protected Identifier getTextureLocation(ArrowRenderState state) {
-        return TEXTURE;
+    public void extractRenderState(LOTRCrossbowBoltEntity bolt, BoltRenderState state, float partialTick) {
+        super.extractRenderState(bolt, state, partialTick);
+        state.poisoned = bolt.isPoisoned();
+    }
+
+    @Override
+    protected Identifier getTextureLocation(BoltRenderState state) {
+        return state.poisoned ? POISONED_TEXTURE : TEXTURE;
     }
 }

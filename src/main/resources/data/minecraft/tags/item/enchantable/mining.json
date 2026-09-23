@@ -5,10 +5,18 @@
     "lotr:dwarven_battleaxe",
     "lotr:dwarven_warhammer",
     "lotr:mordor_warhammer",
+    "lotr:sauron_mace",
     "lotr:mithril_battleaxe",
     "lotr:mithril_warhammer",
     "lotr:gondor_warhammer",
     "lotr:uruk_battleaxe",
-    "lotr:uruk_warhammer"
+    "lotr:uruk_warhammer",
+    "lotr:gundabad_uruk_waraxe",
+    "lotr:gundabad_uruk_bludgeon",
+    "lotr:dale_battleaxe",
+    "lotr:lossarnach_battleaxe",
+    "lotr:rhunic_battleaxe",
+    "lotr:corsair_battleaxe",
+    "lotr:black_numenorean_mace"
   ]
 }

@@ -33,6 +33,16 @@ public final class LOTRSounds {
     /** The crack of the balrog whip, "lotr:item.balrog_whip". */
     public static final SoundEvent ITEM_BALROG_WHIP = register("item.balrog_whip");
 
+    /** The Mace of Sauron coming down, and Gandalf's fireball bursting. */
+    public static final SoundEvent ITEM_MACE_SAURON = register("item.mace_sauron");
+    public static final SoundEvent ITEM_GANDALF_FIREBALL = register("item.gandalf_fireball");
+
+    /** A vessel dipped in water, "lotr:item.mug_fill". */
+    public static final SoundEvent ITEM_MUG_FILL = register("item.mug_fill");
+
+    /** A plate smashing, "lotr:block.plate.break". */
+    public static final SoundEvent BLOCK_PLATE_BREAK = register("block.plate.break");
+
     private LOTRSounds() {
     }
 

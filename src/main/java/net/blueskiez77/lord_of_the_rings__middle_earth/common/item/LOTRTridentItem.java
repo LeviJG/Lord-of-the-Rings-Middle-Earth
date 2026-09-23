@@ -106,9 +106,23 @@ public class LOTRTridentItem extends TridentItem implements LOTRModifiable {
      * item comes out of the raised fist pointing the wrong way -- the
      * "thrown, it is held in the hand backwards" LOTRThrownTridentRenderer's
      * comment records. lotr:item/dunlending_trident_throwing is that same
-     * roll applied to item/handheld's third-person block, selected by a
+     * roll applied to the third-person block, selected by a
      * minecraft:using_item condition in assets/lotr/items/dunlending_trident
      * .json exactly as vanilla selects its own two.
+     *
+     * <p>The throwing model's display transforms are SOLVED, not tuned: each
+     * one puts the sprite's shaft -- butt pixel (4,27) to tip pixel (31,0) of
+     * dunlending_trident_in_hand.png -- on the line vanilla's TridentModel
+     * occupies under item/trident_throwing, midpoint on midpoint, with the
+     * texture's face towards the camera. That replicates ItemTransform.apply
+     * (left-hand fix included) and the special model's scale(1, -1, -1). A
+     * roll on handheld's translation alone got the angle right but left the
+     * trident half a block too high and a quarter too far left, because
+     * vanilla's model hangs below its origin where a sprite is centred.
+     *
+     * <p>In hand -- first and third person, never the GUI, the ground or a
+     * frame -- the trident is drawn from its 32x32 texture at twice the
+     * size, as LOTRRenderLargeItem drew the original's from items/large.
      *
      * <p>ItemUseAnimation.SPEAR, new in 26.2 and the obvious candidate, is not
      * usable: SpearAnimations.firstPersonUse and thirdPersonUseItem both

@@ -34,10 +34,8 @@ public final class LOTRToolMaterials {
     /**
      * MORDOR: 400 uses, 2.5 damage, harvest level 2, speed 6.0, enchantability 7.
      *
-     * <p>The original repaired these with orc steel -- MORDOR.setCraftingItem
-     * (LOTRMod.orcSteel). The orc steel ingot is not ported yet, so
-     * {@link LOTRItemTags#REPAIRS_MORDOR_TOOLS} stands in for it: an empty tag
-     * today, and the one place to fill in when the ingot exists.
+     * <p>Repaired with orc steel -- MORDOR.setCraftingItem(LOTRMod.orcSteel) --
+     * through {@link LOTRItemTags#REPAIRS_MORDOR_TOOLS}.
      */
     public static final ToolMaterial MORDOR = new ToolMaterial(
             BlockTags.INCORRECT_FOR_IRON_TOOL,
@@ -50,8 +48,7 @@ public final class LOTRToolMaterials {
     /**
      * BRONZE: 230 uses, 1.5 damage, harvest level 2, speed 5.0, enchantability
      * 10. Repaired with bronze ingots -- BRONZE.setCraftingItem(LOTRMod.bronze)
-     * -- which the port has no ingot for yet, so
-     * {@link LOTRItemTags#REPAIRS_BRONZE_TOOLS} stands empty for now.
+     * -- through {@link LOTRItemTags#REPAIRS_BRONZE_TOOLS}.
      */
     public static final ToolMaterial BRONZE = new ToolMaterial(
             BlockTags.INCORRECT_FOR_IRON_TOOL,
@@ -301,6 +298,504 @@ public final class LOTRToolMaterials {
             5, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
             LOTRItemTags.REPAIRS_URUK_TOOLS, URUK_HELMET_ASSET);
 
+    /** The berserker's helmet: URUK, extraName "helmet_berserker". */
+    public static final ResourceKey<EquipmentAsset> URUK_BERSERKER_HELMET_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "uruk_berserker_helmet"));
+
+    /** URUK_HELMET_ARMOR's figures, pointing at the berserker's sheet. */
+    public static final ArmorMaterial URUK_BERSERKER_HELMET_ARMOR = new ArmorMaterial(
+            33,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 7,
+                    ArmorType.LEGGINGS, 6, ArmorType.BOOTS, 2),
+            5, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_URUK_TOOLS, URUK_BERSERKER_HELMET_ASSET);
+
+    /**
+     * GUNDABAD_URUK: 500 uses, 3.0 damage, harvest level 2, speed 6.0,
+     * enchantability 5. Its crafting item is uruk steel, the same as URUK's, so
+     * it mends from the same tag.
+     */
+    public static final ToolMaterial GUNDABAD_URUK = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 500, 6.0f, 3.0f, 5,
+            LOTRItemTags.REPAIRS_URUK_TOOLS);
+
+    public static final ResourceKey<EquipmentAsset> GUNDABAD_URUK_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "gundabad_uruk"));
+
+    /** The Gundabad helmet wears its own layer -- extraName "helmet". */
+    public static final ResourceKey<EquipmentAsset> GUNDABAD_URUK_HELMET_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "gundabad_uruk_helmet"));
+
+    /** round(500 * 0.06) = 30 durability; setProtection(0.7f) gives 2/7/6/2. */
+    public static final ArmorMaterial GUNDABAD_URUK_ARMOR = new ArmorMaterial(
+            30,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 7,
+                    ArmorType.LEGGINGS, 6, ArmorType.BOOTS, 2),
+            5, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_URUK_TOOLS, GUNDABAD_URUK_ASSET);
+
+    /** The same figures, pointing at the helmet's own texture. */
+    public static final ArmorMaterial GUNDABAD_URUK_HELMET_ARMOR = new ArmorMaterial(
+            30,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 7,
+                    ArmorType.LEGGINGS, 6, ArmorType.BOOTS, 2),
+            5, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_URUK_TOOLS, GUNDABAD_URUK_HELMET_ASSET);
+
+    /** DALE: 300 uses, 2.5 damage, harvest level 2, speed 6.0, enchantability 10. */
+    public static final ToolMaterial DALE = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 300, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_DALE_TOOLS);
+
+    public static final ResourceKey<EquipmentAsset> DALE_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "dale"));
+
+    /**
+     * round(300 * 0.06) = 18 durability; setProtection(0.6f) gives 2/6/5/2, and
+     * 11 on a horse, as Gondor's 0.6 does.
+     */
+    public static final ArmorMaterial DALE_ARMOR = new ArmorMaterial(
+            18,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2,
+                    ArmorType.BODY, 11),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_DALE_TOOLS, DALE_ASSET);
+
+    public static final ResourceKey<EquipmentAsset> DORWINION_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "dorwinion"));
+
+    /**
+     * DORWINION: 400 uses, protection 0.5, enchantability 10, so round(400 *
+     * 0.06) = 24 durability and 2/5/4/2. Only the armour is ported; the
+     * material arms nothing yet.
+     */
+    public static final ArmorMaterial DORWINION_ARMOR = new ArmorMaterial(
+            24,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_DORWINION_ARMOR, DORWINION_ASSET);
+
+    public static final ResourceKey<EquipmentAsset> DORWINION_ELVEN_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "dorwinion_elven"));
+
+    /** The elven helmet wears its own layer -- extraName "helmet". */
+    public static final ResourceKey<EquipmentAsset> DORWINION_ELVEN_HELMET_ASSET =
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "dorwinion_elven_helmet"));
+
+    private static ArmorMaterial dorwinionElven(ResourceKey<EquipmentAsset> asset) {
+        // DORWINION_ELF: 500 uses, protection 0.6, enchantability 15, so
+        // round(500 * 0.06) = 30 durability and 2/6/5/2.
+        return new ArmorMaterial(30,
+                Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                        ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+                15, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+                LOTRItemTags.REPAIRS_DORWINION_ELVEN_ARMOR, asset);
+    }
+
+    public static final ArmorMaterial DORWINION_ELVEN_ARMOR = dorwinionElven(DORWINION_ELVEN_ASSET);
+    public static final ArmorMaterial DORWINION_ELVEN_HELMET_ARMOR =
+            dorwinionElven(DORWINION_ELVEN_HELMET_ASSET);
+
+    /** DORWINION_ELF: 500 uses, 3.0 damage, harvest level 2, speed 7.0, ench 15. */
+    public static final ToolMaterial DORWINION_ELVEN = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 500, 7.0f, 3.0f, 15,
+            LOTRItemTags.REPAIRS_DORWINION_ELVEN_ARMOR);
+
+    /** BLADORTHIN: 600 uses, 3.0 damage, harvest level 2, speed 7.0, ench 10; dwarf steel. */
+    public static final ToolMaterial BLADORTHIN = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 600, 7.0f, 3.0f, 10,
+            LOTRItemTags.REPAIRS_BLADORTHIN_TOOLS);
+
+    /**
+     * MOREDAIN_WOOD: 250 uses, 2.0 damage, harvest level 2, speed 6.0, ench 10.
+     * The original gave it no crafting item, so nothing mends it.
+     */
+    public static final ToolMaterial MORWAITH_WOOD = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 250, 6.0f, 2.0f, 10,
+            LOTRItemTags.REPAIRS_MORWAITH_WOOD_TOOLS);
+
+    public static final ResourceKey<EquipmentAsset> RANGER_ITHILIEN_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "ranger_ithilien"));
+
+    /**
+     * RANGER_ITHILIEN: 350 uses, protection 0.48, enchantability 12, so 21
+     * durability and 2/5/4/2; mended with iron or leather, as the northern set is.
+     */
+    public static final ArmorMaterial RANGER_ITHILIEN_ARMOR = new ArmorMaterial(
+            21,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            12, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_RANGER_ARMOR, RANGER_ITHILIEN_ASSET);
+
+    /** LOSSARNACH: 300 uses, 2.5 damage, harvest level 2, speed 6.0, ench 10; iron. */
+    public static final ToolMaterial LOSSARNACH = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 300, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_LOSSARNACH_TOOLS);
+
+    public static final ResourceKey<EquipmentAsset> LOSSARNACH_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "lossarnach"));
+
+    /** round(300 * 0.06) = 18 durability; setProtection(0.5f) gives 2/5/4/2. */
+    public static final ArmorMaterial LOSSARNACH_ARMOR = new ArmorMaterial(
+            18,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_LOSSARNACH_TOOLS, LOSSARNACH_ASSET);
+
+    /** PELARGIR: 450 uses, 2.5 damage, harvest level 2, speed 6.0, ench 10; iron. */
+    public static final ToolMaterial PELARGIR = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 450, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_PELARGIR_TOOLS);
+
+    public static final ResourceKey<EquipmentAsset> PELARGIR_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "pelargir"));
+
+    /** round(450 * 0.06) = 27 durability; setProtection(0.6f) gives 2/6/5/2. */
+    public static final ArmorMaterial PELARGIR_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_PELARGIR_TOOLS, PELARGIR_ASSET);
+
+    public static final ResourceKey<EquipmentAsset> PINNATH_GELIN_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "pinnath_gelin"));
+
+    /**
+     * PINNATH_GELIN: 400 uses, protection 0.6, enchantability 10, so 24
+     * durability and 2/6/5/2. Only the armour exists; the material arms nothing.
+     */
+    public static final ArmorMaterial PINNATH_GELIN_ARMOR = new ArmorMaterial(
+            24,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_PINNATH_GELIN_ARMOR, PINNATH_GELIN_ASSET);
+
+    /** BLACKROOT: 400 uses, 2.0 damage, harvest level 2, speed 6.0, ench 10; iron. */
+    public static final ToolMaterial BLACKROOT = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 400, 6.0f, 2.0f, 10,
+            LOTRItemTags.REPAIRS_BLACKROOT_TOOLS);
+
+    public static final ResourceKey<EquipmentAsset> BLACKROOT_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "blackroot"));
+
+    /** round(400 * 0.06) = 24 durability; setProtection(0.6f) gives 2/6/5/2. */
+    public static final ArmorMaterial BLACKROOT_ARMOR = new ArmorMaterial(
+            24,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_BLACKROOT_TOOLS, BLACKROOT_ASSET);
+
+    /**
+     * GAMBESON: 200 uses, protection 0.4, enchantability 10, mended with wool:
+     * round(200 * 0.06) = 12 durability and 1/4/3/1. Every gambeson wears a
+     * sheet of its own -- LOTRItemArmor(GAMBESON, slot, "dolAmroth") and so on --
+     * so each is its own material pointing at its own asset.
+     */
+    private static ArmorMaterial gambeson(String asset) {
+        return new ArmorMaterial(12,
+                Map.of(ArmorType.HELMET, 1, ArmorType.CHESTPLATE, 4,
+                        ArmorType.LEGGINGS, 3, ArmorType.BOOTS, 1),
+                10, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f,
+                LOTRItemTags.REPAIRS_GAMBESON,
+                ResourceKey.create(EquipmentAssets.ROOT_ID,
+                        Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, asset)));
+    }
+
+    public static final ArmorMaterial GAMBESON_DOL_AMROTH_ARMOR = gambeson("gambeson_dol_amroth");
+    public static final ArmorMaterial GAMBESON_DOL_AMROTH_LEGS_ARMOR =
+            gambeson("gambeson_dol_amroth_legs");
+    public static final ArmorMaterial GAMBESON_GONDOR_ARMOR = gambeson("gambeson_gondor");
+    public static final ArmorMaterial GAMBESON_LEBENNIN_ARMOR = gambeson("gambeson_lebennin");
+
+    public static final ResourceKey<EquipmentAsset> LAMEDON_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "lamedon"));
+
+    /**
+     * LAMEDON: 300 uses, protection 0.5, enchantability 10, iron: 18 durability,
+     * 2/5/4/2, and 9 on a horse -- the chestplate and leggings together.
+     */
+    public static final ArmorMaterial LAMEDON_ARMOR = new ArmorMaterial(
+            18,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2,
+                    ArmorType.BODY, 9),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_LAMEDON_ARMOR, LAMEDON_ASSET);
+
+    public static final ResourceKey<EquipmentAsset> LAMEDON_JACKET_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "lamedon_jacket"));
+
+    /**
+     * JACKET: 150 uses, protection 0.4, enchantability 10, leather: 9 durability
+     * and 1/4/3/1. LOTRItemArmor(JACKET, 1, "lamedon") wears jacket_lamedon.
+     */
+    public static final ArmorMaterial LAMEDON_JACKET_ARMOR = new ArmorMaterial(
+            9,
+            Map.of(ArmorType.HELMET, 1, ArmorType.CHESTPLATE, 4,
+                    ArmorType.LEGGINGS, 3, ArmorType.BOOTS, 1),
+            10, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_JACKET, LAMEDON_JACKET_ASSET);
+
+    // ---- The rest of tabCombat: Arnor, Rhun, Rivendell, Harad and Numenor. ----
+
+    /** RANGER: 350 uses, 2.5 damage, speed 6.0, ench 12. The port's only use is the Ranger Bow. */
+    public static final ToolMaterial RANGER = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 350, 6.0f, 2.5f, 12,
+            LOTRItemTags.REPAIRS_RANGER_ARMOR);
+
+    /** LOTRItemArmor(GAMBESON, 1, "dale"): the Dalish gambeson's own sheet. */
+    public static final ArmorMaterial GAMBESON_DALE_ARMOR = new ArmorMaterial(
+            12,
+            Map.of(ArmorType.HELMET, 1, ArmorType.CHESTPLATE, 4,
+                    ArmorType.LEGGINGS, 3, ArmorType.BOOTS, 1),
+            10, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_GAMBESON,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "gambeson_dale")));
+
+    /** ARNOR: 450 uses, 2.5 damage, harvest level 2, speed 6.0, ench 10; iron. */
+    public static final ToolMaterial ARNOR = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 450, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_ARNOR_TOOLS);
+
+    /** round(450 * 0.06) = 27 durability; setProtection(0.6f) gives 2/6/5/2. */
+    public static final ArmorMaterial ARNOR_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_ARNOR_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "arnor")));
+
+    /** The same figures on the helmet's own sheet -- extraName "helmet". */
+    public static final ArmorMaterial ARNOR_HELMET_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_ARNOR_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "arnor_helmet")));
+
+    /** RHUN: 400 uses, 2.5 damage, harvest level 2, speed 6.0, ench 10; iron. */
+    public static final ToolMaterial RHUN = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 400, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_RHUN_TOOLS);
+
+    /** round(400 * 0.06) = 24 durability; setProtection(0.5f) gives 2/5/4/2. */
+    public static final ArmorMaterial RHUN_ARMOR = new ArmorMaterial(
+            24,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_RHUN_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "rhun")));
+
+    /** RHUN_GOLD: 450 uses, protection 0.6, ench 10, gilded iron: 27, 2/6/5/2, 11 on a horse. */
+    public static final ArmorMaterial RHUN_GOLD_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2,
+                    ArmorType.BODY, 11),
+            10, SoundEvents.ARMOR_EQUIP_GOLD, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_RHUN_GOLD_ARMOR,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "rhun_gold")));
+
+    /** The golden helmet's own sheet -- extraName "helmet". */
+    public static final ArmorMaterial RHUN_GOLD_HELMET_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_GOLD, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_RHUN_GOLD_ARMOR,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "rhun_gold_helmet")));
+
+    /** The warlord's helmet -- RHUN_GOLD, extraName "warlordHelmet", a 64x64 sheet. */
+    public static final ArmorMaterial RHUN_WARLORD_HELMET_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_GOLD, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_RHUN_GOLD_ARMOR,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "rhun_gold_warlord_helmet")));
+
+    /** RIVENDELL: 700 uses, 3.0 damage, harvest level 2, speed 8.0, ench 15; elven steel. */
+    public static final ToolMaterial RIVENDELL = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 700, 8.0f, 3.0f, 15,
+            LOTRItemTags.REPAIRS_RIVENDELL_TOOLS);
+
+    /** round(700 * 0.06) = 42 durability; setProtection(0.6f) gives 2/6/5/2, and 11 on a horse. */
+    public static final ArmorMaterial RIVENDELL_ARMOR = new ArmorMaterial(
+            42,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2,
+                    ArmorType.BODY, 11),
+            15, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_RIVENDELL_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "rivendell")));
+
+    /** MOREDAIN_BRONZE: 230 uses, 1.5 damage, harvest level 2, speed 5.0, ench 10; bronze. */
+    public static final ToolMaterial MORWAITH_BRONZE = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 230, 5.0f, 1.5f, 10,
+            LOTRItemTags.REPAIRS_BRONZE_TOOLS);
+
+    /** GULF_HARAD: 350 uses, 2.5 damage, harvest level 2, speed 6.0, ench 10; bronze. */
+    public static final ToolMaterial GULF_HARAD = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 350, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_GULF_HARAD_TOOLS);
+
+    /** round(350 * 0.06) = 21 durability; setProtection(0.5f) gives 2/5/4/2. */
+    public static final ArmorMaterial GULF_HARAD_ARMOR = new ArmorMaterial(
+            21,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_GULF_HARAD_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "gulf_harad")));
+
+    /** The Gulfen chestplate's own sheet -- extraName "body", worn on its horned model. */
+    public static final ArmorMaterial GULF_HARAD_BODY_ARMOR = new ArmorMaterial(
+            21,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_GULF_HARAD_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "gulf_harad_body")));
+
+    /** CORSAIR: 300 uses, 2.5 damage, harvest level 2, speed 6.0, ench 10; iron or bronze. */
+    public static final ToolMaterial CORSAIR = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 300, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_CORSAIR_TOOLS);
+
+    /** round(300 * 0.06) = 18 durability; setProtection(0.5f) gives 2/5/4/2. */
+    public static final ArmorMaterial CORSAIR_ARMOR = new ArmorMaterial(
+            18,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_CORSAIR_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "corsair")));
+
+    /** UMBARIC_ARMOR's figures on the Umbaric helmet's own sheet -- extraName "helmet". */
+    public static final ArmorMaterial UMBARIC_HELMET_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_UMBARIC_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "umbaric_helmet")));
+
+    /** HARNEDOR: 250 uses, protection 0.5, ench 8, bronze: 15 durability and 2/5/4/2. */
+    public static final ArmorMaterial HARNEDOR_ARMOR = new ArmorMaterial(
+            15,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            8, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_HARNEDOR_ARMOR,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "harnedor")));
+
+    /** The Harnennor helmet's own sheet -- extraName "helmet". */
+    public static final ArmorMaterial HARNEDOR_HELMET_ARMOR = new ArmorMaterial(
+            15,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            8, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_HARNEDOR_ARMOR,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "harnedor_helmet")));
+
+    /** The Harnennor chestplate's own sheet -- extraName "body", worn on its barbed model. */
+    public static final ArmorMaterial HARNEDOR_BODY_ARMOR = new ArmorMaterial(
+            15,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            8, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_HARNEDOR_ARMOR,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "harnedor_body")));
+
+    /** HARAD_NOMAD: 200 uses, protection 0.4, ench 8, dried reeds: 12 durability and 1/4/3/1. */
+    public static final ArmorMaterial HARAD_NOMAD_ARMOR = new ArmorMaterial(
+            12,
+            Map.of(ArmorType.HELMET, 1, ArmorType.CHESTPLATE, 4,
+                    ArmorType.LEGGINGS, 3, ArmorType.BOOTS, 1),
+            8, SoundEvents.ARMOR_EQUIP_LEATHER, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_HARAD_NOMAD_ARMOR,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "harad_nomad")));
+
+    /** helmetNearHaradWarlord: NEAR_HARAD, extraName "warlordHelmet" -- the Southron Champion's plumes. */
+    public static final ArmorMaterial COAST_SOUTHRON_CHAMPION_HELMET_ARMOR = new ArmorMaterial(
+            18,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
+                    ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_COAST_SOUTHRON_ARMOR,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "coast_southron_champion_helmet")));
+
+    /** ANCIENT_HARAD: 450 uses, 2.5 damage, harvest level 2, speed 6.0, ench 10; iron. */
+    public static final ToolMaterial ANCIENT_HARAD = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 450, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_ANCIENT_HARAD_TOOLS);
+
+    /** BLACK_NUMENOREAN: 450 uses, 2.5 damage, harvest level 2, speed 6.0, ench 10; iron. */
+    public static final ToolMaterial BLACK_NUMENOREAN = new ToolMaterial(
+            BlockTags.INCORRECT_FOR_IRON_TOOL, 450, 6.0f, 2.5f, 10,
+            LOTRItemTags.REPAIRS_BLACK_NUMENOREAN_TOOLS);
+
+    /** round(450 * 0.06) = 27 durability; setProtection(0.6f) gives 2/6/5/2. */
+    public static final ArmorMaterial BLACK_NUMENOREAN_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_BLACK_NUMENOREAN_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "black_numenorean")));
+
+    /** The winged helmet's own sheet -- extraName "helmet". */
+    public static final ArmorMaterial BLACK_NUMENOREAN_HELMET_ARMOR = new ArmorMaterial(
+            27,
+            Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 6,
+                    ArmorType.LEGGINGS, 5, ArmorType.BOOTS, 2),
+            10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
+            LOTRItemTags.REPAIRS_BLACK_NUMENOREAN_TOOLS,
+            ResourceKey.create(EquipmentAssets.ROOT_ID,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "black_numenorean_helmet")));
+
     /**
      * WOOD_ELVEN: 500 uses, 3.0 damage, harvest level 2, speed 9.0,
      * enchantability 15 -- the quickest edge in the mod bar mithril, which is
@@ -544,8 +1039,8 @@ public final class LOTRToolMaterials {
 
     /**
      * The armour half of LOTRMaterial.UMBAR, which the port needs for one item
-     * only: the Umbaric horse armour. Its equipment asset carries a horse_body
-     * layer and nothing else, since none of the worn Umbaric pieces are ported.
+     * the Umbaric horse armour and the worn Umbaric set, whose helmet wears a sheet
+     * of its own (UMBARIC_HELMET_ARMOR). The asset carries all three layers.
      * round(450 * 0.06) = 27, protection 0.6, so the horse takes 6 + 5 = 11.
      */
     public static final ArmorMaterial UMBARIC_ARMOR = new ArmorMaterial(
@@ -801,6 +1296,27 @@ public final class LOTRToolMaterials {
             BlockTags.INCORRECT_FOR_IRON_TOOL, 1500, 8.0f, 5.0f, 15,
             LOTRItemTags.REPAIRS_GONDOLIN_TOOLS);
 
+    /**
+     * LOTRMaterial.COSMETIC, HARAD_ROBES and KAFTAN: clothes, not armour. They
+     * gave no protection, took no enchantment and never wore out, so the items
+     * carry a plain EQUIPPABLE component rather than an armour material, and
+     * only the equipment assets they are drawn with are needed here.
+     */
+    public static final ResourceKey<EquipmentAsset> LEATHER_HAT_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "leather_hat"));
+    public static final ResourceKey<EquipmentAsset> PARTY_HAT_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "party_hat"));
+    public static final ResourceKey<EquipmentAsset> HARAD_TURBAN_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "harad_turban"));
+    public static final ResourceKey<EquipmentAsset> HARAD_ROBES_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "harad_robes"));
+    public static final ResourceKey<EquipmentAsset> KAFTAN_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "kaftan"));
     public static final ResourceKey<EquipmentAsset> GONDOLIN_ASSET = ResourceKey.create(
             EquipmentAssets.ROOT_ID,
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "gondolin"));

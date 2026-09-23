@@ -9,7 +9,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTRInvasions: who turns up when a warhorn is blown.
  *
- * <p>A faction can field more than one kind of warband -- Gondor alone has six,
+ * <p>A faction can field more than one kind of warband -- Gondor alone has eight,
  * one for each of its fiefs, and the high elves have Lindon and Rivendell -- so
  * an invasion is a FACTION plus an optional subfaction, and it is the invasion
  * rather than the faction that a warhorn carries.
@@ -44,12 +44,16 @@ public enum LOTRInvasions {
     ROHAN(LOTRFaction.ROHAN),
     GONDOR(LOTRFaction.GONDOR),
     GONDOR_ITHILIEN(LOTRFaction.GONDOR, "ithilien"),
+    GONDOR_DOL_AMROTH(LOTRFaction.GONDOR, "dolAmroth"),
     GONDOR_LOSSARNACH(LOTRFaction.GONDOR, "lossarnach"),
     GONDOR_PELARGIR(LOTRFaction.GONDOR, "pelargir"),
+    GONDOR_PINNATH_GELIN(LOTRFaction.GONDOR, "pinnathGelin"),
     GONDOR_BLACKROOT(LOTRFaction.GONDOR, "blackroot"),
     GONDOR_LEBENNIN(LOTRFaction.GONDOR, "lebennin"),
     GONDOR_LAMEDON(LOTRFaction.GONDOR, "lamedon"),
     MORDOR(LOTRFaction.MORDOR),
+    MORDOR_BLACK_URUK(LOTRFaction.MORDOR, "blackUruk"),
+    MORDOR_NAN_UNGOL(LOTRFaction.MORDOR, "nanUngol"),
     MORDOR_WARG(LOTRFaction.MORDOR, "warg"),
     DORWINION(LOTRFaction.DORWINION),
     DORWINION_ELF(LOTRFaction.DORWINION, "elf"),

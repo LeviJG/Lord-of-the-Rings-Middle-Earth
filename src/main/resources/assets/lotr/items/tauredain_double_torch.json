@@ -1,6 +1,24 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "lotr:item/tauredain_double_torch"
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [
+          "gui",
+          "ground",
+          "fixed",
+          "on_shelf"
+        ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/tauredain_double_torch"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "lotr:item/tauredain_double_torch_in_hand"
+    }
   }
 }

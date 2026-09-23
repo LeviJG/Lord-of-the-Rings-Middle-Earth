@@ -29,11 +29,25 @@ import org.jspecify.annotations.Nullable;
  * the bolt out of the tag keeps a bolt out of every bow in the game, and
  * {@link LOTRCrossbowItem} names the bolt directly rather than going through
  * the tag.
+ *
+ * <p>The poisoned bolt is the same class with the flag set, as
+ * LOTRItemCrossbowBolt.setPoisoned had it; the bolt entity delivers the dose.
  */
 public class LOTRCrossbowBoltItem extends ArrowItem {
 
+    private final boolean poisoned;
+
     public LOTRCrossbowBoltItem(Properties properties) {
+        this(false, properties);
+    }
+
+    public LOTRCrossbowBoltItem(boolean poisoned, Properties properties) {
         super(properties);
+        this.poisoned = poisoned;
+    }
+
+    public boolean isPoisoned() {
+        return this.poisoned;
     }
 
     @Override

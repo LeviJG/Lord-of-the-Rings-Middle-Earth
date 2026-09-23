@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import java.util.function.Function;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCropBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRTrophyType;
 
 import net.minecraft.core.Registry;
@@ -36,12 +37,10 @@ public final class LOTRItems {
     // 0.8, and wolves will eat it. It is what the kebab stand turns raw meat
     // into, so the stand needs it registered.
     //
-    // NOT ported: onEaten had a one-in-a-hundred chance of telling the player
-    // "That was a good kebab. You feel a lot better." A consumption hook like
-    // that wants an item subclass; the joke is noted here so it is not lost.
+    // LOTRItemKebab: one eating in a hundred tells the player it was a good kebab.
     public static final Item KEBAB = register("kebab",
-            Item::new, new Item.Properties()
-                    .food(new FoodProperties(8, 0.8f, false)));
+            LOTRKebabItem::new, new Item.Properties()
+                    .food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.8f).build()));
 
     // LOTRItemTrollStatue: places a stone troll. Stack size 1, as it was --
     // outfit and head count live in the stack, so two statues are rarely alike.
@@ -99,6 +98,23 @@ public final class LOTRItems {
     /** And this one. */
     private static final Identifier POLEARM_KNOCKBACK_ID =
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "polearm_knockback");
+
+    /** And this one: LOTRItemLance.lanceSpeedBoost. */
+    private static final Identifier LANCE_MOVEMENT_ID =
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "lance_movement");
+
+    /**
+     * lanceSpeedBoost: {@code new AttributeModifier(..., -0.2, 2)}, operation 2
+     * being a multiplier on the total -- a lance slows its bearer by a fifth.
+     */
+    private static final double LANCE_MOVEMENT_PENALTY = -0.2;
+
+    /** Up here for the same reason DAGGER_REACH_ID is. The balrog whip's reach. */
+    private static final Identifier WHIP_REACH_ID =
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "whip_reach");
+
+    /** registerMeleeReach(LOTRItemBalrogWhip.class, 1.5f): a polearm's reach. */
+    private static final double WHIP_REACH = 3.0 * 1.5;
 
     /** Up here for the same reason DAGGER_REACH_ID is. See the note above. */
     private static final Identifier WARHAMMER_KNOCKBACK_ID =
@@ -169,6 +185,19 @@ public final class LOTRItems {
     // daggerOrcPoisoned: the same dagger, whose cut festers.
     public static final Item POISONED_MORDOR_DAGGER = register("poisoned_mordor_dagger",
             LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.MORDOR, 0.0f));
+
+    // LOTRItemSting: a Lindon dagger with a point of damage on top and Bilbo's
+    // seven hundred uses. Its one trick is cutting webs -- the original gave it
+    // speed 15 on Ungoliant's web as well as on the vanilla one.
+    public static final Item STING = register("sting", LOTRModifiableItem::new,
+            dagger(LOTRToolMaterials.LINDON, 1.0f)
+                    .component(DataComponents.TOOL, new net.minecraft.world.item.component.Tool(
+                            java.util.List.of(net.minecraft.world.item.component.Tool.Rule.minesAndDrops(
+                                    net.minecraft.core.HolderSet.direct(
+                                            net.minecraft.world.level.block.Blocks.COBWEB.builtInRegistryHolder(),
+                                            net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.WEB_UNGOLIANT.builtInRegistryHolder()),
+                                    15.0f)),
+                            1.0f, 2, false)));
 
     // swordMithril: 5.0 + 4 = 9.0.
     public static final Item MITHRIL_SWORD = register("mithril_sword",
@@ -258,6 +287,11 @@ public final class LOTRItems {
             LOTRModifiableItem::new, spear(LOTRToolMaterials.BRONZE, 4.5f));
     public static final Item MITHRIL_SPEAR = register("mithril_spear",
             LOTRModifiableItem::new, spear(LOTRToolMaterials.MITHRIL, 8.0f));
+
+    // LOTRItemAnduril: iron, but the Flame of the West all the same -- 9 damage
+    // and 1500 uses.
+    public static final Item ANDURIL = register("anduril", LOTRModifiableItem::new,
+            new Item.Properties().sword(net.minecraft.world.item.ToolMaterial.IRON, 6.0f, -2.4f).durability(1500));
 
     // spearElven: 3.0 + 4 - 1 = 6.0.
     public static final Item GALADHRIM_SPEAR = register("galadhrim_spear",
@@ -884,7 +918,24 @@ public final class LOTRItems {
                                     - LOTRToolMaterials.UTUMNO.attackDamageBonus(),
                             -2.4f)
                     .durability(LOTRBalrogWhipItem.DURABILITY)
-                    .repairable(LOTRItemTags.REPAIRS_BALROG_WHIP));
+                    .repairable(LOTRItemTags.REPAIRS_BALROG_WHIP)
+                    // .sword's damage and speed again, plus the whip's reach;
+                    // attributes() replaces the component sword() set.
+                    .attributes(ItemAttributeModifiers.builder()
+                            .add(Attributes.ATTACK_DAMAGE,
+                                    new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID,
+                                            LOTRBalrogWhipItem.ATTACK_DAMAGE - 1.0,
+                                            AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ATTACK_SPEED,
+                                    new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -2.4,
+                                            AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .add(Attributes.ENTITY_INTERACTION_RANGE,
+                                    new AttributeModifier(WHIP_REACH_ID, WHIP_REACH - 3.0,
+                                            AttributeModifier.Operation.ADD_VALUE),
+                                    EquipmentSlotGroup.MAINHAND)
+                            .build()));
 
     // battleaxeIron: LOTRItemBattleaxe on VANILLA iron, so 2.0 + 4 + 2 = 8.0.
     public static final Item IRON_BATTLEAXE = register("iron_battleaxe",
@@ -1132,8 +1183,7 @@ public final class LOTRItems {
     // lanceDolAmroth: 3.0 + 4 = 7.0, a pike's reach and speed, and a lance
     // alone gets registerMeleeExtraKnockback(1).
     public static final Item DOL_AMROTH_LANCE = register("dol_amroth_lance",
-            LOTRModifiableItem::new, polearm(LOTRToolMaterials.DOL_AMROTH, 7.0f,
-                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 1.0));
+            LOTRModifiableItem::new, lance(LOTRToolMaterials.DOL_AMROTH, 7.0f));
 
     // maceNearHarad: LOTRItemHammer(UMBAR), so 2.5 + 4 + 2 = 8.5 and a hammer's
     // swing -- which is where registerMeleeExtraKnockback(LOTRItemHammer, 1)
@@ -1201,6 +1251,1339 @@ public final class LOTRItems {
             LOTRToolMaterials.GOLDEN_TAURETHRIM_ARMOR, ArmorType.LEGGINGS);
     public static final Item GOLDEN_TAURETHRIM_BOOTS = registerArmor("golden_taurethrim_boots",
             LOTRToolMaterials.GOLDEN_TAURETHRIM_ARMOR, ArmorType.BOOTS);
+
+    // pikeDwarven and pikeBlueDwarven: LOTRItemPike, so 3.0 + 4 = 7.0 apiece on
+    // the long polearm's figures.
+    public static final Item DWARVEN_PIKE = register("dwarven_pike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.DWARVEN, 7.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+    public static final Item BLUE_DWARVEN_PIKE = register("blue_dwarven_pike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.BLUE_DWARVEN, 7.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // daggerDolAmroth: 3.0 + 4 - 3 = 4.0, and its poisoned twin.
+    public static final Item DOL_AMROTH_DAGGER = register("dol_amroth_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.DOL_AMROTH, 0.0f));
+    public static final Item POISONED_DOL_AMROTH_DAGGER = register("poisoned_dol_amroth_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.DOL_AMROTH, 0.0f));
+
+    // The Gundabad Uruk armour. The helmet wears a sheet of its own -- extraName
+    // "helmet" -- and a horned model; see LOTRArmorRenderers.
+    public static final Item GUNDABAD_URUK_HELMET = registerArmor("gundabad_uruk_helmet",
+            LOTRToolMaterials.GUNDABAD_URUK_HELMET_ARMOR, ArmorType.HELMET);
+    public static final Item GUNDABAD_URUK_CHESTPLATE = registerArmor("gundabad_uruk_chestplate",
+            LOTRToolMaterials.GUNDABAD_URUK_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item GUNDABAD_URUK_LEGGINGS = registerArmor("gundabad_uruk_leggings",
+            LOTRToolMaterials.GUNDABAD_URUK_ARMOR, ArmorType.LEGGINGS);
+    public static final Item GUNDABAD_URUK_BOOTS = registerArmor("gundabad_uruk_boots",
+            LOTRToolMaterials.GUNDABAD_URUK_ARMOR, ArmorType.BOOTS);
+
+    // lanceGondor: 2.5 + 4 = 6.5, and a lance's reach, swing and knockback.
+    public static final Item GONDOR_LANCE = register("gondor_lance",
+            LOTRModifiableItem::new, lance(LOTRToolMaterials.GONDOR, 6.5f));
+
+    // The Gundabad Uruk weapons, which the original names a Cleaver, a Waraxe
+    // and a Bludgeon: 3.0 damage, so the Isengard Uruks' figures throughout.
+    public static final Item GUNDABAD_URUK_CLEAVER = register("gundabad_uruk_cleaver",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.GUNDABAD_URUK, 3.0f, -2.4f));
+    public static final Item GUNDABAD_URUK_WARAXE = register("gundabad_uruk_waraxe",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .axe(LOTRToolMaterials.GUNDABAD_URUK, 5.0f, -3.0f));
+    public static final Item GUNDABAD_URUK_BLUDGEON = register("gundabad_uruk_bludgeon",
+            LOTRModifiableItem::new, warhammer(LOTRToolMaterials.GUNDABAD_URUK, 5.0f));
+
+    // helmetUrukBerserker and scimitarUrukBerserker, both on URUK. The helmet
+    // is the Uruk model on a sheet of its own; the cleaver's addWeaponDamage(0)
+    // leaves it the Uruk Cleaver's 3.0 + 4 = 7.0.
+    public static final Item URUK_BERSERKER_HELMET = registerArmor("uruk_berserker_helmet",
+            LOTRToolMaterials.URUK_BERSERKER_HELMET_ARMOR, ArmorType.HELMET);
+    public static final Item URUK_BERSERKER_CLEAVER = register("uruk_berserker_cleaver",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.URUK, 3.0f, -2.4f));
+
+    // lanceRohan: 2.5 + 4 = 6.5.
+    public static final Item ROHIRRIC_LANCE = register("rohirric_lance",
+            LOTRModifiableItem::new, lance(LOTRToolMaterials.ROHIRRIC, 6.5f));
+
+    // longspearElven, longspearHighElven and longspearWoodElven: plain
+    // LOTRItemPolearmLong, so 3.0 + 4 = 7.0 apiece on the long polearm's figures.
+    public static final Item GALADHRIM_LONGSPEAR = register("galadhrim_longspear",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.GALADHRIM, 7.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+    public static final Item LINDON_LONGSPEAR = register("lindon_longspear",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.LINDON, 7.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+    public static final Item WOOD_ELVEN_LONGSPEAR = register("wood_elven_longspear",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.WOOD_ELVEN, 7.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // LOTRItemRingil: Fingolfin's sword, Lindon steel at 9 damage and 1500 uses.
+    public static final Item RINGIL = register("ringil", LOTRModifiableItem::new,
+            new Item.Properties().sword(LOTRToolMaterials.LINDON, 5.0f, -2.4f).durability(1500));
+
+    // halberdMithril: LOTRItemPolearmLong(MITHRIL), so 5.0 + 4 = 9.0.
+    public static final Item MITHRIL_HALBERD = register("mithril_halberd",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.MITHRIL, 9.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // The Dale set: 2.5 damage, so a 6.5 sword, a 3.5 dagger and an 8.5 axe.
+    public static final Item DALE_SWORD = register("dale_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.DALE, 3.0f, -2.4f));
+    public static final Item DALE_DAGGER = register("dale_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.DALE, 0.0f));
+    public static final Item POISONED_DALE_DAGGER = register("poisoned_dale_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.DALE, 0.0f));
+    // spearDale: 2.5 + 4 - 1 = 5.5.
+    public static final Item DALE_SPEAR = register("dale_spear",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.DALE, 5.5f));
+    public static final Item DALE_BATTLEAXE = register("dale_battleaxe",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .axe(LOTRToolMaterials.DALE, 5.0f, -3.0f));
+    // No extraName on the helmet, so it wears the set's own sheet.
+    public static final Item DALE_HELMET = registerArmor("dale_helmet",
+            LOTRToolMaterials.DALE_ARMOR, ArmorType.HELMET);
+    public static final Item DALE_CHESTPLATE = registerArmor("dale_chestplate",
+            LOTRToolMaterials.DALE_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item DALE_LEGGINGS = registerArmor("dale_leggings",
+            LOTRToolMaterials.DALE_ARMOR, ArmorType.LEGGINGS);
+    public static final Item DALE_BOOTS = registerArmor("dale_boots",
+            LOTRToolMaterials.DALE_ARMOR, ArmorType.BOOTS);
+
+    // The Dorwinion sets. The men's helmet wears the set's sheet; the elves'
+    // has a sheet and a crested model of its own -- see LOTRArmorRenderers.
+    public static final Item DORWINION_HELMET = registerArmor("dorwinion_helmet",
+            LOTRToolMaterials.DORWINION_ARMOR, ArmorType.HELMET);
+    public static final Item DORWINION_CHESTPLATE = registerArmor("dorwinion_chestplate",
+            LOTRToolMaterials.DORWINION_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item DORWINION_LEGGINGS = registerArmor("dorwinion_leggings",
+            LOTRToolMaterials.DORWINION_ARMOR, ArmorType.LEGGINGS);
+    public static final Item DORWINION_BOOTS = registerArmor("dorwinion_boots",
+            LOTRToolMaterials.DORWINION_ARMOR, ArmorType.BOOTS);
+    public static final Item DORWINION_ELVEN_HELMET = registerArmor("dorwinion_elven_helmet",
+            LOTRToolMaterials.DORWINION_ELVEN_HELMET_ARMOR, ArmorType.HELMET);
+    public static final Item DORWINION_ELVEN_CHESTPLATE = registerArmor(
+            "dorwinion_elven_chestplate",
+            LOTRToolMaterials.DORWINION_ELVEN_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item DORWINION_ELVEN_LEGGINGS = registerArmor("dorwinion_elven_leggings",
+            LOTRToolMaterials.DORWINION_ELVEN_ARMOR, ArmorType.LEGGINGS);
+    public static final Item DORWINION_ELVEN_BOOTS = registerArmor("dorwinion_elven_boots",
+            LOTRToolMaterials.DORWINION_ELVEN_ARMOR, ArmorType.BOOTS);
+
+    // spearBladorthin, the Spear of Bladorthin: LOTRItemSpear, 3.0 + 4 - 1 = 6.0.
+    public static final Item BLADORTHIN_SPEAR = register("bladorthin_spear",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.BLADORTHIN, 6.0f));
+
+    // daleBow, the Dalish Longbow: new LOTRItemBow(DALE, 1.25).setDrawTime(30).
+    public static final Item DALE_BOW = register("dale_bow",
+            props -> new LOTRBowItem(30, 1.25f, props),
+            bow(LOTRToolMaterials.DALE, LOTRItemTags.REPAIRS_DALE_BOW));
+
+    public static final Item DALE_HORSE_ARMOR = registerHorseArmor("dale_horse_armor",
+            LOTRToolMaterials.DALE_ARMOR);
+
+    // The Ithilien rangers' set: a hood and tunic like the northern rangers'.
+    public static final Item ITHILIEN_RANGER_HOOD = registerArmor("ithilien_ranger_hood",
+            LOTRToolMaterials.RANGER_ITHILIEN_ARMOR, ArmorType.HELMET);
+    public static final Item ITHILIEN_RANGER_TUNIC = registerArmor("ithilien_ranger_tunic",
+            LOTRToolMaterials.RANGER_ITHILIEN_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item ITHILIEN_RANGER_LEGGINGS = registerArmor("ithilien_ranger_leggings",
+            LOTRToolMaterials.RANGER_ITHILIEN_ARMOR, ArmorType.LEGGINGS);
+    public static final Item ITHILIEN_RANGER_BOOTS = registerArmor("ithilien_ranger_boots",
+            LOTRToolMaterials.RANGER_ITHILIEN_ARMOR, ArmorType.BOOTS);
+
+    // LOTRMod registers the rest of the set a long way further on, after the
+    // Ithilien rangers' gear; none of what lies between is ported yet.
+    public static final Item GUNDABAD_URUK_DAGGER = register("gundabad_uruk_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.GUNDABAD_URUK, 0.0f));
+    public static final Item POISONED_GUNDABAD_URUK_DAGGER = register(
+            "poisoned_gundabad_uruk_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.GUNDABAD_URUK, 0.0f));
+    // spearGundabadUruk: 3.0 + 4 - 1 = 6.0.
+    public static final Item GUNDABAD_URUK_SPEAR = register("gundabad_uruk_spear",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.GUNDABAD_URUK, 6.0f));
+    public static final Item GUNDABAD_URUK_PIKE = register("gundabad_uruk_pike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.GUNDABAD_URUK, 7.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+    // gundabadUrukBow: new LOTRItemBow(GUNDABAD_URUK, 1.2).setDrawTime(30) --
+    // slow to draw, and it shoots a little harder than a plain bow.
+    public static final Item GUNDABAD_URUK_BOW = register("gundabad_uruk_bow",
+            props -> new LOTRBowItem(30, 1.2f, props),
+            bow(LOTRToolMaterials.GUNDABAD_URUK, LOTRItemTags.REPAIRS_GUNDABAD_URUK_BOW));
+
+    // swordDorwinionElf and its daggers: DORWINION_ELF, 3.0 damage. Elven blades
+    // in the original; the glow is not ported for any blade yet.
+    public static final Item DORWINION_ELVEN_SWORD = register("dorwinion_elven_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.DORWINION_ELVEN, 3.0f, -2.4f));
+    public static final Item DORWINION_ELVEN_DAGGER = register("dorwinion_elven_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.DORWINION_ELVEN, 0.0f));
+    public static final Item POISONED_DORWINION_ELVEN_DAGGER = register(
+            "poisoned_dorwinion_elven_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.DORWINION_ELVEN, 0.0f));
+
+    // pikeTauredain: LOTRItemPike, 2.5 + 4 = 6.5.
+    public static final Item TAURETHRIM_PIKE = register("taurethrim_pike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.TAURETHRIM, 6.5f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // clubMoredain, the Morwaith Club: LOTRItemHammer(MOREDAIN_WOOD), 2.0 + 4 + 2 = 8.0.
+    public static final Item MORWAITH_CLUB = register("morwaith_club",
+            LOTRModifiableItem::new, warhammer(LOTRToolMaterials.MORWAITH_WOOD, 5.0f));
+
+    // pikeDale, the Dalish Pitchfork: LOTRItemPike, so 2.5 + 4 = 6.5.
+    public static final Item DALE_PITCHFORK = register("dale_pitchfork",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.DALE, 6.5f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // rollingPin: LOTRItemSword on VANILLA wood, 0.0 + 4 = 4.0.
+    public static final Item ROLLING_PIN = register("rolling_pin",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(ToolMaterial.WOOD, 3.0f, -2.4f));
+
+    // polearmAngmar, the Angmar Poleaxe: LOTRItemPolearm, 2.5 + 4 = 6.5.
+    public static final Item ANGMAR_POLEAXE = register("angmar_poleaxe",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.ANGMAR, 6.5f, POLEARM_SPEED,
+                    POLEARM_REACH, 0.0));
+
+    // pikeDolGuldur, the Dol Guldur Spike, and pikeNearHarad: LOTRItemPike, 6.5 apiece.
+    public static final Item DOL_GULDUR_SPIKE = register("dol_guldur_spike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.DOL_GULDUR, 6.5f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+    public static final Item UMBARIC_PIKE = register("umbaric_pike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.UMBARIC, 6.5f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // The fiefdoms of Gondor: Lossarnach, Pelargir and Pinnath Gelin armour,
+    // each on the set's own sheet.
+    public static final Item LOSSARNACH_HELMET = registerArmor("lossarnach_helmet",
+            LOTRToolMaterials.LOSSARNACH_ARMOR, ArmorType.HELMET);
+    public static final Item LOSSARNACH_CHESTPLATE = registerArmor("lossarnach_chestplate",
+            LOTRToolMaterials.LOSSARNACH_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item LOSSARNACH_LEGGINGS = registerArmor("lossarnach_leggings",
+            LOTRToolMaterials.LOSSARNACH_ARMOR, ArmorType.LEGGINGS);
+    public static final Item LOSSARNACH_BOOTS = registerArmor("lossarnach_boots",
+            LOTRToolMaterials.LOSSARNACH_ARMOR, ArmorType.BOOTS);
+    public static final Item PELARGIR_HELMET = registerArmor("pelargir_helmet",
+            LOTRToolMaterials.PELARGIR_ARMOR, ArmorType.HELMET);
+    public static final Item PELARGIR_CHESTPLATE = registerArmor("pelargir_chestplate",
+            LOTRToolMaterials.PELARGIR_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item PELARGIR_LEGGINGS = registerArmor("pelargir_leggings",
+            LOTRToolMaterials.PELARGIR_ARMOR, ArmorType.LEGGINGS);
+    public static final Item PELARGIR_BOOTS = registerArmor("pelargir_boots",
+            LOTRToolMaterials.PELARGIR_ARMOR, ArmorType.BOOTS);
+    public static final Item PINNATH_GELIN_HELMET = registerArmor("pinnath_gelin_helmet",
+            LOTRToolMaterials.PINNATH_GELIN_ARMOR, ArmorType.HELMET);
+    public static final Item PINNATH_GELIN_CHESTPLATE = registerArmor("pinnath_gelin_chestplate",
+            LOTRToolMaterials.PINNATH_GELIN_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item PINNATH_GELIN_LEGGINGS = registerArmor("pinnath_gelin_leggings",
+            LOTRToolMaterials.PINNATH_GELIN_ARMOR, ArmorType.LEGGINGS);
+    public static final Item PINNATH_GELIN_BOOTS = registerArmor("pinnath_gelin_boots",
+            LOTRToolMaterials.PINNATH_GELIN_ARMOR, ArmorType.BOOTS);
+
+    // battleaxeLossarnach: 2.5 + 4 + 2 = 8.5.
+    public static final Item LOSSARNACH_BATTLEAXE = register("lossarnach_battleaxe",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .axe(LOTRToolMaterials.LOSSARNACH, 5.0f, -3.0f));
+    public static final Item LOSSARNACH_THROWING_AXE = register("lossarnach_throwing_axe",
+            props -> new LOTRThrowingAxeItem(LOTRToolMaterials.LOSSARNACH, props),
+            throwingAxe(LOTRToolMaterials.LOSSARNACH));
+
+    // swordPelargir, the Pelargir Eket: 2.5 + 4 = 6.5.
+    public static final Item PELARGIR_EKET = register("pelargir_eket",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.PELARGIR, 3.0f, -2.4f));
+
+    // tridentPelargir: LOTRItemTrident on PELARGIR, 2.5 + 4 = 6.5, built the way
+    // the Dunlending trident is; see LOTRTridentItem.
+    public static final Item PELARGIR_TRIDENT = register("pelargir_trident",
+            LOTRTridentItem::new, LOTRTridentItem.properties(LOTRToolMaterials.PELARGIR, 6.5f));
+
+    // Blackroot Vale armour, and blackrootBow: a plain LOTRItemBow -- 20-tick
+    // draw, ordinary arrow speed.
+    public static final Item BLACKROOT_VALE_HELMET = registerArmor("blackroot_vale_helmet",
+            LOTRToolMaterials.BLACKROOT_ARMOR, ArmorType.HELMET);
+    public static final Item BLACKROOT_VALE_CHESTPLATE = registerArmor("blackroot_vale_chestplate",
+            LOTRToolMaterials.BLACKROOT_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item BLACKROOT_VALE_LEGGINGS = registerArmor("blackroot_vale_leggings",
+            LOTRToolMaterials.BLACKROOT_ARMOR, ArmorType.LEGGINGS);
+    public static final Item BLACKROOT_VALE_BOOTS = registerArmor("blackroot_vale_boots",
+            LOTRToolMaterials.BLACKROOT_ARMOR, ArmorType.BOOTS);
+    public static final Item BLACKROOT_BOW = register("blackroot_bow",
+            props -> new LOTRBowItem(20, 1.0f, props),
+            bow(LOTRToolMaterials.BLACKROOT, LOTRItemTags.REPAIRS_BLACKROOT_BOW));
+
+    // pikeGondor: 2.5 + 4 = 6.5.
+    public static final Item GONDOR_PIKE = register("gondor_pike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.GONDOR, 6.5f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // The Dol Amroth gambeson and chaps: GAMBESON, each on its own sheet.
+    public static final Item DOL_AMROTH_GAMBESON = registerArmor("dol_amroth_gambeson",
+            LOTRToolMaterials.GAMBESON_DOL_AMROTH_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item DOL_AMROTH_CHAPS = registerArmor("dol_amroth_chaps",
+            LOTRToolMaterials.GAMBESON_DOL_AMROTH_LEGS_ARMOR, ArmorType.LEGGINGS);
+
+    // longspearDolAmroth: LOTRItemPolearmLong, 3.0 + 4 = 7.0.
+    public static final Item DOL_AMROTH_LONGSPEAR = register("dol_amroth_longspear",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.DOL_AMROTH, 7.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    public static final Item GONDOR_GAMBESON = registerArmor("gondor_gambeson",
+            LOTRToolMaterials.GAMBESON_GONDOR_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item LEBENNIN_GAMBESON = registerArmor("lebennin_gambeson",
+            LOTRToolMaterials.GAMBESON_LEBENNIN_ARMOR, ArmorType.CHESTPLATE);
+
+    // spearStone: LOTRItemSpear on VANILLA stone, 1.0 + 4 - 1 = 4.0.
+    public static final Item STONE_SPEAR = register("stone_spear",
+            LOTRModifiableItem::new, spear(ToolMaterial.STONE, 4.0f));
+
+    // The Lamedon set, its barding, and the Lamedon jacket (JACKET, "lamedon").
+    public static final Item LAMEDON_HELMET = registerArmor("lamedon_helmet",
+            LOTRToolMaterials.LAMEDON_ARMOR, ArmorType.HELMET);
+    public static final Item LAMEDON_CHESTPLATE = registerArmor("lamedon_chestplate",
+            LOTRToolMaterials.LAMEDON_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item LAMEDON_LEGGINGS = registerArmor("lamedon_leggings",
+            LOTRToolMaterials.LAMEDON_ARMOR, ArmorType.LEGGINGS);
+    public static final Item LAMEDON_BOOTS = registerArmor("lamedon_boots",
+            LOTRToolMaterials.LAMEDON_ARMOR, ArmorType.BOOTS);
+    public static final Item LAMEDON_HORSE_ARMOR = registerHorseArmor("lamedon_horse_armor",
+            LOTRToolMaterials.LAMEDON_ARMOR);
+    public static final Item LAMEDON_JACKET = registerArmor("lamedon_jacket",
+            LOTRToolMaterials.LAMEDON_JACKET_ARMOR, ArmorType.CHESTPLATE);
+
+    // ---- The rest of tabCombat, top to bottom. ----
+    //
+    // The first few fill gaps earlier in the tab (the creative tab lists them in
+    // place); from the Dalish gambeson on they follow LOTRMod straight through
+    // to the Black Numenorean mace, the last item tabCombat held.
+
+    // spearIron: LOTRItemSpear on VANILLA iron, 2.0 + 4 - 1 = 5.0.
+    public static final Item IRON_SPEAR = register("iron_spear",
+            LOTRModifiableItem::new, spear(ToolMaterial.IRON, 5.0f));
+
+    // swordAngmar and its daggers: 2.5 damage.
+    public static final Item ANGMAR_SWORD = register("angmar_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.ANGMAR, 3.0f, -2.4f));
+    public static final Item ANGMAR_DAGGER = register("angmar_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.ANGMAR, 0.0f));
+    public static final Item POISONED_ANGMAR_DAGGER = register("poisoned_angmar_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.ANGMAR, 0.0f));
+
+    // elkArmorWoodElven. A plain item for the reason the warg armours are plain:
+    // there are no elks in the port to wear it.
+    public static final Item WOOD_ELVEN_ELK_ARMOR = register("wood_elven_elk_armor",
+            LOTRModifiableItem::new, new Item.Properties().stacksTo(1));
+
+    // blackUrukBow: LOTRItemBow(BLACK_URUK, 1.25).setDrawTime(30).
+    public static final Item BLACK_URUK_BOW = register("black_uruk_bow",
+            props -> new LOTRBowItem(30, 1.25f, props), bow(LOTRToolMaterials.BLACK_URUK, LOTRItemTags.REPAIRS_BLACK_URUK_BOW));
+
+    // helmetNearHaradWarlord, the Southron Champion Helmet: its own plumed model.
+    public static final Item SOUTHRON_CHAMPION_HELMET = registerArmor("southron_champion_helmet",
+            LOTRToolMaterials.COAST_SOUTHRON_CHAMPION_HELMET_ARMOR, ArmorType.HELMET);
+
+    // utumnoBow: LOTRItemBow(UTUMNO, 1.25), the default 20-tick draw.
+    public static final Item UTUMNO_BOW = register("utumno_bow",
+            props -> new LOTRBowItem(20, 1.25f, props), bow(LOTRToolMaterials.UTUMNO, LOTRItemTags.REPAIRS_UTUMNO_BOW));
+
+    // bodyDaleGambeson: GAMBESON, "dale".
+    public static final Item DALE_GAMBESON = registerArmor("dale_gambeson",
+            LOTRToolMaterials.GAMBESON_DALE_ARMOR, ArmorType.CHESTPLATE);
+
+    // The Arnorian set; the helmet has its winged model and a sheet of its own.
+    public static final Item ARNOR_HELMET = registerArmor("arnor_helmet",
+            LOTRToolMaterials.ARNOR_HELMET_ARMOR, ArmorType.HELMET);
+    public static final Item ARNOR_CHESTPLATE = registerArmor("arnor_chestplate",
+            LOTRToolMaterials.ARNOR_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item ARNOR_LEGGINGS = registerArmor("arnor_leggings",
+            LOTRToolMaterials.ARNOR_ARMOR, ArmorType.LEGGINGS);
+    public static final Item ARNOR_BOOTS = registerArmor("arnor_boots",
+            LOTRToolMaterials.ARNOR_ARMOR, ArmorType.BOOTS);
+
+    // rangerBow: a plain LOTRItemBow on RANGER.
+    public static final Item RANGER_BOW = register("ranger_bow",
+            props -> new LOTRBowItem(20, 1.0f, props), bow(LOTRToolMaterials.RANGER, LOTRItemTags.REPAIRS_RANGER_BOW));
+
+    // The Rhunic set: 2.5 damage. polearmRhun is the Bardiche.
+    public static final Item RHUNIC_SWORD = register("rhunic_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.RHUN, 3.0f, -2.4f));
+    public static final Item RHUNIC_DAGGER = register("rhunic_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.RHUN, 0.0f));
+    public static final Item POISONED_RHUNIC_DAGGER = register("poisoned_rhunic_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.RHUN, 0.0f));
+    public static final Item RHUNIC_SPEAR = register("rhunic_spear",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.RHUN, 5.5f));
+    public static final Item RHUNIC_BARDICHE = register("rhunic_bardiche",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.RHUN, 6.5f,
+                    POLEARM_SPEED, POLEARM_REACH, 0.0));
+    public static final Item RHUNIC_PIKE = register("rhunic_pike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.RHUN, 6.5f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+    public static final Item RHUNIC_HELMET = registerArmor("rhunic_helmet",
+            LOTRToolMaterials.RHUN_ARMOR, ArmorType.HELMET);
+    public static final Item RHUNIC_CHESTPLATE = registerArmor("rhunic_chestplate",
+            LOTRToolMaterials.RHUN_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item RHUNIC_LEGGINGS = registerArmor("rhunic_leggings",
+            LOTRToolMaterials.RHUN_ARMOR, ArmorType.LEGGINGS);
+    public static final Item RHUNIC_BOOTS = registerArmor("rhunic_boots",
+            LOTRToolMaterials.RHUN_ARMOR, ArmorType.BOOTS);
+    // rhunBow: LOTRItemBow(RHUN).setDrawTime(16).
+    public static final Item RHUNIC_BOW = register("rhunic_bow",
+            props -> new LOTRBowItem(16, 1.0f, props), bow(LOTRToolMaterials.RHUN, LOTRItemTags.REPAIRS_RHUN_BOW));
+    public static final Item RHUNIC_HORSE_ARMOR = registerHorseArmor("rhunic_horse_armor",
+            LOTRToolMaterials.RHUN_GOLD_ARMOR);
+
+    // The golden Rhunic set (RHUN_GOLD) and the warlord's kine-horned helmet.
+    public static final Item GOLDEN_RHUNIC_HELMET = registerArmor("golden_rhunic_helmet",
+            LOTRToolMaterials.RHUN_GOLD_HELMET_ARMOR, ArmorType.HELMET);
+    public static final Item GOLDEN_RHUNIC_CHESTPLATE = registerArmor("golden_rhunic_chestplate",
+            LOTRToolMaterials.RHUN_GOLD_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item GOLDEN_RHUNIC_LEGGINGS = registerArmor("golden_rhunic_leggings",
+            LOTRToolMaterials.RHUN_GOLD_ARMOR, ArmorType.LEGGINGS);
+    public static final Item GOLDEN_RHUNIC_BOOTS = registerArmor("golden_rhunic_boots",
+            LOTRToolMaterials.RHUN_GOLD_ARMOR, ArmorType.BOOTS);
+    public static final Item RHUNIC_WARLORD_HELMET = registerArmor("rhunic_warlord_helmet",
+            LOTRToolMaterials.RHUN_WARLORD_HELMET_ARMOR, ArmorType.HELMET);
+
+    // dorwinionElfBow: LOTRItemBow(DORWINION_ELF, 1.2).
+    public static final Item DORWINION_ELVEN_BOW = register("dorwinion_elven_bow",
+            props -> new LOTRBowItem(20, 1.2f, props), bow(LOTRToolMaterials.DORWINION_ELVEN, LOTRItemTags.REPAIRS_DORWINION_ELVEN_BOW));
+    public static final Item RHUNIC_BATTLEAXE = register("rhunic_battleaxe",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .axe(LOTRToolMaterials.RHUN, 5.0f, -3.0f));
+
+    // The Rivendell set: 3.0 damage; elven blades, whose glow is not ported. The
+    // helmet is the High Elven model on the set's own sheet.
+    public static final Item RIVENDELL_SWORD = register("rivendell_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.RIVENDELL, 3.0f, -2.4f));
+    public static final Item RIVENDELL_DAGGER = register("rivendell_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.RIVENDELL, 0.0f));
+    public static final Item POISONED_RIVENDELL_DAGGER = register("poisoned_rivendell_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.RIVENDELL, 0.0f));
+    public static final Item RIVENDELL_SPEAR = register("rivendell_spear",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.RIVENDELL, 6.0f));
+    public static final Item RIVENDELL_HELMET = registerArmor("rivendell_helmet",
+            LOTRToolMaterials.RIVENDELL_ARMOR, ArmorType.HELMET);
+    public static final Item RIVENDELL_CHESTPLATE = registerArmor("rivendell_chestplate",
+            LOTRToolMaterials.RIVENDELL_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item RIVENDELL_LEGGINGS = registerArmor("rivendell_leggings",
+            LOTRToolMaterials.RIVENDELL_ARMOR, ArmorType.LEGGINGS);
+    public static final Item RIVENDELL_BOOTS = registerArmor("rivendell_boots",
+            LOTRToolMaterials.RIVENDELL_ARMOR, ArmorType.BOOTS);
+    public static final Item RIVENDELL_HORSE_ARMOR = registerHorseArmor("rivendell_horse_armor",
+            LOTRToolMaterials.RIVENDELL_ARMOR);
+    public static final Item RIVENDELL_BATTLESTAFF = register("rivendell_battlestaff",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.RIVENDELL, 7.0f,
+                    POLEARM_SPEED, POLEARM_REACH, 0.0));
+    public static final Item RIVENDELL_LONGSPEAR = register("rivendell_longspear",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.RIVENDELL, 7.0f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // The Arnorian weapons.
+    public static final Item ARNOR_SWORD = register("arnor_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.ARNOR, 3.0f, -2.4f));
+    public static final Item ARNOR_DAGGER = register("arnor_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.ARNOR, 0.0f));
+    public static final Item POISONED_ARNOR_DAGGER = register("poisoned_arnor_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.ARNOR, 0.0f));
+    public static final Item ARNOR_SPEAR = register("arnor_spear",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.ARNOR, 5.5f));
+    // rivendellBow: LOTRItemBow(RIVENDELL, 1.25).setDrawTime(16).
+    public static final Item RIVENDELL_BOW = register("rivendell_bow",
+            props -> new LOTRBowItem(16, 1.25f, props), bow(LOTRToolMaterials.RIVENDELL, LOTRItemTags.REPAIRS_RIVENDELL_BOW));
+
+    // swordMoredain, the Morwaith Sword: MOREDAIN_BRONZE, 1.5 + 4 = 5.5.
+    public static final Item MORWAITH_SWORD = register("morwaith_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.MORWAITH_BRONZE, 3.0f, -2.4f));
+
+    // The Gulfen set; the chestplate wears its horned model (extraName "body").
+    public static final Item GULFEN_HELMET = registerArmor("gulfen_helmet",
+            LOTRToolMaterials.GULF_HARAD_ARMOR, ArmorType.HELMET);
+    public static final Item GULFEN_CHESTPLATE = registerArmor("gulfen_chestplate",
+            LOTRToolMaterials.GULF_HARAD_BODY_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item GULFEN_LEGGINGS = registerArmor("gulfen_leggings",
+            LOTRToolMaterials.GULF_HARAD_ARMOR, ArmorType.LEGGINGS);
+    public static final Item GULFEN_BOOTS = registerArmor("gulfen_boots",
+            LOTRToolMaterials.GULF_HARAD_ARMOR, ArmorType.BOOTS);
+
+    // The Corsairs: swordCorsair is the Eket, spearCorsair the Harpoon.
+    public static final Item CORSAIR_HELMET = registerArmor("corsair_helmet",
+            LOTRToolMaterials.CORSAIR_ARMOR, ArmorType.HELMET);
+    public static final Item CORSAIR_CHESTPLATE = registerArmor("corsair_chestplate",
+            LOTRToolMaterials.CORSAIR_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item CORSAIR_LEGGINGS = registerArmor("corsair_leggings",
+            LOTRToolMaterials.CORSAIR_ARMOR, ArmorType.LEGGINGS);
+    public static final Item CORSAIR_BOOTS = registerArmor("corsair_boots",
+            LOTRToolMaterials.CORSAIR_ARMOR, ArmorType.BOOTS);
+    public static final Item CORSAIR_EKET = register("corsair_eket",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.CORSAIR, 3.0f, -2.4f));
+    public static final Item CORSAIR_DAGGER = register("corsair_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.CORSAIR, 0.0f));
+    public static final Item POISONED_CORSAIR_DAGGER = register("poisoned_corsair_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.CORSAIR, 0.0f));
+    public static final Item CORSAIR_HARPOON = register("corsair_harpoon",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.CORSAIR, 5.5f));
+    public static final Item CORSAIR_BATTLEAXE = register("corsair_battleaxe",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .axe(LOTRToolMaterials.CORSAIR, 5.0f, -3.0f));
+
+    // The worn Umbaric set, on the material the horse armour already uses.
+    public static final Item UMBARIC_HELMET = registerArmor("umbaric_helmet",
+            LOTRToolMaterials.UMBARIC_HELMET_ARMOR, ArmorType.HELMET);
+    public static final Item UMBARIC_CHESTPLATE = registerArmor("umbaric_chestplate",
+            LOTRToolMaterials.UMBARIC_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item UMBARIC_LEGGINGS = registerArmor("umbaric_leggings",
+            LOTRToolMaterials.UMBARIC_ARMOR, ArmorType.LEGGINGS);
+    public static final Item UMBARIC_BOOTS = registerArmor("umbaric_boots",
+            LOTRToolMaterials.UMBARIC_ARMOR, ArmorType.BOOTS);
+
+    // The Harnennor set: a plumed helmet and a barbed chestplate, each its own model.
+    public static final Item HARNENNOR_HELMET = registerArmor("harnennor_helmet",
+            LOTRToolMaterials.HARNEDOR_HELMET_ARMOR, ArmorType.HELMET);
+    public static final Item HARNENNOR_CHESTPLATE = registerArmor("harnennor_chestplate",
+            LOTRToolMaterials.HARNEDOR_BODY_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item HARNENNOR_LEGGINGS = registerArmor("harnennor_leggings",
+            LOTRToolMaterials.HARNEDOR_ARMOR, ArmorType.LEGGINGS);
+    public static final Item HARNENNOR_BOOTS = registerArmor("harnennor_boots",
+            LOTRToolMaterials.HARNEDOR_ARMOR, ArmorType.BOOTS);
+
+    // The Haradric weapons: NEAR_HARAD, the material the port calls Coast Southron.
+    public static final Item HARADRIC_SWORD = register("haradric_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.COAST_SOUTHRON, 3.0f, -2.4f));
+    public static final Item HARADRIC_DAGGER = register("haradric_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.COAST_SOUTHRON, 0.0f));
+    public static final Item POISONED_HARADRIC_DAGGER = register("poisoned_haradric_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.COAST_SOUTHRON, 0.0f));
+    public static final Item HARADRIC_SPEAR = register("haradric_spear",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.COAST_SOUTHRON, 5.5f));
+    public static final Item HARADRIC_PIKE = register("haradric_pike",
+            LOTRModifiableItem::new, polearm(LOTRToolMaterials.COAST_SOUTHRON, 6.5f,
+                    LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 0.0));
+
+    // swordGulfHarad, the Gulfen Khopesh.
+    public static final Item GULFEN_KHOPESH = register("gulfen_khopesh",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.GULF_HARAD, 3.0f, -2.4f));
+
+    // The nomads' cap, tunic, leggings and shoes.
+    public static final Item NOMAD_CAP = registerArmor("nomad_cap",
+            LOTRToolMaterials.HARAD_NOMAD_ARMOR, ArmorType.HELMET);
+    public static final Item NOMAD_TUNIC = registerArmor("nomad_tunic",
+            LOTRToolMaterials.HARAD_NOMAD_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item NOMAD_LEGGINGS = registerArmor("nomad_leggings",
+            LOTRToolMaterials.HARAD_NOMAD_ARMOR, ArmorType.LEGGINGS);
+    public static final Item NOMAD_SHOES = registerArmor("nomad_shoes",
+            LOTRToolMaterials.HARAD_NOMAD_ARMOR, ArmorType.BOOTS);
+
+    // daggerAncientHarad, the Old-Haradric Sacrificial Dagger: 2.5 + 4 - 3 = 3.5.
+    public static final Item OLD_HARADRIC_SACRIFICIAL_DAGGER = register("old_haradric_sacrificial_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.ANCIENT_HARAD, 0.0f));
+
+    // The Black Numenoreans: a winged helmet, and maceBlackNumenorean is a
+    // LOTRItemHammer, 2.5 + 4 + 2 = 8.5.
+    public static final Item BLACK_NUMENOREAN_HELMET = registerArmor("black_numenorean_helmet",
+            LOTRToolMaterials.BLACK_NUMENOREAN_HELMET_ARMOR, ArmorType.HELMET);
+    public static final Item BLACK_NUMENOREAN_CHESTPLATE = registerArmor("black_numenorean_chestplate",
+            LOTRToolMaterials.BLACK_NUMENOREAN_ARMOR, ArmorType.CHESTPLATE);
+    public static final Item BLACK_NUMENOREAN_LEGGINGS = registerArmor("black_numenorean_leggings",
+            LOTRToolMaterials.BLACK_NUMENOREAN_ARMOR, ArmorType.LEGGINGS);
+    public static final Item BLACK_NUMENOREAN_BOOTS = registerArmor("black_numenorean_boots",
+            LOTRToolMaterials.BLACK_NUMENOREAN_ARMOR, ArmorType.BOOTS);
+    public static final Item BLACK_NUMENOREAN_SWORD = register("black_numenorean_sword",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .sword(LOTRToolMaterials.BLACK_NUMENOREAN, 3.0f, -2.4f));
+    public static final Item BLACK_NUMENOREAN_DAGGER = register("black_numenorean_dagger",
+            LOTRModifiableItem::new, dagger(LOTRToolMaterials.BLACK_NUMENOREAN, 0.0f));
+    public static final Item POISONED_BLACK_NUMENOREAN_DAGGER = register("poisoned_black_numenorean_dagger",
+            LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.BLACK_NUMENOREAN, 0.0f));
+    public static final Item BLACK_NUMENOREAN_SPEAR = register("black_numenorean_spear",
+            LOTRModifiableItem::new, spear(LOTRToolMaterials.BLACK_NUMENOREAN, 5.5f));
+    public static final Item BLACK_NUMENOREAN_MACE = register("black_numenorean_mace",
+            LOTRModifiableItem::new, warhammer(LOTRToolMaterials.BLACK_NUMENOREAN, 5.0f));
+
+    // LOTRItemGandalfStaffGrey: a wooden staff, 4 damage, a thousand uses.
+    public static final Item GANDALF_STAFF_GREY = register("gandalf_staff_grey", LOTRModifiableItem::new,
+            new Item.Properties().sword(net.minecraft.world.item.ToolMaterial.WOOD, 3.0f, -2.4f).durability(1000));
+
+    // LOTRItemGlamdring: a Gondolin sword, with that material's own numbers.
+    public static final Item GLAMDRING = register("glamdring", LOTRModifiableItem::new,
+            new Item.Properties().sword(LOTRToolMaterials.GONDOLIN, 3.0f, -2.4f));
+
+    // LOTRItemMechanism, from tabMisc: right-click a rail with one and it
+    // becomes a mechanised rail -- a powered rail that needs no redstone.
+    public static final Item MECHANISM = register("mechanism", LOTRMechanismItem::new, new Item.Properties());
+
+    // ---- tabMisc, in LOTRMod's registration order. ----
+    //
+    // NOT registered: the pouch, which is a container item with an inventory of
+    // its own, and the NPC respawner, which needs NPCs. The smoking pipe is
+    // here but does nothing: its seventeen colours of smoke were particles.
+    //
+    // The coins keep their three 1.7.10 stack values as three items; the value
+    // system that counted them is not ported. The ancient items and their parts
+    // are plain too -- right-clicking one rolled a random weapon out of a chest
+    // pool, and those pools are not ported.
+    public static final Item GOLD_RING = register("gold_ring", Item::new, new Item.Properties());
+    public static final Item SILVER_RING = register("silver_ring", Item::new, new Item.Properties());
+    public static final Item MITHRIL_RING = register("mithril_ring", Item::new, new Item.Properties());
+    public static final Item SMOKING_PIPE = register("smoking_pipe", LOTRSmokingPipeItem::new,
+            new Item.Properties().stacksTo(1).durability(300));
+    public static final Item SILVER_COIN = register("silver_coin", Item::new, new Item.Properties());
+    public static final Item SILVER_COIN_STACK = register("silver_coin_stack", Item::new, new Item.Properties());
+    public static final Item SILVER_COIN_PILE = register("silver_coin_pile", Item::new, new Item.Properties());
+    public static final Item HOBBIT_MARRIAGE_RING = register("hobbit_marriage_ring", Item::new, new Item.Properties());
+    public static final Item ANCIENT_SWORD_TIP = register("ancient_sword_tip", Item::new, new Item.Properties());
+    public static final Item ANCIENT_SWORD_BLADE = register("ancient_sword_blade", Item::new, new Item.Properties());
+    public static final Item ANCIENT_SWORD_HILT = register("ancient_sword_hilt", Item::new, new Item.Properties());
+    public static final Item ANCIENT_ARMOR_PLATE = register("ancient_armor_plate", Item::new, new Item.Properties());
+    public static final Item ANCIENT_SWORD = register("ancient_sword", Item::new, new Item.Properties());
+    public static final Item ANCIENT_DAGGER = register("ancient_dagger", Item::new, new Item.Properties());
+    public static final Item ANCIENT_HELMET = register("ancient_helmet", Item::new, new Item.Properties());
+    public static final Item ANCIENT_CHESTPLATE = register("ancient_chestplate", Item::new, new Item.Properties());
+    public static final Item ANCIENT_LEGGINGS = register("ancient_leggings", Item::new, new Item.Properties());
+    public static final Item ANCIENT_BOOTS = register("ancient_boots", Item::new, new Item.Properties());
+    public static final Item DWARVEN_MARRIAGE_RING = register("dwarven_marriage_ring", Item::new, new Item.Properties());
+    public static final Item RED_BOOK = register("red_book", Item::new, new Item.Properties());
+    public static final Item KEY_OF_ICE = register("key_of_ice", Item::new, new Item.Properties());
+    public static final Item KEY_OF_OBSIDIAN = register("key_of_obsidian", Item::new, new Item.Properties());
+    public static final Item ICE_KEY_HANDLE = register("ice_key_handle", Item::new, new Item.Properties());
+    public static final Item ICE_KEY_SHAFT = register("ice_key_shaft", Item::new, new Item.Properties());
+    public static final Item ICE_KEY_PIN = register("ice_key_pin", Item::new, new Item.Properties());
+    public static final Item OBSIDIAN_KEY_HANDLE = register("obsidian_key_handle", Item::new, new Item.Properties());
+    public static final Item OBSIDIAN_KEY_SHAFT = register("obsidian_key_shaft", Item::new, new Item.Properties());
+    public static final Item OBSIDIAN_KEY_PIN = register("obsidian_key_pin", Item::new, new Item.Properties());
+    public static final Item TAURETHRIM_AMULET = register("taurethrim_amulet", Item::new, new Item.Properties());
+    public static final Item RED_DALISH_CRACKER = register("red_dalish_cracker", Item::new, new Item.Properties());
+    public static final Item BLUE_DALISH_CRACKER = register("blue_dalish_cracker", Item::new, new Item.Properties());
+    public static final Item GREEN_DALISH_CRACKER = register("green_dalish_cracker", Item::new, new Item.Properties());
+    public static final Item SILVER_DALISH_CRACKER = register("silver_dalish_cracker", Item::new, new Item.Properties());
+    public static final Item GOLD_DALISH_CRACKER = register("gold_dalish_cracker", Item::new, new Item.Properties());
+    public static final Item MYSTERY_WEB = register("mystery_web",
+            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity::new, 0.5f, props),
+            new Item.Properties().stacksTo(16));
+    public static final Item EXPLODING_TERMITE = register("exploding_termite",
+            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity::new, 1.5f, props),
+            new Item.Properties().stacksTo(16));
+    public static final Item CONKER = register("conker",
+            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity::new, 1.0f, props),
+            new Item.Properties().stacksTo(16));
+    public static final Item LEATHER_HAT = register("leather_hat", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
+                    .builder(net.minecraft.world.entity.EquipmentSlot.HEAD)
+                    .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
+                    .setAsset(LOTRToolMaterials.LEATHER_HAT_ASSET)
+                    .build())
+            .component(DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+    public static final Item PARTY_HAT = register("party_hat", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
+                    .builder(net.minecraft.world.entity.EquipmentSlot.HEAD)
+                    .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
+                    .setAsset(LOTRToolMaterials.PARTY_HAT_ASSET)
+                    .build())
+            .component(DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+    public static final Item HARAD_TURBAN = register("harad_turban", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
+                    .builder(net.minecraft.world.entity.EquipmentSlot.HEAD)
+                    .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
+                    .setAsset(LOTRToolMaterials.HARAD_TURBAN_ASSET)
+                    .build())
+            .component(DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+    public static final Item HARAD_ROBE = register("harad_robe", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
+                    .builder(net.minecraft.world.entity.EquipmentSlot.CHEST)
+                    .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
+                    .setAsset(LOTRToolMaterials.HARAD_ROBES_ASSET)
+                    .build())
+            .component(DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+    public static final Item HARAD_ROBE_LEGGINGS = register("harad_robe_leggings", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
+                    .builder(net.minecraft.world.entity.EquipmentSlot.LEGS)
+                    .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
+                    .setAsset(LOTRToolMaterials.HARAD_ROBES_ASSET)
+                    .build())
+            .component(DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+    public static final Item HARAD_ROBE_SHOES = register("harad_robe_shoes", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
+                    .builder(net.minecraft.world.entity.EquipmentSlot.FEET)
+                    .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
+                    .setAsset(LOTRToolMaterials.HARAD_ROBES_ASSET)
+                    .build())
+            .component(DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+    public static final Item KAFTAN = register("kaftan", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
+                    .builder(net.minecraft.world.entity.EquipmentSlot.CHEST)
+                    .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
+                    .setAsset(LOTRToolMaterials.KAFTAN_ASSET)
+                    .build())
+            .component(DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+    public static final Item KAFTAN_LEGGINGS = register("kaftan_leggings", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
+                    .builder(net.minecraft.world.entity.EquipmentSlot.LEGS)
+                    .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
+                    .setAsset(LOTRToolMaterials.KAFTAN_ASSET)
+                    .build())
+            .component(DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+
+    // ---- tabCombat's projectiles, which needed entities of their own. ----
+
+    // rhunFirePot: stacks to four and bursts into fire where it lands.
+    public static final Item RHUNIC_FIRE_POT = register("rhunic_fire_pot",
+            LOTRFirePotItem::new, new Item.Properties().stacksTo(4));
+    // arrowPoisoned and crossbowBoltPoisoned: the dagger's poison, on a shaft.
+    public static final Item POISONED_ARROW = register("poisoned_arrow",
+            LOTRPoisonedArrowItem::new, new Item.Properties());
+    public static final Item POISONED_CROSSBOW_BOLT = register("poisoned_crossbow_bolt",
+            props -> new LOTRCrossbowBoltItem(true, props), new Item.Properties());
+
+    // ---- tabTools, top to bottom. ----
+    //
+    // Damage is the original's modifier less one, as the melee weapons are: a
+    // 1.7.10 pickaxe added material + 2, an axe + 3, a shovel + 1 and a hoe
+    // nothing. Swing speeds are vanilla's for each kind of tool. Mining speed,
+    // tier and durability come from the material.
+
+    private static final net.minecraft.tags.TagKey<Block> MATTOCK_MINEABLE =
+            net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockTags.MATTOCK_MINEABLE;
+
+    public static final Item BRONZE_SHOVEL = register("bronze_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.BRONZE, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item BRONZE_PICKAXE = register("bronze_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.BRONZE, 1.0f, -2.8f));
+    public static final Item BRONZE_AXE = register("bronze_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.BRONZE, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item BRONZE_HOE = register("bronze_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.BRONZE, props), new Item.Properties());
+    public static final Item MITHRIL_SHOVEL = register("mithril_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.MITHRIL, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item MITHRIL_PICKAXE = register("mithril_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.MITHRIL, 1.0f, -2.8f));
+    public static final Item MITHRIL_AXE = register("mithril_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.MITHRIL, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item MITHRIL_HOE = register("mithril_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.MITHRIL, props), new Item.Properties());
+
+    // LOTRItemSauronMace: a Mordor hammer of 8 damage and 1500 uses, and held
+    // down it brings the Dark Lord's blow down on everything within twelve
+    // blocks -- see the item class.
+    public static final Item SAURON_MACE = register("sauron_mace", LOTRSauronMaceItem::new,
+            warhammer(LOTRToolMaterials.MORDOR, 4.5f).durability(1500));
+
+    // LOTRItemGandalfStaffWhite: a Lindon-grade staff of 8 damage, and held
+    // down it looses the fireball.
+    public static final Item GANDALF_STAFF_WHITE = register("gandalf_staff_white",
+            LOTRGandalfStaffWhiteItem::new,
+            new Item.Properties().sword(LOTRToolMaterials.LINDON, 4.0f, -2.4f).durability(1500));
+
+    // The fireball's own item: never in a tab and never in a recipe -- it is
+    // only what the thrown entity is drawn as (LOTRRenderGandalfFireball drew
+    // frames 24-27 of the particle sheet).
+    public static final Item GANDALF_FIREBALL = register("gandalf_fireball", Item::new, new Item.Properties());
+    public static final Item MALLORN_SHOVEL = register("mallorn_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.MALLORN, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item MALLORN_PICKAXE = register("mallorn_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.MALLORN, 1.0f, -2.8f));
+    public static final Item MALLORN_AXE = register("mallorn_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.MALLORN, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item MALLORN_HOE = register("mallorn_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.MALLORN, props), new Item.Properties());
+    public static final Item GALADHRIM_SHOVEL = register("galadhrim_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.GALADHRIM, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item GALADHRIM_PICKAXE = register("galadhrim_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.GALADHRIM, 1.0f, -2.8f));
+    public static final Item GALADHRIM_AXE = register("galadhrim_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.GALADHRIM, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item GALADHRIM_HOE = register("galadhrim_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.GALADHRIM, props), new Item.Properties());
+    public static final Item DWARVEN_SHOVEL = register("dwarven_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.DWARVEN, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item DWARVEN_PICKAXE = register("dwarven_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.DWARVEN, 1.0f, -2.8f));
+    public static final Item DWARVEN_AXE = register("dwarven_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.DWARVEN, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item DWARVEN_HOE = register("dwarven_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.DWARVEN, props), new Item.Properties());
+    public static final Item MORDOR_SHOVEL = register("mordor_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.MORDOR, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item MORDOR_PICKAXE = register("mordor_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.MORDOR, 1.0f, -2.8f));
+    public static final Item MORDOR_AXE = register("mordor_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.MORDOR, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item MORDOR_HOE = register("mordor_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.MORDOR, props), new Item.Properties());
+    public static final Item URUK_SHOVEL = register("uruk_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.URUK, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item URUK_PICKAXE = register("uruk_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.URUK, 1.0f, -2.8f));
+    public static final Item URUK_AXE = register("uruk_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.URUK, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item URUK_HOE = register("uruk_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.URUK, props), new Item.Properties());
+
+    // mattockDwarven: LOTRItemMattock, a pickaxe that also cuts wood well.
+    public static final Item DWARVEN_MATTOCK = register("dwarven_mattock",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .tool(LOTRToolMaterials.DWARVEN, MATTOCK_MINEABLE, 1.0f, -2.8f, 0.0f));
+    public static final Item WOOD_ELVEN_SHOVEL = register("wood_elven_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.WOOD_ELVEN, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item WOOD_ELVEN_PICKAXE = register("wood_elven_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.WOOD_ELVEN, 1.0f, -2.8f));
+    public static final Item WOOD_ELVEN_AXE = register("wood_elven_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.WOOD_ELVEN, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item WOOD_ELVEN_HOE = register("wood_elven_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.WOOD_ELVEN, props), new Item.Properties());
+
+    // sulfurMatch: a one-use flint and steel.
+    public static final Item SULFUR_MATCH = register("sulfur_match",
+            LOTRMatchItem::new, new Item.Properties());
+    public static final Item ANGMAR_SHOVEL = register("angmar_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.ANGMAR, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item ANGMAR_PICKAXE = register("angmar_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.ANGMAR, 1.0f, -2.8f));
+    public static final Item ANGMAR_AXE = register("angmar_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.ANGMAR, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item ANGMAR_HOE = register("angmar_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.ANGMAR, props), new Item.Properties());
+    public static final Item LINDON_SHOVEL = register("lindon_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.LINDON, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item LINDON_PICKAXE = register("lindon_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.LINDON, 1.0f, -2.8f));
+    public static final Item LINDON_AXE = register("lindon_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.LINDON, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item LINDON_HOE = register("lindon_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.LINDON, props), new Item.Properties());
+    public static final Item BLUE_DWARVEN_SHOVEL = register("blue_dwarven_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.BLUE_DWARVEN, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item BLUE_DWARVEN_PICKAXE = register("blue_dwarven_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.BLUE_DWARVEN, 1.0f, -2.8f));
+    public static final Item BLUE_DWARVEN_AXE = register("blue_dwarven_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.BLUE_DWARVEN, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item BLUE_DWARVEN_HOE = register("blue_dwarven_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.BLUE_DWARVEN, props), new Item.Properties());
+    public static final Item BLUE_DWARVEN_MATTOCK = register("blue_dwarven_mattock",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .tool(LOTRToolMaterials.BLUE_DWARVEN, MATTOCK_MINEABLE, 1.0f, -2.8f, 0.0f));
+    // LOTRMod registered the Dol Guldur axe before its pickaxe.
+    public static final Item DOL_GULDUR_SHOVEL = register("dol_guldur_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.DOL_GULDUR, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item DOL_GULDUR_AXE = register("dol_guldur_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.DOL_GULDUR, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item DOL_GULDUR_PICKAXE = register("dol_guldur_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.DOL_GULDUR, 1.0f, -2.8f));
+    public static final Item DOL_GULDUR_HOE = register("dol_guldur_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.DOL_GULDUR, props), new Item.Properties());
+
+    // utumnoPickaxe, the Pickaxe of the Underworld: UTUMNO, but setMaxDamage(80).
+    public static final Item UTUMNO_PICKAXE = register("utumno_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .pickaxe(LOTRToolMaterials.UTUMNO, 1.0f, -2.8f)
+                    .durability(80));
+    public static final Item TAURETHRIM_SHOVEL = register("taurethrim_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.TAURETHRIM, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item TAURETHRIM_PICKAXE = register("taurethrim_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.TAURETHRIM, 1.0f, -2.8f));
+    public static final Item TAURETHRIM_AXE = register("taurethrim_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.TAURETHRIM, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item TAURETHRIM_HOE = register("taurethrim_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.TAURETHRIM, props), new Item.Properties());
+    public static final Item MITHRIL_MATTOCK = register("mithril_mattock",
+            LOTRModifiableItem::new, new Item.Properties()
+                    .tool(LOTRToolMaterials.MITHRIL, MATTOCK_MINEABLE, 1.0f, -2.8f, 0.0f));
+    public static final Item RIVENDELL_SHOVEL = register("rivendell_shovel",
+            props -> new LOTRShovelItem(LOTRToolMaterials.RIVENDELL, 0.0f, -3.0f, props), new Item.Properties());
+    public static final Item RIVENDELL_PICKAXE = register("rivendell_pickaxe",
+            LOTRModifiableItem::new, new Item.Properties().pickaxe(LOTRToolMaterials.RIVENDELL, 1.0f, -2.8f));
+    public static final Item RIVENDELL_AXE = register("rivendell_axe",
+            props -> new LOTRAxeItem(LOTRToolMaterials.RIVENDELL, 2.0f, -3.0f, props), new Item.Properties());
+    public static final Item RIVENDELL_HOE = register("rivendell_hoe",
+            props -> new LOTRHoeItem(LOTRToolMaterials.RIVENDELL, props), new Item.Properties());
+
+    // ---- tabFood, top to bottom. ----
+    //
+    // Food values go through FoodProperties.Builder.saturationModifier, which is
+    // what ItemFood's second argument was: 1.7.10 multiplied it into saturation
+    // the same way (nutrition x modifier x 2).
+
+    /** A drink: one to a stack, drunk rather than eaten, in a mug unless moved to another vessel. */
+    private static Item.Properties drink(boolean brewable) {
+        Item.Properties properties = new Item.Properties().stacksTo(1)
+                .component(DataComponents.CONSUMABLE, net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+                .component(LOTRDataComponents.VESSEL, LOTRVessel.MUG);
+        return brewable ? properties.component(LOTRDataComponents.DRINK_STRENGTH, 0) : properties;
+    }
+
+    private static FoodProperties food(int nutrition, float saturationModifier) {
+        return new FoodProperties.Builder().nutrition(nutrition).saturationModifier(saturationModifier).build();
+    }
+    public static final Item CLAY_MUG = register("clay_mug", Item::new, new Item.Properties());
+    public static final Item MUG = register("mug",
+            props -> new LOTRVesselItem(LOTRVessel.MUG, props), new Item.Properties());
+    public static final Item WATER = register("water",
+            props -> new LOTRDrinkItem(false, false, 0.0f, props),
+            drink(false));
+    public static final Item MILK = register("milk",
+            props -> new LOTRDrinkItem(false, false, 0.0f, props).setCuresEffects(),
+            drink(false));
+    public static final Item ALE = register("ale",
+            props -> new LOTRDrinkItem(false, true, 0.3f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item CHOCOLATE = register("chocolate",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(6, 0.6f),
+            drink(false));
+    public static final Item MIRUVOR = register("miruvor",
+            props -> new LOTRDrinkItem(false, true, 0.0f, props).setDrinkStats(8, 0.8f).addEffect(net.minecraft.world.effect.MobEffects.STRENGTH, 40).addEffect(net.minecraft.world.effect.MobEffects.SPEED, 40),
+            drink(true));
+    public static final Item ORC_DRAUGHT = register("orc_draught",
+            props -> new LOTRDrinkItem(false, true, 0.0f, props).setDrinkStats(6, 0.6f).addEffect(net.minecraft.world.effect.MobEffects.STRENGTH, 60).addEffect(net.minecraft.world.effect.MobEffects.SPEED, 60).setDamageAmount(2),
+            drink(true));
+    public static final Item LEMBAS = register("lembas",
+            Item::new, new Item.Properties().food(food(20, 2.0f)));
+    public static final Item LETTUCE = register("lettuce",
+            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.LETTUCE_CROP, props), new Item.Properties().food(food(3, 0.4f)).useItemDescriptionPrefix());
+    public static final Item GAMMON = register("gammon",
+            Item::new, new Item.Properties().food(food(8, 0.8f)));
+    public static final Item CLAY_PLATE = register("clay_plate", Item::new, new Item.Properties());
+    public static final Item MEAD = register("mead",
+            props -> new LOTRDrinkItem(false, true, 0.6f, props).setDrinkStats(4, 0.4f),
+            drink(true));
+    public static final Item GREEN_APPLE = register("green_apple",
+            Item::new, new Item.Properties().food(food(4, 0.3f)));
+    public static final Item PEAR = register("pear",
+            Item::new, new Item.Properties().food(food(4, 0.3f)));
+    public static final Item CHERRIES = register("cherries",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item RED_WINE = register("red_wine",
+            props -> new LOTRDrinkItem(false, true, 1.0f, props).setDrinkStats(4, 0.4f),
+            drink(true));
+    public static final Item MALLORN_NUT = register("mallorn_nut",
+            Item::new, new Item.Properties().food(food(4, 0.4f)));
+    public static final Item CIDER = register("cider",
+            props -> new LOTRDrinkItem(false, true, 0.3f, props).setDrinkStats(4, 0.4f),
+            drink(true));
+    public static final Item PERRY = register("perry",
+            props -> new LOTRDrinkItem(false, true, 0.3f, props).setDrinkStats(4, 0.4f),
+            drink(true));
+    public static final Item CHERRY_LIQUEUR = register("cherry_liqueur",
+            props -> new LOTRDrinkItem(false, true, 1.0f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item RUM = register("rum",
+            props -> new LOTRDrinkItem(false, true, 1.5f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item ATHELAS_BREW = register("athelas_brew",
+            props -> new LOTRDrinkItem(false, true, 0.0f, props).setDrinkStats(6, 0.6f).addEffect(net.minecraft.world.effect.MobEffects.STRENGTH, 120).addEffect(net.minecraft.world.effect.MobEffects.REGENERATION, 60).setSpecial(LOTRDrinkItem.Special.CURES_HARMFUL),
+            drink(true));
+    public static final Item DWARVEN_TONIC = register("dwarven_tonic",
+            props -> new LOTRDrinkItem(false, true, 0.2f, props).setDrinkStats(4, 0.4f).addEffect(net.minecraft.world.effect.MobEffects.NIGHT_VISION, 240),
+            drink(true));
+    public static final Item ENT_DRAUGHT = register("ent_draught",
+            LOTREntDraughtItem::new, new Item.Properties().stacksTo(1)
+                    .component(DataComponents.CONSUMABLE, net.minecraft.world.item.component.Consumables.DEFAULT_DRINK)
+                    .component(LOTRDataComponents.ENT_DRAUGHT, 0));
+    public static final Item DWARVEN_ALE = register("dwarven_ale",
+            props -> new LOTRDrinkItem(false, true, 0.4f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item MAGGOTY_BREAD = register("maggoty_bread",
+            Item::new, new Item.Properties().food(food(4, 0.5f),
+                    net.minecraft.world.item.component.Consumables.defaultFood().onConsume(
+                            new net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect(
+                                    new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.HUNGER, 400, 0), 0.4f)).build()));
+    // rabbitRaw and rabbitCooked are NOT registered: vanilla has had raw and
+    // cooked rabbit since 1.8, so its own items stand in for them.
+    public static final Item RABBIT_STEW = register("rabbit_stew",
+            Item::new, new Item.Properties().stacksTo(1).food(food(10, 0.8f)).usingConvertsTo(net.minecraft.world.item.Items.BOWL).craftRemainder(net.minecraft.world.item.Items.BOWL));
+    public static final Item VODKA = register("vodka",
+            props -> new LOTRDrinkItem(false, true, 1.75f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item HOBBIT_PANCAKE = register("hobbit_pancake",
+            Item::new, new Item.Properties().food(food(4, 0.6f)));
+    public static final Item MANGO = register("mango",
+            Item::new, new Item.Properties().food(food(4, 0.3f)));
+    public static final Item MANGO_JUICE = register("mango_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(6, 0.6f),
+            drink(false));
+    public static final Item BANANA = register("banana",
+            props -> new LOTRHangingFruitItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.BANANA_BLOCK, props), new Item.Properties().food(food(2, 0.5f)));
+    public static final Item BANANA_BREAD = register("banana_bread",
+            Item::new, new Item.Properties().food(food(5, 0.6f)));
+    public static final Item RAW_LION = register("raw_lion",
+            Item::new, new Item.Properties().food(food(3, 0.3f)));
+    public static final Item COOKED_LION = register("cooked_lion",
+            Item::new, new Item.Properties().food(food(8, 0.8f)));
+    public static final Item RAW_ZEBRA = register("raw_zebra",
+            Item::new, new Item.Properties().food(food(2, 0.1f)));
+    public static final Item COOKED_ZEBRA = register("cooked_zebra",
+            Item::new, new Item.Properties().food(food(6, 0.6f)));
+    public static final Item RAW_RHINO = register("raw_rhino",
+            Item::new, new Item.Properties().food(food(2, 0.1f)));
+    public static final Item COOKED_RHINO = register("cooked_rhino",
+            Item::new, new Item.Properties().food(food(7, 0.4f)));
+    public static final Item MAPLE_SYRUP = register("maple_syrup",
+            Item::new, new Item.Properties().stacksTo(1).food(food(2, 0.1f)).usingConvertsTo(net.minecraft.world.item.Items.BOWL).craftRemainder(net.minecraft.world.item.Items.BOWL));
+    public static final Item HOBBIT_PANCAKE_WITH_MAPLE_SYRUP = register("hobbit_pancake_with_maple_syrup",
+            Item::new, new Item.Properties().food(food(5, 0.6f)));
+    public static final Item MAPLE_BEER = register("maple_beer",
+            props -> new LOTRDrinkItem(false, true, 0.4f, props).setDrinkStats(4, 0.6f),
+            drink(true));
+    public static final Item DATE = register("date",
+            props -> new LOTRHangingFruitItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.DATE_BLOCK, props), new Item.Properties().food(food(2, 0.3f)));
+    public static final Item ARAK = register("arak",
+            props -> new LOTRDrinkItem(false, true, 1.4f, props).setDrinkStats(4, 0.4f),
+            drink(true));
+    public static final Item CARROT_WINE = register("carrot_wine",
+            props -> new LOTRDrinkItem(false, true, 0.8f, props).setDrinkStats(3, 0.4f),
+            drink(true));
+    public static final Item BANANA_BEER = register("banana_beer",
+            props -> new LOTRDrinkItem(false, true, 0.5f, props).setDrinkStats(4, 0.6f),
+            drink(true));
+    public static final Item MELON_LIQUEUR = register("melon_liqueur",
+            props -> new LOTRDrinkItem(false, true, 1.0f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item BLUEBERRIES = register("blueberries",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item BLACKBERRIES = register("blackberries",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item RASPBERRIES = register("raspberries",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item CRANBERRIES = register("cranberries",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item ELDERBERRIES = register("elderberries",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item ROAST_CHESTNUT = register("roast_chestnut",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item CACTUS_LIQUEUR = register("cactus_liqueur",
+            props -> new LOTRDrinkItem(false, true, 0.8f, props).setDrinkStats(2, 0.3f),
+            drink(true));
+    public static final Item TOROG_DRAUGHT = register("torog_draught",
+            props -> new LOTRDrinkItem(false, true, 0.6f, props).setDrinkStats(6, 0.6f).addEffect(net.minecraft.world.effect.MobEffects.STRENGTH, 90),
+            drink(true));
+    public static final Item BLUEBERRY_JUICE = register("blueberry_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(5, 0.5f),
+            drink(false));
+    public static final Item BLACKBERRY_JUICE = register("blackberry_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(5, 0.5f),
+            drink(false));
+    public static final Item RASPBERRY_JUICE = register("raspberry_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(5, 0.5f),
+            drink(false));
+    public static final Item CRANBERRY_JUICE = register("cranberry_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(5, 0.5f),
+            drink(false));
+    public static final Item ELDERBERRY_JUICE = register("elderberry_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(5, 0.5f),
+            drink(false));
+    public static final Item TOROG_STEW = register("torog_stew",
+            Item::new, new Item.Properties().stacksTo(1).food(food(8, 0.6f)).usingConvertsTo(net.minecraft.world.item.Items.BOWL).craftRemainder(net.minecraft.world.item.Items.BOWL));
+    public static final Item CRAM = register("cram",
+            Item::new, new Item.Properties().food(food(8, 1.0f)));
+    public static final Item LEMON = register("lemon",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item ORANGE = register("orange",
+            Item::new, new Item.Properties().food(food(4, 0.3f)));
+    public static final Item ORANGE_JUICE = register("orange_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(6, 0.6f),
+            drink(false));
+    public static final Item LEMON_LIQUEUR = register("lemon_liqueur",
+            props -> new LOTRDrinkItem(false, true, 1.0f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item LEMONADE = register("lemonade",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(5, 0.3f),
+            drink(false));
+    public static final Item LIME = register("lime",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item LIME_LIQUEUR = register("lime_liqueur",
+            props -> new LOTRDrinkItem(false, true, 1.0f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item RAW_MUTTON = register("raw_mutton",
+            Item::new, new Item.Properties().food(food(3, 0.3f)));
+    public static final Item COOKED_MUTTON = register("cooked_mutton",
+            Item::new, new Item.Properties().food(food(8, 0.8f)));
+    public static final Item TAURETHRIM_COCOA = register("taurethrim_cocoa",
+            props -> new LOTRDrinkItem(false, true, 0.0f, props).setDrinkStats(6, 0.6f).addEffect(net.minecraft.world.effect.MobEffects.STRENGTH, 40).addEffect(net.minecraft.world.effect.MobEffects.SPEED, 40),
+            drink(true));
+    public static final Item JUNGLE_REMEDY = register("jungle_remedy",
+            props -> new LOTRDrinkItem(false, false, 0.0f, props).setSpecial(LOTRDrinkItem.Special.CURES_HARMFUL),
+            drink(false));
+    public static final Item CORN = register("corn",
+            Item::new, new Item.Properties().food(food(2, 0.3f)));
+    public static final Item CORN_LIQUOR = register("corn_liquor",
+            props -> new LOTRDrinkItem(false, true, 1.0f, props).setDrinkStats(3, 0.3f),
+            drink(true));
+    public static final Item RAW_VENISON = register("raw_venison",
+            Item::new, new Item.Properties().food(food(3, 0.3f)));
+    public static final Item COOKED_VENISON = register("cooked_venison",
+            Item::new, new Item.Properties().food(food(8, 0.8f)));
+    public static final Item COOKED_CORN = register("cooked_corn",
+            Item::new, new Item.Properties().food(food(4, 0.4f)));
+    public static final Item SHISH_KEBAB = register("shish_kebab",
+            LOTRKebabItem::new, new Item.Properties().food(food(8, 0.8f)));
+    public static final Item LEEK = register("leek",
+            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.LEEK_CROP, props), new Item.Properties().food(food(2, 0.3f)).useItemDescriptionPrefix());
+    public static final Item LEEK_SOUP = register("leek_soup",
+            Item::new, new Item.Properties().stacksTo(1).food(food(8, 0.8f)).usingConvertsTo(net.minecraft.world.item.Items.BOWL).craftRemainder(net.minecraft.world.item.Items.BOWL));
+    public static final Item TURNIP = register("turnip",
+            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.TURNIP_CROP, props), new Item.Properties().food(food(2, 0.3f)).useItemDescriptionPrefix());
+    public static final Item RAW_CAMEL = register("raw_camel",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item COOKED_CAMEL = register("cooked_camel",
+            Item::new, new Item.Properties().food(food(6, 0.6f)));
+    public static final Item OLIVES = register("olives",
+            Item::new, new Item.Properties().food(food(1, 0.1f)));
+    public static final Item APPLE_JUICE = register("apple_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(6, 0.6f),
+            drink(false));
+    public static final Item OLIVE_BREAD = register("olive_bread",
+            Item::new, new Item.Properties().food(food(5, 0.6f)));
+    public static final Item RED_GRAPES = register("red_grapes",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item GREEN_GRAPES = register("green_grapes",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item WHITE_WINE = register("white_wine",
+            props -> new LOTRDrinkItem(false, true, 0.9f, props).setDrinkStats(4, 0.4f),
+            drink(true));
+    public static final Item RED_GRAPE_JUICE = register("red_grape_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(5, 0.5f),
+            drink(false));
+    public static final Item GREEN_GRAPE_JUICE = register("green_grape_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(5, 0.5f),
+            drink(false));
+    public static final Item ROAST_TURNIP = register("roast_turnip",
+            Item::new, new Item.Properties().food(food(6, 0.6f)));
+    public static final Item MELON_SOUP = register("melon_soup",
+            Item::new, new Item.Properties().stacksTo(1).food(food(5, 0.5f)).usingConvertsTo(net.minecraft.world.item.Items.BOWL).craftRemainder(net.minecraft.world.item.Items.BOWL));
+    public static final Item CERAMIC_MUG = register("ceramic_mug",
+            props -> new LOTRVesselItem(LOTRVessel.MUG_CLAY, props), new Item.Properties());
+    public static final Item ALMOND = register("almond",
+            Item::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item WILDBERRIES = register("wildberries",
+            LOTRPoisonousBerryItem::new, new Item.Properties().food(food(2, 0.2f)));
+    public static final Item PLUM = register("plum",
+            Item::new, new Item.Properties().food(food(4, 0.3f)));
+    public static final Item MORGUL_DRAUGHT = register("morgul_draught",
+            props -> new LOTRDrinkItem(false, true, 0.0f, props).setDrinkStats(4, 0.4f).setDamageAmount(3).addEffect(net.minecraft.world.effect.MobEffects.NIGHT_VISION, 300).setSpecial(LOTRDrinkItem.Special.MORGUL),
+            drink(true));
+    public static final Item PLUM_KVASS = register("plum_kvass",
+            props -> new LOTRDrinkItem(false, true, 0.2f, props).setDrinkStats(4, 0.4f),
+            drink(true));
+    public static final Item MARCHPANE = register("marchpane",
+            Item::new, new Item.Properties().food(food(6, 0.6f)));
+    public static final Item CHOCOLATE_MARCHPANE = register("chocolate_marchpane",
+            Item::new, new Item.Properties().food(food(8, 0.8f)));
+    public static final Item GOLDEN_GOBLET = register("golden_goblet",
+            props -> new LOTRVesselItem(LOTRVessel.GOBLET_GOLD, props), new Item.Properties());
+    public static final Item SILVER_GOBLET = register("silver_goblet",
+            props -> new LOTRVesselItem(LOTRVessel.GOBLET_SILVER, props), new Item.Properties());
+    public static final Item COPPER_GOBLET = register("copper_goblet",
+            props -> new LOTRVesselItem(LOTRVessel.GOBLET_COPPER, props), new Item.Properties());
+    public static final Item WOODEN_CUP = register("wooden_cup",
+            props -> new LOTRVesselItem(LOTRVessel.GOBLET_WOOD, props), new Item.Properties());
+    public static final Item SKULL_CUP = register("skull_cup",
+            props -> new LOTRVesselItem(LOTRVessel.SKULL, props), new Item.Properties());
+    public static final Item WINE_GLASS = register("wine_glass",
+            props -> new LOTRVesselItem(LOTRVessel.GLASS, props), new Item.Properties());
+    public static final Item WATERSKIN = register("waterskin",
+            props -> new LOTRVesselItem(LOTRVessel.SKIN, props), new Item.Properties());
+    public static final Item ALE_HORN = register("ale_horn",
+            props -> new LOTRVesselItem(LOTRVessel.HORN, props), new Item.Properties());
+    public static final Item GOLDEN_ALE_HORN = register("golden_ale_horn",
+            props -> new LOTRVesselItem(LOTRVessel.HORN_GOLD, props), new Item.Properties());
+    public static final Item TERMITE_TEQUILA = register("termite_tequila",
+            props -> new LOTRDrinkItem(false, true, 1.5f, props).setDrinkStats(3, 0.3f).setSpecial(LOTRDrinkItem.Special.TERMITE),
+            drink(true));
+    public static final Item YAM = register("yam",
+            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.YAM_CROP, props), new Item.Properties().food(food(1, 0.4f),
+                    net.minecraft.world.item.component.Consumables.defaultFood().onConsume(
+                            new net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect(
+                                    new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.HUNGER, 300, 0), 0.4f)).build()).useItemDescriptionPrefix());
+    public static final Item ROAST_YAM = register("roast_yam",
+            Item::new, new Item.Properties().food(food(6, 0.6f)));
+    public static final Item SOURED_MILK = register("soured_milk",
+            props -> new LOTRDrinkItem(false, true, 0.2f, props).setDrinkStats(5, 0.5f),
+            drink(true));
+    public static final Item POMEGRANATE = register("pomegranate",
+            Item::new, new Item.Properties().food(food(4, 0.3f)));
+    public static final Item POMEGRANATE_JUICE = register("pomegranate_juice",
+            props -> new LOTRDrinkItem(true, false, 0.0f, props).setDrinkStats(6, 0.6f),
+            drink(false));
+    public static final Item POMEGRANATE_WINE = register("pomegranate_wine",
+            props -> new LOTRDrinkItem(false, true, 0.9f, props).setDrinkStats(4, 0.4f),
+            drink(true));
+    public static final Item MAN_FLESH = register("man_flesh",
+            LOTRManFleshItem::new, new Item.Properties().food(food(6, 0.6f)));
+    public static final Item SALT = register("salt", LOTRSaltItem::new, new Item.Properties());
+    public static final Item SUSPICIOUS_MEAT = register("suspicious_meat",
+            Item::new, new Item.Properties().food(food(6, 0.6f)));
+    public static final Item CORN_BREAD = register("corn_bread",
+            Item::new, new Item.Properties().food(food(5, 0.6f)));
+    public static final Item RAISINS = register("raisins",
+            Item::new, new Item.Properties().food(food(1, 0.1f)));
+    public static final Item MUSHROOM_PIE = register("mushroom_pie",
+            Item::new, new Item.Properties().food(food(8, 0.3f)));
+
+    // The seed foods are what their crops are planted from and drop.
+    static {
+        LOTRCropBlock.setSeed(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.LETTUCE_CROP, LETTUCE);
+        LOTRCropBlock.setSeed(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.LEEK_CROP, LEEK);
+        LOTRCropBlock.setSeed(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.TURNIP_CROP, TURNIP);
+        LOTRCropBlock.setSeed(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.YAM_CROP, YAM);
+    }
+
+    // LOTRItemChisel: a hundred uses and held like a tool. Each carves its own
+    // kind of sign; the moon-chisel is a chisel set with ithildin at a dwarven
+    // or elven table, keeping its wear.
+    public static final Item CHISEL = register("chisel",
+            props -> new LOTRChiselItem(() -> net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.CARVED_SIGN, props),
+            new Item.Properties().durability(100));
+    public static final Item MOON_CHISEL = register("moon_chisel",
+            props -> new LOTRChiselItem(() -> net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.CARVED_ITHILDIN_SIGN, props),
+            new Item.Properties().durability(100));
+
+    // ---- tabMaterials, top to bottom. ----
+    //
+    // In registerItem order. The mithril ingot is registered at the top of this
+    // class. NOT registered: the copper ingot and the iron nugget, which vanilla
+    // already has (recipes use its copper ingot).
+    //
+    // The Flame of Udun, Chill of Daedelos, Headhunter's Trophy, Smith's Scroll
+    // and Book of True-silver are plain items: LOTRItemEnchantment named the
+    // modifier each applies in LOTR's anvil, and LOTRItemModifierTemplate named
+    // itself after the one it teaches -- that modifier system is NOT ported, so
+    // the scroll carries no modifier and is plainly "Smith's Scroll".
+    //
+    // The gems, durnor, edhelvir and gulduril also set a renamed item's colour in
+    // the anvil (AnvilNameColorProvider); the port has no LOTR anvil, so that is
+    public static final Item TIN_INGOT = register("tin_ingot", Item::new, new Item.Properties());
+    public static final Item BRONZE_INGOT = register("bronze_ingot", Item::new, new Item.Properties());
+    public static final Item SILVER_INGOT = register("silver_ingot", Item::new, new Item.Properties());
+    public static final Item SILVER_NUGGET = register("silver_nugget", Item::new, new Item.Properties());
+    public static final Item MITHRIL_NUGGET = register("mithril_nugget", Item::new, new Item.Properties());
+    public static final Item ORC_STEEL_INGOT = register("orc_steel_ingot", Item::new, new Item.Properties());
+    public static final Item DURNOR = register("durnor", Item::new, new Item.Properties());
+    public static final Item PIPEWEED_LEAF = register("pipeweed_leaf", Item::new, new Item.Properties());
+    public static final Item PIPEWEED_SEEDS = register("pipeweed_seeds",
+            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.PIPEWEED_CROP, props),
+            new Item.Properties().useItemDescriptionPrefix());
+    // LOTRItemDye's six subtypes, one item each. The DYE component is what
+    // isItemDye's ore-dictionary test became: sheep, wolf collars and signs take
+    // them as vanilla dyes of the same colour, and the c:dyes/<colour> tags let
+    // any recipe asking for a dye of that colour accept them.
+    public static final Item YELLOW_DYE = register("yellow_dye", net.minecraft.world.item.DyeItem::new,
+            new Item.Properties().component(DataComponents.DYE, net.minecraft.world.item.DyeColor.YELLOW));
+    public static final Item WHITE_DYE = register("white_dye", net.minecraft.world.item.DyeItem::new,
+            new Item.Properties().component(DataComponents.DYE, net.minecraft.world.item.DyeColor.WHITE));
+    public static final Item BLUEBELL_BLUE = register("bluebell_blue", net.minecraft.world.item.DyeItem::new,
+            new Item.Properties().component(DataComponents.DYE, net.minecraft.world.item.DyeColor.BLUE));
+    public static final Item CLOVER_GREEN = register("clover_green", net.minecraft.world.item.DyeItem::new,
+            new Item.Properties().component(DataComponents.DYE, net.minecraft.world.item.DyeColor.GREEN));
+    public static final Item CHARCOAL_DUST = register("charcoal_dust", net.minecraft.world.item.DyeItem::new,
+            new Item.Properties().component(DataComponents.DYE, net.minecraft.world.item.DyeColor.BLACK));
+    public static final Item BROWN_DYE = register("brown_dye", net.minecraft.world.item.DyeItem::new,
+            new Item.Properties().component(DataComponents.DYE, net.minecraft.world.item.DyeColor.BROWN));
+    public static final Item MALLORN_STICK = register("mallorn_stick", Item::new, new Item.Properties());
+    public static final Item FUR = register("fur", Item::new, new Item.Properties());
+    public static final Item EDHELVIR = register("edhelvir", LOTRQuenditeCrystalItem::new, new Item.Properties());
+    public static final Item WARG_BONE = register("warg_bone", Item::new, new Item.Properties());
+    public static final Item DWARVEN_STEEL_INGOT = register("dwarven_steel_ingot", Item::new, new Item.Properties());
+    public static final Item GALVORN_INGOT = register("galvorn_ingot", Item::new, new Item.Properties());
+    public static final Item ORC_BONE = register("orc_bone", Item::new, new Item.Properties());
+    public static final Item ELF_BONE = register("elf_bone", Item::new, new Item.Properties());
+    public static final Item DWARF_BONE = register("dwarf_bone", Item::new, new Item.Properties());
+    public static final Item HOBBIT_BONE = register("hobbit_bone", Item::new, new Item.Properties());
+    public static final Item URUK_STEEL_INGOT = register("uruk_steel_ingot", Item::new, new Item.Properties());
+    public static final Item TROLL_BONE = register("troll_bone", Item::new, new Item.Properties());
+    public static final Item GULDURIL = register("gulduril", LOTRGuldurilCrystalItem::new, new Item.Properties());
+    public static final Item MORGUL_STEEL_INGOT = register("morgul_steel_ingot", Item::new, new Item.Properties());
+    public static final Item SULFUR = register("sulfur", Item::new, new Item.Properties());
+    public static final Item NITER = register("niter", Item::new, new Item.Properties());
+    public static final Item LION_FUR = register("lion_fur", Item::new, new Item.Properties());
+    public static final Item RHINO_HORN = register("rhino_horn", Item::new, new Item.Properties());
+    public static final Item GEMSBOK_HIDE = register("gemsbok_hide", Item::new, new Item.Properties());
+    public static final Item GEMSBOK_HORN = register("gemsbok_horn", Item::new, new Item.Properties());
+    public static final Item BLUE_DWARVEN_STEEL_INGOT = register("blue_dwarven_steel_ingot", Item::new, new Item.Properties());
+    public static final Item FLAX_SEEDS = register("flax_seeds",
+            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.FLAX_CROP, props),
+            new Item.Properties().useItemDescriptionPrefix());
+    public static final Item FLAX = register("flax", Item::new, new Item.Properties());
+    public static final Item BLACK_URUK_STEEL_INGOT = register("black_uruk_steel_ingot", Item::new, new Item.Properties());
+    public static final Item ELVEN_STEEL_INGOT = register("elven_steel_ingot", Item::new, new Item.Properties());
+    public static final Item SWAN_FEATHER = register("swan_feather", Item::new, new Item.Properties());
+    public static final Item OBSIDIAN_SHARD = register("obsidian_shard", Item::new, new Item.Properties());
+    public static final Item HITHLAIN = register("hithlain", Item::new, new Item.Properties());
+    public static final Item GATE_GEARS = register("gate_gears", Item::new, new Item.Properties());
+    // LOTRItemGrapeSeeds: plants its vine, so a BlockItem like the other seeds.
+    public static final Item RED_GRAPE_SEEDS = register("red_grape_seeds",
+            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.RED_GRAPEVINE, props),
+            new Item.Properties().useItemDescriptionPrefix());
+    // LOTRItemGrapeSeeds: plants its vine, so a BlockItem like the other seeds.
+    public static final Item GREEN_GRAPE_SEEDS = register("green_grape_seeds",
+            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.GREEN_GRAPEVINE, props),
+            new Item.Properties().useItemDescriptionPrefix());
+    public static final Item KINE_OF_ARAW_HORN = register("kine_of_araw_horn", Item::new, new Item.Properties());
+    public static final Item BLACKROOT_STICK = register("blackroot_stick", Item::new, new Item.Properties());
+    public static final Item HORN = register("horn", Item::new, new Item.Properties());
+    public static final Item ITHILDIN = register("ithildin", Item::new, new Item.Properties());
+    public static final Item GILDED_IRON_INGOT = register("gilded_iron_ingot", Item::new, new Item.Properties());
+    public static final Item FLAME_OF_UDUN = register("flame_of_udun", Item::new, new Item.Properties());
+    public static final Item TOPAZ = register("topaz", Item::new, new Item.Properties());
+    public static final Item AMETHYST = register("amethyst", Item::new, new Item.Properties());
+    public static final Item SAPPHIRE = register("sapphire", Item::new, new Item.Properties());
+    public static final Item RUBY = register("ruby", Item::new, new Item.Properties());
+    public static final Item AMBER = register("amber", Item::new, new Item.Properties());
+    public static final Item DIAMOND = register("diamond", Item::new, new Item.Properties());
+    public static final Item PEARL = register("pearl", Item::new, new Item.Properties());
+    public static final Item CORAL = register("coral", Item::new, new Item.Properties());
+    public static final Item OPAL = register("opal", Item::new, new Item.Properties());
+    public static final Item EMERALD = register("emerald", Item::new, new Item.Properties());
+    public static final Item CHILL_OF_DAEDELOS = register("chill_of_daedelos", Item::new, new Item.Properties());
+    public static final Item HEADHUNTERS_TROPHY = register("headhunters_trophy", Item::new, new Item.Properties());
+    public static final Item SMITHS_SCROLL = register("smiths_scroll", LOTRSmithsScrollItem::new,
+            new Item.Properties().stacksTo(1));
+    public static final Item MITHRIL_MAIL = register("mithril_mail", Item::new, new Item.Properties());
+    public static final Item BOOK_OF_TRUE_SILVER = register("book_of_true_silver", Item::new, new Item.Properties());
+
+    // LOTRItemBottlePoison, from tabMisc: one to a stack, drunk like a potion,
+    // and the glass bottle back afterwards -- or left in the grid when it
+    // poisons a blade, arrows or bolts (setContainerItem). Drinking it gives
+    // LOTRPoisonedDrinks' killing poison for fifteen seconds.
+    public static final Item BOTTLE_OF_POISON = register("bottle_of_poison", Item::new, new Item.Properties()
+            .stacksTo(1)
+            .craftRemainder(net.minecraft.world.item.Items.GLASS_BOTTLE)
+            .component(DataComponents.CONSUMABLE, net.minecraft.world.item.component.Consumables.defaultDrink()
+                    .onConsume(new net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect(
+                            new net.minecraft.world.effect.MobEffectInstance(
+                                    net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects.DRINK_POISON, 300), 1.0F))
+                    .build())
+            .usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE));
+    public static final Item RED_CLAY_BALL = register("red_clay_ball", Item::new, new Item.Properties());
+
+    // LOTRItemSeeds: what the pipe-weed and flax crops are planted from and drop.
+    static {
+        LOTRCropBlock.setSeed(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.PIPEWEED_CROP, PIPEWEED_SEEDS);
+        LOTRCropBlock.setSeed(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.FLAX_CROP, FLAX_SEEDS);
+    }
 
     // throwingAxeBronze and throwingAxeIron, registered together and much later
     // than the dwarven one -- LOTRMod's own order, which the creative tab keeps.
@@ -1376,6 +2759,25 @@ public final class LOTRItems {
      */
     private static Item.Properties polearm(ToolMaterial material, float damage,
             double attackSpeed, double reach, double knockback) {
+        return polearm(material, damage, attackSpeed, reach, knockback, 0.0);
+    }
+
+    /**
+     * A lance: a long polearm with one extra knockback, and LOTRItemLance's
+     * movement penalty.
+     *
+     * <p>The original applied lanceSpeedBoost in LOTREventHandler only while
+     * the holder was on foot and not in creative. A main-hand modifier is on
+     * whenever the lance is held, but a mount moves by its own speed, so riding
+     * is unaffected either way; creative walking is the one difference.
+     */
+    private static Item.Properties lance(ToolMaterial material, float damage) {
+        return polearm(material, damage, LONG_POLEARM_SPEED, LONG_POLEARM_REACH, 1.0,
+                LANCE_MOVEMENT_PENALTY);
+    }
+
+    private static Item.Properties polearm(ToolMaterial material, float damage,
+            double attackSpeed, double reach, double knockback, double movement) {
         java.util.Objects.requireNonNull(POLEARM_REACH_ID, "POLEARM_REACH_ID");
         java.util.Objects.requireNonNull(POLEARM_KNOCKBACK_ID, "POLEARM_KNOCKBACK_ID");
         ItemAttributeModifiers.Builder attributes = ItemAttributeModifiers.builder()
@@ -1397,6 +2799,13 @@ public final class LOTRItems {
                             AttributeModifier.Operation.ADD_VALUE),
                     EquipmentSlotGroup.MAINHAND);
         }
+        if (movement != 0.0) {
+            java.util.Objects.requireNonNull(LANCE_MOVEMENT_ID, "LANCE_MOVEMENT_ID");
+            attributes.add(Attributes.MOVEMENT_SPEED,
+                    new AttributeModifier(LANCE_MOVEMENT_ID, movement,
+                            AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL),
+                    EquipmentSlotGroup.MAINHAND);
+        }
         return new Item.Properties()
                 .durability(material.durability())
                 .repairable(material.repairItems())
@@ -1407,18 +2816,6 @@ public final class LOTRItems {
 
     private static Item registerArmor(String name, ArmorMaterial material, ArmorType type) {
         return register(name, LOTRModifiableItem::new, new Item.Properties().humanoidArmor(material, type));
-    }
-
-    /**
-     * One of the two forms a treasure pile is carried in -- the two-pixel carpet
-     * at one layer, or the full block at eight. Called from LOTRBlocks while the
-     * piles are being built; see registerTreasurePile for why the order of the
-     * two calls matters.
-     */
-    public static Item registerTreasurePileItem(Block pile, String name, int layers) {
-        return register(name,
-                props -> new LOTRTreasurePileItem(pile, layers, props),
-                new Item.Properties());
     }
 
     private LOTRItems() {

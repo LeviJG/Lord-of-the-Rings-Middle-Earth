@@ -34,5 +34,29 @@
     "sounds": [
       "lotr:item/balrog_whip"
     ]
+  },
+  "item.mug_fill": {
+    "category": "block",
+    "sounds": [
+      "lotr:item/mug_fill"
+    ]
+  },
+  "block.plate.break": {
+    "category": "block",
+    "sounds": [
+      "lotr:block/plate/break"
+    ]
+  },
+  "item.mace_sauron": {
+    "category": "player",
+    "sounds": [
+      "lotr:item/mace_sauron"
+    ]
+  },
+  "item.gandalf_fireball": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:item/gandalf_fireball"
+    ]
   }
 }

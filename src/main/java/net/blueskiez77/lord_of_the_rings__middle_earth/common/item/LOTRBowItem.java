@@ -79,4 +79,14 @@ public class LOTRBowItem extends BowItem implements LOTRModifiable {
         super.shootProjectile(shooter, projectile, index,
                 velocity * this.velocityFactor, inaccuracy, angle, target);
     }
+
+    /** getInvArrowSlot: a plain arrow, or a poisoned one -- which no vanilla bow will take. */
+    private static final java.util.function.Predicate<ItemStack> ARROWS_OR_POISONED =
+            stack -> stack.is(net.minecraft.tags.ItemTags.ARROWS)
+                    || stack.getItem() instanceof LOTRPoisonedArrowItem;
+
+    @Override
+    public java.util.function.Predicate<ItemStack> getAllSupportedProjectiles() {
+        return ARROWS_OR_POISONED;
+    }
 }

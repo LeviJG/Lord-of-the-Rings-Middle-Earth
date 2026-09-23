@@ -24,6 +24,7 @@ public final class LOTRMenus {
     public static MenuType<LOTRHobbitOvenMenu> HOBBIT_OVEN;
     public static MenuType<LOTRUnsmelteryMenu> UNSMELTERY;
     public static MenuType<LOTRMillstoneMenu> MILLSTONE;
+    public static MenuType<LOTRBarrelMenu> BARREL;
 
     public static MenuType<LOTRCraftingMenu> forTable(LOTRCraftingTable table) {
         MenuType<LOTRCraftingMenu> type = TYPES.get(table);
@@ -49,6 +50,10 @@ public final class LOTRMenus {
         MILLSTONE = Registry.register(BuiltInRegistries.MENU,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "millstone"),
                 new MenuType<>(LOTRMillstoneMenu::new, FeatureFlags.VANILLA_SET));
+
+        BARREL = Registry.register(BuiltInRegistries.MENU,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "barrel"),
+                new MenuType<>(LOTRBarrelMenu::new, FeatureFlags.VANILLA_SET));
 
         for (LOTRCraftingTable table : LOTRCraftingTable.values()) {
             MenuType<LOTRCraftingMenu> type = new MenuType<>(

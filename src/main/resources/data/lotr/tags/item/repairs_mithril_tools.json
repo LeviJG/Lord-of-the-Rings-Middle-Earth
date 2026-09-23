@@ -1,5 +1,6 @@
 {
   "values": [
-    "lotr:mithril"
+    "lotr:mithril",
+    "lotr:mithril_mail"
   ]
 }

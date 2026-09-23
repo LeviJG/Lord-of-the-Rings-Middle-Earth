@@ -47,6 +47,7 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         var trapdoorsTag = builder(vanillaBlockTag("wooden_trapdoors"));
         var doorsTag = builder(vanillaBlockTag("wooden_doors"));
         var smallFlowersTag = builder(vanillaBlockTag("small_flowers"));
+        var flowersTag = builder(vanillaBlockTag("flowers"));
         var logsTag = builder(vanillaBlockTag("logs"));
         var logsBurnTag = builder(vanillaBlockTag("logs_that_burn"));
         var stairsTag = builder(vanillaBlockTag("stairs"));
@@ -139,6 +140,8 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         LOTRBlocks.ALL_FLOWERS.stream()
                 .filter(b -> !LOTRBlocks.NOT_SMALL_FLOWERS.contains(b))
                 .forEach(b -> smallFlowersTag.add(LOTRBlocks.keyOf(b)));
+        // Tall flowers sit in #flowers directly, as vanilla's peony and lilac do.
+        LOTRBlocks.ALL_DOUBLE_FLOWERS.forEach(b -> flowersTag.add(LOTRBlocks.keyOf(b)));
 
         // anything that looks for wood. Beams are decorative and deliberately
 

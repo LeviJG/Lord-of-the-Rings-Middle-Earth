@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LOTRMod implements ModInitializer {
-    public static final String MOD_ID = "lord_of_the_rings_-_middle_earth";
+    public static final String MOD_ID = "lord_of_the_rings - middle_earth";
 
     public static final String NAMESPACE = "lotr";
 
@@ -36,38 +36,35 @@ public class LOTRMod implements ModInitializer {
         LOTRFaction.initAllProperties();
 
         LOTRPlayerAlignments.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAlcoholTolerance.init();
 
         LOTRRecipeTypes.init();
         LOTRMenus.init();
-
-        // Before blocks: LOTRGateBlock resolves its open/close sounds from
-        // these the first time a gate is used, and they must exist by then.
         LOTRSounds.init();
-
         LOTRBlocks.init();
         LOTRBlockEntities.init();
         LOTRBlockBehaviours.init();
         LOTRMillstoneRecipes.createRecipes();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects.init();
         LOTRItems.init();
 
-        // After items: the troll statue item names the entity type it places.
         LOTREntities.init();
 
-        // LOTRDispenseCrossbowBolt. The bolt is an ArrowItem, so vanilla's own
-        // projectile dispense behaviour already knows how to throw it -- the
-        // dispenser just has to be told the item is one, which 1.7.10 did from
-        // LOTRItemCrossbowBolt's constructor.
         DispenserBlock.registerProjectileBehavior(LOTRItems.CROSSBOW_BOLT);
-        // LOTRDispensePebble, the same way.
         DispenserBlock.registerProjectileBehavior(LOTRItems.PEBBLE);
         DispenserBlock.registerProjectileBehavior(LOTRItems.TAURETHRIM_DART);
         DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_TAURETHRIM_DART);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_ARROW);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_CROSSBOW_BOLT);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.RHUNIC_FIRE_POT);
 
-        // Creative tab. Must come after blocks and items exist.
+        LOTRBlocks.ALL_PLATES.forEach(plate -> DispenserBlock.registerProjectileBehavior(plate.asItem()));
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVanillaVessels.init();
+
         LOTRCreativeTabs.init();
 
-        // Payload types must be registered on both sides and before any
-        // handler, so this runs here rather than in the client initializer.
+        // Payload types must be registered on both sides and before any handler, so this runs here rather than in the client initializer.
         LOTRPackets.init();
 
         LOTRAlignmentCommand.register();

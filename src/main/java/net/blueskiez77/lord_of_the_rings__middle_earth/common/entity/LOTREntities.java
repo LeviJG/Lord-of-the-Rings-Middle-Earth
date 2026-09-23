@@ -98,8 +98,57 @@ public final class LOTREntities {
                     .clientTrackingRange(4)
                     .updateInterval(20));
 
+    /** LOTREntityArrowPoisoned, an EntityArrow: sized and tracked as an arrow. */
+    public static final EntityType<LOTRPoisonedArrowEntity> POISONED_ARROW = register("poisoned_arrow",
+            EntityType.Builder.<LOTRPoisonedArrowEntity>of(LOTRPoisonedArrowEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(20));
+
+    /** LOTREntityFirePot, an EntityThrowable: sized and tracked as a snowball. */
+    public static final EntityType<LOTRFirePotEntity> FIRE_POT = register("fire_pot",
+            EntityType.Builder.<LOTRFirePotEntity>of(LOTRFirePotEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
+
+    /** LOTREntityPlate, an EntityThrowable sized 0.5. */
+    public static final EntityType<LOTRPlateEntity> PLATE = register("plate",
+            EntityType.Builder.<LOTRPlateEntity>of(LOTRPlateEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
+
     private LOTREntities() {
     }
+
+    /** LOTREntityGandalfFireball: an EntityThrowable, so 0.25 across. */
+    public static final EntityType<LOTRGandalfFireballEntity> GANDALF_FIREBALL = register("gandalf_fireball",
+            EntityType.Builder.<LOTRGandalfFireballEntity>of(LOTRGandalfFireballEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
+
+    /** LOTREntityConker, an EntityThrowable sized 0.25. */
+    public static final EntityType<LOTRConkerEntity> CONKER = register("conker",
+            EntityType.Builder.<LOTRConkerEntity>of(LOTRConkerEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
+
+    /** LOTREntityExplodingTermite, an EntityThrowable sized 0.25. */
+    public static final EntityType<LOTRExplodingTermiteEntity> EXPLODING_TERMITE = register("exploding_termite",
+            EntityType.Builder.<LOTRExplodingTermiteEntity>of(LOTRExplodingTermiteEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
+
+    /** LOTREntityMysteryWeb, an EntityThrowable sized 0.25. */
+    public static final EntityType<LOTRMysteryWebEntity> MYSTERY_WEB = register("mystery_web",
+            EntityType.Builder.<LOTRMysteryWebEntity>of(LOTRMysteryWebEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
 
     private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(
             String name, EntityType.Builder<T> builder) {

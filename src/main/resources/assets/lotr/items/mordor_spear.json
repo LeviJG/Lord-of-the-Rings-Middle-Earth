@@ -1,6 +1,20 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "lotr:item/mordor_spear"
-  }
+    "type": "minecraft:select",
+    "property": "minecraft:display_context",
+    "cases": [
+      {
+        "when": [ "gui", "ground", "fixed", "on_shelf" ],
+        "model": {
+          "type": "minecraft:model",
+          "model": "lotr:item/mordor_spear"
+        }
+      }
+    ],
+    "fallback": {
+      "type": "minecraft:model",
+      "model": "lotr:item/mordor_spear_in_hand"
+    }
+  },
+  "swap_animation_scale": 1.95
 }

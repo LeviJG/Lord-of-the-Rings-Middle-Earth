@@ -16,7 +16,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRChestRe
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRCrossbowBoltRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRDartRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTREntJarRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRItemModelProperties;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRKebabStandRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPoisonedArrowRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRStoneTrollRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrowingAxeRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrownTridentRenderer;
@@ -62,6 +64,9 @@ public class LOTRModClient implements ClientModInitializer {
         LOTRMod.LOGGER.info("LOTR client initializing...");
 
         LOTRConnectedBorderPlugin.init();
+
+        // lotr:sneaking and lotr:swinging, which the pikes' item models pose by.
+        LOTRItemModelProperties.init();
 
         // The tall grasses are greyscale sprites tinted by biome, the way
         // LOTRBlockTallGrass.colorMultiplier returned getBiomeGrassColor. Their
@@ -146,6 +151,16 @@ public class LOTRModClient implements ClientModInitializer {
         // A blowgun dart, drawn as its own sprite; see LOTRDartRenderer.
         EntityRenderers.register(LOTREntities.DART, LOTRDartRenderer::new);
 
+        // The poisoned arrow on its own sheet, and the fire-pot drawn as its item, as a snowball is.
+        EntityRenderers.register(LOTREntities.POISONED_ARROW, LOTRPoisonedArrowRenderer::new);
+        EntityRenderers.register(LOTREntities.FIRE_POT, ThrownItemRenderer::new);
+        // Drawn full-bright and a block across, as LOTRRenderGandalfFireball drew it.
+        EntityRenderers.register(LOTREntities.CONKER, ThrownItemRenderer::new);
+        EntityRenderers.register(LOTREntities.EXPLODING_TERMITE, ThrownItemRenderer::new);
+        EntityRenderers.register(LOTREntities.MYSTERY_WEB, ThrownItemRenderer::new);
+        EntityRenderers.register(LOTREntities.GANDALF_FIREBALL,
+                context -> new ThrownItemRenderer<>(context, 2.0F, true));
+
         // A plain Horn of Command opens its selection screen instead of being
         // blown. Opened client-side, the way the beacon's naming dialog is, so
         // no client class leaks into the common source set; the choice travels
@@ -161,6 +176,35 @@ public class LOTRModClient implements ClientModInitializer {
             return InteractionResult.PASS;
         });
 
+        // tabFood's blocks that draw more than a model can: a drink set down in
+        // its vessel, and the food piled on a plate.
+        BlockEntityRenderers.register(LOTRBlockEntities.MUG,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMugRenderer::new);
+        BlockEntityRenderers.register(LOTRBlockEntities.PLATE,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateRenderer::new);
+        // A thrown plate, drawn as the plate itself, spinning.
+        EntityRenderers.register(LOTREntities.PLATE,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateEntityRenderer::new);
+        // A plate worn in the helmet slot.
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateHeadRenderer.init();
+        // LOTRTickHandlerClient: nausea drags the view about.
+        LOTRDrunkCamera.init();
+
+        // Carved signs: the lettering in the world, and the screen a chisel opens.
+        BlockEntityRenderers.register(LOTRBlockEntities.CARVED_SIGN,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRCarvedSignRenderer::new);
+        net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(
+                net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTROpenSignEditorPayload.TYPE, (payload, context) ->
+                        context.client().execute(() -> {
+                            Minecraft client = context.client();
+                            if (client.level != null && client.level.getBlockEntity(payload.pos())
+                                    instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity sign) {
+                                client.setScreenAndShow(new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCarvedSignEditScreen(sign));
+                            }
+                        }));
+
+        MenuScreens.register(LOTRMenus.BARREL,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBarrelScreen::new);
         MenuScreens.register(LOTRMenus.FORGE, LOTRForgeScreen::new);
         MenuScreens.register(LOTRMenus.HOBBIT_OVEN, LOTRHobbitOvenScreen::new);
         MenuScreens.register(LOTRMenus.UNSMELTERY, LOTRUnsmelteryScreen::new);

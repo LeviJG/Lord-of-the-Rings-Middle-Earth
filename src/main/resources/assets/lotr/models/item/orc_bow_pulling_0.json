@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/bow",
+  "parent": "lotr:item/bow_large",
   "textures": {
     "layer0": "lotr:item/orc_bow_pulling_0"
   }

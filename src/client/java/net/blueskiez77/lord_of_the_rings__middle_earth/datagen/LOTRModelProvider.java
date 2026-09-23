@@ -268,6 +268,11 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.createCrossBlockWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED);
         });
 
+        // Vanilla's peony treatment: a cross per half, and the top half as the
+        // inventory icon -- LOTRItemDoubleFlower.getIconFromDamage drew the top.
+        LOTRBlocks.ALL_DOUBLE_FLOWERS.forEach(b ->
+                generators.createDoublePlantWithDefaultItem(b, BlockModelGenerators.PlantType.NOT_TINTED));
+
         // "Duplicate model definition for lotr:item/<name>", it started emitting
 
         List.of(LOTRBlocks.ALL_LOGS, LOTRBlocks.ALL_BEAMS)
@@ -550,20 +555,13 @@ public class LOTRModelProvider extends FabricModelProvider {
             generators.registerSimpleItemModel(b, dry);
         });
 
-        LOTRBlocks.ALL_RAILS.forEach(b -> {
-            TextureMapping mapping = new TextureMapping()
-                    .put(TextureSlot.RAIL, TextureMapping.getBlockTexture(b));
-            Identifier flat = ModelTemplates.RAIL_FLAT.create(b, mapping, generators.modelOutput);
-            generators.blockStateOutput.accept(
-                    BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(flat)));
-
-            // which does not exist -- hence the blank hotbar icon.
-            Identifier itemModel = ModelTemplates.FLAT_ITEM.create(
-                    ModelLocationUtils.getModelLocation(b.asItem()),
-                    TextureMapping.layer0(b),
-                    generators.modelOutput);
-            generators.registerSimpleItemModel(b, itemModel);
-        });
+        // A powered rail needs a model per shape and a second set for the
+        // powered look -- createActiveRail is vanilla's own, and it reads the
+        // "_on" texture for the lit half.
+        // A powered rail needs a model per shape, and a second set for the lit
+        // look -- createActiveRail is vanilla's own, reading the "_on" texture
+        // for the powered half and emitting the flat item model too.
+        LOTRBlocks.ALL_RAILS.forEach(generators::createActiveRail);
 
         LOTRBlocks.ALL_CARPETS.forEach(b -> {
             Identifier model = ModelTemplates.CARPET.create(

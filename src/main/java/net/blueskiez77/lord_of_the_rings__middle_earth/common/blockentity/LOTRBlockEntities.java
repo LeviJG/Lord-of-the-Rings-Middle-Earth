@@ -27,11 +27,31 @@ public final class LOTRBlockEntities {
     public static BlockEntityType<LOTRAnimalJarBlockEntity> ANIMAL_JAR;
     public static BlockEntityType<LOTRWeaponRackBlockEntity> WEAPON_RACK;
     public static BlockEntityType<LOTRBannerBlockEntity> BANNER;
+    public static BlockEntityType<LOTRBarrelBlockEntity> BARREL;
+    public static BlockEntityType<LOTRPlateBlockEntity> PLATE;
+    public static BlockEntityType<LOTRMugBlockEntity> MUG;
+    public static BlockEntityType<LOTRCarvedSignBlockEntity> CARVED_SIGN;
 
     private LOTRBlockEntities() {
     }
 
     public static void init() {
+        CARVED_SIGN = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "carved_sign"),
+                new BlockEntityType<>(LOTRCarvedSignBlockEntity::new, Set.copyOf(LOTRBlocks.ALL_CARVED_SIGNS)));
+
+        BARREL = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "barrel"),
+                new BlockEntityType<>(LOTRBarrelBlockEntity::new, Set.of(LOTRBlocks.BARREL)));
+
+        PLATE = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "plate"),
+                new BlockEntityType<>(LOTRPlateBlockEntity::new, Set.copyOf(LOTRBlocks.ALL_PLATES)));
+
+        MUG = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "mug"),
+                new BlockEntityType<>(LOTRMugBlockEntity::new, Set.copyOf(LOTRBlocks.ALL_MUG_BLOCKS)));
+
         FORGE = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "forge"),
                 new BlockEntityType<>(LOTRForgeBlockEntity::new,

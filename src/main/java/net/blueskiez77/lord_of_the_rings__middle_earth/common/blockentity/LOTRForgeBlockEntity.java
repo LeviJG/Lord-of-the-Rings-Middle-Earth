@@ -1,6 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRForgeMenu;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -13,6 +15,9 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
@@ -24,6 +29,7 @@ import net.minecraft.world.item.crafting.RecipePropertySet;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.FuelValues;
@@ -52,12 +58,14 @@ import org.jspecify.annotations.Nullable;
 // rather than the recipe's cookingTime() -- one timer cannot honour four
 // different per-recipe durations.
 //
-// ALLOYING IS A STUB. getAlloyResult always returns EMPTY: the alloy outputs
-// (dwarf steel, galvorn, mithril, blue dwarf steel, elf steel, ithildin, uruk
-// steel, ...) are items the port has not registered yet. The hook is wired
-// through canSmelt/smeltLane, so filling it in later is a one-method override
-// per forge -- which is the ONLY thing that differed between the dwarven,
-// elven, orc and alloy forges in the original.
+// One block entity serves all four forges. What differed between
+// LOTRTileEntityDwarvenForge, ElvenForge, OrcForge and AlloyForge was only
+// their alloy pairs and a few special smelts, so those are chosen here by the
+// forge block this entity sits in.
+//
+// Like the original, a forge is not a general furnace: it only smelts stone,
+// sand and clay blocks, the clay items, and wood (getSmeltingResult's
+// Material test, here the pickaxe and shovel tags).
 public class LOTRForgeBlockEntity extends BlockEntity implements Container, MenuProvider {
 
     public static final int SLOT_COUNT = 13;
@@ -263,15 +271,87 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
     // ------------------------------------------------------------- recipe API
 
     /**
-     * STUB -- see the class comment. Override per forge once the alloy items
-     * exist; the four originals differed in nothing else.
+     * getAlloySmeltingResult: an input in the lower slot and an alloy in the
+     * slot above it. Each forge's own pairs come first, then the bronze every
+     * forge could make.
      */
     protected ItemStack getAlloyResult(ItemStack input, ItemStack alloyItem) {
+        if (input.isEmpty() || alloyItem.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        Block forge = getBlockState().getBlock();
+        if (forge == LOTRBlocks.ORC_FORGE) {
+            if (isIron(input) && isCoal(alloyItem)) {
+                return new ItemStack(LOTRItems.URUK_STEEL_INGOT);
+            }
+            if (isOrcSteel(input) && alloyItem.is(LOTRItems.GULDURIL)) {
+                return new ItemStack(LOTRItems.MORGUL_STEEL_INGOT);
+            }
+            if (isOrcSteel(input) && alloyItem.is(LOTRItems.DURNOR)) {
+                return new ItemStack(LOTRItems.BLACK_URUK_STEEL_INGOT);
+            }
+        } else if (forge == LOTRBlocks.DWARVEN_FORGE) {
+            if (isIron(input) && isCoal(alloyItem)) {
+                return new ItemStack(LOTRItems.DWARVEN_STEEL_INGOT);
+            }
+            if (isIron(input) && alloyItem.is(LOTRItems.EDHELVIR)) {
+                return new ItemStack(LOTRItems.GALVORN_INGOT);
+            }
+            if (isIron(input) && alloyItem.is(LOTRBlocks.BLUE_ROCK.asItem())) {
+                return new ItemStack(LOTRItems.BLUE_DWARVEN_STEEL_INGOT);
+            }
+        } else if (forge == LOTRBlocks.ELVEN_FORGE) {
+            if (isIron(input) && isCoal(alloyItem)) {
+                return new ItemStack(LOTRItems.ELVEN_STEEL_INGOT);
+            }
+            if (isSilver(input) && alloyItem.is(LOTRItems.MITHRIL_NUGGET)) {
+                return new ItemStack(LOTRItems.ITHILDIN);
+            }
+        } else if (forge == LOTRBlocks.ALLOY_FORGE) {
+            if (isIron(input) && alloyItem.is(Items.GOLD_NUGGET)) {
+                return new ItemStack(LOTRItems.GILDED_IRON_INGOT);
+            }
+        }
+        if (isCopper(input) && isTin(alloyItem) || isTin(input) && isCopper(alloyItem)) {
+            return new ItemStack(LOTRItems.BRONZE_INGOT, 2);
+        }
+        return ItemStack.EMPTY;
+    }
+
+    /**
+     * The smelts only one forge knew: the orc forge chars wood, makes orc steel
+     * of Morgul iron and spoils meat; the dwarven forge alone smelts mithril.
+     */
+    private ItemStack getForgeSmeltingResult(ItemStack input) {
+        Block forge = getBlockState().getBlock();
+        if (forge == LOTRBlocks.ORC_FORGE) {
+            if (input.is(ItemTags.LOGS) && !input.is(LOTRBlocks.CHARRED_LOG.asItem())) {
+                return new ItemStack(LOTRBlocks.CHARRED_LOG);
+            }
+            if (input.is(LOTRBlocks.MORGUL_IRON_ORE.asItem())) {
+                return new ItemStack(LOTRItems.ORC_STEEL_INGOT);
+            }
+            // isWolfsFavoriteMeat
+            if (input.is(ItemTags.MEAT)) {
+                return new ItemStack(Items.ROTTEN_FLESH);
+            }
+        } else if (forge == LOTRBlocks.DWARVEN_FORGE) {
+            if (input.is(LOTRBlocks.MITHRIL_ORE.asItem())) {
+                return new ItemStack(LOTRItems.MITHRIL);
+            }
+        }
         return ItemStack.EMPTY;
     }
 
     protected ItemStack getSmeltingResult(ServerLevel level, ItemStack input) {
         if (input.isEmpty()) {
+            return ItemStack.EMPTY;
+        }
+        ItemStack special = getForgeSmeltingResult(input);
+        if (!special.isEmpty()) {
+            return special;
+        }
+        if (!isForgeMaterial(input)) {
             return ItemStack.EMPTY;
         }
         SingleRecipeInput recipeInput = new SingleRecipeInput(input);
@@ -280,12 +360,57 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
         return recipe == null ? ItemStack.EMPTY : recipe.value().assemble(recipeInput);
     }
 
-    /** Client-safe smeltability test, for slot validation and quick-move. */
+    /**
+     * LOTRTileEntityAlloyForgeBase.getSmeltingResult's filter: blocks of rock,
+     * sand or clay, the clay balls and unfired clay vessels, and wood. Raw ore
+     * items are what 1.7.10's ore blocks became, so they count as rock.
+     */
+    private static boolean isForgeMaterial(ItemStack stack) {
+        if (stack.is(ItemTags.LOGS)) {
+            return true;
+        }
+        if (stack.getItem() instanceof BlockItem blockItem) {
+            BlockState state = blockItem.getBlock().defaultBlockState();
+            return state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_SHOVEL);
+        }
+        return stack.is(Items.CLAY_BALL) || stack.is(Items.RAW_IRON) || stack.is(Items.RAW_COPPER)
+                || stack.is(Items.RAW_GOLD) || stack.is(LOTRBlocks.STONEWARE_PLATE.asItem()) || stack.is(LOTRItems.CLAY_MUG) || stack.is(LOTRItems.CLAY_PLATE) || stack.is(LOTRItems.RED_CLAY_BALL);
+    }
+
+    private static boolean isCoal(ItemStack stack) {
+        return stack.is(Items.COAL) || stack.is(Items.CHARCOAL);
+    }
+
+    private static boolean isCopper(ItemStack stack) {
+        return stack.is(Items.COPPER_INGOT) || stack.is(ItemTags.COPPER_ORES) || stack.is(Items.RAW_COPPER);
+    }
+
+    private static boolean isIron(ItemStack stack) {
+        return stack.is(Items.IRON_INGOT) || stack.is(ItemTags.IRON_ORES) || stack.is(Items.RAW_IRON);
+    }
+
+    private static boolean isTin(ItemStack stack) {
+        return stack.is(LOTRItems.TIN_INGOT) || stack.is(LOTRBlocks.TIN_ORE.asItem());
+    }
+
+    private static boolean isSilver(ItemStack stack) {
+        return stack.is(LOTRItems.SILVER_INGOT) || stack.is(LOTRBlocks.SILVER_ORE.asItem());
+    }
+
+    private static boolean isOrcSteel(ItemStack stack) {
+        return stack.is(LOTRItems.ORC_STEEL_INGOT) || stack.is(LOTRBlocks.MORGUL_IRON_ORE.asItem());
+    }
+
+    /** Client-safe input test, for slot validation and quick-move. */
     public boolean isSmeltable(ItemStack stack) {
         if (stack.isEmpty() || level == null) {
             return false;
         }
-        return level.recipeAccess().propertySet(RecipePropertySet.FURNACE_INPUT).test(stack);
+        if (!getForgeSmeltingResult(stack).isEmpty()
+                || isIron(stack) || isCopper(stack) || isTin(stack) || isSilver(stack) || isOrcSteel(stack)) {
+            return true;
+        }
+        return isForgeMaterial(stack) && level.recipeAccess().propertySet(RecipePropertySet.FURNACE_INPUT).test(stack);
     }
 
     // ------------------------------------------------------------ persistence

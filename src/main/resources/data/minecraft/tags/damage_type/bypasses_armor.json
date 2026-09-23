@@ -1,7 +1,8 @@
 {
-  "__comment": "LOTRDamage.plantHurt called setDamageBypassesArmor(); in modern Minecraft that is membership of this tag rather than a flag on the damage type.",
+  "__comment": "LOTRDamage.plantHurt and poisonDrink called setDamageBypassesArmor(); in modern Minecraft that is membership of this tag rather than a flag on the damage type.",
   "replace": false,
   "values": [
-    "lotr:plant_hurt"
+    "lotr:plant_hurt",
+    "lotr:poison_drink"
   ]
 }

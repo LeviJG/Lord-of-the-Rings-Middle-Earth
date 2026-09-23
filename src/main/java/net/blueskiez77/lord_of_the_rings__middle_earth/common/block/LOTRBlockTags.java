@@ -26,6 +26,13 @@ public final class LOTRBlockTags {
     public static final TagKey<Block> REEDS_PLANTABLE_ON = TagKey.create(
             Registries.BLOCK, Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "reeds_plantable_on"));
 
+    /**
+     * What a mattock digs well: LOTRItemMattock was a pickaxe that also took
+     * setHarvestLevel("axe") and cut wood, plants and vines at full speed.
+     */
+    public static final TagKey<Block> MATTOCK_MINEABLE = TagKey.create(
+            Registries.BLOCK, Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "mineable/mattock"));
+
     private LOTRBlockTags() {
     }
 }

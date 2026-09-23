@@ -9,7 +9,11 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.component.DyedItemColor;
+import java.util.function.Consumer;
+
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
@@ -24,8 +28,8 @@ import net.minecraft.world.level.Level;
  *
  * <p>It is keyed to an INVASION TYPE, as the original is -- not to a faction.
  * That matters: a faction can field several kinds of warband, so Gondor alone
- * has six horns, one per fief, and the high elves have Lindon and Rivendell.
- * Forty-one in all, which is what getSubItems offered and what the creative tab
+ * has eight horns, one per fief, and the high elves have Lindon and Rivendell.
+ * Forty-five in all, which is what getSubItems offered and what the creative tab
  * offers now. Only LOTRInvasions' mob table is missing; its names and factions
  * are ported.
  *
@@ -70,11 +74,20 @@ public class LOTRWarhornItem extends Item {
         return stack;
     }
 
-    /** getItemStackDisplayName: the horn is called after whoever answers it. */
+    /**
+     * getItemStackDisplayName: each horn has a name of its own --
+     * "lotr.invasion.<codeName>.horn", Warhorn of the Shire, Warghorn of Angmar.
+     */
     @Override
     public Component getName(ItemStack stack) {
-        return Component.translatable(this.getDescriptionId() + ".faction",
-                getInvasion(stack).invasionName());
+        return Component.translatable("lotr.invasion." + getInvasion(stack).codeName() + ".horn");
+    }
+
+    /** addInformation: the warband it calls. */
+    @Override
+    public void appendHoverText(ItemStack stack, TooltipContext context, TooltipDisplay display,
+            Consumer<Component> builder, TooltipFlag flag) {
+        builder.accept(getInvasion(stack).invasionName());
     }
 
     /**

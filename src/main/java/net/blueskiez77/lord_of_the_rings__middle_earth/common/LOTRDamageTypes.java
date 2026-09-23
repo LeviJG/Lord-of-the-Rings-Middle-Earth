@@ -26,6 +26,18 @@ public final class LOTRDamageTypes {
                 .getOrThrow(PLANT_HURT));
     }
 
+    /**
+     * LOTRDamage.poisonDrink, dealt by the drink poison effect. Armour-bypassing
+     * magic damage in 1.7.10: #minecraft:bypasses_armor here.
+     */
+    public static final ResourceKey<DamageType> POISON_DRINK = ResourceKey.create(
+            Registries.DAMAGE_TYPE, Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "poison_drink"));
+
+    public static DamageSource poisonDrink(Level level) {
+        return new DamageSource(level.registryAccess().lookupOrThrow(Registries.DAMAGE_TYPE)
+                .getOrThrow(POISON_DRINK));
+    }
+
     private LOTRDamageTypes() {
     }
 }

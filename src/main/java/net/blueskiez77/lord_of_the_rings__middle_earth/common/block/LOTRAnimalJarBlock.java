@@ -44,12 +44,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class LOTRAnimalJarBlock extends BaseEntityBlock {
     public static final MapCodec<LOTRAnimalJarBlock> CODEC =
             simpleCodec(props -> new LOTRAnimalJarBlock(Shapes.block(), props));
-
-    /**
-     * The cage is a full cube; the butterfly jar is a squat glass pot --
-     * LOTRBlockButterflyJar's setBlockBounds(0.1875, 0, 0.1875, 0.8125, 0.75,
-     * 0.8125).
-     */
     private final VoxelShape shape;
 
     public LOTRAnimalJarBlock(Properties properties) {
@@ -79,8 +73,6 @@ public class LOTRAnimalJarBlock extends BaseEntityBlock {
 
     @Override
     protected net.minecraft.world.level.block.RenderShape getRenderShape(BlockState state) {
-        // The cage itself is an ordinary model; only its occupant would need a
-        // block entity renderer.
         return net.minecraft.world.level.block.RenderShape.MODEL;
     }
 
@@ -97,7 +89,6 @@ public class LOTRAnimalJarBlock extends BaseEntityBlock {
                 : net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
     }
 
-    /** Right-click a full cage and whatever is in it goes free. */
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
             Player player, BlockHitResult hit) {

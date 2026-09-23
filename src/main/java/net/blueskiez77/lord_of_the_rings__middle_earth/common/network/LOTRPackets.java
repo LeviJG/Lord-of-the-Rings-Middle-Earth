@@ -26,6 +26,51 @@ public final class LOTRPackets {
     }
 
     public static void init() {
+        PayloadTypeRegistry.clientboundPlay()
+                .register(LOTROpenSignEditorPayload.TYPE, LOTROpenSignEditorPayload.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay()
+                .register(LOTRSignEditPayload.TYPE, LOTRSignEditPayload.STREAM_CODEC);
+
+        // LOTRPacketEditSign: only the player whose chisel carved the sign may
+        // letter it, and each line must be fifteen allowed characters or fewer
+        // -- anything else is written as "!?", as the original did.
+        ServerPlayNetworking.registerGlobalReceiver(LOTRSignEditPayload.TYPE, (payload, context) -> {
+            ServerPlayer player = context.player();
+            context.server().execute(() -> {
+                net.minecraft.core.BlockPos pos = payload.pos();
+                if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > 64.0
+                        || !(player.level().getBlockEntity(pos)
+                                instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity sign)
+                        || !sign.canBeEditedBy(player)) {
+                    net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod.LOGGER.warn("Player {} just tried to change non-editable LOTR sign",
+                            player.getName().getString());
+                    return;
+                }
+                java.util.List<String> lines = new java.util.ArrayList<>();
+                for (int l = 0; l < net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity.NUM_LINES; ++l) {
+                    String line = l < payload.lines().size() ? payload.lines().get(l) : "";
+                    boolean valid = line.length() <= net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity.MAX_LINE_LENGTH
+                            && line.codePoints().allMatch(net.minecraft.util.StringUtil::isAllowedChatCharacter);
+                    lines.add(valid ? line : "!?");
+                }
+                sign.applyEdit(lines);
+            });
+        });
+
+        PayloadTypeRegistry.serverboundPlay()
+                .register(LOTRBrewingButtonPayload.TYPE, LOTRBrewingButtonPayload.STREAM_CODEC);
+
+        // LOTRPacketBrewingButton: start or stop the barrel the player has open.
+        ServerPlayNetworking.registerGlobalReceiver(LOTRBrewingButtonPayload.TYPE, (payload, context) -> {
+            ServerPlayer player = context.player();
+            context.server().execute(() -> {
+                if (player.containerMenu instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRBarrelMenu menu
+                        && menu.barrel() != null && menu.stillValid(player)) {
+                    menu.barrel().handleBrewingButtonPress();
+                }
+            });
+        });
+
         PayloadTypeRegistry.serverboundPlay()
                 .register(LOTRBeaconEditPayload.TYPE, LOTRBeaconEditPayload.STREAM_CODEC);
         PayloadTypeRegistry.serverboundPlay()

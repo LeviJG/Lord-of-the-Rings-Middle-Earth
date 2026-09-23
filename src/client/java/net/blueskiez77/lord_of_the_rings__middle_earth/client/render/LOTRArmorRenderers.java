@@ -1,9 +1,21 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.render;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRArnorHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBlackNumenoreanHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBodyArmorModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRDorwinionElvenHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTREasterlingHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGulfenChestplateModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRHarnennorChestplateModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRHarnennorHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSouthronChampionHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRUmbaricHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGaladhrimHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGemsbokHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGoldenTaurethrimHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGondolinHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGundabadUrukHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRRohirricMarshalHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRTaurethrimChieftainHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGondorHelmetModel;
@@ -35,7 +47,7 @@ import net.minecraft.resources.Identifier;
  * so this uses Fabric's ArmorRenderer, which is the equivalent seam: register a
  * renderer against an item and it takes over that item's armour rendering.
  *
- * <p>Twelve so far. The original has twenty-two of these
+ * <p>Twenty-six so far, two of them chestplates. The original has twenty-two of these
  * (Arnor, the swan helmet, the winged Dol Amroth one, the Gundabad and black
  * Uruk ones, and so on) and they all want the same treatment: a transcribed
  * model, a texture, and one more register() call below.
@@ -61,6 +73,11 @@ public final class LOTRArmorRenderers {
         LOTRUrukHelmetModel uruk =
                 new LOTRUrukHelmetModel(LOTRUrukHelmetModel.createLayer().bakeRoot());
         register(LOTRItems.URUK_HELMET, "uruk_helmet",
+                (poseStack, consumer, light) ->
+                        uruk.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+        // The berserker's helmet is the Uruk model on a sheet of its own --
+        // LOTRArmorModels mapped both to a new LOTRModelUrukHelmet(1.0f).
+        register(LOTRItems.URUK_BERSERKER_HELMET, "uruk_berserker_helmet",
                 (poseStack, consumer, light) ->
                         uruk.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
@@ -122,6 +139,112 @@ public final class LOTRArmorRenderers {
         register(LOTRItems.ROHIRRIC_MARSHAL_HELMET, "rohirric_marshal_helmet",
                 (poseStack, consumer, light) ->
                         marshal.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        LOTRGoldenTaurethrimHelmetModel golden = new LOTRGoldenTaurethrimHelmetModel(
+                LOTRGoldenTaurethrimHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.GOLDEN_TAURETHRIM_HELMET, "golden_taurethrim_helmet",
+                (poseStack, consumer, light) ->
+                        golden.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        LOTRGundabadUrukHelmetModel gundabad = new LOTRGundabadUrukHelmetModel(
+                LOTRGundabadUrukHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.GUNDABAD_URUK_HELMET, "gundabad_uruk_helmet",
+                (poseStack, consumer, light) ->
+                        gundabad.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        LOTRDorwinionElvenHelmetModel dorwinion = new LOTRDorwinionElvenHelmetModel(
+                LOTRDorwinionElvenHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.DORWINION_ELVEN_HELMET, "dorwinion_elven_helmet",
+                (poseStack, consumer, light) ->
+                        dorwinion.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        LOTRSouthronChampionHelmetModel champion = new LOTRSouthronChampionHelmetModel(
+                LOTRSouthronChampionHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.SOUTHRON_CHAMPION_HELMET, "coast_southron_champion_helmet",
+                (poseStack, consumer, light) ->
+                        champion.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        LOTRArnorHelmetModel arnor = new LOTRArnorHelmetModel(LOTRArnorHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.ARNOR_HELMET, "arnor_helmet",
+                (poseStack, consumer, light) ->
+                        arnor.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        // new LOTRModelEasterlingHelmet(1.0f, false) and (1.0f, true): the same
+        // helmet, the warlord's with kine horns on a 64x64 sheet.
+        LOTREasterlingHelmetModel goldenRhunic = new LOTREasterlingHelmetModel(
+                LOTREasterlingHelmetModel.createLayer(false).bakeRoot());
+        register(LOTRItems.GOLDEN_RHUNIC_HELMET, "rhun_gold_helmet",
+                (poseStack, consumer, light) ->
+                        goldenRhunic.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+        LOTREasterlingHelmetModel warlord = new LOTREasterlingHelmetModel(
+                LOTREasterlingHelmetModel.createLayer(true).bakeRoot());
+        register(LOTRItems.RHUNIC_WARLORD_HELMET, "rhun_gold_warlord_helmet",
+                (poseStack, consumer, light) ->
+                        warlord.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        // helmetRivendell: LOTRModelHighElvenHelmet, which the port has as the
+        // Lindon helmet's model, on the Rivendell set's own sheet (no extraName).
+        LOTRLindonHelmetModel rivendell =
+                new LOTRLindonHelmetModel(LOTRLindonHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.RIVENDELL_HELMET, "rivendell",
+                (poseStack, consumer, light) ->
+                        rivendell.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        LOTRUmbaricHelmetModel umbaric = new LOTRUmbaricHelmetModel(LOTRUmbaricHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.UMBARIC_HELMET, "umbaric_helmet",
+                (poseStack, consumer, light) ->
+                        umbaric.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        LOTRHarnennorHelmetModel harnennor = new LOTRHarnennorHelmetModel(
+                LOTRHarnennorHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.HARNENNOR_HELMET, "harnedor_helmet",
+                (poseStack, consumer, light) ->
+                        harnennor.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        LOTRBlackNumenoreanHelmetModel numenorean = new LOTRBlackNumenoreanHelmetModel(
+                LOTRBlackNumenoreanHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.BLACK_NUMENOREAN_HELMET, "black_numenorean_helmet",
+                (poseStack, consumer, light) ->
+                        numenorean.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        // The two chestplates LOTRArmorModels gave models of their own.
+        registerBody(LOTRItems.GULFEN_CHESTPLATE, "gulf_harad_body",
+                new LOTRGulfenChestplateModel(LOTRGulfenChestplateModel.createLayer().bakeRoot()));
+        registerBody(LOTRItems.HARNENNOR_CHESTPLATE, "harnedor_body",
+                new LOTRHarnennorChestplateModel(LOTRHarnennorChestplateModel.createLayer().bakeRoot()));
+    }
+
+    /**
+     * A chestplate model: its body and arms drawn inside the wearer's own body
+     * and arm transforms, as ModelBiped drew bipedBody and the arms at their
+     * rotation points. A hidden wearer part (a sleeve out of view) is skipped.
+     */
+    private static void registerBody(net.minecraft.world.item.Item chestplate, String texture,
+            LOTRBodyArmorModel model) {
+        Identifier path = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE,
+                "textures/entity/equipment/humanoid/" + texture + ".png");
+        ArmorRenderer.register((poseStack, collector, stack, state, slot, light, contextModel) -> {
+            renderPart(poseStack, collector, light, contextModel.body, model.body(), path);
+            renderPart(poseStack, collector, light, contextModel.rightArm, model.rightArm(), path);
+            renderPart(poseStack, collector, light, contextModel.leftArm, model.leftArm(), path);
+        }, chestplate);
+    }
+
+    private static void renderPart(PoseStack poseStack,
+            net.minecraft.client.renderer.SubmitNodeCollector collector, int light,
+            ModelPart wearer, ModelPart part, Identifier texture) {
+        if (!wearer.visible) {
+            return;
+        }
+        poseStack.pushPose();
+        wearer.translateAndRotate(poseStack);
+        collector.submitCustomGeometry(poseStack, RenderTypes.armorCutoutNoCull(texture),
+                (pose, consumer) -> {
+                    PoseStack local = new PoseStack();
+                    local.last().set(pose);
+                    part.render(local, consumer, light, OverlayTexture.NO_OVERLAY);
+                });
+        poseStack.popPose();
     }
 
     /** What a helmet model draws, once its head transform is in place. */

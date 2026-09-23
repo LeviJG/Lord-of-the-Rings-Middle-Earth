@@ -1,5 +1,11 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Block;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.CropBlock;
@@ -16,6 +22,23 @@ public class LOTRCropBlock extends CropBlock {
     // block definitions, which this mod does not use.
     public LOTRCropBlock(Properties properties) {
         super(properties);
+    }
+
+    /**
+     * The item each crop is planted from and drops -- func_149866_i and
+     * func_149865_P on the original's crop blocks. Items register after blocks,
+     * so LOTRItems fills this in; a crop with no entry keeps vanilla's wheat seeds.
+     */
+    private static final Map<Block, ItemLike> SEEDS = new HashMap<>();
+
+    public static void setSeed(Block crop, ItemLike seed) {
+        SEEDS.put(crop, seed);
+    }
+
+    @Override
+    protected ItemLike getBaseSeedId() {
+        ItemLike seed = SEEDS.get(this);
+        return seed != null ? seed : super.getBaseSeedId();
     }
 
     @Override

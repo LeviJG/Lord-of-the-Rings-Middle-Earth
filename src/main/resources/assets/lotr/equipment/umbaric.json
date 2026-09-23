@@ -1,5 +1,15 @@
 {
   "layers": {
+    "humanoid": [
+      {
+        "texture": "lotr:umbaric"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "lotr:umbaric"
+      }
+    ],
     "horse_body": [
       {
         "texture": "lotr:umbaric"
