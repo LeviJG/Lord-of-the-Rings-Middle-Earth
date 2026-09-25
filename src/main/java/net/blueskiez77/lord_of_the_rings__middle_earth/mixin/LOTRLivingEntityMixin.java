@@ -1,11 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.mixin;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRArmourSets;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * getMaxFireProtectionLevel: fire protection also cuts how long you burn, by
@@ -19,5 +22,11 @@ abstract class LOTRLivingEntityMixin {
     private int lotr$fireProtection(int ticks) {
         int level = LOTRModifiers.maxFireProtectionLevel((LivingEntity) (Object) this);
         return level > 0 ? ticks - Mth.floor(ticks * level * 0.15f) : ticks;
+    }
+
+    /** LOTREventHandler.onLivingUpdate: the Wood-elven Scout set's speed. */
+    @Inject(method = "tick", at = @At("TAIL"))
+    private void lotr$armourSetTick(CallbackInfo ci) {
+        LOTRArmourSets.tickScoutSpeed((LivingEntity) (Object) this);
     }
 }

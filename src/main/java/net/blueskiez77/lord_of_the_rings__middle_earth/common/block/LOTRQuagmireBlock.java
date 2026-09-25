@@ -10,7 +10,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-// Quagmire: boggy ground that you sink into. Ported from lotr.common.block.LOTRBlockQuagmire (1.7.10). The original was a plain Block(Material.ground) with three overrides: getCollisionBoundingBoxFromPool -> null   (no collision; you fall in) isOpaqueCube                    -> false onEntityCollidedWithBlock       -> entity.setInWeb() and, notably, NO setHardness call -- so it inherits the Block default of 0.0f and breaks instantly. The registration in LOTRBlocks reflects that. The first two are properties now (noCollision / noOcclusion) and are set at registration rather than here. This class exists only for the third. setInWeb() is exactly what vanilla cobweb does, so the modern equivalent is makeStuckInBlock with cobweb's own vector. The original special-cased LOTR spiders (setInQuag, letting them cross freely); that branch is deliberately left out until the entity tier lands, so for now spiders sink like anything else. Flagged rather than silently dropped.
+/**
+ * LOTRBlockQuagmire: boggy ground you sink into. No collision and no
+ * occlusion (set at registration), and whatever is inside it is caught as in a
+ * cobweb -- the original called entity.setInWeb(), which is makeStuckInBlock
+ * with cobweb's own vector.
+ *
+ * <p>The original let LOTR spiders cross freely (setInQuag); that waits for
+ * the spiders themselves (Track D).
+ */
 public class LOTRQuagmireBlock extends Block {
     public static final MapCodec<LOTRQuagmireBlock> CODEC = simpleCodec(LOTRQuagmireBlock::new);
 
@@ -25,15 +33,11 @@ public class LOTRQuagmireBlock extends Block {
         return CODEC;
     }
 
-    // Matches WebBlock exactly: entityInside gained a trailing boolean in 26.2.
-    // Without it this silently becomes a dead method and quagmire loses its
-    // stickiness, which is what had happened.
+    // WebBlock's signature: entityInside gained a trailing boolean in 26.2.
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
                                 InsideBlockEffectApplier effectApplier, boolean isPrecise) {
-        // Cobweb's own vector. LOTRBlockQuagmire called entity.setInWeb() with
-        // no modifiers, so the Weaving branch WebBlock has is deliberately not
-        // copied -- quagmire slowed everything equally.
+        // setInWeb() had no modifiers, so WebBlock's Weaving branch is not copied.
         entity.makeStuckInBlock(state, STUCK_SPEED);
     }
 }

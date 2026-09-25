@@ -140,9 +140,9 @@ public class LOTRTrollTotemBlock extends Block implements EntityBlock {
      * vanilla bone and any modded equivalent. The port has no ore dictionary,
      * so this uses the vanilla item plus the {@code c:bones} convention tag.
      *
-     * <p>PARTIAL: the summon itself cannot spawn anything yet -- there are no
-     * entities in the port. The totem is consumed and nothing rises. See
-     * docs/TODO-troll-totem.md.
+     * <p>PARTIAL: the chieftain entity is not ported yet, so
+     * {@link LOTRTrollTotemBlockEntity#summon} raises a stand-in (PORT_PLAN
+     * Track D).
      */
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,

@@ -91,7 +91,7 @@ public enum LOTRFaction {
     }
 
     public static boolean controlZonesEnabled(Level level) {
-        return true;
+        return net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData.enableAlignmentZones;
     }
 
     public static LOTRFaction forID(int ID) {
@@ -180,7 +180,7 @@ public enum LOTRFaction {
     }
 
     private static boolean isAprilFools() {
-        return false;
+        return net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod.isAprilFools();
     }
 
     public static void initAllProperties() {

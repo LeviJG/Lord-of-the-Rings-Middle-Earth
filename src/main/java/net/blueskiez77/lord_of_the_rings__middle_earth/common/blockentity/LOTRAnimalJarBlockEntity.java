@@ -5,11 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntitySpawnRequest;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,28 +47,6 @@ public class LOTRAnimalJarBlockEntity extends BlockEntity {
         if (level != null) {
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_ALL);
         }
-    }
-
-    /**
-     * Lets the caged creature out, and empties the cage. Returns false when
-     * there was nothing in it or the entity could not be rebuilt.
-     */
-    public boolean release(Level level, BlockPos pos) {
-        if (isEmpty()) {
-            return false;
-        }
-        Entity entity = EntityType.loadEntityRecursive(entityData.copy(), level,
-                new EntitySpawnRequest(EntitySpawnReason.BUCKET, true), e -> {
-                    e.snapTo(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-                            e.getYRot(), e.getXRot());
-                    return e;
-                });
-        if (entity == null) {
-            return false;
-        }
-        level.addFreshEntity(entity);
-        setEntityData(null);
-        return true;
     }
 
     @Override

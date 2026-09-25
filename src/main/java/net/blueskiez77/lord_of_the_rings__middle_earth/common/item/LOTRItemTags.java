@@ -46,10 +46,40 @@ public final class LOTRItemTags {
             Registries.ITEM,
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_gondor_tools"));
 
-    /** What mends mithril gear: mithril, and mithril mail for the armour. */
+    /** What mends mithril tools: mithril -- MITHRIL.setCraftingItems' tool half. */
     public static final TagKey<Item> REPAIRS_MITHRIL_TOOLS = TagKey.create(
             Registries.ITEM,
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_mithril_tools"));
+
+    /** What mends mithril armour: mithril mail, setCraftingItems' armour half. */
+    public static final TagKey<Item> REPAIRS_MITHRIL_ARMOR = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_mithril_armor"));
+
+    /** What mends Ranger tools: iron, RANGER.setCraftingItems' tool half. */
+    public static final TagKey<Item> REPAIRS_RANGER_TOOLS = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_ranger_tools"));
+
+    /** What mends Corsair armour: bronze, CORSAIR.setCraftingItems' armour half. */
+    public static final TagKey<Item> REPAIRS_CORSAIR_ARMOR = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_corsair_armor"));
+
+    /** What mends half-troll armour: gemsbok hide, the armour half. */
+    public static final TagKey<Item> REPAIRS_HALF_TROLL_ARMOR = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_half_troll_armor"));
+
+    /** What mends Morwaith armour: gemsbok hide, the armour half. */
+    public static final TagKey<Item> REPAIRS_MORWAITH_ARMOR = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_morwaith_armor"));
+
+    /** What mends Taurethrim armour: bronze, the armour half. */
+    public static final TagKey<Item> REPAIRS_TAURETHRIM_ARMOR = TagKey.create(
+            Registries.ITEM,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_taurethrim_armor"));
 
     /** What mends Galadhrim gear -- LOTRMaterial.GALADHRIM's crafting item, elven steel. */
     public static final TagKey<Item> REPAIRS_GALADHRIM_TOOLS = TagKey.create(
@@ -95,9 +125,8 @@ public final class LOTRItemTags {
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_rohirric_tools"));
 
     /**
-     * What mends a Ranger's kit: iron and leather, which is what
-     * {@code RANGER.setCraftingItems(Items.iron_ingot, Items.leather)} named --
-     * both of them vanilla, so this one is filled in.
+     * What mends Ranger armour: leather, the armour half of
+     * {@code RANGER.setCraftingItems(Items.iron_ingot, Items.leather)}.
      */
     public static final TagKey<Item> REPAIRS_RANGER_ARMOR = TagKey.create(
             Registries.ITEM,
@@ -114,7 +143,7 @@ public final class LOTRItemTags {
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_morgul_tools"));
 
     /**
-     * What mends a Wood-elven Scout's kit: elf steel and leather --
+     * What mends Wood-elven Scout armour: leather, the armour half of
      * WOOD_ELVEN_SCOUT.setCraftingItems(elfSteel, leather).
      */
     public static final TagKey<Item> REPAIRS_WOOD_ELVEN_SCOUT_ARMOR = TagKey.create(
@@ -225,7 +254,7 @@ public final class LOTRItemTags {
             Registries.ITEM,
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_morwaith_chieftain_armor"));
 
-    /** What mends bone: bones. BONE has no crafting item, so this is the port's. */
+    /** Nothing mends bone armour: LOTRMaterial.BONE had no crafting item. Left empty. */
     public static final TagKey<Item> REPAIRS_BONE_ARMOR = TagKey.create(
             Registries.ITEM,
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_bone_armor"));

@@ -137,11 +137,8 @@ public class LOTRGateBlock extends Block {
         if (clicked.getAxis() == Direction.Axis.Y) {
             facing = context.getHorizontalDirection();
         } else if (pitch < -40.0F || pitch > 40.0F) {
-            // A full-block gate went off the look direction. A thin panel went
-            // off which HALF of the face was clicked (LOTRItemGate's f1), so
-            // the panel lands on the edge you actually pointed at; pitch alone
-            // gets that wrong whenever you place low on a block while looking
-            // down at it.
+            // A full-block gate goes off the look direction, a thin panel off
+            // which half of the face was clicked (LOTRItemGate's f1).
             if (isFullBlock()) {
                 facing = pitch > 0.0F ? Direction.DOWN : Direction.UP;
             } else {
@@ -149,9 +146,7 @@ public class LOTRGateBlock extends Block {
                 facing = hitY > 0.5 ? Direction.DOWN : Direction.UP;
             }
         } else {
-            // Direction.rotateLeft in 1.7.10 is counter-clockwise seen from
-            // above. getClockWise() is the opposite turn, which left every gate
-            // placed against a wall at ninety degrees to where it belonged.
+            // 1.7.10's Direction.rotateLeft is counter-clockwise seen from above.
             facing = isFullBlock() ? clicked.getOpposite() : clicked.getCounterClockWise();
         }
         return defaultBlockState().setValue(FACING, facing).setValue(OPEN, false);
@@ -408,23 +403,10 @@ public class LOTRGateBlock extends Block {
     }
 
     /**
-     * isOpaqueCube in the original was unconditionally false -- LOTRBlockGate
-     * never blocked light or occluded a neighbour's face, open or closed,
-     * because its geometry never fills a full cube.
-     *
-     * useShapeForLightOcclusion=false is what actually reproduces that:
-     * BlockStateBase only consults getOcclusionShape() when this is true, so
-     * with it false the shape below is unused for light and the block casts
-     * no shadow of its own. It is left as the real per-facing shape rather
-     * than Shapes.empty() only because getOcclusionShape has other callers
-     * (e.g. Block.shouldRenderFace) that expect a state's actual footprint,
-     * not a lie about it; the light behaviour comes from the flag, not from
-     * hollowing the shape out.
-     *
-     * <p>The full-block doors are the exception, and were in 1.7.10 too:
-     * setFullBlock() also set {@code lightOpacity = 255}, unconditionally and
-     * regardless of whether the door was open. Consulting the occlusion shape
-     * for those reproduces it, since their shape is a full cube in both states.
+     * LOTRBlockGate.isOpaqueCube was always false: a panel never blocks light.
+     * The full-block doors are the exception -- setFullBlock() set
+     * lightOpacity = 255, open or shut -- so only they use their shape for
+     * light occlusion.
      */
     @Override
     protected boolean useShapeForLightOcclusion(BlockState state) {
@@ -432,14 +414,9 @@ public class LOTRGateBlock extends Block {
     }
 
     /**
-     * An OPEN gate occludes nothing. This matters only to the full-block
-     * doors -- the thin panels are declared .noOcclusion() and never occlude
-     * either way -- but for those it matters a great deal: this shape is
-     * cached per state and drives BOTH the neighbour face culling in
-     * Block.shouldRenderFace AND getLightBlock. Returning the full cube for an
-     * open door told the chunk mesher that the walls and floor around it were
-     * still hidden, so an opened door became a hole you could see through the
-     * world by.
+     * An open gate occludes nothing. Only the full-block doors care (panels
+     * are .noOcclusion()): this shape drives neighbour face culling, so a full
+     * cube here would leave an opened door as a see-through hole in the world.
      */
     @Override
     protected VoxelShape getOcclusionShape(BlockState state) {
@@ -471,11 +448,8 @@ public class LOTRGateBlock extends Block {
         if (neighbour.getBlock() instanceof LOTRGateBlock other) {
             Direction facing = state.getValue(FACING);
             Direction otherFacing = neighbour.getValue(FACING);
-            // The seam that can be hidden is an IN-PLANE one: two panels side by
-            // side. shouldSideBeRendered's guard was !directionsMatch(dir, side),
-            // i.e. the side is NOT on the axis the gate faces along. Testing for
-            // equality instead culled the panel's own broad faces and left every
-            // seam drawn.
+            // Only an in-plane seam is hidden: shouldSideBeRendered's guard was
+            // !directionsMatch(dir, side), a side NOT on the gate's own axis.
             return side.getAxis() != facing.getAxis()
                     && state.getValue(OPEN) == neighbour.getValue(OPEN)
                     && directionsMatch(facing, otherFacing)

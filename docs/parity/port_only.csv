@@ -1,0 +1,98 @@
+new_id,kind,name
+angmar_wall_banner,block,Banner of Angmar
+anorien_wall_banner,block,Banner of Anórien
+black_uruk_wall_banner,block,Banner of the Black Uruks
+blackroot_vale_wall_banner,block,Banner of Blackroot Vale
+blue_dalish_cracker,item,Dalish Cracker
+blue_mountains_wall_banner,block,Banner of the Blue Mountains
+bree_wall_banner,block,Banner of Bree-land
+carved_numenorean_brick,block,Carved Númenórean Brick
+command_horn,item,Horn of Command
+command_horn[sound],item,Horn of Command
+cracker[empty],item,Unsealed %s
+dale_wall_banner,block,Banner of Dale
+dol_amroth_wall_banner,block,Banner of Dol Amroth
+dol_guldur_wall_banner,block,Banner of Dol Guldur
+dorwinion_wall_banner,block,Banner of Dorwinion
+double_strength_orc_bomb,block,Orc Bomb
+double_strength_orc_fire_bomb,block,Orc Bomb
+drink[alcoholicity],item,Alcoholicity
+drink[explode],item,Volatile!
+drink[light],item,Light
+drink[moderate],item,Moderate
+drink[poison],item,Poisoned!
+drink[potent],item,Potent
+drink[strong],item,Strong
+drink[weak],item,Weak
+drystone_slab,block,Drystone Slab
+drystone_stairs,block,Drystone Stairs
+drystone_wall,block,Drystone Wall
+dunland_wall_banner,block,Banner of Dunland
+durin_wall_banner,block,Banner of Durin's Folk
+ent_draught,item,Ent-draught
+esgaroth_wall_banner,block,Banner of Esgaroth
+gandalf_fireball,item,Fireball
+gold_dalish_cracker,item,Dalish Cracker
+gondor_steward_wall_banner,block,Banner of the Stewards of Gondor
+gondor_wall_banner,block,Banner of Gondor
+green_dalish_cracker,item,Dalish Cracker
+gulduril_mordor_ore,block,Gulduril Mordor Ore
+gundabad_wall_banner,block,Banner of Gundabad
+half_troll_wall_banner,block,Banner of the Half-trolls
+harad_gulf_wall_banner,block,Banner of the Gulf of Harad
+harad_nomad_wall_banner,block,Banner of the Southron Nomads
+high_elf_wall_banner,block,Banner of Lindon
+high_elven_wall_torch,block,High Elven Wall Torch
+hobbit_wall_banner,block,Banner of the Hobbits
+isengard_wall_banner,block,Banner of Isengard
+ithilien_wall_banner,block,Banner of Ithilien
+ivy,block,Ivy
+kebab_stand[cooked],block,Cooked
+kebab_stand[meats],block,%d meat
+khamuls_fire_jar[warning],block,Extremely volatile
+lamedon_wall_banner,block,Banner of Lamedon
+lebennin_wall_banner,block,Banner of Lebennin
+lossarnach_wall_banner,block,Banner of Lossarnach
+lothlorien_wall_banner,block,Banner of Lothlórien
+mallorn_blue_wall_torch,block,Mallorn Blue Wall Torch
+mallorn_gold_wall_torch,block,Mallorn Gold Wall Torch
+mallorn_green_wall_torch,block,Mallorn Green Wall Torch
+mallorn_wall_torch,block,Mallorn Wall Torch
+mechanised_rail,block,Mechanised Rail
+minas_morgul_wall_banner,block,Banner of Minas Morgul
+mirkwood_wall_banner,block,Banner of the Woodland Realm
+mordor_moss_rock,block,Mossy Mordor Rock
+mordor_wall_banner,block,Banner of Mordor
+moredain_wall_banner,block,Banner of the Morwaith
+morgul_iron_mordor_ore,block,Morgul Iron Mordor Ore
+morgul_wall_torch,block,Morgul Wall Torch
+nan_ungol_wall_banner,block,Banner of Nan Ungol
+near_harad_wall_banner,block,Banner of Near Harad
+obsidian_key_handle,item,Key Handle
+obsidian_key_pin,item,Key Pin
+obsidian_key_shaft,item,Key Shaft
+orc_bomb[double_strength],block,Double Strength
+orc_bomb[fire],block,Fire
+orc_bomb[triple_strength],block,Triple Strength
+orc_fire_bomb,block,Orc Bomb
+pelargir_wall_banner,block,Banner of Pelargir
+pinnath_gelin_wall_banner,block,Banner of Pinnath Gelin
+ranger_wall_banner,block,Banner of the Dúnedain of the North
+red_clay_ball,item,Red Clay Ball
+red_ivy,block,Red Ivy
+rhudaur_wall_banner,block,Banner of the Rhudaur Hillmen
+rhun_wall_banner,block,Banner of Rhúdel
+rivendell_wall_banner,block,Banner of Rivendell
+rohan_wall_banner,block,Banner of Rohan
+silver_dalish_cracker,item,Dalish Cracker
+smiths_scroll,item,Smith's Scroll
+tauredain_wall_banner,block,Banner of the Taurethrim
+treasure_copper_carpet,item,Copper Treasure Pile
+treasure_gold_carpet,item,Gold Treasure Pile
+treasure_silver_carpet,item,Silver Treasure Pile
+triple_strength_orc_bomb,block,Orc Bomb
+triple_strength_orc_fire_bomb,block,Orc Bomb
+troll_statue,item,
+troll_statue[two_heads],item,Two-headed
+umbar_wall_banner,block,Banner of Umbar
+wood_elven_wall_torch,block,Wood Elven Wall Torch

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.Level;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,5 +46,13 @@ public class LOTRCropBlock extends CropBlock {
     @Override
     protected boolean mayPlaceOn(BlockState state, BlockGetter level, BlockPos pos) {
         return state.getBlock() instanceof FarmlandBlock;
+    }
+
+    // LOTRBlockPipeweedCrop.randomDisplayTick: a ripe crop smokes like the wild plant.
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        if (this == LOTRBlocks.PIPEWEED_CROP && isMaxAge(state)) {
+            LOTRPlantBlock.pipeweedSmoke(level, pos, random);
+        }
     }
 }

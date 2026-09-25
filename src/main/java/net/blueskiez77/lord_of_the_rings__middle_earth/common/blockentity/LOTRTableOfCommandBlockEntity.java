@@ -19,7 +19,7 @@ import org.jspecify.annotations.Nullable;
  * LOTRTileEntityCommandTable. All it remembers is how far the map on the
  * tabletop is zoomed in.
  *
- * <p>The map itself is not ported -- see docs/TODO-table-of-command.md -- but
+ * <p>The map itself is not ported yet (PORT_PLAN Track D), but
  * the zoom is stored and synced anyway, so a table set up now will already be
  * at the zoom its owner chose once there is a map to draw.
  */

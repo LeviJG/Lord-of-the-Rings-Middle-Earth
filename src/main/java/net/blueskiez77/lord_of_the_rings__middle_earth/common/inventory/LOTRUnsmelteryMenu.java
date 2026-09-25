@@ -41,20 +41,16 @@ public class LOTRUnsmelteryMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
 
-        addSlot(new Slot(container, LOTRUnsmelteryBlockEntity.INPUT_SLOT, 56, 17) {
+        // LOTRContainerUnsmeltery: plain Slots for input and fuel (anything by
+        // hand), and a take-only output that gave no experience.
+        addSlot(new Slot(container, LOTRUnsmelteryBlockEntity.INPUT_SLOT, 56, 17));
+        addSlot(new Slot(container, LOTRUnsmelteryBlockEntity.FUEL_SLOT, 56, 53));
+        addSlot(new Slot(container, LOTRUnsmelteryBlockEntity.OUTPUT_SLOT, 116, 35) {
             @Override
             public boolean mayPlace(ItemStack stack) {
-                return container.canPlaceItem(LOTRUnsmelteryBlockEntity.INPUT_SLOT, stack);
+                return false;
             }
         });
-        addSlot(new Slot(container, LOTRUnsmelteryBlockEntity.FUEL_SLOT, 56, 53) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return container.canPlaceItem(LOTRUnsmelteryBlockEntity.FUEL_SLOT, stack);
-            }
-        });
-        addSlot(new FurnaceResultSlot(inventory.player, container,
-                LOTRUnsmelteryBlockEntity.OUTPUT_SLOT, 116, 35));
 
         addStandardInventorySlots(inventory, 8, 84);
         addDataSlots(data);
@@ -98,19 +94,24 @@ public class LOTRUnsmelteryMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
             slot.onQuickCraft(stack, original);
-        } else if (!moveItemStackTo(stack, LOTRUnsmelteryBlockEntity.INPUT_SLOT,
-                LOTRUnsmelteryBlockEntity.INPUT_SLOT + 1, false)
-                && !moveItemStackTo(stack, LOTRUnsmelteryBlockEntity.FUEL_SLOT,
-                LOTRUnsmelteryBlockEntity.FUEL_SLOT + 1, false)) {
-            // Player -> machine failed; fall back to moving between the
-            // inventory and the hotbar, as vanilla containers do.
-            if (index < HOTBAR_START) {
-                if (!moveItemStackTo(stack, HOTBAR_START, HOTBAR_END, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!moveItemStackTo(stack, INV_START, HOTBAR_START, false)) {
+        } else if (canBeUnsmelted(stack)) {
+            // transferStackInSlot: unsmeltable -> input, fuel -> fuel, anything
+            // else between the inventory and the hotbar.
+            if (!moveItemStackTo(stack, LOTRUnsmelteryBlockEntity.INPUT_SLOT,
+                    LOTRUnsmelteryBlockEntity.INPUT_SLOT + 1, false)) {
                 return ItemStack.EMPTY;
             }
+        } else if (player.level().fuelValues().isFuel(stack)) {
+            if (!moveItemStackTo(stack, LOTRUnsmelteryBlockEntity.FUEL_SLOT,
+                    LOTRUnsmelteryBlockEntity.FUEL_SLOT + 1, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (index < HOTBAR_START) {
+            if (!moveItemStackTo(stack, HOTBAR_START, HOTBAR_END, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (!moveItemStackTo(stack, INV_START, HOTBAR_START, false)) {
+            return ItemStack.EMPTY;
         }
 
         if (stack.isEmpty()) {
@@ -123,5 +124,17 @@ public class LOTRUnsmelteryMenu extends AbstractContainerMenu {
         }
         slot.onTake(player, stack);
         return original;
+    }
+
+    /**
+     * theUnsmeltery.canBeUnsmelted, asked of the real block entity on the
+     * server. The client's stand-in container cannot count recipes, so there it
+     * settles for "is this equipment with a material"; the server's answer wins.
+     */
+    private boolean canBeUnsmelted(ItemStack stack) {
+        if (container instanceof LOTRUnsmelteryBlockEntity unsmeltery) {
+            return unsmeltery.canBeUnsmelted(stack);
+        }
+        return !LOTRUnsmelteryBlockEntity.getEquipmentMaterial(stack).isEmpty();
     }
 }

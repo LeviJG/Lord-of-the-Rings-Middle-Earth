@@ -83,11 +83,10 @@ public class LOTRDartTrapBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
+    // The darts drop on their own (DispenserBlockEntity is a Container, which
+    // BlockEntity.preRemoveSideEffects empties); this only updates comparators.
     @Override
     protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        if (level.getBlockEntity(pos) instanceof LOTRDartTrapBlockEntity trap) {
-            Containers.dropContents(level, pos, trap);
-        }
         Containers.updateNeighboursAfterDestroy(state, level, pos);
     }
 

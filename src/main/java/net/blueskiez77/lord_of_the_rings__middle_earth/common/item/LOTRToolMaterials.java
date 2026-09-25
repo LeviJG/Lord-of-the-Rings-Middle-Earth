@@ -177,7 +177,24 @@ public final class LOTRToolMaterials {
                     ArmorType.LEGGINGS, 6, ArmorType.BOOTS, 3,
                     ArmorType.BODY, 14),
             8, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
-            LOTRItemTags.REPAIRS_MITHRIL_TOOLS, MITHRIL_ASSET);
+            LOTRItemTags.REPAIRS_MITHRIL_ARMOR, MITHRIL_ASSET);
+
+    /** assets/lotr/equipment/diamond_horse.json: the horse layer only. */
+    public static final ResourceKey<EquipmentAsset> DIAMOND_HORSE_ASSET = ResourceKey.create(
+            EquipmentAssets.ROOT_ID,
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "diamond_horse"));
+
+    /**
+     * horseArmorDiamond: LOTRItemMountArmor(ArmorMaterial.DIAMOND, HORSE). Its
+     * damageReduceAmount was the material's chest plus legs, 8 + 6 = 14 --
+     * more than vanilla's diamond barding gives. Only the body figure is used.
+     * Repaired with diamonds, the material's func_151685_b.
+     */
+    public static final ArmorMaterial DIAMOND_HORSE_ARMOR = new ArmorMaterial(
+            33,
+            Map.of(ArmorType.BODY, 14),
+            10, SoundEvents.ARMOR_EQUIP_DIAMOND, 0.0f, 0.0f,
+            net.minecraft.tags.ItemTags.REPAIRS_DIAMOND_ARMOR, DIAMOND_HORSE_ASSET);
 
     /** GALADHRIM: 600 uses, 3.0 damage, harvest level 2, speed 7.0, enchantability 15. */
     public static final ToolMaterial GALADHRIM = new ToolMaterial(
@@ -562,7 +579,7 @@ public final class LOTRToolMaterials {
     /** RANGER: 350 uses, 2.5 damage, speed 6.0, ench 12. The port's only use is the Ranger Bow. */
     public static final ToolMaterial RANGER = new ToolMaterial(
             BlockTags.INCORRECT_FOR_IRON_TOOL, 350, 6.0f, 2.5f, 12,
-            LOTRItemTags.REPAIRS_RANGER_ARMOR);
+            LOTRItemTags.REPAIRS_RANGER_TOOLS);
 
     /** LOTRItemArmor(GAMBESON, 1, "dale"): the Dalish gambeson's own sheet. */
     public static final ArmorMaterial GAMBESON_DALE_ARMOR = new ArmorMaterial(
@@ -702,7 +719,7 @@ public final class LOTRToolMaterials {
             Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
                     ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
             10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
-            LOTRItemTags.REPAIRS_CORSAIR_TOOLS,
+            LOTRItemTags.REPAIRS_CORSAIR_ARMOR,
             ResourceKey.create(EquipmentAssets.ROOT_ID,
                     Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "corsair")));
 
@@ -1152,7 +1169,7 @@ public final class LOTRToolMaterials {
             Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
                     ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
             5, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
-            LOTRItemTags.REPAIRS_HALF_TROLL_TOOLS, HALF_TROLL_ASSET);
+            LOTRItemTags.REPAIRS_HALF_TROLL_ARMOR, HALF_TROLL_ASSET);
 
     /**
      * The three trimmed Dwarven sets. Same DWARVEN material, same numbers --
@@ -1245,7 +1262,7 @@ public final class LOTRToolMaterials {
             Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
                     ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
             10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
-            LOTRItemTags.REPAIRS_MORWAITH_TOOLS, MORWAITH_ASSET);
+            LOTRItemTags.REPAIRS_MORWAITH_ARMOR, MORWAITH_ASSET);
 
     public static final ResourceKey<EquipmentAsset> MORWAITH_CHIEFTAIN_ASSET =
             ResourceKey.create(EquipmentAssets.ROOT_ID,
@@ -1395,7 +1412,7 @@ public final class LOTRToolMaterials {
                 Map.of(ArmorType.HELMET, 2, ArmorType.CHESTPLATE, 5,
                         ArmorType.LEGGINGS, 4, ArmorType.BOOTS, 2),
                 10, SoundEvents.ARMOR_EQUIP_IRON, 0.0f, 0.0f,
-                LOTRItemTags.REPAIRS_TAURETHRIM_TOOLS, asset);
+                LOTRItemTags.REPAIRS_TAURETHRIM_ARMOR, asset);
     }
 
     public static final ArmorMaterial TAURETHRIM_ARMOR = taurethrim(TAURETHRIM_ASSET);

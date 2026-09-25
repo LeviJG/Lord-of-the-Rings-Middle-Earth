@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable.*;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ import net.minecraft.world.item.crafting.ShapedRecipePattern;
 //
 // Ingredients are ids, "#namespace:path" for tags. Ore dictionary names became tags where 26.2 has an equivalent (plankWood -> #minecraft:planks, logWood -> #minecraft:logs, stickWood -> #lotr:sticks, dyeBlue -> #c:dyes/blue, ...); Blocks.wool with no metadata was a wildcard and is #minecraft:wool.
 //
-// NOT here, because the port does not have what they need yet: every recipe that uses a steel or alloy ingot (orc, uruk, elven, dwarven, blue dwarven, black uruk, morgul steel, bronze, copper, tin, silver, gilded iron, galvorn), mallorn sticks, gate gears, food and drink, the vessel/pouch/banner-pattern/dye/poison special recipe classes, and the recipes whose result is a block or item not yet ported.
+// Parity against LOTRRecipes.java is tracked by tools/parity_recipes.py (docs/parity/recipes.csv). Not here: recipes whose result is not ported yet, those the vanilla recipe rule drops (modifyStandardRecipes, vanilla-only recreations), and the special recipe classes, which live in hand-written JSON and their own recipe types.
 final class LOTRTranscribedRecipes extends RecipeProvider {
 
     // Results the 1.7.10 mod could ONLY craft at a faction table -- every recipe for them lived in a faction list, none in GameRegistry -- limited to those whose recipes all resolve in the port. LOTRRecipeProvider's mechanical families skip these so the vanilla table does not offer them; their faction-table recipes are transcribed below with the rest.
@@ -74,6 +75,7 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
             Identifier.parse("lotr:bree_banner"),
             Identifier.parse("lotr:bree_crafting_table"),
             Identifier.parse("lotr:carved_arnor_brick"),
+            Identifier.parse("lotr:carved_black_gondor_brick"),
             Identifier.parse("lotr:carved_black_umbar_brick"),
             Identifier.parse("lotr:carved_dol_guldur_brick"),
             Identifier.parse("lotr:carved_dorwinion_brick"),
@@ -1077,6 +1079,12 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         shaped(null, "saddle_from_fur", "minecraft:saddle", 1, rows("XXX", "Y Y"), 'X', "lotr:fur", 'Y', "minecraft:iron_ingot");
         shaped(null, "saddle_from_gemsbok_hide", "minecraft:saddle", 1, rows("XXX", "Y Y"), 'X', "lotr:gemsbok_hide", 'Y', "minecraft:iron_ingot");
         shapeless(null, "magenta_dye", "minecraft:magenta_dye", 1, "lotr:shire_heather");
+        // "arrowTip", "stickWood", "feather": any horn tips an arrow, and the LOTR sticks and swan feather
+        // count. Only the flint + stick + feather case is also vanilla's, with the same result.
+        shaped(null, "arrow", "minecraft:arrow", 4, rows("X", "Y", "Z"), 'X', "#lotr:arrow_tips", 'Y', "#lotr:sticks", 'Z', "#lotr:feathers");
+        // "vine" included the willow and Mirkwood vines; vanilla already takes its own vine.
+        shapeless(null, "mossy_cobblestone_from_lotr_vines", "minecraft:mossy_cobblestone", 1, "minecraft:cobblestone", "lotr:willow_vines|lotr:mirk_vines");
+        shapeless(null, "mossy_stone_bricks_from_lotr_vines", "minecraft:mossy_stone_bricks", 1, "minecraft:stone_bricks", "lotr:willow_vines|lotr:mirk_vines");
         shapeless(null, "mithril", "lotr:mithril", 9, "lotr:mithril_block");
         shaped(null, "mithril_block", "lotr:mithril_block", 1, rows("XXX", "XXX", "XXX"), 'X', "lotr:mithril");
         shaped(null, "iron_chandelier", "lotr:iron_chandelier", 2, rows(" X ", "YZY"), 'X', "#lotr:sticks", 'Y', "minecraft:torch", 'Z', "minecraft:iron_ingot");
@@ -1557,8 +1565,8 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
      */
     private void restoredRecipes() {
         // brick4:6, the carved black brick, at both Numenorean tables that had it.
-        shaped(GONDORIAN, "gondorian/carved_black_umbar_brick", "lotr:carved_black_umbar_brick", 1, rows("XX", "XX"), 'X', "lotr:numenorean_brick");
-        shaped(DOL_AMROTH, "dol_amroth/carved_black_umbar_brick", "lotr:carved_black_umbar_brick", 1, rows("XX", "XX"), 'X', "lotr:numenorean_brick");
+        shaped(GONDORIAN, "gondorian/carved_black_gondor_brick", "lotr:carved_black_gondor_brick", 1, rows("XX", "XX"), 'X', "lotr:numenorean_brick");
+        shaped(DOL_AMROTH, "dol_amroth/carved_black_gondor_brick", "lotr:carved_black_gondor_brick", 1, rows("XX", "XX"), 'X', "lotr:numenorean_brick");
         // dirtPath:0 from Blocks.dirt with no metadata: any of its three subtypes.
         shaped(null, "dirt_path", "minecraft:dirt_path", 2, rows("XX"), 'X', "minecraft:dirt|minecraft:coarse_dirt|minecraft:podzol");
         // createCommonNearHaradRecipes: the shish kebab on a skewer, corner to corner.
@@ -1648,11 +1656,10 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
     }
 
     /**
-     * The namespace these recipes have always been written under: the mod id
-     * in fabric.mod.json. Not LOTRMod.MOD_ID, which is now a display-style
-     * string with spaces in it and is not a valid namespace.
+     * The "lotr" namespace every other resource of the mod uses, so datagen
+     * recipes sit beside the hand-written ones in data/lotr/recipe.
      */
-    private static final String RECIPE_NAMESPACE = "lord_of_the_rings_-_middle_earth";
+    private static final String RECIPE_NAMESPACE = LOTRMod.NAMESPACE;
 
     private static ResourceKey<Recipe<?>> key(String name) {
         return ResourceKey.create(Registries.RECIPE, Identifier.fromNamespaceAndPath(RECIPE_NAMESPACE, name));

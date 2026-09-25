@@ -58,6 +58,36 @@ public final class LOTRPackets {
         });
 
         PayloadTypeRegistry.serverboundPlay()
+                .register(LOTRAnvilRenamePayload.TYPE, LOTRAnvilRenamePayload.STREAM_CODEC);
+
+        // LOTRPacketAnvilRename: the name for the LOTR anvil the player has open.
+        ServerPlayNetworking.registerGlobalReceiver(LOTRAnvilRenamePayload.TYPE, (payload, context) -> {
+            ServerPlayer player = context.player();
+            context.server().execute(() -> {
+                if (player.containerMenu instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRAnvilMenu menu
+                        && menu.stillValid(player)) {
+                    menu.setItemName(payload.name());
+                }
+            });
+        });
+
+        PayloadTypeRegistry.clientboundPlay()
+                .register(LOTRBrokenPledgePayload.TYPE, LOTRBrokenPledgePayload.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay()
+                .register(LOTRAlignmentZonesPayload.TYPE, LOTRAlignmentZonesPayload.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay()
+                .register(LOTRFactionRelationsPayload.TYPE, LOTRFactionRelationsPayload.STREAM_CODEC);
+        PayloadTypeRegistry.serverboundPlay()
+                .register(LOTRPledgeSetPayload.TYPE, LOTRPledgeSetPayload.STREAM_CODEC);
+
+        // LOTRPacketPledgeSet: the faction screen's pledge or unpledge.
+        ServerPlayNetworking.registerGlobalReceiver(LOTRPledgeSetPayload.TYPE, (payload, context) -> {
+            ServerPlayer player = context.player();
+            context.server().execute(() -> net.blueskiez77.lord_of_the_rings__middle_earth.common.fac
+                    .LOTRPlayerAlignments.handlePledgeRequest(player, payload.faction()));
+        });
+
+        PayloadTypeRegistry.serverboundPlay()
                 .register(LOTRBrewingButtonPayload.TYPE, LOTRBrewingButtonPayload.STREAM_CODEC);
 
         // LOTRPacketBrewingButton: start or stop the barrel the player has open.

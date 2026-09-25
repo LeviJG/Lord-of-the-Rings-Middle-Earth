@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_dye",
+  "group": "lotr_dyed",
+  "dye": "#c:dyes",
+  "target": "lotr:leather_hat",
+  "result": {
+    "id": "lotr:leather_hat"
+  }
+}

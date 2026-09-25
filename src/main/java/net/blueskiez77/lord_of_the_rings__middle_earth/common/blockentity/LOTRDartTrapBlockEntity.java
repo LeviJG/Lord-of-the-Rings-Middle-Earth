@@ -1,6 +1,5 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
-import java.util.List;
 import java.util.function.Predicate;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
@@ -65,11 +64,8 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
         return true;
     };
 
-    // Diagnostic logging, at most once per second per trap. Off in normal play.
-    public static final boolean DEBUG = false;
 
     private int fireCooldown;
-    private long lastDebugTick = Long.MIN_VALUE;
 
     public LOTRDartTrapBlockEntity(BlockPos pos, BlockState state) {
         super(LOTRBlockEntities.DART_TRAP, pos, state);
@@ -83,18 +79,6 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
         return getBlockState().getBlock().getName();
     }
 
-    private void debug(ServerLevel level, BlockPos pos, String message) {
-        if (!DEBUG) {
-            return;
-        }
-        long now = level.getGameTime();
-        if (now - lastDebugTick < 20L) {
-            return;
-        }
-        lastDebugTick = now;
-        LOTRMod.LOGGER.info("[darttrap {}] {}", pos.toShortString(), message);
-    }
-
     // ---------------------------------------------------------------- ticking
 
     public static void serverTick(ServerLevel level, BlockPos pos, BlockState state, LOTRDartTrapBlockEntity trap) {
@@ -104,13 +88,7 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
         }
 
         int slot = trap.pickAmmoSlot(level.getRandom());
-        if (slot < 0) {
-            trap.debug(level, pos, "no dart in the picked slot");
-            return;
-        }
-
-        if (!trap.somethingInRange(level, pos, state)) {
-            trap.debug(level, pos, "ammo in slot " + slot + ", nothing in range");
+        if (slot < 0 || !trap.somethingInRange(level, pos, state)) {
             return;
         }
 
@@ -133,7 +111,6 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
             return;
         }
 
-        trap.debug(level, pos, "firing " + ammo.getItem() + " " + facing);
 
         try {
             trap.setItem(slot, behavior.dispense(source, ammo));
@@ -141,7 +118,8 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
             LOTRMod.LOGGER.error("[darttrap {}] dispense threw", pos.toShortString(), e);
             return;
         }
-        level.levelEvent(1002, pos, 0); // dispenser launch sound
+        // No sound here: the dart's projectile dispense behaviour plays the
+        // launch sound itself, as BehaviorProjectileDispense did.
         trap.fireCooldown = FIRE_COOLDOWN;
     }
 
@@ -163,9 +141,6 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
      * uncollided block. On a hit it pulls the target back to the centre of the
      * block BEFORE the one it struck. The trigger box is then this block's full
      * cube stretched out to that target.
-     *
-     * My first version walked block by block and only stopped on full cubes,
-     * which shot straight through slabs, fences and carpets.
      */
     private AABB getTriggerRange(ServerLevel level, BlockPos pos, BlockState state) {
         Direction facing = state.getValue(HorizontalDirectionalBlock.FACING);
@@ -195,11 +170,7 @@ public class LOTRDartTrapBlockEntity extends DispenserBlockEntity {
 
     private boolean somethingInRange(ServerLevel level, BlockPos pos, BlockState state) {
         AABB range = getTriggerRange(level, pos, state);
-        List<LivingEntity> found = level.getEntitiesOfClass(LivingEntity.class, range, TRIGGERS_TRAP);
-        if (DEBUG && found.isEmpty()) {
-            debug(level, pos, "trigger box " + range + ", no targets");
-        }
-        return !found.isEmpty();
+        return !level.getEntitiesOfClass(LivingEntity.class, range, TRIGGERS_TRAP).isEmpty();
     }
 
     // ------------------------------------------------------------ persistence

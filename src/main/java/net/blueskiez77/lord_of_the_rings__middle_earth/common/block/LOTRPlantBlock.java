@@ -7,6 +7,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -211,12 +213,34 @@ public class LOTRPlantBlock extends VegetationBlock {
             case WATER -> below.is(this)
                     || (below.getFluidState().is(Fluids.WATER) && below.getFluidState().isSource());
             case SOIL_OR_SAND_OR_SELF -> below.is(this) || soil(below) || below.is(BlockTags.SAND);
-            case STURDY_OR_SELF -> below.is(this) || soil(below)
-                    || below.isFaceSturdy(level, belowPos, Direction.UP);
+            // LOTRBlockGrapevine.canPlaceBlockAt: any grapevine, post or vine.
+            case STURDY_OR_SELF -> below.is(this) || below.getBlock() instanceof LOTRGrapevineBlock
+                    || soil(below) || below.isFaceSturdy(level, belowPos, Direction.UP);
         };
     }
 
     private static boolean soil(BlockState below) {
         return below.is(BlockTags.SUPPORTS_VEGETATION);
+    }
+
+    @Override
+    public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+        super.animateTick(state, level, pos, random);
+        if (this == LOTRBlocks.PIPEWEED_PLANT) {
+            pipeweedSmoke(level, pos, random);
+        }
+    }
+
+    /**
+     * LOTRBlockPipeweedPlant.randomDisplayTick: a wisp of smoke one tick in
+     * four. The ripe pipeweed crop borrowed it too.
+     */
+    public static void pipeweedSmoke(Level level, BlockPos pos, RandomSource random) {
+        if (random.nextInt(4) == 0) {
+            double x = pos.getX() + 0.1 + random.nextFloat() * 0.8;
+            double y = pos.getY() + 0.5 + random.nextFloat() * 0.25;
+            double z = pos.getZ() + 0.1 + random.nextFloat() * 0.8;
+            level.addParticle(ParticleTypes.SMOKE, x, y, z, 0.0, 0.0, 0.0);
+        }
     }
 }

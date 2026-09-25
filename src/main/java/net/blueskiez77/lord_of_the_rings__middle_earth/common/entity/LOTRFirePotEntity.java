@@ -7,10 +7,11 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRKhamulsFireJarBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -100,7 +101,8 @@ public class LOTRFirePotEntity extends ThrowableItemProjectile {
                 && server.getBlockState(blockHit.getBlockPos()).getBlock() instanceof LOTRKhamulsFireJarBlock jar) {
             jar.explode(server, blockHit.getBlockPos());
         }
-        playSound(SoundEvents.DECORATED_POT_SHATTER, 1.0f,
+        // LOTRBlockPlate.soundTypePlate's break sound, as the original played.
+        playSound(LOTRSounds.BLOCK_PLATE_BREAK, 1.0f,
                 (this.random.nextFloat() - this.random.nextFloat()) * 0.2f + 1.0f);
         server.broadcastEntityEvent(this, SMASH);
         discard();

@@ -1,4 +1,16 @@
 {
+  "event.pledge": {
+    "category": "player",
+    "sounds": [
+      "lotr:event/pledge"
+    ]
+  },
+  "event.unpledge": {
+    "category": "player",
+    "sounds": [
+      "lotr:event/unpledge"
+    ]
+  },
   "block.gate.open": {
     "category": "block",
     "sounds": [
@@ -39,6 +51,12 @@
     "category": "block",
     "sounds": [
       "lotr:item/mug_fill"
+    ]
+  },
+  "item.puff": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:item/puff"
     ]
   },
   "item.dart": {

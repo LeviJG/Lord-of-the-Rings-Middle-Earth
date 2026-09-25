@@ -1,18 +1,18 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
@@ -38,18 +38,28 @@ public class LOTRMysteryWebEntity extends ThrowableItemProjectile {
     }
 
     /**
-     * onImpact spat out a Mirkwood spider or a piece of Mirkwood chest loot.
-     * Neither exists in the port, so the web does the one thing left to it and
-     * leaves a cobweb where it lands.
+     * onImpact: nothing when it hits its thrower. Otherwise, one time in four,
+     * a small Mirkwood spider comes out to attack the thrower; when there is no
+     * spider -- always, until Mirkwood spiders are ported -- it pops out one
+     * piece of Mirkwood chest loot, or one time in 500 a stack of 64 melon
+     * slices, which waits ten ticks before it can be picked up.
      */
     @Override
     protected void onHit(HitResult hit) {
+        if (getOwner() != null && hit instanceof EntityHitResult entityHit && entityHit.getEntity() == getOwner()) {
+            return;
+        }
         super.onHit(hit);
         if (level() instanceof ServerLevel server) {
-            BlockPos pos = BlockPos.containing(position());
-            if (server.getBlockState(pos).canBeReplaced()) {
-                server.setBlock(pos, Blocks.COBWEB.defaultBlockState(), Block.UPDATE_ALL);
+            // rand.nextInt(4) == 0 would try the spider here (Track D).
+            this.random.nextInt(4);
+            ItemStack item = LOTRChestContents.pick(LOTRChestContents.MIRKWOOD_LOOT, this.random, false);
+            if (this.random.nextInt(500) == 0) {
+                item = new ItemStack(Items.MELON_SLICE, 64);
             }
+            ItemEntity drop = new ItemEntity(server, getX(), getY(), getZ(), item);
+            drop.setPickUpDelay(10);
+            server.addFreshEntity(drop);
             playSound(SoundEvents.ITEM_PICKUP, 0.2f,
                     ((this.random.nextFloat() - this.random.nextFloat()) * 0.7f + 1.0f) * 2.0f);
             discard();

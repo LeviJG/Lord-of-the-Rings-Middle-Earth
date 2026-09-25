@@ -50,8 +50,10 @@ public class LOTRSmithsScrollItem extends Item implements LOTRTooltipItem {
     public void addTooltip(ItemStack stack, Item.TooltipContext context, Consumer<Component> builder, TooltipFlag flag) {
         LOTRModifier modifier = getModifier(stack);
         if (modifier != null) {
-            builder.accept(modifier.description(false).copy()
-                    .withStyle(ChatFormatting.GRAY));
+            // getNamedFormattedDescription: "Keen: +0.5 melee damage".
+            builder.accept(Component.translatable("lotr.enchant.descFormat",
+                            Component.translatable(modifier.translationKey()), modifier.description(false, true))
+                    .withStyle(modifier.isBeneficial() ? ChatFormatting.GRAY : ChatFormatting.DARK_GRAY));
         }
     }
 }

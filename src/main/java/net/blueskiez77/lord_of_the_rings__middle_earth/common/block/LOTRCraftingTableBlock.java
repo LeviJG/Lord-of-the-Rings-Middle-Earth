@@ -3,11 +3,14 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRCraftingMenu;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
@@ -49,12 +52,16 @@ public class LOTRCraftingTableBlock extends Block {
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hitResult) {
-        if (!level.isClientSide()) {
+        if (level instanceof ServerLevel serverLevel) {
             if (LOTRPlayerAlignments.getAlignment(player, table.faction()) < REQUIRED_ALIGNMENT) {
-                player.sendSystemMessage(Component.translatable(
-                        "container.lotr.crafting.alignmentTooLow",
-                        REQUIRED_ALIGNMENT,
-                        table.faction().factionName()));
+                // Eight puffs of smoke on the table top. The original spawned
+                // them client-side, where the client knew the alignment.
+                for (int l = 0; l < 8; ++l) {
+                    serverLevel.sendParticles(ParticleTypes.SMOKE,
+                            pos.getX() + level.getRandom().nextFloat(), pos.getY() + 1.0,
+                            pos.getZ() + level.getRandom().nextFloat(), 1, 0.0, 0.0, 0.0, 0.0);
+                }
+                LOTRAlignmentValues.notifyAlignmentNotHighEnough(player, REQUIRED_ALIGNMENT, table.faction());
                 return InteractionResult.SUCCESS;
             }
             player.openMenu(state.getMenuProvider(level, pos));

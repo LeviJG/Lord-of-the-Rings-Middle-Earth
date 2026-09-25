@@ -16,6 +16,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
     public LOTRBlockTagProvider(FabricPackOutput output, CompletableFuture<HolderLookup.Provider> registriesFuture) {
@@ -24,6 +25,16 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
 
 
     /** A vanilla block's registry key, without going through the deprecated builtInRegistryHolder. */
+    // The dirt, sand and gravel slabs (LOTRBlockSlabBase's slabSingleDirt,
+    // slabSingleSand, slabSingleGravel) are cut from vanilla blocks, which are
+    // not in SHOVEL_MINEABLE; LOTRMod.load() made all three shovel blocks.
+    private static final List<Block> VANILLA_SHOVEL_BASES = List.of(
+            Blocks.DIRT, Blocks.DIRT_PATH, Blocks.SAND, Blocks.RED_SAND, Blocks.GRAVEL);
+
+    private static boolean isShovelBase(Block base) {
+        return LOTRBlocks.SHOVEL_MINEABLE.contains(base) || VANILLA_SHOVEL_BASES.contains(base);
+    }
+
     private static ResourceKey<Block> vanillaBlockKey(String name) {
         return ResourceKey.create(Registries.BLOCK, Identifier.withDefaultNamespace(name));
     }
@@ -162,7 +173,7 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
             if (LOTRBlocks.ALL_PLANKS.contains(base)) {
                 axe.add(LOTRBlocks.keyOf(st));
                 woodenStairsTag.add(LOTRBlocks.keyOf(st));
-            } else if (LOTRBlocks.SHOVEL_MINEABLE.contains(base)) {
+            } else if (isShovelBase(base)) {
                 shovel.add(LOTRBlocks.keyOf(st));
             } else {
                 pickaxe.add(LOTRBlocks.keyOf(st));
@@ -180,7 +191,7 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
             if (LOTRBlocks.ALL_PLANKS.contains(base)) {
                 axe.add(LOTRBlocks.keyOf(sl));
                 woodenSlabsTag.add(LOTRBlocks.keyOf(sl));
-            } else if (LOTRBlocks.SHOVEL_MINEABLE.contains(base)) {
+            } else if (isShovelBase(base)) {
                 shovel.add(LOTRBlocks.keyOf(sl));
             } else {
                 pickaxe.add(LOTRBlocks.keyOf(sl));
@@ -232,6 +243,37 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         // chain is a climbable shaft.
         climbable.add(LOTRBlocks.keyOf(LOTRBlocks.ORC_CHAIN));
         pickaxe.add(LOTRBlocks.keyOf(LOTRBlocks.ORC_CHAIN));
+        // The grapevine post is Material.plants at hardness 2; 1.7.10's axe
+        // was effective on plants, so it is an axe block (no tool needed to drop).
+        axe.add(LOTRBlocks.keyOf(LOTRBlocks.GRAPEVINE));
+        // The troll totem is Material.rock: pickaxe, and it needs one to drop.
+        LOTRBlocks.ALL_TROLL_TOTEMS.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
+        // LOTRBlockCommandTable is Material.iron and requires the correct tool,
+        // so without this it could never be picked back up.
+        pickaxe.add(LOTRBlocks.keyOf(LOTRBlocks.TABLE_OF_COMMAND));
+        // LOTRBlockHobbitOven and LOTRBlockMillstone are Material.rock (pickaxe,
+        // needed to drop); LOTRBlockBarrel is Material.wood (axe).
+        pickaxe.add(LOTRBlocks.keyOf(LOTRBlocks.HOBBIT_OVEN));
+        pickaxe.add(LOTRBlocks.keyOf(LOTRBlocks.MILLSTONE));
+        // The LOTR anvil is vanilla's anvil block: pickaxe, and an anvil.
+        pickaxe.add(LOTRBlocks.keyOf(LOTRBlocks.ANVIL));
+        builder(BlockTags.ANVIL).add(LOTRBlocks.keyOf(LOTRBlocks.ANVIL));
+        axe.add(LOTRBlocks.keyOf(LOTRBlocks.BARREL));
+        // LOTRBlockChest took its Material per chest: rock (pickaxe), wood (axe),
+        // and cloth for the reed basket, which no tool is for.
+        pickaxe.add(LOTRBlocks.keyOf(LOTRBlocks.STONE_CHEST));
+        pickaxe.add(LOTRBlocks.keyOf(LOTRBlocks.ANCIENT_HARADRIC_CHEST));
+        axe.add(LOTRBlocks.keyOf(LOTRBlocks.LEBETHRON_CASKET));
+        axe.add(LOTRBlocks.keyOf(LOTRBlocks.MALLORN_BOX));
+        // LOTRBlockEntJar is Material.clay, which the shovel was effective on.
+        shovel.add(LOTRBlocks.keyOf(LOTRBlocks.ENT_JAR));
+
+        // LOTRBlockWaste.isFireSource: fire on its top face never goes out, in
+        // any dimension -- netherrack's infiniburn.
+        for (TagKey<Block> infiniburn : List.of(BlockTags.INFINIBURN_OVERWORLD,
+                BlockTags.INFINIBURN_NETHER, BlockTags.INFINIBURN_END)) {
+            builder(infiniburn).add(LOTRBlocks.keyOf(LOTRBlocks.WASTE_BLOCK));
+        }
         LOTRBlocks.ALL_GATES.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
         LOTRBlocks.ALL_FENCE_GATES.forEach(b -> axe.add(LOTRBlocks.keyOf(b)));
         LOTRBlocks.ALL_BUTTONS.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
@@ -245,7 +287,17 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
             doorsTag.add(LOTRBlocks.keyOf(b));
         });
 
-        LOTRBlocks.ALL_BARS.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
+        // The wooden bars are Material.wood (axe) and the reed bars
+        // Material.grass (no tool); every other set is metal.
+        List<Block> woodBars = List.of(LOTRBlocks.GALADHRIM_WOOD_BARS,
+                LOTRBlocks.HIGH_ELF_WOOD_BARS, LOTRBlocks.WOOD_ELF_WOOD_BARS);
+        LOTRBlocks.ALL_BARS.forEach(b -> {
+            if (woodBars.contains(b)) {
+                axe.add(LOTRBlocks.keyOf(b));
+            } else if (b != LOTRBlocks.REED_BARS) {
+                pickaxe.add(LOTRBlocks.keyOf(b));
+            }
+        });
         LOTRBlocks.ALL_CHANDELIERS.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
     }
 }

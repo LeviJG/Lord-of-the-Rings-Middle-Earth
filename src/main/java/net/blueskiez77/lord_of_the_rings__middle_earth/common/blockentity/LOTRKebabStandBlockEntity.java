@@ -1,5 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.item.component.CustomData;
+import net.minecraft.util.ProblemReporter;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
 import net.minecraft.core.BlockPos;
@@ -14,6 +19,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
@@ -53,6 +59,9 @@ public class LOTRKebabStandBlockEntity extends BlockEntity {
     // because its description packet carried only a three-field summary. This
     // one syncs the whole block entity, so both sides read the same arrays and
     // those mirror fields are gone.
+
+    /** onBlockHarvested's meta bit 8: broken in creative, so the stand does not drop. */
+    private boolean creativeBroken;
 
     /** The spit turns while it cooks, and coasts to a stop afterwards. */
     private float spin;
@@ -167,6 +176,33 @@ public class LOTRKebabStandBlockEntity extends BlockEntity {
     /** Everything on the spit, for dropping when the stand is broken. */
     public NonNullList<ItemStack> getMeats() {
         return meats;
+    }
+
+    public void markCreativeBroken() {
+        creativeBroken = true;
+    }
+
+    // ------------------------------------------------------------- the item
+
+    /**
+     * getKebabStandDrop: the stand, with what is on its spit when there is
+     * anything (shouldSaveBlockData).
+     */
+    public ItemStack getStandDrop() {
+        ItemStack stack = new ItemStack(getBlockState().getBlock());
+        if (getMeatCount() > 0 && level != null) {
+            TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, level.registryAccess());
+            writeStand(output);
+            stack.set(LOTRDataComponents.KEBAB_DATA, CustomData.of(output.buildResult()));
+        }
+        return stack;
+    }
+
+    /** loadKebabData then onReplaced: a stand set down again starts with its fire out. */
+    public void loadFromItem(CompoundTag tag, HolderLookup.Provider registries) {
+        readStand(TagValueInput.create(ProblemReporter.DISCARDING, registries, tag));
+        stopCooking();
+        sync();
     }
 
     // ---------------------------------------------------------------- cooking
@@ -313,6 +349,17 @@ public class LOTRKebabStandBlockEntity extends BlockEntity {
     @Override
     protected void loadAdditional(ValueInput input) {
         super.loadAdditional(input);
+        readStand(input);
+    }
+
+    @Override
+    protected void saveAdditional(ValueOutput output) {
+        super.saveAdditional(output);
+        writeStand(output);
+    }
+
+    /** readKebabStandFromNBT. */
+    public void readStand(ValueInput input) {
         meats.clear();
         ContainerHelper.loadAllItems(input, meats);
         cookTime = input.getIntOr("CookTime", 0);
@@ -327,9 +374,8 @@ public class LOTRKebabStandBlockEntity extends BlockEntity {
         }
     }
 
-    @Override
-    protected void saveAdditional(ValueOutput output) {
-        super.saveAdditional(output);
+    /** writeKebabStandToNBT. */
+    public void writeStand(ValueOutput output) {
         ContainerHelper.saveAllItems(output, meats);
         output.putInt("CookTime", cookTime);
         output.putInt("FuelTime", fuelTime);
@@ -341,5 +387,18 @@ public class LOTRKebabStandBlockEntity extends BlockEntity {
             }
         }
         output.putInt("Cooked", mask);
+    }
+
+    /**
+     * getDrops: the stand drops itself with its meat inside it, unless a
+     * creative player broke it. It has no loot table; this is the last hook with
+     * the block entity still present.
+     */
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (level != null && !creativeBroken) {
+            Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), getStandDrop());
+        }
     }
 }

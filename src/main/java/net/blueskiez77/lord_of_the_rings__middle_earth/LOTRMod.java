@@ -36,11 +36,13 @@ public class LOTRMod implements ModInitializer {
         LOTRFaction.initAllProperties();
 
         LOTRPlayerAlignments.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAlcoholTolerance.init();
 
         LOTRRecipeTypes.init();
         LOTRMenus.init();
         LOTRSounds.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles.init();
         LOTRBlocks.init();
         LOTRBlockEntities.init();
         LOTRBlockBehaviours.init();
@@ -58,11 +60,24 @@ public class LOTRMod implements ModInitializer {
         DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_ARROW);
         DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_CROSSBOW_BOLT);
         DispenserBlock.registerProjectileBehavior(LOTRItems.RHUNIC_FIRE_POT);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.CONKER);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.MYSTERY_WEB);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.EXPLODING_TERMITE);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.IRON_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.BRONZE_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.DWARVEN_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.BLUE_DWARVEN_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRItems.LOSSARNACH_THROWING_AXE);
 
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDispenserBehaviours.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCauldronWashing.init();
         LOTRBlocks.ALL_PLATES.forEach(plate -> DispenserBlock.registerProjectileBehavior(plate.asItem()));
         net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVanillaVessels.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials.init();
+
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRArmourSets.init();
 
         LOTRCreativeTabs.init();
 
@@ -72,5 +87,11 @@ public class LOTRMod implements ModInitializer {
         LOTRAlignmentCommand.register();
 
         LOGGER.info("LOTR factions initialized: {} factions loaded.", LOTRFaction.values().length);
+    }
+
+    /** isAprilFools: the first of April, when faction and drink names turn silly. */
+    public static boolean isAprilFools() {
+        java.time.LocalDate today = java.time.LocalDate.now();
+        return today.getMonth() == java.time.Month.APRIL && today.getDayOfMonth() == 1;
     }
 }

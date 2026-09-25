@@ -11,6 +11,7 @@ import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.PlacementInfo;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.TransmuteRecipe;
@@ -84,6 +85,11 @@ public class LOTRFactionTransmuteRecipe implements CraftingRecipe {
     @Override
     public List<RecipeDisplay> display() {
         return delegate.display();
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return LOTRRecipeTypes.FACTION_CRAFTING;
     }
 
     @Override

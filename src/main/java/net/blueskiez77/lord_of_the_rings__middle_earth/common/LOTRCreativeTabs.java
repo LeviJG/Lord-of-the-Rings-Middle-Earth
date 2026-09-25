@@ -157,6 +157,8 @@ public final class LOTRCreativeTabs {
                 output.accept(LOTRBlocks.UNSMELTERY);
                 // LOTRBlockMillstone also called setCreativeTab(tabUtil).
                 output.accept(LOTRBlocks.MILLSTONE);
+                // The LOTR anvil, which opens LOTRContainerAnvil.
+                output.accept(LOTRBlocks.ANVIL);
                 LOTRBlocks.ALL_KEBAB_STANDS.forEach(output::accept);
 
                 // --- Storage --------------------------------------------
@@ -928,6 +930,7 @@ public final class LOTRCreativeTabs {
                 output.accept(LOTRItems.BLUE_DWARVEN_BOOTS);
                 output.accept(LOTRItems.DWARVEN_SPEAR);
                 output.accept(LOTRItems.BLUE_DWARVEN_SPEAR);
+                output.accept(LOTRItems.DIAMOND_HORSE_ARMOR);
                 output.accept(LOTRItems.GONDOR_HORSE_ARMOR);
                 output.accept(LOTRItems.ROHIRRIC_HORSE_ARMOR);
                 output.accept(LOTRItems.ISENGARD_WARG_ARMOR);

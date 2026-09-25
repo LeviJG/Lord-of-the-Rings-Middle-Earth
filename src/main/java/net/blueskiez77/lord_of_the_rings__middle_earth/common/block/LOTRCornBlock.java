@@ -1,5 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import net.minecraft.tags.FluidTags;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.core.Direction;
 import com.mojang.serialization.MapCodec;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
@@ -46,8 +49,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class LOTRCornBlock extends VegetationBlock implements BonemealableBlock {
     public static final MapCodec<LOTRCornBlock> CODEC = simpleCodec(LOTRCornBlock::new);
 
-    /** Deliberately 2, not LOTRBlockCorn.MAX_GROW_HEIGHT's 3. */
-    public static final int MAX_HEIGHT = 2;
+    /** LOTRBlockCorn.MAX_GROW_HEIGHT. */
+    public static final int MAX_HEIGHT = 3;
 
     /** LOTRBlockCorn.META_GROW_END: the low three metadata bits ran 0..7. */
     public static final int GROW_END = 7;
@@ -77,9 +80,23 @@ public class LOTRCornBlock extends VegetationBlock implements BonemealableBlock 
         return SHAPE;
     }
 
+    // LOTRBlockCorn.canPlaceBlockAt: on another stalk, on soil that takes a
+    // crop (farmland), or on soil that takes a Beach plant -- Forge's rule for
+    // sugar cane: grass, dirt or sand with water beside it.
     @Override
     protected boolean mayPlaceOn(BlockState below, BlockGetter level, BlockPos belowPos) {
-        return below.is(this) || below.getBlock() instanceof FarmlandBlock;
+        if (below.is(this) || below.getBlock() instanceof FarmlandBlock) {
+            return true;
+        }
+        if (!below.is(BlockTags.DIRT) && !below.is(BlockTags.SAND)) {
+            return false;
+        }
+        for (Direction side : Direction.Plane.HORIZONTAL) {
+            if (level.getFluidState(belowPos.relative(side)).is(FluidTags.WATER)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     // LOTRBlockCorn.onBlockActivated: whatever the player holds, a ripe ear
@@ -110,6 +127,11 @@ public class LOTRCornBlock extends VegetationBlock implements BonemealableBlock 
                 level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_INVISIBLE);
             } else {
                 growUp(level, pos, state);
+            }
+            // The original went on to the ear check in the same tick; carry on
+            // from the state just written, not the captured one.
+            state = level.getBlockState(pos);
+            if (!state.is(this)) {
                 return;
             }
         }
@@ -139,13 +161,13 @@ public class LOTRCornBlock extends VegetationBlock implements BonemealableBlock 
         return growth / 250.0F;
     }
 
-    // LOTRBlockCorn implemented IGrowable: bone meal either adds the next
-    // segment (on a stalk with nothing above and nothing below) or, half the
-    // time, ripens an ear on a stalk that is standing on another stalk.
+    // LOTRBlockCorn implemented IGrowable: bone meal either adds a second
+    // segment to a lone bottom stalk, or, half the time, ripens an ear on a
+    // stalk that is standing on another stalk. Only random ticks grow the third.
     @Override
     public boolean isValidBonemealTarget(LevelReader level, BlockPos pos, BlockState state) {
-        boolean canGrowUp = level.getBlockState(pos.above()).isAir()
-                && columnHeight(level, pos) < MAX_HEIGHT;
+        boolean canGrowUp = !level.getBlockState(pos.below()).is(this)
+                && level.getBlockState(pos.above()).isAir();
         boolean canRipen = !state.getValue(HAS_CORN) && level.getBlockState(pos.below()).is(this);
         return canGrowUp || canRipen;
     }
@@ -157,7 +179,7 @@ public class LOTRCornBlock extends VegetationBlock implements BonemealableBlock 
 
     @Override
     public void performBonemeal(ServerLevel level, RandomSource random, BlockPos pos, BlockState state) {
-        if (level.getBlockState(pos.above()).isAir() && columnHeight(level, pos) < MAX_HEIGHT) {
+        if (!level.getBlockState(pos.below()).is(this) && level.getBlockState(pos.above()).isAir()) {
             growUp(level, pos, state);
             return;
         }

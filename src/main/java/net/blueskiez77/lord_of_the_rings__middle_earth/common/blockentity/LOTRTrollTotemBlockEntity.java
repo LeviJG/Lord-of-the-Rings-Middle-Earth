@@ -126,8 +126,8 @@ public class LOTRTrollTotemBlockEntity extends BlockEntity {
      * entities at all yet, so the summon is wired end to end against a stand-in
      * that proves the plumbing -- the blocks vanish, something appears at the
      * right spot with a random yaw. Swap {@link #SUMMONED} for the chieftain's
-     * type when entities land; nothing else here needs to change.
-     * See docs/TODO-troll-totem.md.
+     * type when entities land (PORT_PLAN Track D); nothing else here needs
+     * to change.
      */
     public void summon() {
         if (!(level instanceof ServerLevel serverLevel)) {

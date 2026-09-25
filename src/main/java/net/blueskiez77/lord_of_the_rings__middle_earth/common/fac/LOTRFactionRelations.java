@@ -10,8 +10,6 @@ import net.minecraft.network.chat.Component;
 public class LOTRFactionRelations {
     public static final Map<FactionPair, Relation> defaultMap = new HashMap<>();
     public static final Map<FactionPair, Relation> overrideMap = new HashMap<>();
-    public static boolean needsLoad = true;
-    public static boolean needsSave;
 
     public static Relation getFromDefaultMap(FactionPair key) {
         if (defaultMap.containsKey(key)) {
@@ -37,21 +35,9 @@ public class LOTRFactionRelations {
         return getFromDefaultMap(key);
     }
 
-    public static void load() {
-        overrideMap.clear();
-        needsLoad = false;
-    }
-
-    public static void save() {
-        needsSave = false;
-    }
-
+    /** markDirty: saved with the world (LOTRLevelData) and sent to every player. */
     public static void markDirty() {
-        needsSave = true;
-    }
-
-    public static boolean needsSave() {
-        return needsSave;
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData.onRelationsChanged();
     }
 
     public static void overrideRelations(LOTRFaction f1, LOTRFaction f2, Relation relation) {

@@ -2,17 +2,17 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 import java.util.function.Consumer;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRSmokeRingEntity;
+
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.particles.DustParticleOptions;
-import net.minecraft.core.particles.ParticleOptions;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
@@ -56,8 +56,12 @@ public class LOTRSmokingPipeItem extends Item implements LOTRTooltipItem {
                 .withStyle(ChatFormatting.GRAY));
     }
 
+    /** onItemRightClick: a draw only starts with pipeweed to hand, or in creative. */
     @Override
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        if (!player.hasInfiniteMaterials() && !hasPipeweed(player)) {
+            return InteractionResult.FAIL;
+        }
         player.startUsingItem(hand);
         return InteractionResult.CONSUME;
     }
@@ -87,9 +91,25 @@ public class LOTRSmokingPipeItem extends Item implements LOTRTooltipItem {
             player.getFoodData().eat(2, 0.3f);
         }
         if (level instanceof ServerLevel server) {
-            smoke(server, player, getSmokeColor(stack));
+            LOTRSmokeRingEntity ring = new LOTRSmokeRingEntity(server, player)
+                    .setSmokeColour(getSmokeColor(stack));
+            ring.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f,
+                    LOTRSmokeRingEntity.SPEED, 1.0f);
+            server.addFreshEntity(ring);
         }
+        level.playSound(null, player.getX(), player.getY(), player.getZ(), LOTRSounds.ITEM_PUFF,
+                SoundSource.PLAYERS, 1.0f,
+                (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2f + 1.0f);
         return stack;
+    }
+
+    private static boolean hasPipeweed(Player player) {
+        for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
+            if (player.getInventory().getItem(slot).is(LOTRItems.PIPEWEED)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static boolean takePipeweed(Player player) {
@@ -103,11 +123,4 @@ public class LOTRSmokingPipeItem extends Item implements LOTRTooltipItem {
         return false;
     }
 
-    private static void smoke(ServerLevel server, Player player, int smokeColour) {
-        ParticleOptions particle = smokeColour == MAGIC_COLOR
-                ? ParticleTypes.ENCHANT
-                : new DustParticleOptions(DyeColor.byId(smokeColour).getTextureDiffuseColor(), 1.0f);
-        server.sendParticles(particle, player.getX(), player.getEyeY() + 0.2, player.getZ(),
-                8, 0.15, 0.1, 0.15, 0.02);
-    }
 }

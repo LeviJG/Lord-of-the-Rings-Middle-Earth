@@ -16,3 +16,7 @@ mutable	field	net/minecraft/world/entity/item/PrimedTnt	owner	Lnet/minecraft/wor
 accessible	field	net/minecraft/world/entity/projectile/arrow/ThrownTrident	ID_LOYALTY	Lnet/minecraft/network/syncher/EntityDataAccessor;
 accessible	field	net/minecraft/world/entity/projectile/arrow/ThrownTrident	ID_FOIL	Lnet/minecraft/network/syncher/EntityDataAccessor;
 accessible	method	net/minecraft/world/entity/projectile/arrow/ThrownTrident	getLoyaltyFromItem	(Lnet/minecraft/world/item/ItemStack;)B
+
+# CauldronInteraction.Dispatcher.put is package-private; LOTRCauldronWashing adds
+# the mod's own washable items to the water cauldron's dispatcher.
+accessible method net/minecraft/core/cauldron/CauldronInteraction$Dispatcher put (Lnet/minecraft/world/item/Item;Lnet/minecraft/core/cauldron/CauldronInteraction;)V

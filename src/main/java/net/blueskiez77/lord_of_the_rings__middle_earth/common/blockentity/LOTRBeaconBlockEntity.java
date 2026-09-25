@@ -115,12 +115,8 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
     }
 
     /**
-     * setBeaconName/setFellowship both called markBlockForUpdate + markDirty
-     * in the original. markDirty is setChanged; markBlockForUpdate is
-     * sendBlockUpdated, which is what makes getUpdatePacket fire and the
-     * names reach the client. Without this the client's copy of the block
-     * entity keeps whatever it had when the chunk loaded -- which is why a
-     * name typed into the screen vanished the moment it was reopened.
+     * setBeaconName/setFellowship: markDirty and markBlockForUpdate, so the
+     * names reach the client's copy of the block entity.
      */
     private void syncToClients() {
         setChanged();

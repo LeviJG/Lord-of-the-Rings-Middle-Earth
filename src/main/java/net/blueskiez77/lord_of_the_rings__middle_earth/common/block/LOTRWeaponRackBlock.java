@@ -55,18 +55,11 @@ public class LOTRWeaponRackBlock extends BaseEntityBlock {
     public static final EnumProperty<Direction> FACING = BlockStateProperties.HORIZONTAL_FACING;
     public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
 
-    // setBlockBoundsBasedOnState: 0.2 in from the two sides it does not face,
-    // and 0.9 high. A wall rack is flattened against the wall it hangs on --
-    // which is the wall OPPOSITE its facing, since FACING is the clicked face
-    // and so points away from the wall. All four wall boxes were on the wrong
-    // side of the block before: meta 4 (facing south) is bounds z 0..0.6, the
-    // NORTH half, and the other three follow the same way round.
-    //
-    // The 0.2/0.9 boxes above are the original's, and they fit the rack badly:
-    // they are a fifth of a block too wide on the ends, a good deal too deep,
-    // and 0.9 high when nothing on the model reaches past 11/16. These are
-    // measured off LOTRModelWeaponRack instead, worked through the same matrix
-    // the renderer draws it with, plus a sixteenth of slack.
+    // Selection boxes. A port choice: the original's setBlockBoundsBasedOnState
+    // (0.2 in from the unfaced sides, 0.9 high) fitted the model badly, so these
+    // are measured off LOTRModelWeaponRack through the renderer's matrix, plus
+    // a sixteenth of slack. A wall rack sits against the wall OPPOSITE its
+    // facing, since FACING is the clicked face.
     //
     //   floor: base plate x 1..15, z 5..11; holder tops out at y 11.
     //   wall:  base.xRot of -90 lays the same parts flat, giving y 4..8 and
@@ -129,14 +122,12 @@ public class LOTRWeaponRackBlock extends BaseEntityBlock {
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
         Direction face = context.getClickedFace();
-        if (face == Direction.UP) {
-            // A floor rack faces whoever put it down.
+        if (face.getAxis() == Direction.Axis.Y) {
+            // onBlockPlaced gave a floor rack for the top AND the underside of
+            // a block; a floor rack faces whoever put it down.
             return defaultBlockState()
                     .setValue(ON_WALL, false)
                     .setValue(FACING, context.getHorizontalDirection().getOpposite());
-        }
-        if (face == Direction.DOWN) {
-            return null;
         }
         return defaultBlockState().setValue(ON_WALL, true).setValue(FACING, face);
     }
@@ -205,14 +196,4 @@ public class LOTRWeaponRackBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    /** breakBlock dropped whatever was on the rack alongside the rack itself. */
-    @Override
-    protected void affectNeighborsAfterRemoval(BlockState state, net.minecraft.server.level.ServerLevel level,
-            BlockPos pos, boolean movedByPiston) {
-        if (level.getBlockEntity(pos) instanceof LOTRWeaponRackBlockEntity rack
-                && !rack.getWeapon().isEmpty()) {
-            popResource(level, pos, rack.getWeapon());
-        }
-        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
-    }
 }

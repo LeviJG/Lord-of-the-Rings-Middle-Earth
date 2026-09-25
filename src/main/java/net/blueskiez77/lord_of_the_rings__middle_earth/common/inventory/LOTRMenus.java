@@ -26,6 +26,7 @@ public final class LOTRMenus {
     public static MenuType<LOTRMillstoneMenu> MILLSTONE;
     public static MenuType<LOTRBarrelMenu> BARREL;
     public static MenuType<LOTRDaleCrackerMenu> DALE_CRACKER;
+    public static MenuType<LOTRAnvilMenu> ANVIL;
 
     public static MenuType<LOTRCraftingMenu> forTable(LOTRCraftingTable table) {
         MenuType<LOTRCraftingMenu> type = TYPES.get(table);
@@ -59,6 +60,10 @@ public final class LOTRMenus {
         DALE_CRACKER = Registry.register(BuiltInRegistries.MENU,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "dale_cracker"),
                 new MenuType<>(LOTRDaleCrackerMenu::new, FeatureFlags.VANILLA_SET));
+
+        ANVIL = Registry.register(BuiltInRegistries.MENU,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "anvil"),
+                new MenuType<>(LOTRAnvilMenu::new, FeatureFlags.VANILLA_SET));
 
         for (LOTRCraftingTable table : LOTRCraftingTable.values()) {
             MenuType<LOTRCraftingMenu> type = new MenuType<>(

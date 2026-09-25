@@ -9,14 +9,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAnimalJar
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
@@ -24,7 +19,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -76,9 +70,13 @@ public class LOTRAnimalJarBlock extends BaseEntityBlock {
         return net.minecraft.world.level.block.RenderShape.MODEL;
     }
 
+    /**
+     * LOTRBlockAnimalJar.canBlockStay: a solid top below. LOTRBlockBirdCage
+     * overrode it to true, so a cage hangs anywhere.
+     */
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return canSupportCenter(level, pos.below(), Direction.UP);
+        return LOTRBlocks.ALL_BIRD_CAGES.contains(this) || canSupportCenter(level, pos.below(), Direction.UP);
     }
 
     @Override
@@ -87,23 +85,6 @@ public class LOTRAnimalJarBlock extends BaseEntityBlock {
             BlockPos neighbourPos, BlockState neighbourState, net.minecraft.util.RandomSource random) {
         return canSurvive(state, level, pos) ? state
                 : net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
-    }
-
-    @Override
-    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
-            Player player, BlockHitResult hit) {
-        if (!(level.getBlockEntity(pos) instanceof LOTRAnimalJarBlockEntity jar) || jar.isEmpty()) {
-            return InteractionResult.PASS;
-        }
-        if (level.isClientSide()) {
-            return InteractionResult.SUCCESS;
-        }
-        if (!jar.release(level, pos)) {
-            return InteractionResult.PASS;
-        }
-        level.playSound(null, pos, SoundEvents.CHICKEN_EGG, SoundSource.BLOCKS,
-                0.5F, 0.5F + level.getRandom().nextFloat() * 0.5F);
-        return InteractionResult.SUCCESS;
     }
 
     /**

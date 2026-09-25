@@ -50,6 +50,8 @@ public class LOTRBowItem extends BowItem {
         return this.velocityFactor;
     }
 
+    // The draw itself is vanilla's (the user's choice): the original's 65%
+    // minimum draw (MIN_BOW_DRAW_AMOUNT) is deliberately not reproduced.
     @Override
     public boolean releaseUsing(ItemStack stack, Level level, LivingEntity shooter, int timeLeft) {
         if (this.drawTicks != STANDARD_DRAW_TICKS) {

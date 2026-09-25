@@ -9,6 +9,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.item.crafting.CraftingRecipe;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeType;
 
 // One RecipeType per table. A single shared type would force the menu to filter after lookup, but getRecipeFor returns only the first match, so a recipe from another table could mask a valid one.
@@ -16,6 +17,13 @@ public final class LOTRRecipeTypes {
 
     private static final Map<LOTRCraftingTable, RecipeType<CraftingRecipe>> TYPES =
             new EnumMap<>(LOTRCraftingTable.class);
+
+    // The recipe book groups entries by category, and every vanilla crafting
+    // tab is built from the vanilla CRAFTING_* categories. Faction recipes
+    // sit in this one instead, which no tab includes, so they stay out of the
+    // inventory and vanilla table books -- where they could never be crafted.
+    // The original had no recipe book, so faction recipes showed nowhere.
+    public static final RecipeBookCategory FACTION_CRAFTING = new RecipeBookCategory();
 
     private LOTRRecipeTypes() {
     }
@@ -29,6 +37,8 @@ public final class LOTRRecipeTypes {
     }
 
     public static void init() {
+        Registry.register(BuiltInRegistries.RECIPE_BOOK_CATEGORY,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "faction_crafting"), FACTION_CRAFTING);
         for (LOTRCraftingTable table : LOTRCraftingTable.values()) {
             RecipeType<CraftingRecipe> type = new RecipeType<>() {
                 @Override
@@ -48,6 +58,9 @@ public final class LOTRRecipeTypes {
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "faction_crafting_transmute"),
                 LOTRFactionTransmuteRecipe.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "faction_crafting_dye"),
+                LOTRFactionDyeRecipe.SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "smoking_pipe_dye"),
                 LOTRSmokingPipeDyeRecipe.SERIALIZER);

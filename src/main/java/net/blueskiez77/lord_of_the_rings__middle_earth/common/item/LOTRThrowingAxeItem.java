@@ -37,7 +37,7 @@ import net.minecraft.world.level.Level;
  * on DispenserBlock's registry at mod init; it wants doing alongside the other
  * dispenser behaviours the port has yet to bring over, not on its own here.
  */
-public class LOTRThrowingAxeItem extends Item {
+public class LOTRThrowingAxeItem extends Item implements net.minecraft.world.item.ProjectileItem {
 
     /**
      * The speed the axe leaves the hand at.
@@ -119,6 +119,7 @@ public class LOTRThrowingAxeItem extends Item {
             if (player.hasInfiniteMaterials()) {
                 axe.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
+            net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials.onLaunch(stack, axe);
             server.addFreshEntity(axe);
         }
 
@@ -127,5 +128,16 @@ public class LOTRThrowingAxeItem extends Item {
             stack.shrink(1);
         }
         return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * LOTRDispenseThrowingAxe: out of the front at 1.1 with 6.0 spread (vanilla's
+     * dispenser defaults), one axe per shot.
+     */
+    @Override
+    public net.minecraft.world.entity.projectile.Projectile asProjectile(Level level,
+            net.minecraft.core.Position pos, ItemStack stack, net.minecraft.core.Direction direction) {
+        return new LOTRThrowingAxeEntity(LOTREntities.THROWING_AXE, level,
+                pos.x(), pos.y(), pos.z(), stack.copyWithCount(1));
     }
 }

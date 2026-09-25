@@ -80,6 +80,14 @@ public class LOTRThrowingAxeEntity extends AbstractArrow {
         setBaseDamage(baseDamageOf(axe));
     }
 
+    /** LOTRDispenseThrowingAxe: loosed from a dispenser, and anyone may pick it up. */
+    public LOTRThrowingAxeEntity(EntityType<? extends LOTRThrowingAxeEntity> type, Level level,
+            double x, double y, double z, ItemStack axe) {
+        super(type, x, y, z, level, axe, null);
+        setBaseDamage(baseDamageOf(axe));
+        this.pickup = Pickup.ALLOWED;
+    }
+
     /** LOTRItemThrowingAxe.getRangedDamageMultiplier, or nothing if it is not one. */
     private static double baseDamageOf(ItemStack stack) {
         return stack.getItem() instanceof LOTRThrowingAxeItem axe

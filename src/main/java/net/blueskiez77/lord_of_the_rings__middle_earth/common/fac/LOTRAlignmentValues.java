@@ -24,14 +24,11 @@ public final class LOTRAlignmentValues {
     /**
      * formatAlignForDisplay: one decimal place, thousands grouped, and a '+' on
      * anything not negative. The original read its separator characters from
-     * two lang keys; the port has neither key, so it keeps the defaults those
-     * keys fell back to, ',' and '.'.
+     * two lang keys, whose English values ('.' and ',') the port fixes, as the
+     * server cannot translate.
      */
     public static String formatAlignForDisplay(float alignment) {
-        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-        symbols.setDecimalSeparator('.');
-        symbols.setGroupingSeparator(',');
-        String s = new DecimalFormat(",##0.0", symbols).format(alignment);
+        String s = new DecimalFormat(",##0.0", symbols()).format(alignment);
         if (s.isEmpty() || s.charAt(0) != '-') {
             s = "+" + s;
         }
@@ -58,9 +55,45 @@ public final class LOTRAlignmentValues {
         player.sendSystemMessage(Component.translatable(key, args));
     }
 
-    public static AlignmentBonus createPledgePenalty(float alignPenalty) {
-        AlignmentBonus penalty = new AlignmentBonus(-Math.abs(alignPenalty), "lotr.alignment.pledgeBroken");
-        return penalty;
+    public static AlignmentBonus createMiniquestBonus(float alignment) {
+        return new AlignmentBonus(alignment, "lotr.alignment.miniQuest");
+    }
+
+    /** createPledgePenalty: the caller passes the (negative) penalty as it is. */
+    public static AlignmentBonus createPledgePenalty(float alignment) {
+        return new AlignmentBonus(alignment, "lotr.alignment.breakPledge");
+    }
+
+    public static void notifyMiniQuestsNeeded(Player player, LOTRFaction faction) {
+        player.sendSystemMessage(Component.translatable("chat.lotr.requireMiniQuest", faction.factionName()));
+    }
+
+    /** formatConqForDisplay: as formatAlignForDisplay, to two places, the '+' optional. */
+    public static String formatConqForDisplay(float conq, boolean prefixPlus) {
+        String s = new DecimalFormat(",##0.00", symbols()).format(conq);
+        if (prefixPlus && (s.isEmpty() || s.charAt(0) != '-')) {
+            s = "+" + s;
+        }
+        return s;
+    }
+
+    /** parseDisplayedAlign: the inverse of formatAlignForDisplay; 0 if unreadable. */
+    public static float parseDisplayedAlign(String alignmentText) {
+        if (!alignmentText.isEmpty() && alignmentText.charAt(0) == '+') {
+            alignmentText = alignmentText.substring(1);
+        }
+        try {
+            return new DecimalFormat(",##0.0", symbols()).parse(alignmentText).floatValue();
+        } catch (java.text.ParseException e) {
+            return 0.0f;
+        }
+    }
+
+    private static DecimalFormatSymbols symbols() {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+        symbols.setDecimalSeparator('.');
+        symbols.setGroupingSeparator(',');
+        return symbols;
     }
 
     public static class AlignmentBonus {

@@ -16,6 +16,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.FarmlandBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import org.jspecify.annotations.Nullable;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -81,11 +84,71 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
         return canSurvive(state, level, pos) ? state : LOTRBlocks.GRAPEVINE.defaultBlockState();
     }
 
+    /**
+     * LOTRBlockGrapevine.canPlantGrapesAt: farmland no more than three blocks
+     * below, reached through nothing but grapevine posts and vines.
+     */
+    public static boolean canPlantGrapesAt(LevelReader level, BlockPos pos) {
+        for (int l = 1; l <= 3; l++) {
+            BlockState below = level.getBlockState(pos.below(l));
+            if (below.getBlock() instanceof FarmlandBlock) {
+                return true;
+            }
+            if (!below.is(LOTRBlocks.GRAPEVINE) && !(below.getBlock() instanceof LOTRGrapevineBlock)) {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * LOTRBlockGrapevine.getGrowthFactor: 1, plus the 3x3 of farmland at the
+     * vine's farmland level -- 1 for dry and 3 for wet farmland, the eight
+     * around the centre counting a quarter.
+     *
+     * <p>The original also multiplied by 1.6 in the Dorwinion biome. That
+     * biome does not exist in the port yet (Track D); add it with the biomes.
+     */
+    private static float growthFactor(LevelReader level, BlockPos pos) {
+        if (!canPlantGrapesAt(level, pos)) {
+            return 0.0F;
+        }
+        int farmlandY = pos.getY();
+        for (int l = 1; l <= 3; l++) {
+            if (level.getBlockState(pos.below(l)).getBlock() instanceof FarmlandBlock) {
+                farmlandY = pos.getY() - l;
+                break;
+            }
+        }
+        float growth = 1.0F;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dz = -1; dz <= 1; dz++) {
+                BlockState soil = level.getBlockState(new BlockPos(pos.getX() + dx, farmlandY, pos.getZ() + dz));
+                float f = 0.0F;
+                if (soil.getBlock() instanceof FarmlandBlock) {
+                    f = soil.getValue(FarmlandBlock.MOISTURE) > 0 ? 3.0F : 1.0F;
+                }
+                if (dx != 0 || dz != 0) {
+                    f /= 4.0F;
+                }
+                growth += f;
+            }
+        }
+        return growth;
+    }
+
+    // LOTRBlockGrapevine.updateTick: light 9, and a 1 in (80 / growth + 1)
+    // chance a tick. The light test is the one vanilla crops use today
+    // (CropBlock: getRawBrightness(pos, 0)); the original copied 1.7.10's crop
+    // test, which looked at the block above.
     @Override
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         int age = state.getValue(AGE);
-        if (age < MAX_AGE && level.getRawBrightness(pos, 0) >= 9 && random.nextInt(12) == 0) {
-            level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_CLIENTS);
+        if (age < MAX_AGE && level.getRawBrightness(pos, 0) >= 9) {
+            float growth = growthFactor(level, pos);
+            if (growth > 0.0F && random.nextInt((int) (80.0F / growth) + 1) == 0) {
+                level.setBlock(pos, state.setValue(AGE, age + 1), Block.UPDATE_CLIENTS);
+            }
         }
     }
 
@@ -97,9 +160,18 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
             return InteractionResult.PASS;
         }
         if (level instanceof ServerLevel server) {
-            int grapes = 1 + server.getRandom().nextInt(2) + (server.getRandom().nextInt(3) == 0 ? 1 : 0);
+            // LOTRBlockGrapevine.getVineDrops(meta 7, fortune 0): three tries at
+            // a seed, each landing if nextInt(15) <= 7; one bunch, two a third
+            // of the time.
+            RandomSource random = server.getRandom();
+            int seeds = 0;
+            for (int l = 0; l < 3; l++) {
+                if (random.nextInt(15) <= MAX_AGE) {
+                    seeds++;
+                }
+            }
+            int grapes = random.nextInt(3) == 0 ? 2 : 1;
             popResource(server, pos, new ItemStack(grapeItem(), grapes));
-            int seeds = server.getRandom().nextInt(3);
             if (seeds > 0) {
                 popResource(server, pos, new ItemStack(asItem(), seeds));
             }
@@ -108,6 +180,17 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
         level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0f,
                 0.8f + level.getRandom().nextFloat() * 0.4f);
         return InteractionResult.SUCCESS;
+    }
+
+    // LOTRBlockGrapevine.removedByPlayer: a player breaking the vine takes the
+    // grapes and seeds (the loot table) but leaves the post standing.
+    @Override
+    public void playerDestroy(Level level, Player player, BlockPos pos, BlockState state,
+            @Nullable BlockEntity blockEntity, ItemStack tool) {
+        super.playerDestroy(level, player, pos, state, blockEntity, tool);
+        if (level.getBlockState(pos).isAir()) {
+            level.setBlock(pos, LOTRBlocks.GRAPEVINE.defaultBlockState(), Block.UPDATE_ALL);
+        }
     }
 
     private net.minecraft.world.item.Item grapeItem() {

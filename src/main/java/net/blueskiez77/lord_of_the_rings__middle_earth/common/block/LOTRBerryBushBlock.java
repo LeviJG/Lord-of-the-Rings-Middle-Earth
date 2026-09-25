@@ -120,52 +120,53 @@ public class LOTRBerryBushBlock extends Block implements BonemealableBlock {
     }
 
     /**
-     * LOTRBlockBerryBush.getGrowthFactor, kept in shape if not in every detail:
-     * a bush on soil in light 9 or better counts the soil in the 3x3 under and
-     * around it, scoring 1 for soil and 3 for wet soil (neighbours at a quarter
-     * weight), halves the result if another bush is adjacent, triples it while
-     * it rains, and divides by 150. In poorer light it falls back to the light
-     * level over 2000.
+     * LOTRBlockBerryBush.getGrowthFactor. Its canSustainPlant tests used the
+     * bush's own plant type, Crop, which in Forge only farmland accepts:
+     *
+     * <ul>
+     * <li>On farmland, in light 9 or better: 1, plus the 3x3 of farmland
+     * around and under it -- 1 dry, 3 wet, the eight neighbours at a quarter
+     * weight -- halved if another bush is adjacent, tripled in rain, over 150.
+     * <li>Otherwise, on soil a sapling would take (grass, dirt, farmland): the
+     * light level over 2000, tripled in rain -- slow, whatever the light.
+     * <li>Anywhere else: never.
+     * </ul>
      */
     private float growthChance(Level level, BlockPos pos) {
         BlockState below = level.getBlockState(pos.below());
-        if (!below.is(BlockTags.SUPPORTS_VEGETATION)) {
-            return 0.0F;
-        }
         int light = level.getMaxLocalRawBrightness(pos.above());
-        if (light < 9) {
-            // The fallback for soil that would take a sapling: the light alone,
-            // over 2000, tripled while it rains.
+        if (below.getBlock() instanceof FarmlandBlock && light >= 9) {
+            float growth = 1.0F;
+            boolean bushAdjacent = false;
+            for (int dx = -1; dx <= 1; dx++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    BlockPos side = pos.offset(dx, 0, dz);
+                    if ((dx != 0 || dz != 0) && level.getBlockState(side).getBlock() instanceof LOTRBerryBushBlock) {
+                        bushAdjacent = true;
+                    }
+                    BlockState soil = level.getBlockState(side.below());
+                    float bonus = 0.0F;
+                    if (soil.getBlock() instanceof FarmlandBlock) {
+                        bonus = soil.getValue(FarmlandBlock.MOISTURE) > 0 ? 3.0F : 1.0F;
+                    }
+                    if (dx != 0 || dz != 0) {
+                        bonus /= 4.0F;
+                    }
+                    growth += bonus;
+                }
+            }
+            if (bushAdjacent) {
+                growth /= 2.0F;
+            }
+            if (level.isRaining()) {
+                growth *= 3.0F;
+            }
+            return growth / 150.0F;
+        }
+        if (below.is(BlockTags.SUPPORTS_VEGETATION)) {
             float growth = light / 2000.0F;
             return level.isRaining() ? growth * 3.0F : growth;
         }
-
-        float growth = 1.0F;
-        boolean bushAdjacent = false;
-        for (int dx = -1; dx <= 1; dx++) {
-            for (int dz = -1; dz <= 1; dz++) {
-                BlockPos side = pos.offset(dx, 0, dz);
-                if ((dx != 0 || dz != 0) && level.getBlockState(side).getBlock() instanceof LOTRBerryBushBlock) {
-                    bushAdjacent = true;
-                }
-                BlockState soil = level.getBlockState(side.below());
-                float bonus = 0.0F;
-                if (soil.is(BlockTags.SUPPORTS_VEGETATION)) {
-                    bonus = soil.getBlock() instanceof FarmlandBlock
-                            && soil.getValue(FarmlandBlock.MOISTURE) > 0 ? 3.0F : 1.0F;
-                }
-                if (dx != 0 || dz != 0) {
-                    bonus /= 4.0F;
-                }
-                growth += bonus;
-            }
-        }
-        if (bushAdjacent) {
-            growth /= 2.0F;
-        }
-        if (level.isRaining()) {
-            growth *= 3.0F;
-        }
-        return growth / 150.0F;
+        return 0.0F;
     }
 }

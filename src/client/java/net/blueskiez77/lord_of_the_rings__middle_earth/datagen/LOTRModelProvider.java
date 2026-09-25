@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 
+import java.util.ArrayList;
+import net.minecraft.client.renderer.block.dispatch.Variant;
 import java.util.List;
 import java.util.Optional;
 
@@ -210,7 +212,31 @@ public class LOTRModelProvider extends FabricModelProvider {
         LOTRBlocks.ALL_CUBES.stream()
                 .filter(b -> !LOTRConnectedBorderTypes.has(b))
                 .filter(b -> !LOTRBlocks.CUBES_COLUMN_TEXTURED.contains(b))
+                .filter(b -> b != LOTRBlocks.WASTE_BLOCK)
                 .forEach(b -> trivialCubeWithItem(generators, b));
+
+        // LOTRBlockWaste.getIcon picked one of eight textures for EACH FACE from
+        // a hash of the position and side. A blockstate can only pick a whole
+        // model at random, so there are eight models, model k giving face f
+        // texture (k + 3f) mod 8: every model shows a mix, and every texture
+        // turns up on every face somewhere. waste_block is the original's _var0.
+        List<TextureSlot> faces = List.of(TextureSlot.DOWN, TextureSlot.UP, TextureSlot.NORTH,
+                TextureSlot.SOUTH, TextureSlot.WEST, TextureSlot.EAST);
+        List<Variant> wasteModels = new ArrayList<>();
+        for (int k = 0; k < 8; k++) {
+            TextureMapping tex = new TextureMapping();
+            for (int f = 0; f < faces.size(); f++) {
+                int t = (k + 3 * f) % 8;
+                tex.put(faces.get(f), TextureMapping.getBlockTexture(LOTRBlocks.WASTE_BLOCK, t == 0 ? "" : "_" + t));
+            }
+            tex.put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(LOTRBlocks.WASTE_BLOCK));
+            wasteModels.add(new Variant(ModelTemplates.CUBE.createWithSuffix(LOTRBlocks.WASTE_BLOCK,
+                    k == 0 ? "" : "_" + k, tex, generators.modelOutput)));
+        }
+        generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(LOTRBlocks.WASTE_BLOCK,
+                BlockModelGenerators.variants(wasteModels.toArray(new Variant[0]))));
+        generators.registerSimpleItemModel(LOTRBlocks.WASTE_BLOCK,
+                ModelLocationUtils.getModelLocation(LOTRBlocks.WASTE_BLOCK));
 
         // Cubes whose four sides differ from top and bottom. In 1.7.10 these
         // were plain cubes overriding getIcon for side != 0/1; cube_column is
@@ -465,8 +491,26 @@ public class LOTRModelProvider extends FabricModelProvider {
         });
 
         final int[] ageToModel = {0, 0, 1, 1, 2, 2, 2, 3};
-        LOTRBlocks.ALL_CROPS.forEach(crop ->
-                generators.createCropBlock(crop, BlockStateProperties.AGE_7, ageToModel));
+        // LOTRBlockLettuceCrop.getRenderType returned 1, a cross; every other
+        // crop kept BlockCrops' '#' shape.
+        LOTRBlocks.ALL_CROPS.forEach(crop -> {
+            if (crop == LOTRBlocks.LETTUCE_CROP) {
+                // Not createCrossBlock: unlike createCropBlock it makes a model per
+                // AGE value, so two ages sharing a stage define the same model twice.
+                java.util.Map<Integer, Identifier> stages = new java.util.HashMap<>();
+                generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(crop)
+                        .with(PropertyDispatch.initial(BlockStateProperties.AGE_7).generate(age -> {
+                            int stage = ageToModel[age];
+                            return BlockModelGenerators.plainVariant(stages.computeIfAbsent(stage, st ->
+                                    BlockModelGenerators.PlantType.NOT_TINTED.getCross().createWithSuffix(
+                                            crop, "_stage" + st,
+                                            TextureMapping.cross(TextureMapping.getBlockTexture(crop, "_stage" + st)),
+                                            generators.modelOutput)));
+                        })));
+            } else {
+                generators.createCropBlock(crop, BlockStateProperties.AGE_7, ageToModel);
+            }
+        });
 
         // Berry bushes are full cubes drawn like leaves, not crosses -- 1.7.10
         // never overrode getRenderType on LOTRBlockBerryBush. Two textures per

@@ -1,0 +1,10 @@
+{
+  "type": "lotr:faction_crafting_dye",
+  "table": "rhun",
+  "group": "lotr_dyed",
+  "dye": "#c:dyes",
+  "target": "lotr:kaftan_leggings",
+  "result": {
+    "id": "lotr:kaftan_leggings"
+  }
+}

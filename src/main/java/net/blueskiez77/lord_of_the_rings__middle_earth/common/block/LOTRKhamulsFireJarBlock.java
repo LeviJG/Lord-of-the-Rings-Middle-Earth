@@ -164,9 +164,15 @@ public class LOTRKhamulsFireJarBlock extends FallingBlock {
         return InteractionResult.SUCCESS;
     }
 
+    /** explodeOnAdded: cleared while a dispenser sets a jar down. */
+    public static boolean explodeOnPlace = true;
+
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         if (level.hasNeighborSignal(pos)) {
+            if (!explodeOnPlace) {
+                return;
+            }
             explode(level, pos);
             return;
         }

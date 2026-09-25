@@ -70,4 +70,13 @@ public class LOTRWeaponRackBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return saveWithoutMetadata(registries);
     }
+
+    /** breakBlock dropped whatever was on the rack alongside the rack itself. */
+    @Override
+    public void preRemoveSideEffects(BlockPos pos, BlockState state) {
+        super.preRemoveSideEffects(pos, state);
+        if (level != null && !getWeapon().isEmpty()) {
+            Block.popResource(level, pos, getWeapon());
+        }
+    }
 }

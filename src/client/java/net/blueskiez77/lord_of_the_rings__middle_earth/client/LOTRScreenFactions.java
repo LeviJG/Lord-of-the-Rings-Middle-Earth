@@ -8,6 +8,10 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionRank;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRPledgeSetPayload;
+
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -26,6 +30,8 @@ public class LOTRScreenFactions extends Screen {
     private Button pledgeButton;
     private Button prevButton;
     private Button nextButton;
+    /** The original's unpledge page: a first press asks, a second breaks the pledge. */
+    private boolean confirmingUnpledge;
 
     public LOTRScreenFactions() {
         super(Component.translatable("lotr.gui.factions.title"));
@@ -81,6 +87,7 @@ public class LOTRScreenFactions extends Screen {
     private void selectRow(int index) {
         if (index >= 0 && index < factions.size()) {
             selectedIndex = index;
+            confirmingUnpledge = false;
 
             updatePledgeButton();
         }
@@ -100,6 +107,12 @@ public class LOTRScreenFactions extends Screen {
         init();
     }
 
+    @Override
+    public void tick() {
+        super.tick();
+        updatePledgeButton();
+    }
+
     private void onPledge() {
         Player player = minecraft != null ? minecraft.player : null;
         if (player == null || factions.isEmpty()) {
@@ -107,9 +120,19 @@ public class LOTRScreenFactions extends Screen {
         }
         LOTRFaction faction = factions.get(selectedIndex);
 
-        if (LOTRPlayerAlignments.canPledgeTo(player, faction)) {
-            LOTRPlayerAlignments.setPledgeFaction(player, faction);
-            updatePledgeButton();
+        if (LOTRPlayerAlignments.isPledgedTo(player, faction)) {
+            if (confirmingUnpledge) {
+                ClientPlayNetworking.send(new LOTRPledgeSetPayload(null));
+                confirmingUnpledge = false;
+            } else {
+                confirmingUnpledge = true;
+            }
+            return;
+        }
+        // The server decides (LOTRPacketPledgeSet); the synced alignment data
+        // brings the result back.
+        if (LOTRPlayerAlignments.canPledgeTo(player, faction) && LOTRClientFactionState.canMakeNewPledge()) {
+            ClientPlayNetworking.send(new LOTRPledgeSetPayload(faction));
         }
     }
 
@@ -120,8 +143,15 @@ public class LOTRScreenFactions extends Screen {
             return;
         }
         LOTRFaction faction = factions.get(selectedIndex);
+        if (LOTRPlayerAlignments.isPledgedTo(player, faction)) {
+            pledgeButton.setMessage(Component.translatable("lotr.gui.factions.unpledge"));
+            pledgeButton.active = true;
+            return;
+        }
+        confirmingUnpledge = false;
+        pledgeButton.setMessage(Component.translatable("lotr.gui.factions.pledge"));
         pledgeButton.active = LOTRPlayerAlignments.canPledgeTo(player, faction)
-                && !LOTRPlayerAlignments.isPledgedTo(player, faction);
+                && LOTRClientFactionState.canMakeNewPledge();
     }
 
     @Override
@@ -134,6 +164,14 @@ public class LOTRScreenFactions extends Screen {
         Player player = minecraft != null ? minecraft.player : null;
         if (player == null) {
             return;
+        }
+
+        if (confirmingUnpledge && !factions.isEmpty()) {
+            Component line1 = Component.translatable("lotr.gui.factions.unpledgeDesc1",
+                    factions.get(selectedIndex).factionName());
+            Component line2 = Component.translatable("lotr.gui.factions.unpledgeDesc2");
+            graphics.text(font, line1, width / 2 - font.width(line1) / 2, height - 54, 0xFFFF5555, true);
+            graphics.text(font, line2, width / 2 - font.width(line2) / 2, height - 43, 0xFFFF5555, true);
         }
 
         int centerX = width / 2;

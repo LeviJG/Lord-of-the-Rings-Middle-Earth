@@ -141,12 +141,8 @@ public class LOTROrcBombBlock extends Block {
         if (level.isClientSide()) {
             return;
         }
-        // pos.getY(), not pos.getY() + 0.5. The original's j + 0.5f was 1.7.10's
-        // centre-origin convention -- posY was the middle of the entity, and
-        // yOffset put its feet back on the block floor. A modern entity's
-        // position IS its feet, so the half block was a real half block: the
-        // bomb appeared hanging and then dropped. Vanilla's TntBlock spawns at
-        // pos.getY() for the same reason, and so does onExplosionHit below.
+        // pos.getY(): the original's j + 0.5 was 1.7.10's centre-origin entity
+        // position. A modern entity stands at its feet, as vanilla TntBlock's does.
         LOTROrcBombEntity bomb = new LOTROrcBombEntity(LOTREntities.ORC_BOMB, level,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, igniter, state);
         level.addFreshEntity(bomb);

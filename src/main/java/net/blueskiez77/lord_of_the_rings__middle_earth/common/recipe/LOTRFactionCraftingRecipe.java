@@ -17,6 +17,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.NormalCraftingRecipe;
 import net.minecraft.world.item.crafting.PlacementInfo;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapedRecipePattern;
@@ -73,6 +74,11 @@ public class LOTRFactionCraftingRecipe extends NormalCraftingRecipe {
     @Override
     public RecipeType<CraftingRecipe> getType() {
         return LOTRRecipeTypes.forTable(table);
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return LOTRRecipeTypes.FACTION_CRAFTING;
     }
 
     public List<Optional<Ingredient>> getIngredients() {

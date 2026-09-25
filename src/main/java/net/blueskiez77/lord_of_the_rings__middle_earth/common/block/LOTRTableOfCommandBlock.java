@@ -26,8 +26,8 @@ import org.jspecify.annotations.Nullable;
  * it to review conquest and to direct squadrons of hired troops.
  *
  * <p>PARTIAL PORT -- the block, its shape and its zoom control are here; the
- * two screens it opens and the map drawn on its surface are not. See
- * docs/TODO-table-of-command.md for what each needs.
+ * two screens it opens and the map drawn on its surface are not (PORT_PLAN
+ * Track D).
  */
 public class LOTRTableOfCommandBlock extends Block implements EntityBlock {
 

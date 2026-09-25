@@ -64,10 +64,12 @@ public final class LOTRItems {
                 : MOUNTAIN_TROLL_CHIEFTAIN_TROPHY;
     }
 
-    /** Daggers swing twice a second. */
+    /**
+     * Daggers swing twice a second and reach two and a half blocks. A deliberate
+     * choice over LOTRWeaponStats' factors (1.5 and 0.75 of the sword, which
+     * would be 2.4 and 2.25).
+     */
     private static final double DAGGER_ATTACK_SPEED = 2.0;
-
-    /** And reach half a block less far than a fist. */
     private static final double DAGGER_REACH = 2.5;
 
     /**
@@ -87,6 +89,8 @@ public final class LOTRItems {
     // Up here rather than beside polearm(): Java forbids a field initialiser
     // from naming a field declared later in the class, and the polearms are.
     private static final double POLEARM_SPEED = 1.6 * 0.667;
+    // registerMeleeSpeed(LOTRItemBattleaxe.class, 0.75f), as a modifier on the base 4.
+    private static final float BATTLEAXE_SPEED = (float) (1.6 * 0.75 - 4.0);
     private static final double POLEARM_REACH = 3.0 * 1.5;
     private static final double LONG_POLEARM_SPEED = 1.6 * 0.5;
     private static final double LONG_POLEARM_REACH = 3.0 * 2.0;
@@ -135,9 +139,14 @@ public final class LOTRItems {
     // the material's own damage on top, so the value in each call is
     // lotrWeaponDamage - 1 - materialDamage.
     //
-    // Attack speed is NOT from the original -- 1.7.10 had no such concept. The
-    // attribute's base is 4.0, so the modifier is (wanted speed - 4). Swords
-    // keep vanilla's 1.6; daggers swing at 2.0 and the battleaxe at 1.0.
+    // Attack speed: LOTRWeaponStats gave each class a melee-speed factor over
+    // the sword (dagger 1.5, spear 0.833, battleaxe 0.75, hammer and polearm
+    // 0.667, long polearm and lance 0.5) and a reach factor over three blocks
+    // (dagger 0.75, spear and polearm 1.5, long polearm and lance 2.0). The
+    // sword keeps vanilla's 1.6 swings a second and the factors apply to that,
+    // except that the dagger (2.0/s, 2.5 blocks) and hammer (0.85/s) keep the
+    // port's own figures by choice, and the spear and trident are vanilla's.
+    // The attribute's base is 4.0, so the modifier is (wanted speed - 4).
 
     // swordBronze: 1.5 + 4 = 5.5.
     public static final Item BRONZE_SWORD = register("bronze_sword",
@@ -176,7 +185,7 @@ public final class LOTRItems {
     // below is worked out identically.
     public static final Item MORDOR_BATTLEAXE = register("mordor_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.MORDOR, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.MORDOR, 5.0f, BATTLEAXE_SPEED));
 
     // daggerOrc: LOTRItemDagger takes 3 off, so 2.5 + 4 - 3 = 3.5.
     public static final Item MORDOR_DAGGER = register("mordor_dagger",
@@ -365,7 +374,7 @@ public final class LOTRItems {
     // battleaxeDwarven: 3.0 + 4 + 2 = 9.0.
     public static final Item DWARVEN_BATTLEAXE = register("dwarven_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.DWARVEN, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.DWARVEN, 5.0f, BATTLEAXE_SPEED));
 
     // hammerDwarven: also 9.0.
     public static final Item DWARVEN_WARHAMMER = register("dwarven_warhammer",
@@ -409,7 +418,7 @@ public final class LOTRItems {
     // battleaxeMithril and hammerMithril: 5.0 + 4 + 2 = 11.0 apiece.
     public static final Item MITHRIL_BATTLEAXE = register("mithril_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.MITHRIL, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.MITHRIL, 5.0f, BATTLEAXE_SPEED));
     public static final Item MITHRIL_WARHAMMER = register("mithril_warhammer",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.MITHRIL, 5.0f));
 
@@ -451,7 +460,7 @@ public final class LOTRItems {
             LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.URUK, 0.0f));
     public static final Item URUK_BATTLEAXE = register("uruk_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.URUK, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.URUK, 5.0f, BATTLEAXE_SPEED));
     public static final Item URUK_WARHAMMER = register("uruk_warhammer",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.URUK, 5.0f));
     public static final Item URUK_SPEAR = register("uruk_spear",
@@ -578,9 +587,9 @@ public final class LOTRItems {
     public static final Item DUNLENDING_TRIDENT = register("dunlending_trident",
             LOTRTridentItem::new, LOTRTridentItem.properties(ToolMaterial.IRON, 6.0f));
 
-    // morgulBlade: a plain LOTRItemSword, 2.5 + 4 = 6.5.
+    // morgulBlade: an LOTRItemSword, 2.5 + 4 = 6.5, that withers what it cuts.
     public static final Item MORGUL_BLADE = register("morgul_blade",
-            LOTRModifiableItem::new, new Item.Properties()
+            LOTRMorgulBladeItem::new, new Item.Properties()
                     .sword(LOTRToolMaterials.MORGUL, 3.0f, -2.4f));
 
     public static final Item MORGUL_HELMET = registerArmor("morgul_helmet",
@@ -648,9 +657,9 @@ public final class LOTRItems {
     // battleaxeAngmar: 2.5 + 4 + 2 = 8.5.
     public static final Item ANGMAR_BATTLEAXE = register("angmar_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.ANGMAR, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.ANGMAR, 5.0f, BATTLEAXE_SPEED));
 
-    // hammerAngmar: also 8.5, and a hammer, so it swings at 0.85 with knockback.
+    // hammerAngmar: also 8.5, and a hammer, so it swings at 0.85 and knocks back like one.
     public static final Item ANGMAR_WARHAMMER = register("angmar_warhammer",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.ANGMAR, 5.0f));
 
@@ -670,7 +679,7 @@ public final class LOTRItems {
     // battleaxeRohan: 2.5 + 4 + 2 = 8.5.
     public static final Item ROHIRRIC_BATTLEAXE = register("rohirric_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.ROHIRRIC, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.ROHIRRIC, 5.0f, BATTLEAXE_SPEED));
 
     // scimitarNearHarad, called an Umbaric Scimitar: LOTRItemSword(UMBAR), so
     // 2.5 + 4 = 6.5. The blade is Umbaric steel where the armour below is Coast
@@ -758,7 +767,7 @@ public final class LOTRItems {
             LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.BLUE_DWARVEN, 0.0f));
     public static final Item BLUE_DWARVEN_BATTLEAXE = register("blue_dwarven_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.BLUE_DWARVEN, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.BLUE_DWARVEN, 5.0f, BATTLEAXE_SPEED));
     public static final Item BLUE_DWARVEN_WARHAMMER = register("blue_dwarven_warhammer",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.BLUE_DWARVEN, 5.0f));
     public static final Item BLUE_DWARVEN_SPEAR = register("blue_dwarven_spear",
@@ -790,6 +799,9 @@ public final class LOTRItems {
             LOTRToolMaterials.GALADHRIM_ARMOR);
     public static final Item MORGUL_HORSE_ARMOR = registerHorseArmor("morgul_horse_armor",
             LOTRToolMaterials.MORGUL_ARMOR);
+    // horseArmorDiamond: the mod's own diamond barding (see DIAMOND_HORSE_ARMOR).
+    public static final Item DIAMOND_HORSE_ARMOR = registerHorseArmor("diamond_horse_armor",
+            LOTRToolMaterials.DIAMOND_HORSE_ARMOR);
     public static final Item MITHRIL_HORSE_ARMOR = registerHorseArmor("mithril_horse_armor",
             LOTRToolMaterials.MITHRIL_ARMOR);
     public static final Item COAST_SOUTHRON_HORSE_ARMOR = registerHorseArmor(
@@ -832,7 +844,7 @@ public final class LOTRItems {
             LOTRModifiableItem::new, spear(LOTRToolMaterials.DOL_GULDUR, 5.5f));
     public static final Item DOL_GULDUR_BATTLEAXE = register("dol_guldur_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.DOL_GULDUR, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.DOL_GULDUR, 5.0f, BATTLEAXE_SPEED));
     public static final Item DOL_GULDUR_WARHAMMER = register("dol_guldur_warhammer",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.DOL_GULDUR, 5.0f));
     public static final Item DOL_GULDUR_HELMET = registerArmor("dol_guldur_helmet",
@@ -857,7 +869,7 @@ public final class LOTRItems {
             LOTRModifiableItem::new, spear(LOTRToolMaterials.UTUMNO, 6.5f));
     public static final Item UTUMNO_BATTLEAXE = register("utumno_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.UTUMNO, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.UTUMNO, 5.0f, BATTLEAXE_SPEED));
     public static final Item UTUMNO_WARHAMMER = register("utumno_warhammer",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.UTUMNO, 5.0f));
     public static final Item UTUMNO_HELMET = registerArmor("utumno_helmet",
@@ -882,7 +894,7 @@ public final class LOTRItems {
             LOTRModifiableItem::new, spear(LOTRToolMaterials.BLACK_URUK, 6.0f));
     public static final Item BLACK_URUK_BATTLEAXE = register("black_uruk_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.BLACK_URUK, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.BLACK_URUK, 5.0f, BATTLEAXE_SPEED));
     public static final Item BLACK_URUK_WARHAMMER = register("black_uruk_warhammer",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.BLACK_URUK, 5.0f));
     public static final Item BLACK_URUK_HELMET = registerArmor("black_uruk_helmet",
@@ -919,6 +931,8 @@ public final class LOTRItems {
                             -2.4f)
                     .durability(LOTRBalrogWhipItem.DURABILITY)
                     .repairable(LOTRItemTags.REPAIRS_BALROG_WHIP)
+                    // getItemEnchantability() returned 0; sword() set Utumno's 12.
+                    .component(DataComponents.ENCHANTABLE, null)
                     // .sword's damage and speed again, plus the whip's reach;
                     // attributes() replaces the component sword() set.
                     .attributes(ItemAttributeModifiers.builder()
@@ -940,12 +954,12 @@ public final class LOTRItems {
     // battleaxeIron: LOTRItemBattleaxe on VANILLA iron, so 2.0 + 4 + 2 = 8.0.
     public static final Item IRON_BATTLEAXE = register("iron_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(ToolMaterial.IRON, 5.0f, -3.0f));
+                    .axe(ToolMaterial.IRON, 5.0f, BATTLEAXE_SPEED));
 
     // battleaxeBronze: 1.5 + 4 + 2 = 7.5.
     public static final Item BRONZE_BATTLEAXE = register("bronze_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.BRONZE, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.BRONZE, 5.0f, BATTLEAXE_SPEED));
 
     // bronzeCrossbow: LOTRItemCrossbow(BRONZE). Bronze damage is 1.5, so
     // boltDamageFactor is 1.0 -- the expression subtracts two and clamps at
@@ -971,7 +985,7 @@ public final class LOTRItems {
             LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.HALF_TROLL, 0.0f));
     public static final Item HALF_TROLL_BATTLEAXE = register("half_troll_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.HALF_TROLL, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.HALF_TROLL, 5.0f, BATTLEAXE_SPEED));
     public static final Item HALF_TROLL_WARHAMMER = register("half_troll_warhammer",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.HALF_TROLL, 5.0f));
     public static final Item HALF_TROLL_MACE = register("half_troll_mace",
@@ -1052,7 +1066,7 @@ public final class LOTRItems {
             LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.MORWAITH, 0.0f));
     public static final Item MORWAITH_BATTLEAXE = register("morwaith_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.MORWAITH, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.MORWAITH, 5.0f, BATTLEAXE_SPEED));
     public static final Item MORWAITH_SPEAR = register("morwaith_spear",
             LOTRModifiableItem::new, spear(LOTRToolMaterials.MORWAITH_SPEAR, 6.0f));
     public static final Item MORWAITH_HELMET = registerArmor("morwaith_helmet",
@@ -1132,7 +1146,7 @@ public final class LOTRItems {
             LOTRModifiableItem::new, spear(LOTRToolMaterials.TAURETHRIM, 5.5f));
     public static final Item TAURETHRIM_BATTLEAXE = register("taurethrim_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.TAURETHRIM, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.TAURETHRIM, 5.0f, BATTLEAXE_SPEED));
     public static final Item TAURETHRIM_BLUDGEON = register("taurethrim_bludgeon",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.TAURETHRIM, 5.0f));
     public static final Item TAURETHRIM_HELMET = registerArmor("taurethrim_helmet",
@@ -1289,7 +1303,7 @@ public final class LOTRItems {
                     .sword(LOTRToolMaterials.GUNDABAD_URUK, 3.0f, -2.4f));
     public static final Item GUNDABAD_URUK_WARAXE = register("gundabad_uruk_waraxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.GUNDABAD_URUK, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.GUNDABAD_URUK, 5.0f, BATTLEAXE_SPEED));
     public static final Item GUNDABAD_URUK_BLUDGEON = register("gundabad_uruk_bludgeon",
             LOTRModifiableItem::new, warhammer(LOTRToolMaterials.GUNDABAD_URUK, 5.0f));
 
@@ -1340,7 +1354,7 @@ public final class LOTRItems {
             LOTRModifiableItem::new, spear(LOTRToolMaterials.DALE, 5.5f));
     public static final Item DALE_BATTLEAXE = register("dale_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.DALE, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.DALE, 5.0f, BATTLEAXE_SPEED));
     // No extraName on the helmet, so it wears the set's own sheet.
     public static final Item DALE_HELMET = registerArmor("dale_helmet",
             LOTRToolMaterials.DALE_ARMOR, ArmorType.HELMET);
@@ -1485,7 +1499,7 @@ public final class LOTRItems {
     // battleaxeLossarnach: 2.5 + 4 + 2 = 8.5.
     public static final Item LOSSARNACH_BATTLEAXE = register("lossarnach_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.LOSSARNACH, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.LOSSARNACH, 5.0f, BATTLEAXE_SPEED));
     public static final Item LOSSARNACH_THROWING_AXE = register("lossarnach_throwing_axe",
             props -> new LOTRThrowingAxeItem(LOTRToolMaterials.LOSSARNACH, props),
             throwingAxe(LOTRToolMaterials.LOSSARNACH));
@@ -1655,7 +1669,7 @@ public final class LOTRItems {
             props -> new LOTRBowItem(20, 1.2f, props), bow(LOTRToolMaterials.DORWINION_ELVEN, LOTRItemTags.REPAIRS_DORWINION_ELVEN_BOW));
     public static final Item RHUNIC_BATTLEAXE = register("rhunic_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.RHUN, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.RHUN, 5.0f, BATTLEAXE_SPEED));
 
     // The Rivendell set: 3.0 damage; elven blades, whose glow is not ported. The
     // helmet is the High Elven model on the set's own sheet.
@@ -1734,7 +1748,7 @@ public final class LOTRItems {
             LOTRModifiableItem::new, spear(LOTRToolMaterials.CORSAIR, 5.5f));
     public static final Item CORSAIR_BATTLEAXE = register("corsair_battleaxe",
             LOTRModifiableItem::new, new Item.Properties()
-                    .axe(LOTRToolMaterials.CORSAIR, 5.0f, -3.0f));
+                    .axe(LOTRToolMaterials.CORSAIR, 5.0f, BATTLEAXE_SPEED));
 
     // The worn Umbaric set, on the material the horse armour already uses.
     public static final Item UMBARIC_HELMET = registerArmor("umbaric_helmet",
@@ -1871,13 +1885,16 @@ public final class LOTRItems {
     public static final Item SILVER_DALISH_CRACKER = register("silver_dalish_cracker", LOTRDaleCrackerItem::new, new Item.Properties().stacksTo(1));
     public static final Item GOLD_DALISH_CRACKER = register("gold_dalish_cracker", LOTRDaleCrackerItem::new, new Item.Properties().stacksTo(1));
     public static final Item MYSTERY_WEB = register("mystery_web",
-            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity::new, 0.5f, props),
+            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity::new, 0.5f,
+                    () -> net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities.MYSTERY_WEB, props),
             new Item.Properties());
     public static final Item EXPLODING_TERMITE = register("exploding_termite",
-            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity::new, 1.5f, props),
+            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity::new, 1.5f,
+                    () -> net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities.EXPLODING_TERMITE, props),
             new Item.Properties().stacksTo(16));
     public static final Item CONKER = register("conker",
-            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity::new, 1.0f, props),
+            props -> new LOTRThrownMiscItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity::new, 1.0f,
+                    () -> net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities.CONKER, props),
             new Item.Properties().stacksTo(16));
     public static final Item LEATHER_HAT = register("leather_hat", Item::new, new Item.Properties()
             .stacksTo(1)
@@ -1885,72 +1902,56 @@ public final class LOTRItems {
                     .builder(net.minecraft.world.entity.EquipmentSlot.HEAD)
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.LEATHER_HAT_ASSET)
-                    .build())
-            .component(DataComponents.DYED_COLOR,
-                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+                    .build()));
     public static final Item PARTY_HAT = register("party_hat", Item::new, new Item.Properties()
             .stacksTo(1)
             .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
                     .builder(net.minecraft.world.entity.EquipmentSlot.HEAD)
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.PARTY_HAT_ASSET)
-                    .build())
-            .component(DataComponents.DYED_COLOR,
-                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+                    .build()));
     public static final Item HARAD_TURBAN = register("harad_turban", Item::new, new Item.Properties()
             .stacksTo(1)
             .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
                     .builder(net.minecraft.world.entity.EquipmentSlot.HEAD)
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.HARAD_TURBAN_ASSET)
-                    .build())
-            .component(DataComponents.DYED_COLOR,
-                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+                    .build()));
     public static final Item HARAD_ROBE = register("harad_robe", Item::new, new Item.Properties()
             .stacksTo(1)
             .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
                     .builder(net.minecraft.world.entity.EquipmentSlot.CHEST)
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.HARAD_ROBES_ASSET)
-                    .build())
-            .component(DataComponents.DYED_COLOR,
-                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+                    .build()));
     public static final Item HARAD_ROBE_LEGGINGS = register("harad_robe_leggings", Item::new, new Item.Properties()
             .stacksTo(1)
             .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
                     .builder(net.minecraft.world.entity.EquipmentSlot.LEGS)
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.HARAD_ROBES_ASSET)
-                    .build())
-            .component(DataComponents.DYED_COLOR,
-                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+                    .build()));
     public static final Item HARAD_ROBE_SHOES = register("harad_robe_shoes", Item::new, new Item.Properties()
             .stacksTo(1)
             .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
                     .builder(net.minecraft.world.entity.EquipmentSlot.FEET)
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.HARAD_ROBES_ASSET)
-                    .build())
-            .component(DataComponents.DYED_COLOR,
-                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+                    .build()));
     public static final Item KAFTAN = register("kaftan", Item::new, new Item.Properties()
             .stacksTo(1)
             .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
                     .builder(net.minecraft.world.entity.EquipmentSlot.CHEST)
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.KAFTAN_ASSET)
-                    .build())
-            .component(DataComponents.DYED_COLOR,
-                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+                    .build()));
     public static final Item KAFTAN_LEGGINGS = register("kaftan_leggings", Item::new, new Item.Properties()
             .stacksTo(1)
             .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
                     .builder(net.minecraft.world.entity.EquipmentSlot.LEGS)
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.KAFTAN_ASSET)
-                    .build())
-            .component(DataComponents.DYED_COLOR,
-                    new net.minecraft.world.item.component.DyedItemColor(0xFFFFFF)));
+                    .build()));
 
     // ---- tabCombat's projectiles, which needed entities of their own. ----
 
@@ -2536,13 +2537,13 @@ public final class LOTRItems {
     public static final Item OBSIDIAN_SHARD = register("obsidian_shard", Item::new, new Item.Properties());
     public static final Item HITHLAIN = register("hithlain", Item::new, new Item.Properties());
     public static final Item GATE_GEARS = register("gate_gears", Item::new, new Item.Properties());
-    // LOTRItemGrapeSeeds: plants its vine, so a BlockItem like the other seeds.
+    // LOTRItemGrapeSeeds: planted onto a bare grapevine post, never the ground.
     public static final Item RED_GRAPE_SEEDS = register("red_grape_seeds",
-            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.RED_GRAPEVINE, props),
+            props -> new LOTRGrapeSeedsItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.RED_GRAPEVINE, props),
             new Item.Properties().useItemDescriptionPrefix());
-    // LOTRItemGrapeSeeds: plants its vine, so a BlockItem like the other seeds.
+    // LOTRItemGrapeSeeds: planted onto a bare grapevine post, never the ground.
     public static final Item GREEN_GRAPE_SEEDS = register("green_grape_seeds",
-            props -> new net.minecraft.world.item.BlockItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.GREEN_GRAPEVINE, props),
+            props -> new LOTRGrapeSeedsItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.GREEN_GRAPEVINE, props),
             new Item.Properties().useItemDescriptionPrefix());
     public static final Item KINE_OF_ARAW_HORN = register("kine_of_araw_horn", Item::new, new Item.Properties());
     public static final Item BLACKROOT_STICK = register("blackroot_stick", Item::new, new Item.Properties());
@@ -2640,10 +2641,13 @@ public final class LOTRItems {
                         .build());
     }
 
-    /** A hammer swings 0.85 times a second, where a battleaxe manages 1.0. */
+    /**
+     * A hammer swings 0.85 times a second. A deliberate choice over
+     * registerMeleeSpeed(LOTRItemHammer.class, 0.667f), which would be 1.067.
+     */
     private static final double WARHAMMER_ATTACK_SPEED = 0.85;
 
-    /** And puts its weight behind the blow: one whole knockback level. */
+    /** registerMeleeExtraKnockback(LOTRItemHammer.class, 1): one knockback level. */
     private static final double WARHAMMER_KNOCKBACK = 1.0;
 
     /**
@@ -2653,12 +2657,9 @@ public final class LOTRItems {
      * the blacksmith's, which is LOTRItemHammer(GONDOR) like the Gondorian one
      * and swings the same way.
      *
-     * <p>NOT the original's figures, and deliberately so. 1.7.10 had neither an
-     * attack-speed concept nor a knockback attribute, so LOTRItemHammer was a
-     * plain sword-alike hitting for material + 6 and nothing else; a hammer and
-     * a battleaxe of the same metal were identical. These two numbers are the
-     * port's own balance choice -- slower than a battleaxe, and it sends what it
-     * hits flying, which is what separates the two weapons now.
+     * <p>LOTRItemHammer hits for material + 6 like a battleaxe; LOTRWeaponStats
+     * set them apart with a slower swing and one level of extra knockback. The
+     * swing is the port's 0.85 rather than the original's factor.
      *
      * <p>Built by hand rather than left to Properties.axe because a third
      * attribute has to go alongside the usual two, and .attributes replaces the

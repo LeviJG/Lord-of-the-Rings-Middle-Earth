@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory;
 
+import net.minecraft.world.item.crafting.RecipePropertySet;
+import net.minecraft.server.level.ServerPlayer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRHobbitOvenBlockEntity;
 
 import net.minecraft.util.Mth;
@@ -43,25 +45,25 @@ public class LOTRHobbitOvenMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
 
+        // LOTRContainerHobbitOven: plain Slots for input and fuel (anything by
+        // hand) and SlotFurnace outputs, which pay out the cooking experience.
         for (int i = 0; i < 9; ++i) {
-            final int inputSlot = LOTRHobbitOvenBlockEntity.INPUT_START + i;
-            addSlot(new Slot(container, inputSlot, 8 + i * 18, 21) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return container.canPlaceItem(inputSlot, stack);
-                }
-            });
+            addSlot(new Slot(container, LOTRHobbitOvenBlockEntity.INPUT_START + i, 8 + i * 18, 21));
         }
         for (int i = 0; i < 9; ++i) {
             addSlot(new FurnaceResultSlot(inventory.player, container,
-                    LOTRHobbitOvenBlockEntity.OUTPUT_START + i, 8 + i * 18, 67));
+                    LOTRHobbitOvenBlockEntity.OUTPUT_START + i, 8 + i * 18, 67) {
+                @Override
+                protected void checkTakeAchievements(ItemStack stack) {
+                    super.checkTakeAchievements(stack);
+                    if (inventory.player instanceof ServerPlayer player
+                            && container instanceof LOTRHobbitOvenBlockEntity oven) {
+                        oven.popExperience(player);
+                    }
+                }
+            });
         }
-        addSlot(new Slot(container, LOTRHobbitOvenBlockEntity.FUEL_SLOT, 80, 111) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return container.canPlaceItem(LOTRHobbitOvenBlockEntity.FUEL_SLOT, stack);
-            }
-        });
+        addSlot(new Slot(container, LOTRHobbitOvenBlockEntity.FUEL_SLOT, 80, 111));
 
         addStandardInventorySlots(inventory, 8, 133);
         addDataSlots(data);
@@ -109,22 +111,23 @@ public class LOTRHobbitOvenMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack, INV_START, HOTBAR_END, false)) {
                 return ItemStack.EMPTY;
             }
-        } else if (container.canPlaceItem(LOTRHobbitOvenBlockEntity.FUEL_SLOT, stack)) {
-            // Fuel is tested BEFORE the input slots here, the reverse of the
-            // forge: the oven's input test cannot run client-side (it needs a
-            // recipe lookup), so anything would otherwise land in the inputs.
+        } else if (isCookable(player, stack)) {
+            // transferStackInSlot: cookable -> inputs, fuel -> fuel, anything
+            // else between the inventory and the hotbar.
+            if (!moveItemStackTo(stack, LOTRHobbitOvenBlockEntity.INPUT_START,
+                    LOTRHobbitOvenBlockEntity.OUTPUT_START, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (player.level().fuelValues().isFuel(stack)) {
             if (!moveItemStackTo(stack, LOTRHobbitOvenBlockEntity.FUEL_SLOT, CONTAINER_END, false)) {
                 return ItemStack.EMPTY;
             }
-        } else if (!moveItemStackTo(stack, LOTRHobbitOvenBlockEntity.INPUT_START,
-                LOTRHobbitOvenBlockEntity.OUTPUT_START, false)) {
-            if (slotIndex < HOTBAR_START) {
-                if (!moveItemStackTo(stack, HOTBAR_START, HOTBAR_END, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!moveItemStackTo(stack, INV_START, HOTBAR_START, false)) {
+        } else if (slotIndex < HOTBAR_START) {
+            if (!moveItemStackTo(stack, HOTBAR_START, HOTBAR_END, false)) {
                 return ItemStack.EMPTY;
             }
+        } else if (!moveItemStackTo(stack, INV_START, HOTBAR_START, false)) {
+            return ItemStack.EMPTY;
         }
 
         if (stack.isEmpty()) {
@@ -137,5 +140,17 @@ public class LOTRHobbitOvenMenu extends AbstractContainerMenu {
         }
         slot.onTake(player, stack);
         return clicked;
+    }
+
+    /**
+     * isCookResultAcceptable(smelting result), asked of the real oven on the
+     * server. The client's stand-in container cannot look up results, so there
+     * it settles for "has a furnace recipe"; the server's answer wins.
+     */
+    private boolean isCookable(Player player, ItemStack stack) {
+        if (container instanceof LOTRHobbitOvenBlockEntity oven) {
+            return oven.isCookable(stack);
+        }
+        return player.level().recipeAccess().propertySet(RecipePropertySet.FURNACE_INPUT).test(stack);
     }
 }

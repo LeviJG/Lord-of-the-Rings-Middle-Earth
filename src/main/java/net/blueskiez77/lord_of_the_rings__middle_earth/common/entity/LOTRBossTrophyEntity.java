@@ -51,7 +51,7 @@ public class LOTRBossTrophyEntity extends Entity {
     protected void defineSynchedData(SynchedEntityData.Builder builder) {
         builder.define(DATA_TYPE, (byte) 0);
         builder.define(DATA_HANGING, false);
-        builder.define(DATA_FACING, (byte) Direction.NORTH.get2DDataValue());
+        builder.define(DATA_FACING, (byte) 0);
     }
 
     public LOTRTrophyType getTrophyType() {
@@ -148,6 +148,8 @@ public class LOTRBossTrophyEntity extends Entity {
         // The same gravity and friction the stone troll uses, transcribed from
         // the original rather than replaced with applyGravity().
         this.setDeltaMovement(this.getDeltaMovement().subtract(0.0, 0.04, 0.0));
+        this.moveTowardsClosestSpace(this.getX(),
+                (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
         this.move(MoverType.SELF, this.getDeltaMovement());
 
         float friction = 0.98f;

@@ -1,0 +1,10 @@
+{
+  "type": "lotr:faction_crafting_dye",
+  "table": "gulf",
+  "group": "lotr_dyed",
+  "dye": "#c:dyes",
+  "target": "lotr:harad_turban",
+  "result": {
+    "id": "lotr:harad_turban"
+  }
+}

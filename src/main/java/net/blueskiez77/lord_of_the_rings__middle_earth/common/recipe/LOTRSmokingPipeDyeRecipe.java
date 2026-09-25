@@ -42,7 +42,10 @@ public class LOTRSmokingPipeDyeRecipe extends CustomRecipe {
         if (color < 0) {
             return ItemStack.EMPTY;
         }
-        ItemStack pipe = findPipe(input).copyWithCount(1);
+        // A new pipe carrying over only the wear: the original built a fresh
+        // stack, so a name or anything else on the old pipe did not survive.
+        ItemStack pipe = new ItemStack(LOTRItems.SMOKING_PIPE);
+        pipe.setDamageValue(findPipe(input).getDamageValue());
         pipe.set(LOTRDataComponents.SMOKE_COLOR, color);
         return pipe;
     }

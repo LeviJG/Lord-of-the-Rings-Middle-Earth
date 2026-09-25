@@ -158,9 +158,8 @@ public class LOTRStoneTrollEntity extends Entity {
                 ItemStack held = player.getMainHandItem();
                 // A pickaxe prises the statue out whole and hits far harder;
                 // anything else chips it into cobblestone one point at a time.
-                if (held.is(Items.WOODEN_PICKAXE) || held.is(Items.STONE_PICKAXE)
-                        || held.is(Items.IRON_PICKAXE) || held.is(Items.GOLDEN_PICKAXE)
-                        || held.is(Items.DIAMOND_PICKAXE) || held.is(Items.NETHERITE_PICKAXE)) {
+                // (ItemPickaxe in the original: any pickaxe, the mod's included.)
+                if (held.is(net.minecraft.tags.ItemTags.PICKAXES)) {
                     dropStatue = true;
                     damage = 1.0f + (float) player.getAttributeValue(
                             net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
@@ -247,6 +246,9 @@ public class LOTRStoneTrollEntity extends Entity {
         // times 0.98 on the floor. Transcribed rather than replaced with
         // applyGravity() so a statue slides and settles the way it always did.
         this.setDeltaMovement(this.getDeltaMovement().subtract(0.0, 0.03999999910593033, 0.0));
+        // func_145771_j: nudged out of any block it has ended up inside.
+        this.moveTowardsClosestSpace(this.getX(),
+                (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
         this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
 
         float friction = 0.98f;

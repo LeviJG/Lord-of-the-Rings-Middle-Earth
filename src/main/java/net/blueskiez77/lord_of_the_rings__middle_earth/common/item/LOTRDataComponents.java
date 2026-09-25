@@ -55,6 +55,13 @@ public final class LOTRDataComponents {
                             net.minecraft.world.item.component.CustomData::of,
                             net.minecraft.world.item.component.CustomData::copyTag)));
 
+    /** LOTRItemKebabStand's "LOTRKebabData": the meat on a stand, carried as an item. */
+    public static final DataComponentType<net.minecraft.world.item.component.CustomData> KEBAB_DATA = register("kebab_data",
+            b -> b.persistent(net.minecraft.world.item.component.CustomData.CODEC)
+                    .networkSynchronized(ByteBufCodecs.COMPOUND_TAG.map(
+                            net.minecraft.world.item.component.CustomData::of,
+                            net.minecraft.world.item.component.CustomData::copyTag)));
+
     /** LOTRPoisonedDrinks' "PoisonDrink": the drink has had poison stirred in. */
     public static final DataComponentType<Boolean> POISON_DRINK = register("poison_drink",
             b -> b.persistent(com.mojang.serialization.Codec.BOOL).networkSynchronized(ByteBufCodecs.BOOL));

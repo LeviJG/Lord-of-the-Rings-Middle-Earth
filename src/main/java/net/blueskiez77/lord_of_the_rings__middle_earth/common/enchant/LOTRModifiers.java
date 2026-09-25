@@ -107,7 +107,16 @@ public final class LOTRModifiers {
     }
 
     /** Hooks the roll up to players' inventories and to mobs' equipment. */
+    /** LOTREnchantProgress, as the original named it: per bane, Kills and KillsRequired. */
+    private static final String TAG_PROGRESS = "LOTREnchantProgress";
+
     public static void init() {
+        net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.AFTER_DEATH.register((entity, source) -> {
+            if (source.getEntity() instanceof net.minecraft.server.level.ServerPlayer player
+                    && source.getDirectEntity() == player) {
+                onKill(player, entity);
+            }
+        });
         // handlePlayerInventoryChanges: anything new in a player's inventory,
         // or on the cursor, is rolled.
         ServerTickEvents.END_LEVEL_TICK.register(level -> {
@@ -245,6 +254,12 @@ public final class LOTRModifiers {
             case PROTECTION_FIRE -> source.is(DamageTypeTags.IS_FIRE);
             case PROTECTION_FALL -> source.is(DamageTypes.FALL);
             case PROTECTION_RANGED -> source.is(DamageTypeTags.IS_PROJECTILE);
+            // LOTREnchantmentProtectionMithril.protectsAgainst: a melee blow from a
+            // long weapon -- base reach, modifiers aside, of at least 1.3.
+            case PROTECTION_MITHRIL -> source.getEntity() instanceof LivingEntity attacker
+                    && attacker == source.getDirectEntity()
+                    && (BASE_INTERACTION_RANGE + sum(attacker.getMainHandItem(), Attributes.ENTITY_INTERACTION_RANGE))
+                            / BASE_INTERACTION_RANGE >= 1.3;
             default -> false;
         };
     }
@@ -469,6 +484,11 @@ public final class LOTRModifiers {
             case KNOCKBACK -> baseKnockback(stack) + (int) modifier.value() <= MAX_MODIFIABLE_KNOCKBACK;
             case PROTECTION -> canApplyProtection(modifier, stack, considering);
             case PROTECTION_RANGED -> !isMaterial(stack, LOTRToolMaterials.GALVORN_ARMOR);
+            // LOTREnchantmentProtectionMithril: true-silver only on mithril.
+            case PROTECTION_MITHRIL -> isMaterial(stack, LOTRToolMaterials.MITHRIL_ARMOR);
+            // The whip is its own fire; Infernal and Chilling will not go on it.
+            case WEAPON_SPECIAL -> modifier == LOTRModifier.HEADHUNTING
+                    || !stack.is(net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.BALROG_WHIP);
             default -> true;
         };
     }
@@ -502,6 +522,56 @@ public final class LOTRModifiers {
         return false;
     }
 
+    /**
+     * onKillEntity: every kill of a bane's foe with a weapon that could take it
+     * counts. When the count reaches its target -- 100 to 250, drawn at the
+     * first kill -- the weapon has earned the bane, and the whole server hears
+     * of it. The Utumno and hired-unit exclusions wait on those.
+     */
+    private static void onKill(net.minecraft.server.level.ServerPlayer player, LivingEntity target) {
+        ItemStack weapon = player.getMainHandItem();
+        if (weapon.isEmpty()) {
+            return;
+        }
+        for (LOTRModifier bane : LOTRModifier.values()) {
+            if (bane.effect() != LOTRModifier.Effect.BANE || bane.baneOf() == null
+                    || !target.is(bane.baneOf()) || !canApply(bane, weapon, false)) {
+                continue;
+            }
+            int[] earned = {0};
+            CustomData data = weapon.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+            weapon.set(DataComponents.CUSTOM_DATA, data.update(tag -> {
+                net.minecraft.nbt.CompoundTag all = tag.getCompoundOrEmpty(TAG_PROGRESS);
+                net.minecraft.nbt.CompoundTag progress = all.getCompoundOrEmpty(bane.getSerializedName());
+                int kills = progress.getIntOr("Kills", 0) + 1;
+                int required = progress.getIntOr("KillsRequired", 0);
+                if (required <= 0) {
+                    required = net.minecraft.util.Mth.randomBetweenInclusive(player.getRandom(), 100, 250);
+                }
+                progress.putInt("Kills", kills);
+                progress.putInt("KillsRequired", required);
+                all.put(bane.getSerializedName(), progress);
+                tag.put(TAG_PROGRESS, all);
+                earned[0] = kills >= required ? 1 : 0;
+            }));
+            List<LOTRModifier> current = new ArrayList<>(get(weapon));
+            if (earned[0] == 0 || current.contains(bane)
+                    || current.stream().anyMatch(m -> !m.isCompatibleWith(bane))) {
+                continue;
+            }
+            current.add(bane);
+            set(weapon, current);
+            player.sendSystemMessage(Component.translatable(bane.translationKey() + ".earn",
+                    weapon.getHoverName()).withStyle(ChatFormatting.YELLOW));
+            for (net.minecraft.server.level.ServerPlayer other : player.level().getServer().getPlayerList().getPlayers()) {
+                if (other != player) {
+                    other.sendSystemMessage(Component.translatable(bane.translationKey() + ".earnName",
+                            player.getName(), weapon.getHoverName()).withStyle(ChatFormatting.YELLOW));
+                }
+            }
+        }
+    }
+
     // ------------------------------------------------------------------------
     // Rolling
     // ------------------------------------------------------------------------
@@ -515,20 +585,34 @@ public final class LOTRModifiers {
         return false;
     }
 
-    /**
-     * applyRandomEnchantments, without keepBanes -- that is the reforge, which
-     * waits on the anvil.
-     */
+    /** applyRandomEnchantments without keepBanes: a fresh roll. */
     public static void applyRandom(ItemStack stack, RandomSource random, boolean skilful) {
+        applyRandom(stack, random, skilful, false);
+    }
+
+    /**
+     * applyRandomEnchantments. keepBanes is the anvil's reforge: whatever
+     * persistsReforge -- the banes -- stays, and only the rest is re-rolled.
+     */
+    public static void applyRandom(ItemStack stack, RandomSource random, boolean skilful, boolean keepBanes) {
         List<LOTRModifier> chosen = new ArrayList<>();
+        if (keepBanes) {
+            for (LOTRModifier kept : get(stack)) {
+                if (kept.persistsReforge()) {
+                    chosen.add(kept);
+                }
+            }
+        }
 
         // The barrow blades are Wightbane and Sting is Spiderbane from the start.
         Item item = stack.getItem();
         if ((item == LOTRItems.BARROW_BLADE || item == LOTRItems.POISONED_BARROW_BLADE)
+                && !chosen.contains(LOTRModifier.BANE_WIGHT)
                 && canApply(LOTRModifier.BANE_WIGHT, stack, false)) {
             chosen.add(LOTRModifier.BANE_WIGHT);
         }
-        if (item == LOTRItems.STING && canApply(LOTRModifier.BANE_SPIDER, stack, false)) {
+        if (item == LOTRItems.STING && !chosen.contains(LOTRModifier.BANE_SPIDER)
+                && canApply(LOTRModifier.BANE_SPIDER, stack, false)) {
             chosen.add(LOTRModifier.BANE_SPIDER);
         }
 
@@ -577,7 +661,7 @@ public final class LOTRModifiers {
             }
         }
         for (LOTRModifier modifier : drawn) {
-            if (canApply(modifier, stack, false)) {
+            if (canApply(modifier, stack, false) && !chosen.contains(modifier)) {
                 chosen.add(modifier);
             }
         }
@@ -601,6 +685,23 @@ public final class LOTRModifiers {
         return Math.max((int) Math.round(weight), 1);
     }
 
+    /**
+     * LOTRItemModifierTemplate.getRandomCommonTemplate: a smith's scroll for
+     * any modifier that has one, drawn by the skilful weights.
+     */
+    public static ItemStack randomTemplate(RandomSource random) {
+        List<LOTRModifier> candidates = new ArrayList<>();
+        List<Integer> weights = new ArrayList<>();
+        for (LOTRModifier modifier : LOTRModifier.values()) {
+            if (modifier.hasTemplateItem()) {
+                candidates.add(modifier);
+                weights.add(skilfulWeight(modifier));
+            }
+        }
+        return net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmithsScrollItem.of(
+                candidates.get(drawByWeight(weights, random)));
+    }
+
     private static int drawByWeight(List<Integer> weights, RandomSource random) {
         int total = 0;
         for (int weight : weights) {
@@ -614,6 +715,24 @@ public final class LOTRModifiers {
             }
         }
         return weights.size() - 1;
+    }
+
+    /** LOTRRepairCost: what the anvil adds for this item's past repairs and combines. */
+    private static final String TAG_ANVIL_COST = "LOTRRepairCost";
+
+    public static int getAnvilCost(ItemStack stack) {
+        return stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag()
+                .getIntOr(TAG_ANVIL_COST, 0);
+    }
+
+    public static void setAnvilCost(ItemStack stack, int cost) {
+        CustomData data = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        stack.set(DataComponents.CUSTOM_DATA, data.update(tag -> tag.putInt(TAG_ANVIL_COST, cost)));
+    }
+
+    /** isReforgeable: it has modifiers, or could take one. */
+    public static boolean isReforgeable(ItemStack stack) {
+        return !get(stack).isEmpty() || canApplyAny(stack);
     }
 
     /** setEnchantList: write the modifiers onto a stack, effects and all. */
@@ -633,9 +752,7 @@ public final class LOTRModifiers {
                 tag.putBoolean(TAG_ROLLED, true);
             }
         }));
-        if (!modifiers.isEmpty()) {
-            applyEffects(stack, modifiers);
-        }
+        applyEffects(stack, modifiers);
     }
 
     // ------------------------------------------------------------------------
@@ -654,8 +771,9 @@ public final class LOTRModifiers {
      * func_152377_a added it to any held item.
      */
     private static void applyEffects(ItemStack stack, List<LOTRModifier> modifiers) {
-        ItemAttributeModifiers base = stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS,
-                ItemAttributeModifiers.EMPTY);
+        // Always from the item's own defaults, so re-applying -- a reforge, an
+        // anvil combine, a bane earned -- never stacks on the last application.
+        ItemAttributeModifiers base = defaultAttributes(stack);
         ItemAttributeModifiers.Builder builder = ItemAttributeModifiers.builder();
 
         boolean hasDamageEntry = false;
@@ -720,7 +838,8 @@ public final class LOTRModifiers {
      * renders in italics, which this is not.
      */
     private static void nameAndDescribe(ItemStack stack, List<LOTRModifier> modifiers) {
-        Component name = stack.getItem().getName(stack);
+        Component name = stack.getItem().components().getOrDefault(DataComponents.ITEM_NAME,
+                stack.getItem().getName(stack.getItem().getDefaultInstance()));
         for (int i = modifiers.size() - 1; i >= 0; i--) {
             name = Component.translatable("lotr.enchant.nameFormat",
                     Component.translatable(modifiers.get(i).translationKey()), name);
@@ -728,13 +847,14 @@ public final class LOTRModifiers {
         stack.set(DataComponents.ITEM_NAME, name);
 
         boolean throwingAxe = stack.getItem() instanceof LOTRThrowingAxeItem;
+        boolean melee = kindsOf(stack).contains(LOTRModifier.Kind.MELEE);
         List<Component> lore = new ArrayList<>();
         for (LOTRModifier modifier : modifiers) {
             lore.add(Component.translatable("lotr.enchant.descFormat",
-                            Component.translatable(modifier.translationKey()), modifier.description(throwingAxe))
+                            Component.translatable(modifier.translationKey()), modifier.description(throwingAxe, melee))
                     .withStyle(modifier.isBeneficial() ? ChatFormatting.GRAY : ChatFormatting.DARK_GRAY));
         }
-        lore.addAll(stack.getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines());
+        lore.addAll(stack.getItem().components().getOrDefault(DataComponents.LORE, ItemLore.EMPTY).lines());
         stack.set(DataComponents.LORE, new ItemLore(lore));
     }
 

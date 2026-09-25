@@ -13,7 +13,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -23,9 +22,7 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
@@ -135,24 +132,8 @@ public class LOTRKebabStandBlock extends Block implements EntityBlock {
         return Shapes.empty();
     }
 
-    // ------------------------------------------------------------- attachment
-
-    /** canBlockStay: it needs something under it -- the fire it cooks over. */
-    @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        BlockPos below = pos.below();
-        return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
-    }
-
-    @Override
-    protected BlockState updateShape(BlockState state, LevelReader level, ScheduledTickAccess tickAccess,
-                                     BlockPos pos, Direction direction, BlockPos neighborPos,
-                                     BlockState neighborState, RandomSource random) {
-        if (direction == Direction.DOWN && !canSurvive(state, level, pos)) {
-            return Blocks.AIR.defaultBlockState();
-        }
-        return super.updateShape(state, level, tickAccess, pos, direction, neighborPos, neighborState, random);
-    }
+    // LOTRBlockKebabStand never overrode canBlockStay, so a stand needs
+    // nothing beneath it; it only cooks over a container that holds fuel.
 
     // ------------------------------------------------------------- placement
 
@@ -188,7 +169,12 @@ public class LOTRKebabStandBlock extends Block implements EntityBlock {
             return InteractionResult.PASS;
         }
 
-        if (!stand.isCooked() && stand.isMeat(stack) && stand.hasEmptySlot()) {
+        // Raw meat onto an uncooked stand; with every skewer taken it does
+        // nothing, rather than taking one back.
+        if (!stand.isCooked() && stand.isMeat(stack)) {
+            if (!stand.hasEmptySlot()) {
+                return InteractionResult.PASS;
+            }
             if (!level.isClientSide() && stand.addMeat(stack) && !player.getAbilities().instabuild) {
                 stack.shrink(1);
             }
@@ -222,18 +208,22 @@ public class LOTRKebabStandBlock extends Block implements EntityBlock {
         return InteractionResult.SUCCESS;
     }
 
-    /**
-     * The original stored the spit's contents in the dropped item's NBT, so a
-     * stand kept its meat when you picked it up. That needs a data component
-     * here; for now the meat simply drops alongside the stand, which loses
-     * nothing but the tidiness. See docs/TODO-kebab-stand.md.
-     */
+
+    /** onBlockHarvested: a creative player does not get the stand back. */
     @Override
-    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level,
-                                               BlockPos pos, boolean movedByPiston) {
-        if (level.getBlockEntity(pos) instanceof LOTRKebabStandBlockEntity stand) {
-            Containers.dropContents(level, pos, stand.getMeats());
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (player.hasInfiniteMaterials() && level.getBlockEntity(pos) instanceof LOTRKebabStandBlockEntity stand) {
+            stand.markCreativeBroken();
         }
-        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
+        return super.playerWillDestroy(level, pos, state, player);
+    }
+
+    /** getPickBlock: the stand with whatever is on it. */
+    @Override
+    protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
+        if (level.getBlockEntity(pos) instanceof LOTRKebabStandBlockEntity stand) {
+            return stand.getStandDrop();
+        }
+        return super.getCloneItemStack(level, pos, state, includeData);
     }
 }

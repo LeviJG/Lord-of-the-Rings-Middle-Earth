@@ -395,12 +395,13 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         dropSelf(LOTRBlocks.TABLE_OF_COMMAND);
         dropSelf(LOTRBlocks.UNSMELTERY);
         dropSelf(LOTRBlocks.MILLSTONE);
+        dropSelf(LOTRBlocks.ANVIL);
         dropSelf(LOTRBlocks.ORC_CHAIN);
         // getItemDropped returned null for the head half, so a bed drops one
         // item, not two -- vanilla's own beds use exactly this condition.
         LOTRBlocks.ALL_BEDS.forEach(bed -> add(bed,
                 createSinglePropConditionTable(bed, BedBlock.PART, BedPart.FOOT)));
-        LOTRBlocks.ALL_KEBAB_STANDS.forEach(this::dropSelf);
+        // Kebab stands have none: LOTRKebabStandBlockEntity drops them with their meat.
         LOTRBlocks.ALL_CHESTS.forEach(this::dropSelf);
         // damageDropped(i) = i & 3: each part dropped its own kind.
         LOTRBlocks.ALL_TROLL_TOTEMS.forEach(this::dropSelf);

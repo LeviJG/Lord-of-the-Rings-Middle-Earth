@@ -73,6 +73,7 @@ public class LOTRModClient implements ClientModInitializer {
         LOTRMod.LOGGER.info("LOTR client initializing...");
 
         LOTRConnectedBorderPlugin.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.particle.LOTRParticleProviders.init();
 
         // lotr:sneaking and lotr:swinging, which the pikes' item models pose by.
         LOTRItemModelProperties.init();
@@ -96,6 +97,26 @@ public class LOTRModClient implements ClientModInitializer {
             if (player != null && LOTRPoisonedDrinks.isPoisoned(stack)
                     && LOTRPoisonedDrinks.canPlayerSeePoisoned(stack, player)) {
                 lines.add(Component.translatable("item.lotr.drink.poison").withStyle(ChatFormatting.DARK_GREEN));
+            }
+            // LOTRItemOwnership, engraved at the LOTR anvil: the owner, then up
+            // to three previous owners in italics.
+            String owner = net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership.getCurrentOwner(stack);
+            if (owner != null) {
+                lines.add(Component.empty());
+                lines.add(Component.translatable("item.lotr.generic.currentOwner", owner));
+            }
+            List<String> previous = net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership.getPreviousOwners(stack);
+            if (!previous.isEmpty()) {
+                lines.add(Component.empty());
+                if (previous.size() == 1) {
+                    lines.add(Component.translatable("item.lotr.generic.previousOwner", previous.get(0))
+                            .withStyle(ChatFormatting.ITALIC));
+                } else {
+                    lines.add(Component.translatable("item.lotr.generic.previousOwnerList").withStyle(ChatFormatting.ITALIC));
+                    for (String name : previous) {
+                        lines.add(Component.literal("  " + name).withStyle(ChatFormatting.ITALIC));
+                    }
+                }
             }
         });
 
@@ -167,6 +188,8 @@ public class LOTRModClient implements ClientModInitializer {
 
         // A thrown axe draws its own item sprite, tumbling.
         EntityRenderers.register(LOTREntities.THROWING_AXE, LOTRThrowingAxeRenderer::new);
+        EntityRenderers.register(LOTREntities.SMOKE_RING,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSmokeRingRenderer::new);
 
         // And a bolt is drawn exactly as an arrow is; see LOTRCrossbowBoltRenderer.
         EntityRenderers.register(LOTREntities.CROSSBOW_BOLT, LOTRCrossbowBoltRenderer::new);
@@ -220,6 +243,7 @@ public class LOTRModClient implements ClientModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateHeadRenderer.init();
         // LOTRTickHandlerClient: nausea drags the view about.
         LOTRDrunkCamera.init();
+        LOTRClientFactionState.init();
 
         // Carved signs: the lettering in the world, and the screen a chisel opens.
         BlockEntityRenderers.register(LOTRBlockEntities.CARVED_SIGN,
@@ -240,6 +264,8 @@ public class LOTRModClient implements ClientModInitializer {
         MenuScreens.register(LOTRMenus.HOBBIT_OVEN, LOTRHobbitOvenScreen::new);
         MenuScreens.register(LOTRMenus.UNSMELTERY, LOTRUnsmelteryScreen::new);
         MenuScreens.register(LOTRMenus.MILLSTONE, LOTRMillstoneScreen::new);
+        MenuScreens.register(LOTRMenus.ANVIL,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRAnvilScreen::new);
         MenuScreens.register(LOTRMenus.DALE_CRACKER,
                 net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRDaleCrackerScreen::new);
 

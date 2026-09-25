@@ -30,6 +30,9 @@ public class LOTRDartEntity extends AbstractArrow {
     /** dartDamageFactor, clamped to a minimum of one by the blowgun. */
     public static final double BASE_DAMAGE = 1.0;
 
+    /** getKnockbackFactor. */
+    private static final double KNOCKBACK_FACTOR = 0.5;
+
     public LOTRDartEntity(EntityType<? extends LOTRDartEntity> type, Level level) {
         super(type, level);
         setBaseDamage(BASE_DAMAGE);
@@ -58,7 +61,13 @@ public class LOTRDartEntity extends AbstractArrow {
      */
     @Override
     protected void onHitEntity(EntityHitResult hit) {
+        // getKnockbackFactor: a dart gives only half the shove an arrow does --
+        // whatever the hit did to the target's motion is scaled by 0.5.
+        net.minecraft.world.entity.Entity struck = hit.getEntity();
+        net.minecraft.world.phys.Vec3 before = struck.getDeltaMovement();
         super.onHitEntity(hit);
+        net.minecraft.world.phys.Vec3 after = struck.getDeltaMovement();
+        struck.setDeltaMovement(before.add(after.subtract(before).scale(KNOCKBACK_FACTOR)));
         if (level().isClientSide()
                 || !(getPickupItemStackOrigin().getItem() instanceof LOTRDartItem dart)
                 || !dart.isPoisoned()

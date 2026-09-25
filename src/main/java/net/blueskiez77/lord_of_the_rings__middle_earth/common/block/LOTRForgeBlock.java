@@ -12,7 +12,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -23,13 +22,10 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import org.jspecify.annotations.Nullable;
 
-// Forges and ovens. Still extends AbstractFurnaceBlock for FACING, LIT, the
-// comparator output, rotate/mirror and useWithoutItem -- but NOT for the ticker
-// or the drops. createFurnaceTicker is typed to AbstractFurnaceBlockEntity, and
-// AbstractFurnaceBlock.affectNeighborsAfterRemoval only calls
-// Containers.updateNeighboursAfterDestroy: it does not drop inventory contents,
-// because BaseContainerBlockEntity normally handles that. The forge is neither,
-// so both are done here.
+// Forges and ovens. Extends AbstractFurnaceBlock for FACING, LIT, the
+// comparator output, rotate/mirror and useWithoutItem, but not for the ticker:
+// createFurnaceTicker is typed to AbstractFurnaceBlockEntity. The contents drop
+// on their own -- BlockEntity.preRemoveSideEffects empties any Container.
 public class LOTRForgeBlock extends AbstractFurnaceBlock {
 
     public static final MapCodec<LOTRForgeBlock> CODEC = simpleCodec(LOTRForgeBlock::new);
@@ -55,16 +51,6 @@ public class LOTRForgeBlock extends AbstractFurnaceBlock {
         }
     }
 
-    // Thirteen slots of contents that nothing upstream will drop for us.
-    // super() then runs Containers.updateNeighboursAfterDestroy.
-    @Override
-    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        if (level.getBlockEntity(pos) instanceof LOTRForgeBlockEntity forge) {
-            Containers.dropContents(level, pos, forge);
-        }
-        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
-    }
-
     // LOTRBlockForgeBase.randomDisplayTick was vanilla's furnace effect
     // verbatim -- same 0.52 offset, same 6/16 vertical jitter, same two
     // particles -- so this is FurnaceBlock.animateTick with nothing changed.
@@ -83,6 +69,15 @@ public class LOTRForgeBlock extends AbstractFurnaceBlock {
         }
 
         flameFront(state, level, pos, random);
+
+        // useLargeSmoke(), true for all four forges: six puffs from the top
+        // corners, two in three of them large.
+        for (int l = 0; l < 6; ++l) {
+            double cx = (random.nextBoolean() ? 0.0 : 1.0) - 0.1 + random.nextFloat() * 0.2;
+            double cz = (random.nextBoolean() ? 0.0 : 1.0) - 0.1 + random.nextFloat() * 0.2;
+            level.addParticle(random.nextInt(3) > 0 ? ParticleTypes.LARGE_SMOKE : ParticleTypes.SMOKE,
+                    pos.getX() + cx, pos.getY() + 0.5, pos.getZ() + cz, 0.0, 0.0, 0.0);
+        }
     }
 
     /**

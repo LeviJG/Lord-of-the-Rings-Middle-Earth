@@ -24,12 +24,12 @@ import net.minecraft.world.entity.EntityType;
  * <p>Every entry the random roll can reach is here, with the original's
  * weights, values and names. So are the two banes the roll itself hands out --
  * Wightbane on the barrow blades and Spiderbane on Sting -- which have no
- * weight and so are never drawn. NOT here: the other banes, earned by killing
- * enough Elves, Orcs, Dwarves, Wargs or Trolls, which wait on those NPCs and
- * the kill counting that goes with them; "True" (protectMithril), which only
- * mithril mail gives; and the three weapon specials -- Infernal, Chilling,
- * Headhunting -- which come from the LOTR anvil's template items. None of
- * those is part of the random roll.
+ * weight and so are never drawn -- they are earned too, by killing enough of
+ * their foe (LOTRModifiers.onKill). So are "True" (protectMithril) and the three
+ * weapon specials -- Infernal, Chilling, Headhunting -- which the LOTR anvil
+ * puts on from the Book of True-silver, the Flame of Udûn, the Chill of
+ * Daedelos and the Headhunter's Trophy. NOT here: the Elf, Orc, Dwarf, Warg,
+ * Troll and Wraith banes, which wait on those NPCs.
  */
 public enum LOTRModifier implements StringRepresentable {
 
@@ -99,7 +99,15 @@ public enum LOTRModifier implements StringRepresentable {
     RANGED_WEAK_1("rangedWeak1", Effect.RANGED_DAMAGE, 0.75f, 8, false),
     RANGED_WEAK_2("rangedWeak2", Effect.RANGED_DAMAGE, 0.5f, 3, false),
     RANGED_KNOCKBACK_1("rangedKnockback1", Effect.RANGED_KNOCKBACK, 1.0f, 6, false),
-    RANGED_KNOCKBACK_2("rangedKnockback2", Effect.RANGED_KNOCKBACK, 2.0f, 2, true);
+    RANGED_KNOCKBACK_2("rangedKnockback2", Effect.RANGED_KNOCKBACK, 2.0f, 2, true),
+
+    // --- LOTREnchantmentProtectionMithril: "True", from the Book of True-silver.
+    PROTECT_MITHRIL("protectMithril", Effect.PROTECTION_MITHRIL, 1.0f, 0, false),
+
+    // --- LOTREnchantmentWeaponSpecial: put on at the anvil, weight 0. ---------
+    FIRE("fire", Effect.WEAPON_SPECIAL, 0.0f, 0, false),
+    CHILL("chill", Effect.WEAPON_SPECIAL, 0.0f, 0, false),
+    HEADHUNTING("headhunting", Effect.WEAPON_SPECIAL, 0.0f, 0, false);
 
     /**
      * LOTREnchantmentType, less the three per-slot armour types nothing in the
@@ -145,7 +153,10 @@ public enum LOTRModifier implements StringRepresentable {
         PROTECTION_FALL("lotr.enchant.protectFall.desc", Format.SPECIAL_PROTECTION, EnumSet.of(Kind.ARMOR_FEET)),
         PROTECTION_RANGED("lotr.enchant.protectRanged.desc", Format.SPECIAL_PROTECTION, EnumSet.of(Kind.ARMOR)),
         RANGED_DAMAGE("lotr.enchant.rangedDamage.desc", Format.MULTIPLICATIVE, EnumSet.of(Kind.RANGED_LAUNCHER)),
-        RANGED_KNOCKBACK("lotr.enchant.rangedKnockback.desc", Format.ADDITIVE_INT, EnumSet.of(Kind.RANGED_LAUNCHER));
+        RANGED_KNOCKBACK("lotr.enchant.rangedKnockback.desc", Format.ADDITIVE_INT, EnumSet.of(Kind.RANGED_LAUNCHER)),
+        PROTECTION_MITHRIL("lotr.enchant.protectMithril.desc", Format.SPECIAL_PROTECTION, EnumSet.of(Kind.ARMOR)),
+        WEAPON_SPECIAL(null, Format.NONE,
+                EnumSet.of(Kind.MELEE, Kind.THROWING_AXE, Kind.RANGED_LAUNCHER));
 
         private final String descriptionKey;
         private final Format format;
@@ -163,7 +174,8 @@ public enum LOTRModifier implements StringRepresentable {
         }
 
         public boolean isSpecialProtection() {
-            return this == PROTECTION_FIRE || this == PROTECTION_FALL || this == PROTECTION_RANGED;
+            return this == PROTECTION_FIRE || this == PROTECTION_FALL || this == PROTECTION_RANGED
+                    || this == PROTECTION_MITHRIL;
         }
     }
 
@@ -239,8 +251,43 @@ public enum LOTRModifier implements StringRepresentable {
         return switch (this.effect) {
             case DAMAGE, KNOCKBACK, PROTECTION, RANGED_KNOCKBACK -> this.value >= 0.0f;
             case DURABILITY, MELEE_SPEED, MELEE_REACH, TOOL_SPEED, RANGED_DAMAGE -> this.value >= 1.0f;
-            case BANE, SILK_TOUCH, LOOTING, PROTECTION_FIRE, PROTECTION_FALL, PROTECTION_RANGED -> true;
+            case BANE, SILK_TOUCH, LOOTING, PROTECTION_FIRE, PROTECTION_FALL, PROTECTION_RANGED,
+                    PROTECTION_MITHRIL, WEAPON_SPECIAL -> true;
         };
+    }
+
+    /**
+     * getValueModifier: what the modifier is worth, which the anvil charges for
+     * and a trader prices by. Each class set its own in its constructor.
+     */
+    public float valueModifier() {
+        return switch (this.effect) {
+            case DAMAGE -> this.value >= 0.0f ? (7.0f + this.value * 5.0f) / 7.0f : (7.0f + this.value) / 7.0f;
+            case BANE -> (10.0f + this.value) / 10.0f;
+            case PROTECTION -> this.value >= 0.0f ? (2.0f + this.value) / 2.0f : (4.0f + this.value) / 4.0f;
+            case PROTECTION_FIRE, PROTECTION_FALL, PROTECTION_RANGED -> (2.0f + this.value) / 2.0f;
+            case PROTECTION_MITHRIL -> 2.0f;
+            case KNOCKBACK, RANGED_KNOCKBACK -> (this.value + 2.0f) / 2.0f;
+            case SILK_TOUCH, WEAPON_SPECIAL -> 3.0f;
+            case LOOTING -> 1.0f + this.value;
+            case RANGED_DAMAGE -> this.value > 1.0f ? this.value * 2.0f : this.value;
+            case DURABILITY, MELEE_SPEED, MELEE_REACH, TOOL_SPEED -> this.value;
+        };
+    }
+
+    /** persistsReforge: a bane survives a reforge. */
+    public boolean persistsReforge() {
+        return this.effect == Effect.BANE;
+    }
+
+    /** bypassAnvilLimit: banes and the weapon specials do not count towards the anvil's three. */
+    public boolean bypassAnvilLimit() {
+        return this.effect == Effect.BANE || this.effect == Effect.WEAPON_SPECIAL;
+    }
+
+    /** hasTemplateItem: only a rollable gift can be put on a smith's scroll. */
+    public boolean hasTemplateItem() {
+        return this.weight > 0 && isBeneficial();
     }
 
     /**
@@ -250,6 +297,18 @@ public enum LOTRModifier implements StringRepresentable {
      * other.
      */
     public boolean isCompatibleWith(LOTRModifier other) {
+        if (this.effect == Effect.WEAPON_SPECIAL || other.effect == Effect.WEAPON_SPECIAL) {
+            // LOTREnchantmentWeaponSpecial: one special at a time, unless one of
+            // them is Headhunting, which will not go on a bane.
+            if (this == HEADHUNTING && other.effect == Effect.BANE
+                    || other == HEADHUNTING && this.effect == Effect.BANE) {
+                return false;
+            }
+            if (this.effect == other.effect) {
+                return this == HEADHUNTING || other == HEADHUNTING;
+            }
+            return true;
+        }
         if (this.effect == other.effect) {
             return false;
         }
@@ -271,6 +330,7 @@ public enum LOTRModifier implements StringRepresentable {
             case PROTECTION_FIRE -> 1 + level;
             case PROTECTION_FALL -> 3 + level * (level + 1) / 2;
             case PROTECTION_RANGED -> level;
+            case PROTECTION_MITHRIL -> 4;
             default -> 0;
         };
     }
@@ -280,9 +340,12 @@ public enum LOTRModifier implements StringRepresentable {
      * axe's damage line says "thrown damage" instead, a bane names its foe, and
      * Silken has no figure at all.
      */
-    public Component description(boolean throwingAxe) {
+    public Component description(boolean throwingAxe, boolean melee) {
         if (this.effect == Effect.BANE) {
             return Component.translatable(translationKey() + ".desc", formattedValue());
+        }
+        if (this.effect == Effect.WEAPON_SPECIAL) {
+            return Component.translatable(translationKey() + (melee ? ".desc.melee" : ".desc.ranged"));
         }
         if (this.effect.format == Format.NONE) {
             return Component.translatable(this.effect.descriptionKey);

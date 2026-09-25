@@ -39,8 +39,14 @@ public final class LOTRSounds {
 
     /** A vessel dipped in water, "lotr:item.mug_fill". */
     public static final SoundEvent ITEM_MUG_FILL = register("item.mug_fill");
+    /** A draw on a smoking pipe, "lotr:item.puff". */
+    public static final SoundEvent ITEM_PUFF = register("item.puff");
     /** A blowgun dart leaving the pipe, "lotr:item.dart". */
     public static final SoundEvent ITEM_DART = register("item.dart");
+    /** Pledging to a faction, "lotr:event.pledge". */
+    public static final SoundEvent EVENT_PLEDGE = register("event.pledge");
+    /** Breaking a pledge, "lotr:event.unpledge". */
+    public static final SoundEvent EVENT_UNPLEDGE = register("event.unpledge");
 
     /** A plate smashing, "lotr:block.plate.break". */
     public static final SoundEvent BLOCK_PLATE_BREAK = register("block.plate.break");

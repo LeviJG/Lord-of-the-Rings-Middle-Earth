@@ -12,6 +12,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeBookCategory;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.ShapelessRecipe;
@@ -72,6 +73,11 @@ public class LOTRFactionShapelessRecipe extends ShapelessRecipe {
     @Override
     public RecipeType<CraftingRecipe> getType() {
         return LOTRRecipeTypes.forTable(table);
+    }
+
+    @Override
+    public RecipeBookCategory recipeBookCategory() {
+        return LOTRRecipeTypes.FACTION_CRAFTING;
     }
 
     // As the shaped faction recipe does: the recipe book shows the faction table.

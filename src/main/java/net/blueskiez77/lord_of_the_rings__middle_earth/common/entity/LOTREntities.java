@@ -144,6 +144,13 @@ public final class LOTREntities {
                     .updateInterval(10));
 
     /** LOTREntityMysteryWeb, an EntityThrowable sized 0.25. */
+    /** LOTREntitySmokeRing, puffed from a smoking pipe. */
+    public static final EntityType<LOTRSmokeRingEntity> SMOKE_RING = register("smoke_ring",
+            EntityType.Builder.<LOTRSmokeRingEntity>of(LOTRSmokeRingEntity::new, MobCategory.MISC)
+                    .sized(0.25f, 0.25f)
+                    .clientTrackingRange(4)
+                    .updateInterval(10));
+
     public static final EntityType<LOTRMysteryWebEntity> MYSTERY_WEB = register("mystery_web",
             EntityType.Builder.<LOTRMysteryWebEntity>of(LOTRMysteryWebEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f)

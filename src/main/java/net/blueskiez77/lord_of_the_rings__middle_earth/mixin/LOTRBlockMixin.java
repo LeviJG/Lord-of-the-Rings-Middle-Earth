@@ -1,5 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.mixin;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockParticles;
+import net.minecraft.util.RandomSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.Inject;
 import com.llamalad7.mixinextras.sugar.Local;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
@@ -33,5 +40,11 @@ abstract class LOTRBlockMixin {
         ItemStack silken = tool.copy();
         silken.enchant(silkTouch, 1);
         return silken;
+    }
+
+    /** LOTRBlockParticles: randomDisplayTick effects of blocks with no class of their own. */
+    @Inject(method = "animateTick", at = @At("HEAD"))
+    private void lotr$animateTick(BlockState state, Level level, BlockPos pos, RandomSource random, CallbackInfo ci) {
+        LOTRBlockParticles.animate((Block) (Object) this, level, pos, random);
     }
 }

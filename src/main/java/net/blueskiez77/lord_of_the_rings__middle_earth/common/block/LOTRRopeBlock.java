@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import net.minecraft.world.level.block.SoundType;
 import com.mojang.serialization.MapCodec;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -159,7 +160,8 @@ public class LOTRRopeBlock extends LadderBlock {
         if (stack.is(asItem())) {
             return extend(state, level, pos, player, stack, step);
         }
-        if (stack.isEmpty() && canRetract && !player.onClimbable()) {
+        // Anything else in hand, or nothing, retracts -- if this rope can.
+        if (canRetract && !player.onClimbable()) {
             return retract(level, pos, player, step);
         }
         return InteractionResult.PASS;
@@ -197,13 +199,21 @@ public class LOTRRopeBlock extends LadderBlock {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
+        // Each length goes straight into the player's inventory, or at their
+        // feet if it is full -- LOTRBlockRope used addItemStackToInventory.
         BlockPos at = pos;
         while (level.getBlockState(at).is(this)) {
-            if (!player.getAbilities().instabuild) {
-                Block.dropResources(level.getBlockState(at), level, at);
+            BlockState rope = level.getBlockState(at);
+            if (!player.getAbilities().instabuild && level instanceof ServerLevel server) {
+                for (ItemStack drop : Block.getDrops(rope, server, at, null)) {
+                    if (!player.getInventory().add(drop)) {
+                        player.drop(drop, false);
+                    }
+                }
             }
-            level.playSound(null, at, getSoundType(level.getBlockState(at)).getBreakSound(),
-                    SoundSource.BLOCKS, 1.0F, 0.8F);
+            SoundType sound = getSoundType(rope);
+            level.playSound(null, at, sound.getBreakSound(), SoundSource.BLOCKS,
+                    (sound.getVolume() + 1.0F) / 2.0F, sound.getPitch() * 0.8F);
             level.removeBlock(at, false);
             at = at.relative(step);
             if (level.isOutsideBuildHeight(at)) {

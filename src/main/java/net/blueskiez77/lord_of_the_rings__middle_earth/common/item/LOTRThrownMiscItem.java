@@ -19,15 +19,32 @@ import net.minecraft.world.level.Level;
  * mystery web. All three did the same thing in 1.7.10: bow twang, one off the
  * stack, and an EntityThrowable on its way.
  */
-public class LOTRThrownMiscItem extends Item {
+public class LOTRThrownMiscItem extends Item implements net.minecraft.world.item.ProjectileItem {
     private final BiFunction<Level, LivingEntity, ThrowableItemProjectile> factory;
     private final float power;
+    private final java.util.function.Supplier<? extends net.minecraft.world.entity.EntityType<? extends ThrowableItemProjectile>> type;
 
     public LOTRThrownMiscItem(BiFunction<Level, LivingEntity, ThrowableItemProjectile> factory, float power,
+            java.util.function.Supplier<? extends net.minecraft.world.entity.EntityType<? extends ThrowableItemProjectile>> type,
             Properties properties) {
         super(properties);
         this.factory = factory;
         this.power = power;
+        this.type = type;
+    }
+
+    /**
+     * LOTRDispenseConker, LOTRDispenseMysteryWeb, LOTRDispenseTermite: plain
+     * BehaviorProjectileDispense, whose 1.1 power and 6.0 spread are vanilla's
+     * dispenser defaults still.
+     */
+    @Override
+    public net.minecraft.world.entity.projectile.Projectile asProjectile(Level level, net.minecraft.core.Position pos,
+            ItemStack stack, net.minecraft.core.Direction direction) {
+        ThrowableItemProjectile thrown = type.get().create(level, net.minecraft.world.entity.EntitySpawnReason.DISPENSER);
+        thrown.setPos(pos.x(), pos.y(), pos.z());
+        thrown.setItem(stack.copyWithCount(1));
+        return thrown;
     }
 
     @Override

@@ -34,6 +34,17 @@ public class LOTRFarmlandBlock extends FarmlandBlock {
         }
     }
 
+    // A block set on top: vanilla updateShape schedules this tick, which turns
+    // the farmland to dirt. LOTRBlockMudFarmland.onNeighborBlockChange made it
+    // mud instead.
+    @Override
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+        super.tick(state, level, pos, random);
+        if (level.getBlockState(pos).is(Blocks.DIRT)) {
+            level.setBlockAndUpdate(pos, LOTRBlocks.MUD.defaultBlockState());
+        }
+    }
+
     @Override
     public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
         super.fallOn(level, state, pos, entity, fallDistance);

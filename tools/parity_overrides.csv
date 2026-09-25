@@ -1,0 +1,80 @@
+# Hand-confirmed rows for tools/parity_items_blocks.py.
+# old_key (unloc or unloc.meta), new_id, status (ported|missing|merged|excluded|vanilla), notes
+berryBush.0,berry_bush_blueberry,merged,bare bush is has_berries=false
+berryBush.1,berry_bush_blackberry,merged,bare bush is has_berries=false
+berryBush.2,berry_bush_raspberry,merged,bare bush is has_berries=false
+berryBush.3,berry_bush_cranberry,merged,bare bush is has_berries=false
+berryBush.4,berry_bush_elderberry,merged,bare bush is has_berries=false
+berryBush.5,berry_bush_wildberry,merged,bare bush is has_berries=false
+brick4.6,carved_black_gondor_brick,ported,Carved Black Gondor Brick (not carved_gondor_brick)
+glassBottle,bottle_block,ported,
+grapevineWhite,green_grapevine,ported,old White grapes renamed Green
+grapevineRed,red_grapevine,ported,
+coralReef,,missing,worldgen coral reef block; not the gem coral_block
+stairsStone,,vanilla?,vanilla stone stairs; fuzzy match to drystone is wrong
+slabSingleV.5,,vanilla?,vanilla stone slab; fuzzy match to drystone is wrong
+stairsStoneBrickMossy,,vanilla?,vanilla mossy stone brick stairs
+slabSingleV.0,,vanilla?,vanilla mossy stone brick slab
+slabSingle7.5,,vanilla?,vanilla red sandstone slab
+wallStoneV.1,,vanilla?,
+wallStoneV.2,,vanilla?,
+wallStoneV.4,,vanilla?,
+wallStoneV.5,,vanilla?,
+wallStoneV.6,,vanilla?,
+copper,,vanilla?,vanilla copper ingot
+mechanisedRailOn,,merged,powered state of mechanised_rail
+aleHornGoldBlock,golden_ale_horn_block,ported,
+gobletGoldBlock,golden_goblet_block,ported,
+elvenBed,galadhrim_bed,ported,
+lionBed,lion_fur_bed,ported,
+plateBlock,fine_plate,ported,
+woodPlateBlock,wooden_plate,ported,
+ceramicPlateBlock,stoneware_plate,ported,
+gobletCopperBlock,copper_goblet_block,ported,
+gobletSilverBlock,silver_goblet_block,ported,
+gobletWoodBlock,wooden_cup_block,ported,old Wooden Goblet item is named Wooden Cup
+# User decisions on vanilla? rows (2026-09-23)
+dirtPath.0,,vanilla,user confirmed vanilla duplicate
+doorAcacia,,vanilla,user confirmed vanilla duplicate
+doorBirch,,vanilla,user confirmed vanilla duplicate
+doorDarkOak,,vanilla,user confirmed vanilla duplicate
+doorJungle,,vanilla,user confirmed vanilla duplicate
+doorSpruce,,vanilla,user confirmed vanilla duplicate
+fenceGateAcacia,,vanilla,user confirmed vanilla duplicate
+fenceGateBirch,,vanilla,user confirmed vanilla duplicate
+fenceGateDarkOak,,vanilla,user confirmed vanilla duplicate
+fenceGateJungle,,vanilla,user confirmed vanilla duplicate
+fenceGateSpruce,,vanilla,user confirmed vanilla duplicate
+flowerPot,,vanilla,user confirmed vanilla duplicate
+mobSpawner,,vanilla,user confirmed vanilla duplicate
+oreCopper,,vanilla,user confirmed vanilla duplicate
+oreStorage.0,,vanilla,user confirmed vanilla duplicate
+redSandstone,,vanilla,user confirmed vanilla duplicate
+slabSingle7.5,,vanilla,user confirmed vanilla duplicate
+slabSingleV.0,,vanilla,user confirmed vanilla duplicate
+slabSingleV.4,,vanilla,user confirmed vanilla duplicate
+slabSingleV.5,,vanilla,user confirmed vanilla duplicate
+smoothStoneV.0,,vanilla,user confirmed vanilla duplicate
+stairsCobblestoneMossy,,vanilla,user confirmed vanilla duplicate
+stairsRedSandstone,,vanilla,user confirmed vanilla duplicate
+stairsStone,,vanilla,user confirmed vanilla duplicate
+stairsStoneBrickMossy,,vanilla,user confirmed vanilla duplicate
+trapdoorAcacia,,vanilla,user confirmed vanilla duplicate
+trapdoorBirch,,vanilla,user confirmed vanilla duplicate
+trapdoorDarkOak,,vanilla,user confirmed vanilla duplicate
+trapdoorJungle,,vanilla,user confirmed vanilla duplicate
+trapdoorSpruce,,vanilla,user confirmed vanilla duplicate
+wallStoneV.1,,vanilla,user confirmed vanilla duplicate
+wallStoneV.2,,vanilla,user confirmed vanilla duplicate
+wallStoneV.4,,vanilla,user confirmed vanilla duplicate
+wallStoneV.5,,vanilla,user confirmed vanilla duplicate
+wallStoneV.6,,vanilla,user confirmed vanilla duplicate
+copper,,vanilla,user confirmed vanilla duplicate
+horseArmorDiamond,diamond_horse_armor,ported,LOTR diamond horse armour (14 protection)
+horseArmorGold,,vanilla,user confirmed vanilla duplicate
+horseArmorIron,,vanilla,user confirmed vanilla duplicate
+ironNugget,,vanilla,user confirmed vanilla duplicate
+rabbitCooked,,vanilla,user confirmed vanilla duplicate
+rabbitRaw,,vanilla,user confirmed vanilla duplicate
+spawnEgg,,missing,user: keep; add with NPCs/animals (Track D)
+rhunFire,khamuls_fire,ported,fire block left by the Khamul's Fire jar (no item)

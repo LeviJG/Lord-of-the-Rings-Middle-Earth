@@ -85,11 +85,10 @@ public class LOTRHobbitOvenBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
+    // The oven's contents drop on their own (BlockEntity.preRemoveSideEffects
+    // empties any Container); this only tells comparators it has gone.
     @Override
     protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level, BlockPos pos, boolean movedByPiston) {
-        if (level.getBlockEntity(pos) instanceof LOTRHobbitOvenBlockEntity oven) {
-            Containers.dropContents(level, pos, oven);
-        }
         Containers.updateNeighboursAfterDestroy(state, level, pos);
     }
 

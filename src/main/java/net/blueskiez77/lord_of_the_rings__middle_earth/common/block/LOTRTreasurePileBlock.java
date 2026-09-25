@@ -103,9 +103,12 @@ public class LOTRTreasurePileBlock extends FallingBlock {
                 : Shapes.empty();
     }
 
-    /** canBlockStay: it needs a solid face beneath it. */
-    @Override
-    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    /**
+     * canBlockStay: a solid face beneath. Only the tick asks it -- placement
+     * does not (canPlaceBlockAt was the default), so a pile can be put down
+     * over air and then falls.
+     */
+    private static boolean hasFloor(LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
         return level.getBlockState(below).isFaceSturdy(level, below, Direction.UP);
     }
@@ -175,8 +178,9 @@ public class LOTRTreasurePileBlock extends FallingBlock {
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        // updateTick: fall if it can, otherwise break if it has lost its floor.
-        if (!canSurvive(state, level, pos)) {
+        // updateTick: tryFall first; only a pile that can neither fall nor
+        // stand breaks. FallingBlock.tick does the falling.
+        if (!isFree(level.getBlockState(pos.below())) && !hasFloor(level, pos)) {
             level.destroyBlock(pos, true);
             return;
         }

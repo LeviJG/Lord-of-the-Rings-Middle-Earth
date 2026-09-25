@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentMessages;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.minecraft.core.BlockPos;
@@ -52,7 +52,7 @@ public class LOTRQuenditeCrystalItem extends Item {
                         x, pos.getY() + 1.5, z, 8, 0.25, 0.0, 0.25, 0.0);
             } else {
                 level.sendParticles(ParticleTypes.SMOKE, x, pos.getY() + 1.0, z, 8, 0.25, 0.0, 0.25, 0.0);
-                LOTRAlignmentMessages.notifyAlignmentNotHighEnough(player, 1.0f,
+                LOTRAlignmentValues.notifyAlignmentNotHighEnough(player, 1.0f,
                         LOTRFaction.LOTHLORIEN, LOTRFaction.HIGH_ELF);
             }
         }

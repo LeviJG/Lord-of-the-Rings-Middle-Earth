@@ -1,0 +1,2503 @@
+old_package,old_class,new_class,status,notes
+client,LOTRAlignmentTicker,,missing,
+client,LOTRAttackTiming,,missing,
+client,LOTRClientProxy,,referenced,named in: LOTRModClient
+client,LOTREntityRenderer,,missing,
+client,LOTRGuiHandler,,missing,
+client,LOTRItemRendererManager,,missing,
+client,LOTRKeyHandler,,missing,
+client,LOTRReflectionClient,,missing,
+client,LOTRSpeechClient,,missing,
+client,LOTRTextBody,,missing,
+client,LOTRTextures,,missing,
+client,LOTRTickHandlerClient,,referenced,named in: LOTRDrunkCamera LOTRModClient
+client.fx,LOTREffectRenderer,,missing,
+client.fx,LOTREntityAlignmentBonus,,missing,
+client.fx,LOTREntityAngryFX,,missing,
+client.fx,LOTREntityBlueFlameFX,,missing,
+client.fx,LOTREntityBossSpawnFX,,missing,
+client.fx,LOTREntityChillFX,,missing,
+client.fx,LOTREntityDeadMarshFace,,missing,
+client.fx,LOTREntityElvenGlowFX,,missing,
+client.fx,LOTREntityGandalfFireballExplodeFX,,referenced,named in: LOTRGandalfFireballEntity
+client.fx,LOTREntityLargeBlockFX,,missing,
+client.fx,LOTREntityLeafFX,,missing,
+client.fx,LOTREntityMTCHealFX,,missing,
+client.fx,LOTREntityMallornEntHealFX,,missing,
+client.fx,LOTREntityMallornEntSummonFX,,missing,
+client.fx,LOTREntityMarshFlameFX,,missing,
+client.fx,LOTREntityMarshLightFX,,missing,
+client.fx,LOTREntityMorgulPortalFX,,missing,
+client.fx,LOTREntityMusicFX,,missing,
+client.fx,LOTREntityPickpocketFX,,missing,
+client.fx,LOTREntityPickpocketFailFX,,missing,
+client.fx,LOTREntityQuenditeSmokeFX,,missing,
+client.fx,LOTREntityRiverWaterFX,,missing,
+client.fx,LOTREntitySwordCommandMarker,,missing,
+client.fx,LOTREntityUtumnoKillFX,,missing,
+client.fx,LOTREntityWaveFX,,missing,
+client.fx,LOTREntityWhiteSmokeFX,,missing,
+client.gui,LOTRGuiAchievementHoverEvent,,missing,
+client.gui,LOTRGuiAchievements,,missing,
+client.gui,LOTRGuiAlignmentChoices,,missing,
+client.gui,LOTRGuiAlloyForge,,referenced,named in: LOTRForgeScreen
+client.gui,LOTRGuiAnvil,,missing,
+client.gui,LOTRGuiArmorStand,,excluded,
+client.gui,LOTRGuiBanner,LOTRBannerBlock LOTRBannerBlockEntity LOTRBannerRenderState LOTRBannerRenderer LOTRBannerModel,ported,
+client.gui,LOTRGuiBannerButton,,missing,
+client.gui,LOTRGuiBarrel,LOTRBarrelScreen,ported,
+client.gui,LOTRGuiBeacon,LOTRBeaconScreen,ported,
+client.gui,LOTRGuiBookshelf,,missing,
+client.gui,LOTRGuiBrandingIron,,missing,
+client.gui,LOTRGuiButtonAchievements,,missing,
+client.gui,LOTRGuiButtonBanner,,missing,
+client.gui,LOTRGuiButtonBannerWhitelistSlots,,missing,
+client.gui,LOTRGuiButtonCoinExchange,,missing,
+client.gui,LOTRGuiButtonFactionsMap,,missing,
+client.gui,LOTRGuiButtonFactionsPage,,missing,
+client.gui,LOTRGuiButtonFsInvites,,missing,
+client.gui,LOTRGuiButtonFsOption,,missing,
+client.gui,LOTRGuiButtonLeftRight,,missing,
+client.gui,LOTRGuiButtonLock,,missing,
+client.gui,LOTRGuiButtonMenu,,missing,
+client.gui,LOTRGuiButtonOptions,,missing,
+client.gui,LOTRGuiButtonPledge,,missing,
+client.gui,LOTRGuiButtonRedBook,,missing,
+client.gui,LOTRGuiButtonReforge,,missing,
+client.gui,LOTRGuiButtonRestockPouch,,missing,
+client.gui,LOTRGuiButtonShieldsArrows,,missing,
+client.gui,LOTRGuiChestWithPouch,,missing,
+client.gui,LOTRGuiCoinExchange,,missing,
+client.gui,LOTRGuiCraftingTable,LOTRCraftingTableBlock LOTRCraftingTable,ported,
+client.gui,LOTRGuiDaleCracker,LOTRDaleCrackerScreen,ported,
+client.gui,LOTRGuiDownloadTerrain,,missing,
+client.gui,LOTRGuiEditSign,,referenced,named in: LOTRCarvedSignEditScreen
+client.gui,LOTRGuiFactions,LOTRScreenFactions,ported,
+client.gui,LOTRGuiFastTravel,,missing,
+client.gui,LOTRGuiFellowships,,missing,
+client.gui,LOTRGuiGollum,,missing,
+client.gui,LOTRGuiHireBase,,base,extended by: LOTRGuiMercenaryHire LOTRGuiUnitTrade
+client.gui,LOTRGuiHiredDismiss,,missing,
+client.gui,LOTRGuiHiredFarmer,,missing,
+client.gui,LOTRGuiHiredFarmerInventory,,missing,
+client.gui,LOTRGuiHiredInteract,,missing,
+client.gui,LOTRGuiHiredNPC,,base,extended by: LOTRGuiHiredFarmer LOTRGuiHiredWarrior
+client.gui,LOTRGuiHiredWarrior,,missing,
+client.gui,LOTRGuiHiredWarriorInventory,,missing,
+client.gui,LOTRGuiHobbitOven,LOTRHobbitOvenScreen,ported,
+client.gui,LOTRGuiHornSelect,LOTRHornSelectScreen,ported,
+client.gui,LOTRGuiMainMenu,,missing,
+client.gui,LOTRGuiMap,,missing,
+client.gui,LOTRGuiMapWidget,,missing,
+client.gui,LOTRGuiMenu,,missing,
+client.gui,LOTRGuiMenuBase,,base,extended by: LOTRGuiAchievements LOTRGuiFactions LOTRGuiFellowships LOTRGuiMap LOTRGuiOptions LOTRGuiShields ...
+client.gui,LOTRGuiMercenaryHire,,missing,
+client.gui,LOTRGuiMercenaryInteract,,missing,
+client.gui,LOTRGuiMessage,,missing,
+client.gui,LOTRGuiMillstone,LOTRMillstoneScreen,ported,
+client.gui,LOTRGuiMiniquestOffer,,missing,
+client.gui,LOTRGuiMiniquestTracker,,missing,
+client.gui,LOTRGuiMobSpawner,,missing,
+client.gui,LOTRGuiMountInventory,,missing,
+client.gui,LOTRGuiNPCInteract,,base,extended by: LOTRGuiHiredDismiss LOTRGuiHiredInteract LOTRGuiTradeInteract LOTRGuiUnitTradeInteract
+client.gui,LOTRGuiNPCMountInventory,,missing,
+client.gui,LOTRGuiNPCRespawner,,missing,
+client.gui,LOTRGuiNotificationDisplay,,missing,
+client.gui,LOTRGuiOptions,,missing,
+client.gui,LOTRGuiPouch,,excluded,
+client.gui,LOTRGuiRedBook,,missing,
+client.gui,LOTRGuiRendererMap,,missing,
+client.gui,LOTRGuiScreenBase,,base,extended by: LOTRGuiAlignmentChoices LOTRGuiBanner LOTRGuiBeacon LOTRGuiBrandingIron LOTRGuiFastTravel LOTRGuiHiredNPC ...
+client.gui,LOTRGuiScrollPane,,missing,
+client.gui,LOTRGuiShields,,missing,
+client.gui,LOTRGuiSlider,,missing,
+client.gui,LOTRGuiSquadronItem,,referenced,named in: LOTRHornSelectScreen
+client.gui,LOTRGuiTitles,,missing,
+client.gui,LOTRGuiTrade,,missing,
+client.gui,LOTRGuiTradeButton,,missing,
+client.gui,LOTRGuiTradeInteract,,missing,
+client.gui,LOTRGuiTradeUnitTradeInteract,,missing,
+client.gui,LOTRGuiUnitTrade,,missing,
+client.gui,LOTRGuiUnitTradeButton,,missing,
+client.gui,LOTRGuiUnitTradeInteract,,missing,
+client.gui,LOTRGuiUnsmeltery,LOTRUnsmelteryScreen,ported,
+client.gui,LOTRMapLabels,,missing,
+client.gui.config,LOTRGuiConfig,,missing,
+client.gui.config,LOTRGuiFactory,,missing,
+client.model,LOTRArmorModels,,referenced,named in: LOTRArmorRenderers LOTRArnorHelmetModel LOTRBlackNumenoreanHelmetModel LOTRDorwinionElvenHelmetModel ...
+client.model,LOTRModelAleHorn,,referenced,named in: LOTRVesselModels
+client.model,LOTRModelArmorStand,,excluded,
+client.model,LOTRModelArnorHelmet,LOTRArnorHelmetModel,ported,
+client.model,LOTRModelAurochs,,missing,
+client.model,LOTRModelBalrog,,missing,
+client.model,LOTRModelBanner,LOTRBannerModel,ported,
+client.model,LOTRModelBannerWall,LOTRWallBannerBlock,ported,
+client.model,LOTRModelBarrowWight,,missing,
+client.model,LOTRModelBeacon,LOTRBeaconBlock LOTRBeaconBlockEntity LOTRBeaconScreen,ported,
+client.model,LOTRModelBear,,missing,
+client.model,LOTRModelBearRug,,missing,
+client.model,LOTRModelBiped,,referenced,named in: LOTRGondorHelmetModel
+client.model,LOTRModelBird,,missing,
+client.model,LOTRModelBlackNumenoreanHelmet,LOTRBlackNumenoreanHelmetModel,ported,
+client.model,LOTRModelBlackUrukHelmet,,missing,
+client.model,LOTRModelBlock,,missing,
+client.model,LOTRModelBoar,,missing,
+client.model,LOTRModelButterfly,,missing,
+client.model,LOTRModelCamel,,missing,
+client.model,LOTRModelCompass,,missing,
+client.model,LOTRModelCrocodile,,missing,
+client.model,LOTRModelDeer,,missing,
+client.model,LOTRModelDikDik,,missing,
+client.model,LOTRModelDorwinionElfHelmet,,referenced,named in: LOTRDorwinionElvenHelmetModel
+client.model,LOTRModelDwarf,,missing,
+client.model,LOTRModelEasterlingHelmet,LOTREasterlingHelmetModel,ported,
+client.model,LOTRModelElf,,missing,
+client.model,LOTRModelElk,,missing,
+client.model,LOTRModelEnt,,referenced,named in: LOTREntTrunkModel
+client.model,LOTRModelFish,,missing,
+client.model,LOTRModelFlamingo,,missing,
+client.model,LOTRModelGaladhrimHelmet,LOTRGaladhrimHelmetModel,ported,
+client.model,LOTRModelGemsbok,,missing,
+client.model,LOTRModelGemsbokHelmet,LOTRGemsbokHelmetModel,ported,
+client.model,LOTRModelGiraffe,,missing,
+client.model,LOTRModelGiraffeRug,,missing,
+client.model,LOTRModelGlassBottle,,referenced,named in: LOTRVesselModels
+client.model,LOTRModelGoblet,,referenced,named in: LOTRVesselModels
+client.model,LOTRModelGollum,,missing,
+client.model,LOTRModelGondolinHelmet,LOTRGondolinHelmetModel,ported,
+client.model,LOTRModelGondorHelmet,LOTRGondorHelmetModel,ported,
+client.model,LOTRModelGulfChestplate,,referenced,named in: LOTRGulfenChestplateModel
+client.model,LOTRModelGundabadUrukHelmet,LOTRGundabadUrukHelmetModel,ported,
+client.model,LOTRModelHalfTroll,,missing,
+client.model,LOTRModelHaradRobes,,missing,
+client.model,LOTRModelHaradTurban,,missing,
+client.model,LOTRModelHarnedorChestplate,,referenced,named in: LOTRHarnennorChestplateModel
+client.model,LOTRModelHarnedorHelmet,,referenced,named in: LOTRHarnennorHelmetModel
+client.model,LOTRModelHeadPlate,LOTRPlateHeadRenderer,ported,
+client.model,LOTRModelHighElvenHelmet,,referenced,named in: LOTRArmorRenderers LOTRLindonHelmetModel
+client.model,LOTRModelHobbit,,missing,
+client.model,LOTRModelHuman,,missing,
+client.model,LOTRModelHuorn,,missing,
+client.model,LOTRModelKebabStand,LOTRKebabStandModel,ported,
+client.model,LOTRModelLeatherHat,,missing,
+client.model,LOTRModelLion,,missing,
+client.model,LOTRModelLionOld,,missing,
+client.model,LOTRModelLionRug,,missing,
+client.model,LOTRModelMallornEntTrophy,,missing,
+client.model,LOTRModelMarshWraith,,missing,
+client.model,LOTRModelMidge,,missing,
+client.model,LOTRModelMoredainLionHelmet,,referenced,named in: LOTRMorwaithChieftainHelmetModel
+client.model,LOTRModelMorgulHelmet,LOTRMorgulHelmetModel,ported,
+client.model,LOTRModelMug,LOTRMugBlock LOTRMugBlockEntity LOTRMugRenderState LOTRMugRenderer,ported,
+client.model,LOTRModelNearHaradWarlordHelmet,,referenced,named in: LOTRSouthronChampionHelmetModel
+client.model,LOTRModelOrc,,missing,
+client.model,LOTRModelPartyHat,,missing,
+client.model,LOTRModelPortal,,missing,
+client.model,LOTRModelRabbit,,missing,
+client.model,LOTRModelRhino,,missing,
+client.model,LOTRModelRohanMarshalHelmet,,referenced,named in: LOTRRohirricMarshalHelmetModel
+client.model,LOTRModelSauron,,missing,
+client.model,LOTRModelScorpion,,missing,
+client.model,LOTRModelSkeleton,,missing,
+client.model,LOTRModelSkullCup,,referenced,named in: LOTRVesselModels
+client.model,LOTRModelSmokeShip,,missing,
+client.model,LOTRModelSpider,,missing,
+client.model,LOTRModelSwan,,missing,
+client.model,LOTRModelSwanChestplate,,missing,
+client.model,LOTRModelSwanHelmet,LOTRSwanHelmetModel,ported,
+client.model,LOTRModelTauredainChieftainHelmet,,referenced,named in: LOTRTaurethrimChieftainHelmetModel
+client.model,LOTRModelTauredainGoldHelmet,,referenced,named in: LOTRGoldenTaurethrimHelmetModel
+client.model,LOTRModelTermite,,missing,
+client.model,LOTRModelTroll,LOTRTrollModel,ported,
+client.model,LOTRModelTrollTotem,LOTRTrollTotemModel,ported,
+client.model,LOTRModelUmbarHelmet,,referenced,named in: LOTRUmbaricHelmetModel
+client.model,LOTRModelUnsmeltery,LOTRUnsmelteryModel,ported,
+client.model,LOTRModelUrukHelmet,LOTRUrukHelmetModel,ported,
+client.model,LOTRModelWarg,,missing,
+client.model,LOTRModelWargskinRug,,missing,
+client.model,LOTRModelWeaponRack,LOTRWeaponRackModel,ported,
+client.model,LOTRModelWineGlass,,referenced,named in: LOTRVesselModels
+client.model,LOTRModelWingedHelmet,,referenced,named in: LOTRGondorWingedHelmetModel
+client.model,LOTRModelWizardHat,,missing,
+client.render,LOTRBufferedImageIcon,,missing,
+client.render,LOTRCloudRenderer,,missing,
+client.render,LOTRConnectedTextures,,referenced,named in: LOTRConnectedBorder LOTRConnectedBorderSpriteSource LOTRGateBorders LOTRGateModel
+client.render,LOTRDrinkIcons,,missing,
+client.render,LOTRRenderBlocks,LOTRBlocks,ported,
+client.render,LOTRRenderNorthernLights,,missing,
+client.render,LOTRRenderPlayer,,missing,
+client.render,LOTRRenderShield,,missing,
+client.render,LOTRSkyRenderer,,missing,
+client.render,LOTRWeatherRenderer,,missing,
+client.render.entity,LOTRGlowingEyes,,missing,
+client.render.entity,LOTRHuornTextures,,missing,
+client.render.entity,LOTRNPCRendering,,missing,
+client.render.entity,LOTRRandomSkins,,missing,
+client.render.entity,LOTRRenderAlignmentBonus,,missing,
+client.render.entity,LOTRRenderAngmarHillman,,missing,
+client.render.entity,LOTRRenderArrowPoisoned,LOTRPoisonedArrowRenderer,ported,
+client.render.entity,LOTRRenderAurochs,,missing,
+client.render.entity,LOTRRenderBalrog,,missing,
+client.render.entity,LOTRRenderBandit,,missing,
+client.render.entity,LOTRRenderBanner,LOTRBannerRenderer,ported,
+client.render.entity,LOTRRenderBannerWall,LOTRWallBannerBlock,ported,
+client.render.entity,LOTRRenderBarrowWight,,missing,
+client.render.entity,LOTRRenderBear,,missing,
+client.render.entity,LOTRRenderBearRug,,missing,
+client.render.entity,LOTRRenderBiped,,base,extended by: LOTRRenderAngmarHillman LOTRRenderBandit LOTRRenderBarrowWight LOTRRenderBlacksmith LOTRRenderBreeMan LOTRRenderDaleMan ...
+client.render.entity,LOTRRenderBird,,missing,
+client.render.entity,LOTRRenderBlacksmith,,missing,
+client.render.entity,LOTRRenderBossTrophy,LOTRBossTrophyRenderer,ported,
+client.render.entity,LOTRRenderBreeMan,,missing,
+client.render.entity,LOTRRenderBreeRuffian,,missing,
+client.render.entity,LOTRRenderBreeTrader,,missing,
+client.render.entity,LOTRRenderButterfly,,missing,
+client.render.entity,LOTRRenderCamel,,missing,
+client.render.entity,LOTRRenderCrocodile,,missing,
+client.render.entity,LOTRRenderCrossbowBolt,LOTRCrossbowBoltRenderer,ported,
+client.render.entity,LOTRRenderDaleMan,,missing,
+client.render.entity,LOTRRenderDaleTrader,,missing,
+client.render.entity,LOTRRenderDart,LOTRDartRenderer,ported,
+client.render.entity,LOTRRenderDeadMarshFace,,missing,
+client.render.entity,LOTRRenderDeer,,missing,
+client.render.entity,LOTRRenderDikDik,,missing,
+client.render.entity,LOTRRenderDorwinionElfVintner,,missing,
+client.render.entity,LOTRRenderDorwinionMan,,missing,
+client.render.entity,LOTRRenderDunedain,,missing,
+client.render.entity,LOTRRenderDunedainTrader,,missing,
+client.render.entity,LOTRRenderDunlending,,missing,
+client.render.entity,LOTRRenderDunlendingBase,,missing,
+client.render.entity,LOTRRenderDwarf,,missing,
+client.render.entity,LOTRRenderDwarfCommander,,missing,
+client.render.entity,LOTRRenderDwarfSmith,,missing,
+client.render.entity,LOTRRenderEasterling,,missing,
+client.render.entity,LOTRRenderEasterlingTrader,,missing,
+client.render.entity,LOTRRenderElf,,missing,
+client.render.entity,LOTRRenderElk,,missing,
+client.render.entity,LOTRRenderElvenSmith,,missing,
+client.render.entity,LOTRRenderElvenTrader,,missing,
+client.render.entity,LOTRRenderEnt,,missing,
+client.render.entity,LOTRRenderEntityBarrel,LOTRBarrelItem LOTRBarrelBlock LOTRBarrelMenu LOTRBarrelBlockEntity LOTRBarrelScreen,ported,
+client.render.entity,LOTRRenderFallingCoinPile,,missing,
+client.render.entity,LOTRRenderFallingFireJar,,missing,
+client.render.entity,LOTRRenderFish,,missing,
+client.render.entity,LOTRRenderFlamingo,,missing,
+client.render.entity,LOTRRenderGaladhrimWarden,,missing,
+client.render.entity,LOTRRenderGandalf,,missing,
+client.render.entity,LOTRRenderGandalfFireball,LOTRGandalfFireballEntity,ported,
+client.render.entity,LOTRRenderGemsbok,,missing,
+client.render.entity,LOTRRenderGiraffe,,missing,
+client.render.entity,LOTRRenderGiraffeRug,,missing,
+client.render.entity,LOTRRenderGollum,,missing,
+client.render.entity,LOTRRenderGondorMan,,missing,
+client.render.entity,LOTRRenderGondorRenegade,,missing,
+client.render.entity,LOTRRenderGondorTrader,,missing,
+client.render.entity,LOTRRenderHalfTroll,,missing,
+client.render.entity,LOTRRenderHalfTrollScavenger,,missing,
+client.render.entity,LOTRRenderHaradSlave,,missing,
+client.render.entity,LOTRRenderHaradrimTrader,,missing,
+client.render.entity,LOTRRenderHobbit,,missing,
+client.render.entity,LOTRRenderHobbitTrader,,missing,
+client.render.entity,LOTRRenderHorse,,missing,
+client.render.entity,LOTRRenderHuorn,,missing,
+client.render.entity,LOTRRenderInvasionSpawner,,missing,
+client.render.entity,LOTRRenderKineAraw,,missing,
+client.render.entity,LOTRRenderLion,,missing,
+client.render.entity,LOTRRenderLionRug,,missing,
+client.render.entity,LOTRRenderMallornEnt,,missing,
+client.render.entity,LOTRRenderMallornLeafBomb,,missing,
+client.render.entity,LOTRRenderMarshWraith,,missing,
+client.render.entity,LOTRRenderMidges,,missing,
+client.render.entity,LOTRRenderMirkTroll,,missing,
+client.render.entity,LOTRRenderMirkwoodSpider,,missing,
+client.render.entity,LOTRRenderMordorSpider,,missing,
+client.render.entity,LOTRRenderMoredain,,missing,
+client.render.entity,LOTRRenderMountainTroll,,missing,
+client.render.entity,LOTRRenderMountainTrollChieftain,,missing,
+client.render.entity,LOTRRenderNPCRespawner,,missing,
+client.render.entity,LOTRRenderNearHaradTrader,,missing,
+client.render.entity,LOTRRenderNearHaradrim,,missing,
+client.render.entity,LOTRRenderNearHaradrimWarlord,,missing,
+client.render.entity,LOTRRenderNurnSlave,,missing,
+client.render.entity,LOTRRenderOlogHai,,missing,
+client.render.entity,LOTRRenderOrc,,missing,
+client.render.entity,LOTRRenderOrcBomb,LOTROrcBombBlock LOTROrcBombEntity,ported,
+client.render.entity,LOTRRenderPlate,LOTRPlateEntityRenderer LOTRPlateRenderer,ported,
+client.render.entity,LOTRRenderPortal,,missing,
+client.render.entity,LOTRRenderRabbit,,missing,
+client.render.entity,LOTRRenderRanger,,missing,
+client.render.entity,LOTRRenderRhino,,missing,
+client.render.entity,LOTRRenderRohanTrader,,missing,
+client.render.entity,LOTRRenderRohirrim,,missing,
+client.render.entity,LOTRRenderRugBase,,base,extended by: LOTRRenderBearRug LOTRRenderGiraffeRug LOTRRenderLionRug LOTRRenderWargskinRug
+client.render.entity,LOTRRenderSaruman,,missing,
+client.render.entity,LOTRRenderSauron,,missing,
+client.render.entity,LOTRRenderScorpion,,missing,
+client.render.entity,LOTRRenderScrapTrader,,missing,
+client.render.entity,LOTRRenderShirePony,,missing,
+client.render.entity,LOTRRenderSkeleton,,missing,
+client.render.entity,LOTRRenderSmokeRing,,missing,
+client.render.entity,LOTRRenderSnowTroll,,missing,
+client.render.entity,LOTRRenderSpear,,missing,
+client.render.entity,LOTRRenderSpiderBase,,base,extended by: LOTRRenderMirkwoodSpider LOTRRenderMordorSpider LOTRRenderUtumnoIceSpider
+client.render.entity,LOTRRenderStoneTroll,LOTRStoneTrollRenderer,ported,
+client.render.entity,LOTRRenderSwan,,missing,
+client.render.entity,LOTRRenderSwanKnight,,missing,
+client.render.entity,LOTRRenderSwordCommandMarker,,missing,
+client.render.entity,LOTRRenderTauredain,,missing,
+client.render.entity,LOTRRenderTauredainShaman,,missing,
+client.render.entity,LOTRRenderTermite,,missing,
+client.render.entity,LOTRRenderThrowingAxe,LOTRThrowingAxeRenderer,ported,
+client.render.entity,LOTRRenderThrownRock,,missing,
+client.render.entity,LOTRRenderTraderRespawn,,missing,
+client.render.entity,LOTRRenderTroll,LOTRTrollModel,ported,
+client.render.entity,LOTRRenderUtumnoIceSpider,,missing,
+client.render.entity,LOTRRenderUtumnoTroll,,missing,
+client.render.entity,LOTRRenderWarg,,missing,
+client.render.entity,LOTRRenderWargskinRug,,missing,
+client.render.entity,LOTRRenderWhiteOryx,,missing,
+client.render.entity,LOTRRenderWickedDwarf,,missing,
+client.render.entity,LOTRRenderWildBoar,,missing,
+client.render.entity,LOTRRenderWraithBall,,missing,
+client.render.entity,LOTRRenderZebra,,missing,
+client.render.entity,LOTRSwingHandler,,missing,
+client.render.item,LOTRRenderBannerItem,LOTRBannerRenderer,ported,
+client.render.item,LOTRRenderBlownItem,,missing,
+client.render.item,LOTRRenderBow,LOTRBowItem,ported,
+client.render.item,LOTRRenderCrossbow,LOTRCrossbowItem,ported,
+client.render.item,LOTRRenderElvenBlade,,referenced,named in: LOTRItems
+client.render.item,LOTRRenderInvTableCommand,,missing,
+client.render.item,LOTRRenderLargeItem,,referenced,named in: LOTRItemModelProperties LOTRTridentItem
+client.render.item,LOTRRenderSkullStaff,,missing,
+client.render.tileentity,LOTRRenderAnimalJar,LOTRAnimalJarRenderer,ported,
+client.render.tileentity,LOTRRenderArmorStand,,excluded,
+client.render.tileentity,LOTRRenderBeacon,LOTRBeaconBlock LOTRBeaconBlockEntity LOTRBeaconScreen,ported,
+client.render.tileentity,LOTRRenderChest,LOTRChestRenderer,ported,
+client.render.tileentity,LOTRRenderCommandTable,,missing,
+client.render.tileentity,LOTRRenderDartTrap,LOTRDartTrapBlock LOTRDartTrapBlockEntity,ported,
+client.render.tileentity,LOTRRenderDwarvenDoor,LOTRDwarvenDoorBlock LOTRDwarvenDoorBlockEntity,ported,
+client.render.tileentity,LOTRRenderDwarvenGlow,,missing,
+client.render.tileentity,LOTRRenderElvenPortal,,missing,
+client.render.tileentity,LOTRRenderEntJar,LOTREntJarRenderer,ported,
+client.render.tileentity,LOTRRenderGuldurilGlow,,missing,
+client.render.tileentity,LOTRRenderKebabStand,LOTRKebabStandRenderer,ported,
+client.render.tileentity,LOTRRenderMorgulPortal,,missing,
+client.render.tileentity,LOTRRenderMug,LOTRMugRenderer,ported,
+client.render.tileentity,LOTRRenderPlateFood,,referenced,named in: LOTRPlateRenderer
+client.render.tileentity,LOTRRenderSignCarved,LOTRCarvedSignRenderer,ported,
+client.render.tileentity,LOTRRenderSignCarvedIthildin,,referenced,named in: LOTRCarvedSignRenderer
+client.render.tileentity,LOTRRenderSpawnerChest,,missing,
+client.render.tileentity,LOTRRenderTrollTotem,LOTRTrollTotemRenderer,ported,
+client.render.tileentity,LOTRRenderUnsmeltery,LOTRUnsmelteryRenderer,ported,
+client.render.tileentity,LOTRRenderUtumnoPortal,,missing,
+client.render.tileentity,LOTRRenderUtumnoReturnPortal,LOTRUtumnoReturnPortalBaseBlock,ported,
+client.render.tileentity,LOTRRenderWeaponRack,LOTRWeaponRackRenderer,ported,
+client.render.tileentity,LOTRTileEntityMobSpawnerRenderer,,missing,
+client.sound,LOTRAmbience,,missing,
+client.sound,LOTRMusic,,missing,
+client.sound,LOTRMusicCategory,,missing,
+client.sound,LOTRMusicResourceManager,,missing,
+client.sound,LOTRMusicTicker,,missing,
+client.sound,LOTRMusicTrack,,missing,
+client.sound,LOTRRegionTrackPool,,missing,
+client.sound,LOTRTrackRegionInfo,,missing,
+client.sound,LOTRTrackSorter,,missing,
+common,LOTRAchievement,,referenced,named in: LOTRDwarvenDoorBlock
+common,LOTRAchievementRank,,missing,
+common,LOTRBannerProtection,,referenced,named in: LOTRBalrogWhipItem
+common,LOTRCapes,,missing,
+common,LOTRChatEvents,,missing,
+common,LOTRCommonProxy,,referenced,named in: LOTRDartTrapBlock LOTRDartTrapBlockEntity
+common,LOTRConfig,,missing,
+common,LOTRConfigBiomeID,,missing,
+common,LOTRCreativeTabs,LOTRCreativeTabs,ported,
+common,LOTRDamage,,referenced,named in: LOTRDamageTypes
+common,LOTRDate,,missing,
+common,LOTRDimension,LOTRDimension,ported,
+common,LOTRDrunkenSpeech,,missing,
+common,LOTREventHandler,,referenced,named in: LOTRItems LOTRMechanisedRailBlock LOTRPlayerMixin LOTRPoisonedArrowEntity ...
+common,LOTRFoods,,missing,
+common,LOTRGreyWandererTracker,,missing,
+common,LOTRGuiMessageTypes,,missing,
+common,LOTRInterModComms,,missing,
+common,LOTRLevelData,,missing,
+common,LOTRLore,,missing,
+common,LOTRMod,LOTRMod,ported,
+common,LOTRModInfo,,missing,
+common,LOTRNetHandlerPlayServer,,missing,
+common,LOTROptions,,missing,
+common,LOTRPatron,,missing,
+common,LOTRPlayerData,,referenced,named in: LOTRAlcoholTolerance LOTRPlayerAlignments
+common,LOTRPlayerQuestData,,missing,
+common,LOTRPotionChanges,,missing,
+common,LOTRReflection,,missing,
+common,LOTRShields,,missing,
+common,LOTRSpawnDamping,,missing,
+common,LOTRSquadrons,,referenced,named in: LOTRCommandHornItem LOTRHornSelectScreen
+common,LOTRTickHandlerServer,,missing,
+common,LOTRTime,,missing,
+common,LOTRTitle,,missing,
+common,LOTRTranslatorList,,missing,
+common,RenewedBuildContestEntrants,,missing,
+common.block,LOTRBlockAleHorn,,absorbed,backs 2 field(s): aleHornBlock aleHornGoldBlock
+common.block,LOTRBlockAlloyForge,,absorbed,backs 1 field(s): alloyForge
+common.block,LOTRBlockAngmarTable,,absorbed,backs 1 field(s): angmarTable
+common.block,LOTRBlockAnimalJar,LOTRAnimalJarBlock,ported,
+common.block,LOTRBlockArmorStand,,excluded,
+common.block,LOTRBlockBanana,,absorbed,backs 1 field(s): bananaBlock
+common.block,LOTRBlockBarrel,LOTRBarrelBlock,ported,
+common.block,LOTRBlockBars,,absorbed,backs 11 field(s): blueDwarfBars bronzeBars dwarfBars galadhrimBars goldBars highElfBars ...
+common.block,LOTRBlockBeacon,LOTRBeaconBlock,ported,
+common.block,LOTRBlockBed,LOTRBedBlock,ported,
+common.block,LOTRBlockBerryBush,LOTRBerryBushBlock,ported,
+common.block,LOTRBlockBirdCage,,absorbed,backs 1 field(s): birdCage
+common.block,LOTRBlockBirdCageWood,,absorbed,backs 1 field(s): birdCageWood
+common.block,LOTRBlockBlackroot,,absorbed,backs 1 field(s): blackroot
+common.block,LOTRBlockBlueDwarvenTable,,absorbed,backs 1 field(s): blueDwarvenTable
+common.block,LOTRBlockBone,,absorbed,backs 1 field(s): boneBlock
+common.block,LOTRBlockBookshelfStorage,,missing,backs 1 field(s): bookshelfStorage
+common.block,LOTRBlockBreeTable,,absorbed,backs 1 field(s): breeTable
+common.block,LOTRBlockBrick,,absorbed,backs 1 field(s): brick
+common.block,LOTRBlockBrick2,,absorbed,backs 1 field(s): brick2
+common.block,LOTRBlockBrick3,,absorbed,backs 1 field(s): brick3
+common.block,LOTRBlockBrick4,,partial,backs 1 field(s): brick4
+common.block,LOTRBlockBrick5,,absorbed,backs 1 field(s): brick5
+common.block,LOTRBlockBrick6,,absorbed,backs 1 field(s): brick6
+common.block,LOTRBlockBrickBase,,base,extended by: LOTRBlockBrick LOTRBlockBrick2 LOTRBlockBrick3 LOTRBlockBrick4 LOTRBlockBrick5 LOTRBlockBrick6 ...
+common.block,LOTRBlockButterflyJar,,absorbed,backs 1 field(s): butterflyJar
+common.block,LOTRBlockButton,,absorbed,backs 6 field(s): buttonBlueRock buttonChalk buttonGondorRock buttonMordorRock buttonRedRock buttonRohanRock
+common.block,LOTRBlockChandelier,LOTRChandelierBlock,ported,
+common.block,LOTRBlockChest,LOTRChestBlock,ported,
+common.block,LOTRBlockClayMug,,absorbed,backs 1 field(s): ceramicMugBlock
+common.block,LOTRBlockClayTile,,absorbed,backs 1 field(s): clayTile
+common.block,LOTRBlockClayTileDyed,,absorbed,backs 1 field(s): clayTileDyed
+common.block,LOTRBlockClover,,absorbed,backs 1 field(s): clover
+common.block,LOTRBlockCobblebrick,,absorbed,backs 1 field(s): cobblebrick
+common.block,LOTRBlockCommandTable,,absorbed,backs 1 field(s): commandTable
+common.block,LOTRBlockCoralReef,,missing,backs 1 field(s): coralReef
+common.block,LOTRBlockCorn,LOTRCornBlock,ported,
+common.block,LOTRBlockCorruptMallorn,,absorbed,backs 1 field(s): corruptMallorn
+common.block,LOTRBlockCraftingTable,LOTRCraftingTableBlock,ported,
+common.block,LOTRBlockDaleTable,,absorbed,backs 1 field(s): daleTable
+common.block,LOTRBlockDartTrap,LOTRDartTrapBlock,ported,
+common.block,LOTRBlockDate,,absorbed,backs 1 field(s): dateBlock
+common.block,LOTRBlockDaub,,absorbed,backs 1 field(s): daub
+common.block,LOTRBlockDeadPlant,,absorbed,backs 1 field(s): deadPlant
+common.block,LOTRBlockDirtPath,,absorbed,backs 1 field(s): dirtPath
+common.block,LOTRBlockDolAmrothTable,,absorbed,backs 1 field(s): dolAmrothTable
+common.block,LOTRBlockDolGuldurTable,,absorbed,backs 1 field(s): dolGuldurTable
+common.block,LOTRBlockDoor,,absorbed,backs 44 field(s): doorAcacia doorAlmond doorApple doorAspen doorBanana doorBaobab ...
+common.block,LOTRBlockDorwinionTable,,absorbed,backs 1 field(s): dorwinionTable
+common.block,LOTRBlockDoubleFlower,,absorbed,backs 1 field(s): doubleFlower
+common.block,LOTRBlockDoubleTorch,LOTRDoubleTorchBlock,ported,
+common.block,LOTRBlockDunlendingTable,,absorbed,backs 1 field(s): dunlendingTable
+common.block,LOTRBlockDwarvenForge,,absorbed,backs 1 field(s): dwarvenForge
+common.block,LOTRBlockDwarvenTable,,absorbed,backs 1 field(s): dwarvenTable
+common.block,LOTRBlockElvenForge,,absorbed,backs 1 field(s): elvenForge
+common.block,LOTRBlockElvenPortal,,missing,backs 1 field(s): elvenPortal
+common.block,LOTRBlockElvenTable,,absorbed,backs 1 field(s): elvenTable
+common.block,LOTRBlockElvenTorch,,absorbed,backs 1 field(s): highElvenTorch
+common.block,LOTRBlockEntJar,LOTREntJarBlock,ported,
+common.block,LOTRBlockFallenLeaves,,missing,backs 4 field(s): fallenLeaves fallenLeavesLOTR fallenLeavesLOTR2 fallenLeavesLOTR3
+common.block,LOTRBlockFangornPlant,,absorbed,backs 1 field(s): fangornPlant
+common.block,LOTRBlockFangornRiverweed,,absorbed,backs 1 field(s): fangornRiverweed
+common.block,LOTRBlockFence,,absorbed,backs 4 field(s): fence fence2 fence3 fenceRotten
+common.block,LOTRBlockFenceGate,,absorbed,backs 44 field(s): fenceGateAcacia fenceGateAlmond fenceGateApple fenceGateAspen fenceGateBanana fenceGateBaobab ...
+common.block,LOTRBlockFenceVanilla,,missing,
+common.block,LOTRBlockFlaxCrop,,absorbed,backs 1 field(s): flaxCrop
+common.block,LOTRBlockFlower,,absorbed,backs 11 field(s): asphodel athelas bluebell dwarfHerb elanor flaxPlant ...
+common.block,LOTRBlockFlowerPot,,absorbed,backs 1 field(s): flowerPot
+common.block,LOTRBlockForgeBase,LOTRForgeBlock,ported,
+common.block,LOTRBlockFruitLeaves,,absorbed,backs 1 field(s): fruitLeaves
+common.block,LOTRBlockFruitSapling,,absorbed,backs 1 field(s): fruitSapling
+common.block,LOTRBlockFruitWood,,absorbed,backs 1 field(s): fruitWood
+common.block,LOTRBlockGate,LOTRGateBlock,ported,
+common.block,LOTRBlockGateDwarven,,absorbed,backs 1 field(s): dwarvenDoor
+common.block,LOTRBlockGateDwarvenIthildin,,absorbed,backs 1 field(s): dwarvenDoorIthildin
+common.block,LOTRBlockGemStorage,,absorbed,backs 1 field(s): blockGem
+common.block,LOTRBlockGlass,,absorbed,backs 1 field(s): glass
+common.block,LOTRBlockGlassBottle,,absorbed,backs 1 field(s): glassBottleBlock
+common.block,LOTRBlockGlassPane,,absorbed,backs 1 field(s): glassPane
+common.block,LOTRBlockGoblet,,absorbed,backs 4 field(s): gobletCopperBlock gobletGoldBlock gobletSilverBlock gobletWoodBlock
+common.block,LOTRBlockGondorianTable,,absorbed,backs 1 field(s): gondorianTable
+common.block,LOTRBlockGoran,,missing,backs 1 field(s): goran
+common.block,LOTRBlockGrapevine,LOTRGrapevineBlock,ported,
+common.block,LOTRBlockGrapevineRed,,absorbed,backs 1 field(s): grapevineRed
+common.block,LOTRBlockGrapevineWhite,,absorbed,backs 1 field(s): grapevineWhite
+common.block,LOTRBlockGrass,,absorbed,backs 1 field(s): aridGrass
+common.block,LOTRBlockGravel,,excluded,
+common.block,LOTRBlockGuldurilBrick,,absorbed,backs 1 field(s): guldurilBrick
+common.block,LOTRBlockGulfTable,,absorbed,backs 1 field(s): gulfTable
+common.block,LOTRBlockGundabadTable,,absorbed,backs 1 field(s): gundabadTable
+common.block,LOTRBlockHalfTrollTable,,absorbed,backs 1 field(s): halfTrollTable
+common.block,LOTRBlockHangingFruit,LOTRHangingFruitBlock,ported,
+common.block,LOTRBlockHaradFlower,,absorbed,backs 1 field(s): haradFlower
+common.block,LOTRBlockHearth,,absorbed,backs 1 field(s): hearth
+common.block,LOTRBlockHighElvenTable,,absorbed,backs 1 field(s): highElvenTable
+common.block,LOTRBlockHithlainRope,,absorbed,backs 1 field(s): hithlainLadder
+common.block,LOTRBlockHobbitOven,LOTRHobbitOvenBlock,ported,
+common.block,LOTRBlockHobbitTable,,absorbed,backs 1 field(s): hobbitTable
+common.block,LOTRBlockKebab,LOTRKebabItem,ported,
+common.block,LOTRBlockKebabStand,LOTRKebabStandBlock,ported,
+common.block,LOTRBlockLadder,,absorbed,backs 1 field(s): mallornLadder
+common.block,LOTRBlockLeaves,,absorbed,backs 1 field(s): leaves
+common.block,LOTRBlockLeaves2,,absorbed,backs 1 field(s): leaves2
+common.block,LOTRBlockLeaves3,,absorbed,backs 1 field(s): leaves3
+common.block,LOTRBlockLeaves4,,absorbed,backs 1 field(s): leaves4
+common.block,LOTRBlockLeaves5,,absorbed,backs 1 field(s): leaves5
+common.block,LOTRBlockLeaves6,,absorbed,backs 1 field(s): leaves6
+common.block,LOTRBlockLeaves7,,absorbed,backs 1 field(s): leaves7
+common.block,LOTRBlockLeaves8,,absorbed,backs 1 field(s): leaves8
+common.block,LOTRBlockLeaves9,,absorbed,backs 1 field(s): leaves9
+common.block,LOTRBlockLeavesBase,,referenced,named in: LOTRBlockLootProvider LOTRBlocks LOTRCreativeTabs
+common.block,LOTRBlockLeavesVanilla1,,missing,
+common.block,LOTRBlockLeavesVanilla2,,missing,
+common.block,LOTRBlockLeekCrop,,absorbed,backs 1 field(s): leekCrop
+common.block,LOTRBlockLettuceCrop,,absorbed,backs 1 field(s): lettuceCrop
+common.block,LOTRBlockMallornTorch,,absorbed,backs 4 field(s): mallornTorchBlue mallornTorchGold mallornTorchGreen mallornTorchSilver
+common.block,LOTRBlockMarshLights,,missing,backs 1 field(s): marshLights
+common.block,LOTRBlockMechanisedRail,LOTRMechanisedRailBlock,ported,
+common.block,LOTRBlockMillstone,LOTRMillstoneBlock,ported,
+common.block,LOTRBlockMobSpawner,,absorbed,backs 1 field(s): mobSpawner
+common.block,LOTRBlockMordorDirt,,absorbed,backs 1 field(s): mordorDirt
+common.block,LOTRBlockMordorGrass,,absorbed,backs 1 field(s): mordorGrass
+common.block,LOTRBlockMordorMoss,,absorbed,backs 1 field(s): mordorMoss
+common.block,LOTRBlockMordorPlant,,referenced,named in: LOTRPlantBlock
+common.block,LOTRBlockMordorThorn,,absorbed,backs 1 field(s): mordorThorn
+common.block,LOTRBlockMoredainTable,,absorbed,backs 1 field(s): moredainTable
+common.block,LOTRBlockMorgulFlower,,absorbed,backs 1 field(s): morgulFlower
+common.block,LOTRBlockMorgulPortal,,missing,backs 1 field(s): morgulPortal
+common.block,LOTRBlockMorgulShroom,LOTRMorgulShroomBlock,ported,
+common.block,LOTRBlockMorgulTable,,absorbed,backs 1 field(s): morgulTable
+common.block,LOTRBlockMorgulTorch,,absorbed,backs 1 field(s): morgulTorch
+common.block,LOTRBlockMud,,absorbed,backs 1 field(s): mud
+common.block,LOTRBlockMudFarmland,,absorbed,backs 1 field(s): mudFarmland
+common.block,LOTRBlockMudGrass,,absorbed,backs 1 field(s): mudGrass
+common.block,LOTRBlockMug,LOTRMugBlock,ported,
+common.block,LOTRBlockNearHaradTable,,absorbed,backs 1 field(s): nearHaradTable
+common.block,LOTRBlockObsidianGravel,,absorbed,backs 1 field(s): obsidianGravel
+common.block,LOTRBlockOrcBomb,LOTROrcBombBlock,ported,
+common.block,LOTRBlockOrcChain,LOTROrcChainBlock,ported,
+common.block,LOTRBlockOrcForge,,absorbed,backs 1 field(s): orcForge
+common.block,LOTRBlockOrcPlating,,absorbed,backs 1 field(s): orcPlating
+common.block,LOTRBlockOre,,absorbed,backs 10 field(s): oreCopper oreGlowstone oreMithril oreNaurite oreQuendite oreSalt ...
+common.block,LOTRBlockOreGem,,absorbed,backs 1 field(s): oreGem
+common.block,LOTRBlockOreMordorVariant,,absorbed,backs 2 field(s): oreGulduril oreMorgulIron
+common.block,LOTRBlockOreStorage,,absorbed,backs 1 field(s): blockOreStorage
+common.block,LOTRBlockOreStorage2,,absorbed,backs 1 field(s): blockOreStorage2
+common.block,LOTRBlockOreStorageBase,,referenced,named in: LOTRBlocks
+common.block,LOTRBlockPane,,referenced,named in: LOTRCreativeTabs
+common.block,LOTRBlockPillar,LOTRPillarBlock,ported,
+common.block,LOTRBlockPillar2,,absorbed,backs 1 field(s): pillar2
+common.block,LOTRBlockPillar3,,absorbed,backs 1 field(s): pillar3
+common.block,LOTRBlockPillarBase,LOTRPillarBlock,ported,
+common.block,LOTRBlockPipeweedCrop,,absorbed,backs 1 field(s): pipeweedCrop
+common.block,LOTRBlockPipeweedPlant,,absorbed,backs 1 field(s): pipeweedPlant
+common.block,LOTRBlockPlaceableFood,LOTRPlaceableFoodBlock,ported,
+common.block,LOTRBlockPlanks,,absorbed,backs 1 field(s): planks
+common.block,LOTRBlockPlanks2,,absorbed,backs 1 field(s): planks2
+common.block,LOTRBlockPlanks3,,absorbed,backs 1 field(s): planks3
+common.block,LOTRBlockPlanksBase,,base,extended by: LOTRBlockPlanks LOTRBlockPlanks2 LOTRBlockPlanks3 LOTRBlockPlanksRotten
+common.block,LOTRBlockPlanksRotten,,absorbed,backs 1 field(s): planksRotten
+common.block,LOTRBlockPlate,LOTRPlateBlock,ported,
+common.block,LOTRBlockPortal,,base,extended by: LOTRBlockElvenPortal LOTRBlockMorgulPortal
+common.block,LOTRBlockPressurePlate,,absorbed,backs 6 field(s): pressurePlateBlueRock pressurePlateChalk pressurePlateGondorRock pressurePlateMordorRock pressurePlateRedRock pressurePlateRohanRock
+common.block,LOTRBlockQuagmire,LOTRQuagmireBlock,ported,
+common.block,LOTRBlockQuenditeGrass,,absorbed,backs 1 field(s): quenditeGrass
+common.block,LOTRBlockRangerTable,,absorbed,backs 1 field(s): rangerTable
+common.block,LOTRBlockRedBrick,,absorbed,backs 1 field(s): redBrick
+common.block,LOTRBlockRedClay,,absorbed,backs 1 field(s): redClay
+common.block,LOTRBlockReed,LOTRReedBlock,ported,
+common.block,LOTRBlockReedBars,,absorbed,backs 1 field(s): reedBars
+common.block,LOTRBlockReedDry,,absorbed,backs 1 field(s): driedReeds
+common.block,LOTRBlockRemains,,absorbed,backs 1 field(s): remains
+common.block,LOTRBlockReplacement,,missing,
+common.block,LOTRBlockRhunFire,,missing,backs 1 field(s): rhunFire
+common.block,LOTRBlockRhunFireJar,,absorbed,backs 1 field(s): rhunFireJar
+common.block,LOTRBlockRhunFlower,,absorbed,backs 1 field(s): rhunFlower
+common.block,LOTRBlockRhunTable,,absorbed,backs 1 field(s): rhunTable
+common.block,LOTRBlockRivendellTable,,absorbed,backs 1 field(s): rivendellTable
+common.block,LOTRBlockRock,,absorbed,backs 1 field(s): rock
+common.block,LOTRBlockRohirricTable,,absorbed,backs 1 field(s): rohirricTable
+common.block,LOTRBlockRope,LOTRRopeBlock,ported,
+common.block,LOTRBlockRottenLog,,absorbed,backs 1 field(s): rottenLog
+common.block,LOTRBlockRottenSlab,,absorbed,backs 2 field(s): rottenSlabDouble rottenSlabSingle
+common.block,LOTRBlockSand,,absorbed,backs 1 field(s): whiteSand
+common.block,LOTRBlockSandstone,,absorbed,backs 2 field(s): redSandstone whiteSandstone
+common.block,LOTRBlockSapling,LOTRSaplingBlock,ported,
+common.block,LOTRBlockSapling2,,absorbed,backs 1 field(s): sapling2
+common.block,LOTRBlockSapling3,,absorbed,backs 1 field(s): sapling3
+common.block,LOTRBlockSapling4,,absorbed,backs 1 field(s): sapling4
+common.block,LOTRBlockSapling5,,absorbed,backs 1 field(s): sapling5
+common.block,LOTRBlockSapling6,,absorbed,backs 1 field(s): sapling6
+common.block,LOTRBlockSapling7,,absorbed,backs 1 field(s): sapling7
+common.block,LOTRBlockSapling8,,absorbed,backs 1 field(s): sapling8
+common.block,LOTRBlockSapling9,,absorbed,backs 1 field(s): sapling9
+common.block,LOTRBlockSaplingBase,LOTRSaplingBlock,ported,
+common.block,LOTRBlockScorchedSlab,,absorbed,backs 2 field(s): scorchedSlabDouble scorchedSlabSingle
+common.block,LOTRBlockScorchedStone,,absorbed,backs 1 field(s): scorchedStone
+common.block,LOTRBlockScorchedWall,,absorbed,backs 1 field(s): scorchedWall
+common.block,LOTRBlockSignCarved,LOTRCarvedSignBlock,ported,
+common.block,LOTRBlockSkullCup,,absorbed,backs 1 field(s): skullCupBlock
+common.block,LOTRBlockSlab,,absorbed,backs 2 field(s): slabDouble slabSingle
+common.block,LOTRBlockSlab10,,absorbed,backs 2 field(s): slabDouble10 slabSingle10
+common.block,LOTRBlockSlab11,,absorbed,backs 2 field(s): slabDouble11 slabSingle11
+common.block,LOTRBlockSlab12,,absorbed,backs 2 field(s): slabDouble12 slabSingle12
+common.block,LOTRBlockSlab13,,absorbed,backs 2 field(s): slabDouble13 slabSingle13
+common.block,LOTRBlockSlab14,,absorbed,backs 2 field(s): slabDouble14 slabSingle14
+common.block,LOTRBlockSlab2,,absorbed,backs 2 field(s): slabDouble2 slabSingle2
+common.block,LOTRBlockSlab3,,absorbed,backs 2 field(s): slabDouble3 slabSingle3
+common.block,LOTRBlockSlab4,,absorbed,backs 2 field(s): slabDouble4 slabSingle4
+common.block,LOTRBlockSlab5,,absorbed,backs 2 field(s): slabDouble5 slabSingle5
+common.block,LOTRBlockSlab6,,absorbed,backs 2 field(s): slabDouble6 slabSingle6
+common.block,LOTRBlockSlab7,,absorbed,backs 2 field(s): slabDouble7 slabSingle7
+common.block,LOTRBlockSlab8,,absorbed,backs 2 field(s): slabDouble8 slabSingle8
+common.block,LOTRBlockSlab9,,absorbed,backs 2 field(s): slabDouble9 slabSingle9
+common.block,LOTRBlockSlabBase,,base,extended by: LOTRBlockRottenSlab LOTRBlockScorchedSlab LOTRBlockSlab LOTRBlockSlab10 LOTRBlockSlab11 LOTRBlockSlab12 ...
+common.block,LOTRBlockSlabBone,,absorbed,backs 2 field(s): slabBoneDouble slabBoneSingle
+common.block,LOTRBlockSlabClayTile,,absorbed,backs 2 field(s): slabClayTileDouble slabClayTileSingle
+common.block,LOTRBlockSlabClayTileDyed,,absorbed,backs 2 field(s): slabClayTileDyedDouble slabClayTileDyedSingle
+common.block,LOTRBlockSlabClayTileDyed2,,absorbed,backs 2 field(s): slabClayTileDyedDouble2 slabClayTileDyedSingle2
+common.block,LOTRBlockSlabDirt,,absorbed,backs 2 field(s): slabDoubleDirt slabSingleDirt
+common.block,LOTRBlockSlabFalling,,base,extended by: LOTRBlockSlabGravel LOTRBlockSlabSand
+common.block,LOTRBlockSlabGravel,,absorbed,backs 2 field(s): slabDoubleGravel slabSingleGravel
+common.block,LOTRBlockSlabSand,,absorbed,backs 2 field(s): slabDoubleSand slabSingleSand
+common.block,LOTRBlockSlabThatch,,absorbed,backs 2 field(s): slabDoubleThatch slabSingleThatch
+common.block,LOTRBlockSlabV,,absorbed,backs 2 field(s): slabDoubleV slabSingleV
+common.block,LOTRBlockSmoothStone,,absorbed,backs 1 field(s): smoothStone
+common.block,LOTRBlockSmoothStoneBase,,base,extended by: LOTRBlockSmoothStone LOTRBlockSmoothStoneV
+common.block,LOTRBlockSmoothStoneV,,absorbed,backs 1 field(s): smoothStoneV
+common.block,LOTRBlockSpawnerChest,,missing,backs 3 field(s): spawnerChest spawnerChestAncientHarad spawnerChestStone
+common.block,LOTRBlockStainedGlass,,absorbed,backs 1 field(s): stainedGlass
+common.block,LOTRBlockStainedGlassPane,,absorbed,backs 1 field(s): stainedGlassPane
+common.block,LOTRBlockStairs,,absorbed,backs 136 field(s): stairsAlmond stairsAngmarBrick stairsAngmarBrickCracked stairsAngmarBrickSnow stairsApple stairsArnorBrick ...
+common.block,LOTRBlockStalactite,,missing,backs 3 field(s): stalactite stalactiteIce stalactiteObsidian
+common.block,LOTRBlockTallGrass,,absorbed,backs 1 field(s): tallGrass
+common.block,LOTRBlockTauredainTable,,absorbed,backs 1 field(s): tauredainTable
+common.block,LOTRBlockTermite,,absorbed,backs 1 field(s): termiteMound
+common.block,LOTRBlockThatch,,absorbed,backs 1 field(s): thatch
+common.block,LOTRBlockThatchFloor,,absorbed,backs 1 field(s): thatchFloor
+common.block,LOTRBlockTorch,LOTRTorchBlock,ported,
+common.block,LOTRBlockTrapdoor,,absorbed,backs 44 field(s): trapdoorAcacia trapdoorAlmond trapdoorApple trapdoorAspen trapdoorBanana trapdoorBaobab ...
+common.block,LOTRBlockTreasurePile,LOTRTreasurePileBlock,ported,
+common.block,LOTRBlockTrollTotem,LOTRTrollTotemBlock,ported,
+common.block,LOTRBlockTurnipCrop,,absorbed,backs 1 field(s): turnipCrop
+common.block,LOTRBlockUmbarTable,,absorbed,backs 1 field(s): umbarTable
+common.block,LOTRBlockUnsmeltery,LOTRUnsmelteryBlock,ported,
+common.block,LOTRBlockUrukTable,,absorbed,backs 1 field(s): urukTable
+common.block,LOTRBlockUtumnoBrick,,absorbed,backs 1 field(s): utumnoBrick
+common.block,LOTRBlockUtumnoBrickEntrance,,missing,backs 1 field(s): utumnoBrickEntrance
+common.block,LOTRBlockUtumnoPillar,,absorbed,backs 1 field(s): utumnoPillar
+common.block,LOTRBlockUtumnoPortal,,missing,backs 1 field(s): utumnoPortal
+common.block,LOTRBlockUtumnoReturnLight,LOTRUtumnoReturnLightBlock,ported,
+common.block,LOTRBlockUtumnoReturnPortal,LOTRUtumnoReturnPortalBaseBlock,ported,
+common.block,LOTRBlockUtumnoReturnPortalBase,LOTRUtumnoReturnPortalBaseBlock,ported,
+common.block,LOTRBlockUtumnoSlab,,absorbed,backs 2 field(s): slabUtumnoDouble slabUtumnoSingle
+common.block,LOTRBlockUtumnoSlab2,,absorbed,backs 2 field(s): slabUtumnoDouble2 slabUtumnoSingle2
+common.block,LOTRBlockUtumnoSlabBase,,base,extended by: LOTRBlockUtumnoSlab LOTRBlockUtumnoSlab2
+common.block,LOTRBlockUtumnoStairs,,absorbed,backs 6 field(s): stairsUtumnoBrickFire stairsUtumnoBrickIce stairsUtumnoBrickObsidian stairsUtumnoTileFire stairsUtumnoTileIce stairsUtumnoTileObsidian
+common.block,LOTRBlockUtumnoWall,,absorbed,backs 1 field(s): wallUtumno
+common.block,LOTRBlockVine,,absorbed,backs 2 field(s): mirkVines willowVines
+common.block,LOTRBlockWall,,absorbed,backs 1 field(s): wall
+common.block,LOTRBlockWall2,,absorbed,backs 1 field(s): wall2
+common.block,LOTRBlockWall3,,absorbed,backs 1 field(s): wall3
+common.block,LOTRBlockWall4,,absorbed,backs 1 field(s): wall4
+common.block,LOTRBlockWall5,,absorbed,backs 1 field(s): wall5
+common.block,LOTRBlockWallBase,,base,extended by: LOTRBlockScorchedWall LOTRBlockUtumnoWall LOTRBlockWall LOTRBlockWall2 LOTRBlockWall3 LOTRBlockWall4 ...
+common.block,LOTRBlockWallBone,,absorbed,backs 1 field(s): wallBone
+common.block,LOTRBlockWallClayTile,,absorbed,backs 1 field(s): wallClayTile
+common.block,LOTRBlockWallClayTileDyed,,absorbed,backs 1 field(s): wallClayTileDyed
+common.block,LOTRBlockWallV,,absorbed,backs 1 field(s): wallStoneV
+common.block,LOTRBlockWaste,,absorbed,backs 1 field(s): wasteBlock
+common.block,LOTRBlockWeaponRack,LOTRWeaponRackBlock,ported,
+common.block,LOTRBlockWineGlass,,absorbed,backs 1 field(s): wineGlassBlock
+common.block,LOTRBlockWood,,absorbed,backs 1 field(s): wood
+common.block,LOTRBlockWood2,,absorbed,backs 1 field(s): wood2
+common.block,LOTRBlockWood3,,absorbed,backs 1 field(s): wood3
+common.block,LOTRBlockWood4,,absorbed,backs 1 field(s): wood4
+common.block,LOTRBlockWood5,,absorbed,backs 1 field(s): wood5
+common.block,LOTRBlockWood6,,absorbed,backs 1 field(s): wood6
+common.block,LOTRBlockWood7,,absorbed,backs 1 field(s): wood7
+common.block,LOTRBlockWood8,,absorbed,backs 1 field(s): wood8
+common.block,LOTRBlockWood9,,absorbed,backs 1 field(s): wood9
+common.block,LOTRBlockWoodBars,,absorbed,backs 3 field(s): galadhrimWoodBars highElfWoodBars woodElfWoodBars
+common.block,LOTRBlockWoodBase,,base,extended by: LOTRBlockFruitWood LOTRBlockRottenLog LOTRBlockWood LOTRBlockWood2 LOTRBlockWood3 LOTRBlockWood4 ...
+common.block,LOTRBlockWoodBeam,,base,extended by: LOTRBlockWoodBeam1 LOTRBlockWoodBeam2 LOTRBlockWoodBeam3 LOTRBlockWoodBeam4 LOTRBlockWoodBeam5 LOTRBlockWoodBeam6 ...
+common.block,LOTRBlockWoodBeam1,,absorbed,backs 1 field(s): woodBeam1
+common.block,LOTRBlockWoodBeam2,,absorbed,backs 1 field(s): woodBeam2
+common.block,LOTRBlockWoodBeam3,,absorbed,backs 1 field(s): woodBeam3
+common.block,LOTRBlockWoodBeam4,,absorbed,backs 1 field(s): woodBeam4
+common.block,LOTRBlockWoodBeam5,,absorbed,backs 1 field(s): woodBeam5
+common.block,LOTRBlockWoodBeam6,,absorbed,backs 1 field(s): woodBeam6
+common.block,LOTRBlockWoodBeam7,,absorbed,backs 1 field(s): woodBeam7
+common.block,LOTRBlockWoodBeam8,,absorbed,backs 1 field(s): woodBeam8
+common.block,LOTRBlockWoodBeam9,,absorbed,backs 1 field(s): woodBeam9
+common.block,LOTRBlockWoodBeamFruit,,absorbed,backs 1 field(s): woodBeamFruit
+common.block,LOTRBlockWoodBeamRotten,,absorbed,backs 1 field(s): woodBeamRotten
+common.block,LOTRBlockWoodBeamS,,absorbed,backs 1 field(s): woodBeamS
+common.block,LOTRBlockWoodBeamV1,,absorbed,backs 1 field(s): woodBeamV1
+common.block,LOTRBlockWoodBeamV2,,absorbed,backs 1 field(s): woodBeamV2
+common.block,LOTRBlockWoodElvenTable,,absorbed,backs 1 field(s): woodElvenTable
+common.block,LOTRBlockWoodElvenTorch,,absorbed,backs 1 field(s): woodElvenTorch
+common.block,LOTRBlockWoodSlab,,absorbed,backs 2 field(s): woodSlabDouble woodSlabSingle
+common.block,LOTRBlockWoodSlab2,,absorbed,backs 2 field(s): woodSlabDouble2 woodSlabSingle2
+common.block,LOTRBlockWoodSlab3,,absorbed,backs 2 field(s): woodSlabDouble3 woodSlabSingle3
+common.block,LOTRBlockWoodSlab4,,absorbed,backs 2 field(s): woodSlabDouble4 woodSlabSingle4
+common.block,LOTRBlockWoodSlab5,,absorbed,backs 2 field(s): woodSlabDouble5 woodSlabSingle5
+common.block,LOTRBlockYamCrop,,absorbed,backs 1 field(s): yamCrop
+common.block,LOTRConnectedBlock,,missing,
+common.block,LOTRItemBlockWeaponRack,LOTRWeaponRackBlock LOTRWeaponRackBlockEntity LOTRWeaponRackRenderState LOTRWeaponRackRenderer LOTRWeaponRackModel,ported,
+common.block,LOTRItemPlantableBlock,,missing,
+common.block,LOTRMaterialRemains,,missing,
+common.block,LOTRVanillaSaplings,,missing,
+common.command,LOTRCommandAchievement,,missing,
+common.command,LOTRCommandAdminHideMap,,missing,
+common.command,LOTRCommandAlignment,LOTRAlignmentCommand,ported,
+common.command,LOTRCommandAlignmentSee,,missing,
+common.command,LOTRCommandAllowStructures,,missing,
+common.command,LOTRCommandBanStructures,,missing,
+common.command,LOTRCommandConquest,,missing,
+common.command,LOTRCommandDate,,missing,
+common.command,LOTRCommandEnableAlignmentZones,,missing,
+common.command,LOTRCommandEnchant,,missing,
+common.command,LOTRCommandFactionRelations,,missing,
+common.command,LOTRCommandFastTravelClock,,missing,
+common.command,LOTRCommandFellowship,,missing,
+common.command,LOTRCommandFellowshipMessage,,missing,
+common.command,LOTRCommandInvasion,,missing,
+common.command,LOTRCommandMessageFixed,,missing,
+common.command,LOTRCommandPledgeCooldown,,missing,
+common.command,LOTRCommandSpawnDamping,,missing,
+common.command,LOTRCommandStrScan,,missing,
+common.command,LOTRCommandStructureTimelapse,,missing,
+common.command,LOTRCommandSummon,,missing,
+common.command,LOTRCommandTime,,missing,
+common.command,LOTRCommandTimeVanilla,,missing,
+common.command,LOTRCommandWaypointCooldown,,missing,
+common.command,LOTRCommandWaypoints,,missing,
+common.coremod,LOTRClassTransformer,,referenced,named in: LOTROldMinecartBehaviorMixin
+common.coremod,LOTRLoadingPlugin,,missing,
+common.coremod,LOTRReplacedMethods,,referenced,named in: LOTREnchantmentHelperMixin LOTRMechanisedRailBlock
+common.coremod,RandomTexturePatchCheck,,missing,
+common.dispenser,LOTRDispenseArrowPoisoned,,referenced,named in: LOTRPoisonedArrowItem
+common.dispenser,LOTRDispenseConker,,missing,
+common.dispenser,LOTRDispenseCrossbowBolt,,referenced,named in: LOTRCrossbowBoltItem
+common.dispenser,LOTRDispenseDart,,missing,
+common.dispenser,LOTRDispenseFirePot,,referenced,named in: LOTRFirePotItem
+common.dispenser,LOTRDispenseMysteryWeb,,missing,
+common.dispenser,LOTRDispenseOrcBomb,,missing,
+common.dispenser,LOTRDispensePebble,,referenced,named in: LOTRPebbleItem
+common.dispenser,LOTRDispensePlate,,referenced,named in: LOTRPlateItem
+common.dispenser,LOTRDispenseRhunFireJar,,missing,
+common.dispenser,LOTRDispenseSpawnEgg,,missing,
+common.dispenser,LOTRDispenseSpear,,missing,
+common.dispenser,LOTRDispenseTermite,,missing,
+common.dispenser,LOTRDispenseThrowingAxe,,referenced,named in: LOTRThrowingAxeItem
+common.enchant,LOTREnchantment,,referenced,named in: LOTRModifier LOTRModifiers
+common.enchant,LOTREnchantmentBane,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentCombining,,missing,
+common.enchant,LOTREnchantmentDamage,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentDurability,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentHelper,,referenced,named in: LOTREnchantmentHelperMixin LOTRModifiableItem LOTRModifiers
+common.enchant,LOTREnchantmentKnockback,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentLooting,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentMeleeReach,,missing,
+common.enchant,LOTREnchantmentMeleeSpeed,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentProtection,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentProtectionFall,,missing,
+common.enchant,LOTREnchantmentProtectionFire,,missing,
+common.enchant,LOTREnchantmentProtectionMithril,,missing,
+common.enchant,LOTREnchantmentProtectionRanged,,missing,
+common.enchant,LOTREnchantmentProtectionSpecial,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentRangedDamage,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentRangedKnockback,,missing,
+common.enchant,LOTREnchantmentSilkTouch,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentToolSpeed,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentType,,referenced,named in: LOTRCrossbowItem LOTRModifier LOTRModifiers LOTRThrowingAxeItem
+common.enchant,LOTREnchantmentWeaponSpecial,,missing,
+common.entity,AnimalJarUpdater,,missing,
+common.entity,LOTRBannerProtectable,,referenced,named in: LOTRStoneTrollEntity
+common.entity,LOTREntities,LOTREntities,ported,
+common.entity,LOTREntityFallingFireJar,,missing,
+common.entity,LOTREntityInvasionSpawner,,referenced,named in: LOTRWarhornItem
+common.entity,LOTREntityNPCRespawner,,missing,
+common.entity,LOTREntityRegistry,,missing,
+common.entity,LOTREntityUtils,,missing,
+common.entity,LOTRInvasionStatus,,missing,
+common.entity,LOTRMobSpawnerCondition,,missing,
+common.entity,LOTRMountFunctions,,missing,
+common.entity,LOTRNPCSelectByFaction,,missing,
+common.entity,LOTRNPCSelectForInfluence,,missing,
+common.entity,LOTRPlateFallingInfo,,referenced,named in: LOTRPlateHeadRenderer
+common.entity,LOTRRandomSkinEntity,,missing,
+common.entity,LOTRScarecrows,,missing,
+common.entity.ai,LOTREntityAIAttackOnCollide,,missing,
+common.entity.ai,LOTREntityAIAvoidHuorn,,missing,
+common.entity.ai,LOTREntityAIAvoidWithChance,,missing,
+common.entity.ai,LOTREntityAIBalrogCharge,,missing,
+common.entity.ai,LOTREntityAIBanditFlee,,missing,
+common.entity.ai,LOTREntityAIBanditSteal,,missing,
+common.entity.ai,LOTREntityAIBossJumpAttack,,missing,
+common.entity.ai,LOTREntityAIBreeEat,,missing,
+common.entity.ai,LOTREntityAIBurningPanic,,missing,
+common.entity.ai,LOTREntityAIConsumeBase,,base,extended by: LOTREntityAIDrink LOTREntityAIEat LOTREntityAIHobbitSmoke
+common.entity.ai,LOTREntityAIDrink,,missing,
+common.entity.ai,LOTREntityAIEat,,missing,
+common.entity.ai,LOTREntityAIEntHealSapling,,missing,
+common.entity.ai,LOTREntityAIFarm,,missing,
+common.entity.ai,LOTREntityAIFarmhandAttackRabbit,,missing,
+common.entity.ai,LOTREntityAIFlee,,missing,
+common.entity.ai,LOTREntityAIFollowHiringPlayer,,missing,
+common.entity.ai,LOTREntityAIGandalfSmoke,,missing,
+common.entity.ai,LOTREntityAIGollumAvoidEntity,,missing,
+common.entity.ai,LOTREntityAIGollumFishing,,missing,
+common.entity.ai,LOTREntityAIGollumFollowOwner,,missing,
+common.entity.ai,LOTREntityAIGollumPanic,,missing,
+common.entity.ai,LOTREntityAIGollumRemainStill,,missing,
+common.entity.ai,LOTREntityAIHiredHorseRemainStill,,missing,
+common.entity.ai,LOTREntityAIHiredRemainStill,,missing,
+common.entity.ai,LOTREntityAIHiringPlayerHurtByTarget,,missing,
+common.entity.ai,LOTREntityAIHiringPlayerHurtTarget,,missing,
+common.entity.ai,LOTREntityAIHobbitChildFollowGoodPlayer,,missing,
+common.entity.ai,LOTREntityAIHobbitSmoke,,missing,
+common.entity.ai,LOTREntityAIHobbitTargetRuffian,,missing,
+common.entity.ai,LOTREntityAIHorseFollowHiringPlayer,,missing,
+common.entity.ai,LOTREntityAIHorseMoveToRiderTarget,,missing,
+common.entity.ai,LOTREntityAILionChase,,missing,
+common.entity.ai,LOTREntityAIMFMate,,missing,
+common.entity.ai,LOTREntityAINPCAvoidEvilPlayer,,missing,
+common.entity.ai,LOTREntityAINPCFollowParent,,missing,
+common.entity.ai,LOTREntityAINPCFollowSpouse,,missing,
+common.entity.ai,LOTREntityAINPCHurtByTarget,,missing,
+common.entity.ai,LOTREntityAINPCMarry,,missing,
+common.entity.ai,LOTREntityAINPCMate,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetBandit,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetBasic,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetHuorn,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetOrc,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetTroll,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetWoodElf,,missing,
+common.entity.ai,LOTREntityAIOrcAvoidGoodPlayer,,missing,
+common.entity.ai,LOTREntityAIOrcPlaceBomb,,missing,
+common.entity.ai,LOTREntityAIOrcSkirmish,,missing,
+common.entity.ai,LOTREntityAIRabbitEatCrops,,missing,
+common.entity.ai,LOTREntityAIRangedAttack,,missing,
+common.entity.ai,LOTREntityAISauronUseMace,,missing,
+common.entity.ai,LOTREntityAITrollFleeSun,,missing,
+common.entity.ai,LOTREntityAIUntamedPanic,,missing,
+common.entity.ai,LOTREntityAIWargBombardierAttack,,missing,
+common.entity.ai,LOTRNPCTargetSelector,,missing,
+common.entity.animal,LOTRAmbientCreature,,missing,
+common.entity.animal,LOTRAmbientSpawnChecks,,missing,
+common.entity.animal,LOTRAnimalSpawnConditions,,missing,
+common.entity.animal,LOTREntityAnimalMF,,base,extended by: LOTREntityDeer LOTREntityLionBase
+common.entity.animal,LOTREntityAurochs,,missing,
+common.entity.animal,LOTREntityBear,,missing,
+common.entity.animal,LOTREntityBird,,referenced,named in: LOTRAnimalJarItem LOTREntityTags
+common.entity.animal,LOTREntityButterfly,,referenced,named in: LOTREntityTags
+common.entity.animal,LOTREntityCamel,,missing,
+common.entity.animal,LOTREntityCrebain,,missing,
+common.entity.animal,LOTREntityCrocodile,,missing,
+common.entity.animal,LOTREntityDeer,,missing,
+common.entity.animal,LOTREntityDesertScorpion,,missing,
+common.entity.animal,LOTREntityDikDik,,missing,
+common.entity.animal,LOTREntityElk,,missing,
+common.entity.animal,LOTREntityFish,,missing,
+common.entity.animal,LOTREntityFlamingo,,missing,
+common.entity.animal,LOTREntityGemsbok,,missing,
+common.entity.animal,LOTREntityGiraffe,,missing,
+common.entity.animal,LOTREntityGorcrow,,missing,
+common.entity.animal,LOTREntityHorse,,missing,
+common.entity.animal,LOTREntityJungleScorpion,,missing,
+common.entity.animal,LOTREntityKineAraw,,missing,
+common.entity.animal,LOTREntityLion,,missing,
+common.entity.animal,LOTREntityLionBase,,base,extended by: LOTREntityLion LOTREntityLioness
+common.entity.animal,LOTREntityLioness,,missing,
+common.entity.animal,LOTREntityMidges,,missing,
+common.entity.animal,LOTREntityRabbit,,missing,
+common.entity.animal,LOTREntityRhino,,missing,
+common.entity.animal,LOTREntityScorpion,,base,extended by: LOTREntityDesertScorpion LOTREntityJungleScorpion
+common.entity.animal,LOTREntitySeagull,,missing,
+common.entity.animal,LOTREntityShirePony,,missing,
+common.entity.animal,LOTREntitySwan,,missing,
+common.entity.animal,LOTREntityTermite,,missing,
+common.entity.animal,LOTREntityWhiteOryx,,missing,
+common.entity.animal,LOTREntityWildBoar,,missing,
+common.entity.animal,LOTREntityZebra,,missing,
+common.entity.item,LOTRBannerWhitelistEntry,,missing,
+common.entity.item,LOTREntityArrowPoisoned,LOTRPoisonedArrowEntity,ported,
+common.entity.item,LOTREntityBanner,LOTRBannerBlockEntity,ported,
+common.entity.item,LOTREntityBannerWall,LOTRWallBannerBlock,ported,
+common.entity.item,LOTREntityBarrel,LOTRBarrelBlockEntity,ported,
+common.entity.item,LOTREntityBearRug,,missing,
+common.entity.item,LOTREntityBossTrophy,LOTRBossTrophyEntity,ported,
+common.entity.item,LOTREntityFallingTreasure,,missing,
+common.entity.item,LOTREntityGiraffeRug,,missing,
+common.entity.item,LOTREntityLionRug,,missing,
+common.entity.item,LOTREntityOrcBomb,LOTROrcBombEntity,ported,
+common.entity.item,LOTREntityPortal,,missing,
+common.entity.item,LOTREntityRugBase,,base,extended by: LOTREntityBearRug LOTREntityGiraffeRug LOTREntityLionRug LOTREntityWargskinRug
+common.entity.item,LOTREntityStoneTroll,LOTRStoneTrollEntity,ported,
+common.entity.item,LOTREntityTraderRespawn,,missing,
+common.entity.item,LOTREntityWargskinRug,,missing,
+common.entity.npc,IBandit,,missing,
+common.entity.npc,LOTRBannerBearer,,missing,
+common.entity.npc,LOTRBoss,,missing,
+common.entity.npc,LOTRBossInfo,,missing,
+common.entity.npc,LOTRCharacter,,missing,
+common.entity.npc,LOTREntityAngmarBannerBearer,,missing,
+common.entity.npc,LOTREntityAngmarHillman,,missing,
+common.entity.npc,LOTREntityAngmarHillmanAxeThrower,,missing,
+common.entity.npc,LOTREntityAngmarHillmanBannerBearer,,missing,
+common.entity.npc,LOTREntityAngmarHillmanChieftain,,missing,
+common.entity.npc,LOTREntityAngmarHillmanWarrior,,missing,
+common.entity.npc,LOTREntityAngmarOrc,,missing,
+common.entity.npc,LOTREntityAngmarOrcArcher,,missing,
+common.entity.npc,LOTREntityAngmarOrcBombardier,,missing,
+common.entity.npc,LOTREntityAngmarOrcMercenaryCaptain,,missing,
+common.entity.npc,LOTREntityAngmarOrcTrader,,missing,
+common.entity.npc,LOTREntityAngmarWarg,,missing,
+common.entity.npc,LOTREntityAngmarWargBombardier,,missing,
+common.entity.npc,LOTREntityBalrog,,missing,
+common.entity.npc,LOTREntityBandit,,missing,
+common.entity.npc,LOTREntityBanditHarad,,missing,
+common.entity.npc,LOTREntityBarrowWight,,missing,
+common.entity.npc,LOTREntityBlackUruk,,missing,
+common.entity.npc,LOTREntityBlackUrukArcher,,missing,
+common.entity.npc,LOTREntityBlackUrukBannerBearer,,missing,
+common.entity.npc,LOTREntityBlackUrukCaptain,,missing,
+common.entity.npc,LOTREntityBlackrootArcher,,missing,
+common.entity.npc,LOTREntityBlackrootBannerBearer,,missing,
+common.entity.npc,LOTREntityBlackrootCaptain,,missing,
+common.entity.npc,LOTREntityBlackrootSoldier,,missing,
+common.entity.npc,LOTREntityBlueDwarf,,missing,
+common.entity.npc,LOTREntityBlueDwarfAxeThrower,,missing,
+common.entity.npc,LOTREntityBlueDwarfBannerBearer,,missing,
+common.entity.npc,LOTREntityBlueDwarfCommander,,missing,
+common.entity.npc,LOTREntityBlueDwarfMerchant,,missing,
+common.entity.npc,LOTREntityBlueDwarfMiner,,missing,
+common.entity.npc,LOTREntityBlueDwarfWarrior,,missing,
+common.entity.npc,LOTREntityBlueMountainsSmith,,missing,
+common.entity.npc,LOTREntityBreeBaker,,missing,
+common.entity.npc,LOTREntityBreeBannerBearer,,missing,
+common.entity.npc,LOTREntityBreeBlacksmith,,missing,
+common.entity.npc,LOTREntityBreeBrewer,,missing,
+common.entity.npc,LOTREntityBreeButcher,,missing,
+common.entity.npc,LOTREntityBreeCaptain,,missing,
+common.entity.npc,LOTREntityBreeFarmer,,missing,
+common.entity.npc,LOTREntityBreeFarmhand,,missing,
+common.entity.npc,LOTREntityBreeFlorist,,missing,
+common.entity.npc,LOTREntityBreeGuard,,missing,
+common.entity.npc,LOTREntityBreeHobbit,,missing,
+common.entity.npc,LOTREntityBreeHobbitBaker,,missing,
+common.entity.npc,LOTREntityBreeHobbitBrewer,,missing,
+common.entity.npc,LOTREntityBreeHobbitButcher,,missing,
+common.entity.npc,LOTREntityBreeHobbitFlorist,,missing,
+common.entity.npc,LOTREntityBreeHobbitInnkeeper,,missing,
+common.entity.npc,LOTREntityBreeHobbitTrader,,base,extended by: LOTREntityBreeHobbitBaker LOTREntityBreeHobbitBrewer LOTREntityBreeHobbitButcher LOTREntityBreeHobbitFlorist
+common.entity.npc,LOTREntityBreeInnkeeper,,missing,
+common.entity.npc,LOTREntityBreeLumberman,,missing,
+common.entity.npc,LOTREntityBreeMan,,missing,
+common.entity.npc,LOTREntityBreeMarketTrader,,base,extended by: LOTREntityBreeBaker LOTREntityBreeBrewer LOTREntityBreeButcher LOTREntityBreeFlorist LOTREntityBreeLumberman LOTREntityBreeMason
+common.entity.npc,LOTREntityBreeMason,,missing,
+common.entity.npc,LOTREntityBreeRuffian,,base,extended by: LOTREntityRuffianBrute LOTREntityRuffianSpy
+common.entity.npc,LOTREntityCorsair,,missing,
+common.entity.npc,LOTREntityCorsairCaptain,,missing,
+common.entity.npc,LOTREntityCorsairSlaver,,missing,
+common.entity.npc,LOTREntityDaleArcher,,missing,
+common.entity.npc,LOTREntityDaleBaker,,missing,
+common.entity.npc,LOTREntityDaleBannerBearer,,missing,
+common.entity.npc,LOTREntityDaleBlacksmith,,missing,
+common.entity.npc,LOTREntityDaleCaptain,,missing,
+common.entity.npc,LOTREntityDaleLevyman,,missing,
+common.entity.npc,LOTREntityDaleMan,,missing,
+common.entity.npc,LOTREntityDaleMerchant,,missing,
+common.entity.npc,LOTREntityDaleSoldier,,missing,
+common.entity.npc,LOTREntityDarkHuorn,,missing,
+common.entity.npc,LOTREntityDolAmrothArcher,,missing,
+common.entity.npc,LOTREntityDolAmrothBannerBearer,,missing,
+common.entity.npc,LOTREntityDolAmrothCaptain,,missing,
+common.entity.npc,LOTREntityDolAmrothSoldier,,missing,
+common.entity.npc,LOTREntityDolGuldurBannerBearer,,missing,
+common.entity.npc,LOTREntityDolGuldurOrc,,missing,
+common.entity.npc,LOTREntityDolGuldurOrcArcher,,missing,
+common.entity.npc,LOTREntityDolGuldurOrcChieftain,,missing,
+common.entity.npc,LOTREntityDolGuldurOrcTrader,,missing,
+common.entity.npc,LOTREntityDorwinionBannerBearer,,missing,
+common.entity.npc,LOTREntityDorwinionCaptain,,missing,
+common.entity.npc,LOTREntityDorwinionCrossbower,,missing,
+common.entity.npc,LOTREntityDorwinionElf,,missing,
+common.entity.npc,LOTREntityDorwinionElfArcher,,missing,
+common.entity.npc,LOTREntityDorwinionElfBannerBearer,,missing,
+common.entity.npc,LOTREntityDorwinionElfCaptain,,missing,
+common.entity.npc,LOTREntityDorwinionElfVintner,,missing,
+common.entity.npc,LOTREntityDorwinionElfWarrior,,missing,
+common.entity.npc,LOTREntityDorwinionGuard,,missing,
+common.entity.npc,LOTREntityDorwinionMan,,missing,
+common.entity.npc,LOTREntityDorwinionMerchantElf,,missing,
+common.entity.npc,LOTREntityDorwinionMerchantMan,,missing,
+common.entity.npc,LOTREntityDorwinionVinehand,,missing,
+common.entity.npc,LOTREntityDorwinionVinekeeper,,missing,
+common.entity.npc,LOTREntityDunedain,,missing,
+common.entity.npc,LOTREntityDunedainBlacksmith,,missing,
+common.entity.npc,LOTREntityDunlending,,missing,
+common.entity.npc,LOTREntityDunlendingArcher,,missing,
+common.entity.npc,LOTREntityDunlendingAxeThrower,,missing,
+common.entity.npc,LOTREntityDunlendingBannerBearer,,missing,
+common.entity.npc,LOTREntityDunlendingBartender,,missing,
+common.entity.npc,LOTREntityDunlendingBerserker,,missing,
+common.entity.npc,LOTREntityDunlendingWarlord,,missing,
+common.entity.npc,LOTREntityDunlendingWarrior,,missing,
+common.entity.npc,LOTREntityDwarf,,missing,
+common.entity.npc,LOTREntityDwarfAxeThrower,,missing,
+common.entity.npc,LOTREntityDwarfBannerBearer,,missing,
+common.entity.npc,LOTREntityDwarfCommander,,missing,
+common.entity.npc,LOTREntityDwarfMiner,,missing,
+common.entity.npc,LOTREntityDwarfSmith,,missing,
+common.entity.npc,LOTREntityDwarfWarrior,,missing,
+common.entity.npc,LOTREntityEasterling,,missing,
+common.entity.npc,LOTREntityEasterlingArcher,,missing,
+common.entity.npc,LOTREntityEasterlingBaker,,missing,
+common.entity.npc,LOTREntityEasterlingBannerBearer,,missing,
+common.entity.npc,LOTREntityEasterlingBartender,,missing,
+common.entity.npc,LOTREntityEasterlingBlacksmith,,missing,
+common.entity.npc,LOTREntityEasterlingBrewer,,missing,
+common.entity.npc,LOTREntityEasterlingButcher,,missing,
+common.entity.npc,LOTREntityEasterlingFarmer,,missing,
+common.entity.npc,LOTREntityEasterlingFarmhand,,missing,
+common.entity.npc,LOTREntityEasterlingFireThrower,,missing,
+common.entity.npc,LOTREntityEasterlingFishmonger,,missing,
+common.entity.npc,LOTREntityEasterlingGoldWarrior,,missing,
+common.entity.npc,LOTREntityEasterlingGoldsmith,,missing,
+common.entity.npc,LOTREntityEasterlingHunter,,missing,
+common.entity.npc,LOTREntityEasterlingLevyman,,missing,
+common.entity.npc,LOTREntityEasterlingLumberman,,missing,
+common.entity.npc,LOTREntityEasterlingMarketTrader,,base,extended by: LOTREntityEasterlingBaker LOTREntityEasterlingBrewer LOTREntityEasterlingButcher LOTREntityEasterlingFishmonger LOTREntityEasterlingGoldsmith LOTREntityEasterlingHunter ...
+common.entity.npc,LOTREntityEasterlingMason,,missing,
+common.entity.npc,LOTREntityEasterlingWarlord,,missing,
+common.entity.npc,LOTREntityEasterlingWarrior,,missing,
+common.entity.npc,LOTREntityElf,,base,extended by: LOTREntityDorwinionElf LOTREntityGaladhrimElf LOTREntityHighElfBase LOTREntityTormentedElf LOTREntityWoodElf
+common.entity.npc,LOTREntityEnt,,missing,
+common.entity.npc,LOTREntityEsgarothBannerBearer,,missing,
+common.entity.npc,LOTREntityGaladhrimBannerBearer,,missing,
+common.entity.npc,LOTREntityGaladhrimElf,,missing,
+common.entity.npc,LOTREntityGaladhrimLord,,missing,
+common.entity.npc,LOTREntityGaladhrimSmith,,missing,
+common.entity.npc,LOTREntityGaladhrimTrader,,missing,
+common.entity.npc,LOTREntityGaladhrimWarden,,missing,
+common.entity.npc,LOTREntityGaladhrimWarrior,,missing,
+common.entity.npc,LOTREntityGandalf,,missing,
+common.entity.npc,LOTREntityGollum,,missing,
+common.entity.npc,LOTREntityGondorArcher,,missing,
+common.entity.npc,LOTREntityGondorBaker,,missing,
+common.entity.npc,LOTREntityGondorBannerBearer,,missing,
+common.entity.npc,LOTREntityGondorBartender,,missing,
+common.entity.npc,LOTREntityGondorBlacksmith,,missing,
+common.entity.npc,LOTREntityGondorBrewer,,missing,
+common.entity.npc,LOTREntityGondorButcher,,missing,
+common.entity.npc,LOTREntityGondorFarmer,,missing,
+common.entity.npc,LOTREntityGondorFarmhand,,missing,
+common.entity.npc,LOTREntityGondorFishmonger,,missing,
+common.entity.npc,LOTREntityGondorFlorist,,missing,
+common.entity.npc,LOTREntityGondorGreengrocer,,missing,
+common.entity.npc,LOTREntityGondorLevyman,,missing,
+common.entity.npc,LOTREntityGondorLumberman,,missing,
+common.entity.npc,LOTREntityGondorMan,,missing,
+common.entity.npc,LOTREntityGondorMarketTrader,,base,extended by: LOTREntityGondorBaker LOTREntityGondorBrewer LOTREntityGondorButcher LOTREntityGondorFishmonger LOTREntityGondorFlorist LOTREntityGondorGreengrocer ...
+common.entity.npc,LOTREntityGondorMason,,missing,
+common.entity.npc,LOTREntityGondorRenegade,,missing,
+common.entity.npc,LOTREntityGondorRuinsWraith,,missing,
+common.entity.npc,LOTREntityGondorSoldier,,missing,
+common.entity.npc,LOTREntityGondorTowerGuard,,missing,
+common.entity.npc,LOTREntityGondorianCaptain,,missing,
+common.entity.npc,LOTREntityGulfBaker,,missing,
+common.entity.npc,LOTREntityGulfBartender,,missing,
+common.entity.npc,LOTREntityGulfBlacksmith,,missing,
+common.entity.npc,LOTREntityGulfBrewer,,missing,
+common.entity.npc,LOTREntityGulfButcher,,missing,
+common.entity.npc,LOTREntityGulfFarmer,,missing,
+common.entity.npc,LOTREntityGulfFishmonger,,missing,
+common.entity.npc,LOTREntityGulfGoldsmith,,missing,
+common.entity.npc,LOTREntityGulfHaradArcher,,missing,
+common.entity.npc,LOTREntityGulfHaradBannerBearer,,missing,
+common.entity.npc,LOTREntityGulfHaradWarlord,,missing,
+common.entity.npc,LOTREntityGulfHaradWarrior,,missing,
+common.entity.npc,LOTREntityGulfHaradrim,,missing,
+common.entity.npc,LOTREntityGulfHunter,,missing,
+common.entity.npc,LOTREntityGulfLumberman,,missing,
+common.entity.npc,LOTREntityGulfMason,,missing,
+common.entity.npc,LOTREntityGulfMiner,,missing,
+common.entity.npc,LOTREntityGulfTrader,,base,extended by: LOTREntityGulfBaker LOTREntityGulfBrewer LOTREntityGulfButcher LOTREntityGulfFishmonger LOTREntityGulfGoldsmith LOTREntityGulfHunter ...
+common.entity.npc,LOTREntityGundabadBannerBearer,,missing,
+common.entity.npc,LOTREntityGundabadOrc,,missing,
+common.entity.npc,LOTREntityGundabadOrcArcher,,missing,
+common.entity.npc,LOTREntityGundabadOrcMercenaryCaptain,,missing,
+common.entity.npc,LOTREntityGundabadOrcTrader,,missing,
+common.entity.npc,LOTREntityGundabadUruk,,missing,
+common.entity.npc,LOTREntityGundabadUrukArcher,,missing,
+common.entity.npc,LOTREntityGundabadWarg,,missing,
+common.entity.npc,LOTREntityHalfTroll,,missing,
+common.entity.npc,LOTREntityHalfTrollBannerBearer,,missing,
+common.entity.npc,LOTREntityHalfTrollScavenger,,missing,
+common.entity.npc,LOTREntityHalfTrollWarlord,,missing,
+common.entity.npc,LOTREntityHalfTrollWarrior,,missing,
+common.entity.npc,LOTREntityHaradPyramidWraith,,missing,
+common.entity.npc,LOTREntityHaradSlave,,missing,
+common.entity.npc,LOTREntityHarnedhrim,,missing,
+common.entity.npc,LOTREntityHarnedorArcher,,missing,
+common.entity.npc,LOTREntityHarnedorBaker,,missing,
+common.entity.npc,LOTREntityHarnedorBannerBearer,,missing,
+common.entity.npc,LOTREntityHarnedorBartender,,missing,
+common.entity.npc,LOTREntityHarnedorBlacksmith,,missing,
+common.entity.npc,LOTREntityHarnedorBrewer,,missing,
+common.entity.npc,LOTREntityHarnedorButcher,,missing,
+common.entity.npc,LOTREntityHarnedorFarmer,,missing,
+common.entity.npc,LOTREntityHarnedorFarmhand,,missing,
+common.entity.npc,LOTREntityHarnedorFishmonger,,missing,
+common.entity.npc,LOTREntityHarnedorHunter,,missing,
+common.entity.npc,LOTREntityHarnedorLumberman,,missing,
+common.entity.npc,LOTREntityHarnedorMason,,missing,
+common.entity.npc,LOTREntityHarnedorMiner,,missing,
+common.entity.npc,LOTREntityHarnedorTrader,,base,extended by: LOTREntityHarnedorBaker LOTREntityHarnedorBrewer LOTREntityHarnedorButcher LOTREntityHarnedorFishmonger LOTREntityHarnedorHunter LOTREntityHarnedorLumberman ...
+common.entity.npc,LOTREntityHarnedorWarlord,,missing,
+common.entity.npc,LOTREntityHarnedorWarrior,,missing,
+common.entity.npc,LOTREntityHighElf,,missing,
+common.entity.npc,LOTREntityHighElfBannerBearer,,missing,
+common.entity.npc,LOTREntityHighElfBase,,base,extended by: LOTREntityHighElf LOTREntityRivendellElf
+common.entity.npc,LOTREntityHighElfLord,,missing,
+common.entity.npc,LOTREntityHighElfSmith,,missing,
+common.entity.npc,LOTREntityHighElfWarrior,,missing,
+common.entity.npc,LOTREntityHobbit,,missing,
+common.entity.npc,LOTREntityHobbitBartender,,missing,
+common.entity.npc,LOTREntityHobbitBounder,,missing,
+common.entity.npc,LOTREntityHobbitFarmer,,missing,
+common.entity.npc,LOTREntityHobbitFarmhand,,missing,
+common.entity.npc,LOTREntityHobbitOrcharder,,missing,
+common.entity.npc,LOTREntityHobbitShirriff,,missing,
+common.entity.npc,LOTREntityHuorn,,missing,
+common.entity.npc,LOTREntityHuornBase,,base,extended by: LOTREntityDarkHuorn LOTREntityHuorn
+common.entity.npc,LOTREntityIronHillsMerchant,,missing,
+common.entity.npc,LOTREntityIsengardSnaga,,missing,
+common.entity.npc,LOTREntityIsengardSnagaArcher,,missing,
+common.entity.npc,LOTREntityLamedonArcher,,missing,
+common.entity.npc,LOTREntityLamedonBannerBearer,,missing,
+common.entity.npc,LOTREntityLamedonCaptain,,missing,
+common.entity.npc,LOTREntityLamedonHillman,,missing,
+common.entity.npc,LOTREntityLamedonSoldier,,missing,
+common.entity.npc,LOTREntityLebenninBannerBearer,,missing,
+common.entity.npc,LOTREntityLebenninCaptain,,missing,
+common.entity.npc,LOTREntityLebenninLevyman,,missing,
+common.entity.npc,LOTREntityLossarnachAxeman,,missing,
+common.entity.npc,LOTREntityLossarnachBannerBearer,,missing,
+common.entity.npc,LOTREntityLossarnachCaptain,,missing,
+common.entity.npc,LOTREntityMallornEnt,,missing,
+common.entity.npc,LOTREntityMan,,base,extended by: LOTREntityAngmarHillman LOTREntityBandit LOTREntityBreeMan LOTREntityDaleMan LOTREntityDorwinionMan LOTREntityDunedain ...
+common.entity.npc,LOTREntityMarshWraith,,missing,
+common.entity.npc,LOTREntityMinasMorgulBannerBearer,,missing,
+common.entity.npc,LOTREntityMirkTroll,,missing,
+common.entity.npc,LOTREntityMirkwoodSpider,,missing,
+common.entity.npc,LOTREntityMordorBannerBearer,,missing,
+common.entity.npc,LOTREntityMordorOrc,,missing,
+common.entity.npc,LOTREntityMordorOrcArcher,,missing,
+common.entity.npc,LOTREntityMordorOrcBombardier,,missing,
+common.entity.npc,LOTREntityMordorOrcMercenaryCaptain,,missing,
+common.entity.npc,LOTREntityMordorOrcSlaver,,missing,
+common.entity.npc,LOTREntityMordorOrcSpiderKeeper,,missing,
+common.entity.npc,LOTREntityMordorOrcTrader,,missing,
+common.entity.npc,LOTREntityMordorSpider,,missing,
+common.entity.npc,LOTREntityMordorWarg,,missing,
+common.entity.npc,LOTREntityMordorWargBombardier,,missing,
+common.entity.npc,LOTREntityMoredain,,missing,
+common.entity.npc,LOTREntityMoredainBannerBearer,,missing,
+common.entity.npc,LOTREntityMoredainChieftain,,missing,
+common.entity.npc,LOTREntityMoredainHuntsman,,missing,
+common.entity.npc,LOTREntityMoredainHutmaker,,missing,
+common.entity.npc,LOTREntityMoredainMercenary,,missing,
+common.entity.npc,LOTREntityMoredainVillageTrader,,base,extended by: LOTREntityMoredainHuntsman LOTREntityMoredainHutmaker
+common.entity.npc,LOTREntityMoredainWarrior,,missing,
+common.entity.npc,LOTREntityMountainTroll,,missing,
+common.entity.npc,LOTREntityMountainTrollChieftain,,referenced,named in: LOTRTrollTotemBlockEntity
+common.entity.npc,LOTREntityNPC,,referenced,named in: LOTRCommandHornItem
+common.entity.npc,LOTREntityNPCRideable,,base,extended by: LOTREntitySpiderBase LOTREntityWarg
+common.entity.npc,LOTREntityNanUngolBannerBearer,,missing,
+common.entity.npc,LOTREntityNearHaradBannerBearer,,missing,
+common.entity.npc,LOTREntityNearHaradBlacksmith,,missing,
+common.entity.npc,LOTREntityNearHaradMerchant,,missing,
+common.entity.npc,LOTREntityNearHaradrim,,missing,
+common.entity.npc,LOTREntityNearHaradrimArcher,,missing,
+common.entity.npc,LOTREntityNearHaradrimBase,,base,extended by: LOTREntityGulfHaradrim LOTREntityHarnedhrim LOTREntityNearHaradrim LOTREntityNomad LOTREntityUmbarian
+common.entity.npc,LOTREntityNearHaradrimWarlord,,missing,
+common.entity.npc,LOTREntityNearHaradrimWarrior,,missing,
+common.entity.npc,LOTREntityNomad,,missing,
+common.entity.npc,LOTREntityNomadArcher,,missing,
+common.entity.npc,LOTREntityNomadArmourer,,missing,
+common.entity.npc,LOTREntityNomadBannerBearer,,missing,
+common.entity.npc,LOTREntityNomadBrewer,,missing,
+common.entity.npc,LOTREntityNomadChieftain,,missing,
+common.entity.npc,LOTREntityNomadMason,,missing,
+common.entity.npc,LOTREntityNomadMerchant,,missing,
+common.entity.npc,LOTREntityNomadMiner,,missing,
+common.entity.npc,LOTREntityNomadTrader,,base,extended by: LOTREntityNomadBrewer LOTREntityNomadMason LOTREntityNomadMiner
+common.entity.npc,LOTREntityNomadWarrior,,missing,
+common.entity.npc,LOTREntityNurnSlave,,missing,
+common.entity.npc,LOTREntityOlogHai,,missing,
+common.entity.npc,LOTREntityOrc,,base,extended by: LOTREntityAngmarOrc LOTREntityDolGuldurOrc LOTREntityGundabadOrc LOTREntityIsengardSnaga LOTREntityMordorOrc LOTREntityUrukHai ...
+common.entity.npc,LOTREntityPelargirBannerBearer,,missing,
+common.entity.npc,LOTREntityPelargirCaptain,,missing,
+common.entity.npc,LOTREntityPelargirMarine,,missing,
+common.entity.npc,LOTREntityPinnathGelinBannerBearer,,missing,
+common.entity.npc,LOTREntityPinnathGelinCaptain,,missing,
+common.entity.npc,LOTREntityPinnathGelinSoldier,,missing,
+common.entity.npc,LOTREntityQuestInfo,,missing,
+common.entity.npc,LOTREntityRanger,,base,extended by: LOTREntityRangerIthilien LOTREntityRangerNorth
+common.entity.npc,LOTREntityRangerIthilien,,missing,
+common.entity.npc,LOTREntityRangerIthilienBannerBearer,,missing,
+common.entity.npc,LOTREntityRangerIthilienCaptain,,missing,
+common.entity.npc,LOTREntityRangerNorth,,missing,
+common.entity.npc,LOTREntityRangerNorthBannerBearer,,missing,
+common.entity.npc,LOTREntityRangerNorthCaptain,,missing,
+common.entity.npc,LOTREntityRivendellBannerBearer,,missing,
+common.entity.npc,LOTREntityRivendellElf,,missing,
+common.entity.npc,LOTREntityRivendellLord,,missing,
+common.entity.npc,LOTREntityRivendellSmith,,missing,
+common.entity.npc,LOTREntityRivendellTrader,,missing,
+common.entity.npc,LOTREntityRivendellWarrior,,missing,
+common.entity.npc,LOTREntityRohanBaker,,missing,
+common.entity.npc,LOTREntityRohanBannerBearer,,missing,
+common.entity.npc,LOTREntityRohanBarrowWraith,,missing,
+common.entity.npc,LOTREntityRohanBlacksmith,,missing,
+common.entity.npc,LOTREntityRohanBrewer,,missing,
+common.entity.npc,LOTREntityRohanBuilder,,missing,
+common.entity.npc,LOTREntityRohanButcher,,missing,
+common.entity.npc,LOTREntityRohanFarmer,,missing,
+common.entity.npc,LOTREntityRohanFarmhand,,missing,
+common.entity.npc,LOTREntityRohanFishmonger,,missing,
+common.entity.npc,LOTREntityRohanLumberman,,missing,
+common.entity.npc,LOTREntityRohanMan,,missing,
+common.entity.npc,LOTREntityRohanMarketTrader,,base,extended by: LOTREntityRohanBaker LOTREntityRohanBrewer LOTREntityRohanBuilder LOTREntityRohanButcher LOTREntityRohanFishmonger LOTREntityRohanLumberman ...
+common.entity.npc,LOTREntityRohanMeadhost,,missing,
+common.entity.npc,LOTREntityRohanOrcharder,,missing,
+common.entity.npc,LOTREntityRohanShieldmaiden,,missing,
+common.entity.npc,LOTREntityRohanStablemaster,,missing,
+common.entity.npc,LOTREntityRohirrimArcher,,missing,
+common.entity.npc,LOTREntityRohirrimMarshal,,missing,
+common.entity.npc,LOTREntityRohirrimWarrior,,missing,
+common.entity.npc,LOTREntityRuffianBrute,,missing,
+common.entity.npc,LOTREntityRuffianSpy,,missing,
+common.entity.npc,LOTREntitySaruman,,missing,
+common.entity.npc,LOTREntitySauron,,missing,
+common.entity.npc,LOTREntityScrapTrader,,missing,
+common.entity.npc,LOTREntitySkeletalWraith,,base,extended by: LOTREntityGondorRuinsWraith LOTREntityHaradPyramidWraith LOTREntityRohanBarrowWraith LOTREntityTauredainPyramidWraith
+common.entity.npc,LOTREntitySnowTroll,,missing,
+common.entity.npc,LOTREntitySouthronBaker,,missing,
+common.entity.npc,LOTREntitySouthronBartender,,missing,
+common.entity.npc,LOTREntitySouthronBrewer,,missing,
+common.entity.npc,LOTREntitySouthronButcher,,missing,
+common.entity.npc,LOTREntitySouthronChampion,,missing,
+common.entity.npc,LOTREntitySouthronFarmer,,missing,
+common.entity.npc,LOTREntitySouthronFishmonger,,missing,
+common.entity.npc,LOTREntitySouthronFlorist,,missing,
+common.entity.npc,LOTREntitySouthronGoldsmith,,missing,
+common.entity.npc,LOTREntitySouthronLumberman,,missing,
+common.entity.npc,LOTREntitySouthronMason,,missing,
+common.entity.npc,LOTREntitySouthronMiner,,missing,
+common.entity.npc,LOTREntitySouthronTrader,,base,extended by: LOTREntitySouthronBaker LOTREntitySouthronBrewer LOTREntitySouthronButcher LOTREntitySouthronFishmonger LOTREntitySouthronFlorist LOTREntitySouthronGoldsmith ...
+common.entity.npc,LOTREntitySpiderBase,,base,extended by: LOTREntityMirkwoodSpider LOTREntityMordorSpider LOTREntityUtumnoIceSpider
+common.entity.npc,LOTREntitySwanKnight,,missing,
+common.entity.npc,LOTREntityTauredain,,missing,
+common.entity.npc,LOTREntityTauredainBannerBearer,,missing,
+common.entity.npc,LOTREntityTauredainBlowgunner,,missing,
+common.entity.npc,LOTREntityTauredainChieftain,,missing,
+common.entity.npc,LOTREntityTauredainFarmer,,missing,
+common.entity.npc,LOTREntityTauredainFarmhand,,missing,
+common.entity.npc,LOTREntityTauredainPyramidWraith,,missing,
+common.entity.npc,LOTREntityTauredainShaman,,missing,
+common.entity.npc,LOTREntityTauredainSmith,,missing,
+common.entity.npc,LOTREntityTauredainWarrior,,missing,
+common.entity.npc,LOTREntityTormentedElf,,missing,
+common.entity.npc,LOTREntityTree,,base,extended by: LOTREntityEnt LOTREntityHuornBase
+common.entity.npc,LOTREntityTroll,LOTRTrollModel,ported,
+common.entity.npc,LOTREntityUmbarArcher,,missing,
+common.entity.npc,LOTREntityUmbarBaker,,missing,
+common.entity.npc,LOTREntityUmbarBannerBearer,,missing,
+common.entity.npc,LOTREntityUmbarBartender,,missing,
+common.entity.npc,LOTREntityUmbarBlacksmith,,missing,
+common.entity.npc,LOTREntityUmbarBrewer,,missing,
+common.entity.npc,LOTREntityUmbarButcher,,missing,
+common.entity.npc,LOTREntityUmbarCaptain,,missing,
+common.entity.npc,LOTREntityUmbarFarmer,,missing,
+common.entity.npc,LOTREntityUmbarFishmonger,,missing,
+common.entity.npc,LOTREntityUmbarFlorist,,missing,
+common.entity.npc,LOTREntityUmbarGoldsmith,,missing,
+common.entity.npc,LOTREntityUmbarLumberman,,missing,
+common.entity.npc,LOTREntityUmbarMason,,missing,
+common.entity.npc,LOTREntityUmbarMiner,,missing,
+common.entity.npc,LOTREntityUmbarTrader,,base,extended by: LOTREntityUmbarBaker LOTREntityUmbarBrewer LOTREntityUmbarButcher LOTREntityUmbarFishmonger LOTREntityUmbarFlorist LOTREntityUmbarGoldsmith ...
+common.entity.npc,LOTREntityUmbarWarrior,,missing,
+common.entity.npc,LOTREntityUmbarian,,missing,
+common.entity.npc,LOTREntityUrukHai,,missing,
+common.entity.npc,LOTREntityUrukHaiBannerBearer,,missing,
+common.entity.npc,LOTREntityUrukHaiBerserker,,missing,
+common.entity.npc,LOTREntityUrukHaiCrossbower,,missing,
+common.entity.npc,LOTREntityUrukHaiMercenaryCaptain,,missing,
+common.entity.npc,LOTREntityUrukHaiSapper,,missing,
+common.entity.npc,LOTREntityUrukHaiTrader,,missing,
+common.entity.npc,LOTREntityUrukWarg,,missing,
+common.entity.npc,LOTREntityUrukWargBombardier,,missing,
+common.entity.npc,LOTREntityUtumnoFireWarg,,missing,
+common.entity.npc,LOTREntityUtumnoIceSpider,,missing,
+common.entity.npc,LOTREntityUtumnoIceWarg,,missing,
+common.entity.npc,LOTREntityUtumnoObsidianWarg,,missing,
+common.entity.npc,LOTREntityUtumnoOrc,,missing,
+common.entity.npc,LOTREntityUtumnoOrcArcher,,missing,
+common.entity.npc,LOTREntityUtumnoSnowTroll,,missing,
+common.entity.npc,LOTREntityUtumnoTroll,,missing,
+common.entity.npc,LOTREntityUtumnoWarg,,missing,
+common.entity.npc,LOTREntityWarg,,base,extended by: LOTREntityAngmarWarg LOTREntityGundabadWarg LOTREntityMordorWarg LOTREntityUrukWarg LOTREntityUtumnoWarg LOTREntityWargBombardier
+common.entity.npc,LOTREntityWargBombardier,,base,extended by: LOTREntityAngmarWargBombardier LOTREntityMordorWargBombardier LOTREntityUrukWargBombardier
+common.entity.npc,LOTREntityWickedDwarf,,missing,
+common.entity.npc,LOTREntityWoodElf,,missing,
+common.entity.npc,LOTREntityWoodElfBannerBearer,,missing,
+common.entity.npc,LOTREntityWoodElfCaptain,,missing,
+common.entity.npc,LOTREntityWoodElfScout,,missing,
+common.entity.npc,LOTREntityWoodElfSmith,,missing,
+common.entity.npc,LOTREntityWoodElfWarrior,,missing,
+common.entity.npc,LOTRFamilyInfo,,missing,
+common.entity.npc,LOTRFarmhand,,missing,
+common.entity.npc,LOTRHireableBase,,missing,
+common.entity.npc,LOTRHiredNPCInfo,,missing,
+common.entity.npc,LOTRInventoryHiredReplacedItems,,missing,
+common.entity.npc,LOTRInventoryNPCItems,,missing,
+common.entity.npc,LOTRMercenary,,missing,
+common.entity.npc,LOTRMercenaryTradeEntry,,missing,
+common.entity.npc,LOTRNPCMount,,missing,
+common.entity.npc,LOTRNames,,missing,
+common.entity.npc,LOTRSpeech,,missing,
+common.entity.npc,LOTRTradeEntries,,missing,
+common.entity.npc,LOTRTradeEntry,,missing,
+common.entity.npc,LOTRTradeEntryBarrel,,missing,
+common.entity.npc,LOTRTradeSellResult,,missing,
+common.entity.npc,LOTRTradeable,,missing,
+common.entity.npc,LOTRTraderNPCInfo,,missing,
+common.entity.npc,LOTRTravellingTrader,,missing,
+common.entity.npc,LOTRTravellingTraderInfo,,missing,
+common.entity.npc,LOTRUnitTradeEntries,,missing,
+common.entity.npc,LOTRUnitTradeEntry,,missing,
+common.entity.npc,LOTRUnitTradeable,,missing,
+common.entity.projectile,LOTREntityConker,LOTRConkerEntity,ported,
+common.entity.projectile,LOTREntityCrossbowBolt,LOTRCrossbowBoltEntity,ported,
+common.entity.projectile,LOTREntityDart,LOTRDartEntity,ported,
+common.entity.projectile,LOTREntityFirePot,LOTRFirePotEntity,ported,
+common.entity.projectile,LOTREntityFishHook,,missing,
+common.entity.projectile,LOTREntityGandalfFireball,LOTRGandalfFireballEntity,ported,
+common.entity.projectile,LOTREntityMallornLeafBomb,,missing,
+common.entity.projectile,LOTREntityMarshWraithBall,,missing,
+common.entity.projectile,LOTREntityMysteryWeb,LOTRMysteryWebEntity,ported,
+common.entity.projectile,LOTREntityPebble,LOTRPebbleEntity,ported,
+common.entity.projectile,LOTREntityPlate,LOTRPlateBlockEntity LOTRPlateEntity,ported,
+common.entity.projectile,LOTREntityProjectileBase,,referenced,named in: LOTRCrossbowBoltEntity LOTRThrowingAxeEntity LOTRThrowingAxeItem
+common.entity.projectile,LOTREntitySmokeRing,,missing,
+common.entity.projectile,LOTREntitySpear,,missing,
+common.entity.projectile,LOTREntityThrowingAxe,LOTRThrowingAxeEntity,ported,
+common.entity.projectile,LOTREntityThrownRock,,missing,
+common.entity.projectile,LOTREntityThrownTermite,,missing,
+common.entity.projectile,LOTREntityTrollSnowball,,missing,
+common.entity.projectile,LOTRFishing,,missing,
+common.fac,LOTRAlignmentBonusMap,LOTRAlignmentBonusMap,ported,
+common.fac,LOTRAlignmentValues,LOTRAlignmentValues,ported,
+common.fac,LOTRControlZone,LOTRControlZone,ported,
+common.fac,LOTRFaction,LOTRFaction,ported,
+common.fac,LOTRFactionBounties,,missing,
+common.fac,LOTRFactionData,,missing,
+common.fac,LOTRFactionRank,LOTRFactionRank,ported,
+common.fac,LOTRFactionRelations,LOTRFactionRelations,ported,
+common.fac,LOTRMapRegion,LOTRMapRegion,ported,
+common.fellowship,FellowshipUpdateType,,missing,
+common.fellowship,LOTRFellowship,,missing,
+common.fellowship,LOTRFellowshipClient,,missing,
+common.fellowship,LOTRFellowshipData,,missing,
+common.fellowship,LOTRFellowshipInvite,,missing,
+common.fellowship,LOTRFellowshipProfile,,missing,
+common.inventory,LOTRContainerAlloyForge,,referenced,named in: LOTRForgeMenu
+common.inventory,LOTRContainerAnvil,,referenced,named in: LOTRModifiers
+common.inventory,LOTRContainerArmorStand,,excluded,
+common.inventory,LOTRContainerBarrel,LOTRBarrelMenu,ported,
+common.inventory,LOTRContainerBookshelf,,missing,
+common.inventory,LOTRContainerChestWithPouch,,missing,
+common.inventory,LOTRContainerCoinExchange,,missing,
+common.inventory,LOTRContainerCraftingTable,LOTRCraftingTableBlock LOTRCraftingTable,ported,
+common.inventory,LOTRContainerDaleCracker,LOTRDaleCrackerMenu,ported,
+common.inventory,LOTRContainerGollum,,missing,
+common.inventory,LOTRContainerHiredFarmerInventory,,missing,
+common.inventory,LOTRContainerHiredWarriorInventory,,missing,
+common.inventory,LOTRContainerHobbitOven,LOTRHobbitOvenMenu,ported,
+common.inventory,LOTRContainerMillstone,LOTRMillstoneMenu,ported,
+common.inventory,LOTRContainerMountInventory,,missing,
+common.inventory,LOTRContainerNPCMountInventory,,missing,
+common.inventory,LOTRContainerPouch,,excluded,
+common.inventory,LOTRContainerTrade,,missing,
+common.inventory,LOTRContainerUnitTrade,,missing,
+common.inventory,LOTRContainerUnsmeltery,LOTRUnsmelteryMenu,ported,
+common.inventory,LOTREntityInventory,,missing,
+common.inventory,LOTRInventoryGollum,,missing,
+common.inventory,LOTRInventoryNPC,,missing,
+common.inventory,LOTRInventoryPouch,,excluded,
+common.inventory,LOTRSlotAlignmentReward,,missing,
+common.inventory,LOTRSlotAnvilOutput,,missing,
+common.inventory,LOTRSlotArmorStand,,missing,
+common.inventory,LOTRSlotBarrel,,referenced,named in: LOTRBarrelMenu
+common.inventory,LOTRSlotBarrelResult,,referenced,named in: LOTRBarrelMenu
+common.inventory,LOTRSlotBomb,,missing,
+common.inventory,LOTRSlotBonemeal,,missing,
+common.inventory,LOTRSlotCoinResult,,missing,
+common.inventory,LOTRSlotDaleCracker,,missing,
+common.inventory,LOTRSlotHiredReplaceItem,,missing,
+common.inventory,LOTRSlotImmutable,,missing,
+common.inventory,LOTRSlotMeleeWeapon,,missing,
+common.inventory,LOTRSlotMillstone,,referenced,named in: LOTRMillstoneMenu
+common.inventory,LOTRSlotPouch,,missing,
+common.inventory,LOTRSlotProtected,,missing,
+common.inventory,LOTRSlotSaddle,,missing,
+common.inventory,LOTRSlotSeeds,,missing,
+common.inventory,LOTRSlotStackSize,,missing,
+common.inventory,LOTRSlotTrade,,missing,
+common.inventory,LOTRSlotUnsmeltResult,,referenced,named in: LOTRUnsmelteryMenu
+common.inventory,OddmentCollectorNameMischief,,missing,
+common.item,AnvilNameColorProvider,,missing,
+common.item,LOTRItemAncientItem,,absorbed,backs 1 field(s): ancientItem
+common.item,LOTRItemAncientItemParts,,absorbed,backs 1 field(s): ancientItemParts
+common.item,LOTRItemAnduril,,absorbed,backs 1 field(s): anduril
+common.item,LOTRItemAnimalJar,LOTRAnimalJarItem,ported,
+common.item,LOTRItemArmor,,absorbed,backs 235 field(s): bodyAngmar bodyArnor bodyBlackNumenorean bodyBlackUruk bodyBlackroot bodyBlueDwarven ...
+common.item,LOTRItemArmorStand,,excluded,
+common.item,LOTRItemArrowPoisoned,LOTRPoisonedArrowItem,ported,
+common.item,LOTRItemAxe,LOTRAxeItem,ported,
+common.item,LOTRItemBalrogWhip,LOTRBalrogWhipItem,ported,
+common.item,LOTRItemBanner,LOTRBannerBlock LOTRBannerBlockEntity LOTRBannerRenderState LOTRBannerRenderer LOTRBannerModel,ported,
+common.item,LOTRItemBarrel,LOTRBarrelItem,ported,
+common.item,LOTRItemBattleaxe,,absorbed,backs 20 field(s): battleaxeAngmar battleaxeBlackUruk battleaxeBlueDwarven battleaxeBronze battleaxeCorsair battleaxeDale ...
+common.item,LOTRItemBearRug,,missing,backs 1 field(s): bearRug
+common.item,LOTRItemBed,LOTRBedBlock,ported,
+common.item,LOTRItemBerry,,absorbed,backs 6 field(s): blackberry blueberry cranberry elderberry raspberry wildberry
+common.item,LOTRItemBlockGoran,,missing,
+common.item,LOTRItemBlockMetadata,,missing,
+common.item,LOTRItemBlowgun,LOTRBlowgunItem,ported,
+common.item,LOTRItemBone,,absorbed,backs 6 field(s): dwarfBone elfBone hobbitBone orcBone trollBone wargBone
+common.item,LOTRItemBossTrophy,LOTRBossTrophyItem,ported,
+common.item,LOTRItemBottlePoison,,absorbed,backs 1 field(s): bottlePoison
+common.item,LOTRItemBow,LOTRBowItem,ported,
+common.item,LOTRItemBrandingIron,,missing,backs 1 field(s): brandingIron
+common.item,LOTRItemChisel,LOTRChiselItem,ported,
+common.item,LOTRItemCoin,,absorbed,backs 1 field(s): silverCoin
+common.item,LOTRItemCommandHorn,LOTRCommandHornItem,ported,
+common.item,LOTRItemCommandSword,LOTRCommandSwordItem,ported,
+common.item,LOTRItemConker,LOTRConkerEntity,ported,
+common.item,LOTRItemConquestHorn,,absorbed,backs 1 field(s): conquestHorn
+common.item,LOTRItemCrossbow,LOTRCrossbowItem,ported,
+common.item,LOTRItemCrossbowBolt,LOTRCrossbowBoltItem,ported,
+common.item,LOTRItemDagger,,absorbed,backs 63 field(s): daggerAncientHarad daggerAngmar daggerAngmarPoisoned daggerArnor daggerArnorPoisoned daggerBarrow ...
+common.item,LOTRItemDaleCracker,LOTRDaleCrackerItem,ported,
+common.item,LOTRItemDart,LOTRDartItem,ported,
+common.item,LOTRItemDoor,,missing,
+common.item,LOTRItemDoubleFlower,,referenced,named in: LOTRModelProvider
+common.item,LOTRItemDoubleTorch,LOTRDoubleTorchBlock,ported,
+common.item,LOTRItemDye,,absorbed,backs 1 field(s): dye
+common.item,LOTRItemEnchantment,,absorbed,backs 4 field(s): balrogFire bountyTrophy chilling mithrilBook
+common.item,LOTRItemEntDraught,LOTREntDraughtItem,ported,
+common.item,LOTRItemFallenLeaves,,missing,
+common.item,LOTRItemFeatherDyed,,missing,backs 1 field(s): featherDyed
+common.item,LOTRItemFenceVanilla,,missing,
+common.item,LOTRItemFirePot,LOTRFirePotItem,ported,
+common.item,LOTRItemFood,,absorbed,backs 47 field(s): almond appleGreen bananaBread camelCooked camelRaw cherry ...
+common.item,LOTRItemGandalfStaffGrey,,absorbed,backs 1 field(s): gandalfStaffGrey
+common.item,LOTRItemGandalfStaffWhite,LOTRGandalfStaffWhiteItem,ported,
+common.item,LOTRItemGate,LOTRGateBlock LOTRGateModel,ported,
+common.item,LOTRItemGem,,absorbed,backs 2 field(s): coral pearl
+common.item,LOTRItemGemWithAnvilNameColor,,absorbed,backs 8 field(s): amber amethyst diamond emerald opal ruby ...
+common.item,LOTRItemGiraffeRug,,missing,backs 1 field(s): giraffeRug
+common.item,LOTRItemGlamdring,,absorbed,backs 1 field(s): glamdring
+common.item,LOTRItemGlassBottle,,referenced,named in: LOTRVanillaVessels
+common.item,LOTRItemGrapeSeeds,,absorbed,backs 2 field(s): seedsGrapeRed seedsGrapeWhite
+common.item,LOTRItemGuldurilCrystal,LOTRGuldurilCrystalItem,ported,
+common.item,LOTRItemHammer,,absorbed,backs 20 field(s): blacksmithHammer clubMoredain dunlendingClub hammerAngmar hammerBlackUruk hammerBlueDwarven ...
+common.item,LOTRItemHangingFruit,LOTRHangingFruitItem,ported,
+common.item,LOTRItemHaradRobes,,absorbed,backs 3 field(s): bodyHaradRobes bootsHaradRobes legsHaradRobes
+common.item,LOTRItemHaradTurban,,absorbed,backs 1 field(s): helmetHaradRobes
+common.item,LOTRItemHobbitPipe,,absorbed,backs 1 field(s): hobbitPipe
+common.item,LOTRItemHoe,LOTRHoeItem,ported,
+common.item,LOTRItemKaftan,,absorbed,backs 2 field(s): bodyKaftan legsKaftan
+common.item,LOTRItemKebab,LOTRKebabItem,ported,
+common.item,LOTRItemKebabStand,LOTRKebabStandBlock LOTRKebabStandBlockEntity LOTRKebabStandRenderState LOTRKebabStandRenderer LOTRKebabStandModel,ported,
+common.item,LOTRItemLance,,absorbed,backs 3 field(s): lanceDolAmroth lanceGondor lanceRohan
+common.item,LOTRItemLeatherHat,,absorbed,backs 1 field(s): leatherHat
+common.item,LOTRItemLeaves,,missing,
+common.item,LOTRItemLionRug,,missing,backs 1 field(s): lionRug
+common.item,LOTRItemManFlesh,LOTRManFleshItem,ported,
+common.item,LOTRItemMatch,LOTRMatchItem,ported,
+common.item,LOTRItemMattock,,absorbed,backs 3 field(s): mattockBlueDwarven mattockDwarven mattockMithril
+common.item,LOTRItemMechanism,LOTRMechanismItem,ported,
+common.item,LOTRItemMobSpawner,,missing,
+common.item,LOTRItemModifierTemplate,,absorbed,backs 1 field(s): modTemplate
+common.item,LOTRItemMorgulShroom,LOTRMorgulShroomBlock,ported,
+common.item,LOTRItemMountArmor,,absorbed,backs 23 field(s): boarArmorBlueDwarven boarArmorDwarven elkArmorWoodElven horseArmorDale horseArmorDiamond horseArmorDolAmroth ...
+common.item,LOTRItemMug,LOTRMugBlock LOTRMugBlockEntity LOTRMugRenderState LOTRMugRenderer,ported,
+common.item,LOTRItemMugMorgulDraught,,absorbed,backs 1 field(s): mugMorgulDraught
+common.item,LOTRItemMugTauredainCure,,absorbed,backs 1 field(s): mugTauredainCure
+common.item,LOTRItemMugTermite,,absorbed,backs 1 field(s): mugTermiteTequila
+common.item,LOTRItemMysteryWeb,LOTRMysteryWebEntity,ported,
+common.item,LOTRItemNPCRespawner,,missing,backs 1 field(s): npcRespawner
+common.item,LOTRItemOrcBomb,LOTROrcBombBlock LOTROrcBombEntity,ported,
+common.item,LOTRItemOrcSkullStaff,,absorbed,backs 1 field(s): orcSkullStaff
+common.item,LOTRItemOwnership,,missing,
+common.item,LOTRItemPartyHat,,absorbed,backs 1 field(s): partyHat
+common.item,LOTRItemPebble,LOTRPebbleItem,ported,
+common.item,LOTRItemPickaxe,,absorbed,backs 15 field(s): pickaxeAngmar pickaxeBlueDwarven pickaxeBronze pickaxeDolGuldur pickaxeDwarven pickaxeElven ...
+common.item,LOTRItemPike,,absorbed,backs 13 field(s): pikeBlueDwarven pikeDale pikeDolGuldur pikeDwarven pikeGondor pikeGundabadUruk ...
+common.item,LOTRItemPlaceableFood,LOTRPlaceableFoodBlock,ported,
+common.item,LOTRItemPlate,LOTRPlateItem,ported,
+common.item,LOTRItemPolearm,,absorbed,backs 8 field(s): polearmAngmar polearmElven polearmHighElven polearmOrc polearmRhun polearmRivendell ...
+common.item,LOTRItemPolearmLong,,absorbed,backs 6 field(s): halberdMithril longspearDolAmroth longspearElven longspearHighElven longspearRivendell longspearWoodElven
+common.item,LOTRItemPotion,,referenced,named in: LOTRVanillaVessels
+common.item,LOTRItemPouch,,excluded,
+common.item,LOTRItemQuenditeCrystal,LOTRQuenditeCrystalItem,ported,
+common.item,LOTRItemRedBook,,absorbed,backs 1 field(s): redBook
+common.item,LOTRItemReeds,,missing,
+common.item,LOTRItemRhunFireJar,,missing,
+common.item,LOTRItemRing,,absorbed,backs 3 field(s): goldRing mithrilRing silverRing
+common.item,LOTRItemRingil,,absorbed,backs 1 field(s): ringil
+common.item,LOTRItemRugBase,,referenced,named in: LOTRCreativeTabs
+common.item,LOTRItemSalt,LOTRSaltItem,ported,
+common.item,LOTRItemSauronMace,LOTRSauronMaceItem,ported,
+common.item,LOTRItemSeeds,,absorbed,backs 2 field(s): flaxSeeds pipeweedSeeds
+common.item,LOTRItemShovel,LOTRShovelItem,ported,
+common.item,LOTRItemSling,LOTRSlingItem,ported,
+common.item,LOTRItemSpawnEgg,,absorbed,backs 1 field(s): spawnEgg
+common.item,LOTRItemSpear,,absorbed,backs 29 field(s): spearAngmar spearArnor spearBlackNumenorean spearBlackUruk spearBladorthin spearBlueDwarven ...
+common.item,LOTRItemStew,,absorbed,backs 5 field(s): leekSoup mapleSyrup melonSoup rabbitStew torogStew
+common.item,LOTRItemSting,,absorbed,backs 1 field(s): sting
+common.item,LOTRItemStructureSpawner,,missing,backs 1 field(s): structureSpawner
+common.item,LOTRItemSword,,absorbed,backs 36 field(s): morgulBlade rollingPin scimitarBlackUruk scimitarHalfTroll scimitarNearHarad scimitarOrc ...
+common.item,LOTRItemTallGrass,,missing,
+common.item,LOTRItemTermite,,absorbed,backs 1 field(s): termite
+common.item,LOTRItemThrowingAxe,LOTRThrowingAxeItem,ported,
+common.item,LOTRItemTreasurePile,LOTRTreasurePileItem,ported,
+common.item,LOTRItemTrident,LOTRTridentItem,ported,
+common.item,LOTRItemTrollStatue,LOTRTrollStatueItem,ported,
+common.item,LOTRItemUtumnoKey,,absorbed,backs 1 field(s): utumnoKey
+common.item,LOTRItemVessel,LOTRVesselItem,ported,
+common.item,LOTRItemVine,,missing,
+common.item,LOTRItemWargskinRug,,missing,backs 1 field(s): wargskinRug
+common.item,LOTRItemWaterPlant,,referenced,named in: LOTRBlocks
+common.item,LOTRItemWithAnvilNameColor,,absorbed,backs 1 field(s): nauriteGem
+common.item,LOTRMaterial,,referenced,named in: LOTRItemTags LOTRItems LOTRToolMaterials
+common.item,LOTRPoisonedDrinks,LOTRPoisonedDrinks,ported,
+common.item,LOTRPotionPoisonKilling,,referenced,named in: LOTRDrinkPoisonMobEffect
+common.item,LOTRStoryItem,,referenced,named in: LOTRCreativeTabs
+common.item,LOTRValuableItems,,missing,
+common.item,LOTRWeaponStats,,referenced,named in: LOTRGateBlock LOTRItemTags LOTRItems LOTRModifier ...
+common.network,LOTRPacketAchievement,,missing,
+common.network,LOTRPacketAchievementRemove,,missing,
+common.network,LOTRPacketAlignDrain,,missing,
+common.network,LOTRPacketAlignment,,missing,
+common.network,LOTRPacketAlignmentBonus,,missing,
+common.network,LOTRPacketAlignmentChoiceOffer,,missing,
+common.network,LOTRPacketAlignmentChoices,,missing,
+common.network,LOTRPacketAlignmentSee,,missing,
+common.network,LOTRPacketAnvilEngraveOwner,,missing,
+common.network,LOTRPacketAnvilReforge,,missing,
+common.network,LOTRPacketAnvilRename,,missing,
+common.network,LOTRPacketBannerData,,missing,
+common.network,LOTRPacketBannerRequestInvalidName,,missing,
+common.network,LOTRPacketBannerValidate,,missing,
+common.network,LOTRPacketBeaconEdit,,referenced,named in: LOTRBeaconEditPayload
+common.network,LOTRPacketBiomeVariantsUnwatch,,missing,
+common.network,LOTRPacketBiomeVariantsWatch,,missing,
+common.network,LOTRPacketBlockFX,,missing,
+common.network,LOTRPacketBrandingIron,,missing,
+common.network,LOTRPacketBrewingButton,,referenced,named in: LOTRBrewingButtonPayload LOTRPackets
+common.network,LOTRPacketBrokenPledge,,missing,
+common.network,LOTRPacketBuyUnit,,missing,
+common.network,LOTRPacketCWPProtectionMessage,,missing,
+common.network,LOTRPacketCWPSharedHide,,missing,
+common.network,LOTRPacketCWPSharedHideClient,,missing,
+common.network,LOTRPacketCWPSharedUnlockClient,,missing,
+common.network,LOTRPacketCancelItemHighlight,,missing,
+common.network,LOTRPacketClientInfo,,missing,
+common.network,LOTRPacketClientMQEvent,,missing,
+common.network,LOTRPacketClientsideGUI,,missing,
+common.network,LOTRPacketCoinExchange,,missing,
+common.network,LOTRPacketConquestGrid,,missing,
+common.network,LOTRPacketConquestGridRequest,,missing,
+common.network,LOTRPacketConquestNotification,,missing,
+common.network,LOTRPacketCreateCWP,,missing,
+common.network,LOTRPacketCreateCWPClient,,missing,
+common.network,LOTRPacketDate,,missing,
+common.network,LOTRPacketDeleteCWP,,missing,
+common.network,LOTRPacketDeleteCWPClient,,missing,
+common.network,LOTRPacketDeleteMiniquest,,missing,
+common.network,LOTRPacketEditBanner,,missing,
+common.network,LOTRPacketEditNPCRespawner,,missing,
+common.network,LOTRPacketEditSign,,referenced,named in: LOTRCarvedSignBlockEntity LOTRPackets LOTRSignEditPayload
+common.network,LOTRPacketEnableAlignmentZones,,missing,
+common.network,LOTRPacketEntityUUID,,missing,
+common.network,LOTRPacketEnvironmentOverlay,,missing,
+common.network,LOTRPacketFTBounceClient,,missing,
+common.network,LOTRPacketFTBounceServer,,missing,
+common.network,LOTRPacketFTCooldown,,missing,
+common.network,LOTRPacketFTScreen,,missing,
+common.network,LOTRPacketFTTimer,,missing,
+common.network,LOTRPacketFactionData,,missing,
+common.network,LOTRPacketFactionRelations,,missing,
+common.network,LOTRPacketFamilyInfo,,missing,
+common.network,LOTRPacketFastTravel,,missing,
+common.network,LOTRPacketFellowship,,missing,
+common.network,LOTRPacketFellowshipAcceptInviteResult,,missing,
+common.network,LOTRPacketFellowshipCreate,,missing,
+common.network,LOTRPacketFellowshipDisband,,missing,
+common.network,LOTRPacketFellowshipDo,,base,extended by: LOTRPacketFellowshipDisband LOTRPacketFellowshipDoPlayer LOTRPacketFellowshipInvitePlayer LOTRPacketFellowshipLeave LOTRPacketFellowshipRename LOTRPacketFellowshipRespondInvite ...
+common.network,LOTRPacketFellowshipDoPlayer,,missing,
+common.network,LOTRPacketFellowshipInvitePlayer,,missing,
+common.network,LOTRPacketFellowshipLeave,,missing,
+common.network,LOTRPacketFellowshipNotification,,missing,
+common.network,LOTRPacketFellowshipPartialUpdate,,base,extended by: 
+common.network,LOTRPacketFellowshipRemove,,missing,
+common.network,LOTRPacketFellowshipRename,,missing,
+common.network,LOTRPacketFellowshipRespondInvite,,missing,
+common.network,LOTRPacketFellowshipSetIcon,,missing,
+common.network,LOTRPacketFellowshipToggle,,missing,
+common.network,LOTRPacketHandler,,missing,
+common.network,LOTRPacketHiredGui,,missing,
+common.network,LOTRPacketHiredInfo,,missing,
+common.network,LOTRPacketHiredUnitCommand,,missing,
+common.network,LOTRPacketHiredUnitDismiss,,missing,
+common.network,LOTRPacketHiredUnitInteract,,missing,
+common.network,LOTRPacketHornSelect,,missing,
+common.network,LOTRPacketInvasionWatch,,missing,
+common.network,LOTRPacketIsOpRequest,,missing,
+common.network,LOTRPacketIsOpResponse,,missing,
+common.network,LOTRPacketItemSquadron,,missing,
+common.network,LOTRPacketLocationFX,,missing,
+common.network,LOTRPacketLogin,,missing,
+common.network,LOTRPacketLoginPlayerData,,missing,
+common.network,LOTRPacketMallornEntHeal,,missing,
+common.network,LOTRPacketMallornEntSummon,,missing,
+common.network,LOTRPacketMapTp,,missing,
+common.network,LOTRPacketMercenaryInteract,,missing,
+common.network,LOTRPacketMessage,,missing,
+common.network,LOTRPacketMiniquest,,missing,
+common.network,LOTRPacketMiniquestOffer,,missing,
+common.network,LOTRPacketMiniquestOfferClose,,missing,
+common.network,LOTRPacketMiniquestRemove,,missing,
+common.network,LOTRPacketMiniquestTrack,,missing,
+common.network,LOTRPacketMiniquestTrackClient,,missing,
+common.network,LOTRPacketMobSpawner,,missing,
+common.network,LOTRPacketMountControl,,missing,
+common.network,LOTRPacketMountControlServerEnforce,,missing,
+common.network,LOTRPacketMountOpenInv,,missing,
+common.network,LOTRPacketNPCCombatStance,,missing,
+common.network,LOTRPacketNPCFX,,missing,
+common.network,LOTRPacketNPCIsEating,,missing,
+common.network,LOTRPacketNPCIsOfferingQuest,,missing,
+common.network,LOTRPacketNPCRespawner,,missing,
+common.network,LOTRPacketNPCSpeech,,missing,
+common.network,LOTRPacketNPCSquadron,,missing,
+common.network,LOTRPacketOpenSignEditor,,referenced,named in: LOTROpenSignEditorPayload
+common.network,LOTRPacketOptions,,missing,
+common.network,LOTRPacketPledge,,missing,
+common.network,LOTRPacketPledgeSet,,missing,
+common.network,LOTRPacketPortalPos,,missing,
+common.network,LOTRPacketRenameCWP,,missing,
+common.network,LOTRPacketRenameCWPClient,,missing,
+common.network,LOTRPacketRenamePouch,,missing,
+common.network,LOTRPacketRestockPouches,,missing,
+common.network,LOTRPacketSealCracker,,referenced,named in: LOTRDaleCrackerMenu
+common.network,LOTRPacketSelectShield,,missing,
+common.network,LOTRPacketSelectTitle,,missing,
+common.network,LOTRPacketSell,,missing,
+common.network,LOTRPacketSetOption,,missing,
+common.network,LOTRPacketSetPlayerRotation,,missing,
+common.network,LOTRPacketShareCWP,,missing,
+common.network,LOTRPacketShareCWPClient,,missing,
+common.network,LOTRPacketShield,,missing,
+common.network,LOTRPacketSpawnMob,,missing,
+common.network,LOTRPacketStopItemUse,,missing,
+common.network,LOTRPacketTitle,,missing,
+common.network,LOTRPacketTraderInfo,,missing,
+common.network,LOTRPacketTraderInteract,,missing,
+common.network,LOTRPacketUnitTraderInteract,,missing,
+common.network,LOTRPacketUpdatePlayerLocations,,missing,
+common.network,LOTRPacketUpdateViewingFaction,,missing,
+common.network,LOTRPacketUtumnoKill,,missing,
+common.network,LOTRPacketUtumnoReturn,,missing,
+common.network,LOTRPacketWaypointRegion,,missing,
+common.network,LOTRPacketWaypointUseCount,,missing,
+common.network,LOTRPacketWeaponFX,,referenced,named in: LOTRGandalfStaffWhiteItem LOTRSauronMaceItem
+common.playerdetails,ExclusiveGroup,,missing,
+common.playerdetails,LOTRPlayerDetailsCache,,missing,
+common.playerdetails,PlayerDetails,,missing,
+common.playerdetails,PlayerDetailsApiClient,,missing,
+common.quest,IPickpocketable,,missing,
+common.quest,LOTRMiniQuest,,base,extended by: LOTRMiniQuestBounty LOTRMiniQuestCollectBase LOTRMiniQuestKill LOTRMiniQuestWelcome
+common.quest,LOTRMiniQuestBounty,,missing,
+common.quest,LOTRMiniQuestCollect,,missing,
+common.quest,LOTRMiniQuestCollectBase,,base,extended by: LOTRMiniQuestCollect LOTRMiniQuestPickpocket
+common.quest,LOTRMiniQuestEvent,,base,extended by: LOTRMiniQuestEvent
+common.quest,LOTRMiniQuestFactory,,missing,
+common.quest,LOTRMiniQuestKill,,base,extended by: LOTRMiniQuestKillEntity LOTRMiniQuestKillFaction
+common.quest,LOTRMiniQuestKillEntity,,missing,
+common.quest,LOTRMiniQuestKillFaction,,missing,
+common.quest,LOTRMiniQuestPickpocket,,missing,
+common.quest,LOTRMiniQuestRetrieve,,missing,
+common.quest,LOTRMiniQuestWelcome,,missing,
+common.quest,MiniQuestSelector,,missing,
+common.recipe,LOTRBrewingRecipes,LOTRBrewingRecipes,ported,
+common.recipe,LOTREntJarRecipes,,referenced,named in: LOTREntJarBlock LOTREntJarBlockEntity
+common.recipe,LOTRMillstoneRecipes,LOTRMillstoneRecipes,ported,
+common.recipe,LOTRRecipeFeatherDye,,missing,
+common.recipe,LOTRRecipeHaradRobesDye,,missing,
+common.recipe,LOTRRecipeHaradTurbanOrnament,,missing,
+common.recipe,LOTRRecipeHobbitPipe,,referenced,named in: LOTRSmokingPipeDyeRecipe LOTRSmokingPipeItem
+common.recipe,LOTRRecipeLeatherHatDye,,missing,
+common.recipe,LOTRRecipeLeatherHatFeather,,missing,
+common.recipe,LOTRRecipePartyHatDye,,missing,
+common.recipe,LOTRRecipePoisonWeapon,,referenced,named in: LOTRFactionTransmuteRecipe
+common.recipe,LOTRRecipes,,referenced,named in: LOTRCraftingTable LOTRFactionShapelessRecipe LOTRItemTagProvider LOTRRecipeProvider ...
+common.recipe,LOTRRecipesArmorDyes,,missing,
+common.recipe,LOTRRecipesBanners,,missing,
+common.recipe,LOTRRecipesPoisonDrinks,,referenced,named in: LOTRDrinkItem LOTRPoisonDrinkRecipe
+common.recipe,LOTRRecipesPouch,,missing,
+common.recipe,LOTRRecipesTreasurePile,,missing,
+common.recipe,LOTRVesselRecipes,,missing,
+common.tileentity,LOTRDwarvenGlowLogic,LOTRDwarvenGlowLogic,ported,
+common.tileentity,LOTRTileEntityAlloyForge,,missing,
+common.tileentity,LOTRTileEntityAlloyForgeBase,,referenced,named in: LOTRForgeBlockEntity
+common.tileentity,LOTRTileEntityAnimalJar,LOTRAnimalJarBlockEntity,ported,
+common.tileentity,LOTRTileEntityArmorStand,,excluded,
+common.tileentity,LOTRTileEntityBarrel,LOTRBarrelBlockEntity,ported,
+common.tileentity,LOTRTileEntityBeacon,LOTRBeaconBlockEntity,ported,
+common.tileentity,LOTRTileEntityBookshelf,,missing,
+common.tileentity,LOTRTileEntityChest,LOTRChestBlockEntity,ported,
+common.tileentity,LOTRTileEntityCommandTable,,referenced,named in: LOTRTableOfCommandBlockEntity
+common.tileentity,LOTRTileEntityCorruptMallorn,,missing,
+common.tileentity,LOTRTileEntityDartTrap,LOTRDartTrapBlockEntity,ported,
+common.tileentity,LOTRTileEntityDwarvenDoor,LOTRDwarvenDoorBlockEntity,ported,
+common.tileentity,LOTRTileEntityDwarvenForge,,referenced,named in: LOTRForgeBlockEntity
+common.tileentity,LOTRTileEntityElvenForge,,missing,
+common.tileentity,LOTRTileEntityElvenPortal,,missing,
+common.tileentity,LOTRTileEntityEntJar,LOTREntJarBlockEntity,ported,
+common.tileentity,LOTRTileEntityFlowerPot,,missing,
+common.tileentity,LOTRTileEntityForgeBase,LOTRForgeBlockEntity,ported,
+common.tileentity,LOTRTileEntityGulduril,,missing,
+common.tileentity,LOTRTileEntityHobbitOven,LOTRHobbitOvenBlockEntity,ported,
+common.tileentity,LOTRTileEntityKebabStand,LOTRKebabStandBlockEntity,ported,
+common.tileentity,LOTRTileEntityMillstone,LOTRMillstoneBlockEntity,ported,
+common.tileentity,LOTRTileEntityMobSpawner,,missing,
+common.tileentity,LOTRTileEntityMorgulPortal,,missing,
+common.tileentity,LOTRTileEntityMug,LOTRMugBlockEntity,ported,
+common.tileentity,LOTRTileEntityOrcForge,,missing,
+common.tileentity,LOTRTileEntityPlate,LOTRPlateBlockEntity,ported,
+common.tileentity,LOTRTileEntityPortalBase,,base,extended by: LOTRTileEntityElvenPortal LOTRTileEntityMorgulPortal
+common.tileentity,LOTRTileEntitySign,,base,extended by: LOTRTileEntitySignCarved
+common.tileentity,LOTRTileEntitySignCarved,LOTRCarvedSignBlockEntity,ported,
+common.tileentity,LOTRTileEntitySignCarvedIthildin,,referenced,named in: LOTRCarvedSignBlock
+common.tileentity,LOTRTileEntitySpawnerChest,,missing,
+common.tileentity,LOTRTileEntityTrollTotem,LOTRTrollTotemBlockEntity,ported,
+common.tileentity,LOTRTileEntityUnsmeltery,LOTRUnsmelteryBlockEntity,ported,
+common.tileentity,LOTRTileEntityUtumnoPortal,,missing,
+common.tileentity,LOTRTileEntityUtumnoReturnPortal,LOTRUtumnoReturnPortalBaseBlock,ported,
+common.tileentity,LOTRTileEntityWeaponRack,LOTRWeaponRackBlockEntity,ported,
+common.util,CentredSquareArray,,missing,
+common.util,LOTRColorUtil,,missing,
+common.util,LOTRCommonIcons,,missing,
+common.util,LOTRFunctions,,missing,
+common.util,LOTRLog,,missing,
+common.util,LOTRMazeGenerator,,missing,
+common.util,LOTRVersionChecker,,missing,
+common.world,LOTRChunkProvider,,missing,
+common.world,LOTRChunkProviderUtumno,,missing,
+common.world,LOTRTeleporter,,missing,
+common.world,LOTRTeleporterElvenPortal,,missing,
+common.world,LOTRTeleporterMorgulPortal,,missing,
+common.world,LOTRTeleporterUtumno,,missing,
+common.world,LOTRUtumnoLevel,,missing,
+common.world,LOTRWorldChunkManager,,missing,
+common.world,LOTRWorldInfo,,missing,
+common.world,LOTRWorldProvider,,base,extended by: LOTRWorldProviderMiddleEarth LOTRWorldProviderUtumno
+common.world,LOTRWorldProviderMiddleEarth,,missing,
+common.world,LOTRWorldProviderUtumno,,missing,
+common.world,LOTRWorldTypeMiddleEarth,,missing,
+common.world.biome,LOTRBiome,,base,extended by: LOTRBiomeGenAdornland LOTRBiomeGenAnduin LOTRBiomeGenAngmar LOTRBiomeGenBarrowDowns LOTRBiomeGenBlueMountains LOTRBiomeGenBreeland ...
+common.world.biome,LOTRBiomeDecorator,,missing,
+common.world.biome,LOTRBiomeGenAdornland,,missing,
+common.world.biome,LOTRBiomeGenAndrast,,missing,
+common.world.biome,LOTRBiomeGenAnduin,,missing,
+common.world.biome,LOTRBiomeGenAnduinMouth,,missing,
+common.world.biome,LOTRBiomeGenAnduinVale,,missing,
+common.world.biome,LOTRBiomeGenAngle,,missing,
+common.world.biome,LOTRBiomeGenAngmar,,missing,
+common.world.biome,LOTRBiomeGenAngmarMountains,,missing,
+common.world.biome,LOTRBiomeGenBarrowDowns,,missing,
+common.world.biome,LOTRBiomeGenBeach,,missing,
+common.world.biome,LOTRBiomeGenBlackrootVale,,missing,
+common.world.biome,LOTRBiomeGenBlueMountains,,missing,
+common.world.biome,LOTRBiomeGenBlueMountainsFoothills,,missing,
+common.world.biome,LOTRBiomeGenBreeland,,missing,
+common.world.biome,LOTRBiomeGenBrownLands,,missing,
+common.world.biome,LOTRBiomeGenCelebrant,,missing,
+common.world.biome,LOTRBiomeGenChetwood,,missing,
+common.world.biome,LOTRBiomeGenColdfells,,missing,
+common.world.biome,LOTRBiomeGenDagorlad,,missing,
+common.world.biome,LOTRBiomeGenDale,,missing,
+common.world.biome,LOTRBiomeGenDeadMarshes,,missing,
+common.world.biome,LOTRBiomeGenDolGuldur,,missing,
+common.world.biome,LOTRBiomeGenDorEnErnil,,missing,
+common.world.biome,LOTRBiomeGenDorEnErnilHills,,missing,
+common.world.biome,LOTRBiomeGenDorwinion,,missing,
+common.world.biome,LOTRBiomeGenDorwinionHills,,missing,
+common.world.biome,LOTRBiomeGenDunland,,missing,
+common.world.biome,LOTRBiomeGenEastBight,,missing,
+common.world.biome,LOTRBiomeGenEasternDesolation,,missing,
+common.world.biome,LOTRBiomeGenEmynMuil,,missing,
+common.world.biome,LOTRBiomeGenEnedwaith,,missing,
+common.world.biome,LOTRBiomeGenEntwashMouth,,missing,
+common.world.biome,LOTRBiomeGenErebor,,missing,
+common.world.biome,LOTRBiomeGenEregion,,missing,
+common.world.biome,LOTRBiomeGenEriador,,missing,
+common.world.biome,LOTRBiomeGenEriadorDowns,,missing,
+common.world.biome,LOTRBiomeGenErynVorn,,missing,
+common.world.biome,LOTRBiomeGenEttenmoors,,missing,
+common.world.biome,LOTRBiomeGenFangorn,,referenced,named in: LOTREntJarBlock
+common.world.biome,LOTRBiomeGenFangornClearing,,missing,
+common.world.biome,LOTRBiomeGenFangornWasteland,,missing,
+common.world.biome,LOTRBiomeGenFarHarad,,base,extended by: LOTRBiomeGenFarHaradBushland LOTRBiomeGenFarHaradCloudForest LOTRBiomeGenFarHaradJungle LOTRBiomeGenFarHaradMangrove LOTRBiomeGenFarHaradSavannah LOTRBiomeGenFarHaradSwamp ...
+common.world.biome,LOTRBiomeGenFarHaradArid,,missing,
+common.world.biome,LOTRBiomeGenFarHaradBushland,,missing,
+common.world.biome,LOTRBiomeGenFarHaradCloudForest,,missing,
+common.world.biome,LOTRBiomeGenFarHaradCoast,,missing,
+common.world.biome,LOTRBiomeGenFarHaradForest,,missing,
+common.world.biome,LOTRBiomeGenFarHaradJungle,,missing,
+common.world.biome,LOTRBiomeGenFarHaradJungleEdge,,missing,
+common.world.biome,LOTRBiomeGenFarHaradJungleLake,,missing,
+common.world.biome,LOTRBiomeGenFarHaradJungleMountains,,missing,
+common.world.biome,LOTRBiomeGenFarHaradMangrove,,missing,
+common.world.biome,LOTRBiomeGenFarHaradSavannah,,missing,
+common.world.biome,LOTRBiomeGenFarHaradSwamp,,missing,
+common.world.biome,LOTRBiomeGenFarHaradVolcano,,missing,
+common.world.biome,LOTRBiomeGenForodwaith,,missing,
+common.world.biome,LOTRBiomeGenForodwaithCoast,,missing,
+common.world.biome,LOTRBiomeGenForodwaithGlacier,,missing,
+common.world.biome,LOTRBiomeGenForodwaithMountains,,missing,
+common.world.biome,LOTRBiomeGenGladdenFields,,missing,
+common.world.biome,LOTRBiomeGenGondor,,missing,
+common.world.biome,LOTRBiomeGenGondorWoodlands,,missing,
+common.world.biome,LOTRBiomeGenGorgoroth,,missing,
+common.world.biome,LOTRBiomeGenGreyMountains,,missing,
+common.world.biome,LOTRBiomeGenGreyMountainsFoothills,,missing,
+common.world.biome,LOTRBiomeGenGulfHarad,,missing,
+common.world.biome,LOTRBiomeGenGulfHaradForest,,missing,
+common.world.biome,LOTRBiomeGenHalfTrollForest,,missing,
+common.world.biome,LOTRBiomeGenHaradMountains,,missing,
+common.world.biome,LOTRBiomeGenHarnedor,,missing,
+common.world.biome,LOTRBiomeGenHarondor,,missing,
+common.world.biome,LOTRBiomeGenImlothMelui,,missing,
+common.world.biome,LOTRBiomeGenIronHills,,missing,
+common.world.biome,LOTRBiomeGenIthilien,,missing,
+common.world.biome,LOTRBiomeGenIthilienHills,,missing,
+common.world.biome,LOTRBiomeGenIthilienWasteland,,missing,
+common.world.biome,LOTRBiomeGenKanuka,,missing,
+common.world.biome,LOTRBiomeGenLake,,missing,
+common.world.biome,LOTRBiomeGenLamedon,,missing,
+common.world.biome,LOTRBiomeGenLamedonHills,,missing,
+common.world.biome,LOTRBiomeGenLastDesert,,missing,
+common.world.biome,LOTRBiomeGenLebennin,,missing,
+common.world.biome,LOTRBiomeGenLindon,,missing,
+common.world.biome,LOTRBiomeGenLindonCoast,,missing,
+common.world.biome,LOTRBiomeGenLindonWoodlands,,missing,
+common.world.biome,LOTRBiomeGenLoneLands,,missing,
+common.world.biome,LOTRBiomeGenLoneLandsHills,,missing,
+common.world.biome,LOTRBiomeGenLongMarshes,,missing,
+common.world.biome,LOTRBiomeGenLossarnach,,missing,
+common.world.biome,LOTRBiomeGenLostladen,,missing,
+common.world.biome,LOTRBiomeGenLothlorien,,missing,
+common.world.biome,LOTRBiomeGenLothlorienEdge,,missing,
+common.world.biome,LOTRBiomeGenMeneltarma,,missing,
+common.world.biome,LOTRBiomeGenMidgewater,,missing,
+common.world.biome,LOTRBiomeGenMinhiriath,,missing,
+common.world.biome,LOTRBiomeGenMirkwood,,base,extended by: LOTRBiomeGenMirkwoodCorrupted LOTRBiomeGenMirkwoodNorth
+common.world.biome,LOTRBiomeGenMirkwoodCorrupted,,missing,
+common.world.biome,LOTRBiomeGenMirkwoodMountains,,missing,
+common.world.biome,LOTRBiomeGenMirkwoodNorth,,missing,
+common.world.biome,LOTRBiomeGenMistyMountains,,missing,
+common.world.biome,LOTRBiomeGenMistyMountainsFoothills,,missing,
+common.world.biome,LOTRBiomeGenMordor,,referenced,named in: LOTRBlockTagProvider LOTRBlockTags LOTRPlantBlock
+common.world.biome,LOTRBiomeGenMordorMountains,,missing,
+common.world.biome,LOTRBiomeGenMorgulVale,,missing,
+common.world.biome,LOTRBiomeGenNanCurunir,,missing,
+common.world.biome,LOTRBiomeGenNanUngol,,missing,
+common.world.biome,LOTRBiomeGenNearHarad,,missing,
+common.world.biome,LOTRBiomeGenNearHaradFertile,,missing,
+common.world.biome,LOTRBiomeGenNearHaradFertileForest,,missing,
+common.world.biome,LOTRBiomeGenNearHaradHills,,missing,
+common.world.biome,LOTRBiomeGenNearHaradOasis,,missing,
+common.world.biome,LOTRBiomeGenNearHaradRed,,missing,
+common.world.biome,LOTRBiomeGenNearHaradRiverbank,,missing,
+common.world.biome,LOTRBiomeGenNearHaradSemiDesert,,missing,
+common.world.biome,LOTRBiomeGenNindalf,,missing,
+common.world.biome,LOTRBiomeGenNurn,,missing,
+common.world.biome,LOTRBiomeGenNurnMarshes,,missing,
+common.world.biome,LOTRBiomeGenNurnen,,missing,
+common.world.biome,LOTRBiomeGenOcean,,missing,
+common.world.biome,LOTRBiomeGenOldForest,,missing,
+common.world.biome,LOTRBiomeGenPelargir,,missing,
+common.world.biome,LOTRBiomeGenPelennor,,missing,
+common.world.biome,LOTRBiomeGenPertorogwaith,,missing,
+common.world.biome,LOTRBiomeGenPinnathGelin,,missing,
+common.world.biome,LOTRBiomeGenPukel,,missing,
+common.world.biome,LOTRBiomeGenRedMountains,,missing,
+common.world.biome,LOTRBiomeGenRedMountainsFoothills,,missing,
+common.world.biome,LOTRBiomeGenRhun,,missing,
+common.world.biome,LOTRBiomeGenRhunForest,,missing,
+common.world.biome,LOTRBiomeGenRhunIsland,,missing,
+common.world.biome,LOTRBiomeGenRhunIslandForest,,missing,
+common.world.biome,LOTRBiomeGenRhunLand,,missing,
+common.world.biome,LOTRBiomeGenRhunLandHills,,missing,
+common.world.biome,LOTRBiomeGenRhunLandSteppe,,missing,
+common.world.biome,LOTRBiomeGenRhunRedForest,,missing,
+common.world.biome,LOTRBiomeGenRivendell,,missing,
+common.world.biome,LOTRBiomeGenRivendellHills,,missing,
+common.world.biome,LOTRBiomeGenRiver,,missing,
+common.world.biome,LOTRBiomeGenRohan,,missing,
+common.world.biome,LOTRBiomeGenRohanUruk,,missing,
+common.world.biome,LOTRBiomeGenRohanWoodlands,,missing,
+common.world.biome,LOTRBiomeGenShire,,missing,
+common.world.biome,LOTRBiomeGenShireMarshes,,missing,
+common.world.biome,LOTRBiomeGenShireMoors,,missing,
+common.world.biome,LOTRBiomeGenShireWoodlands,,missing,
+common.world.biome,LOTRBiomeGenSwanfleet,,missing,
+common.world.biome,LOTRBiomeGenTaiga,,missing,
+common.world.biome,LOTRBiomeGenTauredainClearing,,missing,
+common.world.biome,LOTRBiomeGenTolfalas,,missing,
+common.world.biome,LOTRBiomeGenTowerHills,,missing,
+common.world.biome,LOTRBiomeGenTrollshaws,,missing,
+common.world.biome,LOTRBiomeGenTundra,,missing,
+common.world.biome,LOTRBiomeGenUdun,,missing,
+common.world.biome,LOTRBiomeGenUmbar,,missing,
+common.world.biome,LOTRBiomeGenUmbarForest,,missing,
+common.world.biome,LOTRBiomeGenUtumno,,missing,
+common.world.biome,LOTRBiomeGenWhiteDowns,,missing,
+common.world.biome,LOTRBiomeGenWhiteMountains,,missing,
+common.world.biome,LOTRBiomeGenWhiteMountainsFoothills,,missing,
+common.world.biome,LOTRBiomeGenWilderland,,missing,
+common.world.biome,LOTRBiomeGenWilderlandNorth,,missing,
+common.world.biome,LOTRBiomeGenWindMountains,,missing,
+common.world.biome,LOTRBiomeGenWindMountainsFoothills,,missing,
+common.world.biome,LOTRBiomeGenWold,,missing,
+common.world.biome,LOTRBiomeGenWoodlandRealm,,missing,
+common.world.biome,LOTRBiomeGenWoodlandRealmHills,,missing,
+common.world.biome,LOTRMusicRegion,,missing,
+common.world.biome.variant,LOTRBiomeVariant,,missing,
+common.world.biome.variant,LOTRBiomeVariantDeadForest,,missing,
+common.world.biome.variant,LOTRBiomeVariantDenseForest,,missing,
+common.world.biome.variant,LOTRBiomeVariantDunes,,missing,
+common.world.biome.variant,LOTRBiomeVariantForest,,missing,
+common.world.biome.variant,LOTRBiomeVariantList,,missing,
+common.world.biome.variant,LOTRBiomeVariantOrchard,,missing,
+common.world.biome.variant,LOTRBiomeVariantScrubland,,missing,
+common.world.biome.variant,LOTRBiomeVariantStorage,,missing,
+common.world.biome.variant,LOTRBiomeVariantWasteland,,missing,
+common.world.feature,LOTRTreeType,,missing,
+common.world.feature,LOTRWorldGenAlmond,,missing,
+common.world.feature,LOTRWorldGenAspen,,missing,
+common.world.feature,LOTRWorldGenBanana,,missing,
+common.world.feature,LOTRWorldGenBaobab,,missing,
+common.world.feature,LOTRWorldGenBerryBush,,missing,
+common.world.feature,LOTRWorldGenBigTrees,,missing,
+common.world.feature,LOTRWorldGenBiomeFlowers,,missing,
+common.world.feature,LOTRWorldGenBlastedLand,,missing,
+common.world.feature,LOTRWorldGenBoulder,,missing,
+common.world.feature,LOTRWorldGenBushes,,missing,
+common.world.feature,LOTRWorldGenCaveCobwebs,,missing,
+common.world.feature,LOTRWorldGenCedar,,missing,
+common.world.feature,LOTRWorldGenCharredTrees,,missing,
+common.world.feature,LOTRWorldGenClover,,missing,
+common.world.feature,LOTRWorldGenCorn,,missing,
+common.world.feature,LOTRWorldGenCypress,,missing,
+common.world.feature,LOTRWorldGenDeadTrees,,missing,
+common.world.feature,LOTRWorldGenDesertTrees,,missing,
+common.world.feature,LOTRWorldGenDoubleFlower,,missing,
+common.world.feature,LOTRWorldGenDragonblood,,missing,
+common.world.feature,LOTRWorldGenEntJars,,missing,
+common.world.feature,LOTRWorldGenFallenLeaves,,missing,
+common.world.feature,LOTRWorldGenFangornTrees,,missing,
+common.world.feature,LOTRWorldGenFir,,missing,
+common.world.feature,LOTRWorldGenGnarledOak,,missing,
+common.world.feature,LOTRWorldGenGrassPatch,,missing,
+common.world.feature,LOTRWorldGenHolly,,missing,
+common.world.feature,LOTRWorldGenKanuka,,missing,
+common.world.feature,LOTRWorldGenLairelosse,,missing,
+common.world.feature,LOTRWorldGenLarch,,missing,
+common.world.feature,LOTRWorldGenLogs,,missing,
+common.world.feature,LOTRWorldGenMallorn,,missing,
+common.world.feature,LOTRWorldGenMallornExtreme,,missing,
+common.world.feature,LOTRWorldGenMangrove,,missing,
+common.world.feature,LOTRWorldGenMarshLights,,missing,
+common.world.feature,LOTRWorldGenMirkOak,,missing,
+common.world.feature,LOTRWorldGenMordorMoss,,missing,
+common.world.feature,LOTRWorldGenMountainsideBush,,missing,
+common.world.feature,LOTRWorldGenObsidianGravel,,missing,
+common.world.feature,LOTRWorldGenOlive,,missing,
+common.world.feature,LOTRWorldGenPalm,,missing,
+common.world.feature,LOTRWorldGenPartyTrees,,missing,
+common.world.feature,LOTRWorldGenPine,,missing,
+common.world.feature,LOTRWorldGenRedwood,,missing,
+common.world.feature,LOTRWorldGenReeds,,missing,
+common.world.feature,LOTRWorldGenSand,,missing,
+common.world.feature,LOTRWorldGenSeaBlock,,missing,
+common.world.feature,LOTRWorldGenShirePine,,missing,
+common.world.feature,LOTRWorldGenShrub,,missing,
+common.world.feature,LOTRWorldGenSimpleTrees,,missing,
+common.world.feature,LOTRWorldGenSkullPile,,missing,
+common.world.feature,LOTRWorldGenStalactites,,missing,
+common.world.feature,LOTRWorldGenStreams,,missing,
+common.world.feature,LOTRWorldGenSurfaceGravel,,missing,
+common.world.feature,LOTRWorldGenTrollHoard,,missing,
+common.world.feature,LOTRWorldGenVolcanoCrater,,missing,
+common.world.feature,LOTRWorldGenWaterPlant,,missing,
+common.world.feature,LOTRWorldGenWebOfUngoliant,,missing,
+common.world.feature,LOTRWorldGenWillow,,missing,
+common.world.feature,LOTRWorldGenYams,,missing,
+common.world.genlayer,LOTRGenLayer,,base,extended by: LOTRGenLayerBeach LOTRGenLayerBiome LOTRGenLayerBiomeSubtypes LOTRGenLayerBiomeSubtypesInit LOTRGenLayerBiomeVariants LOTRGenLayerBiomeVariantsLake ...
+common.world.genlayer,LOTRGenLayerBeach,,missing,
+common.world.genlayer,LOTRGenLayerBiome,,missing,
+common.world.genlayer,LOTRGenLayerBiomeSubtypes,,missing,
+common.world.genlayer,LOTRGenLayerBiomeSubtypesInit,,missing,
+common.world.genlayer,LOTRGenLayerBiomeVariants,,missing,
+common.world.genlayer,LOTRGenLayerBiomeVariantsLake,,missing,
+common.world.genlayer,LOTRGenLayerClassicBiomes,,missing,
+common.world.genlayer,LOTRGenLayerClassicOcean,,missing,
+common.world.genlayer,LOTRGenLayerClassicRemoveOcean,,missing,
+common.world.genlayer,LOTRGenLayerExtractMapRivers,,missing,
+common.world.genlayer,LOTRGenLayerIncludeMapRivers,,missing,
+common.world.genlayer,LOTRGenLayerMapRiverZoom,,missing,
+common.world.genlayer,LOTRGenLayerNarrowRivers,,missing,
+common.world.genlayer,LOTRGenLayerNearHaradOasis,,missing,
+common.world.genlayer,LOTRGenLayerNearHaradRiverbanks,,missing,
+common.world.genlayer,LOTRGenLayerOasisLake,,missing,
+common.world.genlayer,LOTRGenLayerRemoveMapRivers,,missing,
+common.world.genlayer,LOTRGenLayerRiver,,missing,
+common.world.genlayer,LOTRGenLayerRiverInit,,missing,
+common.world.genlayer,LOTRGenLayerSmooth,,missing,
+common.world.genlayer,LOTRGenLayerWorld,,missing,
+common.world.genlayer,LOTRGenLayerZoom,,missing,
+common.world.genlayer,LOTRGenLayerZoomVoronoi,,missing,
+common.world.map,LOTRAbstractWaypoint,,missing,
+common.world.map,LOTRConquestGrid,,missing,
+common.world.map,LOTRConquestZone,,missing,
+common.world.map,LOTRCustomWaypoint,,missing,
+common.world.map,LOTRCustomWaypointLogger,,missing,
+common.world.map,LOTRFixedStructures,,missing,
+common.world.map,LOTRMountains,,missing,
+common.world.map,LOTRRoadGenerator,,missing,
+common.world.map,LOTRRoadType,,base,extended by: 
+common.world.map,LOTRRoads,,missing,
+common.world.map,LOTRWaypoint,,missing,
+common.world.map,LOTRWorldGenIsengardWalls,,missing,
+common.world.map,LOTRWorldGenRammasEchor,,missing,
+common.world.map,LOTRWorldGenUtumnoEntrance,,missing,
+common.world.mapgen,LOTRMapGenCaves,,missing,
+common.world.mapgen,LOTRMapGenCavesUtumno,,missing,
+common.world.mapgen,LOTRMapGenRavine,,missing,
+common.world.mapgen.dwarvenmine,LOTRComponentDwarvenMineCorridor,,missing,
+common.world.mapgen.dwarvenmine,LOTRComponentDwarvenMineCrossing,,missing,
+common.world.mapgen.dwarvenmine,LOTRComponentDwarvenMineEntrance,,missing,
+common.world.mapgen.dwarvenmine,LOTRComponentDwarvenMineStairs,,missing,
+common.world.mapgen.dwarvenmine,LOTRMapGenDwarvenMine,,missing,
+common.world.mapgen.dwarvenmine,LOTRStructureDwarvenMinePieces,,missing,
+common.world.mapgen.dwarvenmine,LOTRStructureDwarvenMineStart,,missing,
+common.world.mapgen.tpyr,LOTRComponentTauredainPyramid,,missing,
+common.world.mapgen.tpyr,LOTRMapGenTauredainPyramid,,missing,
+common.world.mapgen.tpyr,LOTRStructureTPyrStart,,missing,
+common.world.spawning,LOTRBiomeInvasionSpawns,,missing,
+common.world.spawning,LOTRBiomeSpawnList,,missing,
+common.world.spawning,LOTREventSpawner,,missing,
+common.world.spawning,LOTRGollumSpawner,,missing,
+common.world.spawning,LOTRInvasions,LOTRInvasions,ported,
+common.world.spawning,LOTRSpawnEntry,,missing,
+common.world.spawning,LOTRSpawnList,,missing,
+common.world.spawning,LOTRSpawnerAnimals,,missing,
+common.world.spawning,LOTRSpawnerNPCs,,missing,
+common.world.spawning,LOTRTravellingTraderSpawner,,missing,
+common.world.structure,LOTRChestContents,,referenced,named in: LOTRBlockLootProvider LOTRDaleCrackerItem
+common.world.structure,LOTRStructures,,missing,
+common.world.structure,LOTRWorldGenAngmarShrine,,missing,
+common.world.structure,LOTRWorldGenAngmarTower,,missing,
+common.world.structure,LOTRWorldGenBlueMountainsStronghold,,missing,
+common.world.structure,LOTRWorldGenDunlendingCampfire,,missing,
+common.world.structure,LOTRWorldGenElfLordHouse,,missing,
+common.world.structure,LOTRWorldGenGondorRuin,,missing,
+common.world.structure,LOTRWorldGenGondorRuins,,missing,
+common.world.structure,LOTRWorldGenHaradObelisk,,missing,
+common.world.structure,LOTRWorldGenHighElvenHall,,missing,
+common.world.structure,LOTRWorldGenHighElvenTurret,,missing,
+common.world.structure,LOTRWorldGenHobbitPicnicBench,,missing,
+common.world.structure,LOTRWorldGenMarshHut,,missing,
+common.world.structure,LOTRWorldGenMordorTower,,missing,
+common.world.structure,LOTRWorldGenNurnFarmBase,,base,extended by: LOTRWorldGenNurnWheatFarm
+common.world.structure,LOTRWorldGenNurnWheatFarm,,missing,
+common.world.structure,LOTRWorldGenOrcDungeon,,missing,
+common.world.structure,LOTRWorldGenOrcSlaverTower,,missing,
+common.world.structure,LOTRWorldGenRivendellHall,,missing,
+common.world.structure,LOTRWorldGenRohanBarrow,,missing,
+common.world.structure,LOTRWorldGenRuinedDunedainTower,,missing,
+common.world.structure,LOTRWorldGenRuinedGondorTower,,missing,
+common.world.structure,LOTRWorldGenRuinedHighElvenTurret,,missing,
+common.world.structure,LOTRWorldGenRuinedRohanWatchtower,,missing,
+common.world.structure,LOTRWorldGenRuinedWoodElfTower,,missing,
+common.world.structure,LOTRWorldGenStructureBase,,base,extended by: LOTRWorldGenAngmarShrine LOTRWorldGenAngmarTower LOTRWorldGenBlueMountainsStronghold LOTRWorldGenDunlendingCampfire LOTRWorldGenElfLordHouse LOTRWorldGenGondorRuin ...
+common.world.structure,LOTRWorldGenUnderwaterElvenRuin,,missing,
+common.world.structure,LOTRWorldGenWoodElfPlatform,,missing,
+common.world.structure,LOTRWorldGenWoodElfTower,,missing,
+common.world.structure2,LOTRStructureTimelapse,,missing,
+common.world.structure2,LOTRWorldGenAngmarCamp,,missing,
+common.world.structure2,LOTRWorldGenAngmarForgeTent,,missing,
+common.world.structure2,LOTRWorldGenAngmarHillmanChieftainHouse,,missing,
+common.world.structure2,LOTRWorldGenAngmarHillmanHouse,,missing,
+common.world.structure2,LOTRWorldGenAngmarHillmanVillage,,missing,
+common.world.structure2,LOTRWorldGenAngmarTent,,missing,
+common.world.structure2,LOTRWorldGenAngmarWargPit,,missing,
+common.world.structure2,LOTRWorldGenBDBarrow,,missing,
+common.world.structure2,LOTRWorldGenBeaconTower,,missing,
+common.world.structure2,LOTRWorldGenBlackUrukFort,,missing,
+common.world.structure2,LOTRWorldGenBlackrootFortress,,missing,
+common.world.structure2,LOTRWorldGenBlackrootWatchfort,,missing,
+common.world.structure2,LOTRWorldGenBlackrootWatchtower,,missing,
+common.world.structure2,LOTRWorldGenBlueMountainsHouse,,missing,
+common.world.structure2,LOTRWorldGenBlueMountainsSmithy,,missing,
+common.world.structure2,LOTRWorldGenBreeBarn,,missing,
+common.world.structure2,LOTRWorldGenBreeGarden,,missing,
+common.world.structure2,LOTRWorldGenBreeGate,,missing,
+common.world.structure2,LOTRWorldGenBreeGatehouse,,missing,
+common.world.structure2,LOTRWorldGenBreeHedgePart,,missing,
+common.world.structure2,LOTRWorldGenBreeHobbitBurrow,,missing,
+common.world.structure2,LOTRWorldGenBreeHouse,,missing,
+common.world.structure2,LOTRWorldGenBreeInn,,missing,
+common.world.structure2,LOTRWorldGenBreeLampPost,,missing,
+common.world.structure2,LOTRWorldGenBreeMarket,,missing,
+common.world.structure2,LOTRWorldGenBreeMarketStall,,base,extended by: 
+common.world.structure2,LOTRWorldGenBreeOffice,,missing,
+common.world.structure2,LOTRWorldGenBreeRuffianHouse,,missing,
+common.world.structure2,LOTRWorldGenBreeSmithy,,missing,
+common.world.structure2,LOTRWorldGenBreeStable,,missing,
+common.world.structure2,LOTRWorldGenBreeStructure,,base,extended by: LOTRWorldGenBreeBarn LOTRWorldGenBreeGarden LOTRWorldGenBreeGate LOTRWorldGenBreeGatehouse LOTRWorldGenBreeHedgePart LOTRWorldGenBreeHouse ...
+common.world.structure2,LOTRWorldGenBreeWell,,missing,
+common.world.structure2,LOTRWorldGenBurntHouse,,missing,
+common.world.structure2,LOTRWorldGenCampBase,,base,extended by: LOTRWorldGenAngmarCamp LOTRWorldGenCorsairCamp LOTRWorldGenDolGuldurCamp LOTRWorldGenGundabadCamp LOTRWorldGenMordorCamp LOTRWorldGenMoredainMercCamp ...
+common.world.structure2,LOTRWorldGenCorsairCamp,,missing,
+common.world.structure2,LOTRWorldGenCorsairCampCage,,missing,
+common.world.structure2,LOTRWorldGenCorsairCove,,missing,
+common.world.structure2,LOTRWorldGenCorsairStructure,,base,extended by: LOTRWorldGenCorsairCampCage LOTRWorldGenCorsairCove LOTRWorldGenCorsairTent
+common.world.structure2,LOTRWorldGenCorsairTent,,missing,
+common.world.structure2,LOTRWorldGenDaleBakery,,missing,
+common.world.structure2,LOTRWorldGenDaleFortress,,missing,
+common.world.structure2,LOTRWorldGenDaleHouse,,missing,
+common.world.structure2,LOTRWorldGenDaleSmithy,,missing,
+common.world.structure2,LOTRWorldGenDaleStructure,,base,extended by: LOTRWorldGenDaleBakery LOTRWorldGenDaleFortress LOTRWorldGenDaleHouse LOTRWorldGenDaleSmithy LOTRWorldGenDaleVillageTower LOTRWorldGenDaleWatchtower
+common.world.structure2,LOTRWorldGenDaleVillage,,missing,
+common.world.structure2,LOTRWorldGenDaleVillageTower,,missing,
+common.world.structure2,LOTRWorldGenDaleWatchtower,,missing,
+common.world.structure2,LOTRWorldGenDolAmrothStables,,missing,
+common.world.structure2,LOTRWorldGenDolAmrothWatchfort,,missing,
+common.world.structure2,LOTRWorldGenDolAmrothWatchtower,,missing,
+common.world.structure2,LOTRWorldGenDolGuldurAltar,,missing,
+common.world.structure2,LOTRWorldGenDolGuldurCamp,,missing,
+common.world.structure2,LOTRWorldGenDolGuldurForgeTent,,missing,
+common.world.structure2,LOTRWorldGenDolGuldurSpiderPit,,missing,
+common.world.structure2,LOTRWorldGenDolGuldurTent,,missing,
+common.world.structure2,LOTRWorldGenDolGuldurTower,,missing,
+common.world.structure2,LOTRWorldGenDorwinionBath,,missing,
+common.world.structure2,LOTRWorldGenDorwinionBrewery,,missing,
+common.world.structure2,LOTRWorldGenDorwinionCamp,,missing,
+common.world.structure2,LOTRWorldGenDorwinionCaptainTent,,missing,
+common.world.structure2,LOTRWorldGenDorwinionElfHouse,,missing,
+common.world.structure2,LOTRWorldGenDorwinionGarden,,missing,
+common.world.structure2,LOTRWorldGenDorwinionHouse,,missing,
+common.world.structure2,LOTRWorldGenDorwinionTent,,missing,
+common.world.structure2,LOTRWorldGenDunlandHillFort,,missing,
+common.world.structure2,LOTRWorldGenDunlandStructure,,base,extended by: LOTRWorldGenDunlandHillFort LOTRWorldGenDunlendingHouse LOTRWorldGenDunlendingTavern
+common.world.structure2,LOTRWorldGenDunlendingHouse,,missing,
+common.world.structure2,LOTRWorldGenDunlendingTavern,,missing,
+common.world.structure2,LOTRWorldGenDwarfHouse,,missing,
+common.world.structure2,LOTRWorldGenDwarfSmithy,,missing,
+common.world.structure2,LOTRWorldGenDwarvenMineEntrance,,missing,
+common.world.structure2,LOTRWorldGenDwarvenMineEntranceRuined,,missing,
+common.world.structure2,LOTRWorldGenDwarvenTower,,missing,
+common.world.structure2,LOTRWorldGenEasterlingFortress,,missing,
+common.world.structure2,LOTRWorldGenEasterlingGarden,,missing,
+common.world.structure2,LOTRWorldGenEasterlingGatehouse,,missing,
+common.world.structure2,LOTRWorldGenEasterlingHouse,,missing,
+common.world.structure2,LOTRWorldGenEasterlingLamp,,missing,
+common.world.structure2,LOTRWorldGenEasterlingLargeTownHouse,,missing,
+common.world.structure2,LOTRWorldGenEasterlingMarketStall,,base,extended by: 
+common.world.structure2,LOTRWorldGenEasterlingSmithy,,missing,
+common.world.structure2,LOTRWorldGenEasterlingStables,,missing,
+common.world.structure2,LOTRWorldGenEasterlingStatue,,missing,
+common.world.structure2,LOTRWorldGenEasterlingStructure,,base,extended by: LOTRWorldGenEasterlingGarden LOTRWorldGenEasterlingHouse LOTRWorldGenEasterlingLamp LOTRWorldGenEasterlingMarketStall LOTRWorldGenEasterlingStables LOTRWorldGenEasterlingStatue ...
+common.world.structure2,LOTRWorldGenEasterlingStructureTown,,base,extended by: LOTRWorldGenEasterlingFortress LOTRWorldGenEasterlingGatehouse LOTRWorldGenEasterlingLargeTownHouse LOTRWorldGenEasterlingSmithy LOTRWorldGenEasterlingTower LOTRWorldGenEasterlingTownHouse ...
+common.world.structure2,LOTRWorldGenEasterlingTavern,,missing,
+common.world.structure2,LOTRWorldGenEasterlingTavernTown,,missing,
+common.world.structure2,LOTRWorldGenEasterlingTower,,missing,
+common.world.structure2,LOTRWorldGenEasterlingTownHouse,,missing,
+common.world.structure2,LOTRWorldGenEasterlingTownWall,,missing,
+common.world.structure2,LOTRWorldGenEasterlingVillageFarm,,base,extended by: 
+common.world.structure2,LOTRWorldGenEasterlingVillageSign,,missing,
+common.world.structure2,LOTRWorldGenEasterlingWell,,missing,
+common.world.structure2,LOTRWorldGenElfHouse,,missing,
+common.world.structure2,LOTRWorldGenElvenForge,,base,extended by: LOTRWorldGenGaladhrimForge LOTRWorldGenHighElvenForge LOTRWorldGenWoodElvenForge
+common.world.structure2,LOTRWorldGenGaladhrimForge,,missing,
+common.world.structure2,LOTRWorldGenGondorBarn,,missing,
+common.world.structure2,LOTRWorldGenGondorBath,,missing,
+common.world.structure2,LOTRWorldGenGondorCottage,,missing,
+common.world.structure2,LOTRWorldGenGondorFortGate,,missing,
+common.world.structure2,LOTRWorldGenGondorFortWall,,base,extended by: 
+common.world.structure2,LOTRWorldGenGondorFortWallCorner,,missing,
+common.world.structure2,LOTRWorldGenGondorFortress,,missing,
+common.world.structure2,LOTRWorldGenGondorGatehouse,,missing,
+common.world.structure2,LOTRWorldGenGondorHouse,,missing,
+common.world.structure2,LOTRWorldGenGondorLampPost,,missing,
+common.world.structure2,LOTRWorldGenGondorMarketStall,,base,extended by: 
+common.world.structure2,LOTRWorldGenGondorObelisk,,missing,
+common.world.structure2,LOTRWorldGenGondorSmithy,,missing,
+common.world.structure2,LOTRWorldGenGondorStables,,missing,
+common.world.structure2,LOTRWorldGenGondorStoneHouse,,missing,
+common.world.structure2,LOTRWorldGenGondorStructure,,base,extended by: LOTRWorldGenBeaconTower LOTRWorldGenGondorBarn LOTRWorldGenGondorBath LOTRWorldGenGondorCottage LOTRWorldGenGondorFortGate LOTRWorldGenGondorFortWall ...
+common.world.structure2,LOTRWorldGenGondorTavern,,missing,
+common.world.structure2,LOTRWorldGenGondorTownBench,,missing,
+common.world.structure2,LOTRWorldGenGondorTownGarden,,missing,
+common.world.structure2,LOTRWorldGenGondorTownTrees,,missing,
+common.world.structure2,LOTRWorldGenGondorTownWall,,missing,
+common.world.structure2,LOTRWorldGenGondorTurret,,missing,
+common.world.structure2,LOTRWorldGenGondorVillageFarm,,base,extended by: 
+common.world.structure2,LOTRWorldGenGondorVillageSign,,missing,
+common.world.structure2,LOTRWorldGenGondorWatchfort,,missing,
+common.world.structure2,LOTRWorldGenGondorWatchtower,,missing,
+common.world.structure2,LOTRWorldGenGondorWell,,missing,
+common.world.structure2,LOTRWorldGenGrukHouse,,missing,
+common.world.structure2,LOTRWorldGenGulfAltar,,missing,
+common.world.structure2,LOTRWorldGenGulfBazaar,,missing,
+common.world.structure2,LOTRWorldGenGulfFarm,,missing,
+common.world.structure2,LOTRWorldGenGulfHouse,,missing,
+common.world.structure2,LOTRWorldGenGulfPasture,,missing,
+common.world.structure2,LOTRWorldGenGulfPyramid,,missing,
+common.world.structure2,LOTRWorldGenGulfSmithy,,missing,
+common.world.structure2,LOTRWorldGenGulfStructure,,base,extended by: LOTRWorldGenGulfAltar LOTRWorldGenGulfBazaar LOTRWorldGenGulfFarm LOTRWorldGenGulfHouse LOTRWorldGenGulfPasture LOTRWorldGenGulfPyramid ...
+common.world.structure2,LOTRWorldGenGulfTavern,,missing,
+common.world.structure2,LOTRWorldGenGulfTotem,,missing,
+common.world.structure2,LOTRWorldGenGulfTower,,missing,
+common.world.structure2,LOTRWorldGenGulfTownWall,,missing,
+common.world.structure2,LOTRWorldGenGulfVillageLight,,missing,
+common.world.structure2,LOTRWorldGenGulfVillageSign,,missing,
+common.world.structure2,LOTRWorldGenGulfWarCamp,,missing,
+common.world.structure2,LOTRWorldGenGundabadCamp,,missing,
+common.world.structure2,LOTRWorldGenGundabadForgeTent,,missing,
+common.world.structure2,LOTRWorldGenGundabadTent,,missing,
+common.world.structure2,LOTRWorldGenHalfTrollHouse,,missing,
+common.world.structure2,LOTRWorldGenHalfTrollWarlordHouse,,missing,
+common.world.structure2,LOTRWorldGenHaradPyramid,,missing,
+common.world.structure2,LOTRWorldGenHaradRuinedFort,,missing,
+common.world.structure2,LOTRWorldGenHarnedorFarm,,missing,
+common.world.structure2,LOTRWorldGenHarnedorFort,,missing,
+common.world.structure2,LOTRWorldGenHarnedorHouse,,missing,
+common.world.structure2,LOTRWorldGenHarnedorHouseRuined,,missing,
+common.world.structure2,LOTRWorldGenHarnedorMarket,,missing,
+common.world.structure2,LOTRWorldGenHarnedorPalisade,,missing,
+common.world.structure2,LOTRWorldGenHarnedorPalisadeRuined,,missing,
+common.world.structure2,LOTRWorldGenHarnedorPasture,,missing,
+common.world.structure2,LOTRWorldGenHarnedorSmithy,,missing,
+common.world.structure2,LOTRWorldGenHarnedorStables,,missing,
+common.world.structure2,LOTRWorldGenHarnedorStructure,,base,extended by: LOTRWorldGenHarnedorFarm LOTRWorldGenHarnedorFort LOTRWorldGenHarnedorHouse LOTRWorldGenHarnedorMarket LOTRWorldGenHarnedorPalisade LOTRWorldGenHarnedorPasture ...
+common.world.structure2,LOTRWorldGenHarnedorTavern,,missing,
+common.world.structure2,LOTRWorldGenHarnedorTavernRuined,,missing,
+common.world.structure2,LOTRWorldGenHarnedorTower,,missing,
+common.world.structure2,LOTRWorldGenHarnedorVillageSign,,missing,
+common.world.structure2,LOTRWorldGenHayBales,,missing,
+common.world.structure2,LOTRWorldGenHighElfHouse,,missing,
+common.world.structure2,LOTRWorldGenHighElvenForge,,missing,
+common.world.structure2,LOTRWorldGenHighElvenTower,,missing,
+common.world.structure2,LOTRWorldGenHobbitBurrow,,missing,
+common.world.structure2,LOTRWorldGenHobbitFarm,,missing,
+common.world.structure2,LOTRWorldGenHobbitHole,,missing,
+common.world.structure2,LOTRWorldGenHobbitHouse,,missing,
+common.world.structure2,LOTRWorldGenHobbitStructure,,base,extended by: LOTRWorldGenHobbitBurrow LOTRWorldGenHobbitHole LOTRWorldGenHobbitHouse LOTRWorldGenHobbitTavern
+common.world.structure2,LOTRWorldGenHobbitTavern,,missing,
+common.world.structure2,LOTRWorldGenHobbitWindmill,,missing,
+common.world.structure2,LOTRWorldGenIthilienHideout,,missing,
+common.world.structure2,LOTRWorldGenLamedonFortress,,missing,
+common.world.structure2,LOTRWorldGenLamedonWatchfort,,missing,
+common.world.structure2,LOTRWorldGenLamedonWatchtower,,missing,
+common.world.structure2,LOTRWorldGenLebenninFortress,,missing,
+common.world.structure2,LOTRWorldGenLebenninWatchfort,,missing,
+common.world.structure2,LOTRWorldGenLebenninWatchtower,,missing,
+common.world.structure2,LOTRWorldGenLossarnachFortress,,missing,
+common.world.structure2,LOTRWorldGenLossarnachWatchfort,,missing,
+common.world.structure2,LOTRWorldGenLossarnachWatchtower,,missing,
+common.world.structure2,LOTRWorldGenMeadHall,,missing,
+common.world.structure2,LOTRWorldGenMordorCamp,,missing,
+common.world.structure2,LOTRWorldGenMordorForgeTent,,missing,
+common.world.structure2,LOTRWorldGenMordorSpiderPit,,missing,
+common.world.structure2,LOTRWorldGenMordorStructure,,base,extended by: LOTRWorldGenBlackUrukFort
+common.world.structure2,LOTRWorldGenMordorTent,,missing,
+common.world.structure2,LOTRWorldGenMordorWargPit,,missing,
+common.world.structure2,LOTRWorldGenMoredainCamp,,missing,
+common.world.structure2,LOTRWorldGenMoredainHut,,base,extended by: LOTRWorldGenMoredainHutChieftain LOTRWorldGenMoredainHutHunter LOTRWorldGenMoredainHutTrader LOTRWorldGenMoredainHutVillage
+common.world.structure2,LOTRWorldGenMoredainHutChieftain,,missing,
+common.world.structure2,LOTRWorldGenMoredainHutHunter,,missing,
+common.world.structure2,LOTRWorldGenMoredainHutTrader,,missing,
+common.world.structure2,LOTRWorldGenMoredainHutVillage,,missing,
+common.world.structure2,LOTRWorldGenMoredainMercCamp,,missing,
+common.world.structure2,LOTRWorldGenMoredainMercDummy,,missing,
+common.world.structure2,LOTRWorldGenMoredainMercTent,,missing,
+common.world.structure2,LOTRWorldGenMoredainVillage,,missing,
+common.world.structure2,LOTRWorldGenMumakSkeleton,,missing,
+common.world.structure2,LOTRWorldGenNPCRespawner,,base,extended by: 
+common.world.structure2,LOTRWorldGenNearHaradDesertCamp,,missing,
+common.world.structure2,LOTRWorldGenNearHaradTent,,missing,
+common.world.structure2,LOTRWorldGenNomadBazaarTent,,missing,
+common.world.structure2,LOTRWorldGenNomadChieftainTent,,missing,
+common.world.structure2,LOTRWorldGenNomadStructure,,base,extended by: LOTRWorldGenNomadBazaarTent LOTRWorldGenNomadChieftainTent LOTRWorldGenNomadTent LOTRWorldGenNomadTentLarge LOTRWorldGenNomadWell
+common.world.structure2,LOTRWorldGenNomadTent,,missing,
+common.world.structure2,LOTRWorldGenNomadTentLarge,,missing,
+common.world.structure2,LOTRWorldGenNomadWell,,missing,
+common.world.structure2,LOTRWorldGenNumenorRuin,,missing,
+common.world.structure2,LOTRWorldGenPelargirFortress,,missing,
+common.world.structure2,LOTRWorldGenPelargirWatchfort,,missing,
+common.world.structure2,LOTRWorldGenPelargirWatchtower,,missing,
+common.world.structure2,LOTRWorldGenPinnathGelinFortress,,missing,
+common.world.structure2,LOTRWorldGenPinnathGelinWatchfort,,missing,
+common.world.structure2,LOTRWorldGenPinnathGelinWatchtower,,missing,
+common.world.structure2,LOTRWorldGenRangerCamp,,missing,
+common.world.structure2,LOTRWorldGenRangerHouse,,missing,
+common.world.structure2,LOTRWorldGenRangerLodge,,missing,
+common.world.structure2,LOTRWorldGenRangerSmithy,,missing,
+common.world.structure2,LOTRWorldGenRangerStables,,missing,
+common.world.structure2,LOTRWorldGenRangerStructure,,base,extended by: LOTRWorldGenRangerHouse LOTRWorldGenRangerLodge LOTRWorldGenRangerSmithy LOTRWorldGenRangerStables LOTRWorldGenRangerVillageLight LOTRWorldGenRangerVillagePalisade ...
+common.world.structure2,LOTRWorldGenRangerTent,,missing,
+common.world.structure2,LOTRWorldGenRangerVillageLight,,missing,
+common.world.structure2,LOTRWorldGenRangerVillagePalisade,,missing,
+common.world.structure2,LOTRWorldGenRangerWatchtower,,missing,
+common.world.structure2,LOTRWorldGenRangerWell,,missing,
+common.world.structure2,LOTRWorldGenRhudaurCastle,,missing,
+common.world.structure2,LOTRWorldGenRivendellForge,,missing,
+common.world.structure2,LOTRWorldGenRivendellHouse,,missing,
+common.world.structure2,LOTRWorldGenRohanBarn,,missing,
+common.world.structure2,LOTRWorldGenRohanFortCorner,,missing,
+common.world.structure2,LOTRWorldGenRohanFortWall,,missing,
+common.world.structure2,LOTRWorldGenRohanFortress,,missing,
+common.world.structure2,LOTRWorldGenRohanGatehouse,,missing,
+common.world.structure2,LOTRWorldGenRohanHouse,,missing,
+common.world.structure2,LOTRWorldGenRohanMarketStall,,base,extended by: 
+common.world.structure2,LOTRWorldGenRohanSmithy,,missing,
+common.world.structure2,LOTRWorldGenRohanStables,,missing,
+common.world.structure2,LOTRWorldGenRohanStructure,,base,extended by: LOTRWorldGenEasterlingVillageSign LOTRWorldGenMeadHall LOTRWorldGenRohanBarn LOTRWorldGenRohanFortCorner LOTRWorldGenRohanFortWall LOTRWorldGenRohanFortress ...
+common.world.structure2,LOTRWorldGenRohanVillageFarm,,missing,
+common.world.structure2,LOTRWorldGenRohanVillageGarden,,missing,
+common.world.structure2,LOTRWorldGenRohanVillagePalisade,,missing,
+common.world.structure2,LOTRWorldGenRohanVillagePasture,,missing,
+common.world.structure2,LOTRWorldGenRohanVillageSign,,missing,
+common.world.structure2,LOTRWorldGenRohanWatchtower,,missing,
+common.world.structure2,LOTRWorldGenRohanWell,,missing,
+common.world.structure2,LOTRWorldGenRottenHouse,,missing,
+common.world.structure2,LOTRWorldGenRuinedBeaconTower,,missing,
+common.world.structure2,LOTRWorldGenRuinedDwarvenTower,,missing,
+common.world.structure2,LOTRWorldGenRuinedEregionForge,,missing,
+common.world.structure2,LOTRWorldGenRuinedHouse,,missing,
+common.world.structure2,LOTRWorldGenSmallStoneRuin,,missing,
+common.world.structure2,LOTRWorldGenSouthronBarracks,,missing,
+common.world.structure2,LOTRWorldGenSouthronBazaar,,missing,
+common.world.structure2,LOTRWorldGenSouthronFarm,,missing,
+common.world.structure2,LOTRWorldGenSouthronFortCorner,,missing,
+common.world.structure2,LOTRWorldGenSouthronFortGate,,missing,
+common.world.structure2,LOTRWorldGenSouthronFortWall,,base,extended by: LOTRWorldGenUmbarFortWall
+common.world.structure2,LOTRWorldGenSouthronFortress,,missing,
+common.world.structure2,LOTRWorldGenSouthronHouse,,missing,
+common.world.structure2,LOTRWorldGenSouthronLamp,,missing,
+common.world.structure2,LOTRWorldGenSouthronMansion,,missing,
+common.world.structure2,LOTRWorldGenSouthronPasture,,missing,
+common.world.structure2,LOTRWorldGenSouthronSmithy,,missing,
+common.world.structure2,LOTRWorldGenSouthronStables,,missing,
+common.world.structure2,LOTRWorldGenSouthronStatue,,missing,
+common.world.structure2,LOTRWorldGenSouthronStructure,,base,extended by: LOTRWorldGenSouthronBarracks LOTRWorldGenSouthronBazaar LOTRWorldGenSouthronFarm LOTRWorldGenSouthronFortCorner LOTRWorldGenSouthronFortGate LOTRWorldGenSouthronFortWall ...
+common.world.structure2,LOTRWorldGenSouthronTavern,,missing,
+common.world.structure2,LOTRWorldGenSouthronTower,,missing,
+common.world.structure2,LOTRWorldGenSouthronTownCorner,,missing,
+common.world.structure2,LOTRWorldGenSouthronTownFlowers,,missing,
+common.world.structure2,LOTRWorldGenSouthronTownGate,,missing,
+common.world.structure2,LOTRWorldGenSouthronTownTree,,missing,
+common.world.structure2,LOTRWorldGenSouthronTownWall,,base,extended by: LOTRWorldGenUmbarTownWall
+common.world.structure2,LOTRWorldGenSouthronTraining,,missing,
+common.world.structure2,LOTRWorldGenSouthronVillageFence,,missing,
+common.world.structure2,LOTRWorldGenSouthronVillagePost,,missing,
+common.world.structure2,LOTRWorldGenSouthronVillageSign,,missing,
+common.world.structure2,LOTRWorldGenSouthronWell,,missing,
+common.world.structure2,LOTRWorldGenStoneRuin,,base,extended by: 
+common.world.structure2,LOTRWorldGenStructureBase2,,referenced,named in: LOTRDwarvenDoorBlock
+common.world.structure2,LOTRWorldGenTauredainChieftainPyramid,,missing,
+common.world.structure2,LOTRWorldGenTauredainHouse,,base,extended by: LOTRWorldGenTauredainChieftainPyramid LOTRWorldGenTauredainHouseLarge LOTRWorldGenTauredainHouseSimple LOTRWorldGenTauredainHouseStilts LOTRWorldGenTauredainSmithy LOTRWorldGenTauredainVillageFarm ...
+common.world.structure2,LOTRWorldGenTauredainHouseLarge,,missing,
+common.world.structure2,LOTRWorldGenTauredainHouseSimple,,missing,
+common.world.structure2,LOTRWorldGenTauredainHouseStilts,,missing,
+common.world.structure2,LOTRWorldGenTauredainPyramid,,missing,
+common.world.structure2,LOTRWorldGenTauredainSmithy,,missing,
+common.world.structure2,LOTRWorldGenTauredainVillageFarm,,missing,
+common.world.structure2,LOTRWorldGenTauredainVillageTree,,missing,
+common.world.structure2,LOTRWorldGenTauredainWatchtower,,missing,
+common.world.structure2,LOTRWorldGenTentBase,,base,extended by: LOTRWorldGenAngmarTent LOTRWorldGenDolGuldurTent LOTRWorldGenGundabadTent LOTRWorldGenMordorTent LOTRWorldGenRangerTent LOTRWorldGenUrukTent
+common.world.structure2,LOTRWorldGenTicketBooth,,missing,
+common.world.structure2,LOTRWorldGenTowerHillsTower,,missing,
+common.world.structure2,LOTRWorldGenUmbarBarracks,,missing,
+common.world.structure2,LOTRWorldGenUmbarBazaar,,missing,
+common.world.structure2,LOTRWorldGenUmbarFarm,,missing,
+common.world.structure2,LOTRWorldGenUmbarFortCorner,,missing,
+common.world.structure2,LOTRWorldGenUmbarFortGate,,missing,
+common.world.structure2,LOTRWorldGenUmbarFortWall,,base,extended by: 
+common.world.structure2,LOTRWorldGenUmbarFortress,,missing,
+common.world.structure2,LOTRWorldGenUmbarHouse,,missing,
+common.world.structure2,LOTRWorldGenUmbarLamp,,missing,
+common.world.structure2,LOTRWorldGenUmbarMansion,,missing,
+common.world.structure2,LOTRWorldGenUmbarPasture,,missing,
+common.world.structure2,LOTRWorldGenUmbarSmithy,,missing,
+common.world.structure2,LOTRWorldGenUmbarStables,,missing,
+common.world.structure2,LOTRWorldGenUmbarStatue,,missing,
+common.world.structure2,LOTRWorldGenUmbarTavern,,missing,
+common.world.structure2,LOTRWorldGenUmbarTower,,missing,
+common.world.structure2,LOTRWorldGenUmbarTownCorner,,missing,
+common.world.structure2,LOTRWorldGenUmbarTownFlowers,,missing,
+common.world.structure2,LOTRWorldGenUmbarTownGate,,missing,
+common.world.structure2,LOTRWorldGenUmbarTownTree,,missing,
+common.world.structure2,LOTRWorldGenUmbarTownWall,,base,extended by: 
+common.world.structure2,LOTRWorldGenUmbarTraining,,missing,
+common.world.structure2,LOTRWorldGenUmbarVillageSign,,missing,
+common.world.structure2,LOTRWorldGenUmbarWell,,missing,
+common.world.structure2,LOTRWorldGenUrukCamp,,missing,
+common.world.structure2,LOTRWorldGenUrukForgeTent,,missing,
+common.world.structure2,LOTRWorldGenUrukTent,,missing,
+common.world.structure2,LOTRWorldGenUrukWargPit,,missing,
+common.world.structure2,LOTRWorldGenWargPitBase,,base,extended by: LOTRWorldGenAngmarWargPit LOTRWorldGenDolGuldurSpiderPit LOTRWorldGenMordorWargPit LOTRWorldGenUrukWargPit
+common.world.structure2,LOTRWorldGenWoodElfHouse,,missing,
+common.world.structure2,LOTRWorldGenWoodElvenForge,,missing,
+common.world.structure2.scan,LOTRScanAlias,,missing,
+common.world.structure2.scan,LOTRStructureScan,,missing,
+common.world.village,LOTRVillageGen,,base,extended by: LOTRVillageGenBree LOTRVillageGenDunedain LOTRVillageGenGondor LOTRVillageGenGulfHarad LOTRVillageGenHaradNomad LOTRVillageGenHarnedor ...
+common.world.village,LOTRVillageGenBree,,missing,
+common.world.village,LOTRVillageGenDunedain,,missing,
+common.world.village,LOTRVillageGenGondor,,missing,
+common.world.village,LOTRVillageGenGulfHarad,,missing,
+common.world.village,LOTRVillageGenHaradNomad,,missing,
+common.world.village,LOTRVillageGenHarnedor,,missing,
+common.world.village,LOTRVillageGenRhun,,missing,
+common.world.village,LOTRVillageGenRohan,,missing,
+common.world.village,LOTRVillageGenSouthron,,missing,
+common.world.village,LOTRVillageGenTauredain,,missing,
+common.world.village,LOTRVillageGenUmbar,,missing,
+common.world.village,LOTRVillagePositionCache,,missing,
+common.world.village,LocationInfo,,missing,
+compatibility,LOTRModChecker,,missing,

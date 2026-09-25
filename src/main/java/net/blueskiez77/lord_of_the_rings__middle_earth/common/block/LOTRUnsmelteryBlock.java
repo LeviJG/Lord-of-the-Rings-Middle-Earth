@@ -9,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Containers;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -82,20 +81,6 @@ public class LOTRUnsmelteryBlock extends AbstractFurnaceBlock {
         return (BlockEntityTicker<T>) (BlockEntityTicker<LOTRUnsmelteryBlockEntity>)
                 (innerLevel, pos, blockState, entity) ->
                         LOTRUnsmelteryBlockEntity.serverTick((ServerLevel) innerLevel, pos, blockState, entity);
-    }
-
-    /**
-     * Three slots of contents that nothing upstream will drop for us --
-     * AbstractFurnaceBlock only runs Containers.updateNeighboursAfterDestroy,
-     * leaving the dropping to BaseContainerBlockEntity, which this is not.
-     */
-    @Override
-    protected void affectNeighborsAfterRemoval(BlockState state, ServerLevel level,
-                                               BlockPos pos, boolean movedByPiston) {
-        if (level.getBlockEntity(pos) instanceof LOTRUnsmelteryBlockEntity unsmeltery) {
-            Containers.dropContents(level, pos, unsmeltery.getItems());
-        }
-        super.affectNeighborsAfterRemoval(state, level, pos, movedByPiston);
     }
 
     /**

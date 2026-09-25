@@ -1,6 +1,11 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.EntitySpawnRequest;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.Entity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRAnimalJarBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 
@@ -101,10 +106,43 @@ public class LOTRAnimalJarItem extends BlockItem {
         setJarEntity(filled, saved);
         player.setItemInHand(hand, filled);
 
-        entity.level().playSound(null, entity.blockPosition(), SoundEvents.CHICKEN_EGG,
+        // "random.pop", which is today's item-pickup pop.
+        entity.level().playSound(null, entity.blockPosition(), SoundEvents.ITEM_PICKUP,
                 entity.getSoundSource(), 0.5F,
                 0.5F + entity.level().getRandom().nextFloat() * 0.5F);
         entity.discard();
+        return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * LOTRItemAnimalJar.onItemRightClick: the creature is let out two blocks
+     * ahead of the player's eyes, along where they are looking, and the jar is
+     * left empty. Only the held item does this; a placed jar keeps its creature.
+     */
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        CompoundTag data = getJarEntity(stack);
+        if (data == null) {
+            return InteractionResult.PASS;
+        }
+        if (level.isClientSide()) {
+            return InteractionResult.SUCCESS;
+        }
+        Vec3 eye = player.getEyePosition();
+        Vec3 at = eye.add(player.getLookAngle().scale(2.0));
+        Entity entity = EntityType.loadEntityRecursive(data, level,
+                new EntitySpawnRequest(EntitySpawnReason.BUCKET, true), e -> {
+                    e.snapTo(at.x, at.y, at.z, level.getRandom().nextFloat(), 0.0F);
+                    return e;
+                });
+        if (entity == null) {
+            return InteractionResult.PASS;
+        }
+        level.addFreshEntity(entity);
+        level.playSound(null, entity.blockPosition(), SoundEvents.ITEM_PICKUP, entity.getSoundSource(),
+                0.5F, 0.5F + level.getRandom().nextFloat() * 0.5F);
+        setJarEntity(stack, null);
         return InteractionResult.SUCCESS;
     }
 }

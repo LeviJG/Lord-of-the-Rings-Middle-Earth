@@ -10,7 +10,12 @@ import net.fabricmc.fabric.api.registry.TillableBlockRegistry;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 // Block interactions the port had none of: burning, hoeing, shovelling, fuel,
 // composting.
@@ -39,9 +44,26 @@ public final class LOTRBlockBehaviours {
         LOTRBlocks.ALL_BEAMS.forEach(b -> fire.add(b, 5, 20));
         LOTRBlocks.ALL_FENCES.forEach(b -> fire.add(b, 5, 20));
         LOTRBlocks.ALL_FENCE_GATES.forEach(b -> fire.add(b, 5, 20));
-        LOTRBlocks.ALL_FLOWERS.forEach(b -> fire.add(b, 60, 100));
+        // ALL_FLOWERS also holds plants the original did not class as flowers
+        // or grass (LOTRBlockReed, LOTRBlockCorn, LOTRBlockGrapevine,
+        // LOTRBlockFangornRiverweed); load() gave those no fire info at all.
+        List<Block> notFlowers = List.of(LOTRBlocks.REEDS, LOTRBlocks.DRIED_REEDS,
+                LOTRBlocks.CORN_STALK, LOTRBlocks.GRAPEVINE, LOTRBlocks.FANGORN_RIVERWEED);
+        LOTRBlocks.ALL_FLOWERS.stream().filter(b -> !notFlowers.contains(b))
+                .forEach(b -> fire.add(b, 60, 100));
+        LOTRBlocks.ALL_DOUBLE_FLOWERS.forEach(b -> fire.add(b, 60, 100));
         LOTRBlocks.ALL_SAPLINGS.forEach(b -> fire.add(b, 60, 100));
         LOTRBlocks.ALL_VINES.forEach(b -> fire.add(b, 15, 100));
+
+        // LOTRBlockWoodBars.
+        List.of(LOTRBlocks.GALADHRIM_WOOD_BARS, LOTRBlocks.HIGH_ELF_WOOD_BARS, LOTRBlocks.WOOD_ELF_WOOD_BARS)
+                .forEach(b -> fire.add(b, 5, 20));
+
+        // LOTRBlockMordorMoss, alongside the grasses (Mordor grass is in ALL_FLOWERS).
+        fire.add(LOTRBlocks.MORDOR_MOSS, 60, 100);
+
+        // LOTRBlockDaub.
+        fire.add(LOTRBlocks.DAUB, 40, 40);
 
         // Wooden slabs and stairs only -- the originals tested for Material.wood.
         LOTRBlocks.SLAB_BASE.forEach((slab, base) -> {
@@ -56,21 +78,36 @@ public final class LOTRBlockBehaviours {
         });
 
         // Thatch burns readily but spreads poorly -- 60/20, not 60/100.
-        List.of(LOTRBlocks.THATCH_THATCH, LOTRBlocks.THATCH_REED, LOTRBlocks.THATCH_FLOOR)
+        // Also LOTRBlockReedBars, and the slabs and stairs of Material.grass,
+        // which are the thatch ones.
+        List.of(LOTRBlocks.THATCH_THATCH, LOTRBlocks.THATCH_REED, LOTRBlocks.THATCH_FLOOR,
+                        LOTRBlocks.REED_BARS,
+                        LOTRBlocks.THATCH_THATCH_SLAB, LOTRBlocks.THATCH_REED_SLAB,
+                        LOTRBlocks.THATCH_THATCH_STAIRS, LOTRBlocks.THATCH_REED_STAIRS)
                 .forEach(b -> fire.add(b, 60, 20));
 
         // Hoe: soil -> farmland. Without this there is no way to make farmland
-        // at all, so nothing can be planted.
-        TillableBlockRegistry.register(LOTRBlocks.MUD, LOTRBlockBehaviours::always,
+        // at all, so nothing can be planted. Like vanilla, only with nothing on
+        // top -- except that a grapevine does not count: LOTREventHandler's
+        // onUseHoe set LOTRBlockGrapevine.hoeing so the vine above reported
+        // itself as air, letting you till the soil a vineyard stands in.
+        TillableBlockRegistry.register(LOTRBlocks.MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
                 LOTRBlocks.MUD_FARMLAND.defaultBlockState());
-        TillableBlockRegistry.register(LOTRBlocks.BARREN_JUNGLE_MUD, LOTRBlockBehaviours::always,
+        TillableBlockRegistry.register(LOTRBlocks.BARREN_JUNGLE_MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
                 LOTRBlocks.MUD_FARMLAND.defaultBlockState());
-        TillableBlockRegistry.register(LOTRBlocks.MUD_GRASS, LOTRBlockBehaviours::always,
+        TillableBlockRegistry.register(LOTRBlocks.MUD_GRASS, LOTRBlockBehaviours::airOrGrapevineAbove,
                 LOTRBlocks.MUD_FARMLAND.defaultBlockState());
 
         // Paths hoe back into farmland, as vanilla dirt path does.
-        TillableBlockRegistry.register(LOTRBlocks.DIRT_PATH_MUD, LOTRBlockBehaviours::always,
+        TillableBlockRegistry.register(LOTRBlocks.DIRT_PATH_MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
                 LOTRBlocks.MUD_FARMLAND.defaultBlockState());
+
+        // The same grapevine allowance for vanilla's own tillable soils, which
+        // otherwise keep vanilla's rule (HoeItem.onlyIfAirAbove).
+        for (Block soil : List.of(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.DIRT_PATH)) {
+            TillableBlockRegistry.register(soil, LOTRBlockBehaviours::airOrGrapevineAbove,
+                    Blocks.FARMLAND.defaultBlockState());
+        }
 
         // Shovel: grass-like -> path, matching what vanilla does to grass.
         FlattenableBlockRegistry.register(LOTRBlocks.MUD_GRASS, LOTRBlocks.DIRT_PATH_MUD.defaultBlockState());
@@ -96,10 +133,6 @@ public final class LOTRBlockBehaviours {
 
     // Vanilla burn times, in ticks: anything wooden 300, wooden slabs 150,
     // wooden doors 200, buttons and saplings 100.
-    // NOTE FOR LEVI: the class name is confirmed, but I have not seen
-    // FuelValueEvents' own source. If BUILD or builder.add(block, ticks) is
-    // wrong, Ctrl-click FuelValueEvents and paste it -- the values below stay
-    // the same whatever the call shape turns out to be.
     private static void fuel() {
         FuelValueEvents.BUILD.register((builder, context) -> {
             LOTRBlocks.ALL_PLANKS.forEach(b -> builder.add(b, 300));
@@ -137,8 +170,13 @@ public final class LOTRBlockBehaviours {
         });
     }
 
-    private static boolean always(net.minecraft.world.item.context.UseOnContext context) {
-        return true;
+    private static boolean airOrGrapevineAbove(UseOnContext context) {
+        if (HoeItem.onlyIfAirAbove(context)) {
+            return true;
+        }
+        BlockState above = context.getLevel().getBlockState(context.getClickedPos().above());
+        return context.getClickedFace() != Direction.DOWN
+                && (above.is(LOTRBlocks.GRAPEVINE) || above.getBlock() instanceof LOTRGrapevineBlock);
     }
 
     private static boolean isWood(Block base) {

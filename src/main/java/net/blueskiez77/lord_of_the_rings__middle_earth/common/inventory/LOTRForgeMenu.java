@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory;
 
+import net.minecraft.world.item.crafting.RecipePropertySet;
+import net.minecraft.server.level.ServerPlayer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRForgeBlockEntity;
 
 import net.minecraft.util.Mth;
@@ -57,25 +59,26 @@ public class LOTRForgeMenu extends AbstractContainerMenu {
         for (int i = 0; i < 4; ++i) {
             addSlot(new Slot(container, LOTRForgeBlockEntity.ALLOY_START + i, 53 + i * 18, 21));
         }
+        // LOTRContainerAlloyForge: plain Slots for alloy, input and fuel -- a
+        // player may put anything there by hand -- and SlotFurnace outputs,
+        // which pay out the smelting experience.
         for (int i = 0; i < 4; ++i) {
-            final int inputSlot = LOTRForgeBlockEntity.INPUT_START + i;
-            addSlot(new Slot(container, inputSlot, 53 + i * 18, 39) {
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return container.canPlaceItem(inputSlot, stack);
-                }
-            });
+            addSlot(new Slot(container, LOTRForgeBlockEntity.INPUT_START + i, 53 + i * 18, 39));
         }
         for (int i = 0; i < 4; ++i) {
             addSlot(new FurnaceResultSlot(inventory.player, container,
-                    LOTRForgeBlockEntity.OUTPUT_START + i, 53 + i * 18, 85));
+                    LOTRForgeBlockEntity.OUTPUT_START + i, 53 + i * 18, 85) {
+                @Override
+                protected void checkTakeAchievements(ItemStack stack) {
+                    super.checkTakeAchievements(stack);
+                    if (inventory.player instanceof ServerPlayer player
+                            && container instanceof LOTRForgeBlockEntity forge) {
+                        forge.popExperience(player);
+                    }
+                }
+            });
         }
-        addSlot(new Slot(container, LOTRForgeBlockEntity.FUEL_SLOT, 80, 129) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return container.canPlaceItem(LOTRForgeBlockEntity.FUEL_SLOT, stack);
-            }
-        });
+        addSlot(new Slot(container, LOTRForgeBlockEntity.FUEL_SLOT, 80, 129));
 
         addStandardInventorySlots(inventory, 8, 151);
         addDataSlots(data);
@@ -128,12 +131,12 @@ public class LOTRForgeMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack, INV_START, HOTBAR_END, false)) {
                 return ItemStack.EMPTY;
             }
-        } else if (container.canPlaceItem(LOTRForgeBlockEntity.INPUT_START, stack)) {
+        } else if (hasSmeltingResult(player, stack)) {
             if (!moveItemStackTo(stack, LOTRForgeBlockEntity.INPUT_START,
                     LOTRForgeBlockEntity.OUTPUT_START, false)) {
                 return ItemStack.EMPTY;
             }
-        } else if (container.canPlaceItem(LOTRForgeBlockEntity.FUEL_SLOT, stack)) {
+        } else if (player.level().fuelValues().isFuel(stack)) {
             if (!moveItemStackTo(stack, LOTRForgeBlockEntity.FUEL_SLOT, CONTAINER_END, false)) {
                 return ItemStack.EMPTY;
             }
@@ -155,5 +158,17 @@ public class LOTRForgeMenu extends AbstractContainerMenu {
         }
         slot.onTake(player, stack);
         return clicked;
+    }
+
+    /**
+     * theForge.getSmeltingResult(stack) != null, asked of the real forge on the
+     * server and of the synced furnace inputs on the client (whose container
+     * is a stand-in that does not know which forge it is).
+     */
+    private boolean hasSmeltingResult(Player player, ItemStack stack) {
+        if (container instanceof LOTRForgeBlockEntity forge) {
+            return forge.hasSmeltingResult(stack);
+        }
+        return player.level().recipeAccess().propertySet(RecipePropertySet.FURNACE_INPUT).test(stack);
     }
 }

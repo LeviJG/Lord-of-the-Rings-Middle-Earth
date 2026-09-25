@@ -3,6 +3,9 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.client.render;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRArnorHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBlackNumenoreanHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBlackUrukHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRDyedHeadModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSwanChestplateModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBodyArmorModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRDorwinionElvenHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTREasterlingHelmetModel;
@@ -207,6 +210,34 @@ public final class LOTRArmorRenderers {
                 (poseStack, consumer, light) ->
                         numenorean.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
+        LOTRBlackUrukHelmetModel blackUruk = new LOTRBlackUrukHelmetModel(
+                LOTRBlackUrukHelmetModel.createLayer().bakeRoot());
+        register(LOTRItems.BLACK_URUK_HELMET, "black_uruk",
+                (poseStack, consumer, light) ->
+                        blackUruk.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+
+        // The dyed head pieces, tinted whole as the original's glColor3f did,
+        // in the colour each item had undyed: LOTRItemLeatherHat 0x684A36,
+        // LOTRItemPartyHat and ROBES_WHITE 0xFFFFFF.
+        registerDyed(LOTRItems.LEATHER_HAT, "leather_hat",
+                new LOTRDyedHeadModel(LOTRDyedHeadModel.createLeatherHat().bakeRoot()), 0x684A36);
+        registerDyed(LOTRItems.PARTY_HAT, "party_hat",
+                new LOTRDyedHeadModel(LOTRDyedHeadModel.createPartyHat().bakeRoot()), 0xFFFFFF);
+        registerDyed(LOTRItems.HARAD_TURBAN, "harad_turban",
+                new LOTRDyedHeadModel(LOTRDyedHeadModel.createTurban().bakeRoot()), 0xFFFFFF);
+
+        // bodyDolAmroth: LOTRModelSwanChestplate, on its "wingedBody" sheet.
+        LOTRSwanChestplateModel swanBody = new LOTRSwanChestplateModel(
+                LOTRSwanChestplateModel.createLayer().bakeRoot());
+        Identifier swanTexture = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE,
+                "textures/entity/equipment/humanoid/dol_amroth_winged_body.png");
+        ArmorRenderer.register((poseStack, collector, stack, state, slot, light, contextModel) -> {
+            swanBody.setupWings(state.ageInTicks, state.walkAnimationPos, state.walkAnimationSpeed);
+            renderPart(poseStack, collector, light, contextModel.body, swanBody.body(), swanTexture);
+            renderPart(poseStack, collector, light, contextModel.rightArm, swanBody.rightArm(), swanTexture);
+            renderPart(poseStack, collector, light, contextModel.leftArm, swanBody.leftArm(), swanTexture);
+        }, LOTRItems.DOL_AMROTH_CHESTPLATE);
+
         // The two chestplates LOTRArmorModels gave models of their own.
         registerBody(LOTRItems.GULFEN_CHESTPLATE, "gulf_harad_body",
                 new LOTRGulfenChestplateModel(LOTRGulfenChestplateModel.createLayer().bakeRoot()));
@@ -245,6 +276,21 @@ public final class LOTRArmorRenderers {
                     part.render(local, consumer, light, OverlayTexture.NO_OVERLAY);
                 });
         poseStack.popPose();
+    }
+
+    /** A dyed head piece: the stack's dye, or the item's own undyed colour. */
+    private static void registerDyed(net.minecraft.world.item.Item hat, String texture,
+            LOTRDyedHeadModel model, int undyed) {
+        Identifier path = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE,
+                "textures/entity/equipment/humanoid/" + texture + ".png");
+        ArmorRenderer.register((poseStack, collector, stack, state, slot, light, contextModel) -> {
+            net.minecraft.world.item.component.DyedItemColor dyed =
+                    stack.get(net.minecraft.core.component.DataComponents.DYED_COLOR);
+            int color = 0xFF000000 | (dyed != null ? dyed.rgb() : undyed);
+            renderHead(poseStack, collector, light, contextModel,
+                    (local, consumer, l) -> model.render(local, consumer, l, OverlayTexture.NO_OVERLAY, color),
+                    path);
+        }, hat);
     }
 
     /** What a helmet model draws, once its head transform is in place. */

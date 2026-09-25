@@ -1,5 +1,11 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
+import java.util.Set;
+import java.util.HashSet;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.core.Direction;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.item.Items;
@@ -22,11 +28,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
@@ -39,7 +42,6 @@ import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.enchantment.Repairable;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -66,8 +68,11 @@ import org.jspecify.annotations.Nullable;
  * </ol>
  *
  * <p>The 400-tick duration is twice a furnace's -- unsmelting is slow work.
+ *
+ * <p>A BaseContainerBlockEntity for the custom name, and a WorldlyContainer for
+ * LOTRTileEntityForgeBase's hopper rules.
  */
-public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container, MenuProvider {
+public class LOTRUnsmelteryBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
     public static final int SLOT_COUNT = 3;
     public static final int INPUT_SLOT = 0;
@@ -102,8 +107,6 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
     private int cookingProgress;
     private int litTime;
     private int litTotalTime;
-
-    private @Nullable Component customName;
 
     private final ContainerData dataAccess = new ContainerData() {
         @Override
@@ -268,7 +271,8 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
     /**
      * canBeUnsmelted. Refuses anything whose material would BURN -- the
      * original checked getItemBurnTime on the material, so a wooden sword
-     * cannot be turned back into planks by a fire that would consume them.
+     * cannot be turned back into planks by a fire that would consume them --
+     * and any block item whose block burns (Material.getCanBurn).
      */
     public boolean canBeUnsmelted(ItemStack stack) {
         if (level == null || stack.isEmpty()) {
@@ -282,6 +286,10 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
         if (fuel.isFuel(material)) {
             return false;
         }
+        if (stack.getItem() instanceof BlockItem blockItem
+                && blockItem.getBlock().defaultBlockState().ignitedByLava()) {
+            return false;
+        }
         return resourcesUsed(stack, material) > 0;
     }
 
@@ -290,9 +298,16 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
      * recipe consumes -- an iron chestplate is eight ingots, an iron sword two
      * (one ingot, one stick, of which one matches).
      *
-     * <p>SIMPLIFIED from the original, which also recursed into sub-recipes so
-     * that an item crafted from iron BLOCKS counted nine ingots each. This
-     * counts only direct ingredient matches. See docs/TODO-unsmeltery.md.
+     * <p>An ingredient that is not the material itself is followed into ITS
+     * recipe (countMatchingIngredients' recursion), so something crafted from
+     * iron blocks counts nine ingots a block. A recipe is followed at most once
+     * per question, which is what stops a cycle. For an ingredient that
+     * accepts several items (a tag, 1.7.10's ore-dictionary list) every
+     * alternative's count is added, as the original's loop did.
+     *
+     * <p>Where several recipes make the item, the largest count is kept; the
+     * original took the first it came to in its recipe lists, an order the
+     * modern recipe manager does not share.
      *
      * <p>Gear with no crafting recipe at all falls back on
      * {@link #uncraftable()}, as the original searched its uncraftable list last.
@@ -306,37 +321,49 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
         if (cached != null) {
             return cached;
         }
-
-        int best = 0;
-        if (level instanceof ServerLevel serverLevel) {
-            for (RecipeHolder<?> holder : serverLevel.recipeAccess().getRecipes()) {
-                Recipe<?> recipe = holder.value();
-                if (!(recipe instanceof NormalCraftingRecipe crafting)) {
-                    continue;
-                }
-                ItemStack result = resultOf(crafting);
-                if (result.isEmpty() || !result.is(stack.getItem())) {
-                    continue;
-                }
-                int matches = 0;
-                for (Ingredient ingredient : crafting.placementInfo().ingredients()) {
-                    if (ingredient.test(material)) {
-                        matches++;
-                    }
-                }
-                // Per crafted item, not per recipe: a recipe making four of
-                // something spreads its ingredients across all four.
-                matches /= Math.max(1, result.getCount());
-                best = Math.max(best, matches);
-            }
-        }
-        if (best == 0) {
+        int count = level instanceof ServerLevel serverLevel
+                ? resourcesUsed(serverLevel, stack.getItem(), material, new HashSet<>())
+                : 0;
+        if (count == 0) {
             List<Item> grid = uncraftable().get(stack.getItem());
             if (grid != null) {
-                best = (int) grid.stream().filter(material::is).count();
+                count = (int) grid.stream().filter(material::is).count();
             }
         }
-        RESOURCE_COUNTS.put(key, best);
+        RESOURCE_COUNTS.put(key, count);
+        return count;
+    }
+
+    // Ingredient.items() is deprecated but is the only way 26.2 offers to list
+    // an ingredient's alternatives, which the recursion has to follow.
+    @SuppressWarnings("deprecation")
+    private static int resourcesUsed(ServerLevel level, Item item, ItemStack material,
+                                     Set<RecipeHolder<?>> checked) {
+        int best = 0;
+        for (RecipeHolder<?> holder : level.recipeAccess().getRecipes()) {
+            if (checked.contains(holder) || !(holder.value() instanceof NormalCraftingRecipe crafting)) {
+                continue;
+            }
+            ItemStack result = resultOf(crafting);
+            if (result.isEmpty() || !result.is(item)) {
+                continue;
+            }
+            checked.add(holder);
+            int matches = 0;
+            for (Ingredient ingredient : crafting.placementInfo().ingredients()) {
+                if (ingredient.test(material)) {
+                    matches++;
+                    continue;
+                }
+                for (Holder<Item> alternative : ingredient.items().toList()) {
+                    matches += resourcesUsed(level, alternative.value(), material, checked);
+                }
+            }
+            // Per crafted item, not per recipe: a recipe making four of
+            // something spreads its ingredients across all four.
+            matches /= Math.max(1, result.getCount());
+            best = Math.max(best, matches);
+        }
         return best;
     }
 
@@ -517,30 +544,15 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
     }
 
     @Override
-    public boolean isEmpty() {
-        return items.stream().allMatch(ItemStack::isEmpty);
+    protected NonNullList<ItemStack> getItems() {
+        return items;
     }
 
     @Override
-    public ItemStack getItem(int slot) {
-        return items.get(slot);
-    }
-
-    @Override
-    public ItemStack removeItem(int slot, int amount) {
-        return ContainerHelper.removeItem(items, slot, amount);
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int slot) {
-        return ContainerHelper.takeItem(items, slot);
-    }
-
-    @Override
-    public void setItem(int slot, ItemStack stack) {
-        items.set(slot, stack);
-        stack.limitSize(getMaxStackSize(stack));
-        setChanged();
+    protected void setItems(NonNullList<ItemStack> newItems) {
+        for (int i = 0; i < SLOT_COUNT; ++i) {
+            items.set(i, i < newItems.size() ? newItems.get(i) : ItemStack.EMPTY);
+        }
     }
 
     @Override
@@ -555,37 +567,40 @@ public class LOTRUnsmelteryBlockEntity extends BlockEntity implements Container,
         };
     }
 
+    private static final int[] SLOTS_DOWN = {OUTPUT_SLOT, FUEL_SLOT};
+    private static final int[] SLOTS_UP = {INPUT_SLOT};
+    private static final int[] SLOTS_SIDE = {FUEL_SLOT};
+
+    /** getAccessibleSlotsFromSide: output and fuel below, input above, fuel at the sides. */
     @Override
-    public boolean stillValid(Player player) {
-        return level != null
-                && level.getBlockEntity(worldPosition) == this
-                && player.distanceToSqr(worldPosition.getX() + 0.5,
-                worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5) <= 64.0;
+    public int[] getSlotsForFace(Direction side) {
+        return switch (side) {
+            case DOWN -> SLOTS_DOWN;
+            case UP -> SLOTS_UP;
+            default -> SLOTS_SIDE;
+        };
     }
 
     @Override
-    public void clearContent() {
-        items.clear();
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
+        return canPlaceItem(slot, stack);
     }
 
-    /** For Containers.dropContents when the block breaks. */
-    public NonNullList<ItemStack> getItems() {
-        return items;
+    /** canExtractItem: from below, the fuel slot only gives up an empty bucket. */
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        return side != Direction.DOWN || slot != FUEL_SLOT || stack.is(Items.BUCKET);
     }
 
     // ----------------------------------------------------------- MenuProvider
 
-    public void setCustomName(Component name) {
-        this.customName = name;
+    @Override
+    protected Component getDefaultName() {
+        return getBlockState().getBlock().getName();
     }
 
     @Override
-    public Component getDisplayName() {
-        return customName != null ? customName : getBlockState().getBlock().getName();
-    }
-
-    @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+    protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
         return new LOTRUnsmelteryMenu(containerId, inventory, this, dataAccess);
     }
 

@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRMillstoneRecipes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRMillstoneBlockEntity;
 
 import net.minecraft.world.Container;
@@ -42,12 +43,9 @@ public class LOTRMillstoneMenu extends AbstractContainerMenu {
         this.container = container;
         this.data = data;
 
-        addSlot(new Slot(container, LOTRMillstoneBlockEntity.INPUT_SLOT, 84, 25) {
-            @Override
-            public boolean mayPlace(ItemStack stack) {
-                return container.canPlaceItem(LOTRMillstoneBlockEntity.INPUT_SLOT, stack);
-            }
-        });
+        // LOTRContainerMillstone: a plain Slot for the input (anything by
+        // hand; hoppers are the ones held to millable items).
+        addSlot(new Slot(container, LOTRMillstoneBlockEntity.INPUT_SLOT, 84, 25));
         addSlot(new FurnaceResultSlot(inventory.player, container,
                 LOTRMillstoneBlockEntity.OUTPUT_SLOT, 84, 71));
 
@@ -85,17 +83,19 @@ public class LOTRMillstoneMenu extends AbstractContainerMenu {
                 return ItemStack.EMPTY;
             }
             slot.onQuickCraft(stack, original);
-        } else if (!moveItemStackTo(stack, LOTRMillstoneBlockEntity.INPUT_SLOT,
-                LOTRMillstoneBlockEntity.INPUT_SLOT + 1, false)) {
-            // Player -> machine failed; fall back to moving between the
-            // inventory and the hotbar, as vanilla containers do.
-            if (index < HOTBAR_START) {
-                if (!moveItemStackTo(stack, HOTBAR_START, HOTBAR_END, false)) {
-                    return ItemStack.EMPTY;
-                }
-            } else if (!moveItemStackTo(stack, INV_START, HOTBAR_START, false)) {
+        } else if (LOTRMillstoneRecipes.canMill(stack)) {
+            // transferStackInSlot: millable -> input, anything else between
+            // the inventory and the hotbar.
+            if (!moveItemStackTo(stack, LOTRMillstoneBlockEntity.INPUT_SLOT,
+                    LOTRMillstoneBlockEntity.INPUT_SLOT + 1, false)) {
                 return ItemStack.EMPTY;
             }
+        } else if (index < HOTBAR_START) {
+            if (!moveItemStackTo(stack, HOTBAR_START, HOTBAR_END, false)) {
+                return ItemStack.EMPTY;
+            }
+        } else if (!moveItemStackTo(stack, INV_START, HOTBAR_START, false)) {
+            return ItemStack.EMPTY;
         }
 
         if (stack.isEmpty()) {

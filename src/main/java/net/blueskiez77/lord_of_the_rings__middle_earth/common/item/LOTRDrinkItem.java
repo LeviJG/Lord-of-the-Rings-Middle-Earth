@@ -129,6 +129,13 @@ public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
                 context, context.getItemInHand());
     }
 
+    /** getItemStackDisplayName: on the first of April every drink is Hooch. */
+    @Override
+    public Component getName(ItemStack stack) {
+        return net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod.isAprilFools()
+                ? Component.literal("Hooch") : super.getName(stack);
+    }
+
     /** A drink at the given strength, in a mug -- what getSubItems listed. */
     public static ItemStack stack(Item item, int strength) {
         ItemStack stack = new ItemStack(item);

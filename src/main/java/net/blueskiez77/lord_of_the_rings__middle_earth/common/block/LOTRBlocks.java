@@ -99,6 +99,8 @@ public final class LOTRBlocks {
     public static final Map<Block, Block> LEAVES_SAPLING = new LinkedHashMap<>();
     public static final List<Block> ALL_TRAPDOORS = new ArrayList<>();
     public static final List<Block> ALL_DOORS = new ArrayList<>();
+    // Float.MAX_VALUE, as LOTRBlockUtumnoBrick/Pillar/SlabBase set it.
+    private static final float UTUMNO_RESISTANCE = Float.MAX_VALUE;
     public static final List<Block> ALL_BARS = new ArrayList<>();
     public static final List<Block> ALL_GLASS_PANES = new ArrayList<>();
 
@@ -279,6 +281,7 @@ public final class LOTRBlocks {
     public static final Block GLOWSTONE_ORE = registerOre("glowstone_ore", Tier.STONE, 11, 2, 4);
     public static final Block GONDOR_BRICK = registerCube("gondor_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block CARVED_GONDOR_BRICK = registerCube("carved_gondor_brick", 1.5f, 6.0f, Tier.NONE);
+    public static final Block CARVED_BLACK_GONDOR_BRICK = registerCube("carved_black_gondor_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block CRACKED_GONDOR_BRICK = registerCube("cracked_gondor_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block MOSSY_GONDOR_BRICK = registerCube("mossy_gondor_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block GONDOR_ROCK = registerCube("gondor_rock", 1.5f, 6.0f, Tier.NONE);
@@ -343,7 +346,8 @@ public final class LOTRBlocks {
             LOTRQuagmireBlock::new,
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.DIRT)
-                    .strength(0.0f)
+                    // LOTRMod: quagmire.setHardness(1.0f).setStepSound(soundTypeGravel).
+                    .strength(1.0f)
                     .sound(SoundType.GRAVEL)
                     .noCollision()
                     .noOcclusion(),
@@ -376,9 +380,9 @@ public final class LOTRBlocks {
     public static final Block SAPPHIRE_ORE = registerOre("sapphire_ore", Tier.IRON, 0, 0, 2);
     public static final Block SCORCHED_STONE = registerCube("scorched_stone", 2.0f, 6.0f, Tier.NONE);
     // utumnoPillar 0/1/2. Column-textured like every other pillar.
-    public static final Block FIRE_UTUMNO_PILLAR = registerPillar("fire_utumno_pillar");
-    public static final Block ICE_UTUMNO_PILLAR = registerPillar("ice_utumno_pillar");
-    public static final Block OBSIDIAN_UTUMNO_PILLAR = registerPillar("obsidian_utumno_pillar");
+    public static final Block FIRE_UTUMNO_PILLAR = registerPillar("fire_utumno_pillar", UTUMNO_RESISTANCE);
+    public static final Block ICE_UTUMNO_PILLAR = registerPillar("ice_utumno_pillar", UTUMNO_RESISTANCE);
+    public static final Block OBSIDIAN_UTUMNO_PILLAR = registerPillar("obsidian_utumno_pillar", UTUMNO_RESISTANCE);
     public static final Block SILVER_BLOCK = registerCube("silver_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block TAUREDAIN_BRICK = registerCube("tauredain_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block TAUREDAIN_CRACKED_BRICK = registerCube("tauredain_cracked_brick", 1.5f, 6.0f, Tier.NONE);
@@ -410,16 +414,17 @@ public final class LOTRBlocks {
     public static final Block CRACKED_UMBAR_BRICK = registerCube("cracked_umbar_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block URUK_BRICK = registerCube("uruk_brick", 1.5f, 6.0f, Tier.NONE);
     public static final Block URUK_STEEL_BLOCK = registerCubeColumn("uruk_steel_block", 5.0f, 6.0f, Tier.STONE, SoundType.METAL);
-    // LOTRBlockUtumnoBrick: setHardness(1.5) and never setResistance, so it
-    // stands up to a blast no better than its hardness -- 1.5, not a brick's 6.
-    public static final Block FIRE_UTUMNO_BRICK = registerCube("fire_utumno_brick", 1.5f, 1.5f, Tier.NONE);
-    public static final Block UTUMNO_FIRE_TILE_BRICK = registerCube("utumno_fire_tile_brick", 1.5f, 1.5f, Tier.NONE);
-    public static final Block ICE_UTUMNO_BRICK = registerCube("ice_utumno_brick", 1.5f, 1.5f, Tier.NONE);
-    public static final Block GLOWING_ICE_UTUMNO_BRICK = registerCube("glowing_ice_utumno_brick", 1.5f, 1.5f, Tier.NONE, SoundType.STONE, 12);
-    public static final Block UTUMNO_ICE_TILE_BRICK = registerCube("utumno_ice_tile_brick", 1.5f, 1.5f, Tier.NONE);
-    public static final Block OBSIDIAN_UTUMNO_BRICK = registerCube("obsidian_utumno_brick", 1.5f, 1.5f, Tier.NONE);
-    public static final Block UTUMNO_OBSIDIAN_FIRE_BRICK = registerCube("utumno_obsidian_fire_brick", 1.5f, 1.5f, Tier.NONE, SoundType.STONE, 12);
-    public static final Block UTUMNO_OBSIDIAN_TILE_BRICK = registerCube("utumno_obsidian_tile_brick", 1.5f, 1.5f, Tier.NONE);
+    // LOTRBlockUtumnoBrick and LOTRBlockUtumnoPillar: setHardness(1.5) then
+    // setResistance(Float.MAX_VALUE), so no explosion breaks them. Their
+    // slabs, stairs and walls copy this, as the originals' did.
+    public static final Block FIRE_UTUMNO_BRICK = registerCube("fire_utumno_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE);
+    public static final Block UTUMNO_FIRE_TILE_BRICK = registerCube("utumno_fire_tile_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE);
+    public static final Block ICE_UTUMNO_BRICK = registerCube("ice_utumno_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE);
+    public static final Block GLOWING_ICE_UTUMNO_BRICK = registerCube("glowing_ice_utumno_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE, SoundType.STONE, 12);
+    public static final Block UTUMNO_ICE_TILE_BRICK = registerCube("utumno_ice_tile_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE);
+    public static final Block OBSIDIAN_UTUMNO_BRICK = registerCube("obsidian_utumno_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE);
+    public static final Block UTUMNO_OBSIDIAN_FIRE_BRICK = registerCube("utumno_obsidian_fire_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE, SoundType.STONE, 12);
+    public static final Block UTUMNO_OBSIDIAN_TILE_BRICK = registerCube("utumno_obsidian_tile_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE);
     public static final Block UTUMNO_FIRE_TILE_BRICK_WALL = registerWall("utumno_fire_tile_brick_wall", UTUMNO_FIRE_TILE_BRICK);
     public static final Block UTUMNO_ICE_TILE_BRICK_WALL = registerWall("utumno_ice_tile_brick_wall", UTUMNO_ICE_TILE_BRICK);
     public static final Block UTUMNO_OBSIDIAN_TILE_BRICK_WALL = registerWall("utumno_obsidian_tile_brick_wall", UTUMNO_OBSIDIAN_TILE_BRICK);
@@ -467,7 +472,7 @@ public final class LOTRBlocks {
     public static final Block BARREL = register("barrel", LOTRBarrelBlock::new,
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD)
-                    .strength(3.0f, 5.0f)
+                    .strength(3.0f, 3.0f) // 1.7.10 blast resistance = setResistance x 3 / 5 (or the hardness, if higher).
                     .sound(SoundType.WOOD)
                     .noOcclusion()
                     .ignitedByLava(),
@@ -527,7 +532,7 @@ public final class LOTRBlocks {
     public static final Block CORAL_BLOCK = registerCube("coral_block", 5.0f, 6.0f, Tier.NONE, SoundType.METAL);
     public static final Block EMERALD_BLOCK = registerCube("emerald_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block TOPAZ_ORE = registerOre("topaz_ore", Tier.IRON, 0, 0, 2);
-    public static final Block BURNING_UTUMNO_BRICK = registerCube("burning_utumno_brick", 1.5f, 1.5f, Tier.NONE, SoundType.STONE, 12);
+    public static final Block BURNING_UTUMNO_BRICK = registerCube("burning_utumno_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE, SoundType.STONE, 12);
 
     public static final Block SMOOTH_MORDOR_ROCK = registerColumn("smooth_mordor_rock");
     public static final Block SMOOTH_GONDOR_ROCK = registerColumn("smooth_gondor_rock");
@@ -675,7 +680,7 @@ public final class LOTRBlocks {
     public static final Block WEAPON_RACK = register("weapon_rack", LOTRWeaponRackBlock::new,
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.WOOD)
-                    .strength(0.5f, 1.0f)
+                    .strength(0.5f, 0.6f) // setHardness(0.5).setResistance(1): blast 0.6
                     .sound(SoundType.WOOD)
                     .noOcclusion()
                     .pushReaction(PushReaction.DESTROY),
@@ -775,9 +780,9 @@ public final class LOTRBlocks {
     public static final Block MALLORN_LADDER = registerLadder("mallorn_ladder");
 
     // faces 0/1, sideIcon otherwise). Material.ground, no harvest level set.
-    public static final Block TERMITE_MOUND = registerSoilColumn("termite_mound", 0.5f, 1.8f, SoundType.SAND, false);
+    public static final Block TERMITE_MOUND = registerSoilColumn("termite_mound", 0.5f, 1.8f, SoundType.STONE, false);
 
-    public static final Block INFESTED_TERMITE_MOUND = registerSoilColumn("infested_termite_mound", 0.5f, 1.8f, SoundType.SAND, false);
+    public static final Block INFESTED_TERMITE_MOUND = registerSoilColumn("infested_termite_mound", 0.5f, 1.8f, SoundType.STONE, false);
     static {
         SOIL_COLUMN_TEXTURE.put(INFESTED_TERMITE_MOUND, TERMITE_MOUND);
     }
@@ -796,7 +801,16 @@ public final class LOTRBlocks {
 
     public static final Block DAUB = registerSoftBlock("daub", 1.0f, SoundType.GRASS);
 
-    public static final Block WASTE_BLOCK = track(SHOVEL_MINEABLE, registerSoftBlock("waste_block", 0.5f, SoundType.SAND));
+    // LOTRBlockWaste: Material.ground, hardness 0.5, soundTypeSand; slows and
+    // sinks you like soul sand -- see LOTRWasteBlock.
+    public static final Block WASTE_BLOCK = track(SHOVEL_MINEABLE, track(ALL_CUBES, register("waste_block",
+            LOTRWasteBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.DIRT)
+                    .strength(0.5f)
+                    .sound(SoundType.SAND)
+                    .speedFactor(0.4f),
+            true)));
     // LOTRBlockTreasurePile, NOT a plain cube: eight layer heights, the
     // shallowest of them carpet-thin. They were registered as full blocks here
     // by mistake.
@@ -850,9 +864,15 @@ public final class LOTRBlocks {
     // picks the renderer's texture: "" wooden, "sand" for Harad.
     // LOTRBlockMillstone: Material.rock, hardness 4.0, stone step sound. It has
     // no facing -- the original registers only a side and a top icon.
+    /** The LOTR anvil: vanilla's anvil block, opening LOTRContainerAnvil. */
+    public static final Block ANVIL = register("anvil", LOTRAnvilBlock::new,
+            BlockBehaviour.Properties.ofFullCopy(net.minecraft.world.level.block.Blocks.ANVIL),
+            true);
+
     public static final Block MILLSTONE = register("millstone", LOTRMillstoneBlock::new,
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
+                    .requiresCorrectToolForDrops()
                     .strength(4.0f)
                     .sound(SoundType.STONE),
             true);
@@ -876,7 +896,7 @@ public final class LOTRBlocks {
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
                     .strength(1.0f)
-                    .sound(SoundType.CHAIN)
+                    .sound(SoundType.METAL) // LOTRBlockOrcChain: soundTypeMetal.
                     // The chain keeps a hair-thin collision box of its own
                     // (getCollisionBoundingBoxFromPool), so this is noOcclusion
                     // rather than noCollision.
@@ -914,7 +934,7 @@ public final class LOTRBlocks {
             BlockBehaviour.Properties.of()
                     .mapColor(MapColor.STONE)
                     .requiresCorrectToolForDrops()
-                    .strength(4.0f, 6.0f)
+                    .strength(4.0f) // LOTRBlockForgeBase: setHardness(4) only.
                     .sound(SoundType.STONE)
                     .noOcclusion()
                     .lightLevel(state -> state.getValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT) ? 13 : 0),
@@ -955,7 +975,17 @@ public final class LOTRBlocks {
     public static final Block BERRY_BUSH_WILDBERRY = registerBush("berry_bush_wildberry");
 
     public static final Block CORN_STALK = registerCorn("corn_stalk");
-    public static final Block GRAPEVINE = registerStalk("grapevine", LOTRPlantBlock.Shape.POST, LOTRPlantBlock.Ground.STURDY_OR_SELF);
+    // The bare post: LOTRBlockGrapevine(false) was hardness 2, resistance 5
+    // (blast 3), soundTypeWood, and solid to walk into -- a fence post, not a plant.
+    public static final Block GRAPEVINE = track(ALL_FLOWERS, register("grapevine",
+            props -> new LOTRPlantBlock(LOTRPlantBlock.Shape.POST, LOTRPlantBlock.Ground.STURDY_OR_SELF, props),
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.WOOD)
+                    .strength(2.0f, 3.0f)
+                    .sound(SoundType.WOOD)
+                    .noOcclusion()
+                    .pushReaction(PushReaction.DESTROY),
+            true));
     // LOTRBlockGrapevineRed and LOTRBlockGrapevineWhite: the bearing vines,
     // planted from grape seeds. setCreativeTab(null) in the original -- you get
     // them by planting, never out of the menu -- so no item and no tab entry.
@@ -1397,17 +1427,17 @@ public final class LOTRBlocks {
     public static final Block BRONZE_BARS = registerBars("bronze_bars");
     public static final Block DWARF_BARS = registerBars("dwarf_bars");
     public static final Block GALADHRIM_BARS = registerBars("galadhrim_bars");
-    public static final Block GALADHRIM_WOOD_BARS = registerBars("galadhrim_wood_bars");
+    public static final Block GALADHRIM_WOOD_BARS = registerWoodBars("galadhrim_wood_bars");
     public static final Block GOLD_BARS = registerBars("gold_bars");
     public static final Block HIGH_ELF_BARS = registerBars("high_elf_bars");
-    public static final Block HIGH_ELF_WOOD_BARS = registerBars("high_elf_wood_bars");
+    public static final Block HIGH_ELF_WOOD_BARS = registerWoodBars("high_elf_wood_bars");
     public static final Block MITHRIL_BARS = registerBars("mithril_bars");
     public static final Block ORC_STEEL_BARS = registerBars("orc_steel_bars");
-    public static final Block REED_BARS = registerBars("reed_bars");
+    public static final Block REED_BARS = registerReedBars("reed_bars");
     public static final Block SILVER_BARS = registerBars("silver_bars");
     public static final Block URUK_BARS = registerBars("uruk_bars");
     public static final Block WOOD_ELF_BARS = registerBars("wood_elf_bars");
-    public static final Block WOOD_ELF_WOOD_BARS = registerBars("wood_elf_wood_bars");
+    public static final Block WOOD_ELF_WOOD_BARS = registerWoodBars("wood_elf_wood_bars");
 
     public static final Block BLUE_DWARVEN_CHANDELIER = registerChandelier("blue_dwarven_chandelier", LOTRGlowStyle.FLAME);
     public static final Block BRONZE_CHANDELIER = registerChandelier("bronze_chandelier", LOTRGlowStyle.FLAME);
@@ -1612,22 +1642,22 @@ public final class LOTRBlocks {
     public static final Block CLAY_TILE_DYED_SILVER_STAIRS = registerStairs("clay_tile_dyed_silver_stairs", CLAY_TILE_DYED_SILVER);
     public static final Block CRACKED_STONE_BRICK_STAIRS = registerStairs("cracked_stone_brick_stairs", Blocks.CRACKED_STONE_BRICKS);
 
-    public static final Block ANGMAR_BRICK_SLAB = registerSlab("angmar_brick_slab", ANGMAR_BRICK);
-    public static final Block CRACKED_ANGMAR_BRICK_SLAB = registerSlab("cracked_angmar_brick_slab", CRACKED_ANGMAR_BRICK);
-    public static final Block ANGMAR_PILLAR_SLAB = registerSlab("angmar_pillar_slab", ANGMAR_PILLAR);
-    public static final Block ANGMAR_SNOW_BRICK_SLAB = registerSlab("angmar_snow_brick_slab", ANGMAR_SNOW_BRICK);
-    public static final Block ARNOR_BRICK_SLAB = registerSlab("arnor_brick_slab", ARNOR_BRICK);
-    public static final Block CRACKED_ARNOR_BRICK_SLAB = registerSlab("cracked_arnor_brick_slab", CRACKED_ARNOR_BRICK);
-    public static final Block CRACKED_ARNOR_PILLAR_SLAB = registerSlab("cracked_arnor_pillar_slab", CRACKED_ARNOR_PILLAR);
-    public static final Block MOSSY_ARNOR_BRICK_SLAB = registerSlab("mossy_arnor_brick_slab", MOSSY_ARNOR_BRICK);
-    public static final Block ARNOR_PILLAR_SLAB = registerSlab("arnor_pillar_slab", ARNOR_PILLAR);
-    public static final Block BLUE_ROCK_BRICK_SLAB = registerSlab("blue_rock_brick_slab", BLUE_ROCK_BRICK);
-    public static final Block BLUE_ROCK_PILLAR_SLAB = registerSlab("blue_rock_pillar_slab", BLUE_ROCK_PILLAR);
-    public static final Block BLUE_ROCK_SLAB = registerSlab("blue_rock_slab", BLUE_ROCK);
-    public static final Block BRICK_PILLAR_SLAB = registerSlab("brick_pillar_slab", BRICK_PILLAR);
-    public static final Block CHALK_BRICK_SLAB = registerSlab("chalk_brick_slab", CHALK_BRICK);
-    public static final Block CHALK_PILLAR_SLAB = registerSlab("chalk_pillar_slab", CHALK_PILLAR);
-    public static final Block CHALK_SLAB = registerSlab("chalk_slab", CHALK);
+    public static final Block ANGMAR_BRICK_SLAB = registerStoneSlab("angmar_brick_slab", ANGMAR_BRICK);
+    public static final Block CRACKED_ANGMAR_BRICK_SLAB = registerStoneSlab("cracked_angmar_brick_slab", CRACKED_ANGMAR_BRICK);
+    public static final Block ANGMAR_PILLAR_SLAB = registerStoneSlab("angmar_pillar_slab", ANGMAR_PILLAR);
+    public static final Block ANGMAR_SNOW_BRICK_SLAB = registerStoneSlab("angmar_snow_brick_slab", ANGMAR_SNOW_BRICK);
+    public static final Block ARNOR_BRICK_SLAB = registerStoneSlab("arnor_brick_slab", ARNOR_BRICK);
+    public static final Block CRACKED_ARNOR_BRICK_SLAB = registerStoneSlab("cracked_arnor_brick_slab", CRACKED_ARNOR_BRICK);
+    public static final Block CRACKED_ARNOR_PILLAR_SLAB = registerStoneSlab("cracked_arnor_pillar_slab", CRACKED_ARNOR_PILLAR);
+    public static final Block MOSSY_ARNOR_BRICK_SLAB = registerStoneSlab("mossy_arnor_brick_slab", MOSSY_ARNOR_BRICK);
+    public static final Block ARNOR_PILLAR_SLAB = registerStoneSlab("arnor_pillar_slab", ARNOR_PILLAR);
+    public static final Block BLUE_ROCK_BRICK_SLAB = registerStoneSlab("blue_rock_brick_slab", BLUE_ROCK_BRICK);
+    public static final Block BLUE_ROCK_PILLAR_SLAB = registerStoneSlab("blue_rock_pillar_slab", BLUE_ROCK_PILLAR);
+    public static final Block BLUE_ROCK_SLAB = registerStoneSlab("blue_rock_slab", BLUE_ROCK);
+    public static final Block BRICK_PILLAR_SLAB = registerStoneSlab("brick_pillar_slab", BRICK_PILLAR);
+    public static final Block CHALK_BRICK_SLAB = registerStoneSlab("chalk_brick_slab", CHALK_BRICK);
+    public static final Block CHALK_PILLAR_SLAB = registerStoneSlab("chalk_pillar_slab", CHALK_PILLAR);
+    public static final Block CHALK_SLAB = registerStoneSlab("chalk_slab", CHALK);
     public static final Block CLAY_TILE_DYED_BLACK_SLAB = registerSlab("clay_tile_dyed_black_slab", CLAY_TILE_DYED_BLACK);
     public static final Block CLAY_TILE_DYED_BLUE_SLAB = registerSlab("clay_tile_dyed_blue_slab", CLAY_TILE_DYED_BLUE);
     public static final Block CLAY_TILE_DYED_BROWN_SLAB = registerSlab("clay_tile_dyed_brown_slab", CLAY_TILE_DYED_BROWN);
@@ -1644,92 +1674,92 @@ public final class LOTRBlocks {
     public static final Block CLAY_TILE_DYED_WHITE_SLAB = registerSlab("clay_tile_dyed_white_slab", CLAY_TILE_DYED_WHITE);
     public static final Block CLAY_TILE_DYED_YELLOW_SLAB = registerSlab("clay_tile_dyed_yellow_slab", CLAY_TILE_DYED_YELLOW);
     public static final Block CLAY_TILE_SLAB = registerSlab("clay_tile_slab", CLAY_TILE);
-    public static final Block DALE_BRICK_SLAB = registerSlab("dale_brick_slab", DALE_BRICK);
-    public static final Block DALE_CRACKED_BRICK_SLAB = registerSlab("dale_cracked_brick_slab", DALE_CRACKED_BRICK);
-    public static final Block DALE_MOSSY_BRICK_SLAB = registerSlab("dale_mossy_brick_slab", DALE_MOSSY_BRICK);
-    public static final Block DALE_PILLAR_SLAB = registerSlab("dale_pillar_slab", DALE_PILLAR);
-    public static final Block DOL_AMROTH_BRICK_SLAB = registerSlab("dol_amroth_brick_slab", DOL_AMROTH_BRICK);
-    public static final Block DOL_GULDUR_BRICK_SLAB = registerSlab("dol_guldur_brick_slab", DOL_GULDUR_BRICK);
-    public static final Block CRACKED_DOL_GULDUR_BRICK_SLAB = registerSlab("cracked_dol_guldur_brick_slab", CRACKED_DOL_GULDUR_BRICK);
-    public static final Block MOSSY_DOL_GULDUR_BRICK_SLAB = registerSlab("mossy_dol_guldur_brick_slab", MOSSY_DOL_GULDUR_BRICK);
-    public static final Block DOL_GULDUR_PILLAR_SLAB = registerSlab("dol_guldur_pillar_slab", DOL_GULDUR_PILLAR);
-    public static final Block DORWINION_BRICK_SLAB = registerSlab("dorwinion_brick_slab", DORWINION_BRICK);
-    public static final Block CRACKED_DORWINION_BRICK_SLAB = registerSlab("cracked_dorwinion_brick_slab", CRACKED_DORWINION_BRICK);
-    public static final Block DORWINION_FLOWERS_BRICK_SLAB = registerSlab("dorwinion_flowers_brick_slab", DORWINION_FLOWERS_BRICK);
-    public static final Block MOSSY_DORWINION_BRICK_SLAB = registerSlab("mossy_dorwinion_brick_slab", MOSSY_DORWINION_BRICK);
-    public static final Block MOSSY_DORWINION_PILLAR_SLAB = registerSlab("mossy_dorwinion_pillar_slab", MOSSY_DORWINION_PILLAR);
-    public static final Block DORWINION_PILLAR_SLAB = registerSlab("dorwinion_pillar_slab", DORWINION_PILLAR);
-    public static final Block DWARVEN_BRICK_SLAB = registerSlab("dwarven_brick_slab", DWARVEN_BRICK);
-    public static final Block CRACKED_DWARVEN_BRICK_SLAB = registerSlab("cracked_dwarven_brick_slab", CRACKED_DWARVEN_BRICK);
-    public static final Block CRACKED_DWARVEN_PILLAR_SLAB = registerSlab("cracked_dwarven_pillar_slab", CRACKED_DWARVEN_PILLAR);
-    public static final Block OBSIDIAN_DWARVEN_BRICK_SLAB = registerSlab("obsidian_dwarven_brick_slab", OBSIDIAN_DWARVEN_BRICK);
-    public static final Block DWARVEN_PILLAR_SLAB = registerSlab("dwarven_pillar_slab", DWARVEN_PILLAR);
-    public static final Block GALADHRIM_BRICK_SLAB = registerSlab("galadhrim_brick_slab", GALADHRIM_BRICK);
-    public static final Block CRACKED_GALADHRIM_BRICK_SLAB = registerSlab("cracked_galadhrim_brick_slab", CRACKED_GALADHRIM_BRICK);
-    public static final Block CRACKED_GALADHRIM_PILLAR_SLAB = registerSlab("cracked_galadhrim_pillar_slab", CRACKED_GALADHRIM_PILLAR);
-    public static final Block MOSSY_GALADHRIM_BRICK_SLAB = registerSlab("mossy_galadhrim_brick_slab", MOSSY_GALADHRIM_BRICK);
-    public static final Block GALADHRIM_PILLAR_SLAB = registerSlab("galadhrim_pillar_slab", GALADHRIM_PILLAR);
-    public static final Block GONDOR_BRICK_SLAB = registerSlab("gondor_brick_slab", GONDOR_BRICK);
-    public static final Block CRACKED_GONDOR_BRICK_SLAB = registerSlab("cracked_gondor_brick_slab", CRACKED_GONDOR_BRICK);
-    public static final Block MOSSY_GONDOR_BRICK_SLAB = registerSlab("mossy_gondor_brick_slab", MOSSY_GONDOR_BRICK);
-    public static final Block GONDOR_PILLAR_SLAB = registerSlab("gondor_pillar_slab", GONDOR_PILLAR);
-    public static final Block GONDOR_ROCK_SLAB = registerSlab("gondor_rock_slab", GONDOR_ROCK);
-    public static final Block HIGH_ELVEN_BRICK_SLAB = registerSlab("high_elven_brick_slab", HIGH_ELVEN_BRICK);
-    public static final Block CRACKED_HIGH_ELVEN_BRICK_SLAB = registerSlab("cracked_high_elven_brick_slab", CRACKED_HIGH_ELVEN_BRICK);
-    public static final Block CRACKED_HIGH_ELVEN_PILLAR_SLAB = registerSlab("cracked_high_elven_pillar_slab", CRACKED_HIGH_ELVEN_PILLAR);
-    public static final Block MOSSY_HIGH_ELVEN_BRICK_SLAB = registerSlab("mossy_high_elven_brick_slab", MOSSY_HIGH_ELVEN_BRICK);
-    public static final Block HIGH_ELVEN_PILLAR_SLAB = registerSlab("high_elven_pillar_slab", HIGH_ELVEN_PILLAR);
-    public static final Block MORDOR_BRICK_SLAB = registerSlab("mordor_brick_slab", MORDOR_BRICK);
-    public static final Block CRACKED_MORDOR_BRICK_SLAB = registerSlab("cracked_mordor_brick_slab", CRACKED_MORDOR_BRICK);
+    public static final Block DALE_BRICK_SLAB = registerStoneSlab("dale_brick_slab", DALE_BRICK);
+    public static final Block DALE_CRACKED_BRICK_SLAB = registerStoneSlab("dale_cracked_brick_slab", DALE_CRACKED_BRICK);
+    public static final Block DALE_MOSSY_BRICK_SLAB = registerStoneSlab("dale_mossy_brick_slab", DALE_MOSSY_BRICK);
+    public static final Block DALE_PILLAR_SLAB = registerStoneSlab("dale_pillar_slab", DALE_PILLAR);
+    public static final Block DOL_AMROTH_BRICK_SLAB = registerStoneSlab("dol_amroth_brick_slab", DOL_AMROTH_BRICK);
+    public static final Block DOL_GULDUR_BRICK_SLAB = registerStoneSlab("dol_guldur_brick_slab", DOL_GULDUR_BRICK);
+    public static final Block CRACKED_DOL_GULDUR_BRICK_SLAB = registerStoneSlab("cracked_dol_guldur_brick_slab", CRACKED_DOL_GULDUR_BRICK);
+    public static final Block MOSSY_DOL_GULDUR_BRICK_SLAB = registerStoneSlab("mossy_dol_guldur_brick_slab", MOSSY_DOL_GULDUR_BRICK);
+    public static final Block DOL_GULDUR_PILLAR_SLAB = registerStoneSlab("dol_guldur_pillar_slab", DOL_GULDUR_PILLAR);
+    public static final Block DORWINION_BRICK_SLAB = registerStoneSlab("dorwinion_brick_slab", DORWINION_BRICK);
+    public static final Block CRACKED_DORWINION_BRICK_SLAB = registerStoneSlab("cracked_dorwinion_brick_slab", CRACKED_DORWINION_BRICK);
+    public static final Block DORWINION_FLOWERS_BRICK_SLAB = registerStoneSlab("dorwinion_flowers_brick_slab", DORWINION_FLOWERS_BRICK);
+    public static final Block MOSSY_DORWINION_BRICK_SLAB = registerStoneSlab("mossy_dorwinion_brick_slab", MOSSY_DORWINION_BRICK);
+    public static final Block MOSSY_DORWINION_PILLAR_SLAB = registerStoneSlab("mossy_dorwinion_pillar_slab", MOSSY_DORWINION_PILLAR);
+    public static final Block DORWINION_PILLAR_SLAB = registerStoneSlab("dorwinion_pillar_slab", DORWINION_PILLAR);
+    public static final Block DWARVEN_BRICK_SLAB = registerStoneSlab("dwarven_brick_slab", DWARVEN_BRICK);
+    public static final Block CRACKED_DWARVEN_BRICK_SLAB = registerStoneSlab("cracked_dwarven_brick_slab", CRACKED_DWARVEN_BRICK);
+    public static final Block CRACKED_DWARVEN_PILLAR_SLAB = registerStoneSlab("cracked_dwarven_pillar_slab", CRACKED_DWARVEN_PILLAR);
+    public static final Block OBSIDIAN_DWARVEN_BRICK_SLAB = registerStoneSlab("obsidian_dwarven_brick_slab", OBSIDIAN_DWARVEN_BRICK);
+    public static final Block DWARVEN_PILLAR_SLAB = registerStoneSlab("dwarven_pillar_slab", DWARVEN_PILLAR);
+    public static final Block GALADHRIM_BRICK_SLAB = registerStoneSlab("galadhrim_brick_slab", GALADHRIM_BRICK);
+    public static final Block CRACKED_GALADHRIM_BRICK_SLAB = registerStoneSlab("cracked_galadhrim_brick_slab", CRACKED_GALADHRIM_BRICK);
+    public static final Block CRACKED_GALADHRIM_PILLAR_SLAB = registerStoneSlab("cracked_galadhrim_pillar_slab", CRACKED_GALADHRIM_PILLAR);
+    public static final Block MOSSY_GALADHRIM_BRICK_SLAB = registerStoneSlab("mossy_galadhrim_brick_slab", MOSSY_GALADHRIM_BRICK);
+    public static final Block GALADHRIM_PILLAR_SLAB = registerStoneSlab("galadhrim_pillar_slab", GALADHRIM_PILLAR);
+    public static final Block GONDOR_BRICK_SLAB = registerStoneSlab("gondor_brick_slab", GONDOR_BRICK);
+    public static final Block CRACKED_GONDOR_BRICK_SLAB = registerStoneSlab("cracked_gondor_brick_slab", CRACKED_GONDOR_BRICK);
+    public static final Block MOSSY_GONDOR_BRICK_SLAB = registerStoneSlab("mossy_gondor_brick_slab", MOSSY_GONDOR_BRICK);
+    public static final Block GONDOR_PILLAR_SLAB = registerStoneSlab("gondor_pillar_slab", GONDOR_PILLAR);
+    public static final Block GONDOR_ROCK_SLAB = registerStoneSlab("gondor_rock_slab", GONDOR_ROCK);
+    public static final Block HIGH_ELVEN_BRICK_SLAB = registerStoneSlab("high_elven_brick_slab", HIGH_ELVEN_BRICK);
+    public static final Block CRACKED_HIGH_ELVEN_BRICK_SLAB = registerStoneSlab("cracked_high_elven_brick_slab", CRACKED_HIGH_ELVEN_BRICK);
+    public static final Block CRACKED_HIGH_ELVEN_PILLAR_SLAB = registerStoneSlab("cracked_high_elven_pillar_slab", CRACKED_HIGH_ELVEN_PILLAR);
+    public static final Block MOSSY_HIGH_ELVEN_BRICK_SLAB = registerStoneSlab("mossy_high_elven_brick_slab", MOSSY_HIGH_ELVEN_BRICK);
+    public static final Block HIGH_ELVEN_PILLAR_SLAB = registerStoneSlab("high_elven_pillar_slab", HIGH_ELVEN_PILLAR);
+    public static final Block MORDOR_BRICK_SLAB = registerStoneSlab("mordor_brick_slab", MORDOR_BRICK);
+    public static final Block CRACKED_MORDOR_BRICK_SLAB = registerStoneSlab("cracked_mordor_brick_slab", CRACKED_MORDOR_BRICK);
     public static final Block MORDOR_DIRT_SLAB = registerSlab("mordor_dirt_slab", MORDOR_DIRT);
     public static final Block MORDOR_GRAVEL_SLAB = registerSlab("mordor_gravel_slab", MORDOR_GRAVEL);
-    public static final Block MORDOR_PILLAR_SLAB = registerSlab("mordor_pillar_slab", MORDOR_PILLAR);
-    public static final Block MORDOR_ROCK_SLAB = registerSlab("mordor_rock_slab", MORDOR_ROCK);
-    public static final Block CRACKED_MORWAITH_BRICK_SLAB = registerSlab("cracked_morwaith_brick_slab", CRACKED_MORWAITH_BRICK);
-    public static final Block MUD_BRICK_SLAB = registerSlab("mud_brick_slab", MUD_BRICK);
-    public static final Block NEAR_HARAD_BRICK_SLAB = registerSlab("near_harad_brick_slab", NEAR_HARAD_BRICK);
-    public static final Block NEAR_HARAD_CRACKED_BRICK_SLAB = registerSlab("near_harad_cracked_brick_slab", NEAR_HARAD_CRACKED_BRICK);
-    public static final Block NEAR_HARAD_PILLAR_SLAB = registerSlab("near_harad_pillar_slab", NEAR_HARAD_PILLAR);
-    public static final Block NEAR_HARAD_RED_BRICK_SLAB = registerSlab("near_harad_red_brick_slab", NEAR_HARAD_RED_BRICK);
-    public static final Block NEAR_HARAD_RED_CRACKED_BRICK_SLAB = registerSlab("near_harad_red_cracked_brick_slab", NEAR_HARAD_RED_CRACKED_BRICK);
-    public static final Block NEAR_HARAD_RED_PILLAR_SLAB = registerSlab("near_harad_red_pillar_slab", NEAR_HARAD_RED_PILLAR);
+    public static final Block MORDOR_PILLAR_SLAB = registerStoneSlab("mordor_pillar_slab", MORDOR_PILLAR);
+    public static final Block MORDOR_ROCK_SLAB = registerStoneSlab("mordor_rock_slab", MORDOR_ROCK);
+    public static final Block CRACKED_MORWAITH_BRICK_SLAB = registerStoneSlab("cracked_morwaith_brick_slab", CRACKED_MORWAITH_BRICK);
+    public static final Block MUD_BRICK_SLAB = registerStoneSlab("mud_brick_slab", MUD_BRICK);
+    public static final Block NEAR_HARAD_BRICK_SLAB = registerStoneSlab("near_harad_brick_slab", NEAR_HARAD_BRICK);
+    public static final Block NEAR_HARAD_CRACKED_BRICK_SLAB = registerStoneSlab("near_harad_cracked_brick_slab", NEAR_HARAD_CRACKED_BRICK);
+    public static final Block NEAR_HARAD_PILLAR_SLAB = registerStoneSlab("near_harad_pillar_slab", NEAR_HARAD_PILLAR);
+    public static final Block NEAR_HARAD_RED_BRICK_SLAB = registerStoneSlab("near_harad_red_brick_slab", NEAR_HARAD_RED_BRICK);
+    public static final Block NEAR_HARAD_RED_CRACKED_BRICK_SLAB = registerStoneSlab("near_harad_red_cracked_brick_slab", NEAR_HARAD_RED_CRACKED_BRICK);
+    public static final Block NEAR_HARAD_RED_PILLAR_SLAB = registerStoneSlab("near_harad_red_pillar_slab", NEAR_HARAD_RED_PILLAR);
     public static final Block OBSIDIAN_GRAVEL_SLAB = registerSlab("obsidian_gravel_slab", OBSIDIAN_GRAVEL);
-    public static final Block RED_ROCK_BRICK_SLAB = registerSlab("red_rock_brick_slab", RED_ROCK_BRICK);
-    public static final Block RED_ROCK_PILLAR_SLAB = registerSlab("red_rock_pillar_slab", RED_ROCK_PILLAR);
-    public static final Block RED_ROCK_SLAB = registerSlab("red_rock_slab", RED_ROCK);
-    public static final Block RHUN_BRICK_SLAB = registerSlab("rhun_brick_slab", RHUN_BRICK);
-    public static final Block RHUN_CRACKED_BRICK_SLAB = registerSlab("rhun_cracked_brick_slab", RHUN_CRACKED_BRICK);
-    public static final Block RHUN_FLOWERS_BRICK_SLAB = registerSlab("rhun_flowers_brick_slab", RHUN_FLOWERS_BRICK);
-    public static final Block RHUN_MOSSY_BRICK_SLAB = registerSlab("rhun_mossy_brick_slab", RHUN_MOSSY_BRICK);
-    public static final Block RHUN_PILLAR_SLAB = registerSlab("rhun_pillar_slab", RHUN_PILLAR);
-    public static final Block RHUN_RED_BRICK_SLAB = registerSlab("rhun_red_brick_slab", RHUN_RED_BRICK);
-    public static final Block RHUN_RED_PILLAR_SLAB = registerSlab("rhun_red_pillar_slab", RHUN_RED_PILLAR);
-    public static final Block ROHAN_BRICK_SLAB = registerSlab("rohan_brick_slab", ROHAN_BRICK);
-    public static final Block ROHAN_PILLAR_SLAB = registerSlab("rohan_pillar_slab", ROHAN_PILLAR);
-    public static final Block ROHAN_ROCK_SLAB = registerSlab("rohan_rock_slab", ROHAN_ROCK);
-    public static final Block STONE_PILLAR_SLAB = registerSlab("stone_pillar_slab", STONE_PILLAR);
-    public static final Block TAUREDAIN_BRICK_SLAB = registerSlab("tauredain_brick_slab", TAUREDAIN_BRICK);
-    public static final Block TAUREDAIN_CRACKED_BRICK_SLAB = registerSlab("tauredain_cracked_brick_slab", TAUREDAIN_CRACKED_BRICK);
-    public static final Block TAUREDAIN_GOLD_BRICK_SLAB = registerSlab("tauredain_gold_brick_slab", TAUREDAIN_GOLD_BRICK);
-    public static final Block TAUREDAIN_MOSSY_BRICK_SLAB = registerSlab("tauredain_mossy_brick_slab", TAUREDAIN_MOSSY_BRICK);
-    public static final Block TAUREDAIN_OBSIDIAN_BRICK_SLAB = registerSlab("tauredain_obsidian_brick_slab", TAUREDAIN_OBSIDIAN_BRICK);
-    public static final Block TAUREDAIN_PILLAR_SLAB = registerSlab("tauredain_pillar_slab", TAUREDAIN_PILLAR);
+    public static final Block RED_ROCK_BRICK_SLAB = registerStoneSlab("red_rock_brick_slab", RED_ROCK_BRICK);
+    public static final Block RED_ROCK_PILLAR_SLAB = registerStoneSlab("red_rock_pillar_slab", RED_ROCK_PILLAR);
+    public static final Block RED_ROCK_SLAB = registerStoneSlab("red_rock_slab", RED_ROCK);
+    public static final Block RHUN_BRICK_SLAB = registerStoneSlab("rhun_brick_slab", RHUN_BRICK);
+    public static final Block RHUN_CRACKED_BRICK_SLAB = registerStoneSlab("rhun_cracked_brick_slab", RHUN_CRACKED_BRICK);
+    public static final Block RHUN_FLOWERS_BRICK_SLAB = registerStoneSlab("rhun_flowers_brick_slab", RHUN_FLOWERS_BRICK);
+    public static final Block RHUN_MOSSY_BRICK_SLAB = registerStoneSlab("rhun_mossy_brick_slab", RHUN_MOSSY_BRICK);
+    public static final Block RHUN_PILLAR_SLAB = registerStoneSlab("rhun_pillar_slab", RHUN_PILLAR);
+    public static final Block RHUN_RED_BRICK_SLAB = registerStoneSlab("rhun_red_brick_slab", RHUN_RED_BRICK);
+    public static final Block RHUN_RED_PILLAR_SLAB = registerStoneSlab("rhun_red_pillar_slab", RHUN_RED_PILLAR);
+    public static final Block ROHAN_BRICK_SLAB = registerStoneSlab("rohan_brick_slab", ROHAN_BRICK);
+    public static final Block ROHAN_PILLAR_SLAB = registerStoneSlab("rohan_pillar_slab", ROHAN_PILLAR);
+    public static final Block ROHAN_ROCK_SLAB = registerStoneSlab("rohan_rock_slab", ROHAN_ROCK);
+    public static final Block STONE_PILLAR_SLAB = registerStoneSlab("stone_pillar_slab", STONE_PILLAR);
+    public static final Block TAUREDAIN_BRICK_SLAB = registerStoneSlab("tauredain_brick_slab", TAUREDAIN_BRICK);
+    public static final Block TAUREDAIN_CRACKED_BRICK_SLAB = registerStoneSlab("tauredain_cracked_brick_slab", TAUREDAIN_CRACKED_BRICK);
+    public static final Block TAUREDAIN_GOLD_BRICK_SLAB = registerStoneSlab("tauredain_gold_brick_slab", TAUREDAIN_GOLD_BRICK);
+    public static final Block TAUREDAIN_MOSSY_BRICK_SLAB = registerStoneSlab("tauredain_mossy_brick_slab", TAUREDAIN_MOSSY_BRICK);
+    public static final Block TAUREDAIN_OBSIDIAN_BRICK_SLAB = registerStoneSlab("tauredain_obsidian_brick_slab", TAUREDAIN_OBSIDIAN_BRICK);
+    public static final Block TAUREDAIN_PILLAR_SLAB = registerStoneSlab("tauredain_pillar_slab", TAUREDAIN_PILLAR);
     public static final Block THATCH_THATCH_SLAB = registerSlab("thatch_thatch_slab", THATCH_THATCH);
-    public static final Block UMBAR_BRICK_SLAB = registerSlab("umbar_brick_slab", UMBAR_BRICK);
-    public static final Block CRACKED_UMBAR_BRICK_SLAB = registerSlab("cracked_umbar_brick_slab", CRACKED_UMBAR_BRICK);
-    public static final Block UMBAR_PILLAR_SLAB = registerSlab("umbar_pillar_slab", UMBAR_PILLAR);
-    public static final Block URUK_BRICK_SLAB = registerSlab("uruk_brick_slab", URUK_BRICK);
-    public static final Block URUK_PILLAR_SLAB = registerSlab("uruk_pillar_slab", URUK_PILLAR);
+    public static final Block UMBAR_BRICK_SLAB = registerStoneSlab("umbar_brick_slab", UMBAR_BRICK);
+    public static final Block CRACKED_UMBAR_BRICK_SLAB = registerStoneSlab("cracked_umbar_brick_slab", CRACKED_UMBAR_BRICK);
+    public static final Block UMBAR_PILLAR_SLAB = registerStoneSlab("umbar_pillar_slab", UMBAR_PILLAR);
+    public static final Block URUK_BRICK_SLAB = registerStoneSlab("uruk_brick_slab", URUK_BRICK);
+    public static final Block URUK_PILLAR_SLAB = registerStoneSlab("uruk_pillar_slab", URUK_PILLAR);
     public static final Block FIRE_UTUMNO_BRICK_SLAB = registerSlab("fire_utumno_brick_slab", FIRE_UTUMNO_BRICK);
     public static final Block ICE_UTUMNO_BRICK_SLAB = registerSlab("ice_utumno_brick_slab", ICE_UTUMNO_BRICK);
     public static final Block OBSIDIAN_UTUMNO_BRICK_SLAB = registerSlab("obsidian_utumno_brick_slab", OBSIDIAN_UTUMNO_BRICK);
     public static final Block WHITE_SAND_SLAB = registerSlab("white_sand_slab", WHITE_SAND);
-    public static final Block WHITE_SANDSTONE_SLAB = registerSlab("white_sandstone_slab", WHITE_SANDSTONE);
-    public static final Block WOOD_ELVEN_BRICK_SLAB = registerSlab("wood_elven_brick_slab", WOOD_ELVEN_BRICK);
-    public static final Block CRACKED_WOOD_ELVEN_BRICK_SLAB = registerSlab("cracked_wood_elven_brick_slab", CRACKED_WOOD_ELVEN_BRICK);
-    public static final Block CRACKED_WOOD_ELVEN_PILLAR_SLAB = registerSlab("cracked_wood_elven_pillar_slab", CRACKED_WOOD_ELVEN_PILLAR);
-    public static final Block MOSSY_WOOD_ELVEN_BRICK_SLAB = registerSlab("mossy_wood_elven_brick_slab", MOSSY_WOOD_ELVEN_BRICK);
-    public static final Block WOOD_ELVEN_PILLAR_SLAB = registerSlab("wood_elven_pillar_slab", WOOD_ELVEN_PILLAR);
+    public static final Block WHITE_SANDSTONE_SLAB = registerStoneSlab("white_sandstone_slab", WHITE_SANDSTONE);
+    public static final Block WOOD_ELVEN_BRICK_SLAB = registerStoneSlab("wood_elven_brick_slab", WOOD_ELVEN_BRICK);
+    public static final Block CRACKED_WOOD_ELVEN_BRICK_SLAB = registerStoneSlab("cracked_wood_elven_brick_slab", CRACKED_WOOD_ELVEN_BRICK);
+    public static final Block CRACKED_WOOD_ELVEN_PILLAR_SLAB = registerStoneSlab("cracked_wood_elven_pillar_slab", CRACKED_WOOD_ELVEN_PILLAR);
+    public static final Block MOSSY_WOOD_ELVEN_BRICK_SLAB = registerStoneSlab("mossy_wood_elven_brick_slab", MOSSY_WOOD_ELVEN_BRICK);
+    public static final Block WOOD_ELVEN_PILLAR_SLAB = registerStoneSlab("wood_elven_pillar_slab", WOOD_ELVEN_PILLAR);
 
     // Slab cut from an existing block. One modern SlabBlock replaces the 1.7.10 single/double pair, since SlabType covers bottom, top and double. Like stairs, these must be declared AFTER every base block.
     private static Block registerSlab(String name, Block base) {
@@ -1740,20 +1770,31 @@ public final class LOTRBlocks {
         return slab;
     }
 
+    // LOTRBlockSlab through LOTRBlockSlab14. LOTRMod.java gave every one of
+    // them setHardness(2.0).setResistance(10.0).setStepSound(soundTypeStone),
+    // whatever block the slab was cut from: hardness 2, blast resistance 6.
+    private static Block registerStoneSlab(String name, Block base) {
+        Block slab = register(name, SlabBlock::new,
+                BlockBehaviour.Properties.ofFullCopy(base).strength(2.0f, 6.0f).sound(SoundType.STONE), true);
+        ALL_SLABS.add(slab);
+        SLAB_BASE.put(slab, base);
+        return slab;
+    }
+
     // Cut from vanilla gravel: lotr:gravel was removed as a duplicate. */
     public static final Block GRAVEL_SLAB = registerSlab("gravel_slab", Blocks.GRAVEL);
 
-    public static final Block SMOOTH_MORDOR_ROCK_SLAB = registerSlab("smooth_mordor_rock_slab", SMOOTH_MORDOR_ROCK);
+    public static final Block SMOOTH_MORDOR_ROCK_SLAB = registerStoneSlab("smooth_mordor_rock_slab", SMOOTH_MORDOR_ROCK);
 
-    public static final Block SMOOTH_GONDOR_ROCK_SLAB = registerSlab("smooth_gondor_rock_slab", SMOOTH_GONDOR_ROCK);
+    public static final Block SMOOTH_GONDOR_ROCK_SLAB = registerStoneSlab("smooth_gondor_rock_slab", SMOOTH_GONDOR_ROCK);
 
-    public static final Block SMOOTH_ROHAN_ROCK_SLAB = registerSlab("smooth_rohan_rock_slab", SMOOTH_ROHAN_ROCK);
+    public static final Block SMOOTH_ROHAN_ROCK_SLAB = registerStoneSlab("smooth_rohan_rock_slab", SMOOTH_ROHAN_ROCK);
 
-    public static final Block SMOOTH_BLUE_ROCK_SLAB = registerSlab("smooth_blue_rock_slab", SMOOTH_BLUE_ROCK);
+    public static final Block SMOOTH_BLUE_ROCK_SLAB = registerStoneSlab("smooth_blue_rock_slab", SMOOTH_BLUE_ROCK);
 
-    public static final Block SMOOTH_RED_ROCK_SLAB = registerSlab("smooth_red_rock_slab", SMOOTH_RED_ROCK);
+    public static final Block SMOOTH_RED_ROCK_SLAB = registerStoneSlab("smooth_red_rock_slab", SMOOTH_RED_ROCK);
 
-    public static final Block SMOOTH_CHALK_SLAB = registerSlab("smooth_chalk_slab", SMOOTH_CHALK);
+    public static final Block SMOOTH_CHALK_SLAB = registerStoneSlab("smooth_chalk_slab", SMOOTH_CHALK);
 
     public static final Block DRYSTONE_SLAB = registerSlab("drystone_slab", DRYSTONE);
 
@@ -1955,17 +1996,17 @@ public final class LOTRBlocks {
     public static final Block WILLOW_SLAB = registerSlab("willow_slab", WILLOW_PLANKS);
     public static final Block BONE_SLAB = registerSlab("bone_slab", BONE_BLOCK);
     public static final Block SCORCHED_STONE_SLAB = registerSlab("scorched_stone_slab", SCORCHED_STONE);
-    public static final Block MORWAITH_BRICK_SLAB = registerSlab("morwaith_brick_slab", MORWAITH_BRICK);
-    public static final Block NUMENOREAN_BRICK_SLAB = registerSlab("numenorean_brick_slab", NUMENOREAN_BRICK);
-    public static final Block NUMENOREAN_PILLAR_SLAB = registerSlab("numenorean_pillar_slab", NUMENOREAN_PILLAR);
-    public static final Block GONDOR_COBBLEBRICK_SLAB = registerSlab("gondor_cobblebrick_slab", GONDOR_COBBLEBRICK);
-    public static final Block MOSSY_GONDOR_COBBLEBRICK_SLAB = registerSlab("mossy_gondor_cobblebrick_slab", MOSSY_GONDOR_COBBLEBRICK);
-    public static final Block CRACKED_GONDOR_COBBLEBRICK_SLAB = registerSlab("cracked_gondor_cobblebrick_slab", CRACKED_GONDOR_COBBLEBRICK);
+    public static final Block MORWAITH_BRICK_SLAB = registerStoneSlab("morwaith_brick_slab", MORWAITH_BRICK);
+    public static final Block NUMENOREAN_BRICK_SLAB = registerStoneSlab("numenorean_brick_slab", NUMENOREAN_BRICK);
+    public static final Block NUMENOREAN_PILLAR_SLAB = registerStoneSlab("numenorean_pillar_slab", NUMENOREAN_PILLAR);
+    public static final Block GONDOR_COBBLEBRICK_SLAB = registerStoneSlab("gondor_cobblebrick_slab", GONDOR_COBBLEBRICK);
+    public static final Block MOSSY_GONDOR_COBBLEBRICK_SLAB = registerStoneSlab("mossy_gondor_cobblebrick_slab", MOSSY_GONDOR_COBBLEBRICK);
+    public static final Block CRACKED_GONDOR_COBBLEBRICK_SLAB = registerStoneSlab("cracked_gondor_cobblebrick_slab", CRACKED_GONDOR_COBBLEBRICK);
     public static final Block FIRE_UTUMNO_PILLAR_SLAB = registerSlab("fire_utumno_pillar_slab", FIRE_UTUMNO_PILLAR);
     public static final Block ICE_UTUMNO_PILLAR_SLAB = registerSlab("ice_utumno_pillar_slab", ICE_UTUMNO_PILLAR);
     public static final Block OBSIDIAN_UTUMNO_PILLAR_SLAB = registerSlab("obsidian_utumno_pillar_slab", OBSIDIAN_UTUMNO_PILLAR);
-    public static final Block TAUR_GOLD_PILLAR_SLAB = registerSlab("taur_gold_pillar_slab", TAUR_GOLD_PILLAR);
-    public static final Block TAUR_OBSIDIAN_PILLAR_SLAB = registerSlab("taur_obsidian_pillar_slab", TAUR_OBSIDIAN_PILLAR);
+    public static final Block TAUR_GOLD_PILLAR_SLAB = registerStoneSlab("taur_gold_pillar_slab", TAUR_GOLD_PILLAR);
+    public static final Block TAUR_OBSIDIAN_PILLAR_SLAB = registerStoneSlab("taur_obsidian_pillar_slab", TAUR_OBSIDIAN_PILLAR);
     public static final Block CLAY_TILE_DYED_SILVER_SLAB = registerSlab("clay_tile_dyed_silver_slab", CLAY_TILE_DYED_SILVER);
     public static final Block THATCH_REED_SLAB = registerSlab("thatch_reed_slab", THATCH_REED);
     public static final Block MUD_SLAB = registerSlab("mud_slab", MUD);
@@ -2167,6 +2208,8 @@ public final class LOTRBlocks {
                 .pushReaction(PushReaction.DESTROY);
     }
 
+    // Every faction table is built like today's vanilla crafting table (the
+    // user's call), whatever Material the original gave it.
     private static Block registerCraftingTable(String name) {
         LOTRCraftingTable table = LOTRCraftingTable.valueOf(name.replace("_crafting_table", "").toUpperCase(Locale.ROOT));
         return track(ALL_CRAFTING_TABLES, register(name, props -> new LOTRCraftingTableBlock(table, props),
@@ -2242,16 +2285,17 @@ public final class LOTRBlocks {
         return registerMetalGate(name, true);
     }
 
+    // LOTRBlockGate.createWooden/createStone/createMetal: hardness 4, and
+    // setResistance 5 (wood) or 10 (stone, metal), which 1.7.10 turned into
+    // blast resistance 3 and 6. Gates refuse pistons: a gate is a multiblock,
+    // and shoving one panel out of it would break the flood fill for the rest.
     private static Block registerWoodenGate(String name, boolean connectedTextures) {
         return track(ALL_GATES, register(name, props -> new LOTRGateBlock(connectedTextures, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.WOOD)
-                        .strength(4.0f, 5.0f)
+                        .strength(4.0f, 3.0f)
                         .sound(SoundType.WOOD)
                         .noOcclusion()
-                        // A gate is a multiblock: a piston shoving one panel
-                        // out of a wall would silently break the flood fill
-                        // for the rest.
                         .pushReaction(PushReaction.BLOCK),
                 true));
     }
@@ -2261,12 +2305,9 @@ public final class LOTRBlocks {
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
                         .requiresCorrectToolForDrops()
-                        .strength(4.0f, 10.0f)
+                        .strength(4.0f, 6.0f)
                         .sound(SoundType.STONE)
                         .noOcclusion()
-                        // A gate is a multiblock: a piston shoving one panel
-                        // out of a wall would silently break the flood fill
-                        // for the rest.
                         .pushReaction(PushReaction.BLOCK),
                 true));
     }
@@ -2276,12 +2317,9 @@ public final class LOTRBlocks {
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.METAL)
                         .requiresCorrectToolForDrops()
-                        .strength(4.0f, 10.0f)
+                        .strength(4.0f, 6.0f)
                         .sound(SoundType.METAL)
                         .noOcclusion()
-                        // A gate is a multiblock: a piston shoving one panel
-                        // out of a wall would silently break the flood fill
-                        // for the rest.
                         .pushReaction(PushReaction.BLOCK),
                 true));
     }
@@ -2299,11 +2337,8 @@ public final class LOTRBlocks {
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
                         .requiresCorrectToolForDrops()
-                        .strength(4.0f, 10.0f)
+                        .strength(4.0f, 6.0f)
                         .sound(SoundType.STONE)
-                        // A gate is a multiblock: a piston shoving one panel
-                        // out of a wall would silently break the flood fill
-                        // for the rest.
                         .pushReaction(PushReaction.BLOCK),
                 true));
     }
@@ -2325,31 +2360,39 @@ public final class LOTRBlocks {
 
     private static Block registerChest(String name, String variant, MapColor color,
                                        float hardness, SoundType sound) {
-        return track(ALL_CHESTS, register(name, props -> new LOTRChestBlock(variant, props),
-                BlockBehaviour.Properties.of()
-                        .mapColor(color)
-                        .strength(hardness)
-                        .sound(sound)
-                        .noOcclusion(),
-                true));
+        BlockBehaviour.Properties props = BlockBehaviour.Properties.of()
+                .mapColor(color)
+                .strength(hardness)
+                .sound(sound)
+                .noOcclusion();
+        // The Material.rock chests need a pickaxe to drop, as stone does.
+        if (color == MapColor.STONE) {
+            props = props.requiresCorrectToolForDrops();
+        }
+        return track(ALL_CHESTS, register(name, p -> new LOTRChestBlock(variant, p), props, true));
     }
 
     private static Block registerKebabStand(String name, String variant) {
         return track(ALL_KEBAB_STANDS, register(name, props -> new LOTRKebabStandBlock(variant, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.WOOD)
-                        .strength(0.0f, 1.0f)
+                        .strength(0.0f, 0.6f) // 1.7.10 blast resistance = setResistance x 3 / 5 (or the hardness, if higher).
                         .sound(SoundType.WOOD)
                         .noOcclusion()
                         .noCollision()
                         .pushReaction(PushReaction.DESTROY),
-                true));
+                // No loot table: the block entity drops the stand with its meat inside.
+                true, UnaryOperator.identity(), net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRKebabStandItem::new));
     }
 
     private static Block registerTrollTotem(String name, LOTRTrollTotemBlock.Part part) {
         return track(ALL_TROLL_TOTEMS, register(name, props -> new LOTRTrollTotemBlock(part, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
+                        // LOTRMod: trollTotem.setHardness(5.0f).setResistance(20.0f)
+                        // -- blast resistance 12 -- on Material.rock.
+                        .requiresCorrectToolForDrops()
+                        .strength(5.0f, 12.0f)
                         .sound(SoundType.STONE)
                         .noOcclusion()
                         // A totem is a three-block object; a piston pulling one
@@ -2433,7 +2476,7 @@ public final class LOTRBlocks {
                         .forceSolidOn()
                         .noCollision()
                         .requiresCorrectToolForDrops()
-                        .strength(4.0f)
+                        .strength(2.0f) // LOTRMod: webUngoliant setHardness(2.0f), not vanilla cobweb's 4.
                         .noOcclusion()
                         .pushReaction(PushReaction.DESTROY),
                 true);
@@ -2458,8 +2501,8 @@ public final class LOTRBlocks {
         return track(SHOVEL_MINEABLE, track(ALL_PATHS, register(name, DirtPathBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.DIRT)
-                        .strength(0.65f)
-                        .sound(SoundType.GRASS)
+                        .strength(0.5f) // LOTRBlockDirtPath: hardness 0.5, soundTypeGravel.
+                        .sound(SoundType.GRAVEL)
                         .isViewBlocking((state, level, pos) -> true)
                         .isSuffocating((state, level, pos) -> true),
                 true)));
@@ -2569,7 +2612,7 @@ public final class LOTRBlocks {
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
                         .requiresCorrectToolForDrops()
-                        .strength(4.0f, 6.0f)
+                        .strength(4.0f) // LOTRBlockForgeBase: setHardness(4) only.
                         .sound(SoundType.STONE)
                         .lightLevel(state -> state.getValue(net.minecraft.world.level.block.AbstractFurnaceBlock.LIT) ? 13 : 0),
                 true)));
@@ -2580,7 +2623,8 @@ public final class LOTRBlocks {
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
                         .requiresCorrectToolForDrops()
-                        .strength(4.0f, 6.0f)
+                        // LOTRBlockDartTrap: setHardness(4) alone, so blast resistance 4 too.
+                        .strength(4.0f)
                         .sound(SoundType.STONE),
                 true);
         ALL_DART_TRAPS.add(block);
@@ -2593,6 +2637,7 @@ public final class LOTRBlocks {
         return register(name, LOTRHobbitOvenBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
+                        .requiresCorrectToolForDrops()
                         .strength(3.5f)
                         .sound(SoundType.STONE)
                         .lightLevel(state -> state.getValue(LOTRHobbitOvenBlock.LIT) ? 13 : 0),
@@ -2603,7 +2648,7 @@ public final class LOTRBlocks {
         return register(name, LOTRBeaconBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.WOOD)
-                        .strength(0.0f, 5.0f)
+                        .strength(0.0f, 3.0f) // 1.7.10 blast resistance = setResistance x 3 / 5 (or the hardness, if higher).
                         .sound(SoundType.WOOD)
                         // isFullyLit() drove getLightValue in the original. A
                         // blockstate light level cannot ask the block entity,
@@ -2790,7 +2835,9 @@ public final class LOTRBlocks {
         return register(name, props -> new LOTRHangingFruitBlock(minY, maxY, fruit, props),
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
-                        .strength(0.0f, 1.0f)
+                        // setHardness(0).setResistance(1): 1.7.10 stored 3x
+                        // and exploded against a fifth, so 0.6 of blast resistance.
+                        .strength(0.0f, 0.6f)
                         .sound(SoundType.WOOD)
                         .randomTicks()
                         .noOcclusion()
@@ -2909,11 +2956,15 @@ public final class LOTRBlocks {
     }
 
     private static Block registerPillar(String name) {
+        return registerPillar(name, 6.0f);
+    }
+
+    private static Block registerPillar(String name, float resistance) {
         return track(ALL_PILLARS, register(name, LOTRPillarBlock::new,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.STONE)
                         .requiresCorrectToolForDrops()
-                        .strength(1.5f, 6.0f)
+                        .strength(1.5f, resistance)
                         .sound(SoundType.STONE),
                 true));
     }
@@ -3009,13 +3060,6 @@ public final class LOTRBlocks {
                 false);
     }
 
-    private static Block registerStalk(String name, LOTRPlantBlock.Shape shape,
-            LOTRPlantBlock.Ground ground) {
-        return track(ALL_FLOWERS, register(name,
-                props -> new LOTRPlantBlock(shape, ground, props),
-                plantProperties(), true));
-    }
-
     // Fangorn riverweed, the mod's one lily pad.
     // Riverweed keeps its collision box: a lily pad is something you stand on,
     // and vanilla's does not set noCollision. plantProperties() does, so the
@@ -3090,11 +3134,32 @@ public final class LOTRBlocks {
                         .requiresCorrectToolForDrops()
                         .strength(5.0f, 6.0f)
                         .sound(SoundType.METAL)
-                        .noOcclusion()
-                        // A gate is a multiblock: a piston shoving one panel
-                        // out of a wall would silently break the flood fill
-                        // for the rest.
-                        .pushReaction(PushReaction.BLOCK),
+                        .noOcclusion(),
+                true));
+    }
+
+    // LOTRBlockWoodBars: Material.wood, setHardness(2.0), setResistance(5.0)
+    // (blast resistance 3), soundTypeWood. Wood needs no tool to drop.
+    private static Block registerWoodBars(String name) {
+        return track(ALL_BARS, register(name, IronBarsBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.WOOD)
+                        .strength(2.0f, 3.0f)
+                        .sound(SoundType.WOOD)
+                        .ignitedByLava()
+                        .noOcclusion(),
+                true));
+    }
+
+    // LOTRBlockReedBars: Material.grass, setHardness(0.5), soundTypeGrass.
+    private static Block registerReedBars(String name) {
+        return track(ALL_BARS, register(name, IronBarsBlock::new,
+                BlockBehaviour.Properties.of()
+                        .mapColor(MapColor.PLANT)
+                        .strength(0.5f)
+                        .sound(SoundType.GRASS)
+                        .ignitedByLava()
+                        .noOcclusion(),
                 true));
     }
 
@@ -3103,7 +3168,7 @@ public final class LOTRBlocks {
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.NONE)
                         .noCollision()
-                        .strength(0.0f, 2.0f)
+                        .strength(0.0f, 1.2f) // 1.7.10 blast resistance = setResistance x 3 / 5 (or the hardness, if higher).
                         .sound(SoundType.METAL)
                         // setLightLevel(0.9375f): 14.
                         .lightLevel(state -> 14)

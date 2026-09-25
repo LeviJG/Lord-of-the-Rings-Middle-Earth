@@ -1,5 +1,11 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.util.Mth;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.Direction;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRHobbitOvenBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRHobbitOvenMenu;
@@ -10,11 +16,8 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.Item;
@@ -27,7 +30,6 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.ValueInput;
@@ -51,7 +53,10 @@ import org.jspecify.annotations.Nullable;
 //  * The lit state is metadata bit 8 in the original, flipped by
 //    setOvenActive. Here that is the LIT blockstate property, which also
 //    carries the light level of 13.
-public class LOTRHobbitOvenBlockEntity extends BlockEntity implements Container, MenuProvider {
+//
+// A BaseContainerBlockEntity for the custom name, and a WorldlyContainer for
+// getAccessibleSlotsFromSide's hopper rules.
+public class LOTRHobbitOvenBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
     public static final int SLOT_COUNT = 19;
     public static final int INPUT_START = 0;
@@ -76,7 +81,8 @@ public class LOTRHobbitOvenBlockEntity extends BlockEntity implements Container,
     /** currentItemFuelValue */
     private int litTotalTime;
 
-    private @Nullable Component customName;
+    /** Cooking experience waiting in the outputs; SlotFurnace paid it as they were taken. */
+    private float storedExperience;
 
     private final RecipeManager.CachedCheck<SingleRecipeInput, ? extends AbstractCookingRecipe> quickCheck =
             RecipeManager.createCheck(RecipeType.SMELTING);
@@ -231,6 +237,8 @@ public class LOTRHobbitOvenBlockEntity extends BlockEntity implements Container,
         }
         ItemStack input = items.get(INPUT_START + lane);
         ItemStack result = getCookResult(level, input);
+        storedExperience += quickCheck.getRecipeFor(new SingleRecipeInput(input), level)
+                .map(recipe -> recipe.value().experience()).orElse(0.0F);
         ItemStack output = items.get(OUTPUT_START + lane);
         if (output.isEmpty()) {
             items.set(OUTPUT_START + lane, result.copy());
@@ -250,15 +258,30 @@ public class LOTRHobbitOvenBlockEntity extends BlockEntity implements Container,
         return recipe == null ? ItemStack.EMPTY : recipe.value().assemble(recipeInput);
     }
 
-    /**
-     * Client-safe slot test. The result gate needs a recipe lookup, which is
-     * server-only, so the client accepts anything for the input slots and the
-     * server's canCook is what actually decides. The original had the same
-     * split: isItemValidForSlot ran against FurnaceRecipes, which on the
-     * client was a shared table.
-     */
     public boolean isFuel(ItemStack stack) {
         return level != null && level.fuelValues().isFuel(stack);
+    }
+
+    /** isItemValidForSlot for the inputs: it would cook into something acceptable. */
+    public boolean isCookable(ItemStack stack) {
+        return level instanceof ServerLevel serverLevel && isCookResultAcceptable(getCookResult(serverLevel, stack));
+    }
+
+    /**
+     * SlotFurnace.onCrafting's payout: the whole part of the stored
+     * experience, plus one more with the fractional part as its chance.
+     */
+    public void popExperience(ServerPlayer player) {
+        int whole = Mth.floor(storedExperience);
+        float frac = Mth.frac(storedExperience);
+        if (frac != 0.0F && player.getRandom().nextFloat() < frac) {
+            ++whole;
+        }
+        storedExperience = 0.0F;
+        if (whole > 0) {
+            ExperienceOrb.award(player.level(), player.position(), whole);
+        }
+        setChanged();
     }
 
     // ------------------------------------------------------------ persistence
@@ -271,6 +294,7 @@ public class LOTRHobbitOvenBlockEntity extends BlockEntity implements Container,
         cookingTimer = input.getShortOr("CookTime", (short) 0);
         litTimeRemaining = input.getShortOr("BurnTime", (short) 0);
         litTotalTime = input.getShortOr("BurnTimeTotal", (short) 0);
+        storedExperience = input.getFloatOr("StoredExperience", 0.0F);
     }
 
     @Override
@@ -280,9 +304,10 @@ public class LOTRHobbitOvenBlockEntity extends BlockEntity implements Container,
         output.putShort("CookTime", (short) cookingTimer);
         output.putShort("BurnTime", (short) litTimeRemaining);
         output.putShort("BurnTimeTotal", (short) litTotalTime);
+        output.putFloat("StoredExperience", storedExperience);
     }
 
-    // -------------------------------------------------------------- Container
+    // ------------------------------------------------- Container / hoppers
 
     @Override
     public int getContainerSize() {
@@ -290,89 +315,75 @@ public class LOTRHobbitOvenBlockEntity extends BlockEntity implements Container,
     }
 
     @Override
-    public boolean isEmpty() {
-        for (ItemStack stack : items) {
-            if (!stack.isEmpty()) {
-                return false;
-            }
+    protected NonNullList<ItemStack> getItems() {
+        return items;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> newItems) {
+        for (int i = 0; i < SLOT_COUNT; ++i) {
+            items.set(i, i < newItems.size() ? newItems.get(i) : ItemStack.EMPTY);
         }
-        return true;
     }
 
-    @Override
-    public ItemStack getItem(int slot) {
-        return items.get(slot);
-    }
-
-    @Override
-    public ItemStack removeItem(int slot, int amount) {
-        ItemStack stack = items.get(slot);
-        if (stack.isEmpty() || amount <= 0) {
-            return ItemStack.EMPTY;
-        }
-        ItemStack split = stack.split(amount);
-        if (!split.isEmpty()) {
-            setChanged();
-        }
-        return split;
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int slot) {
-        ItemStack stack = items.get(slot);
-        items.set(slot, ItemStack.EMPTY);
-        return stack;
-    }
-
-    @Override
-    public void setItem(int slot, ItemStack stack) {
-        items.set(slot, stack);
-        stack.limitSize(getMaxStackSize(stack));
-        setChanged();
-    }
-
+    /**
+     * isItemValidForSlot, which hoppers go through: inputs take what would
+     * cook into food, pipeweed or dried reeds, the fuel slot takes fuel, and the
+     * outputs take nothing.
+     */
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        if (slot >= OUTPUT_START && slot < FUEL_SLOT) {
-            return false;
+        if (slot < OUTPUT_START) {
+            return isCookable(stack);
         }
         if (slot == FUEL_SLOT) {
-            ItemStack fuelSlot = items.get(FUEL_SLOT);
-            return isFuel(stack) || (stack.is(Items.BUCKET) && !fuelSlot.is(Items.BUCKET));
+            return isFuel(stack);
         }
-        return true;
+        return false;
+    }
+
+    private static final int[] SLOTS_DOWN = {9, 10, 11, 12, 13, 14, 15, 16, 17, FUEL_SLOT};
+    private static final int[] SLOTS_SIDE = {FUEL_SLOT};
+
+    /**
+     * getAccessibleSlotsFromSide: outputs and fuel from below, fuel from the
+     * sides, the nine inputs from above emptiest-first (LOTRSlotStackSize).
+     */
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+        if (side == Direction.DOWN) {
+            return SLOTS_DOWN;
+        }
+        if (side == Direction.UP) {
+            Integer[] inputs = {0, 1, 2, 3, 4, 5, 6, 7, 8};
+            java.util.Arrays.sort(inputs, java.util.Comparator
+                    .comparingInt((Integer slot) -> items.get(slot).getCount())
+                    .thenComparingInt(slot -> slot));
+            return java.util.Arrays.stream(inputs).mapToInt(Integer::intValue).toArray();
+        }
+        return SLOTS_SIDE;
     }
 
     @Override
-    public boolean stillValid(Player player) {
-        return level != null
-                && level.getBlockEntity(worldPosition) == this
-                && player.distanceToSqr(worldPosition.getX() + 0.5,
-                worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5) <= 64.0;
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
+        return canPlaceItem(slot, stack);
     }
 
+    /** canExtractItem: from below, the fuel slot only gives up an empty bucket. */
     @Override
-    public void clearContent() {
-        items.clear();
-    }
-
-    public NonNullList<ItemStack> getItems() {
-        return items;
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        return side != Direction.DOWN || slot != FUEL_SLOT || stack.is(Items.BUCKET);
     }
 
     // ----------------------------------------------------------- MenuProvider
 
-    public void setCustomName(Component name) {
-        this.customName = name;
+    @Override
+    protected Component getDefaultName() {
+        return getBlockState().getBlock().getName();
     }
 
     @Override
-    public Component getDisplayName() {
-        return customName != null ? customName : getBlockState().getBlock().getName();
-    }
-
-    @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+    protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
         return new LOTRHobbitOvenMenu(containerId, inventory, this, dataAccess);
     }
 }

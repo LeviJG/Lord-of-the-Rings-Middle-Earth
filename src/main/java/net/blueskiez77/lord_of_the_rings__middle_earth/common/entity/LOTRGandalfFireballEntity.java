@@ -5,6 +5,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
+import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
@@ -98,8 +99,10 @@ public class LOTRGandalfFireballEntity extends ThrowableItemProjectile {
     private void explode(ServerLevel server, @Nullable Entity struck) {
         server.playSound(null, getX(), getY(), getZ(), LOTRSounds.ITEM_GANDALF_FIREBALL, SoundSource.NEUTRAL,
                 4.0f, (this.random.nextFloat() - this.random.nextFloat()) * 0.2f + 1.0f);
-        // LOTREntityGandalfFireballExplodeFX, a pale blue flash.
-        server.sendParticles(ParticleTypes.SOUL_FIRE_FLAME, getX(), getY(), getZ(), 40, 0.25, 0.25, 0.25, 0.15);
+        // LOTREntityGandalfFireballExplodeFX: one firework-style flash, tinted
+        // (0.33, 1, 1) -- vanilla's flash particle, which it extended.
+        server.sendParticles(ColorParticleOption.create(ParticleTypes.FLASH, 0.33f, 1.0f, 1.0f),
+                getX(), getY(), getZ(), 1, 0.0, 0.0, 0.0, 0.0);
         DamageSource source = getOwner() instanceof LivingEntity owner
                 ? damageSources().mobAttack(owner)
                 : damageSources().magic();

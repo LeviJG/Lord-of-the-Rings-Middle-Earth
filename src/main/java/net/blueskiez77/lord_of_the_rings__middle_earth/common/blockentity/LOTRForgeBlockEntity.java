@@ -1,5 +1,11 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
+import net.minecraft.world.entity.ExperienceOrb;
+import net.minecraft.util.Mth;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.core.Direction;
+import net.minecraft.world.WorldlyContainer;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRForgeMenu;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
@@ -8,11 +14,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.tags.BlockTags;
@@ -31,7 +34,6 @@ import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -66,7 +68,11 @@ import org.jspecify.annotations.Nullable;
 // Like the original, a forge is not a general furnace: it only smelts stone,
 // sand and clay blocks, the clay items, and wood (getSmeltingResult's
 // Material test, here the pickaxe and shovel tags).
-public class LOTRForgeBlockEntity extends BlockEntity implements Container, MenuProvider {
+//
+// A BaseContainerBlockEntity for the custom name (an anvil-named forge keeps
+// its name, as setSpecialForgeName did) and a WorldlyContainer for
+// getAccessibleSlotsFromSide's hopper rules.
+public class LOTRForgeBlockEntity extends BaseContainerBlockEntity implements WorldlyContainer {
 
     public static final int SLOT_COUNT = 13;
     public static final int ALLOY_START = 0;
@@ -92,7 +98,12 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
     /** currentItemFuelValue -- burn time of the fuel currently alight */
     private int litTotalTime;
 
-    private @Nullable Component customName;
+    /**
+     * Smelting experience waiting in the output slots. SlotFurnace paid it out
+     * by the output item as it was taken; here each smelt adds its share and
+     * the output slot pays the total (see ResultSlot).
+     */
+    private float storedExperience;
 
     private final RecipeManager.CachedCheck<SingleRecipeInput, ? extends AbstractCookingRecipe> quickCheck =
             RecipeManager.createCheck(RecipeType.SMELTING);
@@ -246,6 +257,7 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
 
         ItemStack alloyResult = getAlloyResult(input, alloyItem);
         if (!alloyResult.isEmpty() && canBurn(output, alloyResult)) {
+            storedExperience += experienceFor(level, input, alloyResult);
             grow(outputSlot, alloyResult);
             input.shrink(1);
             alloyItem.shrink(1);
@@ -254,6 +266,7 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
 
         ItemStack result = getSmeltingResult(level, input);
         if (!result.isEmpty() && canBurn(output, result)) {
+            storedExperience += experienceFor(level, input, result);
             grow(outputSlot, result);
             input.shrink(1);
         }
@@ -266,6 +279,54 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
         } else {
             output.grow(result.getCount());
         }
+    }
+
+    /**
+     * FurnaceRecipes.getSmeltingExperience for what came out: the furnace
+     * recipe's own experience when this was an ordinary smelt, or the values
+     * LOTRRecipes.addSmeltingXPForItem gave the mod's alloys and forge-only
+     * results.
+     */
+    private float experienceFor(ServerLevel level, ItemStack input, ItemStack result) {
+        Float special = LOTR_SMELT_XP.get(result.getItem());
+        if (special != null) {
+            return special;
+        }
+        return quickCheck.getRecipeFor(new SingleRecipeInput(input), level)
+                .filter(recipe -> ItemStack.isSameItem(recipe.value().assemble(new SingleRecipeInput(input)), result))
+                .map(recipe -> recipe.value().experience())
+                .orElse(0.0F);
+    }
+
+    private static final java.util.Map<Item, Float> LOTR_SMELT_XP = java.util.Map.ofEntries(
+            java.util.Map.entry(LOTRItems.BRONZE_INGOT, 0.7F),
+            java.util.Map.entry(LOTRItems.MITHRIL, 1.0F),
+            java.util.Map.entry(LOTRItems.ORC_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRItems.DWARVEN_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRItems.GALVORN_INGOT, 0.8F),
+            java.util.Map.entry(LOTRItems.URUK_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRItems.MORGUL_STEEL_INGOT, 0.8F),
+            java.util.Map.entry(LOTRItems.BLUE_DWARVEN_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRItems.BLACK_URUK_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRItems.ELVEN_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRItems.ITHILDIN, 0.8F),
+            java.util.Map.entry(LOTRItems.GILDED_IRON_INGOT, 0.7F));
+
+    /**
+     * SlotFurnace.onCrafting's payout: the whole part of the experience, plus
+     * one more with the fractional part as its chance, dropped at the player.
+     */
+    public void popExperience(ServerPlayer player) {
+        int whole = Mth.floor(storedExperience);
+        float frac = Mth.frac(storedExperience);
+        if (frac != 0.0F && player.getRandom().nextFloat() < frac) {
+            ++whole;
+        }
+        storedExperience = 0.0F;
+        if (whole > 0) {
+            ExperienceOrb.award(player.level(), player.position(), whole);
+        }
+        setChanged();
     }
 
     // ------------------------------------------------------------- recipe API
@@ -401,16 +462,24 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
         return stack.is(LOTRItems.ORC_STEEL_INGOT) || stack.is(LOTRBlocks.MORGUL_IRON_ORE.asItem());
     }
 
-    /** Client-safe input test, for slot validation and quick-move. */
-    public boolean isSmeltable(ItemStack stack) {
+    /**
+     * canMachineInsertInput: getSmeltingResult(stack) != null. An ingot that
+     * only ever alloys (iron, tin, silver) has no smelting result of its own,
+     * so neither hoppers nor shift-click put it in an input slot -- the player
+     * places it by hand. Client-safe: it asks the synced furnace input set.
+     */
+    public boolean hasSmeltingResult(ItemStack stack) {
         if (stack.isEmpty() || level == null) {
             return false;
         }
-        if (!getForgeSmeltingResult(stack).isEmpty()
-                || isIron(stack) || isCopper(stack) || isTin(stack) || isSilver(stack) || isOrcSteel(stack)) {
+        if (!getForgeSmeltingResult(stack).isEmpty()) {
             return true;
         }
         return isForgeMaterial(stack) && level.recipeAccess().propertySet(RecipePropertySet.FURNACE_INPUT).test(stack);
+    }
+
+    public boolean isFuel(ItemStack stack) {
+        return level != null && level.fuelValues().isFuel(stack);
     }
 
     // ------------------------------------------------------------ persistence
@@ -423,6 +492,7 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
         cookingTimer = input.getShortOr("cooking_time_spent", (short) 0);
         litTimeRemaining = input.getShortOr("lit_time_remaining", (short) 0);
         litTotalTime = input.getShortOr("lit_total_time", (short) 0);
+        storedExperience = input.getFloatOr("stored_experience", 0.0F);
     }
 
     @Override
@@ -431,10 +501,11 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
         output.putShort("cooking_time_spent", (short) cookingTimer);
         output.putShort("lit_time_remaining", (short) litTimeRemaining);
         output.putShort("lit_total_time", (short) litTotalTime);
+        output.putFloat("stored_experience", storedExperience);
         ContainerHelper.saveAllItems(output, items);
     }
 
-    // -------------------------------------------------------------- Container
+    // ------------------------------------------------- Container / hoppers
 
     @Override
     public int getContainerSize() {
@@ -442,105 +513,77 @@ public class LOTRForgeBlockEntity extends BlockEntity implements Container, Menu
     }
 
     @Override
-    public boolean isEmpty() {
-        for (ItemStack stack : items) {
-            if (!stack.isEmpty()) {
-                return false;
-            }
+    protected NonNullList<ItemStack> getItems() {
+        return items;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> newItems) {
+        for (int i = 0; i < SLOT_COUNT; ++i) {
+            items.set(i, i < newItems.size() ? newItems.get(i) : ItemStack.EMPTY);
         }
-        return true;
     }
 
-    @Override
-    public ItemStack getItem(int slot) {
-        return items.get(slot);
-    }
-
-    // Written out rather than delegated, so nothing here depends on a
-    // ContainerHelper overload I have not seen.
-    @Override
-    public ItemStack removeItem(int slot, int amount) {
-        ItemStack stack = items.get(slot);
-        if (stack.isEmpty() || amount <= 0) {
-            return ItemStack.EMPTY;
-        }
-        ItemStack split = stack.split(amount);
-        if (!split.isEmpty()) {
-            setChanged();
-        }
-        return split;
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int slot) {
-        ItemStack stack = items.get(slot);
-        items.set(slot, ItemStack.EMPTY);
-        return stack;
-    }
-
-    @Override
-    public void setItem(int slot, ItemStack stack) {
-        items.set(slot, stack);
-        stack.limitSize(getMaxStackSize(stack));
-        setChanged();
-    }
-
+    /**
+     * isItemValidForSlot, which hoppers (canInsertItem) go through: input
+     * slots take what the forge can smelt, the fuel slot takes fuel, and
+     * nothing is ever put into an alloy or output slot this way.
+     */
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
-        if (slot >= OUTPUT_START && slot < FUEL_SLOT) {
-            return false;
+        if (slot >= INPUT_START && slot < OUTPUT_START) {
+            return hasSmeltingResult(stack);
         }
         if (slot == FUEL_SLOT) {
-            // Vanilla's rule: fuel, or an empty bucket to catch the lava one.
-            ItemStack fuelSlot = items.get(FUEL_SLOT);
-            return (level != null && level.fuelValues().isFuel(stack))
-                    || (stack.is(Items.BUCKET) && !fuelSlot.is(Items.BUCKET));
+            return isFuel(stack);
         }
-        if (slot >= INPUT_START) {
-            return isSmeltable(stack);
+        return false;
+    }
+
+    private static final int[] SLOTS_DOWN = {OUTPUT_START, OUTPUT_START + 1, OUTPUT_START + 2, OUTPUT_START + 3, FUEL_SLOT};
+    private static final int[] SLOTS_SIDE = {FUEL_SLOT};
+
+    /**
+     * getAccessibleSlotsFromSide: outputs and fuel from below, fuel from the
+     * sides, and from above the four inputs emptiest-first (LOTRSlotStackSize),
+     * so a hopper spreads its load across the lanes.
+     */
+    @Override
+    public int[] getSlotsForFace(Direction side) {
+        if (side == Direction.DOWN) {
+            return SLOTS_DOWN;
         }
-        // Alloy slots take anything; the recipe hook decides what pairs.
-        return true;
-    }
-
-    // LOTRTileEntityForgeBase.isUseableByPlayer, written out to avoid depending
-    // on a Container static helper I have not seen the signature of.
-    @Override
-    public boolean stillValid(Player player) {
-        return level != null
-                && level.getBlockEntity(worldPosition) == this
-                && player.distanceToSqr(worldPosition.getX() + 0.5,
-                worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5) <= 64.0;
+        if (side == Direction.UP) {
+            Integer[] inputs = {INPUT_START, INPUT_START + 1, INPUT_START + 2, INPUT_START + 3};
+            java.util.Arrays.sort(inputs, java.util.Comparator
+                    .comparingInt((Integer slot) -> items.get(slot).getCount())
+                    .thenComparingInt(slot -> slot));
+            return java.util.Arrays.stream(inputs).mapToInt(Integer::intValue).toArray();
+        }
+        return SLOTS_SIDE;
     }
 
     @Override
-    public void clearContent() {
-        items.clear();
+    public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction side) {
+        return canPlaceItem(slot, stack);
     }
 
-    /** For Containers.dropContents when the block breaks. */
-    public NonNullList<ItemStack> getItems() {
-        return items;
+    /** canExtractItem: from below, the fuel slot only gives up an empty bucket. */
+    @Override
+    public boolean canTakeItemThroughFace(int slot, ItemStack stack, Direction side) {
+        return side != Direction.DOWN || slot != FUEL_SLOT || stack.is(Items.BUCKET);
     }
 
     // ----------------------------------------------------------- MenuProvider
 
-    public void setCustomName(Component name) {
-        this.customName = name;
-    }
-
+    /** "Dwarven Forge", "Elven Forge", ...: the block's own name. */
     @Override
-    public Component getDisplayName() {
-        if (customName != null) {
-            return customName;
-        }
-        // "Dwarven Forge" / "Elven Forge" / ... straight off the block, so the
-        // four forges need no container.* lang keys of their own.
+    protected Component getDefaultName() {
         return getBlockState().getBlock().getName();
     }
 
     @Override
-    public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player player) {
+    protected AbstractContainerMenu createMenu(int containerId, Inventory inventory) {
         return new LOTRForgeMenu(containerId, inventory, this, dataAccess);
     }
 }

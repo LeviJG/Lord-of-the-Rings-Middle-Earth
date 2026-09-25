@@ -1,6 +1,12 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "lotr:item/leather_hat"
+    "model": "lotr:item/leather_hat",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -9942474
+      }
+    ]
   }
 }

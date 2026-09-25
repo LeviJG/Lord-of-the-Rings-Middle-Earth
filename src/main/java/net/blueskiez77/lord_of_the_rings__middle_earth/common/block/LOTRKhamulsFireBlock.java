@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import net.minecraft.world.level.block.SoundType;
 import com.mojang.serialization.MapCodec;
 
 import net.minecraft.core.BlockPos;
@@ -53,17 +54,15 @@ public class LOTRKhamulsFireBlock extends BaseFireBlock {
     private static final int LIGHT = 15;
 
     /**
-     * How often it acts. The original ran on BlockFire's tickRate of 30, which
-     * made it creep; this is deliberately faster so it takes hold and burns
-     * through in seconds rather than minutes.
+     * How often it acts: LOTRBlockRhunFire.tickRate() was 2, rescheduled at
+     * tickRate + nextInt(10).
      */
-    private static final int TICK_RATE = 5;
+    private static final int TICK_RATE = 2;
+    private static final int TICK_JITTER = 10;
 
     /**
-     * And it is FINITE. Age climbs by one every tick and the patch is gone at
-     * MAX_AGE, so the worst case is about MAX_AGE * TICK_RATE ticks -- a few
-     * seconds. The original leaned on a 1-in-12 roll alone, which is a coin that
-     * can keep coming up the same way; this puts a ceiling on it.
+     * A port addition: age climbs by one a tick and the patch is gone at
+     * MAX_AGE, a ceiling on the original's 1-in-12 burn-out roll.
      */
     private static final int MAX_AGE = 15;
 
@@ -113,12 +112,12 @@ public class LOTRKhamulsFireBlock extends BaseFireBlock {
     @Override
     protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         super.onPlace(state, level, pos, oldState, movedByPiston);
-        level.scheduleTick(pos, this, TICK_RATE + level.getRandom().nextInt(TICK_RATE));
+        level.scheduleTick(pos, this, TICK_RATE + level.getRandom().nextInt(TICK_JITTER));
     }
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        level.scheduleTick(pos, this, TICK_RATE + random.nextInt(TICK_RATE));
+        level.scheduleTick(pos, this, TICK_RATE + random.nextInt(TICK_JITTER));
         // LOTRMod.doFireTick asked the doFireTick game rule, which 26.2 has
         // replaced with a radius: fire only spreads within
         // FIRE_SPREAD_RADIUS_AROUND_PLAYER blocks of a player, and zero turns
@@ -196,13 +195,15 @@ public class LOTRKhamulsFireBlock extends BaseFireBlock {
     /**
      * What this fire will take hold in.
      *
-     * <p>The original's test, exactly: Material.rock or Material.clay, and
-     * nothing at blast resistance 100 or more -- which is what kept it out of
-     * obsidian and bedrock. Plus whatever vanilla fire would burn anyway.
+     * <p>The original's test: Material.rock or Material.clay, or any
+     * LOTRBlockGate, below blast resistance 100 -- which kept it out of
+     * obsidian and bedrock -- plus whatever vanilla fire burns anyway. With
+     * Material gone, "rock" is read as a pickaxe block that is not metal: that
+     * takes in every LOTR brick, rock and pillar as the original did, where the
+     * vanilla stone tags alone missed them.
      *
-     * <p>NOT dirt, grass, sand or gravel. Material.ground and Material.grass
-     * were never on the original's list, and admitting them gives a fire that
-     * eats the landscape and then spreads from every hole it makes.
+     * <p>Not dirt, grass, sand or gravel (Material.ground/grass were never on
+     * the list).
      */
     private static boolean burnsThrough(BlockState state) {
         if (state.isAir() || state.getBlock() == Blocks.FIRE) {
@@ -212,12 +213,20 @@ public class LOTRKhamulsFireBlock extends BaseFireBlock {
             return false;
         }
         return state.ignitedByLava()
+                || state.getBlock() instanceof LOTRGateBlock
+                || (state.is(net.minecraft.tags.BlockTags.MINEABLE_WITH_PICKAXE) && !isMetal(state.getSoundType()))
                 || state.is(net.minecraft.tags.BlockTags.BASE_STONE_OVERWORLD)
                 || state.is(net.minecraft.tags.BlockTags.STONE_BRICKS)
                 || state.is(net.minecraft.tags.BlockTags.TERRACOTTA)
                 || state.is(Blocks.CLAY)
                 || state.is(Blocks.STONE)
                 || state.is(Blocks.COBBLESTONE);
+    }
+
+    /** Material.iron's blocks, which the original's rock/clay test left alone. */
+    private static boolean isMetal(SoundType sound) {
+        return sound == SoundType.METAL || sound == SoundType.ANVIL || sound == SoundType.CHAIN
+                || sound == SoundType.LANTERN || sound == SoundType.COPPER || sound == SoundType.NETHERITE_BLOCK;
     }
 
     /** BlockFire drops nothing and has no item. */
