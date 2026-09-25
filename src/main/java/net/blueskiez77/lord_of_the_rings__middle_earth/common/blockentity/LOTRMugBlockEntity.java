@@ -2,7 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -80,7 +80,7 @@ public class LOTRMugBlockEntity extends BlockEntity {
     /** updateEntity: an empty vessel under open, rainy sky slowly fills with water. */
     public static void serverTick(Level level, BlockPos pos, BlockState state, LOTRMugBlockEntity mug) {
         if (mug.isEmpty() && level.isRainingAt(pos) && level.getRandom().nextInt(6000) == 0) {
-            ItemStack water = new ItemStack(LOTRItems.WATER);
+            ItemStack water = new ItemStack(LOTRFoodItems.WATER);
             water.set(LOTRDataComponents.VESSEL, mug.getVessel());
             mug.setMugItem(water);
         }

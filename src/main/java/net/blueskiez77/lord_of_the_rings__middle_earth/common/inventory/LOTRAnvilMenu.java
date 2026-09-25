@@ -3,13 +3,14 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChiselItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemTags;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmithsScrollItem;
 
 import net.minecraft.ChatFormatting;
@@ -177,10 +178,10 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
             return material.is(net.minecraft.tags.ItemTags.PLANKS);
         }
         if (LOTRItemTags.REPAIRS_MALLORN_TOOLS.equals(repairs)) {
-            return material.is(LOTRBlocks.MALLORN_PLANKS.asItem());
+            return material.is(LOTRBuildingBlocks.MALLORN_PLANKS.asItem());
         }
         if (LOTRItemTags.REPAIRS_CHARRED_MALLORN_MACE.equals(repairs)) {
-            return material.is(LOTRBlocks.MALLORN_LOG.asItem());
+            return material.is(LOTRBuildingBlocks.MALLORN_LOG.asItem());
         }
         // Bone armour: nothing mends it anywhere else (BONE had no crafting
         // item), but this anvil takes any bone.
@@ -209,32 +210,39 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
 
     /** AnvilNameColorProvider: the gems that colour a name. */
     private static @Nullable ChatFormatting nameColour(ItemStack stack) {
-        if (stack.is(LOTRItems.DURNOR)) {
+        if (stack.is(LOTRMaterialItems.DURNOR)) {
             return ChatFormatting.DARK_RED;
         }
-        if (stack.is(LOTRItems.TOPAZ)) {
+        if (stack.is(LOTRMaterialItems.TOPAZ)) {
             return ChatFormatting.GOLD;
         }
-        if (stack.is(LOTRItems.AMETHYST)) {
+        if (stack.is(LOTRMaterialItems.AMETHYST)) {
             return ChatFormatting.LIGHT_PURPLE;
         }
-        if (stack.is(LOTRItems.SAPPHIRE)) {
+        if (stack.is(LOTRMaterialItems.SAPPHIRE)) {
             return ChatFormatting.BLUE;
         }
-        if (stack.is(LOTRItems.RUBY)) {
+        if (stack.is(LOTRMaterialItems.RUBY)) {
             return ChatFormatting.RED;
         }
-        if (stack.is(LOTRItems.AMBER)) {
+        if (stack.is(LOTRMaterialItems.AMBER)) {
             return ChatFormatting.YELLOW;
         }
-        if (stack.is(LOTRItems.DIAMOND)) {
+        if (stack.is(LOTRMaterialItems.DIAMOND)) {
             return ChatFormatting.GRAY;
         }
-        if (stack.is(LOTRItems.OPAL)) {
+        if (stack.is(LOTRMaterialItems.OPAL)) {
             return ChatFormatting.AQUA;
         }
-        if (stack.is(LOTRItems.EMERALD)) {
+        if (stack.is(LOTRMaterialItems.EMERALD)) {
             return ChatFormatting.GREEN;
+        }
+        // LOTRItemWithAnvilNameColor: the two crystals as well as the gems.
+        if (stack.is(LOTRMaterialItems.EDHELVIR)) {
+            return ChatFormatting.DARK_AQUA;
+        }
+        if (stack.is(LOTRMaterialItems.GULDURIL)) {
+            return ChatFormatting.DARK_GREEN;
         }
         return null;
     }
@@ -489,16 +497,16 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
      * and a smith's scroll each carry one modifier to put on.
      */
     private static @Nullable LOTRModifier specialModifier(ItemStack stack) {
-        if (stack.is(LOTRItems.FLAME_OF_UDUN)) {
+        if (stack.is(LOTRMaterialItems.FLAME_OF_UDUN)) {
             return LOTRModifier.FIRE;
         }
-        if (stack.is(LOTRItems.CHILL_OF_DAEDELOS)) {
+        if (stack.is(LOTRMaterialItems.CHILL_OF_DAEDELOS)) {
             return LOTRModifier.CHILL;
         }
-        if (stack.is(LOTRItems.HEADHUNTERS_TROPHY)) {
+        if (stack.is(LOTRMaterialItems.HEADHUNTERS_TROPHY)) {
             return LOTRModifier.HEADHUNTING;
         }
-        if (stack.is(LOTRItems.BOOK_OF_TRUE_SILVER)) {
+        if (stack.is(LOTRMaterialItems.BOOK_OF_TRUE_SILVER)) {
             return LOTRModifier.PROTECT_MITHRIL;
         }
         if (stack.getItem() instanceof LOTRSmithsScrollItem) {
@@ -652,7 +660,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
-        return stillValid(access, player, LOTRBlocks.ANVIL);
+        return stillValid(access, player, LOTRUtilityBlocks.ANVIL);
     }
 
     @Override

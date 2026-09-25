@@ -6,7 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRHobbitOvenBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRHobbitOvenMenu;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
@@ -134,7 +134,7 @@ public class LOTRHobbitOvenBlockEntity extends BaseContainerBlockEntity implemen
             return true;
         }
         Item item = result.getItem();
-        return item == LOTRItems.PIPEWEED || item == LOTRBlocks.DRIED_REEDS.asItem();
+        return item == LOTRItems.PIPEWEED || item == LOTRDecorationBlocks.DRIED_REEDS.asItem();
     }
 
     // ---------------------------------------------------------------- ticking

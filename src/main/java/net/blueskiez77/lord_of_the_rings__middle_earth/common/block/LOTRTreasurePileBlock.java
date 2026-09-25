@@ -24,6 +24,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRFallingTreasureEntity;
 
 /**
  * LOTRBlockTreasurePile: a heap of coin that piles up a layer at a time.
@@ -34,9 +35,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * That is {@link #LAYERS} here, 1 through 8, the same eight heights under
  * vanilla's own snow-layer property.
  *
- * <p>It falls, like the original's {@link FallingBlock} check, and it lands on
- * top of a pile that is not yet full rather than beside it. Walking on one
- * kicks coins up.
+ * <p>It falls (LOTREntityFallingTreasure, here LOTRFallingTreasureEntity), and a
+ * falling pile pours into a pile that is not yet full rather than breaking.
+ * Walking on one kicks coins up.
  *
  * <p>DIVERGENCE, worth knowing about: in 1.7.10 the ITEM carried a metadata too,
  * so one item could be a whole eight-layer block and breaking a full pile gave
@@ -178,13 +179,16 @@ public class LOTRTreasurePileBlock extends FallingBlock {
 
     @Override
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        // updateTick: tryFall first; only a pile that can neither fall nor
-        // stand breaks. FallingBlock.tick does the falling.
-        if (!isFree(level.getBlockState(pos.below())) && !hasFloor(level, pos)) {
-            level.destroyBlock(pos, true);
+        // updateTick: tryFall first -- as LOTREntityFallingTreasure, which
+        // pours into the pile it lands in -- and only a pile that can neither
+        // fall nor stand breaks.
+        if (isFree(level.getBlockState(pos.below())) && pos.getY() >= level.getMinY()) {
+            LOTRFallingTreasureEntity.fall(level, pos, state);
             return;
         }
-        super.tick(state, level, pos, random);
+        if (!hasFloor(level, pos)) {
+            level.destroyBlock(pos, true);
+        }
     }
 
     @Override

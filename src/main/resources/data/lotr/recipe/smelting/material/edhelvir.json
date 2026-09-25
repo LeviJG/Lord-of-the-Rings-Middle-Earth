@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "category": "misc",
-  "experience": 1.0,
-  "ingredient": "lotr:quendite_ore",
-  "result": {
-    "id": "lotr:edhelvir"
-  }
-}

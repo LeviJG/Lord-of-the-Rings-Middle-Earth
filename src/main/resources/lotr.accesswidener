@@ -20,3 +20,9 @@ accessible	method	net/minecraft/world/entity/projectile/arrow/ThrownTrident	getL
 # CauldronInteraction.Dispatcher.put is package-private; LOTRCauldronWashing adds
 # the mod's own washable items to the water cauldron's dispatcher.
 accessible method net/minecraft/core/cauldron/CauldronInteraction$Dispatcher put (Lnet/minecraft/world/item/Item;Lnet/minecraft/core/cauldron/CauldronInteraction;)V
+
+# FallingBlockEntity keeps the block it carries in a private field, set only by
+# its private constructor. LOTRFallingTreasureEntity is LOTREntityFallingTreasure,
+# a falling block with its own landing, and has to set it itself.
+accessible	field	net/minecraft/world/entity/item/FallingBlockEntity	blockState	Lnet/minecraft/world/level/block/state/BlockState;
+mutable	field	net/minecraft/world/entity/item/FallingBlockEntity	blockState	Lnet/minecraft/world/level/block/state/BlockState;

@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRThrowingAxeItem;
 
 import net.minecraft.world.damagesource.DamageSource;
@@ -98,7 +98,7 @@ public class LOTRThrowingAxeEntity extends AbstractArrow {
     /** Only ever read when a stack is missing; the plainest of the three will do. */
     @Override
     protected ItemStack getDefaultPickupItem() {
-        return new ItemStack(LOTRItems.IRON_THROWING_AXE);
+        return new ItemStack(LOTRCombatItems.IRON_THROWING_AXE);
     }
 
     /** The axe itself is the weapon, as ThrownTrident's is. */

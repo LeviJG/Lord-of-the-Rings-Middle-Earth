@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -45,7 +45,7 @@ public class LOTRCarvedSignBlockEntity extends BlockEntity {
     }
 
     public boolean isIthildin() {
-        return getBlockState().is(LOTRBlocks.CARVED_ITHILDIN_SIGN);
+        return getBlockState().is(LOTRUtilityBlocks.CARVED_ITHILDIN_SIGN);
     }
 
     public String[] copyText() {

@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -64,62 +67,62 @@ public final class LOTRBrewingRecipes {
             return recipes;
         }
         List<Recipe> list = new ArrayList<>();
-        Set<Item> bone = of(Items.BONE, LOTRItems.WARG_BONE, LOTRItems.ORC_BONE, LOTRItems.ELF_BONE,
-                LOTRItems.DWARF_BONE, LOTRItems.HOBBIT_BONE, LOTRItems.TROLL_BONE);
-        Set<Item> apple = of(Items.APPLE, LOTRItems.GREEN_APPLE);
+        Set<Item> bone = of(Items.BONE, LOTRMaterialItems.WARG_BONE, LOTRMaterialItems.ORC_BONE, LOTRMaterialItems.ELF_BONE,
+                LOTRMaterialItems.DWARF_BONE, LOTRMaterialItems.HOBBIT_BONE, LOTRMaterialItems.TROLL_BONE);
+        Set<Item> apple = of(Items.APPLE, LOTRFoodItems.GREEN_APPLE);
         Item wheat = Items.WHEAT;
-        add(list, LOTRItems.ALE, wheat, wheat, wheat, wheat, wheat, wheat);
-        add(list, LOTRItems.MIRUVOR, LOTRItems.MALLORN_NUT, LOTRItems.MALLORN_NUT, LOTRItems.MALLORN_NUT,
-                LOTRBlocks.ELANOR, LOTRBlocks.NIPHREDIL, Items.SUGAR);
-        add(list, LOTRItems.ORC_DRAUGHT, LOTRBlocks.MORGUL_SHROOM, LOTRBlocks.MORGUL_SHROOM, LOTRBlocks.MORGUL_SHROOM,
+        add(list, LOTRFoodItems.ALE, wheat, wheat, wheat, wheat, wheat, wheat);
+        add(list, LOTRFoodItems.MIRUVOR, LOTRFoodItems.MALLORN_NUT, LOTRFoodItems.MALLORN_NUT, LOTRFoodItems.MALLORN_NUT,
+                LOTRDecorationBlocks.ELANOR, LOTRDecorationBlocks.NIPHREDIL, Items.SUGAR);
+        add(list, LOTRFoodItems.ORC_DRAUGHT, LOTRFoodBlocks.MORGUL_SHROOM, LOTRFoodBlocks.MORGUL_SHROOM, LOTRFoodBlocks.MORGUL_SHROOM,
                 bone, bone, bone);
-        add(list, LOTRItems.MEAD, Items.SUGAR, Items.SUGAR, Items.SUGAR, Items.SUGAR, Items.SUGAR, Items.SUGAR);
-        add(list, LOTRItems.CIDER, apple, apple, apple, apple, apple, apple);
-        add(list, LOTRItems.PERRY, LOTRItems.PEAR, LOTRItems.PEAR, LOTRItems.PEAR, LOTRItems.PEAR, LOTRItems.PEAR,
-                LOTRItems.PEAR);
-        add(list, LOTRItems.CHERRY_LIQUEUR, LOTRItems.CHERRIES, LOTRItems.CHERRIES, LOTRItems.CHERRIES,
-                LOTRItems.CHERRIES, LOTRItems.CHERRIES, LOTRItems.CHERRIES);
-        add(list, LOTRItems.RUM, Items.SUGAR_CANE, Items.SUGAR_CANE, Items.SUGAR_CANE, Items.SUGAR_CANE,
+        add(list, LOTRFoodItems.MEAD, Items.SUGAR, Items.SUGAR, Items.SUGAR, Items.SUGAR, Items.SUGAR, Items.SUGAR);
+        add(list, LOTRFoodItems.CIDER, apple, apple, apple, apple, apple, apple);
+        add(list, LOTRFoodItems.PERRY, LOTRFoodItems.PEAR, LOTRFoodItems.PEAR, LOTRFoodItems.PEAR, LOTRFoodItems.PEAR, LOTRFoodItems.PEAR,
+                LOTRFoodItems.PEAR);
+        add(list, LOTRFoodItems.CHERRY_LIQUEUR, LOTRFoodItems.CHERRIES, LOTRFoodItems.CHERRIES, LOTRFoodItems.CHERRIES,
+                LOTRFoodItems.CHERRIES, LOTRFoodItems.CHERRIES, LOTRFoodItems.CHERRIES);
+        add(list, LOTRFoodItems.RUM, Items.SUGAR_CANE, Items.SUGAR_CANE, Items.SUGAR_CANE, Items.SUGAR_CANE,
                 Items.SUGAR_CANE, Items.SUGAR_CANE);
-        add(list, LOTRItems.ATHELAS_BREW, LOTRBlocks.ATHELAS, LOTRBlocks.ATHELAS, LOTRBlocks.ATHELAS,
-                LOTRBlocks.ATHELAS, LOTRBlocks.ATHELAS, LOTRBlocks.ATHELAS);
-        add(list, LOTRItems.DWARVEN_TONIC, wheat, wheat, wheat, LOTRBlocks.DWARF_HERB, LOTRBlocks.DWARF_HERB,
-                LOTRItems.MITHRIL_NUGGET);
-        add(list, LOTRItems.DWARVEN_ALE, wheat, wheat, wheat, wheat, LOTRBlocks.DWARF_HERB, LOTRBlocks.DWARF_HERB);
-        add(list, LOTRItems.VODKA, Items.POTATO, Items.POTATO, Items.POTATO, Items.POTATO, Items.POTATO,
+        add(list, LOTRFoodItems.ATHELAS_BREW, LOTRDecorationBlocks.ATHELAS, LOTRDecorationBlocks.ATHELAS, LOTRDecorationBlocks.ATHELAS,
+                LOTRDecorationBlocks.ATHELAS, LOTRDecorationBlocks.ATHELAS, LOTRDecorationBlocks.ATHELAS);
+        add(list, LOTRFoodItems.DWARVEN_TONIC, wheat, wheat, wheat, LOTRDecorationBlocks.DWARF_HERB, LOTRDecorationBlocks.DWARF_HERB,
+                LOTRMaterialItems.MITHRIL_NUGGET);
+        add(list, LOTRFoodItems.DWARVEN_ALE, wheat, wheat, wheat, wheat, LOTRDecorationBlocks.DWARF_HERB, LOTRDecorationBlocks.DWARF_HERB);
+        add(list, LOTRFoodItems.VODKA, Items.POTATO, Items.POTATO, Items.POTATO, Items.POTATO, Items.POTATO,
                 Items.POTATO);
-        add(list, LOTRItems.MAPLE_BEER, wheat, wheat, wheat, wheat, LOTRItems.MAPLE_SYRUP, LOTRItems.MAPLE_SYRUP);
-        add(list, LOTRItems.ARAK, LOTRItems.DATE, LOTRItems.DATE, LOTRItems.DATE, LOTRItems.DATE, LOTRItems.DATE,
-                LOTRItems.DATE);
-        add(list, LOTRItems.CARROT_WINE, Items.CARROT, Items.CARROT, Items.CARROT, Items.CARROT, Items.CARROT,
+        add(list, LOTRFoodItems.MAPLE_BEER, wheat, wheat, wheat, wheat, LOTRFoodItems.MAPLE_SYRUP, LOTRFoodItems.MAPLE_SYRUP);
+        add(list, LOTRFoodItems.ARAK, LOTRFoodItems.DATE, LOTRFoodItems.DATE, LOTRFoodItems.DATE, LOTRFoodItems.DATE, LOTRFoodItems.DATE,
+                LOTRFoodItems.DATE);
+        add(list, LOTRFoodItems.CARROT_WINE, Items.CARROT, Items.CARROT, Items.CARROT, Items.CARROT, Items.CARROT,
                 Items.CARROT);
-        add(list, LOTRItems.BANANA_BEER, LOTRItems.BANANA, LOTRItems.BANANA, LOTRItems.BANANA, LOTRItems.BANANA,
-                LOTRItems.BANANA, LOTRItems.BANANA);
-        add(list, LOTRItems.MELON_LIQUEUR, Items.MELON_SLICE, Items.MELON_SLICE, Items.MELON_SLICE,
+        add(list, LOTRFoodItems.BANANA_BEER, LOTRFoodItems.BANANA, LOTRFoodItems.BANANA, LOTRFoodItems.BANANA, LOTRFoodItems.BANANA,
+                LOTRFoodItems.BANANA, LOTRFoodItems.BANANA);
+        add(list, LOTRFoodItems.MELON_LIQUEUR, Items.MELON_SLICE, Items.MELON_SLICE, Items.MELON_SLICE,
                 Items.MELON_SLICE, Items.MELON_SLICE, Items.MELON_SLICE);
-        add(list, LOTRItems.CACTUS_LIQUEUR, Items.CACTUS, Items.CACTUS, Items.CACTUS, Items.CACTUS, Items.CACTUS,
+        add(list, LOTRFoodItems.CACTUS_LIQUEUR, Items.CACTUS, Items.CACTUS, Items.CACTUS, Items.CACTUS, Items.CACTUS,
                 Items.CACTUS);
-        add(list, LOTRItems.TERMITE_TEQUILA, Items.CACTUS, Items.CACTUS, Items.CACTUS, Items.CACTUS, Items.CACTUS,
-                LOTRItems.EXPLODING_TERMITE);
-        add(list, LOTRItems.TOROG_DRAUGHT, Items.SUGAR_CANE, Items.SUGAR_CANE, Items.ROTTEN_FLESH,
-                Items.ROTTEN_FLESH, Items.DIRT, LOTRItems.RHINO_HORN);
-        add(list, LOTRItems.LEMON_LIQUEUR, LOTRItems.LEMON, LOTRItems.LEMON, LOTRItems.LEMON, LOTRItems.LEMON,
-                LOTRItems.LEMON, LOTRItems.LEMON);
-        add(list, LOTRItems.LIME_LIQUEUR, LOTRItems.LIME, LOTRItems.LIME, LOTRItems.LIME, LOTRItems.LIME,
-                LOTRItems.LIME, LOTRItems.LIME);
-        add(list, LOTRItems.CORN_LIQUOR, LOTRItems.CORN, LOTRItems.CORN, LOTRItems.CORN, LOTRItems.CORN,
-                LOTRItems.CORN, LOTRItems.CORN);
-        add(list, LOTRItems.RED_WINE, LOTRItems.RED_GRAPES, LOTRItems.RED_GRAPES, LOTRItems.RED_GRAPES,
-                LOTRItems.RED_GRAPES, LOTRItems.RED_GRAPES, LOTRItems.RED_GRAPES);
-        add(list, LOTRItems.WHITE_WINE, LOTRItems.GREEN_GRAPES, LOTRItems.GREEN_GRAPES, LOTRItems.GREEN_GRAPES,
-                LOTRItems.GREEN_GRAPES, LOTRItems.GREEN_GRAPES, LOTRItems.GREEN_GRAPES);
-        add(list, LOTRItems.MORGUL_DRAUGHT, LOTRBlocks.MORGUL_FLOWER, LOTRBlocks.MORGUL_FLOWER,
-                LOTRBlocks.MORGUL_FLOWER, bone, bone, bone);
-        add(list, LOTRItems.PLUM_KVASS, wheat, wheat, wheat, LOTRItems.PLUM, LOTRItems.PLUM, LOTRItems.PLUM);
-        add(list, LOTRItems.SOURED_MILK, Items.MILK_BUCKET, Items.MILK_BUCKET, Items.MILK_BUCKET,
+        add(list, LOTRFoodItems.TERMITE_TEQUILA, Items.CACTUS, Items.CACTUS, Items.CACTUS, Items.CACTUS, Items.CACTUS,
+                LOTRMiscItems.EXPLODING_TERMITE);
+        add(list, LOTRFoodItems.TOROG_DRAUGHT, Items.SUGAR_CANE, Items.SUGAR_CANE, Items.ROTTEN_FLESH,
+                Items.ROTTEN_FLESH, Items.DIRT, LOTRMaterialItems.RHINO_HORN);
+        add(list, LOTRFoodItems.LEMON_LIQUEUR, LOTRFoodItems.LEMON, LOTRFoodItems.LEMON, LOTRFoodItems.LEMON, LOTRFoodItems.LEMON,
+                LOTRFoodItems.LEMON, LOTRFoodItems.LEMON);
+        add(list, LOTRFoodItems.LIME_LIQUEUR, LOTRFoodItems.LIME, LOTRFoodItems.LIME, LOTRFoodItems.LIME, LOTRFoodItems.LIME,
+                LOTRFoodItems.LIME, LOTRFoodItems.LIME);
+        add(list, LOTRFoodItems.CORN_LIQUOR, LOTRFoodItems.CORN, LOTRFoodItems.CORN, LOTRFoodItems.CORN, LOTRFoodItems.CORN,
+                LOTRFoodItems.CORN, LOTRFoodItems.CORN);
+        add(list, LOTRFoodItems.RED_WINE, LOTRFoodItems.RED_GRAPES, LOTRFoodItems.RED_GRAPES, LOTRFoodItems.RED_GRAPES,
+                LOTRFoodItems.RED_GRAPES, LOTRFoodItems.RED_GRAPES, LOTRFoodItems.RED_GRAPES);
+        add(list, LOTRFoodItems.WHITE_WINE, LOTRFoodItems.GREEN_GRAPES, LOTRFoodItems.GREEN_GRAPES, LOTRFoodItems.GREEN_GRAPES,
+                LOTRFoodItems.GREEN_GRAPES, LOTRFoodItems.GREEN_GRAPES, LOTRFoodItems.GREEN_GRAPES);
+        add(list, LOTRFoodItems.MORGUL_DRAUGHT, LOTRDecorationBlocks.MORGUL_FLOWER, LOTRDecorationBlocks.MORGUL_FLOWER,
+                LOTRDecorationBlocks.MORGUL_FLOWER, bone, bone, bone);
+        add(list, LOTRFoodItems.PLUM_KVASS, wheat, wheat, wheat, LOTRFoodItems.PLUM, LOTRFoodItems.PLUM, LOTRFoodItems.PLUM);
+        add(list, LOTRFoodItems.SOURED_MILK, Items.MILK_BUCKET, Items.MILK_BUCKET, Items.MILK_BUCKET,
                 Items.MILK_BUCKET, Items.MILK_BUCKET, Items.MILK_BUCKET);
-        add(list, LOTRItems.POMEGRANATE_WINE, LOTRItems.POMEGRANATE, LOTRItems.POMEGRANATE, LOTRItems.POMEGRANATE,
-                LOTRItems.POMEGRANATE, LOTRItems.POMEGRANATE, LOTRItems.POMEGRANATE);
+        add(list, LOTRFoodItems.POMEGRANATE_WINE, LOTRFoodItems.POMEGRANATE, LOTRFoodItems.POMEGRANATE, LOTRFoodItems.POMEGRANATE,
+                LOTRFoodItems.POMEGRANATE, LOTRFoodItems.POMEGRANATE, LOTRFoodItems.POMEGRANATE);
         recipes = list;
         return list;
     }

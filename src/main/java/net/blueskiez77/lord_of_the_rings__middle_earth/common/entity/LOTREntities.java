@@ -136,7 +136,7 @@ public final class LOTREntities {
                     .clientTrackingRange(4)
                     .updateInterval(10));
 
-    /** LOTREntityExplodingTermite, an EntityThrowable sized 0.25. */
+    /** LOTREntityThrownTermite, an EntityThrowable sized 0.25. */
     public static final EntityType<LOTRExplodingTermiteEntity> EXPLODING_TERMITE = register("exploding_termite",
             EntityType.Builder.<LOTRExplodingTermiteEntity>of(LOTRExplodingTermiteEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f)
@@ -156,6 +156,19 @@ public final class LOTREntities {
                     .sized(0.25f, 0.25f)
                     .clientTrackingRange(4)
                     .updateInterval(10));
+
+    /** LOTREntityFallingTreasure: setSize(0.98, 0.98), as a falling block. */
+    public static final EntityType<LOTRFallingTreasureEntity> FALLING_TREASURE = register("falling_treasure",
+            EntityType.Builder.<LOTRFallingTreasureEntity>of(LOTRFallingTreasureEntity::new, MobCategory.MISC)
+                    .sized(0.98f, 0.98f)
+                    .clientTrackingRange(10)
+                    .updateInterval(20));
+
+    /** LOTREntityBarrel: setSize(1, 1). */
+    public static final EntityType<LOTRBarrelBoatEntity> BARREL = register("barrel",
+            EntityType.Builder.<LOTRBarrelBoatEntity>of(LOTRBarrelBoatEntity::new, MobCategory.MISC)
+                    .sized(1.0f, 1.0f)
+                    .clientTrackingRange(10));
 
     private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(
             String name, EntityType.Builder<T> builder) {

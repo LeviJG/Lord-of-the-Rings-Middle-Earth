@@ -77,6 +77,9 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
      */
     private String fellowshipName;
 
+    /** editingPlayers: who has the naming dialog open. Not saved, as in the original. */
+    private final java.util.Set<java.util.UUID> editingPlayers = new java.util.HashSet<>();
+
     public LOTRBeaconBlockEntity(BlockPos pos, BlockState state) {
         super(LOTRBlockEntities.BEACON, pos, state);
     }
@@ -102,6 +105,19 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
 
     public String getFellowshipName() {
         return fellowshipName;
+    }
+
+    public void addEditingPlayer(net.minecraft.world.entity.player.Player player) {
+        this.editingPlayers.add(player.getUUID());
+    }
+
+    /** isPlayerEditing: on the list, and (the tick's pruning) still alive. */
+    public boolean isPlayerEditing(net.minecraft.world.entity.player.Player player) {
+        return player.isAlive() && this.editingPlayers.contains(player.getUUID());
+    }
+
+    public void releaseEditingPlayer(net.minecraft.world.entity.player.Player player) {
+        this.editingPlayers.remove(player.getUUID());
     }
 
     public void setFellowshipName(String name) {

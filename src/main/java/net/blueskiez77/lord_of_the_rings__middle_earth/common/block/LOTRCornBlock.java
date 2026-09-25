@@ -5,7 +5,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.core.Direction;
 import com.mojang.serialization.MapCodec;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -111,7 +111,7 @@ public class LOTRCornBlock extends VegetationBlock implements BonemealableBlock 
             level.setBlock(pos, state.setValue(HAS_CORN, false), Block.UPDATE_ALL);
             int corns = level.getRandom().nextInt(4) == 0 ? 2 : 1;
             for (int i = 0; i < corns; i++) {
-                popResource(level, pos, new ItemStack(LOTRItems.CORN));
+                popResource(level, pos, new ItemStack(LOTRFoodItems.CORN));
             }
         }
         return InteractionResult.SUCCESS;

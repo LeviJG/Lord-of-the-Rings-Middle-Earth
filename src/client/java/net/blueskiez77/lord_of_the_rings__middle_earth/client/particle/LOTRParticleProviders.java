@@ -6,8 +6,9 @@ import net.fabricmc.fabric.api.client.particle.v1.ParticleProviderRegistry;
 
 /**
  * Client side of LOTRParticles. The sprite lists are in
- * assets/lotr/particles/, pointing at vanilla's own "effect" and "generic"
- * frames, which are the sheet cells the 1.7.10 particles drew from.
+ * assets/lotr/particles/, pointing at vanilla's own frames ("effect",
+ * "generic", "flame", "lava"), which are the sheet cells the 1.7.10 particles
+ * drew from.
  */
 public final class LOTRParticleProviders {
 
@@ -26,5 +27,9 @@ public final class LOTRParticleProviders {
                 LOTRSmokeParticle.quendite(level, x, y, z, xd, yd, zd, sprites));
         registry.register(LOTRParticles.CHILL, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
                 LOTRSmokeParticle.chill(level, x, y, z, xd, yd, zd, sprites));
+        registry.register(LOTRParticles.MARSH_FLAME, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                LOTRMarshParticle.flame(level, x, y, z, xd, yd, zd, sprites, random));
+        registry.register(LOTRParticles.MARSH_LIGHT, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                LOTRMarshParticle.light(level, x, y, z, xd, yd, zd, sprites, random));
     }
 }

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.minecraft.network.chat.Component;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData;
 
 public class LOTRFactionRelations {
     public static final Map<FactionPair, Relation> defaultMap = new HashMap<>();
@@ -37,7 +38,7 @@ public class LOTRFactionRelations {
 
     /** markDirty: saved with the world (LOTRLevelData) and sent to every player. */
     public static void markDirty() {
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData.onRelationsChanged();
+        LOTRLevelData.onRelationsChanged();
     }
 
     public static void overrideRelations(LOTRFaction f1, LOTRFaction f2, Relation relation) {

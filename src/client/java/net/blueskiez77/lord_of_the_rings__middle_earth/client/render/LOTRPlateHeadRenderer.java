@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.render;
 
 import com.mojang.math.Axis;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.world.item.BlockItem;
@@ -36,6 +36,6 @@ public final class LOTRPlateHeadRenderer {
             poseStack.translate(-0.5f, 0.0f, -0.5f);
             LOTRPlateGeometry.submit(poseStack, collector, plate.getBlock(), light);
             poseStack.popPose();
-        }, LOTRBlocks.FINE_PLATE.asItem(), LOTRBlocks.WOODEN_PLATE.asItem(), LOTRBlocks.STONEWARE_PLATE.asItem());
+        }, LOTRFoodBlocks.FINE_PLATE.asItem(), LOTRFoodBlocks.WOODEN_PLATE.asItem(), LOTRFoodBlocks.STONEWARE_PLATE.asItem());
     }
 }

@@ -1,6 +1,7 @@
 new_id,kind,name
 angmar_wall_banner,block,Banner of Angmar
 anorien_wall_banner,block,Banner of Anórien
+anvil,block,LOTR Anvil
 black_uruk_wall_banner,block,Banner of the Black Uruks
 blackroot_vale_wall_banner,block,Banner of Blackroot Vale
 blue_dalish_cracker,item,Dalish Cracker
@@ -31,16 +32,61 @@ dunland_wall_banner,block,Banner of Dunland
 durin_wall_banner,block,Banner of Durin's Folk
 ent_draught,item,Ent-draught
 esgaroth_wall_banner,block,Banner of Esgaroth
-gandalf_fireball,item,Fireball
+fallen_acacia_leaves,item,
+fallen_almond_leaves,item,
+fallen_apple_leaves,item,
+fallen_aspen_leaves,item,
+fallen_banana_leaves,item,
+fallen_baobab_leaves,item,
+fallen_beech_leaves,item,
+fallen_birch_leaves,item,
+fallen_cedar_leaves,item,
+fallen_cherry_leaves,item,
+fallen_chestnut_leaves,item,
+fallen_cypress_leaves,item,
+fallen_dark_oak_leaves,item,
+fallen_date_palm_leaves,item,
+fallen_dragon_leaves,item,
+fallen_fir_leaves,item,
+fallen_green_oak_leaves,item,
+fallen_holly_leaves,item,
+fallen_jungle_leaves,item,
+fallen_kanuka_leaves,item,
+fallen_lairelosse_leaves,item,
+fallen_larch_leaves,item,
+fallen_leaves,block,Fallen %s
+fallen_lebethron_leaves,item,
+fallen_lemon_leaves,item,
+fallen_lime_leaves,item,
+fallen_mahogany_leaves,item,
+fallen_mango_leaves,item,
+fallen_mangrove_leaves,item,
+fallen_maple_leaves,item,
+fallen_mirk_oak_leaves,item,
+fallen_mirk_oak_red_leaves,item,
+fallen_olive_leaves,item,
+fallen_orange_leaves,item,
+fallen_palm_leaves,item,
+fallen_pear_leaves,item,
+fallen_pine_leaves,item,
+fallen_plum_leaves,item,
+fallen_pomegranate_leaves,item,
+fallen_redwood_leaves,item,
+fallen_shire_pine_leaves,item,
+fallen_spruce_leaves,item,
+fallen_willow_leaves,item,
 gold_dalish_cracker,item,Dalish Cracker
 gondor_steward_wall_banner,block,Banner of the Stewards of Gondor
 gondor_wall_banner,block,Banner of Gondor
+goran_rock,block,Cargoran
 green_dalish_cracker,item,Dalish Cracker
 gulduril_mordor_ore,block,Gulduril Mordor Ore
 gundabad_wall_banner,block,Banner of Gundabad
 half_troll_wall_banner,block,Banner of the Half-trolls
 harad_gulf_wall_banner,block,Banner of the Gulf of Harad
 harad_nomad_wall_banner,block,Banner of the Southron Nomads
+hat[dyed],item,Dyed
+hat[feathered],item,Feathered
 high_elf_wall_banner,block,Banner of Lindon
 high_elven_wall_torch,block,High Elven Wall Torch
 hobbit_wall_banner,block,Banner of the Hobbits
@@ -78,7 +124,6 @@ orc_fire_bomb,block,Orc Bomb
 pelargir_wall_banner,block,Banner of Pelargir
 pinnath_gelin_wall_banner,block,Banner of Pinnath Gelin
 ranger_wall_banner,block,Banner of the Dúnedain of the North
-red_clay_ball,item,Red Clay Ball
 red_ivy,block,Red Ivy
 rhudaur_wall_banner,block,Banner of the Rhudaur Hillmen
 rhun_wall_banner,block,Banner of Rhúdel

@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "lotr:item/coast_southron_horse_armor"
-  }
-}

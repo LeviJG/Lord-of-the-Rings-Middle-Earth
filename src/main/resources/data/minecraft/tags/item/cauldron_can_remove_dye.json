@@ -1,13 +1,13 @@
 {
   "replace": false,
   "values": [
-    "lotr:leather_hat",
     "lotr:party_hat",
     "lotr:harad_turban",
     "lotr:harad_robe",
     "lotr:harad_robe_leggings",
     "lotr:harad_robe_shoes",
     "lotr:kaftan",
-    "lotr:kaftan_leggings"
+    "lotr:kaftan_leggings",
+    "lotr:feather_dyed"
   ]
 }

@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRGrapevineBlock;
 
 import net.minecraft.core.BlockPos;
@@ -32,7 +32,7 @@ public class LOTRGrapeSeedsItem extends BlockItem {
         if (context.getPlayer() != null && !context.getPlayer().mayUseItemAt(pos, context.getClickedFace(), context.getItemInHand())) {
             return InteractionResult.FAIL;
         }
-        if (!level.getBlockState(pos).is(LOTRBlocks.GRAPEVINE) || !LOTRGrapevineBlock.canPlantGrapesAt(level, pos)) {
+        if (!level.getBlockState(pos).is(LOTRDecorationBlocks.GRAPEVINE) || !LOTRGrapevineBlock.canPlantGrapesAt(level, pos)) {
             return InteractionResult.PASS;
         }
         if (!level.isClientSide()) {

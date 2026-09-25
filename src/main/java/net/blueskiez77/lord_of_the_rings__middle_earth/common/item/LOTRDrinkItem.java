@@ -26,6 +26,8 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.level.Level;
+import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock;
 
 /**
  * LOTRItemMug, for a FULL vessel: a drink.
@@ -125,14 +127,14 @@ public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
     /** onItemUse -> tryPlaceMug: set the drink down, still in its vessel. */
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        return net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock.tryPlaceMug(
+        return LOTRMugBlock.tryPlaceMug(
                 context, context.getItemInHand());
     }
 
     /** getItemStackDisplayName: on the first of April every drink is Hooch. */
     @Override
     public Component getName(ItemStack stack) {
-        return net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod.isAprilFools()
+        return LOTRMod.isAprilFools()
                 ? Component.literal("Hooch") : super.getName(stack);
     }
 

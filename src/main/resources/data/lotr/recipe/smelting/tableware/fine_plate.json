@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "category": "misc",
-  "experience": 0.3,
-  "ingredient": "lotr:stoneware_plate",
-  "result": {
-    "id": "lotr:fine_plate"
-  }
-}

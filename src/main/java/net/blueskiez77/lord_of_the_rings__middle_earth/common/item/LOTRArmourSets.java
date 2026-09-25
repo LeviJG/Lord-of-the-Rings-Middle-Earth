@@ -67,8 +67,8 @@ public final class LOTRArmourSets {
                 || missile instanceof ThrownTrident || missile instanceof LOTRThrowingAxeEntity) {
             return true;
         }
-        if (!wearingAll(entity, LOTRItems.GALVORN_HELMET, LOTRItems.GALVORN_CHESTPLATE,
-                LOTRItems.GALVORN_LEGGINGS, LOTRItems.GALVORN_BOOTS)) {
+        if (!wearingAll(entity, LOTRCombatItems.GALVORN_HELMET, LOTRCombatItems.GALVORN_CHESTPLATE,
+                LOTRCombatItems.GALVORN_LEGGINGS, LOTRCombatItems.GALVORN_BOOTS)) {
             return true;
         }
         if (entity instanceof Player) {
@@ -88,8 +88,8 @@ public final class LOTRArmourSets {
         if (!(source.getEntity() instanceof LivingEntity attacker) || source.getDirectEntity() != attacker) {
             return;
         }
-        if (!wearingAll(entity, LOTRItems.MORGUL_HELMET, LOTRItems.MORGUL_CHESTPLATE,
-                LOTRItems.MORGUL_LEGGINGS, LOTRItems.MORGUL_BOOTS)) {
+        if (!wearingAll(entity, LOTRCombatItems.MORGUL_HELMET, LOTRCombatItems.MORGUL_CHESTPLATE,
+                LOTRCombatItems.MORGUL_LEGGINGS, LOTRCombatItems.MORGUL_BOOTS)) {
             return;
         }
         ItemStack weapon = attacker.getMainHandItem();
@@ -116,8 +116,8 @@ public final class LOTRArmourSets {
             return;
         }
         speed.removeModifier(SCOUT_SPEED_ID);
-        if (wearingAll(entity, LOTRItems.WOOD_ELVEN_SCOUT_HOOD, LOTRItems.WOOD_ELVEN_SCOUT_TUNIC,
-                LOTRItems.WOOD_ELVEN_SCOUT_LEGGINGS, LOTRItems.WOOD_ELVEN_SCOUT_BOOTS)) {
+        if (wearingAll(entity, LOTRCombatItems.WOOD_ELVEN_SCOUT_HOOD, LOTRCombatItems.WOOD_ELVEN_SCOUT_TUNIC,
+                LOTRCombatItems.WOOD_ELVEN_SCOUT_LEGGINGS, LOTRCombatItems.WOOD_ELVEN_SCOUT_BOOTS)) {
             speed.addTransientModifier(SCOUT_SPEED);
         }
     }

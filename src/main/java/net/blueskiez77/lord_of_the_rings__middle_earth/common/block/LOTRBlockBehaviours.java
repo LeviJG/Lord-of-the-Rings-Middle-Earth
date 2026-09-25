@@ -32,7 +32,7 @@ public final class LOTRBlockBehaviours {
     public static void init() {
         LOTRMod.LOGGER.info("LOTR block behaviours: wiring {} logs, {} leaves, {} planks; hoe turns soil into {}",
                 LOTRBlocks.ALL_LOGS.size(), LOTRBlocks.ALL_LEAVES.size(), LOTRBlocks.ALL_PLANKS.size(),
-                LOTRBlocks.MUD_FARMLAND);
+                LOTRBuildingBlocks.MUD_FARMLAND);
 
         FlammableBlockRegistry fire = FlammableBlockRegistry.getDefaultInstance();
 
@@ -47,8 +47,8 @@ public final class LOTRBlockBehaviours {
         // ALL_FLOWERS also holds plants the original did not class as flowers
         // or grass (LOTRBlockReed, LOTRBlockCorn, LOTRBlockGrapevine,
         // LOTRBlockFangornRiverweed); load() gave those no fire info at all.
-        List<Block> notFlowers = List.of(LOTRBlocks.REEDS, LOTRBlocks.DRIED_REEDS,
-                LOTRBlocks.CORN_STALK, LOTRBlocks.GRAPEVINE, LOTRBlocks.FANGORN_RIVERWEED);
+        List<Block> notFlowers = List.of(LOTRDecorationBlocks.REEDS, LOTRDecorationBlocks.DRIED_REEDS,
+                LOTRDecorationBlocks.CORN_STALK, LOTRDecorationBlocks.GRAPEVINE, LOTRDecorationBlocks.FANGORN_RIVERWEED);
         LOTRBlocks.ALL_FLOWERS.stream().filter(b -> !notFlowers.contains(b))
                 .forEach(b -> fire.add(b, 60, 100));
         LOTRBlocks.ALL_DOUBLE_FLOWERS.forEach(b -> fire.add(b, 60, 100));
@@ -56,14 +56,14 @@ public final class LOTRBlockBehaviours {
         LOTRBlocks.ALL_VINES.forEach(b -> fire.add(b, 15, 100));
 
         // LOTRBlockWoodBars.
-        List.of(LOTRBlocks.GALADHRIM_WOOD_BARS, LOTRBlocks.HIGH_ELF_WOOD_BARS, LOTRBlocks.WOOD_ELF_WOOD_BARS)
+        List.of(LOTRDecorationBlocks.GALADHRIM_WOOD_BARS, LOTRDecorationBlocks.HIGH_ELF_WOOD_BARS, LOTRDecorationBlocks.WOOD_ELF_WOOD_BARS)
                 .forEach(b -> fire.add(b, 5, 20));
 
         // LOTRBlockMordorMoss, alongside the grasses (Mordor grass is in ALL_FLOWERS).
-        fire.add(LOTRBlocks.MORDOR_MOSS, 60, 100);
+        fire.add(LOTRDecorationBlocks.MORDOR_MOSS, 60, 100);
 
         // LOTRBlockDaub.
-        fire.add(LOTRBlocks.DAUB, 40, 40);
+        fire.add(LOTRBuildingBlocks.DAUB, 40, 40);
 
         // Wooden slabs and stairs only -- the originals tested for Material.wood.
         LOTRBlocks.SLAB_BASE.forEach((slab, base) -> {
@@ -80,10 +80,10 @@ public final class LOTRBlockBehaviours {
         // Thatch burns readily but spreads poorly -- 60/20, not 60/100.
         // Also LOTRBlockReedBars, and the slabs and stairs of Material.grass,
         // which are the thatch ones.
-        List.of(LOTRBlocks.THATCH_THATCH, LOTRBlocks.THATCH_REED, LOTRBlocks.THATCH_FLOOR,
-                        LOTRBlocks.REED_BARS,
-                        LOTRBlocks.THATCH_THATCH_SLAB, LOTRBlocks.THATCH_REED_SLAB,
-                        LOTRBlocks.THATCH_THATCH_STAIRS, LOTRBlocks.THATCH_REED_STAIRS)
+        List.of(LOTRBuildingBlocks.THATCH_THATCH, LOTRBuildingBlocks.THATCH_REED, LOTRDecorationBlocks.THATCH_FLOOR,
+                        LOTRDecorationBlocks.REED_BARS,
+                        LOTRBuildingBlocks.THATCH_THATCH_SLAB, LOTRBuildingBlocks.THATCH_REED_SLAB,
+                        LOTRBuildingBlocks.THATCH_THATCH_STAIRS, LOTRBuildingBlocks.THATCH_REED_STAIRS)
                 .forEach(b -> fire.add(b, 60, 20));
 
         // Hoe: soil -> farmland. Without this there is no way to make farmland
@@ -91,16 +91,16 @@ public final class LOTRBlockBehaviours {
         // top -- except that a grapevine does not count: LOTREventHandler's
         // onUseHoe set LOTRBlockGrapevine.hoeing so the vine above reported
         // itself as air, letting you till the soil a vineyard stands in.
-        TillableBlockRegistry.register(LOTRBlocks.MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
-                LOTRBlocks.MUD_FARMLAND.defaultBlockState());
-        TillableBlockRegistry.register(LOTRBlocks.BARREN_JUNGLE_MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
-                LOTRBlocks.MUD_FARMLAND.defaultBlockState());
-        TillableBlockRegistry.register(LOTRBlocks.MUD_GRASS, LOTRBlockBehaviours::airOrGrapevineAbove,
-                LOTRBlocks.MUD_FARMLAND.defaultBlockState());
+        TillableBlockRegistry.register(LOTRBuildingBlocks.MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
+                LOTRBuildingBlocks.MUD_FARMLAND.defaultBlockState());
+        TillableBlockRegistry.register(LOTRBuildingBlocks.BARREN_JUNGLE_MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
+                LOTRBuildingBlocks.MUD_FARMLAND.defaultBlockState());
+        TillableBlockRegistry.register(LOTRBuildingBlocks.MUD_GRASS, LOTRBlockBehaviours::airOrGrapevineAbove,
+                LOTRBuildingBlocks.MUD_FARMLAND.defaultBlockState());
 
         // Paths hoe back into farmland, as vanilla dirt path does.
-        TillableBlockRegistry.register(LOTRBlocks.DIRT_PATH_MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
-                LOTRBlocks.MUD_FARMLAND.defaultBlockState());
+        TillableBlockRegistry.register(LOTRBuildingBlocks.DIRT_PATH_MUD, LOTRBlockBehaviours::airOrGrapevineAbove,
+                LOTRBuildingBlocks.MUD_FARMLAND.defaultBlockState());
 
         // The same grapevine allowance for vanilla's own tillable soils, which
         // otherwise keep vanilla's rule (HoeItem.onlyIfAirAbove).
@@ -110,8 +110,8 @@ public final class LOTRBlockBehaviours {
         }
 
         // Shovel: grass-like -> path, matching what vanilla does to grass.
-        FlattenableBlockRegistry.register(LOTRBlocks.MUD_GRASS, LOTRBlocks.DIRT_PATH_MUD.defaultBlockState());
-        FlattenableBlockRegistry.register(LOTRBlocks.MUD, LOTRBlocks.DIRT_PATH_MUD.defaultBlockState());
+        FlattenableBlockRegistry.register(LOTRBuildingBlocks.MUD_GRASS, LOTRBuildingBlocks.DIRT_PATH_MUD.defaultBlockState());
+        FlattenableBlockRegistry.register(LOTRBuildingBlocks.MUD, LOTRBuildingBlocks.DIRT_PATH_MUD.defaultBlockState());
 
         composting();
         fuel();
@@ -127,7 +127,7 @@ public final class LOTRBlockBehaviours {
         LOTRBlocks.ALL_BUSHES.forEach(b -> CompostableRegistry.INSTANCE.add(b, 0.3F));
         LOTRBlocks.ALL_VINES.forEach(b -> CompostableRegistry.INSTANCE.add(b, 0.5F));
         LOTRBlocks.ALL_FLOWERS.forEach(b -> CompostableRegistry.INSTANCE.add(b, 0.65F));
-        List.of(LOTRBlocks.THATCH_THATCH, LOTRBlocks.THATCH_REED, LOTRBlocks.THATCH_FLOOR)
+        List.of(LOTRBuildingBlocks.THATCH_THATCH, LOTRBuildingBlocks.THATCH_REED, LOTRDecorationBlocks.THATCH_FLOOR)
                 .forEach(b -> CompostableRegistry.INSTANCE.add(b, 0.85F));
     }
 
@@ -176,7 +176,7 @@ public final class LOTRBlockBehaviours {
         }
         BlockState above = context.getLevel().getBlockState(context.getClickedPos().above());
         return context.getClickedFace() != Direction.DOWN
-                && (above.is(LOTRBlocks.GRAPEVINE) || above.getBlock() instanceof LOTRGrapevineBlock);
+                && (above.is(LOTRDecorationBlocks.GRAPEVINE) || above.getBlock() instanceof LOTRGrapevineBlock);
     }
 
     private static boolean isWood(Block base) {

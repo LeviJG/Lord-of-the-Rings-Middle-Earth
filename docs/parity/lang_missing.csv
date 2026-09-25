@@ -27,8 +27,6 @@ tile.lotr,tile.lotr.fenceVanilla.3.name,Jungle Fence
 tile.lotr,tile.lotr.fenceVanilla.4.name,Acacia Fence
 tile.lotr,tile.lotr.fenceVanilla.5.name,Dark Oak Fence
 tile.lotr,tile.lotr.fallenLeaves,Fallen %s
-tile.lotr,tile.lotr.kebabStand.meats,%d meat
-tile.lotr,tile.lotr.kebabStand.cooked,Cooked
 item.lotr,item.lotr.crossbow.loaded,%s (Loaded)
 item.lotr,item.lotr.crossbow.loadedItem,Loaded with: %s
 item.lotr,item.lotr.hat.dyed,Dyed
@@ -41,9 +39,6 @@ item.lotr,item.lotr.redBook.activeQuests,%d active quests
 item.lotr,item.lotr.haradRobes.dyed,Dyed
 item.lotr,item.lotr.haradRobes.ornament,Ornament
 item.lotr,item.lotr.brandingIron.unnamed,Unnamed %s
-item.lotr,item.lotr.generic.currentOwner,Belongs to: %s
-item.lotr,item.lotr.generic.previousOwner,Belonged to: %s
-item.lotr,item.lotr.generic.previousOwnerList,Belonged to:
 item.lotr,item.lotr.generic.stolen,§c§lSTOLEN§r§c from: %s!
 item.lotr,item.lotr.generic.stolenWanted,§c%s wants this
 item.lotr,item.lotr.generic.squadron,Company: %s
@@ -77,25 +72,10 @@ lotr.enchant,lotr.enchant.baneTroll,Trollbane
 lotr.enchant,lotr.enchant.baneTroll.desc,%s melee damage vs. Trolls
 lotr.enchant,lotr.enchant.baneTroll.earn,"Your %s has claimed the lives of many Trolls, and it shall be their bane evermore!"
 lotr.enchant,lotr.enchant.baneTroll.earnName,"%s's %s has claimed the lives of many Trolls, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneSpider.earn,"Your %s has claimed the lives of many Spiders, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneSpider.earnName,"%s's %s has claimed the lives of many Spiders, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneWight.earn,"Your %s has claimed the lives of many Wights, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneWight.earnName,"%s's %s has claimed the lives of many Wights, and it shall be their bane evermore!"
 lotr.enchant,lotr.enchant.baneWraith,Wraithbane
 lotr.enchant,lotr.enchant.baneWraith.desc,Slays Marsh Wraiths
 lotr.enchant,lotr.enchant.break1,Brittle
 lotr.enchant,lotr.enchant.break2,Shoddy
-lotr.enchant,lotr.enchant.protectMithril,True
-lotr.enchant,lotr.enchant.protectMithril.desc,%s protection vs. polearms
-lotr.enchant,lotr.enchant.fire,Infernal
-lotr.enchant,lotr.enchant.fire.desc.melee,Sets targets aflame
-lotr.enchant,lotr.enchant.fire.desc.ranged,Shoots flaming projectiles
-lotr.enchant,lotr.enchant.chill,Chilling
-lotr.enchant,lotr.enchant.chill.desc.melee,Chills targets
-lotr.enchant,lotr.enchant.chill.desc.ranged,Shoots chilling projectiles
-lotr.enchant,lotr.enchant.headhunting,Headhunting
-lotr.enchant,lotr.enchant.headhunting.desc.melee,Drops player heads
-lotr.enchant,lotr.enchant.headhunting.desc.ranged,Drops player heads
 lotr.creativetab,lotr.creativetab.blocks,Middle-earth Blocks
 lotr.creativetab,lotr.creativetab.util,Middle-earth Utilities
 lotr.creativetab,lotr.creativetab.decorations,Middle-earth Decorations
@@ -120,12 +100,6 @@ container.lotr,container.lotr.crafting.gulf,Gulfen Crafting
 container.lotr,container.lotr.crafting.bree,Bree-land Crafting
 container.lotr,container.lotr.armorStand,Armor Stand
 container.lotr,container.lotr.dartTrap,Dart Trap
-container.lotr,container.lotr.anvil,Anvil
-container.lotr,container.lotr.anvil.cost,Material Cost: %d
-container.lotr,container.lotr.anvil.reforge,Reforge
-container.lotr,container.lotr.anvil.reforgeCost,Reforge Cost: %d
-container.lotr,container.lotr.anvil.engraveOwner,Engrave Ownership
-container.lotr,container.lotr.anvil.engraveOwnerCost,Engrave Cost: %d
 container.lotr,container.lotr.smith,Smith
 container.lotr,container.lotr.smith.cost,Coin Cost: %d
 container.lotr,container.lotr.bookshelf,Bookshelf
@@ -303,23 +277,16 @@ lotr.gui,lotr.gui.factions.relationHeader,%s:
 lotr.gui,lotr.gui.factions.list,• %s
 lotr.gui,lotr.gui.factions.rankHeader,Ranks:
 lotr.gui,lotr.gui.factions.listRank,• %s (%s)
-lotr.gui,lotr.gui.factions.rank?,???
 lotr.gui,lotr.gui.factions.viewMap,View areas of influence on the map
-lotr.gui,lotr.gui.factions.pledge,Pledge Service
 lotr.gui,lotr.gui.factions.pledgeReq,(requires %s alignment)
 lotr.gui,lotr.gui.factions.pledgeDesc1,"Pledging service to %s will earn their friendship and grant you many special benefits, including the ability to engage in conquest."
 lotr.gui,lotr.gui.factions.pledgeDesc2,"If you choose to make this pledge, you may break it at any time - but doing so will incur a large penalty."
-lotr.gui,lotr.gui.factions.pledged,Pledged!
 lotr.gui,lotr.gui.factions.pledgeBreakCooldown,"You cannot pledge service to %1$s, because the world has not yet forgotten your broken pledge to %2$s."
-lotr.gui,lotr.gui.factions.pledgeUnknown,???
 lotr.gui,lotr.gui.factions.pledgeEnemies,You cannot pledge service to %s while you maintain good relations with their mortal enemies. (%s)
 lotr.gui,lotr.gui.factions.enemies1,%s
 lotr.gui,lotr.gui.factions.enemies2,"%s, %s"
 lotr.gui,lotr.gui.factions.enemies3,"%s, %s, %s"
 lotr.gui,lotr.gui.factions.enemies3+,"%s, %s, %s, and %d more..."
-lotr.gui,lotr.gui.factions.unpledge,Break Pledge
-lotr.gui,lotr.gui.factions.unpledgeDesc1,Are you sure you wish to break your pledge to %s?
-lotr.gui,lotr.gui.factions.unpledgeDesc2,"You will incur a large alignment penalty, and be unable to make another pledge for some time."
 lotr.gui,lotr.gui.factions.pledgeLocked,You cannot earn above %1$s alignment because of your pledge to %2$s
 lotr.gui,lotr.gui.factions.warCrimesYes,This faction encourages war crimes (the killing of peaceful enemy civilians)
 lotr.gui,lotr.gui.factions.warCrimesNo,This faction does not encourage war crimes (the killing of peaceful enemy civilians)
@@ -614,7 +581,6 @@ lotr.title,lotr.title.drinkSkull,Sick Joker
 lotr.title,lotr.title.zookeeper,Zookeeper
 lotr.title,lotr.title.killEnt,Ent Slayer
 lotr.title,lotr.title.saltedFlesh,Suspicious...
-lotr.title,lotr.title.pickpocket,Pickpocket
 lotr.title,lotr.title.killBarrowWight,Wight Slayer
 lotr.title,lotr.title.stealGrapes,Grape Stealer
 lotr.title,lotr.title.gondorRenegade,Renegade
@@ -1319,7 +1285,6 @@ entity.lotr,entity.lotr.Gollum.name,Gollum
 entity.lotr,entity.lotr.Saruman.name,Saruman
 entity.lotr,entity.lotr.Gandalf.name,Grey Wanderer
 entity.lotr,entity.lotr.Portal.name,Ring Portal
-entity.lotr,entity.lotr.SmokeRing.name,Smoke Ring
 entity.lotr,entity.lotr.GandalfFireball.name,Gandalf Fireball
 entity.lotr,entity.lotr.Spear.name,Spear
 entity.lotr,entity.lotr.WargRug.name,Wargskin Rug
@@ -1951,12 +1916,7 @@ lotr.structure,lotr.structure.HalfTrollHouse.name,Half-troll House
 lotr.structure,lotr.structure.HalfTrollWarlordHouse.name,Half-troll Warlord House
 chat.lotr,chat.lotr.update,%s Update available! (%s)
 chat.lotr,chat.lotr.achievement,%s has just earned the %s achievement %s
-chat.lotr,chat.lotr.unpledge,You have broken your pledge to %s!
-chat.lotr,chat.lotr.autoUnpledge,"%s have lost faith in you, and your pledge has been broken!"
-chat.lotr,chat.lotr.pledgeKillWarn,Beware! Your actions risk breaking your pledge to %s!
-chat.lotr,chat.lotr.pledgeBreakCooldown,"Time has passed, and the world has forgotten your broken pledge to %s"
 chat.lotr,chat.lotr.loseTitle,You are no longer able to bear the title of %s
-chat.lotr,chat.lotr.requireMiniQuest,You must complete a %s mini-quest to perform this action
 chat.lotr,chat.lotr.allowStructures,You have been allowed to spawn structures
 chat.lotr,chat.lotr.banStructures,You have been banned from spawning structures
 chat.lotr,chat.lotr.spawnStructure.disabled,Structure spawning is disabled on this server
@@ -1987,7 +1947,6 @@ chat.lotr,chat.lotr.pickpocket.success,You stole %d %s from %s!
 chat.lotr,chat.lotr.pickpocket.noticed,%s noticed!
 chat.lotr,chat.lotr.pickpocket.otherNoticed,A nearby %s noticed!
 commands.lotr,commands.lotr.alignment.usage,/alignment <set|add> <faction|all> <amount> [player]
-commands.lotr,commands.lotr.alignment.noFaction,No faction for name %s
 commands.lotr,commands.lotr.alignment.tooLow,Cannot set alignment lower than %d
 commands.lotr,commands.lotr.alignment.tooHigh,Cannot set alignment higher than %d
 commands.lotr,commands.lotr.alignment.set,Set %s's %s alignment to %d
@@ -2070,8 +2029,6 @@ commands.lotr,commands.lotr.fmsg.bind,"Bound Fellowship ""%s"""
 commands.lotr,commands.lotr.fmsg.unbind,"Unbound Fellowship ""%s"""
 commands.lotr,commands.lotr.fmsg.fsPrefix,[%s]
 commands.lotr,commands.lotr.alignmentZones.usage,/alignmentZones <enable|disable>
-commands.lotr,commands.lotr.alignmentZones.enable,Enabled the alignment areas of influence mechanic
-commands.lotr,commands.lotr.alignmentZones.disable,Disabled the alignment areas of influence mechanic
 commands.lotr,commands.lotr.lotrEnchant.usage,/lotrEnchant <player> <add|remove> <enchantment> OR /lotrEnchant <player> clear
 commands.lotr,commands.lotr.lotrEnchant.unknown,No enchantment with name %s
 commands.lotr,commands.lotr.lotrEnchant.noItem,Cannot enchant an empty slot
@@ -2086,15 +2043,10 @@ commands.lotr,commands.lotr.spawnDamping.noType,No creature type exists for %s
 commands.lotr,commands.lotr.spawnDamping.reset,Reset all spawn damping settings
 commands.lotr,commands.lotr.spawnDamping.calc,World %d (%s): Spawn damping for type %s is %d. %d players in world. Spawn cap (per %d chunks) is reduced to %d from base of %d. Spawn cap x players = %d.
 commands.lotr,commands.lotr.facRelations.usage,/facRelations set <faction 1> <faction 2> <relation> OR /facRelations reset
-commands.lotr,commands.lotr.facRelations.set,Updated relations between %s and %s to: %s
-commands.lotr,commands.lotr.facRelations.noRelation,No relation type for name %s
-commands.lotr,commands.lotr.facRelations.error,Faction relations error: %s
-commands.lotr,commands.lotr.facRelations.reset,Reset all faction relations to default
 commands.lotr,commands.lotr.pledgeCooldown.usage,/pledgeCooldown <ticks> [player]
 commands.lotr,commands.lotr.pledgeCooldown.set,Set %s's pledge cooldown to %d ticks (%s)
 commands.lotr,commands.lotr.conquest.usage,/conquest <set|add|radial> <faction> <amount> [x] [z] OR /conquest clear [x] [z] OR /conquest rate [value]
 commands.lotr,commands.lotr.conquest.notEnabled,Conquest is not enabled in this world
-commands.lotr,commands.lotr.conquest.noFaction,No faction for name %s
 commands.lotr,commands.lotr.conquest.outOfBounds,"Coordinates (%d, %d) are outside the bounds of the conquest map"
 commands.lotr,commands.lotr.conquest.tooLow,Cannot set conquest lower than %d
 commands.lotr,commands.lotr.conquest.tooHigh,Cannot set conquest higher than %d
@@ -2114,17 +2066,6 @@ commands.lotr,commands.lotr.invasion.noType,No invasion type for name %s
 commands.lotr,commands.lotr.invasion.start,"Started %s invasion (size %d) at %d, %d, %d"
 lotr.alignment,lotr.alignment.decimal_separator_char,.
 lotr.alignment,lotr.alignment.group_separator_char,","
-lotr.alignment,lotr.alignment.marriage,Performed Marriage
-lotr.alignment,lotr.alignment.cutFangornTree,Tree Cruelty
-lotr.alignment,lotr.alignment.killRohanHorse,Horse Murder
-lotr.alignment,lotr.alignment.vineyardSteal,Vineyard Theft
-lotr.alignment,lotr.alignment.pickpocket,Pickpocket
-lotr.alignment,lotr.alignment.miniQuest,Mini-Quest Complete!
-lotr.alignment,lotr.alignment.bountyKilled,Slain for Bounty!
-lotr.alignment,lotr.alignment.killedHunter,Bounty Hunter
-lotr.alignment,lotr.alignment.killedByBounty,Slain by Target!
-lotr.alignment,lotr.alignment.breakPledge,Pledge Broken
-lotr.alignment,lotr.alignment.invasionDefeat,Invasion Defeated
 lotr.achievement,lotr.achievement.category.GENERAL,General
 lotr.achievement,lotr.achievement.category.SHIRE,The Shire
 lotr.achievement,lotr.achievement.category.ERIADOR,Eriador

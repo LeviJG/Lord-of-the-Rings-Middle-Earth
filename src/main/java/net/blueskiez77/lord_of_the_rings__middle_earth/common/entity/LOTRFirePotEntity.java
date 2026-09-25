@@ -3,9 +3,9 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRKhamulsFireJarBlock;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 
@@ -33,9 +33,8 @@ import net.minecraft.world.phys.HitResult;
  * on one of Khamul's fire jars sets the jar off. Then it smashes -- shards of
  * the jar's own texture and a puff of flame and smoke.
  *
- * <p>NOT ported: the achievement for downing a bird in flight, and the
- * plate-breaking sound, which the port has no sound event for; a decorated
- * pot's shatter stands in for it.
+ * <p>NOT ported: the achievement for downing a bird in flight (tracked for
+ * D7).
  */
 public class LOTRFirePotEntity extends ThrowableItemProjectile {
 
@@ -65,7 +64,7 @@ public class LOTRFirePotEntity extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return LOTRItems.RHUNIC_FIRE_POT;
+        return LOTRCombatItems.RHUNIC_FIRE_POT;
     }
 
     @Override
@@ -115,7 +114,7 @@ public class LOTRFirePotEntity extends ThrowableItemProjectile {
             return;
         }
         BlockParticleOption shards = new BlockParticleOption(ParticleTypes.BLOCK,
-                LOTRBlocks.KHAMULS_FIRE_JAR.defaultBlockState());
+                LOTRCombatBlocks.KHAMULS_FIRE_JAR.defaultBlockState());
         for (int i = 0; i < 8; i++) {
             level().addParticle(shards,
                     getX() + Mth.randomBetween(this.random, -0.25f, 0.25f),

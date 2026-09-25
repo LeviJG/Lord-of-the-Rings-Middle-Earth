@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.Blocks;
  * crystal shards; without it, a puff of smoke and the alignment message. The
  * outcome is decided on the server, which holds the alignment.
  *
- * <p>NOT ported: the anvil name colour (dark aqua) the item gave a renamed item.
+ * <p>In the LOTR anvil it colours a renamed item's name (LOTRAnvilMenu.nameColour).
  */
 public class LOTRQuenditeCrystalItem extends Item {
     public LOTRQuenditeCrystalItem(Properties properties) {
@@ -46,7 +46,7 @@ public class LOTRQuenditeCrystalItem extends Item {
             double z = pos.getZ() + 0.5;
             if (LOTRPlayerAlignments.getAlignment(player, LOTRFaction.LOTHLORIEN) >= 1.0f
                     || LOTRPlayerAlignments.getAlignment(player, LOTRFaction.HIGH_ELF) >= 1.0f) {
-                level.setBlock(pos, LOTRBlocks.QUENDITE_GRASS.defaultBlockState(), Block.UPDATE_ALL);
+                level.setBlock(pos, LOTRBuildingBlocks.QUENDITE_GRASS.defaultBlockState(), Block.UPDATE_ALL);
                 stack.shrink(1);
                 level.sendParticles(new ItemParticleOption(ParticleTypes.ITEM, this),
                         x, pos.getY() + 1.5, z, 8, 0.25, 0.0, 0.25, 0.0);

@@ -91,10 +91,10 @@ public class LOTRCrossbowItem extends CrossbowItem {
     }
 
     /**
-     * It carries the durability modifiers, the same as a bow does: the
-     * original's LOTREnchantmentType.BREAKABLE was simply "it wears out", and
-     * LOTRItemCrossbow extended ItemBow. The melee families have nothing to act
-     * on here and the ranged ones are not ported.
+     * It carries the ranged and durability modifiers, the same as a bow does:
+     * the original's LOTREnchantmentType.BREAKABLE was simply "it wears out",
+     * and LOTRItemCrossbow extended ItemBow. The melee families have nothing to
+     * act on here.
      */
 
     @Override

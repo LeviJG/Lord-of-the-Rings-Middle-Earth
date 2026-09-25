@@ -60,7 +60,7 @@ public class LOTRBossTrophyRenderer
         this.troll = new LOTRTrollModel(
                 LOTRTrollModel.createLayer(0.0f).bakeRoot(), LOTRTrollModel.Piece.ALL);
         this.entTrunk = new LOTREntTrunkModel(LOTREntTrunkModel.createLayer().bakeRoot());
-        this.shadowRadius = 0.5f;
+        // No shadow: LOTRRenderBossTrophy left Render's shadowSize at 0.
     }
 
     @Override

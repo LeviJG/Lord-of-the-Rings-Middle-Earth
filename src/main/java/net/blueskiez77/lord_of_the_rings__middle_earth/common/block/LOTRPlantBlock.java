@@ -226,7 +226,7 @@ public class LOTRPlantBlock extends VegetationBlock {
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
         super.animateTick(state, level, pos, random);
-        if (this == LOTRBlocks.PIPEWEED_PLANT) {
+        if (this == LOTRDecorationBlocks.PIPEWEED_PLANT) {
             pipeweedSmoke(level, pos, random);
         }
     }

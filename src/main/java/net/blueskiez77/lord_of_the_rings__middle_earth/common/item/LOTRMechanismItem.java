@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
@@ -43,7 +43,7 @@ public class LOTRMechanismItem extends Item {
         }
         if (!level.isClientSide()) {
             // The original set the powered bit as it placed the rail.
-            BlockState mechanised = LOTRBlocks.MECHANISED_RAIL.defaultBlockState()
+            BlockState mechanised = LOTRUtilityBlocks.MECHANISED_RAIL.defaultBlockState()
                     .setValue(PoweredRailBlock.SHAPE, shape)
                     .setValue(PoweredRailBlock.POWERED, true);
             level.setBlock(pos, mechanised, Block.UPDATE_ALL);

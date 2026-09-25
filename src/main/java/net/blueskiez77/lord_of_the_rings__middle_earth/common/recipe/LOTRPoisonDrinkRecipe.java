@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe;
 
 import com.mojang.serialization.MapCodec;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPoisonedDrinks;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -10,6 +10,7 @@ import net.minecraft.world.item.crafting.CraftingInput;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem;
 
 /**
  * LOTRRecipesPoisonDrinks: one full drink and one bottle of poison, alone in
@@ -18,7 +19,7 @@ import net.minecraft.world.level.Level;
  *
  * <p>The original dug the crafting player out of the grid by reflection to
  * record them as the poisoner. A recipe cannot see the player here, so
- * {@link net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem#onCraftedBy}
+ * {@link LOTRDrinkItem#onCraftedBy}
  * records them instead as the result is taken.
  */
 public class LOTRPoisonDrinkRecipe extends CustomRecipe {
@@ -65,7 +66,7 @@ public class LOTRPoisonDrinkRecipe extends CustomRecipe {
                 drink = stack;
                 continue;
             }
-            if (stack.is(LOTRItems.BOTTLE_OF_POISON)) {
+            if (stack.is(LOTRMiscItems.BOTTLE_OF_POISON)) {
                 if (poison) {
                     return ItemStack.EMPTY;
                 }

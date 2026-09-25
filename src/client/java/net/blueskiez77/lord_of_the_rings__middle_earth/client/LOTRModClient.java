@@ -66,6 +66,25 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 
 import java.util.List;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRAnvilScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBarrelScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCarvedSignEditScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRDaleCrackerScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.particle.LOTRParticleProviders;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRCarvedSignRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRGandalfFireballRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMugRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateEntityRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateHeadRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSmokeRingRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTROpenSignEditorPayload;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRFallenLeavesPlugin;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRHatFeatherTint;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRBarrelBoatRenderer;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 
 public class LOTRModClient implements ClientModInitializer {
     @Override
@@ -73,7 +92,9 @@ public class LOTRModClient implements ClientModInitializer {
         LOTRMod.LOGGER.info("LOTR client initializing...");
 
         LOTRConnectedBorderPlugin.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.client.particle.LOTRParticleProviders.init();
+        LOTRFallenLeavesPlugin.init();
+        LOTRHatFeatherTint.init();
+        LOTRParticleProviders.init();
 
         // lotr:sneaking and lotr:swinging, which the pikes' item models pose by.
         LOTRItemModelProperties.init();
@@ -100,12 +121,12 @@ public class LOTRModClient implements ClientModInitializer {
             }
             // LOTRItemOwnership, engraved at the LOTR anvil: the owner, then up
             // to three previous owners in italics.
-            String owner = net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership.getCurrentOwner(stack);
+            String owner = LOTRItemOwnership.getCurrentOwner(stack);
             if (owner != null) {
                 lines.add(Component.empty());
                 lines.add(Component.translatable("item.lotr.generic.currentOwner", owner));
             }
-            List<String> previous = net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership.getPreviousOwners(stack);
+            List<String> previous = LOTRItemOwnership.getPreviousOwners(stack);
             if (!previous.isEmpty()) {
                 lines.add(Component.empty());
                 if (previous.size() == 1) {
@@ -189,7 +210,7 @@ public class LOTRModClient implements ClientModInitializer {
         // A thrown axe draws its own item sprite, tumbling.
         EntityRenderers.register(LOTREntities.THROWING_AXE, LOTRThrowingAxeRenderer::new);
         EntityRenderers.register(LOTREntities.SMOKE_RING,
-                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSmokeRingRenderer::new);
+                LOTRSmokeRingRenderer::new);
 
         // And a bolt is drawn exactly as an arrow is; see LOTRCrossbowBoltRenderer.
         EntityRenderers.register(LOTREntities.CROSSBOW_BOLT, LOTRCrossbowBoltRenderer::new);
@@ -212,8 +233,11 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.CONKER, ThrownItemRenderer::new);
         EntityRenderers.register(LOTREntities.EXPLODING_TERMITE, ThrownItemRenderer::new);
         EntityRenderers.register(LOTREntities.MYSTERY_WEB, ThrownItemRenderer::new);
+        EntityRenderers.register(LOTREntities.BARREL, LOTRBarrelBoatRenderer::new);
+        EntityRenderers.register(LOTREntities.FALLING_TREASURE,
+                FallingBlockRenderer::new);
         EntityRenderers.register(LOTREntities.GANDALF_FIREBALL,
-                context -> new ThrownItemRenderer<>(context, 2.0F, true));
+                LOTRGandalfFireballRenderer::new);
 
         // A plain Horn of Command opens its selection screen instead of being
         // blown. Opened client-side, the way the beacon's naming dialog is, so
@@ -221,7 +245,8 @@ public class LOTRModClient implements ClientModInitializer {
         // back as LOTRHornModePayload.
         UseItemCallback.EVENT.register((player, level, hand) -> {
             ItemStack held = player.getItemInHand(hand);
-            if (level.isClientSide()
+            // Main hand only: the choice is applied to the main-hand item.
+            if (level.isClientSide() && hand == net.minecraft.world.InteractionHand.MAIN_HAND
                     && held.getItem() instanceof LOTRCommandHornItem
                     && LOTRCommandHornItem.getMode(held) == LOTRCommandHornItem.Mode.SELECT) {
                 Minecraft.getInstance().setScreenAndShow(new LOTRHornSelectScreen(held));
@@ -233,41 +258,41 @@ public class LOTRModClient implements ClientModInitializer {
         // tabFood's blocks that draw more than a model can: a drink set down in
         // its vessel, and the food piled on a plate.
         BlockEntityRenderers.register(LOTRBlockEntities.MUG,
-                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMugRenderer::new);
+                LOTRMugRenderer::new);
         BlockEntityRenderers.register(LOTRBlockEntities.PLATE,
-                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateRenderer::new);
+                LOTRPlateRenderer::new);
         // A thrown plate, drawn as the plate itself, spinning.
         EntityRenderers.register(LOTREntities.PLATE,
-                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateEntityRenderer::new);
+                LOTRPlateEntityRenderer::new);
         // A plate worn in the helmet slot.
-        net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateHeadRenderer.init();
+        LOTRPlateHeadRenderer.init();
         // LOTRTickHandlerClient: nausea drags the view about.
         LOTRDrunkCamera.init();
         LOTRClientFactionState.init();
 
         // Carved signs: the lettering in the world, and the screen a chisel opens.
         BlockEntityRenderers.register(LOTRBlockEntities.CARVED_SIGN,
-                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRCarvedSignRenderer::new);
+                LOTRCarvedSignRenderer::new);
         net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(
-                net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTROpenSignEditorPayload.TYPE, (payload, context) ->
+                LOTROpenSignEditorPayload.TYPE, (payload, context) ->
                         context.client().execute(() -> {
                             Minecraft client = context.client();
                             if (client.level != null && client.level.getBlockEntity(payload.pos())
-                                    instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity sign) {
-                                client.setScreenAndShow(new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCarvedSignEditScreen(sign));
+                                    instanceof LOTRCarvedSignBlockEntity sign) {
+                                client.setScreenAndShow(new LOTRCarvedSignEditScreen(sign));
                             }
                         }));
 
         MenuScreens.register(LOTRMenus.BARREL,
-                net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBarrelScreen::new);
+                LOTRBarrelScreen::new);
         MenuScreens.register(LOTRMenus.FORGE, LOTRForgeScreen::new);
         MenuScreens.register(LOTRMenus.HOBBIT_OVEN, LOTRHobbitOvenScreen::new);
         MenuScreens.register(LOTRMenus.UNSMELTERY, LOTRUnsmelteryScreen::new);
         MenuScreens.register(LOTRMenus.MILLSTONE, LOTRMillstoneScreen::new);
         MenuScreens.register(LOTRMenus.ANVIL,
-                net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRAnvilScreen::new);
+                LOTRAnvilScreen::new);
         MenuScreens.register(LOTRMenus.DALE_CRACKER,
-                net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRDaleCrackerScreen::new);
+                LOTRDaleCrackerScreen::new);
 
         for (LOTRCraftingTable table : LOTRCraftingTable.values()) {
             MenuScreens.register(LOTRMenus.forTable(table), LOTRCraftingScreen::new);

@@ -468,7 +468,7 @@ createDolAmrothRecipes,dol_amroth,longspearDolAmroth,lotr:dol_amroth_longspear,p
 createDolAmrothRecipes,dol_amroth,bodyDolAmrothGambeson,lotr:dol_amroth_gambeson,present,
 createDolAmrothRecipes,dol_amroth,legsDolAmrothGambeson,lotr:dol_amroth_chaps,present,
 createDolAmrothRecipes,dol_amroth,gondorBow,lotr:gondor_bow,present,
-createDolAmrothRecipes,dol_amroth,brick4/6,lotr:carved_black_gondor_brick,missing,
+createDolAmrothRecipes,dol_amroth,brick4/6,lotr:carved_black_gondor_brick,present,
 createDolGuldurRecipes,dol_guldur,brick2/8,lotr:dol_guldur_brick,present,
 createDolGuldurRecipes,dol_guldur,dolGuldurTable,lotr:dol_guldur_crafting_table,present,
 createDolGuldurRecipes,dol_guldur,slabSingle4/5,lotr:dol_guldur_brick_slab,present,
@@ -743,7 +743,7 @@ createGondorianRecipes,gondorian,legsLamedon,lotr:lamedon_leggings,present,
 createGondorianRecipes,gondorian,bootsLamedon,lotr:lamedon_boots,present,
 createGondorianRecipes,gondorian,horseArmorLamedon,lotr:lamedon_horse_armor,present,
 createGondorianRecipes,gondorian,bodyLamedonJacket,lotr:lamedon_jacket,present,
-createGondorianRecipes,gondorian,brick4/6,lotr:carved_black_gondor_brick,missing,
+createGondorianRecipes,gondorian,brick4/6,lotr:carved_black_gondor_brick,present,
 createGulfRecipes,gulf,gulfTable,lotr:gulf_crafting_table,present,
 createGulfRecipes,gulf,banner/haradGulf,lotr:harad_gulf_banner,present,
 createGulfRecipes,gulf,helmetGulfHarad,lotr:gulfen_helmet,present,
@@ -1165,7 +1165,7 @@ createStandardRecipes,vanilla,dye/15,minecraft:bone_meal,present,
 createStandardRecipes,vanilla,dye/15,minecraft:bone_meal,present,
 createStandardRecipes,vanilla,dye/15,minecraft:bone_meal,present,
 createStandardRecipes,vanilla,commandHorn,lotr:command_horn,present,
-createStandardRecipes,vanilla,arrow,minecraft:arrow,excluded,vanilla recipe rule
+createStandardRecipes,vanilla,arrow,minecraft:arrow,present,
 createStandardRecipes,vanilla,crossbowBolt,lotr:crossbow_bolt,present,
 createStandardRecipes,vanilla,crossbowBolt,lotr:crossbow_bolt,present,
 createStandardRecipes,vanilla,cherryPieItem,lotr:cherry_pie,present,
@@ -1176,7 +1176,7 @@ createStandardRecipes,vanilla,stairsMirkOak,lotr:mirk_oak_stairs,present,
 createStandardRecipes,vanilla,planks/2,lotr:mirk_oak_planks,present,
 createStandardRecipes,vanilla,horseArmorIron,,excluded,vanilla
 createStandardRecipes,vanilla,horseArmorGold,,excluded,vanilla
-createStandardRecipes,vanilla,horseArmorDiamond,,blocked,result not ported (missing)
+createStandardRecipes,vanilla,horseArmorDiamond,lotr:diamond_horse_armor,present,
 createStandardRecipes,vanilla,,,manual,no result: GameRegistry.addRecipe(new LOTRRecipesPouch())
 createStandardRecipes,vanilla,ancientItem/0,lotr:ancient_sword,present,
 createStandardRecipes,vanilla,ancientItem/1,lotr:ancient_dagger,present,
@@ -1390,7 +1390,7 @@ createStandardRecipes,vanilla,compass,minecraft:compass,excluded,vanilla recipe 
 createStandardRecipes,vanilla,clock,minecraft:clock,excluded,vanilla recipe rule
 createStandardRecipes,vanilla,obsidianShard,lotr:obsidian_shard,present,
 createStandardRecipes,vanilla,obsidian,minecraft:obsidian,present,
-createStandardRecipes,vanilla,mossy_cobblestone/0,minecraft:mossy_cobblestone,excluded,vanilla recipe rule
+createStandardRecipes,vanilla,mossy_cobblestone/0,minecraft:mossy_cobblestone,present,
 createStandardRecipes,vanilla,stonebrick/1,minecraft:stonebrick,excluded,vanilla recipe rule
 createStandardRecipes,vanilla,planks2/8,lotr:mahogany_planks,present,
 createStandardRecipes,vanilla,stairsMahogany,lotr:mahogany_stairs,present,

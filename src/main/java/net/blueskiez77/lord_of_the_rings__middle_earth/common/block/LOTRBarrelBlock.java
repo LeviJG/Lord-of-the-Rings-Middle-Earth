@@ -2,7 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPoisonedDrinks;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBarrelBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
@@ -52,7 +52,7 @@ import org.jspecify.annotations.Nullable;
  * <p>A bottle of poison used on any face poisons the drink inside
  * (canPoisonBarrel / poisonBarrel) rather than opening it.
  *
- * <p>NOT ported: LOTRItemBarrel's rideable barrel on water.
+ * <p>Its item can also be set afloat on water and ridden (LOTRBarrelBoatEntity).
  */
 public class LOTRBarrelBlock extends BaseEntityBlock {
     public static final MapCodec<LOTRBarrelBlock> CODEC = simpleCodec(LOTRBarrelBlock::new);
@@ -157,7 +157,7 @@ public class LOTRBarrelBlock extends BaseEntityBlock {
                 }
             }
         }
-        if (stack.is(LOTRItems.BOTTLE_OF_POISON) && barrel.canPoisonBarrel()) {
+        if (stack.is(LOTRMiscItems.BOTTLE_OF_POISON) && barrel.canPoisonBarrel()) {
             if (!level.isClientSide()) {
                 barrel.poisonBarrel(player);
                 if (!player.hasInfiniteMaterials()) {

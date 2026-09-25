@@ -520,6 +520,7 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
     @Override
     public void buildRecipes() {
         restoredRecipes();
+        LOTRMovedRecipes.build(this);
         // LOTRRecipes.createAngmarRecipes
         shaped(ANGMAR, "angmar/angmar_brick", "lotr:angmar_brick", 4, rows("XX", "XX"), 'X', "minecraft:stone");
         shaped(ANGMAR, "angmar/angmar_crafting_table", "lotr:angmar_crafting_table", 1, rows("XX", "YY"), 'X', "#minecraft:planks", 'Y', "lotr:angmar_brick");
@@ -1616,7 +1617,7 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         }
     }
 
-    private static String[] rows(String... rows) {
+    static String[] rows(String... rows) {
         return rows;
     }
 
@@ -1666,9 +1667,27 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
     }
 
     // keyAndIngredients alternates a pattern character and an ingredient id, like the Object... tail of ShapedOreRecipe.
-    private void shaped(LOTRCraftingTable table, String name, String resultId, int count, String[] rows, Object... keyAndIngredients) {
+    /**
+     * The recipe-book category for the next recipe only, instead of the one
+     * category() derives from the result. LOTRMovedRecipes uses it to keep the
+     * category each of its recipes had as JSON.
+     */
+    private RecipeCategory pendingCategory;
+
+    LOTRTranscribedRecipes in(RecipeCategory category) {
+        this.pendingCategory = category;
+        return this;
+    }
+
+    private RecipeCategory takeCategory(RecipeCategory derived) {
+        RecipeCategory category = this.pendingCategory != null ? this.pendingCategory : derived;
+        this.pendingCategory = null;
+        return category;
+    }
+
+    void shaped(LOTRCraftingTable table, String name, String resultId, int count, String[] rows, Object... keyAndIngredients) {
         Item result = item(resultId);
-        RecipeCategory category = category(result);
+        RecipeCategory category = takeCategory(category(result));
         Map<Character, Ingredient> key = new LinkedHashMap<>();
         for (int i = 0; i < keyAndIngredients.length; i += 2) {
             key.put((Character) keyAndIngredients[i], ingredient((String) keyAndIngredients[i + 1]));
@@ -1692,9 +1711,9 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
         saveFaction(name, recipe, category, first);
     }
 
-    private void shapeless(LOTRCraftingTable table, String name, String resultId, int count, String... ingredientIds) {
+    void shapeless(LOTRCraftingTable table, String name, String resultId, int count, String... ingredientIds) {
         Item result = item(resultId);
-        RecipeCategory category = category(result);
+        RecipeCategory category = takeCategory(category(result));
         String first = ingredientIds[0];
 
         if (table == null) {
@@ -1725,13 +1744,16 @@ final class LOTRTranscribedRecipes extends RecipeProvider {
     }
 
     // GameRegistry.addSmelting: 200 ticks, as every 1.7.10 furnace recipe was.
-    private void smelting(String name, String resultId, String inputId, float xp) {
+    void smelting(String name, String resultId, String inputId, float xp) {
         Item result = item(resultId);
         boolean block = result instanceof BlockItem;
-        SimpleCookingRecipeBuilder.smelting(ingredient(inputId),
-                        block ? RecipeCategory.BUILDING_BLOCKS : RecipeCategory.MISC,
-                        block ? CookingBookCategory.BLOCKS : CookingBookCategory.MISC,
-                        result, xp, 200)
+        RecipeCategory category = takeCategory(block ? RecipeCategory.BUILDING_BLOCKS : RecipeCategory.MISC);
+        CookingBookCategory book = switch (category) {
+            case BUILDING_BLOCKS -> CookingBookCategory.BLOCKS;
+            case FOOD -> CookingBookCategory.FOOD;
+            default -> CookingBookCategory.MISC;
+        };
+        SimpleCookingRecipeBuilder.smelting(ingredient(inputId), category, book, result, xp, 200)
                 .unlockedBy(unlockName(inputId), unlock(inputId))
                 .save(output, key(name));
     }

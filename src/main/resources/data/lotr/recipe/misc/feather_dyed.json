@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:crafting_dye",
+  "group": "lotr_dyed",
+  "dye": "#c:dyes",
+  "target": "#lotr:dyeable_feathers",
+  "result": {
+    "id": "lotr:feather_dyed"
+  }
+}

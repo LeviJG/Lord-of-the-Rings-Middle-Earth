@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "category": "misc",
-  "experience": 0.3,
-  "ingredient": "lotr:red_clay_ball",
-  "result": {
-    "id": "minecraft:brick"
-  }
-}

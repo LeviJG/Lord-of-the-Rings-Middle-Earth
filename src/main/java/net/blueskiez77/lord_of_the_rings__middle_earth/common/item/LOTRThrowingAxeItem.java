@@ -15,6 +15,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ToolMaterial;
 import net.minecraft.world.level.Level;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials;
 
 /**
  * LOTRItemThrowingAxe: an axe made to leave your hand.
@@ -31,11 +32,6 @@ import net.minecraft.world.level.Level;
  * on -- plus the durability ones. Only knockback and durability change the
  * throw; see the note on LOTRThrowingAxeEntity for why, which is the
  * original's behaviour rather than a gap here.
- *
- * <p>NOT ported: LOTRDispenseThrowingAxe, which let a dispenser throw one. The
- * behaviour was registered from this constructor in 1.7.10, and 26.2 wants it
- * on DispenserBlock's registry at mod init; it wants doing alongside the other
- * dispenser behaviours the port has yet to bring over, not on its own here.
  */
 public class LOTRThrowingAxeItem extends Item implements net.minecraft.world.item.ProjectileItem {
 
@@ -119,7 +115,7 @@ public class LOTRThrowingAxeItem extends Item implements net.minecraft.world.ite
             if (player.hasInfiniteMaterials()) {
                 axe.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
             }
-            net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials.onLaunch(stack, axe);
+            LOTRModifierSpecials.onLaunch(stack, axe);
             server.addFreshEntity(axe);
         }
 

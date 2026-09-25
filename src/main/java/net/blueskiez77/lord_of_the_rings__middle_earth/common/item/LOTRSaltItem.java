@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
@@ -67,8 +67,8 @@ public class LOTRSaltItem extends Item {
         if (state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.DIRT) || state.is(Blocks.FARMLAND)) {
             return Blocks.COARSE_DIRT;
         }
-        if (state.is(LOTRBlocks.MUD_GRASS) || state.is(LOTRBlocks.MUD) || state.is(LOTRBlocks.MUD_FARMLAND)) {
-            return LOTRBlocks.BARREN_JUNGLE_MUD;
+        if (state.is(LOTRBuildingBlocks.MUD_GRASS) || state.is(LOTRBuildingBlocks.MUD) || state.is(LOTRBuildingBlocks.MUD_FARMLAND)) {
+            return LOTRBuildingBlocks.BARREN_JUNGLE_MUD;
         }
         return null;
     }

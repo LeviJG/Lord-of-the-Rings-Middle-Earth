@@ -2,7 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe;
 
 import com.mojang.serialization.MapCodec;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmokingPipeItem;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -44,7 +45,7 @@ public class LOTRSmokingPipeDyeRecipe extends CustomRecipe {
         }
         // A new pipe carrying over only the wear: the original built a fresh
         // stack, so a name or anything else on the old pipe did not survive.
-        ItemStack pipe = new ItemStack(LOTRItems.SMOKING_PIPE);
+        ItemStack pipe = new ItemStack(LOTRMiscItems.SMOKING_PIPE);
         pipe.setDamageValue(findPipe(input).getDamageValue());
         pipe.set(LOTRDataComponents.SMOKE_COLOR, color);
         return pipe;
@@ -64,14 +65,14 @@ public class LOTRSmokingPipeDyeRecipe extends CustomRecipe {
             if (stack.isEmpty()) {
                 continue;
             }
-            if (stack.is(LOTRItems.SMOKING_PIPE)) {
+            if (stack.is(LOTRMiscItems.SMOKING_PIPE)) {
                 if (hasPipe) {
                     return -1;
                 }
                 hasPipe = true;
                 continue;
             }
-            if (stack.is(LOTRItems.MITHRIL_NUGGET)) {
+            if (stack.is(LOTRMaterialItems.MITHRIL_NUGGET)) {
                 color = LOTRSmokingPipeItem.MAGIC_COLOR;
                 continue;
             }
@@ -86,7 +87,7 @@ public class LOTRSmokingPipeDyeRecipe extends CustomRecipe {
 
     private static ItemStack findPipe(CraftingInput input) {
         for (ItemStack stack : input.items()) {
-            if (stack.is(LOTRItems.SMOKING_PIPE)) {
+            if (stack.is(LOTRMiscItems.SMOKING_PIPE)) {
                 return stack;
             }
         }

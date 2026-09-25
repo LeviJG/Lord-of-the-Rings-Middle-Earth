@@ -134,7 +134,7 @@ public class LOTRKhamulsFireJarBlock extends FallingBlock {
             if ((!there.isAir() && !there.canBeReplaced()) || !there.getFluidState().isEmpty()) {
                 continue;
             }
-            server.setBlock(target, LOTRBlocks.KHAMULS_FIRE.defaultBlockState(), 3);
+            server.setBlock(target, LOTRDecorationBlocks.KHAMULS_FIRE.defaultBlockState(), 3);
         }
     }
 
@@ -224,7 +224,7 @@ public class LOTRKhamulsFireJarBlock extends FallingBlock {
                     Mth.randomBetweenInclusive(random, -range, range));
             BlockState there = level.getBlockState(target);
             if (there.is(net.minecraft.tags.BlockTags.FIRE)
-                    || there.is(LOTRBlocks.KHAMULS_FIRE)
+                    || there.is(LOTRDecorationBlocks.KHAMULS_FIRE)
                     || there.getFluidState().is(net.minecraft.tags.FluidTags.LAVA)) {
                 explode(level, pos);
                 return;

@@ -16,6 +16,8 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFallenLeavesBlock;
 
 // Crafting recipes for the blocks tab. Every recipe here is mechanical -- derived from the family lists in LOTRBlocks rather than transcribed one at a time -- because the original was mechanical too. LOTRRecipes.java has ~366 block recipes and they all reduce to a handful of shapes, every one identical to its vanilla equivalent: 4 planks   <- 1 log                       shapeless 3 beams    <- 3 logs                      X / X / X 2 smooth   <- 2 rock                      X / X 6 slabs    <- 3 base                      XXX 4 stairs   <- 6 base                      X.. / XX. / XXX 6 walls    <- 6 base                      XXX / XXX SCOPE -- deliberately not covered yet: - Pillars. They look like they should follow the vertical-three shape from their matching brick, but in 1.7.10 almost every pillar was crafted from plain vanilla stone regardless of appearance. Deriving angmar_pillar <- angmar_brick would invent a recipe the mod never had. - Brick recipes. Not derivable from names: most faction bricks come from plain vanilla stone, not a matching rock. These, and every other one-off recipe, are transcribed in LOTRTranscribedRecipes instead. - Faction gating. In 1.7.10 the faction brick stairs/slabs/walls lived in per-faction lists and could only be crafted at that faction's table. Every family member in LOTRTranscribedRecipes.FACTION_ONLY is skipped here and made at its table instead.
 public class LOTRRecipeProvider extends FabricRecipeProvider {
@@ -33,6 +35,18 @@ public class LOTRRecipeProvider extends FabricRecipeProvider {
         return "LOTR Recipes";
     }
 
+    /**
+     * Every recipe in the lotr namespace. FabricRecipeProvider files a recipe
+     * saved without an explicit id under the mod id
+     * (lord_of_the_rings_-_middle_earth); the transcribed ones already name
+     * lotr, and the mechanical ones here now follow.
+     */
+    @Override
+    protected net.minecraft.resources.Identifier getRecipeIdentifier(net.minecraft.resources.Identifier identifier) {
+        return net.minecraft.resources.Identifier.fromNamespaceAndPath(
+                LOTRMod.NAMESPACE, identifier.getPath());
+    }
+
     private static class Recipes extends RecipeProvider {
         Recipes(HolderLookup.Provider registryLookup, RecipeOutput exporter) {
             super(registryLookup, exporter);
@@ -44,7 +58,25 @@ public class LOTRRecipeProvider extends FabricRecipeProvider {
             beamsFromLogs();
             smoothStone();
             cutFromBase();
+            fallenLeaves();
             new LOTRTranscribedRecipes(registries, output).buildRecipes();
+        }
+
+        // LOTRRecipes: three of a LOTRBlockLeavesBase leaf in a row make six of
+        // its fallen leaves, at the vanilla table. Only the mod's leaves -- the
+        // loop skipped vanilla's.
+        private void fallenLeaves() {
+            LOTRBlocks.ALL_FALLEN_LEAVES.forEach(fallen -> {
+                Block leaves = ((LOTRFallenLeavesBlock) fallen).leaves();
+                if (!LOTRBlocks.ALL_LEAVES.contains(leaves)) {
+                    return;
+                }
+                shaped(RecipeCategory.DECORATIONS, fallen, 6)
+                        .pattern("XXX")
+                        .define('X', leaves)
+                        .unlockedBy(getHasName(leaves), has(leaves))
+                        .save(output);
+            });
         }
 
         private void planksFromLogs() {

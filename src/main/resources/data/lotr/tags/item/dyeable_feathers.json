@@ -1,0 +1,7 @@
+{
+  "__comment": "LOTRRecipeFeatherDye's inputs: the \"feather\" ore name, or a feather already dyed.",
+  "values": [
+    "#lotr:feathers",
+    "lotr:feather_dyed"
+  ]
+}

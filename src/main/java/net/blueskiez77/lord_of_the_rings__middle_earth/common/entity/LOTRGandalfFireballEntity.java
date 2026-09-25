@@ -3,7 +3,6 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
 import net.minecraft.core.particles.ColorParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -14,9 +13,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -35,7 +33,7 @@ import org.jspecify.annotations.Nullable;
  * player half of that (anyone whose High-elven alignment is negative), and
  * since it has no NPCs, everything else living is fair game.
  */
-public class LOTRGandalfFireballEntity extends ThrowableItemProjectile {
+public class LOTRGandalfFireballEntity extends ThrowableProjectile {
     private static final int MAX_AGE = 200;
     private static final double BLAST_RANGE = 6.0;
     private static final float DAMAGE = 10.0f;
@@ -46,14 +44,15 @@ public class LOTRGandalfFireballEntity extends ThrowableItemProjectile {
         super(type, level);
     }
 
+    /** EntityThrowable(world, thrower): from the eyes, a touch below, owned by the caster. */
     public LOTRGandalfFireballEntity(EntityType<? extends LOTRGandalfFireballEntity> type, LivingEntity thrower,
-            Level level, ItemStack stack) {
-        super(type, thrower, level, stack);
+            Level level) {
+        super(type, thrower.getX(), thrower.getEyeY() - 0.1, thrower.getZ(), level);
+        setOwner(thrower);
     }
 
     @Override
-    protected Item getDefaultItem() {
-        return LOTRItems.GANDALF_FIREBALL;
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
     }
 
     /** getGravityVelocity returned 0. */

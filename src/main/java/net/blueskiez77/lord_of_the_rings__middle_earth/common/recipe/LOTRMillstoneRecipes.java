@@ -4,8 +4,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -87,18 +88,18 @@ public final class LOTRMillstoneRecipes {
 
         addRecipe(Blocks.STONE, Blocks.COBBLESTONE);
         addRecipe(Blocks.COBBLESTONE, Blocks.GRAVEL, 1, 0.75f);
-        addRecipe(LOTRBlocks.MORDOR_ROCK, LOTRBlocks.MORDOR_GRAVEL, 1, 0.75f);
+        addRecipe(LOTRBuildingBlocks.MORDOR_ROCK, LOTRBuildingBlocks.MORDOR_GRAVEL, 1, 0.75f);
 
         // Gravel is the gamble: three times in four you grind it away to
         // nothing, which is why flint is worth having a millstone for.
         addRecipe(Blocks.GRAVEL, Items.FLINT, 1, 0.25f);
-        addRecipe(LOTRBlocks.MORDOR_GRAVEL, Items.FLINT, 1, 0.25f);
-        addRecipe(LOTRBlocks.OBSIDIAN_GRAVEL, LOTRItems.OBSIDIAN_SHARD);
-        addRecipe(LOTRBlocks.SALT_ORE, LOTRItems.SALT);
+        addRecipe(LOTRBuildingBlocks.MORDOR_GRAVEL, Items.FLINT, 1, 0.25f);
+        addRecipe(LOTRBuildingBlocks.OBSIDIAN_GRAVEL, LOTRMaterialItems.OBSIDIAN_SHARD);
+        addRecipe(LOTRBuildingBlocks.SALT_ORE, LOTRFoodItems.SALT);
 
         addRecipe(Blocks.SANDSTONE, Blocks.SAND, 2, 1.0f);
         addRecipe(Blocks.RED_SANDSTONE, Blocks.RED_SAND, 2, 1.0f);
-        addRecipe(LOTRBlocks.WHITE_SANDSTONE, LOTRBlocks.WHITE_SAND, 2, 1.0f);
+        addRecipe(LOTRBuildingBlocks.WHITE_SANDSTONE, LOTRBuildingBlocks.WHITE_SAND, 2, 1.0f);
 
         crackedBricks().forEach(LOTRMillstoneRecipes::addRecipe);
     }
@@ -115,31 +116,31 @@ public final class LOTRMillstoneRecipes {
      */
     public static Map<ItemLike, ItemLike> crackedBricks() {
         Map<ItemLike, ItemLike> pairs = new LinkedHashMap<>();
-        pairs.put(Blocks.BRICKS, LOTRBlocks.RED_BRICK_CRACKED);
+        pairs.put(Blocks.BRICKS, LOTRBuildingBlocks.RED_BRICK_CRACKED);
         pairs.put(Blocks.STONE_BRICKS, Blocks.CRACKED_STONE_BRICKS);
-        pairs.put(LOTRBlocks.MORDOR_BRICK, LOTRBlocks.CRACKED_MORDOR_BRICK);
-        pairs.put(LOTRBlocks.GONDOR_BRICK, LOTRBlocks.CRACKED_GONDOR_BRICK);
-        pairs.put(LOTRBlocks.DWARVEN_BRICK, LOTRBlocks.CRACKED_DWARVEN_BRICK);
-        pairs.put(LOTRBlocks.GALADHRIM_BRICK, LOTRBlocks.CRACKED_GALADHRIM_BRICK);
-        pairs.put(LOTRBlocks.NEAR_HARAD_BRICK, LOTRBlocks.NEAR_HARAD_CRACKED_BRICK);
-        pairs.put(LOTRBlocks.ANGMAR_BRICK, LOTRBlocks.CRACKED_ANGMAR_BRICK);
-        pairs.put(LOTRBlocks.ARNOR_BRICK, LOTRBlocks.CRACKED_ARNOR_BRICK);
-        pairs.put(LOTRBlocks.DOL_GULDUR_BRICK, LOTRBlocks.CRACKED_DOL_GULDUR_BRICK);
-        pairs.put(LOTRBlocks.HIGH_ELVEN_BRICK, LOTRBlocks.CRACKED_HIGH_ELVEN_BRICK);
-        pairs.put(LOTRBlocks.WOOD_ELVEN_BRICK, LOTRBlocks.CRACKED_WOOD_ELVEN_BRICK);
-        pairs.put(LOTRBlocks.MORWAITH_BRICK, LOTRBlocks.CRACKED_MORWAITH_BRICK);
-        pairs.put(LOTRBlocks.NEAR_HARAD_RED_BRICK, LOTRBlocks.NEAR_HARAD_RED_CRACKED_BRICK);
-        pairs.put(LOTRBlocks.TAUREDAIN_BRICK, LOTRBlocks.TAUREDAIN_CRACKED_BRICK);
-        pairs.put(LOTRBlocks.DALE_BRICK, LOTRBlocks.DALE_CRACKED_BRICK);
-        pairs.put(LOTRBlocks.DORWINION_BRICK, LOTRBlocks.CRACKED_DORWINION_BRICK);
-        pairs.put(LOTRBlocks.GONDOR_COBBLEBRICK, LOTRBlocks.CRACKED_GONDOR_COBBLEBRICK);
-        pairs.put(LOTRBlocks.RHUN_BRICK, LOTRBlocks.RHUN_CRACKED_BRICK);
-        pairs.put(LOTRBlocks.UMBAR_BRICK, LOTRBlocks.CRACKED_UMBAR_BRICK);
-        pairs.put(LOTRBlocks.DWARVEN_PILLAR, LOTRBlocks.CRACKED_DWARVEN_PILLAR);
-        pairs.put(LOTRBlocks.GALADHRIM_PILLAR, LOTRBlocks.CRACKED_GALADHRIM_PILLAR);
-        pairs.put(LOTRBlocks.HIGH_ELVEN_PILLAR, LOTRBlocks.CRACKED_HIGH_ELVEN_PILLAR);
-        pairs.put(LOTRBlocks.WOOD_ELVEN_PILLAR, LOTRBlocks.CRACKED_WOOD_ELVEN_PILLAR);
-        pairs.put(LOTRBlocks.ARNOR_PILLAR, LOTRBlocks.CRACKED_ARNOR_PILLAR);
+        pairs.put(LOTRBuildingBlocks.MORDOR_BRICK, LOTRBuildingBlocks.CRACKED_MORDOR_BRICK);
+        pairs.put(LOTRBuildingBlocks.GONDOR_BRICK, LOTRBuildingBlocks.CRACKED_GONDOR_BRICK);
+        pairs.put(LOTRBuildingBlocks.DWARVEN_BRICK, LOTRBuildingBlocks.CRACKED_DWARVEN_BRICK);
+        pairs.put(LOTRBuildingBlocks.GALADHRIM_BRICK, LOTRBuildingBlocks.CRACKED_GALADHRIM_BRICK);
+        pairs.put(LOTRBuildingBlocks.NEAR_HARAD_BRICK, LOTRBuildingBlocks.NEAR_HARAD_CRACKED_BRICK);
+        pairs.put(LOTRBuildingBlocks.ANGMAR_BRICK, LOTRBuildingBlocks.CRACKED_ANGMAR_BRICK);
+        pairs.put(LOTRBuildingBlocks.ARNOR_BRICK, LOTRBuildingBlocks.CRACKED_ARNOR_BRICK);
+        pairs.put(LOTRBuildingBlocks.DOL_GULDUR_BRICK, LOTRBuildingBlocks.CRACKED_DOL_GULDUR_BRICK);
+        pairs.put(LOTRBuildingBlocks.HIGH_ELVEN_BRICK, LOTRBuildingBlocks.CRACKED_HIGH_ELVEN_BRICK);
+        pairs.put(LOTRBuildingBlocks.WOOD_ELVEN_BRICK, LOTRBuildingBlocks.CRACKED_WOOD_ELVEN_BRICK);
+        pairs.put(LOTRBuildingBlocks.MORWAITH_BRICK, LOTRBuildingBlocks.CRACKED_MORWAITH_BRICK);
+        pairs.put(LOTRBuildingBlocks.NEAR_HARAD_RED_BRICK, LOTRBuildingBlocks.NEAR_HARAD_RED_CRACKED_BRICK);
+        pairs.put(LOTRBuildingBlocks.TAUREDAIN_BRICK, LOTRBuildingBlocks.TAUREDAIN_CRACKED_BRICK);
+        pairs.put(LOTRBuildingBlocks.DALE_BRICK, LOTRBuildingBlocks.DALE_CRACKED_BRICK);
+        pairs.put(LOTRBuildingBlocks.DORWINION_BRICK, LOTRBuildingBlocks.CRACKED_DORWINION_BRICK);
+        pairs.put(LOTRBuildingBlocks.GONDOR_COBBLEBRICK, LOTRBuildingBlocks.CRACKED_GONDOR_COBBLEBRICK);
+        pairs.put(LOTRBuildingBlocks.RHUN_BRICK, LOTRBuildingBlocks.RHUN_CRACKED_BRICK);
+        pairs.put(LOTRBuildingBlocks.UMBAR_BRICK, LOTRBuildingBlocks.CRACKED_UMBAR_BRICK);
+        pairs.put(LOTRBuildingBlocks.DWARVEN_PILLAR, LOTRBuildingBlocks.CRACKED_DWARVEN_PILLAR);
+        pairs.put(LOTRBuildingBlocks.GALADHRIM_PILLAR, LOTRBuildingBlocks.CRACKED_GALADHRIM_PILLAR);
+        pairs.put(LOTRBuildingBlocks.HIGH_ELVEN_PILLAR, LOTRBuildingBlocks.CRACKED_HIGH_ELVEN_PILLAR);
+        pairs.put(LOTRBuildingBlocks.WOOD_ELVEN_PILLAR, LOTRBuildingBlocks.CRACKED_WOOD_ELVEN_PILLAR);
+        pairs.put(LOTRBuildingBlocks.ARNOR_PILLAR, LOTRBuildingBlocks.CRACKED_ARNOR_PILLAR);
         return pairs;
     }
 }

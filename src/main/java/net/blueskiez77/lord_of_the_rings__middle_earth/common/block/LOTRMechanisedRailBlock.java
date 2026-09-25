@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -38,9 +38,11 @@ import net.minecraft.world.phys.Vec3;
  * Clicking the rail swaps one for the other; sneak-clicking takes the
  * mechanism back out, leaving a plain rail.
  *
- * <p>Carts see a running mechanised rail as a powered powered rail and a
- * stopped one as an unpowered one -- LOTRReplacedMethods.Minecart, which the
- * original patched into EntityMinecart; here it is LOTRMinecartMixin.
+ * <p>Carts see a running mechanised rail as a powered rail and a stopped one
+ * as an unpowered one -- LOTRReplacedMethods.Minecart, which the original
+ * patched into EntityMinecart; here it is the minecart mixins
+ * (LOTRAbstractMinecartMixin, LOTROldMinecartBehaviorMixin,
+ * LOTRNewMinecartBehaviorMixin).
  */
 public class LOTRMechanisedRailBlock extends PoweredRailBlock {
     private final boolean defaultPower;
@@ -87,8 +89,8 @@ public class LOTRMechanisedRailBlock extends PoweredRailBlock {
 
     private InteractionResult toggle(BlockState state, Level level, BlockPos pos) {
         if (!level.isClientSide()) {
-            LOTRMechanisedRailBlock other = (LOTRMechanisedRailBlock) (this == LOTRBlocks.MECHANISED_RAIL_OFF
-                    ? LOTRBlocks.MECHANISED_RAIL : LOTRBlocks.MECHANISED_RAIL_OFF);
+            LOTRMechanisedRailBlock other = (LOTRMechanisedRailBlock) (this == LOTRUtilityBlocks.MECHANISED_RAIL_OFF
+                    ? LOTRUtilityBlocks.MECHANISED_RAIL : LOTRUtilityBlocks.MECHANISED_RAIL_OFF);
             BlockState swapped = other.defaultBlockState()
                     .setValue(SHAPE, state.getValue(SHAPE))
                     .setValue(POWERED, state.getValue(POWERED))
@@ -123,7 +125,7 @@ public class LOTRMechanisedRailBlock extends PoweredRailBlock {
                 SoundType sound = rail.getSoundType();
                 level.playSound(null, pos, sound.getPlaceSound(), SoundSource.BLOCKS,
                         (sound.getVolume() + 1.0f) / 2.0f, sound.getPitch() * 0.8f);
-                Block.popResource(level, pos, new ItemStack(LOTRItems.MECHANISM));
+                Block.popResource(level, pos, new ItemStack(LOTRMiscItems.MECHANISM));
             }
             return InteractionResult.SUCCESS;
         });
@@ -132,7 +134,7 @@ public class LOTRMechanisedRailBlock extends PoweredRailBlock {
     /** getPickBlock: the mechanism. */
     @Override
     protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
-        return new ItemStack(LOTRItems.MECHANISM);
+        return new ItemStack(LOTRMiscItems.MECHANISM);
     }
 
     /** randomDisplayTick: a running rail puffs smoke from somewhere along each side. */

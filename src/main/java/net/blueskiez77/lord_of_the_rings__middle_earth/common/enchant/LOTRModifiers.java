@@ -8,7 +8,8 @@ import java.util.Set;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockTags;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRThrowingAxeItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolMaterials;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
@@ -53,6 +54,7 @@ import net.minecraft.world.item.equipment.ArmorMaterial;
 import net.minecraft.world.item.equipment.ArmorType;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.block.Block;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmithsScrollItem;
 
 /**
  * LOTREnchantmentHelper: rolling an item's modifiers, and making them count.
@@ -76,9 +78,6 @@ import net.minecraft.world.level.block.Block;
  * game applies them and the tooltip lists them; the rest are read back by the
  * hooks in the mixin package, one for each place the original's coremod or
  * event handler asked LOTREnchantmentHelper.
- *
- * <p>NOT ported: the reforging side (LOTRContainerAnvil could re-roll an item,
- * keeping its banes), which waits on the LOTR anvil; and bane kill counting.
  */
 public final class LOTRModifiers {
 
@@ -332,7 +331,7 @@ public final class LOTRModifiers {
         }
         // A 1.7.10 hoe carried no weapon damage, and the command sword was
         // refused by name.
-        if (baseAttackDamage(stack).isPresent() && !(item instanceof HoeItem) && item != LOTRItems.COMMAND_SWORD) {
+        if (baseAttackDamage(stack).isPresent() && !(item instanceof HoeItem) && item != LOTRCombatItems.COMMAND_SWORD) {
             kinds.add(LOTRModifier.Kind.MELEE);
         }
         if (isTool(stack)) {
@@ -488,7 +487,7 @@ public final class LOTRModifiers {
             case PROTECTION_MITHRIL -> isMaterial(stack, LOTRToolMaterials.MITHRIL_ARMOR);
             // The whip is its own fire; Infernal and Chilling will not go on it.
             case WEAPON_SPECIAL -> modifier == LOTRModifier.HEADHUNTING
-                    || !stack.is(net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.BALROG_WHIP);
+                    || !stack.is(LOTRCombatItems.BALROG_WHIP);
             default -> true;
         };
     }
@@ -606,12 +605,12 @@ public final class LOTRModifiers {
 
         // The barrow blades are Wightbane and Sting is Spiderbane from the start.
         Item item = stack.getItem();
-        if ((item == LOTRItems.BARROW_BLADE || item == LOTRItems.POISONED_BARROW_BLADE)
+        if ((item == LOTRCombatItems.BARROW_BLADE || item == LOTRCombatItems.POISONED_BARROW_BLADE)
                 && !chosen.contains(LOTRModifier.BANE_WIGHT)
                 && canApply(LOTRModifier.BANE_WIGHT, stack, false)) {
             chosen.add(LOTRModifier.BANE_WIGHT);
         }
-        if (item == LOTRItems.STING && !chosen.contains(LOTRModifier.BANE_SPIDER)
+        if (item == LOTRStoryItems.STING && !chosen.contains(LOTRModifier.BANE_SPIDER)
                 && canApply(LOTRModifier.BANE_SPIDER, stack, false)) {
             chosen.add(LOTRModifier.BANE_SPIDER);
         }
@@ -698,7 +697,7 @@ public final class LOTRModifiers {
                 weights.add(skilfulWeight(modifier));
             }
         }
-        return net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmithsScrollItem.of(
+        return LOTRSmithsScrollItem.of(
                 candidates.get(drawByWeight(weights, random)));
     }
 

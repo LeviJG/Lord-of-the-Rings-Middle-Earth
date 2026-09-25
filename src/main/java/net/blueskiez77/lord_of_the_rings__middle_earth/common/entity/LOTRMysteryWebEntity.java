@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -23,12 +23,12 @@ public class LOTRMysteryWebEntity extends ThrowableItemProjectile {
     }
 
     public LOTRMysteryWebEntity(Level level, LivingEntity thrower) {
-        super(LOTREntities.MYSTERY_WEB, thrower, level, new ItemStack(LOTRItems.MYSTERY_WEB));
+        super(LOTREntities.MYSTERY_WEB, thrower, level, new ItemStack(LOTRMiscItems.MYSTERY_WEB));
     }
 
     @Override
     protected Item getDefaultItem() {
-        return LOTRItems.MYSTERY_WEB;
+        return LOTRMiscItems.MYSTERY_WEB;
     }
 
     /** getGravityVelocity: 0.01 -- it drifts. */

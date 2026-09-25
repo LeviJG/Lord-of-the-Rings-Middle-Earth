@@ -67,5 +67,11 @@ public final class LOTRRecipeTypes {
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "poison_drink"),
                 LOTRPoisonDrinkRecipe.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "leather_hat_dye"),
+                LOTRLeatherHatDyeRecipe.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "leather_hat_feather"),
+                LOTRLeatherHatFeatherRecipe.SERIALIZER);
     }
 }

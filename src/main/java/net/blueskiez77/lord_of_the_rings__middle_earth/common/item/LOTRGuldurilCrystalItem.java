@@ -2,7 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 import java.util.Map;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -30,7 +31,7 @@ import net.minecraft.world.level.block.Block;
  * <p>On a mallorn sapling, by an ENEMY of Fangorn (alignment below zero), it
  * corrupts the sapling and is spent.
  *
- * <p>NOT ported: the anvil name colour (LOTRItemWithAnvilNameColor, dark green).
+ * <p>In the LOTR anvil it colours a renamed item's name (LOTRAnvilMenu.nameColour).
  */
 public class LOTRGuldurilCrystalItem extends Item {
     private static final float REQUIRED_ALIGNMENT = 1.0f;
@@ -42,16 +43,16 @@ public class LOTRGuldurilCrystalItem extends Item {
     // guldurilMetaForBlock, in its own order: gulduril meta 0..9.
     private static Map<Block, Block> guldurilForms() {
         return Map.of(
-                LOTRBlocks.MORDOR_BRICK, LOTRBlocks.GULDURIL_MORDOR_BRICK,
-                LOTRBlocks.CRACKED_MORDOR_BRICK, LOTRBlocks.GULDURIL_CRACKED_MORDOR_BRICK,
-                LOTRBlocks.ANGMAR_BRICK, LOTRBlocks.GULDURIL_ANGMAR_BRICK,
-                LOTRBlocks.CRACKED_ANGMAR_BRICK, LOTRBlocks.GULDURIL_CRACKED_ANGMAR_BRICK,
-                LOTRBlocks.DOL_GULDUR_BRICK, LOTRBlocks.GULDURIL_DOL_GULDUR_BRICK,
-                LOTRBlocks.CRACKED_DOL_GULDUR_BRICK, LOTRBlocks.GULDURIL_CRACKED_DOL_GULDUR_BRICK,
-                LOTRBlocks.GONDOR_BRICK, LOTRBlocks.GULDURIL_GONDOR_BRICK,
-                LOTRBlocks.MOSSY_GONDOR_BRICK, LOTRBlocks.GULDURIL_MOSSY_GONDOR_BRICK,
-                LOTRBlocks.CRACKED_GONDOR_BRICK, LOTRBlocks.GULDURIL_CRACKED_GONDOR_BRICK,
-                LOTRBlocks.NUMENOREAN_BRICK, LOTRBlocks.GULDURIL_NUMENOREAN_BRICK);
+                LOTRBuildingBlocks.MORDOR_BRICK, LOTRBuildingBlocks.GULDURIL_MORDOR_BRICK,
+                LOTRBuildingBlocks.CRACKED_MORDOR_BRICK, LOTRBuildingBlocks.GULDURIL_CRACKED_MORDOR_BRICK,
+                LOTRBuildingBlocks.ANGMAR_BRICK, LOTRBuildingBlocks.GULDURIL_ANGMAR_BRICK,
+                LOTRBuildingBlocks.CRACKED_ANGMAR_BRICK, LOTRBuildingBlocks.GULDURIL_CRACKED_ANGMAR_BRICK,
+                LOTRBuildingBlocks.DOL_GULDUR_BRICK, LOTRBuildingBlocks.GULDURIL_DOL_GULDUR_BRICK,
+                LOTRBuildingBlocks.CRACKED_DOL_GULDUR_BRICK, LOTRBuildingBlocks.GULDURIL_CRACKED_DOL_GULDUR_BRICK,
+                LOTRBuildingBlocks.GONDOR_BRICK, LOTRBuildingBlocks.GULDURIL_GONDOR_BRICK,
+                LOTRBuildingBlocks.MOSSY_GONDOR_BRICK, LOTRBuildingBlocks.GULDURIL_MOSSY_GONDOR_BRICK,
+                LOTRBuildingBlocks.CRACKED_GONDOR_BRICK, LOTRBuildingBlocks.GULDURIL_CRACKED_GONDOR_BRICK,
+                LOTRBuildingBlocks.NUMENOREAN_BRICK, LOTRBuildingBlocks.GULDURIL_NUMENOREAN_BRICK);
     }
 
     @Override
@@ -91,9 +92,9 @@ public class LOTRGuldurilCrystalItem extends Item {
             return InteractionResult.SUCCESS;
         }
 
-        if (target == LOTRBlocks.MALLORN_SAPLING
+        if (target == LOTRDecorationBlocks.MALLORN_SAPLING
                 && LOTRPlayerAlignments.getAlignment(player, LOTRFaction.FANGORN) < 0.0f) {
-            level.setBlock(pos, LOTRBlocks.CORRUPT_MALLORN.defaultBlockState(), Block.UPDATE_ALL);
+            level.setBlock(pos, LOTRDecorationBlocks.CORRUPT_MALLORN.defaultBlockState(), Block.UPDATE_ALL);
             stack.shrink(1);
             spawnCrystalParticles(level, pos);
             return InteractionResult.SUCCESS;

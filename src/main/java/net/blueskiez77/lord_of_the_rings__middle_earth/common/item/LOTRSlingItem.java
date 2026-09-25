@@ -60,11 +60,11 @@ public class LOTRSlingItem extends Item {
             // See LOTRPebbleItem: spawnProjectileUsingShoot wants a direction
             // vector, not a pitch and a yaw, and this is the overload that
             // takes the shooter's rotation properly.
-            ItemStack ammo = new ItemStack(LOTRItems.PEBBLE);
+            ItemStack ammo = new ItemStack(LOTRCombatItems.PEBBLE);
             Projectile.spawnProjectileFromRotation(
                     (lvl, shooter, unused) -> new LOTRPebbleEntity(
                             LOTREntities.PEBBLE, shooter, lvl,
-                            new ItemStack(LOTRItems.PEBBLE)).setSlung(),
+                            new ItemStack(LOTRCombatItems.PEBBLE)).setSlung(),
                     server, ammo, player, 0.0f, LOTRPebbleEntity.THROW_VELOCITY, 1.0f);
         }
 
@@ -81,7 +81,7 @@ public class LOTRSlingItem extends Item {
     /** inventory.hasItem(LOTRMod.pebble), and the slot to spend it from. */
     private static int findPebble(Player player) {
         for (int slot = 0; slot < player.getInventory().getContainerSize(); slot++) {
-            if (player.getInventory().getItem(slot).is(LOTRItems.PEBBLE)) {
+            if (player.getInventory().getItem(slot).is(LOTRCombatItems.PEBBLE)) {
                 return slot;
             }
         }

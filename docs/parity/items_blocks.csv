@@ -271,10 +271,10 @@ block,elvenTable,elvenCraftingTable,,Galadhrim Crafting Table,elven_crafting_tab
 block,elvenForge,elvenForge,,Elven Forge,elven_forge,ported,name,
 block,elvenPortal,elvenPortal,,,,missing,,
 block,entJar,entJar,,Ent Jar,ent_jar,ported,name,
-block,fallenLeaves,fallenLeaves,,,,missing,,
-block,fallenLeavesLOTR,fallenLeavesLOTR,,,,missing,,
-block,fallenLeavesLOTR2,fallenLeavesLOTR2,,,,missing,,
-block,fallenLeavesLOTR3,fallenLeavesLOTR3,,,,missing,,
+block,fallenLeaves,fallenLeaves,,,fallen_oak_leaves,ported,override,one block per leaf type now: fallen_<leaf> for vanilla's six leaves
+block,fallenLeavesLOTR,fallenLeavesLOTR,,,fallen_mallorn_leaves,ported,override,one block per leaf type now: fallen_<leaf> for every LOTR leaf
+block,fallenLeavesLOTR2,fallenLeavesLOTR2,,,fallen_mallorn_leaves,ported,override,one block per leaf type now (see fallenLeavesLOTR)
+block,fallenLeavesLOTR3,fallenLeavesLOTR3,,,fallen_mallorn_leaves,ported,override,one block per leaf type now (see fallenLeavesLOTR)
 block,fangornPlant,fangornPlant,0,Tears of Yavanna,fangorn_plant_green,ported,name,
 block,fangornPlant,fangornPlant,1,Fangorn's Beard,fangorn_plant_brown,ported,name,
 block,fangornPlant,fangornPlant,2,Huorn Leaf,fangorn_plant_gold,ported,name,
@@ -414,7 +414,7 @@ block,gobletSilverBlock,gobletSilver,,,silver_goblet_block,ported,override,
 block,gobletWoodBlock,gobletWood,,,wooden_cup_block,ported,override,old Wooden Goblet item is named Wooden Cup
 block,goldBars,goldBars,,Gold Bars,gold_bars,ported,name,
 block,gondorianTable,gondorianCraftingTable,,Gondorian Crafting Table,gondorian_crafting_table,ported,name,
-block,goran,goran,,,,missing,,
+block,goran,goran,,,goran,ported,id,
 block,grapevine,grapevine,,Grapevine Post,grapevine,ported,name,
 block,grapevineRed,grapevineRed,,,red_grapevine,ported,override,
 block,grapevineWhite,grapevineWhite,,,green_grapevine,ported,override,old White grapes renamed Green
@@ -492,7 +492,7 @@ block,mallornTorchBlue,mallornTorchBlue,,Blue Mallorn Torch,blue_mallorn_torch,p
 block,mallornTorchGold,mallornTorchGold,,Golden Mallorn Torch,mallorn_gold_torch,ported,name,
 block,mallornTorchGreen,mallornTorchGreen,,Green Mallorn Torch,green_mallorn_torch,ported,name,
 block,marigold,marigold,,Marigold,marigold,ported,name,
-block,marshLights,marshLights,,,,missing,,
+block,marshLights,marshLights,,,marsh_lights,ported,override,block only (the original item had no icon)
 block,marzipanBlock,marzipanBlock,,Marchpane Block,marchpane_block,ported,name,
 block,mechanisedRailOff,mechanisedRailOff,,,mechanised_rail_off,ported,id,
 block,mechanisedRailOn,mechanisedRailOn,,,,merged,override,powered state of mechanised_rail
@@ -1088,12 +1088,12 @@ block,stairsWillow,stairsWillow,,Willow Wood Stairs,willow_stairs,ported,name,
 block,stairsWoodElvenBrick,stairsWoodElvenBrick,,Wood-elven Brick Stairs,wood_elven_brick_stairs,ported,name,
 block,stairsWoodElvenBrickCracked,stairsWoodElvenBrickCracked,,Cracked Wood-elven Brick Stairs,cracked_wood_elven_brick_stairs,ported,name,
 block,stairsWoodElvenBrickMossy,stairsWoodElvenBrickMossy,,Mossy Wood-elven Brick Stairs,mossy_wood_elven_brick_stairs,ported,name,
-block,stalactite,stalactite,0,Stalactite,,missing,,
-block,stalactite,stalactite,1,Stalagmite,,missing,,
-block,stalactiteIce,stalactiteIce,0,Ice Stalactite,,missing,,
-block,stalactiteIce,stalactiteIce,1,Ice Stalagmite,,missing,,
-block,stalactiteObsidian,stalactiteObsidian,0,Obsidian Stalactite,,missing,,
-block,stalactiteObsidian,stalactiteObsidian,1,Obsidian Stalagmite,,missing,,
+block,stalactite,stalactite,0,Stalactite,stalactite,ported,override,LOTRBlockStalactite meta 0 (hanging)
+block,stalactite,stalactite,1,Stalagmite,stalagmite,ported,override,LOTRBlockStalactite meta 1 (standing)
+block,stalactiteIce,stalactiteIce,0,Ice Stalactite,ice_stalactite,ported,override,
+block,stalactiteIce,stalactiteIce,1,Ice Stalagmite,ice_stalagmite,ported,override,
+block,stalactiteObsidian,stalactiteObsidian,0,Obsidian Stalactite,obsidian_stalactite,ported,override,
+block,stalactiteObsidian,stalactiteObsidian,1,Obsidian Stalagmite,obsidian_stalagmite,ported,override,
 block,strawBed,strawBed,,,straw_bed,ported,id,
 block,tallGrass,tallGrass,0,Short Grass,tall_grass_short,ported,name,
 block,tallGrass,tallGrass,1,Flowery Grass,tall_grass_flower,ported,name,
@@ -1793,7 +1793,7 @@ item,entDraught,entDraught,3,Yellow Ent-draught,ent_draught[3],ported,name,
 item,entDraught,entDraught,4,Red Ent-draught,ent_draught[4],ported,name,
 item,entDraught,entDraught,5,Silver Ent-draught,ent_draught[5],ported,name,
 item,entDraught,entDraught,6,Blue Ent-draught,ent_draught[6],ported,name,
-item,featherDyed,featherDyed,,Dyed Feather,,missing,,
+item,featherDyed,featherDyed,,Dyed Feather,feather_dyed,ported,override,LOTRItemFeatherDyed
 item,flax,flax,,Flax,flax,ported,name,also: flax_crop
 item,flaxSeeds,flaxSeeds,,Flax Seeds,flax_seeds,ported,name,
 item,galvorn,galvorn,,Galvorn Ingot,galvorn_ingot,ported,name,
@@ -2165,7 +2165,7 @@ item,raisins,raisins,,Raisins,raisins,ported,name,
 item,rangerBow,rangerBow,,Ranger Bow,ranger_bow,ported,name,
 item,raspberry,raspberry,,Raspberries,raspberries,ported,name,
 item,redBook,redBook,,Red Book,red_book,ported,name,
-item,redClayBall,redClayBall,,Red Clay,red_clay,ported,name,
+item,redClayBall,redClayBall,,Red Clay,red_clay_ball,ported,override,the ball item; name-matching paired it with the red_clay block
 item,rhinoArmorHalfTroll,rhinoArmorHalfTroll,,Half-troll Rhino Armor,half_troll_rhino_armor,ported,name,
 item,rhinoCooked,rhinoCooked,,Cooked Rhino,cooked_rhino,ported,name,
 item,rhinoHorn,rhinoHorn,,Rhino Horn,rhino_horn,ported,name,

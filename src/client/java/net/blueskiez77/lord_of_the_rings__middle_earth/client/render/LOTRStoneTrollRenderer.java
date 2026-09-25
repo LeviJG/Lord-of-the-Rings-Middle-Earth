@@ -59,7 +59,7 @@ public class LOTRStoneTrollRenderer
                 LOTRTrollModel.createLayer(1.0f).bakeRoot(), LOTRTrollModel.Piece.SHIRT);
         this.trousers = new LOTRTrollModel(
                 LOTRTrollModel.createLayer(0.75f).bakeRoot(), LOTRTrollModel.Piece.TROUSERS);
-        this.shadowRadius = 0.8f;
+        // No shadow: LOTRRenderStoneTroll left Render's shadowSize at 0.
     }
 
     @Override

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRDaleCrackerMenu;
 import net.minecraft.core.component.DataComponents;
@@ -42,8 +42,7 @@ import net.minecraft.world.level.Level;
  * <p>The original was one item with five colour subtypes; the port keeps its
  * five colours as five items, and the empty bit as {@code lotr:cracker_empty}.
  *
- * <p>NOT ported: the achievement, and the leather hat with a white feather in
- * the loot -- the port's hat has no feather yet, so that entry gives a plain hat.
+ * <p>NOT ported: the achievement (D7).
  */
 public class LOTRDaleCrackerItem extends Item implements LOTRTooltipItem {
     /** getMaxItemUseDuration. */
@@ -56,26 +55,26 @@ public class LOTRDaleCrackerItem extends Item implements LOTRTooltipItem {
 
     /** LOTRChestContents.DALE_CRACKER, entry for entry. */
     private static final List<Loot> LOOT = List.of(
-            new Loot(() -> new ItemStack(LOTRItems.CRAM), 1, 4, 25),
-            new Loot(() -> new ItemStack(LOTRBlocks.DALISH_PASTRY), 1, 1, 25),
-            new Loot(() -> new ItemStack(LOTRItems.MARCHPANE), 1, 3, 25),
-            new Loot(() -> new ItemStack(LOTRItems.CHOCOLATE_MARCHPANE), 1, 3, 25),
+            new Loot(() -> new ItemStack(LOTRFoodItems.CRAM), 1, 4, 25),
+            new Loot(() -> new ItemStack(LOTRFoodBlocks.DALISH_PASTRY), 1, 1, 25),
+            new Loot(() -> new ItemStack(LOTRFoodItems.MARCHPANE), 1, 3, 25),
+            new Loot(() -> new ItemStack(LOTRFoodItems.CHOCOLATE_MARCHPANE), 1, 3, 25),
             new Loot(() -> new ItemStack(Items.COOKIE), 1, 3, 25),
-            new Loot(() -> new ItemStack(LOTRItems.ROAST_CHESTNUT), 1, 4, 25),
-            new Loot(() -> new ItemStack(LOTRItems.ORANGE), 1, 3, 50),
-            new Loot(() -> new ItemStack(LOTRItems.LEMON), 1, 3, 50),
-            new Loot(() -> new ItemStack(LOTRItems.RAISINS), 1, 3, 25),
+            new Loot(() -> new ItemStack(LOTRFoodItems.ROAST_CHESTNUT), 1, 4, 25),
+            new Loot(() -> new ItemStack(LOTRFoodItems.ORANGE), 1, 3, 50),
+            new Loot(() -> new ItemStack(LOTRFoodItems.LEMON), 1, 3, 50),
+            new Loot(() -> new ItemStack(LOTRFoodItems.RAISINS), 1, 3, 25),
             new Loot(() -> new ItemStack(Items.COMPASS), 1, 1, 25),
             new Loot(() -> new ItemStack(Items.CLOCK), 1, 1, 25),
-            new Loot(() -> new ItemStack(LOTRItems.SULFUR_MATCH), 1, 8, 25),
-            new Loot(() -> new ItemStack(LOTRItems.SLING), 1, 1, 25),
-            new Loot(() -> new ItemStack(LOTRItems.PEBBLE), 1, 4, 25),
+            new Loot(() -> new ItemStack(LOTRToolItems.SULFUR_MATCH), 1, 8, 25),
+            new Loot(() -> new ItemStack(LOTRCombatItems.SLING), 1, 1, 25),
+            new Loot(() -> new ItemStack(LOTRCombatItems.PEBBLE), 1, 4, 25),
             new Loot(() -> new ItemStack(Items.COAL), 1, 1, 100),
             new Loot(() -> new ItemStack(Items.STRING), 1, 3, 25),
             new Loot(() -> new ItemStack(Items.FEATHER), 1, 3, 25),
-            new Loot(() -> new ItemStack(LOTRItems.SWAN_FEATHER), 1, 3, 25),
-            new Loot(() -> new ItemStack(LOTRItems.LEATHER_HAT), 1, 1, 50),
-            new Loot(() -> new ItemStack(LOTRItems.LEATHER_HAT), 1, 1, 50),
+            new Loot(() -> new ItemStack(LOTRMaterialItems.SWAN_FEATHER), 1, 3, 25),
+            new Loot(() -> new ItemStack(LOTRMiscItems.LEATHER_HAT), 1, 1, 50),
+            new Loot(LOTRDaleCrackerItem::featheredHat, 1, 1, 50),
             new Loot(() -> partyHat(16777215), 1, 1, 25),
             new Loot(() -> partyHat(0), 1, 1, 25),
             new Loot(() -> partyHat(16711680), 1, 1, 25),
@@ -85,11 +84,11 @@ public class LOTRDaleCrackerItem extends Item implements LOTRTooltipItem {
             new Loot(() -> partyHat(40908), 1, 1, 25),
             new Loot(() -> partyHat(4607), 1, 1, 25),
             new Loot(() -> partyHat(13576667), 1, 1, 25),
-            new Loot(() -> new ItemStack(LOTRItems.GOLD_RING), 1, 1, 25),
-            new Loot(() -> new ItemStack(LOTRItems.SILVER_RING), 1, 1, 25),
+            new Loot(() -> new ItemStack(LOTRMiscItems.GOLD_RING), 1, 1, 25),
+            new Loot(() -> new ItemStack(LOTRMiscItems.SILVER_RING), 1, 1, 25),
             new Loot(() -> new ItemStack(Items.GOLD_NUGGET), 1, 5, 25),
-            new Loot(() -> new ItemStack(LOTRItems.SILVER_NUGGET), 1, 5, 25),
-            new Loot(() -> new ItemStack(LOTRItems.MITHRIL_NUGGET), 1, 2, 5));
+            new Loot(() -> new ItemStack(LOTRMaterialItems.SILVER_NUGGET), 1, 5, 25),
+            new Loot(() -> new ItemStack(LOTRMaterialItems.MITHRIL_NUGGET), 1, 2, 5));
 
     public LOTRDaleCrackerItem(Properties properties) {
         super(properties);
@@ -106,8 +105,15 @@ public class LOTRDaleCrackerItem extends Item implements LOTRTooltipItem {
         stack.set(LOTRDataComponents.CRACKER_CONTENTS, ItemContainerContents.fromItems(contents));
     }
 
+    /** setFeatherColor(new ItemStack(leatherHat), 16777215): a hat with a white feather. */
+    private static ItemStack featheredHat() {
+        ItemStack hat = new ItemStack(LOTRMiscItems.LEATHER_HAT);
+        hat.set(LOTRDataComponents.HAT_FEATHER, LOTRLeatherHatItem.FEATHER_WHITE);
+        return hat;
+    }
+
     private static ItemStack partyHat(int color) {
-        ItemStack hat = new ItemStack(LOTRItems.PARTY_HAT);
+        ItemStack hat = new ItemStack(LOTRMiscItems.PARTY_HAT);
         hat.set(DataComponents.DYED_COLOR, new DyedItemColor(color));
         return hat;
     }

@@ -23,7 +23,7 @@ public final class LOTRDispenserBehaviours {
 
     public static void init() {
         LOTRBlocks.ALL_ORC_BOMBS.forEach(bomb -> DispenserBlock.registerBehavior(bomb.asItem(), ORC_BOMB));
-        DispenserBlock.registerBehavior(LOTRBlocks.KHAMULS_FIRE_JAR.asItem(), FIRE_JAR);
+        DispenserBlock.registerBehavior(LOTRCombatBlocks.KHAMULS_FIRE_JAR.asItem(), FIRE_JAR);
     }
 
     /**
@@ -66,7 +66,7 @@ public final class LOTRDispenserBehaviours {
             if (level.getBlockState(pos).canBeReplaced()) {
                 LOTRKhamulsFireJarBlock.explodeOnPlace = false;
                 try {
-                    level.setBlockAndUpdate(pos, LOTRBlocks.KHAMULS_FIRE_JAR.defaultBlockState());
+                    level.setBlockAndUpdate(pos, LOTRCombatBlocks.KHAMULS_FIRE_JAR.defaultBlockState());
                 } finally {
                     LOTRKhamulsFireJarBlock.explodeOnPlace = true;
                 }

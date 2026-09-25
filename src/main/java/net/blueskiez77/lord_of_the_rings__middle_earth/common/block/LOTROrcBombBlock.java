@@ -92,7 +92,7 @@ public class LOTROrcBombBlock extends Block {
     @Override
     protected InteractionResult useItemOn(ItemStack held, BlockState state, Level level, BlockPos pos,
             Player player, InteractionHand hand, BlockHitResult hit) {
-        if (!held.is(LOTRBlocks.ORC_TORCH.asItem())) {
+        if (!held.is(LOTRDecorationBlocks.ORC_TORCH.asItem())) {
             return InteractionResult.PASS;
         }
         prime(level, pos, player);

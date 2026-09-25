@@ -50,7 +50,7 @@ public class LOTRTrollTotemBlockEntity extends BlockEntity {
     /**
      * What a completed totem calls up. PLACEHOLDER -- this is
      * LOTREntityMountainTrollChieftain in the original, and a chicken here only
-     * because the port has no entities of its own yet. One line to change.
+     * until the chieftain is ported (tracked for D9). One line to change.
      */
     private static final EntityType<? extends Mob> SUMMONED = EntityTypes.CHICKEN;
 

@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 import com.mojang.serialization.Codec;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -67,18 +67,18 @@ public enum LOTRVessel implements StringRepresentable {
     /** Vessel.getEmptyVesselItem: the cup handed back when the drink is gone. */
     public Item emptyItem() {
         return switch (this) {
-            case MUG -> LOTRItems.MUG;
-            case MUG_CLAY -> LOTRItems.CERAMIC_MUG;
-            case GOBLET_GOLD -> LOTRItems.GOLDEN_GOBLET;
-            case GOBLET_SILVER -> LOTRItems.SILVER_GOBLET;
-            case GOBLET_COPPER -> LOTRItems.COPPER_GOBLET;
-            case GOBLET_WOOD -> LOTRItems.WOODEN_CUP;
-            case SKULL -> LOTRItems.SKULL_CUP;
-            case GLASS -> LOTRItems.WINE_GLASS;
+            case MUG -> LOTRFoodItems.MUG;
+            case MUG_CLAY -> LOTRFoodItems.CERAMIC_MUG;
+            case GOBLET_GOLD -> LOTRFoodItems.GOLDEN_GOBLET;
+            case GOBLET_SILVER -> LOTRFoodItems.SILVER_GOBLET;
+            case GOBLET_COPPER -> LOTRFoodItems.COPPER_GOBLET;
+            case GOBLET_WOOD -> LOTRFoodItems.WOODEN_CUP;
+            case SKULL -> LOTRFoodItems.SKULL_CUP;
+            case GLASS -> LOTRFoodItems.WINE_GLASS;
             case BOTTLE -> Items.GLASS_BOTTLE;
-            case SKIN -> LOTRItems.WATERSKIN;
-            case HORN -> LOTRItems.ALE_HORN;
-            case HORN_GOLD -> LOTRItems.GOLDEN_ALE_HORN;
+            case SKIN -> LOTRFoodItems.WATERSKIN;
+            case HORN -> LOTRFoodItems.ALE_HORN;
+            case HORN_GOLD -> LOTRFoodItems.GOLDEN_ALE_HORN;
         };
     }
 
@@ -94,18 +94,18 @@ public enum LOTRVessel implements StringRepresentable {
     /** Vessel.getBlock: what a vessel set down becomes. */
     public Block block() {
         return switch (this) {
-            case MUG -> LOTRBlocks.MUG_BLOCK;
-            case MUG_CLAY -> LOTRBlocks.CERAMIC_MUG_BLOCK;
-            case GOBLET_GOLD -> LOTRBlocks.GOLDEN_GOBLET_BLOCK;
-            case GOBLET_SILVER -> LOTRBlocks.SILVER_GOBLET_BLOCK;
-            case GOBLET_COPPER -> LOTRBlocks.COPPER_GOBLET_BLOCK;
-            case GOBLET_WOOD -> LOTRBlocks.WOODEN_CUP_BLOCK;
-            case SKULL -> LOTRBlocks.SKULL_CUP_BLOCK;
-            case GLASS -> LOTRBlocks.WINE_GLASS_BLOCK;
-            case BOTTLE -> LOTRBlocks.BOTTLE_BLOCK;
+            case MUG -> LOTRFoodBlocks.MUG_BLOCK;
+            case MUG_CLAY -> LOTRFoodBlocks.CERAMIC_MUG_BLOCK;
+            case GOBLET_GOLD -> LOTRFoodBlocks.GOLDEN_GOBLET_BLOCK;
+            case GOBLET_SILVER -> LOTRFoodBlocks.SILVER_GOBLET_BLOCK;
+            case GOBLET_COPPER -> LOTRFoodBlocks.COPPER_GOBLET_BLOCK;
+            case GOBLET_WOOD -> LOTRFoodBlocks.WOODEN_CUP_BLOCK;
+            case SKULL -> LOTRFoodBlocks.SKULL_CUP_BLOCK;
+            case GLASS -> LOTRFoodBlocks.WINE_GLASS_BLOCK;
+            case BOTTLE -> LOTRFoodBlocks.BOTTLE_BLOCK;
             case SKIN -> null;
-            case HORN -> LOTRBlocks.ALE_HORN_BLOCK;
-            case HORN_GOLD -> LOTRBlocks.GOLDEN_ALE_HORN_BLOCK;
+            case HORN -> LOTRFoodBlocks.ALE_HORN_BLOCK;
+            case HORN_GOLD -> LOTRFoodBlocks.GOLDEN_ALE_HORN_BLOCK;
         };
     }
 
@@ -141,7 +141,7 @@ public enum LOTRVessel implements StringRepresentable {
     /** getEquivalentDrink: vanilla's water bottle counts as water in a bottle. */
     public static ItemStack equivalentDrink(ItemStack stack) {
         if (isWaterBottle(stack)) {
-            ItemStack water = new ItemStack(LOTRItems.WATER, stack.getCount());
+            ItemStack water = new ItemStack(LOTRFoodItems.WATER, stack.getCount());
             water.set(LOTRDataComponents.VESSEL, BOTTLE);
             return LOTRPoisonedDrinks.copyPoison(stack, water);
         }
@@ -154,7 +154,7 @@ public enum LOTRVessel implements StringRepresentable {
      */
     public ItemStack fill(ItemStack drink) {
         ItemStack result = equivalentDrink(drink).copy();
-        if (this == BOTTLE && result.is(LOTRItems.WATER)) {
+        if (this == BOTTLE && result.is(LOTRFoodItems.WATER)) {
             return LOTRPoisonedDrinks.copyPoison(result,
                     PotionContents.createItemStack(Items.POTION, Potions.WATER).copyWithCount(result.getCount()));
         }

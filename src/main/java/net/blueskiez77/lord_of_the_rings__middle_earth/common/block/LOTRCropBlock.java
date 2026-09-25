@@ -51,7 +51,7 @@ public class LOTRCropBlock extends CropBlock {
     // LOTRBlockPipeweedCrop.randomDisplayTick: a ripe crop smokes like the wild plant.
     @Override
     public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
-        if (this == LOTRBlocks.PIPEWEED_CROP && isMaxAge(state)) {
+        if (this == LOTRUtilityBlocks.PIPEWEED_CROP && isMaxAge(state)) {
             LOTRPlantBlock.pipeweedSmoke(level, pos, random);
         }
     }

@@ -26,6 +26,10 @@ public final class LOTRParticles {
     public static final SimpleParticleType QUENDITE_SMOKE = register("quendite_smoke");
     /** LOTREntityChillFX: pale blue smoke that hangs and sinks, off a Chilling blow. */
     public static final SimpleParticleType CHILL = register("chill");
+    /** LOTREntityMarshFlameFX: a long-lived flame, off the marsh lights. */
+    public static final SimpleParticleType MARSH_FLAME = register("marsh_flame");
+    /** LOTREntityMarshLightFX: a pale grey light, off the marsh lights. */
+    public static final SimpleParticleType MARSH_LIGHT = register("marsh_light");
 
     private LOTRParticles() {
     }

@@ -75,6 +75,11 @@ and `tools/parity_class_overrides.csv` (classes) rather than editing the CSVs in
 - No ritual final `./gradlew build`; compile mid-change only to settle an API
   question. The user builds and tests in game.
 
+- **Track what cannot be ported.** Anything an audit finds that cannot be
+  ported yet goes on the *Deferred-port tracker* (below Track D), under the
+  unit that unblocks it, and not only in the unit's *Result* or a code
+  comment.
+
 ## Snapshot of where the port stands (2026-09-23)
 
 | Area (old package) | Old classes | Port status |
@@ -761,7 +766,7 @@ say what the user should check in game.
     with the NPC death handler. Save keys to keep: per faction `NPCKill`,
     `EnemyKill`, `Trades`, `Hired`, `MiniQuests`, `Conquest`, `ConquestHorn`;
     bounties per faction, per player UUID, with kill records.
-- [ ] **B13 Entities ported so far** (projectiles, boss trophy, stone troll,
+- [x] **B13 Entities ported so far** (projectiles, boss trophy, stone troll,
   exploding termite, mystery web, plate entity) + their renderers. *Result:*
   - [x] **B13a Stone troll, boss trophy, plate.** Stone troll: the pickaxe
     test listed the six vanilla pickaxes, but the original took any
@@ -813,44 +818,366 @@ say what the user should check in game.
       1200 ground ticks, pickup wear, knockback modifiers.
     - Trident: vanilla's.
     Track D: the fire pot's bird achievement.
-- [ ] **B14 Networking & client/server split.** All payloads validate input
+  - [x] **Tracker sweep (with B13).** Every deferral from B3 onwards, and every
+    "NOT ported" code comment, is now on the Deferred-port tracker. The sweep
+    found:
+    - **Anvil name colour:** Edhelvir (dark aqua) and Gulduril (dark green)
+      were missing from `LOTRAnvilMenu.nameColour`; both extend
+      `LOTRItemWithAnvilNameColor`. Added (a B11 gap).
+    - **Ancient items** (`LOTRItemAncientItem`) were plain items waiting on
+      chest pools. Ported as `LOTRAncientItem` with the six `ANCIENT_*` pools
+      in `LOTRChestContents` (orc/Mordor 100, the four elven 25 each, Gondor,
+      Arnor and Dwarven 50 each). Wraithbane roll and achievement are
+      tracked.
+    - **Stale comments** removed or rewritten, their gaps now closed:
+      `LOTRSmithsScrollItem`, `LOTRThrowingAxeItem`, `LOTRModifiers`,
+      `LOTRBalrogWhipItem`, the Edhelvir and Gulduril item classes, and
+      `LOTRItems` (special items, gem colours, whip repair, smoking pipe,
+      ancient items).
+  - [x] **B13d Renderers.** Each checked against its `LOTRRender*`.
+    - **Gandalf's fireball** was a 2× thrown item sprite. The original is a
+      camera-facing, full-bright 1×1 sprite cycling through cells 24–27 of
+      `particles.png`, a frame every 5 ticks. Now `LOTRGandalfFireballRenderer`.
+    - **Crossbow bolt:** the poisoned bolt read
+      `crossbow_bolt_poisoned.png`, which is not in the old mod; it is a
+      generated crop of the original sheet's lower row. Now both bolts read
+      the original `crossbow_bolt.png`, the poisoned one through a copy of
+      `ArrowModel` with texture offsets 10 px down (`yOffset * 10`). The
+      generated PNG was deleted (user).
+    - **Gandalf's fireball item removed** (user): `gandalf_fireball` had no
+      original counterpart and existed only to give the projectile a sprite.
+      The entity is now a plain `ThrowableProjectile` (caster, eye height
+      −0.1). The item, its model, item definition, lang key and its generated,
+      animated texture are gone.
+    - **Stone troll and boss trophy** had shadows (0.8 / 0.5). The originals
+      left `Render.shadowSize` at 0. Removed.
+    - **Matched:**
+      - Orc bomb: vanilla `TntRenderer`, the same swell and flash formula,
+        drawn from the bomb's block state.
+      - Plate, poisoned arrow (vanilla arrow, own texture), smoke ring.
+      - The `RenderSnowball` ones: pebble, web, termite, conker, fire pot.
+      - Trophy geometry.
+    - **Reported, not changed** (hand-tuned earlier; the user decides):
+      - Throwing axe: the original stands a stuck axe upright (−90° roll,
+        +0.75) and draws a flying one 0.5 higher; the port lays a stuck axe
+        along its flight line.
+      - Dart: now 0.6 blocks as the original (user), `SCALE` 1.2 on the GROUND
+        model.
+- [x] **B14 Networking & client/server split.** All payloads validate input
   server-side (sign edit, beacon edit, horn mode, brewing button); no client
-  classes referenced from `src/main`. *Result:*
-- [ ] **B15 Creative tabs, lang, tags.** Every registered item in exactly the
+  classes referenced from `src/main`. *Result:* No `net.minecraft.client` or
+  Fabric client API in `src/main`; clientbound receivers live in the client
+  source set (`LOTRClientFactionState`, the sign editor). Each serverbound
+  handler compared with its original packet:
+  - **Beacon edit** checked distance only. The original accepts an edit only
+    from a player on the beacon's `editingPlayers` list, added when they
+    open the dialog (`openGui 50` → `addEditingPlayer`) and released by the
+    edit. Now: `LOTRBeaconBlock.useWithoutItem` registers the player
+    server-side (`useItemOn` falls through with `TRY_WITH_EMPTY_HAND`; the
+    client's `UseBlockCallback` still sends the use packet), and the handler
+    requires and releases it. The list is not saved and alive-checked, as
+    the original.
+  - **Anvil rename:** the original handler ignored names over 30 characters
+    (the box takes 40) and cleared on blank. Now the same.
+  - **Horn:** the port set the mode on a horn in either hand, whatever its
+    mode. Both original packets (`LOTRPacketHornSelect`,
+    `LOTRPacketItemSquadron`) act on the main-hand item only, and the mode is
+    only chosen for a plain horn (damage 0 = `Mode.SELECT`). Now so, and the
+    selection screen opens for the main hand only.
+  - **Matched:** sign edit (distance, carver, 15 allowed chars or "!?"),
+    brewing button (open barrel menu), pledge set (B12b).
+- [x] **B15 Creative tabs, lang, tags.** Every registered item in exactly the
   right tab in old order; no missing/duplicate lang keys; tag files match usage.
   *Result:*
+  - **Removed the "LOTR (All, temporary)" tab** (user: debugging scaffolding):
+    its key, registration, lang key and the header comment that called it
+    scaffolding. Nothing depended on it.
+  - **Membership, checked at runtime:** a throwaway datagen provider bound
+    item components and built every LOTR tab (now removed, datagen output
+    unchanged).
+    - Every item is in exactly one tab, except 10 in none, all correct:
+      crops, mechanised rail and Utumno portal pieces (`setCreativeTab(null)`
+      in the original), and the bone block (vanilla duplicate).
+    - **Right tab:** compared against each original item's tab (explicit
+      `setCreativeTab` on its `LOTRMod` line, else its class or superclass).
+      2,120 match. The rest are variant stacks, blocks whose separate item
+      carries the tab (beds, cakes), gate factories, and placed-only blocks,
+      each confirmed by hand.
+    - Mud farmland is in Blocks although 1.7.10 farmland had no tab. That was
+      inherited from vanilla, and modern vanilla lists farmland, so it stays.
+  - **Lang:** no duplicate keys. Every item has a name (the troll statue by
+    outfit, `.0`–`.2`, as the original). The 82 keys without an item are all
+    item-less blocks (wall torches and banners, placed mugs, signs, fire) or
+    shared tooltip keys.
+  - **Tags:** every `lotr:` id in 183 tag files exists, and every code
+    `TagKey` has a file except `lotr:is_fangorn` (biome, empty until D10). The
+    11 cube/gate/door blocks with no blockstate file are modelled by the
+    connected-border plugin, so that is correct.
+  - **Parity ledger fix:** `redClayBall` was name-matched to the `red_clay`
+    block; `tools/parity_overrides.csv` now maps it to `red_clay_ball`.
+  - Found out of scope, logged in the findings backlog: 703 mechanical
+    recipes still generate under the mod-id namespace, 49 possibly
+    duplicating `lotr` ones [B15→B6].
 
 ## Track C — Code clean-up (behaviour-neutral only)
 
 Run these after the relevant B unit so a refactor never hides a bug fix.
 
-- [ ] **C1 Imports.** 179 files use fully qualified `net.blueskiez77...` names
+- [x] **C1 Imports.** 179 files use fully qualified `net.blueskiez77...` names
   inline (e.g. `LOTRMod.onInitialize`). Replace with imports. Pure mechanical.
-- [ ] **C2 Split the giant registries.** `LOTRBlocks` (3218 lines), `LOTRItems`
+  *Result:* By script: every inline `net.blueskiez77...Class` outside string
+  literals and `//` comments became an import, same-package references need
+  none, and no simple name clashed. 17 files had any left (80 references).
+  Also moved `LOTRMillstoneRecipes.createRecipes()` after `LOTRItems.init()`,
+  the B1 note (it worked either way, as the item fields are static). Compiles.
+- [x] **C2 Split the giant registries.** `LOTRBlocks` (3218 lines), `LOTRItems`
   (2837), `LOTRCreativeTabs` (1314), `LOTRToolMaterials` (1457) → split by theme
   (e.g. `LOTRBuildingBlocks`, `LOTRWoodBlocks`, `LOTRFactionItems`), keeping IDs
   and registration order identical. *Suggest-first — confirm the split scheme
-  with the user before doing it.*
-- [ ] **C3 Datagen coverage.** Move hand-written JSON (models, loot, tags,
+  with the user before doing it.* *Result (user: by creative tab):*
+  - **Items:** 812 fields assigned by the tab each item appears in.
+    `LOTRCombatItems` (496), `LOTRFoodItems` (125), `LOTRMaterialItems` (68),
+    `LOTRToolItems` (63), `LOTRMiscItems` (47), `LOTRStoryItems` (7).
+    `LOTRItems` keeps the six early items registered first on purpose
+    (mithril, pipeweed, kebab, troll statue, the two trophies), `register`,
+    and the shared builders and constants (now package-private).
+  - **Blocks:** 1,429 fields. `LOTRBuildingBlocks` (830),
+    `LOTRDecorationBlocks` (343), `LOTRUtilityBlocks` (212), `LOTRFoodBlocks`
+    (26), `LOTRMiscBlocks` (12), `LOTRCombatBlocks` (7). Item-less blocks go
+    with the block before them, e.g. wall banners with banners. `LOTRBlocks`
+    keeps the family lists, maps, sound types and builders. The four mid-file
+    `static` blocks and `ALL_CARVED_SIGNS` moved with the blocks they read;
+    the file-final pass (leaves↔saplings, `NOT_SMALL_FLOWERS`) now runs in
+    `LOTRBlocks.init()` after the six classes load.
+  - Each part is loaded by its parent's `init()`, in first-appearance order;
+    comments travelled with their fields. All references across the code
+    were rewritten (83 files).
+  - **Checks:** compiles; no init cycle (every cross-class read in a field
+    initialiser points at `LOTRBuildingBlocks`, which loads first, and
+    `LOTRBlocks` reads no moved block at class-init); datagen output
+    identical except the entry order inside `mineable/pickaxe.json`; every
+    creative tab identical in contents and order (runtime audit, before and
+    after).
+  - Not split: `LOTRToolMaterials` (materials don't sort by tab) and
+    `LOTRCreativeTabs` (it is the tab definitions).
+- [x] **C3 Datagen coverage.** Move hand-written JSON (models, loot, tags,
   recipes) into the datagen providers where they already exist, or document why
-  a file is hand-written. Delete generated duplicates.
-- [ ] **C4 Dead code & orphans.** Unused classes/methods/assets from A3.
-- [ ] **C5 Comment hygiene.** Keep "old class ↔ new class" mapping comments,
+  a file is hand-written. Delete generated duplicates. *Result:*
+  - **Duplicates:** no path exists in both `src/main/resources` and
+    `src/main/generated`, and every model is referenced.
+  - **Moved into datagen, each verified equal to the file it replaced, then
+    deleted (and removed from git):**
+    - 660 flat items: 1,320 files, each item's definition plus its flat
+      model. New `LOTRFlatItemModels` lists them as vanilla's
+      ItemModelGenerators does (492 flat, 168 handheld).
+    - All 18 hand-written loot tables, into `LOTRBlockLootProvider`:
+      plates and fruit blocks (single item), seven cakes and pies (self
+      only at `bites=0`), flax and pipe-weed (vanilla crop shape), lettuce,
+      leek, turnip and yam (the potato shape without the poisonous potato).
+      The only differences are `random_sequence`, which no generated table
+      carries, and the order of AND-ed conditions.
+  - **Documented as hand-written:** `docs/hand_written_resources.md`, with the
+    reason for each remaining group (custom blockstates and models, pull and
+    in-hand item models, equipment layer data, hand-picked tags, special
+    recipe types, dynamic registries).
+  - **Recipes moved (user):** 790 of the 952 ordinary hand-written recipes
+    are now generated by new `LOTRMovedRecipes`, called from
+    `LOTRTranscribedRecipes`. Each keeps its id and its recipe-book category:
+    the helpers take a one-shot `in(RecipeCategory)`, since their derived
+    category would have put all 478 equipment recipes under misc. All 790
+    are identical to the JSON they replaced; that JSON is deleted and removed
+    from git. They gain recipe-book unlock advancements like every other
+    generated recipe. Parity unchanged: 2,089 present, 0 missing. Still
+    hand-written: 126 drinks (result components), 36 with ingredient
+    alternatives, and 55 special types.
+  - **Fixed (user report):** the lettuce had no item definition at all, in
+    either tree or in git history, so its inventory icon never rendered. It
+    is now a generated flat item. It was the only registered item without
+    one (the `*_crop` block items are tabless).
+- [x] **C4 Dead code & orphans.** Unused classes/methods/assets from A3.
+  *Result:* `parity_assets.py` rerun: 11 orphans.
+  - **Deleted (and removed from git):**
+    - `block/marzipan_chocolate.png`: a stray copy of the original's unused
+      blocks texture; the chocolate marzipan is an item with its own.
+    - The five vanilla door item textures (acacia, birch, dark oak, jungle,
+      spruce), which have no LOTR item.
+    - `textures/block/textures.txt`: a saved colour `ls` listing committed
+      by accident.
+  - **Kept, false positives:** `entity/troll/outfit_0..2`, built as
+    `"outfit_" + i`.
+  - **Kept, a render gap (reported):** `reeds_lower` and `dried_reeds_lower`.
+    The original drew the lowest stalk segment, the one on solid ground,
+    with them; the redesigned reeds (B3) only have `top`/`mid` states.
+  - **Code:** every Java class is referenced, and no private or package
+    method is uncalled. The one class nothing uses, `LOTRKeyBindings`, is
+    entirely commented out (since the 26.2 upgrade commit). It is the only
+    way to open the factions screen, so it is kept and tracked (D16).
+- [x] **C5 Comment hygiene.** Keep "old class ↔ new class" mapping comments,
   remove stale ones.
 
 ## Track D — Continue porting (baseline feature parity)
 
-Ordered by dependency. Each bullet is one or more units; split as needed.
-
-- [ ] **D1 Remaining items/blocks** from A1 `missing` rows, batched by faction
+Ordered by dependency. Each bullet is one or more units; split as needed. *Result:*
+  - **Stale "not ported" claims fixed, now true:**
+    - Bow and crossbow: the ranged modifier family is ported (B11).
+    - Fire pot: plays `BLOCK_PLATE_BREAK`; the sound claim is gone.
+    - Coast Southron repair tag: the port has a bronze ingot.
+    - Troll totem: only the chieftain is missing, not "entities".
+    - Combat tab: the tools are left out because they sit in the tools
+      tab, not because they are "not ported".
+  - **Wrong names fixed:** `LOTREntityThrownTermite` (was
+    `…ExplodingTermite`), `LOTRItemBanner` / `LOTREntityBanner` (was a
+    nonexistent `LOTRBlockBanner`), and the three minecart mixins (was
+    `LOTRMinecartMixin`, plus a doubled "powered").
+  - The broken fragment heading `LOTRItems` is replaced by a class comment
+    describing it after C2.
+  - **Checked and left as correct:** the remaining "not ported" / "waits on
+    NPCs" notes (all on the tracker), the NBT key names the original used
+    (`LOTRRepairCost`, `LOTREnchantProgress`, `LOTRBarrelData`,
+    `LOTRKebabData`, `LOTRCrossbowAmmo`…), and every "Track D" pointer. No
+    TODO/FIXME remains.
+- [x] **D1 Remaining items/blocks** from A1 `missing` rows, batched by faction
   (≈10–30 items per unit), with all their systems.
-- [ ] **D2 Missing tile entities**: bookshelf storage, flower pot, spawner
+  - Remaining `missing` rows (31) after Tracks A–C: most need other systems
+    and are listed under their D unit on the tracker:
+    - portals and the Utumno entrance (D15);
+    - spawner chests and bookshelf storage (D2);
+    - rugs (D4);
+    - branding iron, NPC respawner, spawn eggs (D9);
+    - structure spawner (D11);
+    - coral reef (D10).
+  - [x] **D1a Stalactites.** `LOTRBlockStalactite` → `LOTRStalactiteBlock`,
+    six blocks: `stalactite`, `stalagmite`, `ice_*` and `obsidian_*`.
+    - Taken from the model block: hardness, resistance, sound, tool and
+      texture; friction left at 0.6, as the original did not copy it.
+    - Needs a sturdy face above or below, both to be placed and to stay;
+      broken with its drop when that goes.
+    - Landing on a stalagmite deals `2 × fall + 1` *instead of* fall damage.
+    - A stalactite under pickaxe-mineable rock drips (Material.rock).
+    - Shape: `renderStalactite`'s 16 tapering layers, as two hand-written
+      template models with datagen children, also the item.
+    - Drops: stone and obsidian drop themselves, packed ice only to silk
+      touch. All pickaxe; obsidian needs diamond.
+    - Decorations tab; lang; parity overrides. Cave generation → D10.
+  - [x] **D1b Fallen leaves.** `LOTRBlockFallenLeaves` → `LOTRFallenLeavesBlock`
+    and `LOTRFallenLeavesItem`, one block per leaf: `fallen_<leaf>` for
+    vanilla's six and all 38 LOTR leaves, 44 blocks.
+    - Material.vine behaviour: hardness 0.2, grass sound, no collision, 2 px
+      tall, replaceable, lit by lava, broken by pistons.
+    - Sits on a sturdy top or a water source, never inside a liquid; placed
+      on water like a lily pad; gone, without drops, when unsupported.
+    - Named "Fallen %s" after its leaf; shears-only drop.
+    - Recipe: 3 leaves in a row make 6, LOTR leaves only (the original loop
+      skipped vanilla's). Decorations tab.
+    - Look: `LOTRFallenLeavesModel` transcribes `renderFallenLeaves` (fancy),
+      with the original position seed: 6–10 pieces, 2–6 px, random crop,
+      angle and place, 0.7 shade, no AO. Supplied by
+      `LOTRFallenLeavesPlugin` in place of a blockstate. Vanilla's six take
+      their leaf's tint (foliage, or the birch and evergreen constants), and
+      their items are tinted the way vanilla tints the leaf item.
+    - The fast-graphics flat slab is not ported, as 26.2 has no such toggle
+      for block models. Generation under trees → D10.
+  - [x] **D1c Dyed feather and the hat's feather.** Everything that used
+    `LOTRItemFeatherDyed`:
+    - **The item:** `feather_dyed`, stack 1, no tab (the original set none).
+      Vanilla's feather sprite tinted by `DYED_COLOR`, white undyed.
+    - **Feather dye** (`LOTRRecipeFeatherDye`): vanilla `crafting_dye`, whose
+      blend is the same and which transmutes onto the result. Target
+      `#lotr:dyeable_feathers` (new tag: the "feather" ore name plus a dyed
+      feather).
+    - **Hat feather** (`LOTRRecipeLeatherHatFeather`): new
+      `lotr:leather_hat_feather`. One featherless hat and one feather, plain
+      or dyed, nothing else; the colour goes in new `HAT_FEATHER`.
+    - **Hat dye** (`LOTRRecipeLeatherHatDye`): now `lotr:leather_hat_dye`, a
+      `DyeRecipe` that refuses a feathered hat, as the original did.
+    - **Hat item:** `LOTRLeatherHatItem`, with the "Dyed" / "Feathered"
+      tooltip. Its inventory icon adds the original's `leatherHat_feather`
+      overlay (copied) when feathered, tinted by new item tint source
+      `lotr:hat_feather`.
+    - **Worn:** the feather is drawn on the hat with `LOTRModelLeatherHat`'s
+      transforms, as the dyed-feather item in its colour.
+    - **Cauldron** (LOTREventHandler): a hat washes its dye and its feather's
+      (back to white) if either is dyed; a dyed feather via
+      `#cauldron_can_remove_dye`.
+    - **Dale cracker:** its second hat entry is the white-feathered hat again.
+    - The feathered hats of Shirriff chiefs and Bree captains come with those
+      NPCs (D9).
+  - [x] **D1d Marsh lights, Goran.**
+    - **Marsh lights** (`LOTRBlockMarshLights` → `LOTRMarshLightsBlock`,
+      `marsh_lights`): invisible, no collision, no outline, no drop, and no
+      item (the original's had no icon). Needs water beneath, gone without
+      it. Emits the corpse-lights two ticks in three, half a block down: a
+      marsh flame one time in three, a marsh light otherwise.
+    - **Two new particles,** `marsh_flame` and `marsh_light`
+      (`LOTRMarshParticle`). Both are `EntityFlameFX` underneath: vanilla
+      FlameParticle's shrink, self-light and movement, 40–59 ticks. The
+      light uses sheet cell 49, vanilla's `lava` sprite, tinted pale grey
+      and moving as spawned. Both are vanilla sprites, so no new art.
+    - **Goran** (`LOTRBlockGoran` → `LOTRGoranBlock`, `goran` "Goran" and
+      `goran_rock` "Cargoran", textures copied): the developers' joke block,
+      no tab, instabreak, stone sound, a pickaxe to keep it. Used by a
+      server operator, it fills every loaded air block within 32 with water.
+  - **D1 status:** 18 `missing` rows remain, every one on the deferred-port
+    tracker under the system it needs.
+- [x] **D2 Missing tile entities**: bookshelf storage, flower pot, spawner
   chest, mob spawner, gulduril, corrupt mallorn, ithildin carved sign.
-- [ ] **D3 Missing projectiles & dispenser behaviours**: spear, thrown rock,
+  - Excluded (user): bookshelf storage (`LOTRBlockBookshelfStorage`,
+    `LOTRTileEntityBookshelf`, container and GUI) -- unless rebuilt on modern
+    bookshelves -- and the flower pot (`LOTRBlockFlowerPot`,
+    `LOTRTileEntityFlowerPot`).
+  - Deferred: corrupt mallorn (spawns Ents in Fangorn: D9/D10), mob
+    spawner and spawner chests (NPCs: D9/D12), the portals (D15). The armour
+    stand is a vanilla duplicate.
+  - **Gulduril glow: not ported (user).** `LOTRTileEntityGulduril` /
+    `LOTRRenderGuldurilGlow` drew a drifting glow around gulduril blocks and
+    bricks; the user replaced it with an animated texture instead. (It was
+    briefly ported in D2a and then removed.)
+- [x] **D3 Missing projectiles & dispenser behaviours**: spear, thrown rock,
   thrown termite, troll snowball, smoke ring (pipe), mallorn leaf bomb, marsh
-  wraith ball, fishing.
+  wraith ball, fishing. *Result:* nothing portable on its own.
+  - **Already covered:** the spear is vanilla's (user decision); "thrown
+    termite" is `LOTREntityThrownTermite`, ported as the exploding termite
+    (B13); the smoke ring (B9); dispensers (B8).
+  - **Tracked with their throwers (D9):** thrown rock (mountain troll),
+    troll snowball (snow troll), mallorn leaf bomb (mallorn Ent),
+    marsh-wraith ball.
+  - **Tracked for the dimension (D10):** `LOTREntityFishHook`, which the
+    event handler swapped in for vanilla's hook inside Middle-earth.
 - [ ] **D4 Decorative entities**: rugs (wargskin/bear/lion/giraffe), banners as
   entities + banner protection, barrel entity, falling treasure.
+  - **Rugs → D8.** `LOTRModelBearRug`/`LionRug`/`WargskinRug`/`GiraffeRug`
+    lay the animals' own models flat, and rugs only drop from those animals,
+    so they come with the animal models there. The Decorations-tab note
+    already says so.
+  - [x] **D4a Floating barrel** (`LOTREntityBarrel` → `LOTRBarrelBoatEntity`).
+    - The original was 1.7.10's EntityBoat with a barrel drawn in, so it is
+      a 26.2 `Boat` now, keeping what is the mod's own:
+      - one rider;
+      - five-eighths of a boat's top speed (speedMultiplier 0.04–0.25
+        against the boat's 0.07–0.40). 26.2's paddling is private, so while
+        ridden the horizontal speed is scaled by 0.943 a tick, which in
+        water caps it at that ratio;
+      - it bumps only other barrels;
+      - broken, it drops the barrel it was placed from, contents included.
+    - The item's `use` sets it afloat on still water, square to the player
+      (onItemRightClick).
+    - `LOTRBarrelBoatRenderer`: the barrel item at 1.5×, half a block up,
+      rocking when struck, no shadow.
+    - Pick-block gives a plain barrel (26.2's boat `getPickResult` is final).
+    - The two stale "not ported" comments are fixed.
+  - **Banners as entities and banner protection → D14 (user):** wait for
+    fellowships, whose members a banner could whitelist.
+  - [x] **D4b Falling treasure** (`LOTREntityFallingTreasure` →
+    `LOTRFallingTreasureEntity`, a FallingBlockEntity subclass, `blockState`
+    access-widened).
+    - The pile already fell through vanilla's falling block, which on
+      landing in a part-full pile dropped a single item, losing the other
+      layers.
+    - Now, as the original: it pours into the pile it lands in up to a full
+      block, sets any left over on top, and drops the rest a coin item per
+      layer. Moving pistons are waited out; it is dropped after 100 ticks
+      out of the world, or 600 in any case. Vanilla's falling-block renderer
+      draws it.
 - [ ] **D5 Player data foundation**: port `LOTRPlayerData`/`LOTRLevelData` as
   Fabric attachments + SavedData (alignment already partly there — unify),
   with sync packets. Prerequisite for everything below.
@@ -874,6 +1201,158 @@ Ordered by dependency. Each bullet is one or more units; split as needed.
 - [ ] **D14 Quests, fellowships, mini-quests, Grey Wanderer.**
 - [ ] **D15 Portals**: elven/morgul/utumno portals, Utumno dimension.
 - [ ] **D16 Remaining GUIs, commands, particles/fx, sounds, drunken speech.**
+
+## Deferred-port tracker
+
+Everything an audit found that **could not be ported yet**, grouped by the
+Track D unit that unblocks it. When a unit below is started, work through its
+list here as part of it. Format: what (original class/method) → where it goes
+in the port [found in]. Tick an entry and note where it landed once it is
+ported. Anything newly found unportable during an audit is added here, not
+only to the unit's *Result*.
+
+### D1 — remaining items
+- [ ] Poisoned Dorwinion elven dagger and poisoned Gundabad Uruk dagger (not
+  registered) → `LOTRItems` [B7b]
+- [x] `featherDyed` and the leather hat's feather: dye recipe, hat-feather
+  recipes, the feathered-hat overlay (`leatherHat_feather`), and the Dale
+  cracker's leather hat with a white feather → `LOTRDyedHeadModel`,
+  `LOTRDaleCrackerItem` [B6d, B9] -- done in D1c
+- [ ] Harad turban gold ornament (needs an ornament state) and kaftan/robe
+  overlays (`bodyKaftan_overlay`, `legsKaftan_overlay`,
+  `helmetHaradRobes_ornament`) [A3, B9]
+- [ ] Elven blade glow near orcs (`setIsElvenBlade` renderer switch and glow
+  textures) [A3, B7d]
+- [ ] Coin value system (the three coin items as one currency) [LOTRItems]
+- [ ] Lore books (`LOTRLore`): also the 1-in-20 lore roll in chest pools
+  (`MIRKWOOD_LOOT` carries Woodland Realm and Dol Guldur lore) →
+  `LOTRChestContents.pick` [B13b]
+- [ ] Fallen leaves (and their charcoal/recipes) [B6b]
+
+### D4 — decorative entities and banners
+- [ ] Banner protection (`LOTRBannerProtection`), then its checks in:
+  Khamûl's fire `isBannered` (`LOTRKhamulsFireBlock`), the balrog whip's lash
+  (`LOTRBalrogWhipItem`), the plate's glass smashing (`LOTRPlateEntity`),
+  `LOTRBannerProtectable` on the stone troll and boss trophy, the banner block
+  entity's owner/protection data, and the banner copy/clear recipes
+  (`LOTRRecipesBanners`) [B4, B5e, B6d, B7d, B13a]
+- [ ] Floating barrel entity: `LOTRItemBarrel.onItemRightClick` puts a
+  rideable barrel on water → `LOTRBarrelItem` [B5b]
+
+### D5/D6 — player data, config
+- [ ] `LOTRConfig`: `alignmentDrain` (drain always on until then),
+  `alwaysShowAlignment`, `alignmentXOffset`/`YOffset`, `enchantingLOTR`
+  [B12b]
+- [ ] Feminine rank option: `setFemRankOverride`, `useFeminineRanks` (also
+  via titles) → `LOTRPlayerAlignments` [B12a/b]
+- [ ] Viewing faction per dimension region (`getViewingFaction`,
+  `prevRegionFactions`) [B12c]
+
+### D7 — achievements and titles
+- [ ] Achievements to wire up where their triggers already exist:
+  `harvestGrapes`, `pickBanana` [B3]; Dwarven door, grape, banana and beacon
+  achievements [B4]; `brewDrinkInBarrel` [B5b]; `cookKebab`,
+  `smeltObsidianShard` [B5c]; `catchButterfly` [B5d]; `unsmelt` [B5a];
+  drink achievements (`LOTRDrinkItem`) [B10]; Dale cracker [B5d];
+  `getTrollStatue` (`LOTRStoneTrollEntity`) [B13a]; `hitBirdFirePot`
+  (`LOTRFirePotEntity`) [B13c]; `craftAncientItem` (`LOTRAncientItem`)
+  [B13]; `pledgeService` and `checkAlignmentAchievements` on alignment
+  change and pledging (`LOTRPlayerAlignments`) [B12b]
+- [ ] Rank achievements and titles: `LOTRFactionRank.hasRankAchievement` /
+  `hasRankTitle` are flags only (`LOTRAchievementRank`, `LOTRTitle`) [B12a]
+
+### D8 — animals and mounts
+- [ ] Warg (3), elk, boar (2) and rhino armour are inert until the mounts
+  exist [B9]
+- [ ] Swan chestplate wings driven by the mount's stride when riding
+  (`LOTRSwanChestplateModel`) [B9]
+- [ ] Rohirric marshal helmet plume sway (needs limb-swing state through
+  `ArmorRenderer`) → `LOTRRohirricMarshalHelmetModel` [B9]
+- [ ] Animal jar: occupant bobbing/turning/sounds, the Lórien butterfly's
+  light 7, and catching LOTR birds/butterflies [B5d]
+- [ ] `LOTREntityBird` checks: fire pot bird achievement, `LOTREntityTags`
+  bird tag [B13c]
+
+### D9 — NPCs
+- [ ] NPC projectiles: `LOTREntityThrownRock` (mountain troll),
+  `LOTREntityTrollSnowball` (snow troll), `LOTREntityMallornLeafBomb`
+  (mallorn Ent), `LOTREntityMarshWraithBall` (marsh wraith) [D3]
+- [ ] Corrupt mallorn's tile entity: in Fangorn, one tick in forty, spawns an
+  Ent within 20 if none is within 24 (`LOTRTileEntityCorruptMallorn`) [D2]
+- [ ] `LOTRFactionData` per-player per-faction stats (NPC kills, enemy kills,
+  trades, hires, mini-quests, conquest, conquest horn; save keys `NPCKill`,
+  `EnemyKill`, `Trades`, `Hired`, `MiniQuests`, `Conquest`, `ConquestHorn`)
+  and `LOTRFactionBounties` (per faction, per player, kill records;
+  `recordNewKill` on NPC death) [B12d]
+- [ ] Alignment from kills: `LOTRAlignmentValues.Bonuses` (every NPC's kill
+  value), `addAlignment`'s `forcedBonusFactions`, and callers of
+  `LOTRPlayerAlignments.onPledgeKill` [B12a/b]
+- [ ] NPC-influence check in control zones (`LOTRFaction` control-zone
+  multiplier) [B12a]
+- [ ] Mystery web: the one-in-four small Mirkwood spider that attacks the
+  thrower (`LOTRMysteryWebEntity.onHit`, where the roll is already consumed)
+  [B13b]
+- [ ] Troll and Wraith banes (`baneTroll`, `baneWraith`) in `LOTRModifier`,
+  and the one-in-four Wraithbane on an ancient item's result
+  (`LOTRAncientItem`) [B11, B13]
+- [ ] Mountain troll chieftain: the troll totem summons a CHICKEN stand-in
+  (`LOTRTrollTotemBlock`) [B5e]
+- [ ] Orders and summons: command sword, command horn (`command`), war horn
+  (`summon`), NPC respawner item [B7d, LOTRItems]
+- [ ] Orc bomb `droppedByHiredUnit` / `droppedTargetingPlayer` and
+  `LOTRMod.canGrief` [B13b]
+- [ ] NPC faction checks: Sauron's mace exemption, Gandalf's fireball
+  (`!HIGH_ELF.isGoodRelation(npcFaction)`), rope/Lothlórien, man flesh drops
+  (`setManFlesh`, `LOTREntityMan`), NPC drinking (`LOTRDrinkItem`) [B7, B10,
+  B13b]
+- [ ] Termite mound spawning termites; quagmire letting spiders through [B4]
+- [ ] Utumno return portal sacrifice kill hook
+  (`LOTRUtumnoReturnPortalBaseBlock`), with D15 [B4]
+
+### D10 — dimension and world gen
+- [ ] `LOTREntityFishHook`: swapped in for vanilla's hook in Middle-earth
+  (LOTREventHandler), for the Middle-earth fishing loot [D3]
+- [ ] Marsh lights over the Dead Marshes' water (the block exists, D1d) [D1]
+- [ ] Fallen leaves scattered under trees (the blocks exist, D1b) [D1]
+- [ ] Stalactites and stalagmites in caves (stone; ice and obsidian in their
+  biomes) -- the blocks exist (D1) [D1]
+- [ ] `LOTRFaction.isFactionDimension` returns true until the dimension
+  exists [B12a]
+- [ ] Sapling tree growers are placeholders; grapes' ×1.6 Dorwinion bonus;
+  ent jar herb brewing needs the Fangorn biome; wild yam [B3, B5d]
+
+### D11 — structures
+- [ ] The remaining `LOTRChestContents` pools (structure chests) →
+  `LOTRChestContents` [B13b]
+
+### D13/D14 — map, quests, conquest
+- [ ] Table of command map, squadron and conquest screens [B4, B5e]
+- [ ] Mini-quests and bounty quests: `createMiniquestBonus` and
+  `notifyMiniQuestsNeeded` callers; conquest (`LOTRConquestGrid`,
+  `onConquestKill`) [B12]
+
+### D16 — GUIs, HUD, fx (user: HUD in a later release, after entities and structures)
+- [ ] HUD alignment bar and `LOTRAlignmentTicker`; alignment-drain notice
+  (`LOTRPacketAlignDrain`); floating gain/loss popup
+  (`LOTREntityAlignmentBonus`, `sendAlignmentBonusPacket`, and with it the
+  position arguments to `addAlignment`) [B12c]
+- [ ] Full `LOTRGuiFactions` (the port's screen is a list with pledge and
+  unpledge only: pledge requirements and descriptions, break-cooldown text,
+  enemies preventing a pledge, rank limits, map) [B12c]
+- [ ] Alignment shown above other players' heads (data already synced to
+  trackers) [B12b]
+- [ ] Chilling's FROST screen overlay (`LOTRModifierSpecials`) [B11]
+- [ ] Worn plate's food pile and `LOTRPlateFallingInfo`
+  (`LOTRPlateHeadRenderer`) [B9]
+- [ ] Leaf particles (user: "leave the leaves for now") [B4]
+- [ ] Faction recipe unlock toasts still fire (`showNotification`) [B6a]
+- [ ] The menu key: the original's **L** (`LOTRKeyHandler.keyBindingMenu`,
+  key 38) opened the LOTR menu, and from it the factions screen.
+  `LOTRKeyBindings` is commented out, so `LOTRScreenFactions` (pledge and
+  unpledge included) cannot be opened in game [C4]
+- [ ] Reeds' lowest segment on solid ground should use `reeds_lower` /
+  `dried_reeds_lower`, as `LOTRRenderBlocks.renderReeds` did; the blockstate
+  has only `top`/`mid` [C4]
 
 ## Suggested order
 
@@ -998,3 +1477,20 @@ Append here: `- [unit] file:line — description (confirmed|suspected)`.
 - [B4→B5] Block-entity behaviour itself (dart trap firing, forge smelting,
   kebab cooking, animal jar, weapon rack contents) is B5's audit.
 - [B5a→D7] Unsmeltery `unsmelt` achievement on taking the output.
+- [B15→B6] DONE (user: fix it) Recipe namespace: B1 is marked DONE ("unified on `lotr`"), but
+  `LOTRRecipeProvider`'s mechanical recipes (planks, beams, smooth stone,
+  cut blocks, and smelting) are saved without an explicit id, so Fabric files
+  703 of them under `lord_of_the_rings_-_middle_earth` (in the 0.2.2 jar
+  too). 49 of those share result and type with a recipe under `lotr` (e.g.
+  `mud_slab`, `naurite_from_smelting`, `sulfur_from_smelting`) and may be
+  duplicates. Not changed: recipe IDs are the user's call (B1). (confirmed)
+  Fixed: `LOTRRecipeProvider.getRecipeIdentifier` returns the `lotr`
+  namespace, so all 1,532 generated recipes are `lotr:` (703 moved, no path
+  collisions, nothing else in the generated output changed, and nothing
+  referred to the old ids). The duplicates were between datagen and older
+  hand-written JSON under `src/main/resources/data/lotr/recipe`: 38
+  hand-written recipes that datagen already produced in equivalent form were
+  deleted (and removed from git). They were the cracked bricks/pillars,
+  scorched stone, ore smeltings, salt, dried reeds, mud slab and three
+  faction shish kebabs. The millstone's two recipes (iron and bronze) are
+  both original. `parity_recipes.py`: 2,089 present, 0 missing.

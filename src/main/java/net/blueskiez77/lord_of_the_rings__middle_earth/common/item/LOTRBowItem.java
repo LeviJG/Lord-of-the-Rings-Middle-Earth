@@ -17,9 +17,10 @@ import org.jspecify.annotations.Nullable;
  * the arrow's launch speed, which is what gives those bows their flatter, longer
  * shot: 1.0 as standard and 1.25 for the elven bows.
  *
- * <p>It carries LOTR modifiers like everything else in the tab, though only the
- * durability ones can apply: the ranged family -- rangedStrong, rangedKnockback
- * -- is not ported, and the melee ones have nothing to act on here.
+ * <p>It carries LOTR modifiers like everything else in the tab: the ranged
+ * family (rangedStrong, rangedKnockback, and the specials a launcher hands to
+ * its arrows) and the durability ones. The melee ones have nothing to act on
+ * here.
  *
  * <p>The draw is reached through releaseUsing rather than by overriding
  * getPowerForTime, which is static in 26.2 and so cannot be replaced. Vanilla

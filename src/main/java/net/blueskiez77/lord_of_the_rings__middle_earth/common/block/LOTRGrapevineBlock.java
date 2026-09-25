@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 
 /**
  * LOTRBlockGrapevine with hasGrapes: a vine growing up a post, ripening over
@@ -71,7 +72,7 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         BlockPos below = pos.below();
         BlockState state2 = level.getBlockState(below);
-        return state2.is(this) || state2.is(LOTRBlocks.GRAPEVINE)
+        return state2.is(this) || state2.is(LOTRDecorationBlocks.GRAPEVINE)
                 || state2.is(net.minecraft.tags.BlockTags.SUPPORTS_VEGETATION)
                 || state2.isFaceSturdy(level, below, net.minecraft.core.Direction.UP);
     }
@@ -81,7 +82,7 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
             BlockPos pos, net.minecraft.core.Direction direction, BlockPos neighbourPos, BlockState neighbourState,
             RandomSource random) {
         // checkCanStay: a vine left without support falls back to the bare post.
-        return canSurvive(state, level, pos) ? state : LOTRBlocks.GRAPEVINE.defaultBlockState();
+        return canSurvive(state, level, pos) ? state : LOTRDecorationBlocks.GRAPEVINE.defaultBlockState();
     }
 
     /**
@@ -94,7 +95,7 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
             if (below.getBlock() instanceof FarmlandBlock) {
                 return true;
             }
-            if (!below.is(LOTRBlocks.GRAPEVINE) && !(below.getBlock() instanceof LOTRGrapevineBlock)) {
+            if (!below.is(LOTRDecorationBlocks.GRAPEVINE) && !(below.getBlock() instanceof LOTRGrapevineBlock)) {
                 return false;
             }
         }
@@ -175,7 +176,7 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
             if (seeds > 0) {
                 popResource(server, pos, new ItemStack(asItem(), seeds));
             }
-            server.setBlock(pos, LOTRBlocks.GRAPEVINE.defaultBlockState(), Block.UPDATE_ALL);
+            server.setBlock(pos, LOTRDecorationBlocks.GRAPEVINE.defaultBlockState(), Block.UPDATE_ALL);
         }
         level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0f,
                 0.8f + level.getRandom().nextFloat() * 0.4f);
@@ -189,14 +190,14 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
             @Nullable BlockEntity blockEntity, ItemStack tool) {
         super.playerDestroy(level, player, pos, state, blockEntity, tool);
         if (level.getBlockState(pos).isAir()) {
-            level.setBlock(pos, LOTRBlocks.GRAPEVINE.defaultBlockState(), Block.UPDATE_ALL);
+            level.setBlock(pos, LOTRDecorationBlocks.GRAPEVINE.defaultBlockState(), Block.UPDATE_ALL);
         }
     }
 
     private net.minecraft.world.item.Item grapeItem() {
-        return this == LOTRBlocks.RED_GRAPEVINE
-                ? net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.RED_GRAPES
-                : net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.GREEN_GRAPES;
+        return this == LOTRDecorationBlocks.RED_GRAPEVINE
+                ? LOTRFoodItems.RED_GRAPES
+                : LOTRFoodItems.GREEN_GRAPES;
     }
 
     // --- bone meal: func_149853_b added two to five stages at once ----------

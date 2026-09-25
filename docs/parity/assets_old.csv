@@ -199,7 +199,7 @@ cape,cape/woodElf.png,,missing
 gui/achievements,gui/achievements/icons.png,,missing
 gui/achievements,gui/achievements/page.png,,missing
 gui,gui/alignment.png,,missing
-gui,gui/anvil.png,,missing
+gui,gui/anvil.png,src/main/resources/assets/lotr/textures/gui/anvil.png,ported
 gui,gui/armor_stand.png,,missing
 gui,gui/attackMeter.png,,missing
 gui,gui/banner_edit.png,,missing
@@ -311,7 +311,7 @@ item/unsmeltery,item/unsmeltery/active.png,src/main/resources/assets/lotr/textur
 item/unsmeltery,item/unsmeltery/idle.png,src/main/resources/assets/lotr/textures/entity/unsmeltery_idle.png,ported
 item,item/weaponRack.png,,missing
 item,item/wineGlass.png,src/main/resources/assets/lotr/textures/entity/vessel/wine_glass.png,ported
-,logo.png,,missing
+,logo.png,src/main/resources/assets/lotr/logo.png,ported
 map,map/conquest.png,,missing
 map,map/map.png,,missing
 map,map/mapOverlay.png,,missing
@@ -327,7 +327,7 @@ misc,misc/frost_overlay.png,,missing
 misc,misc/gulduril_glow.png,,missing
 misc,misc/mist_overlay.png,,missing
 misc,misc/morgulportal_overlay.png,,missing
-misc,misc/particles.png,,missing
+misc,misc/particles.png,src/main/resources/assets/lotr/textures/misc/particles.png,ported
 misc,misc/particles2.png,,missing
 misc,misc/portal.png,,missing
 misc,misc/portal_overlay.png,,missing
@@ -1065,12 +1065,12 @@ sounds/ent,sounds/ent/mallorn/leafAttack.ogg,,missing
 sounds/ent,sounds/ent/mallorn/summonEnt.ogg,,missing
 sounds/ent,sounds/ent/step.ogg,,missing
 sounds/event,sounds/event/fastTravel.ogg,,missing
-sounds/event,sounds/event/pledge.ogg,,missing
+sounds/event,sounds/event/pledge.ogg,src/main/resources/assets/lotr/sounds/event/pledge.ogg,ported
 sounds/event,sounds/event/trade1.ogg,,missing
 sounds/event,sounds/event/trade2.ogg,,missing
 sounds/event,sounds/event/trade3.ogg,,missing
 sounds/event,sounds/event/trade4.ogg,,missing
-sounds/event,sounds/event/unpledge.ogg,,missing
+sounds/event,sounds/event/unpledge.ogg,src/main/resources/assets/lotr/sounds/event/unpledge.ogg,ported
 sounds/flamingo,sounds/flamingo/death.ogg,,missing
 sounds/flamingo,sounds/flamingo/hurt1.ogg,,missing
 sounds/flamingo,sounds/flamingo/hurt2.ogg,,missing
@@ -1096,7 +1096,7 @@ sounds/item,sounds/item/gandalfFireball.ogg,src/main/resources/assets/lotr/sound
 sounds/item,sounds/item/horn.ogg,src/main/resources/assets/lotr/sounds/item/horn.ogg,ported
 sounds/item,sounds/item/maceSauron.ogg,src/main/resources/assets/lotr/sounds/item/mace_sauron.ogg,ported
 sounds/item,sounds/item/mug_fill.ogg,src/main/resources/assets/lotr/sounds/item/mug_fill.ogg,ported
-sounds/item,sounds/item/puff.ogg,,missing
+sounds/item,sounds/item/puff.ogg,src/main/resources/assets/lotr/sounds/item/puff.ogg,ported
 sounds/item,sounds/item/structureSpawner.ogg,,missing
 sounds/lion,sounds/lion/death.ogg,,missing
 sounds/lion,sounds/lion/hurt.ogg,,missing
@@ -1281,7 +1281,7 @@ textures/blocks,textures/blocks/brick3_redCarved.png,src/main/resources/assets/l
 textures/blocks,textures/blocks/brick3_woodElven.png,src/main/resources/assets/lotr/textures/block/wood_elven_brick.png,ported
 textures/blocks,textures/blocks/brick3_woodElvenCracked.png,src/main/resources/assets/lotr/textures/block/cracked_wood_elven_brick.png,ported
 textures/blocks,textures/blocks/brick3_woodElvenMossy.png,src/main/resources/assets/lotr/textures/block/mossy_wood_elven_brick.png,ported
-textures/blocks,textures/blocks/brick4_blackGondorCarved.png,src/main/resources/assets/lotr/textures/block/carved_numenorean_brick.png,ported
+textures/blocks,textures/blocks/brick4_blackGondorCarved.png,src/main/resources/assets/lotr/textures/block/carved_numenorean_brick.png src/main/resources/assets/lotr/textures/block/carved_black_gondor_brick.png,ported
 textures/blocks,textures/blocks/brick4_chalk.png,src/main/resources/assets/lotr/textures/block/chalk_brick.png,ported
 textures/blocks,textures/blocks/brick4_dwarvenCracked.png,src/main/resources/assets/lotr/textures/block/cracked_dwarven_brick.png,ported
 textures/blocks,textures/blocks/brick4_dwarvenObsidian.png,src/main/resources/assets/lotr/textures/block/obsidian_dwarven_brick.png,ported
@@ -2657,13 +2657,13 @@ textures/blocks,textures/blocks/wargFurBed_head_end.png,src/main/resources/asset
 textures/blocks,textures/blocks/wargFurBed_head_side.png,src/main/resources/assets/lotr/textures/block/fur_bed_head_side.png,ported
 textures/blocks,textures/blocks/wargFurBed_head_top.png,src/main/resources/assets/lotr/textures/block/fur_bed_head_top.png,ported
 textures/blocks,textures/blocks/wasteBlock_var0.png,src/main/resources/assets/lotr/textures/block/waste_block.png,ported
-textures/blocks,textures/blocks/wasteBlock_var1.png,,missing
-textures/blocks,textures/blocks/wasteBlock_var2.png,,missing
-textures/blocks,textures/blocks/wasteBlock_var3.png,,missing
-textures/blocks,textures/blocks/wasteBlock_var4.png,,missing
-textures/blocks,textures/blocks/wasteBlock_var5.png,,missing
-textures/blocks,textures/blocks/wasteBlock_var6.png,,missing
-textures/blocks,textures/blocks/wasteBlock_var7.png,,missing
+textures/blocks,textures/blocks/wasteBlock_var1.png,src/main/resources/assets/lotr/textures/block/waste_block_1.png,ported
+textures/blocks,textures/blocks/wasteBlock_var2.png,src/main/resources/assets/lotr/textures/block/waste_block_2.png,ported
+textures/blocks,textures/blocks/wasteBlock_var3.png,src/main/resources/assets/lotr/textures/block/waste_block_3.png,ported
+textures/blocks,textures/blocks/wasteBlock_var4.png,src/main/resources/assets/lotr/textures/block/waste_block_4.png,ported
+textures/blocks,textures/blocks/wasteBlock_var5.png,src/main/resources/assets/lotr/textures/block/waste_block_5.png,ported
+textures/blocks,textures/blocks/wasteBlock_var6.png,src/main/resources/assets/lotr/textures/block/waste_block_6.png,ported
+textures/blocks,textures/blocks/wasteBlock_var7.png,src/main/resources/assets/lotr/textures/block/waste_block_7.png,ported
 textures/blocks,textures/blocks/webUngoliant.png,src/main/resources/assets/lotr/textures/block/web_ungoliant.png,ported
 textures/blocks,textures/blocks/whiteSand.png,src/main/resources/assets/lotr/textures/block/white_sand.png,ported
 textures/blocks,textures/blocks/whiteSandstone.png,src/main/resources/assets/lotr/textures/block/white_sandstone.png,ported

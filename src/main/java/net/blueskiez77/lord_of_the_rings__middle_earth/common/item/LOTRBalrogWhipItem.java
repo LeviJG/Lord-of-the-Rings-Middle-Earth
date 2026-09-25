@@ -40,10 +40,6 @@ import net.minecraft.world.phys.Vec3;
  * <p>NOT ported: the banner-protection test, which spared blocks inside a
  * faction's claim. LOTRBannerProtection is not in the port -- Khamûl's fire is
  * missing the same check -- so the whip burns anywhere.
- *
- * <p>Also not ported: checkIncompatibleModifiers, which stripped the fire and
- * chill modifiers off the whip because they would double up on its own burning.
- * Neither of those two is in the port's modifier table.
  */
 public class LOTRBalrogWhipItem extends LOTRModifiableItem {
 

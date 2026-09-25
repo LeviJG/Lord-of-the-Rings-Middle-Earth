@@ -78,3 +78,18 @@ rabbitCooked,,vanilla,user confirmed vanilla duplicate
 rabbitRaw,,vanilla,user confirmed vanilla duplicate
 spawnEgg,,missing,user: keep; add with NPCs/animals (Track D)
 rhunFire,khamuls_fire,ported,fire block left by the Khamul's Fire jar (no item)
+redClayBall,red_clay_ball,ported,the ball item; name-matching paired it with the red_clay block
+stalactite.0,stalactite,ported,LOTRBlockStalactite meta 0 (hanging)
+stalactite.1,stalagmite,ported,LOTRBlockStalactite meta 1 (standing)
+stalactiteIce.0,ice_stalactite,ported,
+stalactiteIce.1,ice_stalagmite,ported,
+stalactiteObsidian.0,obsidian_stalactite,ported,
+stalactiteObsidian.1,obsidian_stalagmite,ported,
+fallenLeaves,fallen_oak_leaves,ported,one block per leaf type now: fallen_<leaf> for vanilla's six leaves
+fallenLeavesLOTR,fallen_mallorn_leaves,ported,one block per leaf type now: fallen_<leaf> for every LOTR leaf
+fallenLeavesLOTR2,fallen_mallorn_leaves,ported,one block per leaf type now (see fallenLeavesLOTR)
+fallenLeavesLOTR3,fallen_mallorn_leaves,ported,one block per leaf type now (see fallenLeavesLOTR)
+featherDyed,feather_dyed,ported,LOTRItemFeatherDyed
+goran.0,goran,ported,LOTRBlockGoran meta 0 "Goran"
+goran.1,goran_rock,ported,LOTRBlockGoran meta 1 "Cargoran"
+marshLights,marsh_lights,ported,block only (the original item had no icon)

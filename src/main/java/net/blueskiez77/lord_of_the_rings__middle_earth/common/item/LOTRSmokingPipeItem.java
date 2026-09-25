@@ -44,7 +44,7 @@ public class LOTRSmokingPipeItem extends Item implements LOTRTooltipItem {
     }
 
     public static ItemStack of(int smokeColour) {
-        ItemStack stack = new ItemStack(LOTRItems.SMOKING_PIPE);
+        ItemStack stack = new ItemStack(LOTRMiscItems.SMOKING_PIPE);
         stack.set(LOTRDataComponents.SMOKE_COLOR, smokeColour);
         return stack;
     }

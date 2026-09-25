@@ -17,9 +17,6 @@ import org.jspecify.annotations.Nullable;
  * Scroll", "Sturdy Smith's Scroll". The original had one for every beneficial
  * modifier that could be rolled (hasTemplateItem: weight above zero and
  * beneficial), and the anvil read the modifier off the scroll.
- *
- * <p>NOT ported: applying it. LOTR's anvil is not in the port, so a scroll
- * names its modifier and does nothing else yet.
  */
 public class LOTRSmithsScrollItem extends Item implements LOTRTooltipItem {
     public LOTRSmithsScrollItem(Properties properties) {
@@ -31,7 +28,7 @@ public class LOTRSmithsScrollItem extends Item implements LOTRTooltipItem {
     }
 
     public static ItemStack of(LOTRModifier modifier) {
-        ItemStack stack = new ItemStack(LOTRItems.SMITHS_SCROLL);
+        ItemStack stack = new ItemStack(LOTRMaterialItems.SMITHS_SCROLL);
         stack.set(LOTRDataComponents.SCROLL_MODIFIER, modifier);
         return stack;
     }

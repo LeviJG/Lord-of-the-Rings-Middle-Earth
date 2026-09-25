@@ -11,6 +11,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRCon
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRGateBorders;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBerryBushBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 
@@ -35,6 +38,10 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFallenLeavesBlock;
+import net.minecraft.client.data.models.model.ItemModelUtils;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.FoliageColor;
 
 // Blockstates, block models, item models. Everything is driven off the family lists in LOTRBlocks, so a block only ever needs registering in one place. Which generators emit the ITEM model too (learned the hard way): createTrivialCube            -> NO  (needs registerSimpleItemModel) createNonTemplateModelBlock  -> NO  (needs registerSimpleFlatItemModel) createCrossBlockWithDefaultItem -> YES (the "WithDefaultItem" suffix) createTrapdoor               -> YES createDoor                   -> YES (points at assets/<ns>/textures/item/<n>.png) Adding a redundant item-model call throws "IllegalStateException: Duplicate model definition".
 public class LOTRModelProvider extends FabricModelProvider {
@@ -49,6 +56,16 @@ public class LOTRModelProvider extends FabricModelProvider {
     // a 4/16-thick slab, matching LOTRBlockGate.setBlockBoundsForItemRender.
     private static final ModelTemplate GATE_PANEL = new ModelTemplate(
             Optional.of(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "block/gate_panel")),
+            Optional.empty(),
+            TextureSlot.ALL);
+
+    /** LOTRRenderBlocks.renderStalactite's two shapes, textured with the model block's. */
+    private static final ModelTemplate STALACTITE = new ModelTemplate(
+            Optional.of(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "block/template_stalactite")),
+            Optional.empty(),
+            TextureSlot.ALL);
+    private static final ModelTemplate STALAGMITE = new ModelTemplate(
+            Optional.of(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "block/template_stalagmite")),
             Optional.empty(),
             TextureSlot.ALL);
 
@@ -196,9 +213,9 @@ public class LOTRModelProvider extends FabricModelProvider {
         // Hobbit oven. Same shape as the forges: FACING + LIT, handled by
         // createFurnace, which expects the lit texture as <name>_front_on and
         // emits no item model of its own.
-        generators.createFurnace(LOTRBlocks.HOBBIT_OVEN, TexturedModel.ORIENTABLE_ONLY_TOP);
-        generators.registerSimpleItemModel(LOTRBlocks.HOBBIT_OVEN,
-                ModelLocationUtils.getModelLocation(LOTRBlocks.HOBBIT_OVEN));
+        generators.createFurnace(LOTRUtilityBlocks.HOBBIT_OVEN, TexturedModel.ORIENTABLE_ONLY_TOP);
+        generators.registerSimpleItemModel(LOTRUtilityBlocks.HOBBIT_OVEN,
+                ModelLocationUtils.getModelLocation(LOTRUtilityBlocks.HOBBIT_OVEN));
 
         // Beacon of Gondor. Its blockstate and block models are hand-written
         // under src/main/resources (custom pyre geometry, not a cube), but the
@@ -206,13 +223,13 @@ public class LOTRModelProvider extends FabricModelProvider {
         // live in assets/lotr/items/ in this version, not models/item/, and
         // hand-placing one there kept going wrong -- this is the same call the
         // forges use, pointed at the hand-written block model.
-        generators.registerSimpleItemModel(LOTRBlocks.BEACON_OF_GONDOR,
-                ModelLocationUtils.getModelLocation(LOTRBlocks.BEACON_OF_GONDOR));
+        generators.registerSimpleItemModel(LOTRUtilityBlocks.BEACON_OF_GONDOR,
+                ModelLocationUtils.getModelLocation(LOTRUtilityBlocks.BEACON_OF_GONDOR));
 
         LOTRBlocks.ALL_CUBES.stream()
                 .filter(b -> !LOTRConnectedBorderTypes.has(b))
                 .filter(b -> !LOTRBlocks.CUBES_COLUMN_TEXTURED.contains(b))
-                .filter(b -> b != LOTRBlocks.WASTE_BLOCK)
+                .filter(b -> b != LOTRBuildingBlocks.WASTE_BLOCK)
                 .forEach(b -> trivialCubeWithItem(generators, b));
 
         // LOTRBlockWaste.getIcon picked one of eight textures for EACH FACE from
@@ -227,16 +244,16 @@ public class LOTRModelProvider extends FabricModelProvider {
             TextureMapping tex = new TextureMapping();
             for (int f = 0; f < faces.size(); f++) {
                 int t = (k + 3 * f) % 8;
-                tex.put(faces.get(f), TextureMapping.getBlockTexture(LOTRBlocks.WASTE_BLOCK, t == 0 ? "" : "_" + t));
+                tex.put(faces.get(f), TextureMapping.getBlockTexture(LOTRBuildingBlocks.WASTE_BLOCK, t == 0 ? "" : "_" + t));
             }
-            tex.put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(LOTRBlocks.WASTE_BLOCK));
-            wasteModels.add(new Variant(ModelTemplates.CUBE.createWithSuffix(LOTRBlocks.WASTE_BLOCK,
+            tex.put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(LOTRBuildingBlocks.WASTE_BLOCK));
+            wasteModels.add(new Variant(ModelTemplates.CUBE.createWithSuffix(LOTRBuildingBlocks.WASTE_BLOCK,
                     k == 0 ? "" : "_" + k, tex, generators.modelOutput)));
         }
-        generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(LOTRBlocks.WASTE_BLOCK,
+        generators.blockStateOutput.accept(MultiVariantGenerator.dispatch(LOTRBuildingBlocks.WASTE_BLOCK,
                 BlockModelGenerators.variants(wasteModels.toArray(new Variant[0]))));
-        generators.registerSimpleItemModel(LOTRBlocks.WASTE_BLOCK,
-                ModelLocationUtils.getModelLocation(LOTRBlocks.WASTE_BLOCK));
+        generators.registerSimpleItemModel(LOTRBuildingBlocks.WASTE_BLOCK,
+                ModelLocationUtils.getModelLocation(LOTRBuildingBlocks.WASTE_BLOCK));
 
         // Cubes whose four sides differ from top and bottom. In 1.7.10 these
         // were plain cubes overriding getIcon for side != 0/1; cube_column is
@@ -276,8 +293,8 @@ public class LOTRModelProvider extends FabricModelProvider {
             // -- none of which are plain crosses.
             if (LOTRBlocks.GRASS_TINTED_WITH_OVERLAY.contains(b)
                     || LOTRBlocks.ALL_COLUMN_PLANTS.contains(b)
-                    || b == LOTRBlocks.FANGORN_RIVERWEED
-                    || b == LOTRBlocks.GRAPEVINE
+                    || b == LOTRDecorationBlocks.FANGORN_RIVERWEED
+                    || b == LOTRDecorationBlocks.GRAPEVINE
                     || LOTRBlocks.ALL_CLOVERS.contains(b)) {
                 return;
             }
@@ -432,9 +449,9 @@ public class LOTRModelProvider extends FabricModelProvider {
         // Ungoliant's web is vanilla's cobweb: a cross, not a cube, with a flat
         // sprite for the item. createTrivialCube was drawing it as a solid
         // block of web.
-        generators.createCrossBlock(LOTRBlocks.WEB_UNGOLIANT,
+        generators.createCrossBlock(LOTRDecorationBlocks.WEB_UNGOLIANT,
                 BlockModelGenerators.PlantType.NOT_TINTED);
-        generators.registerSimpleFlatItemModel(LOTRBlocks.WEB_UNGOLIANT);
+        generators.registerSimpleFlatItemModel(LOTRDecorationBlocks.WEB_UNGOLIANT);
         LOTRBlocks.ALL_LADDERS.forEach(b -> {
             // The two ropes' item models are hand-written: LOTRBlockRope
             // overrode getItemIconName, and items/rope.png and
@@ -442,7 +459,7 @@ public class LOTRModelProvider extends FabricModelProvider {
             // strand their block sprites draw. Their blockstates and block
             // models are hand-written too -- a rope is a cord with a knot, not
             // the flat panel a ladder is.
-            if (b == LOTRBlocks.ROPE || b == LOTRBlocks.HITHLAIN_LADDER) {
+            if (b == LOTRDecorationBlocks.ROPE || b == LOTRDecorationBlocks.HITHLAIN_LADDER) {
                 return;
             }
             Identifier model = ModelTemplates.FLAT_ITEM.create(
@@ -494,7 +511,7 @@ public class LOTRModelProvider extends FabricModelProvider {
         // LOTRBlockLettuceCrop.getRenderType returned 1, a cross; every other
         // crop kept BlockCrops' '#' shape.
         LOTRBlocks.ALL_CROPS.forEach(crop -> {
-            if (crop == LOTRBlocks.LETTUCE_CROP) {
+            if (crop == LOTRUtilityBlocks.LETTUCE_CROP) {
                 // Not createCrossBlock: unlike createCropBlock it makes a model per
                 // AGE value, so two ages sharing a stage define the same model twice.
                 java.util.Map<Integer, Identifier> stages = new java.util.HashMap<>();
@@ -570,7 +587,7 @@ public class LOTRModelProvider extends FabricModelProvider {
             TextureMapping mapping = new TextureMapping()
                     .put(TextureSlot.TOP, tex)
                     .put(TextureSlot.SIDE, tex)
-                    .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(LOTRBlocks.MUD));
+                    .put(TextureSlot.BOTTOM, TextureMapping.getBlockTexture(LOTRBuildingBlocks.MUD));
             Identifier model = DIRT_PATH.create(b, mapping, generators.modelOutput);
             generators.blockStateOutput.accept(
                     BlockModelGenerators.createSimpleBlock(b, BlockModelGenerators.plainVariant(model)));
@@ -582,11 +599,11 @@ public class LOTRModelProvider extends FabricModelProvider {
         // is why mud_farmland_moist.png was previously unreferenced.
         LOTRBlocks.ALL_FARMLAND.forEach(b -> {
             Identifier dry = ModelTemplates.FARMLAND.create(b, new TextureMapping()
-                            .put(TextureSlot.DIRT, TextureMapping.getBlockTexture(LOTRBlocks.MUD))
+                            .put(TextureSlot.DIRT, TextureMapping.getBlockTexture(LOTRBuildingBlocks.MUD))
                             .put(TextureSlot.TOP, TextureMapping.getBlockTexture(b)),
                     generators.modelOutput);
             Identifier moist = ModelTemplates.FARMLAND.createWithSuffix(b, "_moist", new TextureMapping()
-                            .put(TextureSlot.DIRT, TextureMapping.getBlockTexture(LOTRBlocks.MUD))
+                            .put(TextureSlot.DIRT, TextureMapping.getBlockTexture(LOTRBuildingBlocks.MUD))
                             .put(TextureSlot.TOP, TextureMapping.getBlockTexture(b, "_moist")),
                     generators.modelOutput);
 
@@ -629,6 +646,14 @@ public class LOTRModelProvider extends FabricModelProvider {
         });
 
         LOTRBlocks.ALL_CHANDELIERS.forEach(b -> chandelier(generators, b));
+        // Never drawn, never targeted or broken; the blockstate only has to
+        // exist. Its particle is never seen, so any real texture will do.
+        generators.createParticleOnlyBlock(LOTRDecorationBlocks.MARSH_LIGHTS, Blocks.LILY_PAD);
+        trivialCubeWithItem(generators, LOTRDecorationBlocks.GORAN);
+        trivialCubeWithItem(generators, LOTRDecorationBlocks.GORAN_ROCK);
+        stalactites(generators, LOTRDecorationBlocks.STALACTITE, LOTRDecorationBlocks.STALAGMITE, Blocks.STONE);
+        stalactites(generators, LOTRDecorationBlocks.ICE_STALACTITE, LOTRDecorationBlocks.ICE_STALAGMITE, Blocks.PACKED_ICE);
+        stalactites(generators, LOTRDecorationBlocks.OBSIDIAN_STALACTITE, LOTRDecorationBlocks.OBSIDIAN_STALAGMITE, Blocks.OBSIDIAN);
 
         LOTRConnectedBorderTypes.all().forEach((block, type) -> connectedBorder(generators, block, type));
     }
@@ -659,6 +684,18 @@ public class LOTRModelProvider extends FabricModelProvider {
     }
 
     // Chandeliers are static (no blockstate properties), so a single variant pointing at the cross model is all the blockstate needs. The item is backed by that same block model (as the cubes are), NOT a flat item model: the textures live in textures/block/, and a flat item model would look for textures/item/<name>.png, which does not exist -> blank icon. Pointing the item at the block model renders the 3D cross in the inventory, the way vanilla torches and lanterns show.
+    // getIcon returned the model block's own icon, so the item is drawn with
+    // the block model, as renderInvStalactite did.
+    private static void stalactites(BlockModelGenerators generators, Block hanging, Block standing, Block model) {
+        TextureMapping texture = TextureMapping.cube(model);
+        for (Block block : List.of(hanging, standing)) {
+            Identifier id = (block == hanging ? STALACTITE : STALAGMITE).create(block, texture, generators.modelOutput);
+            generators.blockStateOutput.accept(
+                    BlockModelGenerators.createSimpleBlock(block, BlockModelGenerators.plainVariant(id)));
+            generators.registerSimpleItemModel(block, id);
+        }
+    }
+
     private static void chandelier(BlockModelGenerators generators, Block block) {
         Identifier model = CHANDELIER.create(block, TextureMapping.cross(block), generators.modelOutput);
         generators.blockStateOutput.accept(
@@ -675,11 +712,34 @@ public class LOTRModelProvider extends FabricModelProvider {
     public void generateItemModels(ItemModelGenerators generators) {
         generators.generateFlatItem(LOTRItems.MITHRIL, ModelTemplates.FLAT_ITEM);
         generators.generateFlatItem(LOTRItems.PIPEWEED, ModelTemplates.FLAT_ITEM);
+        LOTRFlatItemModels.generate(generators);
+        LOTRBlocks.ALL_FALLEN_LEAVES.forEach(block -> fallenLeavesItem(generators, block));
     }
 
     @Override
     public String getName() {
         return "LOTR Model Provider";
+    }
+
+    /**
+     * A fallen-leaves item is the flat icon of its leaf, tinted as vanilla
+     * tints that leaf's own item. The block has no blockstate file: its look
+     * is LOTRFallenLeavesModel, which the client plugin hands it.
+     */
+    private static void fallenLeavesItem(ItemModelGenerators generators, Block block) {
+        Block leaves = ((LOTRFallenLeavesBlock) block).leaves();
+        Identifier leafId = BuiltInRegistries.BLOCK.getKey(leaves);
+        Identifier model = ModelTemplates.FLAT_ITEM.create(block.asItem(), TextureMapping.layer0(leaves),
+                generators.modelOutput);
+        if (!leafId.getNamespace().equals("minecraft")) {
+            generators.itemModelOutput.accept(block.asItem(), ItemModelUtils.plainModel(model));
+            return;
+        }
+        int tint = leaves == Blocks.SPRUCE_LEAVES ? FoliageColor.FOLIAGE_EVERGREEN
+                : leaves == Blocks.BIRCH_LEAVES ? FoliageColor.FOLIAGE_BIRCH
+                : FoliageColor.FOLIAGE_DEFAULT;
+        generators.itemModelOutput.accept(block.asItem(),
+                ItemModelUtils.tintedModel(model, ItemModelUtils.constantTint(tint)));
     }
 
     /**
@@ -690,7 +750,7 @@ public class LOTRModelProvider extends FabricModelProvider {
      * signal and goes dark when one reaches it.
      */
     private static void mechanisedRails(BlockModelGenerators generators) {
-        Block source = LOTRBlocks.MECHANISED_RAIL;
+        Block source = LOTRUtilityBlocks.MECHANISED_RAIL;
         MultiVariant flat = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "", ModelTemplates.RAIL_FLAT, TextureMapping::rail));
         MultiVariant raisedNE = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "", ModelTemplates.RAIL_RAISED_NE, TextureMapping::rail));
         MultiVariant raisedSW = BlockModelGenerators.plainVariant(generators.createSuffixedVariant(source, "", ModelTemplates.RAIL_RAISED_SW, TextureMapping::rail));

@@ -13,7 +13,11 @@ import net.minecraft.world.item.ProjectileWeaponItem;
 import net.minecraft.world.item.CrossbowItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRThrowingAxeItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSlingItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
@@ -201,23 +205,23 @@ public class LOTRUnsmelteryBlockEntity extends BaseContainerBlockEntity implemen
         if (stack.is(Items.BUCKET)) {
             return new ItemStack(Items.IRON_INGOT);
         }
-        if (stack.is(LOTRItems.SILVER_RING)) {
-            return new ItemStack(LOTRItems.SILVER_NUGGET);
+        if (stack.is(LOTRMiscItems.SILVER_RING)) {
+            return new ItemStack(LOTRMaterialItems.SILVER_NUGGET);
         }
-        if (stack.is(LOTRItems.GOLD_RING)) {
+        if (stack.is(LOTRMiscItems.GOLD_RING)) {
             return new ItemStack(Items.GOLD_NUGGET);
         }
-        if (stack.is(LOTRItems.MITHRIL_RING)) {
-            return new ItemStack(LOTRItems.MITHRIL_NUGGET);
+        if (stack.is(LOTRMiscItems.MITHRIL_RING)) {
+            return new ItemStack(LOTRMaterialItems.MITHRIL_NUGGET);
         }
-        if (stack.is(LOTRItems.GOLDEN_GOBLET)) {
+        if (stack.is(LOTRFoodItems.GOLDEN_GOBLET)) {
             return new ItemStack(Items.GOLD_INGOT);
         }
-        if (stack.is(LOTRItems.SILVER_GOBLET)) {
-            return new ItemStack(LOTRItems.SILVER_INGOT);
+        if (stack.is(LOTRFoodItems.SILVER_GOBLET)) {
+            return new ItemStack(LOTRMaterialItems.SILVER_INGOT);
         }
-        if (stack.is(LOTRItems.COPPER_GOBLET)) {
-            return new ItemStack(LOTRItems.BRONZE_INGOT);
+        if (stack.is(LOTRFoodItems.COPPER_GOBLET)) {
+            return new ItemStack(LOTRMaterialItems.BRONZE_INGOT);
         }
         return ItemStack.EMPTY;
     }
@@ -234,31 +238,31 @@ public class LOTRUnsmelteryBlockEntity extends BaseContainerBlockEntity implemen
         if (uncraftable == null) {
             Map<Item, List<Item>> map = new HashMap<>();
             Item iron = Items.IRON_INGOT;
-            Item elf = LOTRItems.ELVEN_STEEL_INGOT;
-            Item orc = LOTRItems.ORC_STEEL_INGOT;
+            Item elf = LOTRMaterialItems.ELVEN_STEEL_INGOT;
+            Item orc = LOTRMaterialItems.ORC_STEEL_INGOT;
             Item gold = Items.GOLD_INGOT;
             for (Object[] entry : new Object[][] {
-                    {LOTRItems.BARROW_BLADE, iron, 1},
-                    {LOTRItems.ARNOR_HELMET, iron, 5}, {LOTRItems.ARNOR_CHESTPLATE, iron, 8},
-                    {LOTRItems.ARNOR_LEGGINGS, iron, 7}, {LOTRItems.ARNOR_BOOTS, iron, 4},
-                    {LOTRItems.ARNOR_SWORD, iron, 2}, {LOTRItems.ARNOR_DAGGER, iron, 1},
-                    {LOTRItems.ARNOR_SPEAR, iron, 1},
-                    {LOTRItems.BLACK_NUMENOREAN_HELMET, iron, 5}, {LOTRItems.BLACK_NUMENOREAN_CHESTPLATE, iron, 8},
-                    {LOTRItems.BLACK_NUMENOREAN_LEGGINGS, iron, 7}, {LOTRItems.BLACK_NUMENOREAN_BOOTS, iron, 4},
-                    {LOTRItems.BLACK_NUMENOREAN_SWORD, iron, 2}, {LOTRItems.BLACK_NUMENOREAN_DAGGER, iron, 1},
-                    {LOTRItems.BLACK_NUMENOREAN_SPEAR, iron, 1}, {LOTRItems.BLACK_NUMENOREAN_MACE, iron, 4},
-                    {LOTRItems.GONDOLIN_HELMET, elf, 5}, {LOTRItems.GONDOLIN_CHESTPLATE, elf, 8},
-                    {LOTRItems.GONDOLIN_LEGGINGS, elf, 7}, {LOTRItems.GONDOLIN_BOOTS, elf, 4},
-                    {LOTRItems.GONDOLIN_SWORD, elf, 2},
-                    {LOTRItems.GOLDEN_TAURETHRIM_HELMET, gold, 5}, {LOTRItems.GOLDEN_TAURETHRIM_CHESTPLATE, gold, 8},
-                    {LOTRItems.GOLDEN_TAURETHRIM_LEGGINGS, gold, 7}, {LOTRItems.GOLDEN_TAURETHRIM_BOOTS, gold, 4},
-                    {LOTRItems.BLACKSMITH_HAMMER, iron, 4},
-                    {LOTRItems.OLD_HARADRIC_SACRIFICIAL_DAGGER, iron, 1},
-                    {LOTRItems.UTUMNO_HELMET, orc, 5}, {LOTRItems.UTUMNO_CHESTPLATE, orc, 8},
-                    {LOTRItems.UTUMNO_LEGGINGS, orc, 7}, {LOTRItems.UTUMNO_BOOTS, orc, 4},
-                    {LOTRItems.UTUMNO_SWORD, orc, 2}, {LOTRItems.UTUMNO_DAGGER, orc, 1},
-                    {LOTRItems.UTUMNO_SPEAR, orc, 1}, {LOTRItems.UTUMNO_BATTLEAXE, orc, 5},
-                    {LOTRItems.UTUMNO_WARHAMMER, orc, 4}, {LOTRItems.UTUMNO_PICKAXE, orc, 3}}) {
+                    {LOTRCombatItems.BARROW_BLADE, iron, 1},
+                    {LOTRCombatItems.ARNOR_HELMET, iron, 5}, {LOTRCombatItems.ARNOR_CHESTPLATE, iron, 8},
+                    {LOTRCombatItems.ARNOR_LEGGINGS, iron, 7}, {LOTRCombatItems.ARNOR_BOOTS, iron, 4},
+                    {LOTRCombatItems.ARNOR_SWORD, iron, 2}, {LOTRCombatItems.ARNOR_DAGGER, iron, 1},
+                    {LOTRCombatItems.ARNOR_SPEAR, iron, 1},
+                    {LOTRCombatItems.BLACK_NUMENOREAN_HELMET, iron, 5}, {LOTRCombatItems.BLACK_NUMENOREAN_CHESTPLATE, iron, 8},
+                    {LOTRCombatItems.BLACK_NUMENOREAN_LEGGINGS, iron, 7}, {LOTRCombatItems.BLACK_NUMENOREAN_BOOTS, iron, 4},
+                    {LOTRCombatItems.BLACK_NUMENOREAN_SWORD, iron, 2}, {LOTRCombatItems.BLACK_NUMENOREAN_DAGGER, iron, 1},
+                    {LOTRCombatItems.BLACK_NUMENOREAN_SPEAR, iron, 1}, {LOTRCombatItems.BLACK_NUMENOREAN_MACE, iron, 4},
+                    {LOTRCombatItems.GONDOLIN_HELMET, elf, 5}, {LOTRCombatItems.GONDOLIN_CHESTPLATE, elf, 8},
+                    {LOTRCombatItems.GONDOLIN_LEGGINGS, elf, 7}, {LOTRCombatItems.GONDOLIN_BOOTS, elf, 4},
+                    {LOTRCombatItems.GONDOLIN_SWORD, elf, 2},
+                    {LOTRCombatItems.GOLDEN_TAURETHRIM_HELMET, gold, 5}, {LOTRCombatItems.GOLDEN_TAURETHRIM_CHESTPLATE, gold, 8},
+                    {LOTRCombatItems.GOLDEN_TAURETHRIM_LEGGINGS, gold, 7}, {LOTRCombatItems.GOLDEN_TAURETHRIM_BOOTS, gold, 4},
+                    {LOTRCombatItems.BLACKSMITH_HAMMER, iron, 4},
+                    {LOTRCombatItems.OLD_HARADRIC_SACRIFICIAL_DAGGER, iron, 1},
+                    {LOTRCombatItems.UTUMNO_HELMET, orc, 5}, {LOTRCombatItems.UTUMNO_CHESTPLATE, orc, 8},
+                    {LOTRCombatItems.UTUMNO_LEGGINGS, orc, 7}, {LOTRCombatItems.UTUMNO_BOOTS, orc, 4},
+                    {LOTRCombatItems.UTUMNO_SWORD, orc, 2}, {LOTRCombatItems.UTUMNO_DAGGER, orc, 1},
+                    {LOTRCombatItems.UTUMNO_SPEAR, orc, 1}, {LOTRCombatItems.UTUMNO_BATTLEAXE, orc, 5},
+                    {LOTRCombatItems.UTUMNO_WARHAMMER, orc, 4}, {LOTRToolItems.UTUMNO_PICKAXE, orc, 3}}) {
                 map.put((Item) entry[0], java.util.Collections.nCopies((Integer) entry[2], (Item) entry[1]));
             }
             // The Utumno bow was on the list too, but as a bow it was never

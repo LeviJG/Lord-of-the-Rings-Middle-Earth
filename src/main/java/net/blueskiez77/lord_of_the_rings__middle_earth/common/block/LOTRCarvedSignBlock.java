@@ -3,7 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 import com.mojang.serialization.MapCodec;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
@@ -89,7 +89,7 @@ public class LOTRCarvedSignBlock extends BaseEntityBlock {
     @SuppressWarnings("unchecked")
     public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state,
             BlockEntityType<T> type) {
-        if (!level.isClientSide() || type != LOTRBlockEntities.CARVED_SIGN || this != LOTRBlocks.CARVED_ITHILDIN_SIGN) {
+        if (!level.isClientSide() || type != LOTRBlockEntities.CARVED_SIGN || this != LOTRUtilityBlocks.CARVED_ITHILDIN_SIGN) {
             return null;
         }
         return (BlockEntityTicker<T>) (BlockEntityTicker<LOTRCarvedSignBlockEntity>) LOTRCarvedSignBlockEntity::clientTick;
@@ -119,6 +119,6 @@ public class LOTRCarvedSignBlock extends BaseEntityBlock {
     /** getItem: the chisel, the moon-chisel for ithildin. */
     @Override
     protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
-        return new ItemStack(this == LOTRBlocks.CARVED_ITHILDIN_SIGN ? LOTRItems.MOON_CHISEL : LOTRItems.CHISEL);
+        return new ItemStack(this == LOTRUtilityBlocks.CARVED_ITHILDIN_SIGN ? LOTRToolItems.MOON_CHISEL : LOTRToolItems.CHISEL);
     }
 }

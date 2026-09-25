@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -58,7 +58,7 @@ public class LOTRPlateEntity extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return LOTRBlocks.FINE_PLATE.asItem();
+        return LOTRFoodBlocks.FINE_PLATE.asItem();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class LOTRPlateEntity extends ThrowableItemProjectile {
     }
 
     public Block getPlateBlock() {
-        return getItem().getItem() instanceof BlockItem blockItem ? blockItem.getBlock() : LOTRBlocks.FINE_PLATE;
+        return getItem().getItem() instanceof BlockItem blockItem ? blockItem.getBlock() : LOTRFoodBlocks.FINE_PLATE;
     }
 
     @Override

@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "category": "misc",
-  "experience": 0.8,
-  "ingredient": "lotr:silver_ore",
-  "result": {
-    "id": "lotr:silver_ingot"
-  }
-}

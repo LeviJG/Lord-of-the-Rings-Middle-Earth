@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "category": "misc",
-  "experience": 1.0,
-  "ingredient": "lotr:naurite_ore",
-  "result": {
-    "id": "lotr:durnor"
-  }
-}

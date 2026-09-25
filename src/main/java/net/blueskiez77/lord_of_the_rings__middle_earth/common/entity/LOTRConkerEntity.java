@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -23,12 +23,12 @@ public class LOTRConkerEntity extends ThrowableItemProjectile {
     }
 
     public LOTRConkerEntity(Level level, LivingEntity thrower) {
-        super(LOTREntities.CONKER, thrower, level, new ItemStack(LOTRItems.CONKER));
+        super(LOTREntities.CONKER, thrower, level, new ItemStack(LOTRMiscItems.CONKER));
     }
 
     @Override
     protected Item getDefaultItem() {
-        return LOTRItems.CONKER;
+        return LOTRMiscItems.CONKER;
     }
 
     /** getGravityVelocity: 0.04, a little lighter than a snowball. */
@@ -50,7 +50,7 @@ public class LOTRConkerEntity extends ThrowableItemProjectile {
     protected void onHit(HitResult hit) {
         super.onHit(hit);
         if (level() instanceof ServerLevel server) {
-            spawnAtLocation(server, new ItemStack(LOTRItems.CONKER));
+            spawnAtLocation(server, new ItemStack(LOTRMiscItems.CONKER));
             discard();
         }
     }

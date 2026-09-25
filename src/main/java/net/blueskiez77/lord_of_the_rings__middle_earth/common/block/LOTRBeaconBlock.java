@@ -191,7 +191,21 @@ public class LOTRBeaconBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
 
-        return InteractionResult.PASS;
+        return InteractionResult.TRY_WITH_EMPTY_HAND;
+    }
+
+    /**
+     * Everything else opens the naming dialog (openGui 50). The screen itself
+     * is opened client-side; the server side is LOTRCommonProxy's half,
+     * addEditingPlayer, without which LOTRPacketBeaconEdit is refused.
+     */
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
+            BlockHitResult hitResult) {
+        if (!level.isClientSide() && level.getBlockEntity(pos) instanceof LOTRBeaconBlockEntity beacon) {
+            beacon.addEditingPlayer(player);
+        }
+        return InteractionResult.SUCCESS;
     }
 
     // onEntityCollidedWithBlock: anything on fire lights it.

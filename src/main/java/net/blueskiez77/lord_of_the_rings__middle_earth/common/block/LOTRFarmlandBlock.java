@@ -30,7 +30,7 @@ public class LOTRFarmlandBlock extends FarmlandBlock {
     protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.randomTick(state, level, pos, random);
         if (level.getBlockState(pos).is(Blocks.DIRT)) {
-            level.setBlockAndUpdate(pos, LOTRBlocks.MUD.defaultBlockState());
+            level.setBlockAndUpdate(pos, LOTRBuildingBlocks.MUD.defaultBlockState());
         }
     }
 
@@ -41,7 +41,7 @@ public class LOTRFarmlandBlock extends FarmlandBlock {
     protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         super.tick(state, level, pos, random);
         if (level.getBlockState(pos).is(Blocks.DIRT)) {
-            level.setBlockAndUpdate(pos, LOTRBlocks.MUD.defaultBlockState());
+            level.setBlockAndUpdate(pos, LOTRBuildingBlocks.MUD.defaultBlockState());
         }
     }
 
@@ -50,7 +50,7 @@ public class LOTRFarmlandBlock extends FarmlandBlock {
         super.fallOn(level, state, pos, entity, fallDistance);
         // Vanilla turned it to dirt; make it mud instead.
         if (level.getBlockState(pos).is(Blocks.DIRT)) {
-            level.setBlockAndUpdate(pos, LOTRBlocks.MUD.defaultBlockState());
+            level.setBlockAndUpdate(pos, LOTRBuildingBlocks.MUD.defaultBlockState());
         }
     }
 }

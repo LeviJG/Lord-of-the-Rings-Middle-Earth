@@ -18,6 +18,10 @@ public final class LOTRItemTags {
      * -- which also means the mod's own weapons only have to be added to it
      * once, rather than taught to a stats table.
      */
+    /** The "feather" ore name: vanilla's feather and the swan feather. */
+    public static final TagKey<Item> FEATHERS = TagKey.create(
+            Registries.ITEM, Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "feathers"));
+
     public static final TagKey<Item> WEAPON_RACK_HOLDABLE = TagKey.create(
             Registries.ITEM,
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "weapon_rack_holdable"));
@@ -165,8 +169,7 @@ public final class LOTRItemTags {
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "repairs_umbaric_tools"));
 
     /**
-     * What mends Coast Southron gear: bronze, which the port has no ingot for,
-     * so this leans on the bronze tag and fills itself in when that does.
+     * What mends Coast Southron gear: bronze, through the bronze tools tag.
      */
     public static final TagKey<Item> REPAIRS_COAST_SOUTHRON_ARMOR = TagKey.create(
             Registries.ITEM,

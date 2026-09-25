@@ -22,12 +22,14 @@ import net.minecraft.world.item.ItemDisplayContext;
  * roll: a sprite's point is at its top right, so the diagonal has to come round
  * to the line of flight head first.
  *
- * <p>Half the size of a thrown trident, because a dart is a small thing.
+ * <p>Six-tenths of a block across, the original's {@code glScalef(0.6)} of a
+ * one-block renderItemIn2D sprite.
  */
 public class LOTRDartRenderer
         extends EntityRenderer<LOTRDartEntity, LOTRThrowingAxeRenderState> {
 
-    private static final float SCALE = 1.0f;
+    /** GROUND halves the model; 1.2 makes it the original's 0.6 blocks. */
+    private static final float SCALE = 1.2f;
     /** See LOTRThrownTridentRenderer: forward is +X, a sprite's point is at +45. */
     private static final float SPRITE_ROLL = -45.0f;
 

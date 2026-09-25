@@ -28,7 +28,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRMorgulHe
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRMorwaithChieftainHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSwanHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRUrukHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
@@ -40,6 +41,13 @@ import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRLeatherHatItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.item.ItemStack;
 
 /**
  * LOTRArmorModels: the helmets that are not the standard armour biped.
@@ -63,36 +71,36 @@ public final class LOTRArmorRenderers {
     public static void init() {
         LOTRGondorHelmetModel gondor =
                 new LOTRGondorHelmetModel(LOTRGondorHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.GONDOR_HELMET, "gondor_helmet",
+        register(LOTRCombatItems.GONDOR_HELMET, "gondor_helmet",
                 (poseStack, consumer, light) ->
                         gondor.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRGaladhrimHelmetModel galadhrim =
                 new LOTRGaladhrimHelmetModel(LOTRGaladhrimHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.GALADHRIM_HELMET, "galadhrim_helmet",
+        register(LOTRCombatItems.GALADHRIM_HELMET, "galadhrim_helmet",
                 (poseStack, consumer, light) ->
                         galadhrim.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRUrukHelmetModel uruk =
                 new LOTRUrukHelmetModel(LOTRUrukHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.URUK_HELMET, "uruk_helmet",
+        register(LOTRCombatItems.URUK_HELMET, "uruk_helmet",
                 (poseStack, consumer, light) ->
                         uruk.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
         // The berserker's helmet is the Uruk model on a sheet of its own --
         // LOTRArmorModels mapped both to a new LOTRModelUrukHelmet(1.0f).
-        register(LOTRItems.URUK_BERSERKER_HELMET, "uruk_berserker_helmet",
+        register(LOTRCombatItems.URUK_BERSERKER_HELMET, "uruk_berserker_helmet",
                 (poseStack, consumer, light) ->
                         uruk.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRGondorWingedHelmetModel winged = new LOTRGondorWingedHelmetModel(
                 LOTRGondorWingedHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.GONDOR_WINGED_HELMET, "gondor_winged_helmet",
+        register(LOTRCombatItems.GONDOR_WINGED_HELMET, "gondor_winged_helmet",
                 (poseStack, consumer, light) ->
                         winged.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRMorgulHelmetModel morgul =
                 new LOTRMorgulHelmetModel(LOTRMorgulHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.MORGUL_HELMET, "morgul_helmet",
+        register(LOTRCombatItems.MORGUL_HELMET, "morgul_helmet",
                 (poseStack, consumer, light) ->
                         morgul.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
@@ -103,72 +111,72 @@ public final class LOTRArmorRenderers {
         // model samples.
         LOTRGemsbokHelmetModel gemsbok =
                 new LOTRGemsbokHelmetModel(LOTRGemsbokHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.GEMSBOK_HIDE_HELMET, "gemsbok_hide",
+        register(LOTRCombatItems.GEMSBOK_HIDE_HELMET, "gemsbok_hide",
                 (poseStack, consumer, light) ->
                         gemsbok.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRLindonHelmetModel lindon =
                 new LOTRLindonHelmetModel(LOTRLindonHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.LINDON_HELMET, "lindon",
+        register(LOTRCombatItems.LINDON_HELMET, "lindon",
                 (poseStack, consumer, light) ->
                         lindon.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRSwanHelmetModel swan =
                 new LOTRSwanHelmetModel(LOTRSwanHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.DOL_AMROTH_HELMET, "dol_amroth_winged_helmet",
+        register(LOTRCombatItems.DOL_AMROTH_HELMET, "dol_amroth_winged_helmet",
                 (poseStack, consumer, light) ->
                         swan.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRMorwaithChieftainHelmetModel lion = new LOTRMorwaithChieftainHelmetModel(
                 LOTRMorwaithChieftainHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.MORWAITH_CHIEFTAIN_HELMET, "morwaith_chieftain_helmet",
+        register(LOTRCombatItems.MORWAITH_CHIEFTAIN_HELMET, "morwaith_chieftain_helmet",
                 (poseStack, consumer, light) ->
                         lion.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRGondolinHelmetModel gondolin =
                 new LOTRGondolinHelmetModel(LOTRGondolinHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.GONDOLIN_HELMET, "gondolin_helmet",
+        register(LOTRCombatItems.GONDOLIN_HELMET, "gondolin_helmet",
                 (poseStack, consumer, light) ->
                         gondolin.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRTaurethrimChieftainHelmetModel taurethrim = new LOTRTaurethrimChieftainHelmetModel(
                 LOTRTaurethrimChieftainHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.TAURETHRIM_CHIEFTAIN_HELMET, "taurethrim_chieftain_helmet",
+        register(LOTRCombatItems.TAURETHRIM_CHIEFTAIN_HELMET, "taurethrim_chieftain_helmet",
                 (poseStack, consumer, light) ->
                         taurethrim.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRRohirricMarshalHelmetModel marshal = new LOTRRohirricMarshalHelmetModel(
                 LOTRRohirricMarshalHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.ROHIRRIC_MARSHAL_HELMET, "rohirric_marshal_helmet",
+        register(LOTRCombatItems.ROHIRRIC_MARSHAL_HELMET, "rohirric_marshal_helmet",
                 (poseStack, consumer, light) ->
                         marshal.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRGoldenTaurethrimHelmetModel golden = new LOTRGoldenTaurethrimHelmetModel(
                 LOTRGoldenTaurethrimHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.GOLDEN_TAURETHRIM_HELMET, "golden_taurethrim_helmet",
+        register(LOTRCombatItems.GOLDEN_TAURETHRIM_HELMET, "golden_taurethrim_helmet",
                 (poseStack, consumer, light) ->
                         golden.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRGundabadUrukHelmetModel gundabad = new LOTRGundabadUrukHelmetModel(
                 LOTRGundabadUrukHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.GUNDABAD_URUK_HELMET, "gundabad_uruk_helmet",
+        register(LOTRCombatItems.GUNDABAD_URUK_HELMET, "gundabad_uruk_helmet",
                 (poseStack, consumer, light) ->
                         gundabad.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRDorwinionElvenHelmetModel dorwinion = new LOTRDorwinionElvenHelmetModel(
                 LOTRDorwinionElvenHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.DORWINION_ELVEN_HELMET, "dorwinion_elven_helmet",
+        register(LOTRCombatItems.DORWINION_ELVEN_HELMET, "dorwinion_elven_helmet",
                 (poseStack, consumer, light) ->
                         dorwinion.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRSouthronChampionHelmetModel champion = new LOTRSouthronChampionHelmetModel(
                 LOTRSouthronChampionHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.SOUTHRON_CHAMPION_HELMET, "coast_southron_champion_helmet",
+        register(LOTRCombatItems.SOUTHRON_CHAMPION_HELMET, "coast_southron_champion_helmet",
                 (poseStack, consumer, light) ->
                         champion.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRArnorHelmetModel arnor = new LOTRArnorHelmetModel(LOTRArnorHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.ARNOR_HELMET, "arnor_helmet",
+        register(LOTRCombatItems.ARNOR_HELMET, "arnor_helmet",
                 (poseStack, consumer, light) ->
                         arnor.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
@@ -176,12 +184,12 @@ public final class LOTRArmorRenderers {
         // helmet, the warlord's with kine horns on a 64x64 sheet.
         LOTREasterlingHelmetModel goldenRhunic = new LOTREasterlingHelmetModel(
                 LOTREasterlingHelmetModel.createLayer(false).bakeRoot());
-        register(LOTRItems.GOLDEN_RHUNIC_HELMET, "rhun_gold_helmet",
+        register(LOTRCombatItems.GOLDEN_RHUNIC_HELMET, "rhun_gold_helmet",
                 (poseStack, consumer, light) ->
                         goldenRhunic.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
         LOTREasterlingHelmetModel warlord = new LOTREasterlingHelmetModel(
                 LOTREasterlingHelmetModel.createLayer(true).bakeRoot());
-        register(LOTRItems.RHUNIC_WARLORD_HELMET, "rhun_gold_warlord_helmet",
+        register(LOTRCombatItems.RHUNIC_WARLORD_HELMET, "rhun_gold_warlord_helmet",
                 (poseStack, consumer, light) ->
                         warlord.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
@@ -189,41 +197,40 @@ public final class LOTRArmorRenderers {
         // Lindon helmet's model, on the Rivendell set's own sheet (no extraName).
         LOTRLindonHelmetModel rivendell =
                 new LOTRLindonHelmetModel(LOTRLindonHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.RIVENDELL_HELMET, "rivendell",
+        register(LOTRCombatItems.RIVENDELL_HELMET, "rivendell",
                 (poseStack, consumer, light) ->
                         rivendell.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRUmbaricHelmetModel umbaric = new LOTRUmbaricHelmetModel(LOTRUmbaricHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.UMBARIC_HELMET, "umbaric_helmet",
+        register(LOTRCombatItems.UMBARIC_HELMET, "umbaric_helmet",
                 (poseStack, consumer, light) ->
                         umbaric.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRHarnennorHelmetModel harnennor = new LOTRHarnennorHelmetModel(
                 LOTRHarnennorHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.HARNENNOR_HELMET, "harnedor_helmet",
+        register(LOTRCombatItems.HARNENNOR_HELMET, "harnedor_helmet",
                 (poseStack, consumer, light) ->
                         harnennor.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRBlackNumenoreanHelmetModel numenorean = new LOTRBlackNumenoreanHelmetModel(
                 LOTRBlackNumenoreanHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.BLACK_NUMENOREAN_HELMET, "black_numenorean_helmet",
+        register(LOTRCombatItems.BLACK_NUMENOREAN_HELMET, "black_numenorean_helmet",
                 (poseStack, consumer, light) ->
                         numenorean.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         LOTRBlackUrukHelmetModel blackUruk = new LOTRBlackUrukHelmetModel(
                 LOTRBlackUrukHelmetModel.createLayer().bakeRoot());
-        register(LOTRItems.BLACK_URUK_HELMET, "black_uruk",
+        register(LOTRCombatItems.BLACK_URUK_HELMET, "black_uruk",
                 (poseStack, consumer, light) ->
                         blackUruk.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
 
         // The dyed head pieces, tinted whole as the original's glColor3f did,
-        // in the colour each item had undyed: LOTRItemLeatherHat 0x684A36,
-        // LOTRItemPartyHat and ROBES_WHITE 0xFFFFFF.
-        registerDyed(LOTRItems.LEATHER_HAT, "leather_hat",
-                new LOTRDyedHeadModel(LOTRDyedHeadModel.createLeatherHat().bakeRoot()), 0x684A36);
-        registerDyed(LOTRItems.PARTY_HAT, "party_hat",
+        // in the colour each item had undyed: LOTRItemLeatherHat 0x684A36 (with
+        // its feather, below), LOTRItemPartyHat and ROBES_WHITE 0xFFFFFF.
+        registerLeatherHat(new LOTRDyedHeadModel(LOTRDyedHeadModel.createLeatherHat().bakeRoot()));
+        registerDyed(LOTRMiscItems.PARTY_HAT, "party_hat",
                 new LOTRDyedHeadModel(LOTRDyedHeadModel.createPartyHat().bakeRoot()), 0xFFFFFF);
-        registerDyed(LOTRItems.HARAD_TURBAN, "harad_turban",
+        registerDyed(LOTRMiscItems.HARAD_TURBAN, "harad_turban",
                 new LOTRDyedHeadModel(LOTRDyedHeadModel.createTurban().bakeRoot()), 0xFFFFFF);
 
         // bodyDolAmroth: LOTRModelSwanChestplate, on its "wingedBody" sheet.
@@ -236,12 +243,12 @@ public final class LOTRArmorRenderers {
             renderPart(poseStack, collector, light, contextModel.body, swanBody.body(), swanTexture);
             renderPart(poseStack, collector, light, contextModel.rightArm, swanBody.rightArm(), swanTexture);
             renderPart(poseStack, collector, light, contextModel.leftArm, swanBody.leftArm(), swanTexture);
-        }, LOTRItems.DOL_AMROTH_CHESTPLATE);
+        }, LOTRCombatItems.DOL_AMROTH_CHESTPLATE);
 
         // The two chestplates LOTRArmorModels gave models of their own.
-        registerBody(LOTRItems.GULFEN_CHESTPLATE, "gulf_harad_body",
+        registerBody(LOTRCombatItems.GULFEN_CHESTPLATE, "gulf_harad_body",
                 new LOTRGulfenChestplateModel(LOTRGulfenChestplateModel.createLayer().bakeRoot()));
-        registerBody(LOTRItems.HARNENNOR_CHESTPLATE, "harnedor_body",
+        registerBody(LOTRCombatItems.HARNENNOR_CHESTPLATE, "harnedor_body",
                 new LOTRHarnennorChestplateModel(LOTRHarnennorChestplateModel.createLayer().bakeRoot()));
     }
 
@@ -291,6 +298,47 @@ public final class LOTRArmorRenderers {
                     (local, consumer, l) -> model.render(local, consumer, l, OverlayTexture.NO_OVERLAY, color),
                     path);
         }, hat);
+    }
+
+    /**
+     * LOTRModelLeatherHat: the dyed hat, and in its band -- if it has one -- a
+     * feather drawn as the feather item in the feather's colour, placed where
+     * the original put it after bipedHead.postRender.
+     */
+    private static void registerLeatherHat(LOTRDyedHeadModel model) {
+        Identifier path = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE,
+                "textures/entity/equipment/humanoid/leather_hat.png");
+        ArmorRenderer.register((poseStack, collector, stack, state, slot, light, contextModel) -> {
+            net.minecraft.world.item.component.DyedItemColor dyed =
+                    stack.get(net.minecraft.core.component.DataComponents.DYED_COLOR);
+            int color = 0xFF000000 | (dyed != null ? dyed.rgb() : LOTRLeatherHatItem.HAT_LEATHER);
+            renderHead(poseStack, collector, light, contextModel,
+                    (local, consumer, l) -> model.render(local, consumer, l, OverlayTexture.NO_OVERLAY, color),
+                    path);
+
+            Integer feather = stack.get(LOTRDataComponents.HAT_FEATHER);
+            if (feather == null) {
+                return;
+            }
+            poseStack.pushPose();
+            contextModel.head.translateAndRotate(poseStack);
+            poseStack.scale(0.375f, 0.375f, 0.375f);
+            poseStack.mulPose(com.mojang.math.Axis.XP.rotationDegrees(130.0f));
+            poseStack.mulPose(com.mojang.math.Axis.YP.rotationDegrees(30.0f));
+            poseStack.translate(0.25f, 1.5f, 0.75f);
+            poseStack.mulPose(com.mojang.math.Axis.ZP.rotationDegrees(-45.0f));
+            // 1.7.10 drew an item from its corner, one pixel deep behind it; a
+            // 26.2 item model is centred on the origin.
+            poseStack.translate(0.5f, 0.5f, -1.0f / 32.0f);
+            ItemStack featherStack = new ItemStack(LOTRItems.FEATHER_DYED);
+            featherStack.set(net.minecraft.core.component.DataComponents.DYED_COLOR,
+                    new net.minecraft.world.item.component.DyedItemColor(feather));
+            ItemStackRenderState item = new ItemStackRenderState();
+            Minecraft.getInstance().getItemModelResolver().updateForTopItem(
+                    item, featherStack, ItemDisplayContext.NONE, null, null, 0);
+            item.submit(poseStack, collector, light, OverlayTexture.NO_OVERLAY, 0);
+            poseStack.popPose();
+        }, LOTRMiscItems.LEATHER_HAT);
     }
 
     /** What a helmet model draws, once its head transform is in place. */

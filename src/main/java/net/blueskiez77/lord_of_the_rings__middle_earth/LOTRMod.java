@@ -14,6 +14,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRRecipeT
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRAlignmentCommand;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import net.minecraft.world.level.block.DispenserBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -21,6 +23,18 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCauldronWashing;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDispenserBehaviours;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAlcoholTolerance;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRArmourSets;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVanillaVessels;
 
 public class LOTRMod implements ModInitializer {
     public static final String MOD_ID = "lord_of_the_rings - middle_earth";
@@ -36,48 +50,49 @@ public class LOTRMod implements ModInitializer {
         LOTRFaction.initAllProperties();
 
         LOTRPlayerAlignments.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAlcoholTolerance.init();
+        LOTRLevelData.init();
+        LOTRAlcoholTolerance.init();
 
         LOTRRecipeTypes.init();
         LOTRMenus.init();
         LOTRSounds.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles.init();
+        LOTRParticles.init();
         LOTRBlocks.init();
         LOTRBlockEntities.init();
         LOTRBlockBehaviours.init();
-        LOTRMillstoneRecipes.createRecipes();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects.init();
+        LOTRDataComponents.init();
+        LOTREffects.init();
         LOTRItems.init();
+        // After the items, as the original built its recipes after registration.
+        LOTRMillstoneRecipes.createRecipes();
 
         LOTREntities.init();
 
-        DispenserBlock.registerProjectileBehavior(LOTRItems.CROSSBOW_BOLT);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.PEBBLE);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.TAURETHRIM_DART);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_TAURETHRIM_DART);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_ARROW);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.POISONED_CROSSBOW_BOLT);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.RHUNIC_FIRE_POT);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.CONKER);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.MYSTERY_WEB);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.EXPLODING_TERMITE);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.IRON_THROWING_AXE);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.BRONZE_THROWING_AXE);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.DWARVEN_THROWING_AXE);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.BLUE_DWARVEN_THROWING_AXE);
-        DispenserBlock.registerProjectileBehavior(LOTRItems.LOSSARNACH_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.CROSSBOW_BOLT);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.PEBBLE);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.TAURETHRIM_DART);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.POISONED_TAURETHRIM_DART);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.POISONED_ARROW);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.POISONED_CROSSBOW_BOLT);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.RHUNIC_FIRE_POT);
+        DispenserBlock.registerProjectileBehavior(LOTRMiscItems.CONKER);
+        DispenserBlock.registerProjectileBehavior(LOTRMiscItems.MYSTERY_WEB);
+        DispenserBlock.registerProjectileBehavior(LOTRMiscItems.EXPLODING_TERMITE);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.IRON_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.BRONZE_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.DWARVEN_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.BLUE_DWARVEN_THROWING_AXE);
+        DispenserBlock.registerProjectileBehavior(LOTRCombatItems.LOSSARNACH_THROWING_AXE);
 
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDispenserBehaviours.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCauldronWashing.init();
+        LOTRDispenserBehaviours.init();
+        LOTRCauldronWashing.init();
         LOTRBlocks.ALL_PLATES.forEach(plate -> DispenserBlock.registerProjectileBehavior(plate.asItem()));
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVanillaVessels.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials.init();
+        LOTRVanillaVessels.init();
+        LOTRMechanisedRailBlock.init();
+        LOTRModifiers.init();
+        LOTRModifierSpecials.init();
 
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRArmourSets.init();
+        LOTRArmourSets.init();
 
         LOTRCreativeTabs.init();
 

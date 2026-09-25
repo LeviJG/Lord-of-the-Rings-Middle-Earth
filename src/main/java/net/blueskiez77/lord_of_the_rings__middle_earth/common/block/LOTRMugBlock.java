@@ -2,7 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPoisonedDrinks;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRMugBlockEntity;
@@ -166,7 +166,7 @@ public class LOTRMugBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
         if (!mug.isEmpty()) {
-            if (stack.is(LOTRItems.BOTTLE_OF_POISON) && LOTRPoisonedDrinks.canPoison(mugItem)
+            if (stack.is(LOTRMiscItems.BOTTLE_OF_POISON) && LOTRPoisonedDrinks.canPoison(mugItem)
                     && !LOTRPoisonedDrinks.isPoisoned(mugItem)) {
                 if (!level.isClientSide()) {
                     LOTRPoisonedDrinks.poison(mugItem, player);

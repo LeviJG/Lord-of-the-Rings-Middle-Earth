@@ -6,9 +6,13 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.core.Direction;
 import net.minecraft.world.WorldlyContainer;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRForgeMenu;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
@@ -299,18 +303,18 @@ public class LOTRForgeBlockEntity extends BaseContainerBlockEntity implements Wo
     }
 
     private static final java.util.Map<Item, Float> LOTR_SMELT_XP = java.util.Map.ofEntries(
-            java.util.Map.entry(LOTRItems.BRONZE_INGOT, 0.7F),
+            java.util.Map.entry(LOTRMaterialItems.BRONZE_INGOT, 0.7F),
             java.util.Map.entry(LOTRItems.MITHRIL, 1.0F),
-            java.util.Map.entry(LOTRItems.ORC_STEEL_INGOT, 0.7F),
-            java.util.Map.entry(LOTRItems.DWARVEN_STEEL_INGOT, 0.7F),
-            java.util.Map.entry(LOTRItems.GALVORN_INGOT, 0.8F),
-            java.util.Map.entry(LOTRItems.URUK_STEEL_INGOT, 0.7F),
-            java.util.Map.entry(LOTRItems.MORGUL_STEEL_INGOT, 0.8F),
-            java.util.Map.entry(LOTRItems.BLUE_DWARVEN_STEEL_INGOT, 0.7F),
-            java.util.Map.entry(LOTRItems.BLACK_URUK_STEEL_INGOT, 0.7F),
-            java.util.Map.entry(LOTRItems.ELVEN_STEEL_INGOT, 0.7F),
-            java.util.Map.entry(LOTRItems.ITHILDIN, 0.8F),
-            java.util.Map.entry(LOTRItems.GILDED_IRON_INGOT, 0.7F));
+            java.util.Map.entry(LOTRMaterialItems.ORC_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRMaterialItems.DWARVEN_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRMaterialItems.GALVORN_INGOT, 0.8F),
+            java.util.Map.entry(LOTRMaterialItems.URUK_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRMaterialItems.MORGUL_STEEL_INGOT, 0.8F),
+            java.util.Map.entry(LOTRMaterialItems.BLUE_DWARVEN_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRMaterialItems.BLACK_URUK_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRMaterialItems.ELVEN_STEEL_INGOT, 0.7F),
+            java.util.Map.entry(LOTRMaterialItems.ITHILDIN, 0.8F),
+            java.util.Map.entry(LOTRMaterialItems.GILDED_IRON_INGOT, 0.7F));
 
     /**
      * SlotFurnace.onCrafting's payout: the whole part of the experience, plus
@@ -341,40 +345,40 @@ public class LOTRForgeBlockEntity extends BaseContainerBlockEntity implements Wo
             return ItemStack.EMPTY;
         }
         Block forge = getBlockState().getBlock();
-        if (forge == LOTRBlocks.ORC_FORGE) {
+        if (forge == LOTRUtilityBlocks.ORC_FORGE) {
             if (isIron(input) && isCoal(alloyItem)) {
-                return new ItemStack(LOTRItems.URUK_STEEL_INGOT);
+                return new ItemStack(LOTRMaterialItems.URUK_STEEL_INGOT);
             }
-            if (isOrcSteel(input) && alloyItem.is(LOTRItems.GULDURIL)) {
-                return new ItemStack(LOTRItems.MORGUL_STEEL_INGOT);
+            if (isOrcSteel(input) && alloyItem.is(LOTRMaterialItems.GULDURIL)) {
+                return new ItemStack(LOTRMaterialItems.MORGUL_STEEL_INGOT);
             }
-            if (isOrcSteel(input) && alloyItem.is(LOTRItems.DURNOR)) {
-                return new ItemStack(LOTRItems.BLACK_URUK_STEEL_INGOT);
+            if (isOrcSteel(input) && alloyItem.is(LOTRMaterialItems.DURNOR)) {
+                return new ItemStack(LOTRMaterialItems.BLACK_URUK_STEEL_INGOT);
             }
-        } else if (forge == LOTRBlocks.DWARVEN_FORGE) {
+        } else if (forge == LOTRUtilityBlocks.DWARVEN_FORGE) {
             if (isIron(input) && isCoal(alloyItem)) {
-                return new ItemStack(LOTRItems.DWARVEN_STEEL_INGOT);
+                return new ItemStack(LOTRMaterialItems.DWARVEN_STEEL_INGOT);
             }
-            if (isIron(input) && alloyItem.is(LOTRItems.EDHELVIR)) {
-                return new ItemStack(LOTRItems.GALVORN_INGOT);
+            if (isIron(input) && alloyItem.is(LOTRMaterialItems.EDHELVIR)) {
+                return new ItemStack(LOTRMaterialItems.GALVORN_INGOT);
             }
-            if (isIron(input) && alloyItem.is(LOTRBlocks.BLUE_ROCK.asItem())) {
-                return new ItemStack(LOTRItems.BLUE_DWARVEN_STEEL_INGOT);
+            if (isIron(input) && alloyItem.is(LOTRBuildingBlocks.BLUE_ROCK.asItem())) {
+                return new ItemStack(LOTRMaterialItems.BLUE_DWARVEN_STEEL_INGOT);
             }
-        } else if (forge == LOTRBlocks.ELVEN_FORGE) {
+        } else if (forge == LOTRUtilityBlocks.ELVEN_FORGE) {
             if (isIron(input) && isCoal(alloyItem)) {
-                return new ItemStack(LOTRItems.ELVEN_STEEL_INGOT);
+                return new ItemStack(LOTRMaterialItems.ELVEN_STEEL_INGOT);
             }
-            if (isSilver(input) && alloyItem.is(LOTRItems.MITHRIL_NUGGET)) {
-                return new ItemStack(LOTRItems.ITHILDIN);
+            if (isSilver(input) && alloyItem.is(LOTRMaterialItems.MITHRIL_NUGGET)) {
+                return new ItemStack(LOTRMaterialItems.ITHILDIN);
             }
-        } else if (forge == LOTRBlocks.ALLOY_FORGE) {
+        } else if (forge == LOTRUtilityBlocks.ALLOY_FORGE) {
             if (isIron(input) && alloyItem.is(Items.GOLD_NUGGET)) {
-                return new ItemStack(LOTRItems.GILDED_IRON_INGOT);
+                return new ItemStack(LOTRMaterialItems.GILDED_IRON_INGOT);
             }
         }
         if (isCopper(input) && isTin(alloyItem) || isTin(input) && isCopper(alloyItem)) {
-            return new ItemStack(LOTRItems.BRONZE_INGOT, 2);
+            return new ItemStack(LOTRMaterialItems.BRONZE_INGOT, 2);
         }
         return ItemStack.EMPTY;
     }
@@ -385,19 +389,19 @@ public class LOTRForgeBlockEntity extends BaseContainerBlockEntity implements Wo
      */
     private ItemStack getForgeSmeltingResult(ItemStack input) {
         Block forge = getBlockState().getBlock();
-        if (forge == LOTRBlocks.ORC_FORGE) {
-            if (input.is(ItemTags.LOGS) && !input.is(LOTRBlocks.CHARRED_LOG.asItem())) {
-                return new ItemStack(LOTRBlocks.CHARRED_LOG);
+        if (forge == LOTRUtilityBlocks.ORC_FORGE) {
+            if (input.is(ItemTags.LOGS) && !input.is(LOTRBuildingBlocks.CHARRED_LOG.asItem())) {
+                return new ItemStack(LOTRBuildingBlocks.CHARRED_LOG);
             }
-            if (input.is(LOTRBlocks.MORGUL_IRON_ORE.asItem())) {
-                return new ItemStack(LOTRItems.ORC_STEEL_INGOT);
+            if (input.is(LOTRBuildingBlocks.MORGUL_IRON_ORE.asItem())) {
+                return new ItemStack(LOTRMaterialItems.ORC_STEEL_INGOT);
             }
             // isWolfsFavoriteMeat: whatever a wolf eats, the mod's own meats included.
             if (input.is(ItemTags.WOLF_FOOD)) {
                 return new ItemStack(Items.ROTTEN_FLESH);
             }
-        } else if (forge == LOTRBlocks.DWARVEN_FORGE) {
-            if (input.is(LOTRBlocks.MITHRIL_ORE.asItem())) {
+        } else if (forge == LOTRUtilityBlocks.DWARVEN_FORGE) {
+            if (input.is(LOTRBuildingBlocks.MITHRIL_ORE.asItem())) {
                 return new ItemStack(LOTRItems.MITHRIL);
             }
         }
@@ -435,7 +439,7 @@ public class LOTRForgeBlockEntity extends BaseContainerBlockEntity implements Wo
             return state.is(BlockTags.MINEABLE_WITH_PICKAXE) || state.is(BlockTags.MINEABLE_WITH_SHOVEL);
         }
         return stack.is(Items.CLAY_BALL) || stack.is(Items.RAW_IRON) || stack.is(Items.RAW_COPPER)
-                || stack.is(Items.RAW_GOLD) || stack.is(LOTRBlocks.STONEWARE_PLATE.asItem()) || stack.is(LOTRItems.CLAY_MUG) || stack.is(LOTRItems.CLAY_PLATE) || stack.is(LOTRItems.RED_CLAY_BALL);
+                || stack.is(Items.RAW_GOLD) || stack.is(LOTRFoodBlocks.STONEWARE_PLATE.asItem()) || stack.is(LOTRFoodItems.CLAY_MUG) || stack.is(LOTRFoodItems.CLAY_PLATE) || stack.is(LOTRMaterialItems.RED_CLAY_BALL);
     }
 
     private static boolean isCoal(ItemStack stack) {
@@ -451,15 +455,15 @@ public class LOTRForgeBlockEntity extends BaseContainerBlockEntity implements Wo
     }
 
     private static boolean isTin(ItemStack stack) {
-        return stack.is(LOTRItems.TIN_INGOT) || stack.is(LOTRBlocks.TIN_ORE.asItem());
+        return stack.is(LOTRMaterialItems.TIN_INGOT) || stack.is(LOTRBuildingBlocks.TIN_ORE.asItem());
     }
 
     private static boolean isSilver(ItemStack stack) {
-        return stack.is(LOTRItems.SILVER_INGOT) || stack.is(LOTRBlocks.SILVER_ORE.asItem());
+        return stack.is(LOTRMaterialItems.SILVER_INGOT) || stack.is(LOTRBuildingBlocks.SILVER_ORE.asItem());
     }
 
     private static boolean isOrcSteel(ItemStack stack) {
-        return stack.is(LOTRItems.ORC_STEEL_INGOT) || stack.is(LOTRBlocks.MORGUL_IRON_ORE.asItem());
+        return stack.is(LOTRMaterialItems.ORC_STEEL_INGOT) || stack.is(LOTRBuildingBlocks.MORGUL_IRON_ORE.asItem());
     }
 
     /**

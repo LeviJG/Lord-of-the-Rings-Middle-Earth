@@ -57,7 +57,7 @@ public class LOTRGandalfStaffWhiteItem extends LOTRModifiableItem {
                 (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2f + 1.0f);
         if (level instanceof ServerLevel server) {
             LOTRGandalfFireballEntity fireball = new LOTRGandalfFireballEntity(
-                    LOTREntities.GANDALF_FIREBALL, user, server, new ItemStack(LOTRItems.GANDALF_FIREBALL));
+                    LOTREntities.GANDALF_FIREBALL, user, server);
             fireball.shootFromRotation(user, user.getXRot(), user.getYRot(), 0.0f, SHOT_POWER, SHOT_SPREAD);
             server.addFreshEntity(fireball);
             // LOTRPacketWeaponFX.STAFF_GANDALF_WHITE: a ring of blue flame.

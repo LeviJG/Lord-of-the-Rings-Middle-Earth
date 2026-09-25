@@ -17,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock;
 
 /**
  * LOTRItemVessel: an EMPTY mug, goblet, horn or skin.
@@ -41,7 +42,7 @@ public class LOTRVesselItem extends Item {
 
     @Override
     public InteractionResult useOn(UseOnContext context) {
-        return net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock.tryPlaceMug(
+        return LOTRMugBlock.tryPlaceMug(
                 context, context.getItemInHand());
     }
 
@@ -60,7 +61,7 @@ public class LOTRVesselItem extends Item {
         if (!fluid.is(FluidTags.WATER) || !fluid.isSource()) {
             return InteractionResult.PASS;
         }
-        ItemStack water = new ItemStack(LOTRItems.WATER);
+        ItemStack water = new ItemStack(LOTRFoodItems.WATER);
         water.set(LOTRDataComponents.VESSEL, this.vessel);
         level.playSound(player, player.getX(), player.getY(), player.getZ(), LOTRSounds.ITEM_MUG_FILL,
                 SoundSource.PLAYERS, 0.5f, 0.8f + level.getRandom().nextFloat() * 0.4f);

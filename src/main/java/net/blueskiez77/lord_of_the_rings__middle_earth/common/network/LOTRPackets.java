@@ -10,6 +10,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCommandHornItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRAnvilMenu;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRBarrelMenu;
 
 /**
  * The port's first networking. Payload types must be registered on BOTH sides
@@ -40,16 +44,16 @@ public final class LOTRPackets {
                 net.minecraft.core.BlockPos pos = payload.pos();
                 if (player.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) > 64.0
                         || !(player.level().getBlockEntity(pos)
-                                instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity sign)
+                                instanceof LOTRCarvedSignBlockEntity sign)
                         || !sign.canBeEditedBy(player)) {
-                    net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod.LOGGER.warn("Player {} just tried to change non-editable LOTR sign",
+                    LOTRMod.LOGGER.warn("Player {} just tried to change non-editable LOTR sign",
                             player.getName().getString());
                     return;
                 }
                 java.util.List<String> lines = new java.util.ArrayList<>();
-                for (int l = 0; l < net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity.NUM_LINES; ++l) {
+                for (int l = 0; l < LOTRCarvedSignBlockEntity.NUM_LINES; ++l) {
                     String line = l < payload.lines().size() ? payload.lines().get(l) : "";
-                    boolean valid = line.length() <= net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity.MAX_LINE_LENGTH
+                    boolean valid = line.length() <= LOTRCarvedSignBlockEntity.MAX_LINE_LENGTH
                             && line.codePoints().allMatch(net.minecraft.util.StringUtil::isAllowedChatCharacter);
                     lines.add(valid ? line : "!?");
                 }
@@ -64,9 +68,16 @@ public final class LOTRPackets {
         ServerPlayNetworking.registerGlobalReceiver(LOTRAnvilRenamePayload.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();
             context.server().execute(() -> {
-                if (player.containerMenu instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRAnvilMenu menu
+                if (player.containerMenu instanceof LOTRAnvilMenu menu
                         && menu.stillValid(player)) {
-                    menu.setItemName(payload.name());
+                    // A blank name clears it; one over 30 characters is ignored
+                    // (the box takes 40, the handler only ever accepted 30).
+                    String rename = payload.name();
+                    if (rename == null || rename.isBlank()) {
+                        menu.setItemName("");
+                    } else if (rename.length() <= 30) {
+                        menu.setItemName(rename);
+                    }
                 }
             });
         });
@@ -94,7 +105,7 @@ public final class LOTRPackets {
         ServerPlayNetworking.registerGlobalReceiver(LOTRBrewingButtonPayload.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();
             context.server().execute(() -> {
-                if (player.containerMenu instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRBarrelMenu menu
+                if (player.containerMenu instanceof LOTRBarrelMenu menu
                         && menu.barrel() != null && menu.stillValid(player)) {
                     menu.barrel().handleBrewingButtonPress();
                 }
@@ -106,7 +117,9 @@ public final class LOTRPackets {
         PayloadTypeRegistry.serverboundPlay()
                 .register(LOTRHornModePayload.TYPE, LOTRHornModePayload.STREAM_CODEC);
 
-        // LOTRGuiHornSelect's choice, applied to whichever hand holds a horn.
+        // LOTRPacketHornSelect and LOTRPacketItemSquadron in one: both acted on
+        // the item in the main hand only, and the mode is only chosen for a
+        // plain horn (item damage 0, now Mode.SELECT).
         ServerPlayNetworking.registerGlobalReceiver(LOTRHornModePayload.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();
             context.server().execute(() -> {
@@ -114,13 +127,12 @@ public final class LOTRPackets {
                 if (payload.mode() < 0 || payload.mode() >= modes.length) {
                     return;
                 }
-                for (InteractionHand hand : InteractionHand.values()) {
-                    ItemStack stack = player.getItemInHand(hand);
-                    if (stack.getItem() instanceof LOTRCommandHornItem) {
+                ItemStack stack = player.getItemInHand(InteractionHand.MAIN_HAND);
+                if (stack.getItem() instanceof LOTRCommandHornItem) {
+                    if (LOTRCommandHornItem.getMode(stack) == LOTRCommandHornItem.Mode.SELECT) {
                         LOTRCommandHornItem.setMode(stack, modes[payload.mode()]);
-                        LOTRCommandHornItem.setSquadron(stack, payload.squadron());
-                        return;
                     }
+                    LOTRCommandHornItem.setSquadron(stack, payload.squadron());
                 }
             });
         });
@@ -131,15 +143,11 @@ public final class LOTRPackets {
             // happen on the server thread. Context.server() hands it over
             // directly -- ServerPlayer.server is private.
             context.server().execute(() -> {
-                // The original checked isPlayerEditing(). Without fellowships
-                // the only thing to guard is that the player is actually at the
-                // block -- LOTRGuiBeacon closed itself past 8 blocks (64 sq).
-                if (player.distanceToSqr(payload.pos().getX() + 0.5,
-                        payload.pos().getY() + 0.5, payload.pos().getZ() + 0.5) > 64.0) {
-                    return;
-                }
+                // LOTRPacketBeaconEdit: only from a player who opened this
+                // beacon's dialog, who is then released (releasePlayer).
                 if (player.level().getBlockEntity(payload.pos())
-                        instanceof LOTRBeaconBlockEntity beacon) {
+                        instanceof LOTRBeaconBlockEntity beacon && beacon.isPlayerEditing(player)) {
+                    beacon.releaseEditingPlayer(player);
                     // StringUtils.isBlank in the original; String.isBlank is
                     // the same test without pulling in commons-lang3.
                     beacon.setBeaconName(blankToNull(payload.beaconName()));

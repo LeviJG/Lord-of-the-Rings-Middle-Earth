@@ -1,9 +1,0 @@
-{
-  "type": "minecraft:smelting",
-  "category": "food",
-  "experience": 0.3,
-  "ingredient": "lotr:red_grapes",
-  "result": {
-    "id": "lotr:raisins"
-  }
-}

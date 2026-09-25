@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
@@ -60,7 +60,7 @@ public class LOTRPebbleEntity extends ThrowableItemProjectile {
 
     @Override
     protected Item getDefaultItem() {
-        return LOTRItems.PEBBLE;
+        return LOTRCombatItems.PEBBLE;
     }
 
     @Override
@@ -107,7 +107,7 @@ public class LOTRPebbleEntity extends ThrowableItemProjectile {
     protected void onHit(HitResult hit) {
         super.onHit(hit);
         if (this.level() instanceof ServerLevel server) {
-            spawnAtLocation(server, new ItemStack(LOTRItems.PEBBLE));
+            spawnAtLocation(server, new ItemStack(LOTRCombatItems.PEBBLE));
             discard();
         }
     }

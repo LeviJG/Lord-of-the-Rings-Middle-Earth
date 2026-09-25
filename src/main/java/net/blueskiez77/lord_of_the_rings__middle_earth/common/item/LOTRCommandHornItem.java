@@ -115,7 +115,7 @@ public class LOTRCommandHornItem extends InstrumentItem {
 
     /** One stack per form, for the creative tab: getSubItems gave all four. */
     public static ItemStack stack(Mode mode) {
-        ItemStack stack = new ItemStack(LOTRItems.COMMAND_HORN);
+        ItemStack stack = new ItemStack(LOTRCombatItems.COMMAND_HORN);
         setMode(stack, mode);
         return stack;
     }

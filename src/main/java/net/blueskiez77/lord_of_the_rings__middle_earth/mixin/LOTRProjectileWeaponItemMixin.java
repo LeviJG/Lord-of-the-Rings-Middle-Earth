@@ -8,6 +8,7 @@ import net.minecraft.world.item.ProjectileWeaponItem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials;
 
 /**
  * getLaunchSpeedFactor: a launcher's damage modifier is a launch speed
@@ -26,6 +27,6 @@ abstract class LOTRProjectileWeaponItemMixin {
     private void lotr$carrySpecials(net.minecraft.world.level.Level level, net.minecraft.world.entity.LivingEntity shooter,
             ItemStack weapon, ItemStack ammo, boolean crit,
             org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable<net.minecraft.world.entity.projectile.Projectile> cir) {
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials.onLaunch(weapon, cir.getReturnValue());
+        LOTRModifierSpecials.onLaunch(weapon, cir.getReturnValue());
     }
 }

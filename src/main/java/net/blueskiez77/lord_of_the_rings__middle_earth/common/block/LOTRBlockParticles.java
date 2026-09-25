@@ -29,7 +29,7 @@ public final class LOTRBlockParticles {
 
     static {
         // LOTRBlockRock, metadata 0: Mordor rock smoulders.
-        EFFECTS.put(LOTRBlocks.MORDOR_ROCK, (level, pos, random) -> {
+        EFFECTS.put(LOTRBuildingBlocks.MORDOR_ROCK, (level, pos, random) -> {
             if (random.nextInt(10) == 0) {
                 level.addParticle(ParticleTypes.SMOKE, pos.getX() + random.nextFloat(), pos.getY() + 1.1,
                         pos.getZ() + random.nextFloat(), 0.0, 0.0, 0.0);
@@ -37,7 +37,7 @@ public final class LOTRBlockParticles {
         });
         // LOTRBlockHearth: a fire on top sends large smoke up to five blocks,
         // stopping at the first solid one.
-        EFFECTS.put(LOTRBlocks.HEARTH, (level, pos, random) -> {
+        EFFECTS.put(LOTRBuildingBlocks.HEARTH, (level, pos, random) -> {
             if (!level.getBlockState(pos.above()).is(BlockTags.FIRE)) {
                 return;
             }
@@ -49,14 +49,14 @@ public final class LOTRBlockParticles {
             }
         });
         // LOTRBlockMorgulTable: two flames over the top every tick.
-        EFFECTS.put(LOTRBlocks.MORGUL_CRAFTING_TABLE, (level, pos, random) -> {
+        EFFECTS.put(LOTRUtilityBlocks.MORGUL_CRAFTING_TABLE, (level, pos, random) -> {
             for (int l = 0; l < 2; l++) {
                 level.addParticle(ParticleTypes.FLAME, pos.getX() + 0.25 + random.nextFloat() * 0.5, pos.getY() + 1.0,
                         pos.getZ() + 0.25 + random.nextFloat() * 0.5, 0.0, 0.0, 0.0);
             }
         });
         // LOTRBlockDolGuldurTable: now and then, a burst of sixteen Morgul sparks.
-        EFFECTS.put(LOTRBlocks.DOL_GULDUR_CRAFTING_TABLE, (level, pos, random) -> {
+        EFFECTS.put(LOTRUtilityBlocks.DOL_GULDUR_CRAFTING_TABLE, (level, pos, random) -> {
             if (random.nextInt(20) == 0) {
                 for (int l = 0; l < 16; l++) {
                     morgulSpark(level, pos.getX(), pos.getY() + 1.0, pos.getZ(), random);
@@ -64,13 +64,13 @@ public final class LOTRBlockParticles {
             }
         });
         // LOTRBlockCorruptMallorn: two Morgul sparks every tick.
-        EFFECTS.put(LOTRBlocks.CORRUPT_MALLORN, (level, pos, random) -> {
+        EFFECTS.put(LOTRDecorationBlocks.CORRUPT_MALLORN, (level, pos, random) -> {
             for (int l = 0; l < 2; l++) {
                 morgulSpark(level, pos.getX(), pos.getY() + 0.5, pos.getZ(), random);
             }
         });
         // LOTRBlockMorgulFlower: one tick in four, Morgul water or white smoke.
-        EFFECTS.put(LOTRBlocks.MORGUL_FLOWER, (level, pos, random) -> {
+        EFFECTS.put(LOTRDecorationBlocks.MORGUL_FLOWER, (level, pos, random) -> {
             if (random.nextInt(4) == 0) {
                 double x = pos.getX() + 0.1 + random.nextFloat() * 0.8;
                 double y = pos.getY() + 0.5 + random.nextFloat() * 0.25;
@@ -80,7 +80,7 @@ public final class LOTRBlockParticles {
             }
         });
         // LOTRBlockQuenditeGrass: blue smoke off the top, one tick in eight.
-        EFFECTS.put(LOTRBlocks.QUENDITE_GRASS, (level, pos, random) -> {
+        EFFECTS.put(LOTRBuildingBlocks.QUENDITE_GRASS, (level, pos, random) -> {
             if (random.nextInt(8) == 0) {
                 level.addParticle(LOTRParticles.QUENDITE_SMOKE, pos.getX() + random.nextFloat(), pos.getY() + 1.0,
                         pos.getZ() + random.nextFloat(), 0.0, 0.0, 0.0);

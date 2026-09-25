@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -23,12 +23,12 @@ public class LOTRExplodingTermiteEntity extends ThrowableItemProjectile {
     }
 
     public LOTRExplodingTermiteEntity(Level level, LivingEntity thrower) {
-        super(LOTREntities.EXPLODING_TERMITE, thrower, level, new ItemStack(LOTRItems.EXPLODING_TERMITE));
+        super(LOTREntities.EXPLODING_TERMITE, thrower, level, new ItemStack(LOTRMiscItems.EXPLODING_TERMITE));
     }
 
     @Override
     protected Item getDefaultItem() {
-        return LOTRItems.EXPLODING_TERMITE;
+        return LOTRMiscItems.EXPLODING_TERMITE;
     }
 
     /** onImpact: an explosion of strength two, which is what makes it "exploding". */

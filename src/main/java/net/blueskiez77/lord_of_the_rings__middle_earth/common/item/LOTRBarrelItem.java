@@ -15,6 +15,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRBarrelBoatEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 /**
  * LOTRItemBarrel: a barrel that remembers what it held.
@@ -23,12 +32,41 @@ import org.jspecify.annotations.Nullable;
  * the {@code lotr:barrel_data} component here. Placing the barrel loads it back
  * in, and the tooltip shows the same subtitle as the barrel's screen.
  *
- * <p>NOT ported: onItemRightClick, which set the barrel on water as a rideable
- * LOTREntityBarrel.
+ * <p>Aimed at still water it sets the barrel afloat to be ridden
+ * (onItemRightClick, LOTRBarrelBoatEntity).
  */
 public class LOTRBarrelItem extends BlockItem implements LOTRTooltipItem {
     public LOTRBarrelItem(Block block, Properties properties) {
         super(block, properties);
+    }
+
+    /**
+     * onItemRightClick: aimed at still water, the barrel goes on it to be
+     * ridden, square to the player's facing and carrying what it held.
+     */
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        BlockHitResult hit = getPlayerPOVHitResult(level, player, ClipContext.Fluid.SOURCE_ONLY);
+        if (hit.getType() != HitResult.Type.BLOCK) {
+            return InteractionResult.PASS;
+        }
+        BlockPos pos = hit.getBlockPos();
+        if (!level.getFluidState(pos).is(FluidTags.WATER) || !level.getFluidState(pos).isSource()) {
+            return InteractionResult.PASS;
+        }
+        LOTRBarrelBoatEntity barrel = new LOTRBarrelBoatEntity(LOTREntities.BARREL, level);
+        barrel.setInitialPos(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
+        barrel.setYRot(((Mth.floor(player.getYRot() * 4.0f / 360.0f + 0.5) & 3) - 1) * 90.0f);
+        if (!level.noCollision(barrel, barrel.getBoundingBox().deflate(0.1))) {
+            return InteractionResult.FAIL;
+        }
+        if (!level.isClientSide()) {
+            barrel.setBarrelItem(stack);
+            level.addFreshEntity(barrel);
+        }
+        stack.consume(1, player);
+        return InteractionResult.SUCCESS;
     }
 
     /** placeBlockAt -> loadBarrelDataToTE. */

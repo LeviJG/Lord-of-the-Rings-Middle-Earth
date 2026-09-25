@@ -8,7 +8,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTREntJarBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTREntDraughtItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
 
 import net.minecraft.core.BlockPos;
@@ -130,25 +130,25 @@ public class LOTREntJarBlock extends Block implements EntityBlock {
      * green, brown, gold, yellow, red, silver -- the draughts' own order.
      */
     private static int draughtFor(ItemStack stack) {
-        if (stack.is(LOTRBlocks.FANGORN_PLANT_GREEN.asItem())) {
+        if (stack.is(LOTRDecorationBlocks.FANGORN_PLANT_GREEN.asItem())) {
             return 0;
         }
-        if (stack.is(LOTRBlocks.FANGORN_PLANT_BROWN.asItem())) {
+        if (stack.is(LOTRDecorationBlocks.FANGORN_PLANT_BROWN.asItem())) {
             return 1;
         }
-        if (stack.is(LOTRBlocks.FANGORN_PLANT_GOLD.asItem())) {
+        if (stack.is(LOTRDecorationBlocks.FANGORN_PLANT_GOLD.asItem())) {
             return 2;
         }
-        if (stack.is(LOTRBlocks.FANGORN_PLANT_YELLOW.asItem())) {
+        if (stack.is(LOTRDecorationBlocks.FANGORN_PLANT_YELLOW.asItem())) {
             return 3;
         }
-        if (stack.is(LOTRBlocks.FANGORN_PLANT_RED.asItem())) {
+        if (stack.is(LOTRDecorationBlocks.FANGORN_PLANT_RED.asItem())) {
             return 4;
         }
-        if (stack.is(LOTRBlocks.FANGORN_PLANT_SILVER.asItem())) {
+        if (stack.is(LOTRDecorationBlocks.FANGORN_PLANT_SILVER.asItem())) {
             return 5;
         }
-        if (stack.is(LOTRBlocks.FANGORN_RIVERWEED.asItem())) {
+        if (stack.is(LOTRDecorationBlocks.FANGORN_RIVERWEED.asItem())) {
             return 6;
         }
         return -1;
@@ -182,7 +182,7 @@ public class LOTREntJarBlock extends Block implements EntityBlock {
         // A jar of draught only gives it up to a bowl.
         if (!jar.holdsWater()) {
             if (stack.is(Items.BOWL)) {
-                ItemStack draught = LOTREntDraughtItem.stack(LOTRItems.ENT_DRAUGHT, jar.getDrinkMeta());
+                ItemStack draught = LOTREntDraughtItem.stack(LOTRFoodItems.ENT_DRAUGHT, jar.getDrinkMeta());
                 if (!level.isClientSide()) {
                     jar.consume();
                 }
@@ -232,7 +232,7 @@ public class LOTREntJarBlock extends Block implements EntityBlock {
                 if (!level.isClientSide()) {
                     jar.consume();
                 }
-                giveOrDrop(player, hand, stack, vessel.fill(new ItemStack(LOTRItems.WATER)));
+                giveOrDrop(player, hand, stack, vessel.fill(new ItemStack(LOTRFoodItems.WATER)));
                 playFill(level, pos, player);
                 return InteractionResult.SUCCESS;
             }
@@ -252,7 +252,7 @@ public class LOTREntJarBlock extends Block implements EntityBlock {
             // Every vessel of water pours one unit in.
             LOTRVessel vessel = LOTRVessel.of(stack);
             if (vessel != null && LOTRVessel.isFullDrink(stack)
-                    && LOTRVessel.equivalentDrink(stack).is(LOTRItems.WATER)) {
+                    && LOTRVessel.equivalentDrink(stack).is(LOTRFoodItems.WATER)) {
                 if (!level.isClientSide()) {
                     jar.fillWithWater();
                 }

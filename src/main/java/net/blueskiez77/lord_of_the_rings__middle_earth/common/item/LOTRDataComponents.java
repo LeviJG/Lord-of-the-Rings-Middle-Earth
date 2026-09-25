@@ -10,6 +10,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 
 /**
  * Item data that 1.7.10 kept in the item damage value.
@@ -39,14 +40,21 @@ public final class LOTRDataComponents {
     public static final DataComponentType<Integer> SMOKE_COLOR = register("smoke_color",
             b -> b.persistent(ExtraCodecs.intRange(0, 16)).networkSynchronized(ByteBufCodecs.VAR_INT));
 
+    /**
+     * LOTRItemLeatherHat's "FeatherColor": the colour of the feather in a hat's
+     * band. Absent for a hat with no feather; white for a plain one.
+     */
+    public static final DataComponentType<Integer> HAT_FEATHER = register("hat_feather",
+            b -> b.persistent(com.mojang.serialization.Codec.INT).networkSynchronized(ByteBufCodecs.INT));
+
     /** LOTRItemModifierTemplate's "ScrollModifier": the modifier a scroll teaches. */
-    public static final DataComponentType<net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier> SCROLL_MODIFIER =
+    public static final DataComponentType<LOTRModifier> SCROLL_MODIFIER =
             register("scroll_modifier", b -> b
                     .persistent(net.minecraft.util.StringRepresentable.fromEnum(
-                            net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier::values))
+                            LOTRModifier::values))
                     .networkSynchronized(ByteBufCodecs.STRING_UTF8.map(
-                            net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier::byName,
-                            net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier::getSerializedName)));
+                            LOTRModifier::byName,
+                            LOTRModifier::getSerializedName)));
 
     /** LOTRItemBarrel's "LOTRBarrelData": a barrel's contents, carried as an item. */
     public static final DataComponentType<net.minecraft.world.item.component.CustomData> BARREL_DATA = register("barrel_data",

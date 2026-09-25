@@ -2,7 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -59,22 +59,22 @@ public class LOTRBerryBushBlock extends Block implements BonemealableBlock {
 
     /** getBerryDrops' switch on the berry type. */
     private Item berry() {
-        if (this == LOTRBlocks.BERRY_BUSH_BLUEBERRY) {
-            return LOTRItems.BLUEBERRIES;
+        if (this == LOTRDecorationBlocks.BERRY_BUSH_BLUEBERRY) {
+            return LOTRFoodItems.BLUEBERRIES;
         }
-        if (this == LOTRBlocks.BERRY_BUSH_BLACKBERRY) {
-            return LOTRItems.BLACKBERRIES;
+        if (this == LOTRDecorationBlocks.BERRY_BUSH_BLACKBERRY) {
+            return LOTRFoodItems.BLACKBERRIES;
         }
-        if (this == LOTRBlocks.BERRY_BUSH_RASPBERRY) {
-            return LOTRItems.RASPBERRIES;
+        if (this == LOTRDecorationBlocks.BERRY_BUSH_RASPBERRY) {
+            return LOTRFoodItems.RASPBERRIES;
         }
-        if (this == LOTRBlocks.BERRY_BUSH_CRANBERRY) {
-            return LOTRItems.CRANBERRIES;
+        if (this == LOTRDecorationBlocks.BERRY_BUSH_CRANBERRY) {
+            return LOTRFoodItems.CRANBERRIES;
         }
-        if (this == LOTRBlocks.BERRY_BUSH_ELDERBERRY) {
-            return LOTRItems.ELDERBERRIES;
+        if (this == LOTRDecorationBlocks.BERRY_BUSH_ELDERBERRY) {
+            return LOTRFoodItems.ELDERBERRIES;
         }
-        return LOTRItems.WILDBERRIES;
+        return LOTRFoodItems.WILDBERRIES;
     }
 
     /** onBlockActivated: whatever is in hand, a ripe bush gives up its berries. */

@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 
 import net.minecraft.world.level.block.Block;
 
@@ -13,17 +13,17 @@ public final class LOTRConnectedBorderTypes {
     private static final Map<Block, LOTRConnectedBorderType> TYPES = new LinkedHashMap<>();
 
     static {
-        register(LOTRBlocks.MITHRIL_BLOCK, LOTRConnectedBorderType.sameBlock("mithril_block"));
+        register(LOTRBuildingBlocks.MITHRIL_BLOCK, LOTRConnectedBorderType.sameBlock("mithril_block"));
 
-        register(LOTRBlocks.DAUB, LOTRConnectedBorderType.sameBlock("daub"));
+        register(LOTRBuildingBlocks.DAUB, LOTRConnectedBorderType.sameBlock("daub"));
         // LOTRBlockCobblebrick connected unconditionally -- it had one subtype.
-        register(LOTRBlocks.DRYSTONE, LOTRConnectedBorderType.sameBlock("drystone"));
+        register(LOTRBuildingBlocks.DRYSTONE, LOTRConnectedBorderType.sameBlock("drystone"));
         // brick metas 8/9/10 -- the trimmed dwarven set. LOTRBlockBrick.getIcon
         // guards on those three metas and no other brick, which is why the plain
         // dwarven brick stays flat.
-        register(LOTRBlocks.DWARVEN_SILVER_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_silver_brick"));
-        register(LOTRBlocks.DWARVEN_GOLD_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_gold_brick"));
-        register(LOTRBlocks.DWARVEN_MITHRIL_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_mithril_brick"));
+        register(LOTRBuildingBlocks.DWARVEN_SILVER_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_silver_brick"));
+        register(LOTRBuildingBlocks.DWARVEN_GOLD_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_gold_brick"));
+        register(LOTRBuildingBlocks.DWARVEN_MITHRIL_BRICK, LOTRConnectedBorderType.sameBlock("dwarven_mithril_brick"));
     }
 
     private LOTRConnectedBorderTypes() {
