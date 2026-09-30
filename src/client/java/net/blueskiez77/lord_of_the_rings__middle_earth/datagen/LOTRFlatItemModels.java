@@ -199,10 +199,13 @@ final class LOTRFlatItemModels {
             LOTRMiscItems.ICE_KEY_SHAFT, LOTRMiscItems.KEY_OF_ICE, LOTRMiscItems.KEY_OF_OBSIDIAN,
             LOTRMiscItems.MECHANISM, LOTRMiscItems.MITHRIL_RING, LOTRMiscItems.MYSTERY_WEB,
             LOTRMiscItems.OBSIDIAN_KEY_HANDLE, LOTRMiscItems.OBSIDIAN_KEY_PIN, LOTRMiscItems.OBSIDIAN_KEY_SHAFT,
-            LOTRMiscItems.RED_BOOK, LOTRMiscItems.RED_DALISH_CRACKER, LOTRMiscItems.SILVER_COIN,
+            LOTRMiscItems.RED_BOOK, LOTRMiscItems.NPC_RESPAWNER, LOTRMiscItems.RED_DALISH_CRACKER, LOTRMiscItems.SILVER_COIN,
             LOTRMiscItems.SILVER_COIN_PILE, LOTRMiscItems.SILVER_COIN_STACK, LOTRMiscItems.SILVER_DALISH_CRACKER,
             LOTRMiscItems.SILVER_RING, LOTRMiscItems.SMOKING_PIPE, LOTRMiscItems.TAURETHRIM_AMULET);
 
+    // The elven daggers and Sting are not here: their models and items/*.json
+    // are hand-written in resources, for the glow near orcs
+    // (LOTRElvenBladeItemModel), which datagen has no way to write.
     private static final List<Item> HANDHELD = List.of(
             // LOTRCombatItems
             LOTRCombatItems.ANGMAR_BATTLEAXE, LOTRCombatItems.ANGMAR_DAGGER, LOTRCombatItems.ANGMAR_WARHAMMER,
@@ -213,12 +216,12 @@ final class LOTRFlatItemModels {
             LOTRCombatItems.BRONZE_DAGGER, LOTRCombatItems.BRONZE_SWORD, LOTRCombatItems.BRONZE_THROWING_AXE,
             LOTRCombatItems.CORSAIR_BATTLEAXE, LOTRCombatItems.CORSAIR_DAGGER, LOTRCombatItems.CORSAIR_EKET,
             LOTRCombatItems.DALE_DAGGER, LOTRCombatItems.DOL_AMROTH_DAGGER, LOTRCombatItems.DOL_GULDUR_BATTLEAXE,
-            LOTRCombatItems.DOL_GULDUR_DAGGER, LOTRCombatItems.DORWINION_ELVEN_DAGGER, LOTRCombatItems.DWARVEN_BATTLEAXE,
+            LOTRCombatItems.DOL_GULDUR_DAGGER, LOTRCombatItems.DWARVEN_BATTLEAXE,
             LOTRCombatItems.DWARVEN_DAGGER, LOTRCombatItems.DWARVEN_SWORD, LOTRCombatItems.DWARVEN_THROWING_AXE,
-            LOTRCombatItems.DWARVEN_WARHAMMER, LOTRCombatItems.GALADHRIM_DAGGER, LOTRCombatItems.GONDOR_DAGGER,
+            LOTRCombatItems.DWARVEN_WARHAMMER, LOTRCombatItems.GONDOR_DAGGER,
             LOTRCombatItems.GONDOR_WARHAMMER, LOTRCombatItems.GUNDABAD_URUK_DAGGER, LOTRCombatItems.HALF_TROLL_DAGGER,
             LOTRCombatItems.HARADRIC_DAGGER, LOTRCombatItems.IRON_BATTLEAXE, LOTRCombatItems.IRON_DAGGER,
-            LOTRCombatItems.IRON_THROWING_AXE, LOTRCombatItems.LINDON_DAGGER, LOTRCombatItems.LOSSARNACH_THROWING_AXE,
+            LOTRCombatItems.IRON_THROWING_AXE, LOTRCombatItems.LOSSARNACH_THROWING_AXE,
             LOTRCombatItems.MALLORN_SWORD, LOTRCombatItems.MITHRIL_BATTLEAXE, LOTRCombatItems.MITHRIL_DAGGER,
             LOTRCombatItems.MITHRIL_WARHAMMER, LOTRCombatItems.MORDOR_BATTLEAXE, LOTRCombatItems.MORDOR_DAGGER,
             LOTRCombatItems.MORDOR_WARHAMMER, LOTRCombatItems.MORGUL_BLADE, LOTRCombatItems.MORWAITH_BATTLEAXE,
@@ -227,24 +230,20 @@ final class LOTRFlatItemModels {
             LOTRCombatItems.POISONED_BARROW_BLADE, LOTRCombatItems.POISONED_BLACK_NUMENOREAN_DAGGER, LOTRCombatItems.POISONED_BLACK_URUK_DAGGER,
             LOTRCombatItems.POISONED_BLUE_DWARVEN_DAGGER, LOTRCombatItems.POISONED_BRONZE_DAGGER, LOTRCombatItems.POISONED_CORSAIR_DAGGER,
             LOTRCombatItems.POISONED_DALE_DAGGER, LOTRCombatItems.POISONED_DOL_AMROTH_DAGGER, LOTRCombatItems.POISONED_DOL_GULDUR_DAGGER,
-            LOTRCombatItems.POISONED_DORWINION_ELVEN_DAGGER, LOTRCombatItems.POISONED_DWARVEN_DAGGER, LOTRCombatItems.POISONED_GALADHRIM_DAGGER,
-            LOTRCombatItems.POISONED_GONDOR_DAGGER, LOTRCombatItems.POISONED_GUNDABAD_URUK_DAGGER, LOTRCombatItems.POISONED_HALF_TROLL_DAGGER,
-            LOTRCombatItems.POISONED_HARADRIC_DAGGER, LOTRCombatItems.POISONED_IRON_DAGGER, LOTRCombatItems.POISONED_LINDON_DAGGER,
-            LOTRCombatItems.POISONED_MITHRIL_DAGGER, LOTRCombatItems.POISONED_MORDOR_DAGGER, LOTRCombatItems.POISONED_MORWAITH_DAGGER,
-            LOTRCombatItems.POISONED_RHUNIC_DAGGER, LOTRCombatItems.POISONED_RIVENDELL_DAGGER, LOTRCombatItems.POISONED_ROHIRRIC_DAGGER,
+            LOTRCombatItems.POISONED_DWARVEN_DAGGER, LOTRCombatItems.POISONED_GONDOR_DAGGER, LOTRCombatItems.POISONED_GUNDABAD_URUK_DAGGER, LOTRCombatItems.POISONED_HALF_TROLL_DAGGER,
+            LOTRCombatItems.POISONED_HARADRIC_DAGGER, LOTRCombatItems.POISONED_IRON_DAGGER, LOTRCombatItems.POISONED_MITHRIL_DAGGER, LOTRCombatItems.POISONED_MORDOR_DAGGER, LOTRCombatItems.POISONED_MORWAITH_DAGGER,
+            LOTRCombatItems.POISONED_RHUNIC_DAGGER, LOTRCombatItems.POISONED_ROHIRRIC_DAGGER,
             LOTRCombatItems.POISONED_TAURETHRIM_DAGGER, LOTRCombatItems.POISONED_UMBARIC_DAGGER, LOTRCombatItems.POISONED_URUK_DAGGER,
-            LOTRCombatItems.POISONED_UTUMNO_DAGGER, LOTRCombatItems.POISONED_WOOD_ELVEN_DAGGER, LOTRCombatItems.RHUNIC_DAGGER,
-            LOTRCombatItems.RIVENDELL_DAGGER, LOTRCombatItems.ROHIRRIC_DAGGER, LOTRCombatItems.ROLLING_PIN,
+            LOTRCombatItems.POISONED_UTUMNO_DAGGER, LOTRCombatItems.RHUNIC_DAGGER,
+            LOTRCombatItems.ROHIRRIC_DAGGER, LOTRCombatItems.ROLLING_PIN,
             LOTRCombatItems.SLING, LOTRCombatItems.TAURETHRIM_DAGGER, LOTRCombatItems.UMBARIC_DAGGER,
-            LOTRCombatItems.URUK_DAGGER, LOTRCombatItems.UTUMNO_DAGGER, LOTRCombatItems.WOOD_ELVEN_DAGGER,
-            // LOTRFoodItems
+            LOTRCombatItems.URUK_DAGGER, LOTRCombatItems.UTUMNO_DAGGER, // LOTRFoodItems
             LOTRFoodItems.SHISH_KEBAB,
             // LOTRMaterialItems
             LOTRMaterialItems.BLACKROOT_STICK, LOTRMaterialItems.DWARF_BONE, LOTRMaterialItems.ELF_BONE,
             LOTRMaterialItems.HOBBIT_BONE, LOTRMaterialItems.MALLORN_STICK, LOTRMaterialItems.ORC_BONE,
             LOTRMaterialItems.TROLL_BONE, LOTRMaterialItems.WARG_BONE,
             // LOTRStoryItems
-            LOTRStoryItems.STING,
             // LOTRToolItems
             LOTRToolItems.ANGMAR_AXE, LOTRToolItems.ANGMAR_HOE, LOTRToolItems.ANGMAR_PICKAXE,
             LOTRToolItems.ANGMAR_SHOVEL, LOTRToolItems.BLUE_DWARVEN_AXE, LOTRToolItems.BLUE_DWARVEN_HOE,
@@ -273,6 +272,13 @@ final class LOTRFlatItemModels {
 
     static void generate(ItemModelGenerators generators) {
         FLAT.forEach(item -> generators.generateFlatItem(item, ModelTemplates.FLAT_ITEM));
+        // The rugs (LOTRItemRugBase's icons, lionRug_lion and so on).
+        for (Item rug : List.of(LOTRItems.LION_RUG, LOTRItems.LIONESS_RUG, LOTRItems.LIGHT_BEAR_RUG,
+                LOTRItems.DARK_BEAR_RUG, LOTRItems.BLACK_BEAR_RUG, LOTRItems.GIRAFFE_RUG,
+                LOTRItems.BROWN_WARGSKIN_RUG, LOTRItems.GREY_WARGSKIN_RUG, LOTRItems.BLACK_WARGSKIN_RUG, LOTRItems.WHITE_WARGSKIN_RUG,
+                LOTRItems.ICE_WARGSKIN_RUG, LOTRItems.OBSIDIAN_WARGSKIN_RUG, LOTRItems.FIRE_WARGSKIN_RUG)) {
+            generators.generateFlatItem(rug, ModelTemplates.FLAT_ITEM);
+        }
         HANDHELD.forEach(item -> generators.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
     }
 }

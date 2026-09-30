@@ -26,3 +26,30 @@ accessible method net/minecraft/core/cauldron/CauldronInteraction$Dispatcher put
 # a falling block with its own landing, and has to set it itself.
 accessible	field	net/minecraft/world/entity/item/FallingBlockEntity	blockState	Lnet/minecraft/world/level/block/state/BlockState;
 mutable	field	net/minecraft/world/entity/item/FallingBlockEntity	blockState	Lnet/minecraft/world/level/block/state/BlockState;
+
+# Horse sets its coat and markings only through a private method. LOTRHorseEntity
+# breeds its own type (LOTREntityHorse.createChild) and has to hand the foal the
+# coat and markings vanilla's Horse.getBreedOffspring would have picked.
+accessible	method	net/minecraft/world/entity/animal/equine/Horse	setVariantAndMarkings	(Lnet/minecraft/world/entity/animal/equine/Variant;Lnet/minecraft/world/entity/animal/equine/Markings;)V
+
+# A hired unit's level-up firework is short-lived: LOTRHiredNPCInfo.spawnLevelUpFireworks
+# rewrote the rocket's LifeTime, which has no setter.
+accessible field net/minecraft/world/entity/projectile/FireworkRocketEntity lifetime I
+
+# The farmhand's farming (LOTREntityAIFarm) needs a stem's fruit block, which
+# the original also took by reflection (LOTRReflection.getStemFruitBlock).
+accessible field net/minecraft/world/level/block/StemBlock fruit Lnet/minecraft/resources/ResourceKey;
+
+# LOTRElvenBladeItemModel (LOTRRenderElvenBlade) draws its glowing layers
+# unshaded and with the glint four times over; it has to reach the layers the
+# glowing model has just added, which ItemStackRenderState keeps private.
+accessible	field	net/minecraft/client/renderer/item/ItemStackRenderState	activeLayerCount	I
+accessible	field	net/minecraft/client/renderer/item/ItemStackRenderState	layers	[Lnet/minecraft/client/renderer/item/ItemStackRenderState$LayerRenderState;
+
+# LOTRLegacyBlocks reads 1.12 block names to numeric ids from the data fixers'
+# own flattening table, to place the original structures' vanilla blocks.
+accessible field net/minecraft/util/datafix/fixes/BlockStateData ID_BY_OLD_NAME Lit/unimi/dsi/fastutil/objects/Object2IntMap;
+# ...and places a torch's wall form, which only its item names.
+accessible field net/minecraft/world/item/StandingAndWallBlockItem wallBlock Lnet/minecraft/world/level/block/Block;
+# The structure spawner's items/*.json tint, by the structure it builds.
+accessible field net/minecraft/client/color/item/ItemTintSources ID_MAPPER Lnet/minecraft/util/ExtraCodecs$LateBoundIdMapper;

@@ -2,7 +2,10 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 import java.util.function.UnaryOperator;
 
+import com.mojang.serialization.Codec;
+
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
@@ -10,7 +13,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 
 /**
  * Item data that 1.7.10 kept in the item damage value.
@@ -39,6 +41,10 @@ public final class LOTRDataComponents {
      */
     public static final DataComponentType<Integer> SMOKE_COLOR = register("smoke_color",
             b -> b.persistent(ExtraCodecs.intRange(0, 16)).networkSynchronized(ByteBufCodecs.VAR_INT));
+
+    /** A structure spawner's damage value: which structure (LOTRStructures) it builds. */
+    public static final DataComponentType<Integer> STRUCTURE_ID = register("structure_id",
+            b -> b.persistent(Codec.INT).networkSynchronized(ByteBufCodecs.VAR_INT));
 
     /**
      * LOTRItemLeatherHat's "FeatherColor": the colour of the feather in a hat's

@@ -1,5 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRBearRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRWargskinRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRWargType;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRLionRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRGiraffeRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.LOTRBearEntity;
+import net.minecraft.world.level.Level;
 import java.util.function.Function;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
@@ -75,6 +84,69 @@ public final class LOTRItems {
             LOTRTrophyType.MALLORN_ENT.itemName(),
             props -> new LOTRBossTrophyItem(LOTRTrophyType.MALLORN_ENT, props),
             new Item.Properties().stacksTo(1));
+
+    // LOTRItemLionRug and LOTRItemBearRug, one item per damage value. Stack
+    // size 1, as LOTRItemRugBase set; the entities come from LOTREntities.
+    public static final Item LION_RUG = register("lion_rug",
+            props -> new LOTRRugItem(props, level -> lionRug(level, LOTRLionRugEntity.RugType.LION)),
+            new Item.Properties().stacksTo(1));
+    public static final Item LIONESS_RUG = register("lioness_rug",
+            props -> new LOTRRugItem(props, level -> lionRug(level, LOTRLionRugEntity.RugType.LIONESS)),
+            new Item.Properties().stacksTo(1));
+    public static final Item LIGHT_BEAR_RUG = register("light_bear_rug",
+            props -> new LOTRRugItem(props, level -> bearRug(level, LOTRBearEntity.BearType.LIGHT)),
+            new Item.Properties().stacksTo(1));
+    public static final Item DARK_BEAR_RUG = register("dark_bear_rug",
+            props -> new LOTRRugItem(props, level -> bearRug(level, LOTRBearEntity.BearType.DARK)),
+            new Item.Properties().stacksTo(1));
+    public static final Item BLACK_BEAR_RUG = register("black_bear_rug",
+            props -> new LOTRRugItem(props, level -> bearRug(level, LOTRBearEntity.BearType.BLACK)),
+            new Item.Properties().stacksTo(1));
+
+    private static LOTRRugEntity lionRug(Level level, LOTRLionRugEntity.RugType type) {
+        LOTRLionRugEntity rug = new LOTRLionRugEntity(LOTREntities.LION_RUG, level);
+        rug.setRugType(type);
+        return rug;
+    }
+
+    private static LOTRRugEntity bearRug(Level level, LOTRBearEntity.BearType type) {
+        LOTRBearRugEntity rug = new LOTRBearRugEntity(LOTREntities.BEAR_RUG, level);
+        rug.setRugType(type);
+        return rug;
+    }
+
+    public static final Item GIRAFFE_RUG = register("giraffe_rug",
+            props -> new LOTRRugItem(props, level -> new LOTRGiraffeRugEntity(LOTREntities.GIRAFFE_RUG, level)),
+            new Item.Properties().stacksTo(1));
+
+    // LOTRItemWargskinRug: one per coat, the Utumno wargs' three with the rest.
+    public static final Item BROWN_WARGSKIN_RUG = register("brown_wargskin_rug",
+            props -> new LOTRRugItem(props, level -> wargRug(level, LOTRWargType.BROWN)),
+            new Item.Properties().stacksTo(1));
+    public static final Item GREY_WARGSKIN_RUG = register("grey_wargskin_rug",
+            props -> new LOTRRugItem(props, level -> wargRug(level, LOTRWargType.GREY)),
+            new Item.Properties().stacksTo(1));
+    public static final Item BLACK_WARGSKIN_RUG = register("black_wargskin_rug",
+            props -> new LOTRRugItem(props, level -> wargRug(level, LOTRWargType.BLACK)),
+            new Item.Properties().stacksTo(1));
+    public static final Item WHITE_WARGSKIN_RUG = register("white_wargskin_rug",
+            props -> new LOTRRugItem(props, level -> wargRug(level, LOTRWargType.WHITE)),
+            new Item.Properties().stacksTo(1));
+    public static final Item ICE_WARGSKIN_RUG = register("ice_wargskin_rug",
+            props -> new LOTRRugItem(props, level -> wargRug(level, LOTRWargType.ICE)),
+            new Item.Properties().stacksTo(1));
+    public static final Item OBSIDIAN_WARGSKIN_RUG = register("obsidian_wargskin_rug",
+            props -> new LOTRRugItem(props, level -> wargRug(level, LOTRWargType.OBSIDIAN)),
+            new Item.Properties().stacksTo(1));
+    public static final Item FIRE_WARGSKIN_RUG = register("fire_wargskin_rug",
+            props -> new LOTRRugItem(props, level -> wargRug(level, LOTRWargType.FIRE)),
+            new Item.Properties().stacksTo(1));
+
+    private static LOTRRugEntity wargRug(Level level, LOTRWargType type) {
+        LOTRWargskinRugEntity rug = new LOTRWargskinRugEntity(LOTREntities.WARGSKIN_RUG, level);
+        rug.setRugType(type);
+        return rug;
+    }
 
     /** The item a given trophy entity gives back when it is knocked down. */
     public static Item trophyItem(LOTRTrophyType type) {
@@ -335,9 +407,59 @@ public final class LOTRItems {
     }
 
     /** setMaxStackSize(1), and vanilla's own barding properties for the rest. */
+    /**
+     * LOTRItemMountArmor for a mount that is not a horse (elk, boar, rhino):
+     * body armour that only that mount may wear. Its armour is the material's
+     * chestplate plus leggings, as damageReduceAmount was; it is drawn by the
+     * mount's renderer from lotr:armor/mount/&lt;mount&gt;_&lt;material&gt;.
+     */
+    @SafeVarargs
+    static Item registerMountArmor(String name, ArmorMaterial material,
+                                   java.util.function.Supplier<net.minecraft.world.entity.EntityType<?>>... mounts) {
+        int defense = material.defense().getOrDefault(net.minecraft.world.item.equipment.ArmorType.CHESTPLATE, 0)
+                + material.defense().getOrDefault(net.minecraft.world.item.equipment.ArmorType.LEGGINGS, 0);
+        Identifier modifierId = Identifier.withDefaultNamespace("armor.body");
+        net.minecraft.world.item.component.ItemAttributeModifiers attributes =
+                net.minecraft.world.item.component.ItemAttributeModifiers.builder()
+                        .add(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR,
+                                new net.minecraft.world.entity.ai.attributes.AttributeModifier(modifierId, defense,
+                                        net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE),
+                                net.minecraft.world.entity.EquipmentSlotGroup.BODY)
+                        .build();
+        return register(name, LOTRModifiableItem::new, new Item.Properties()
+                .stacksTo(1)
+                .attributes(attributes)
+                .component(net.minecraft.core.component.DataComponents.EQUIPPABLE,
+                        net.minecraft.world.item.equipment.Equippable.builder(net.minecraft.world.entity.EquipmentSlot.BODY)
+                                .setEquipSound(net.minecraft.sounds.SoundEvents.HORSE_ARMOR)
+                                .setAllowedEntities(java.util.Arrays.stream(mounts)
+                                        .map(java.util.function.Supplier::get)
+                                        .toArray(net.minecraft.world.entity.EntityType<?>[]::new))
+                                .setDamageOnHurt(false)
+                                .setCanBeSheared(true)
+                                .setShearingSound(net.minecraft.sounds.SoundEvents.HORSE_ARMOR_UNEQUIP)
+                                .build()));
+    }
+
+    /**
+     * LOTRItemMountArmor(material, Mount.HORSE): vanilla's horse armour
+     * properties, but wearable only by the LOTR horses isValid allowed -- the
+     * horse, the Shire pony and the zebra -- and not by vanilla's horses (its
+     * sheets are painted for 1.7.10's horse model, which only the LOTR horses
+     * use).
+     */
     static Item registerHorseArmor(String name, ArmorMaterial material) {
-        return register(name, LOTRModifiableItem::new,
-                new Item.Properties().horseArmor(material));
+        return register(name, LOTRModifiableItem::new, new Item.Properties()
+                .horseArmor(material)
+                .component(net.minecraft.core.component.DataComponents.EQUIPPABLE,
+                        net.minecraft.world.item.equipment.Equippable.builder(net.minecraft.world.entity.EquipmentSlot.BODY)
+                                .setEquipSound(net.minecraft.sounds.SoundEvents.HORSE_ARMOR)
+                                .setAsset(material.assetId())
+                                .setAllowedEntities(LOTREntities.HORSE, LOTREntities.SHIRE_PONY, LOTREntities.ZEBRA)
+                                .setDamageOnHurt(false)
+                                .setCanBeSheared(true)
+                                .setShearingSound(net.minecraft.sounds.SoundEvents.HORSE_ARMOR_UNEQUIP)
+                                .build()));
     }
 
     /**
@@ -436,5 +558,6 @@ public final class LOTRItems {
         LOTRFoodItems.init();
         LOTRMaterialItems.init();
         LOTRStoryItems.init();
+        LOTRSpawnItems.init();
     }
 }

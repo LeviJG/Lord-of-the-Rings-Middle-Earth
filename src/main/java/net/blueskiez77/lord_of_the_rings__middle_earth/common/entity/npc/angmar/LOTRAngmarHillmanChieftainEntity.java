@@ -1,0 +1,85 @@
+package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+
+import org.jspecify.annotations.Nullable;
+
+/**
+ * LOTREntityAngmarHillmanChieftain: a hillman warrior who leads the others,
+ * bare-headed in Angmar armour with an Angmar sword. He seeks no one out --
+ * he only answers attacks. He hires out hillmen, warriors and axe-throwers
+ * (any of them on an Angmar warg, the armed ones' wargs barded three times in
+ * ten) and banner bearers to those at +100 or better.
+ *
+ * <p>NOT ported yet: his warhorn (LOTRInvasions.ANGMAR_HILLMEN, D12) and the
+ * tradeAngmarHillmanChieftain achievement (D7).
+ */
+public class LOTRAngmarHillmanChieftainEntity extends LOTRAngmarHillmanWarriorEntity implements LOTRUnitTradeable {
+
+    public LOTRAngmarHillmanChieftainEntity(EntityType<? extends LOTRAngmarHillmanChieftainEntity> type, Level level) {
+        super(type, level);
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return LOTRAngmarHillmanEntity.createAttributes()
+                .add(Attributes.MAX_HEALTH, 25.0);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        addTargetTasks(false);
+    }
+
+    @Override
+    public LOTRUnitTradeEntries getUnits() {
+        return LOTRUnitTradeEntries.ANGMAR_HILLMAN_CHIEFTAIN;
+    }
+
+    /** canTradeWith: +100 alignment and friendly. */
+    @Override
+    public boolean canTradeWith(Player player) {
+        return LOTRPlayerAlignments.getAlignment(player, getFaction()) >= 100.0f && isFriendly(player);
+    }
+
+    @Override
+    public float getAlignmentBonus() {
+        return 5.0f;
+    }
+
+    @Override
+    public @Nullable String getSpeechBank(Player player) {
+        if (isFriendly(player)) {
+            return canTradeWith(player) ? "angmar/hillmanChieftain/friendly" : "angmar/hillmanChieftain/neutral";
+        }
+        return "angmar/hillman/hostile";
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+                                                  EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
+        this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.ANGMAR_SWORD));
+        this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
+        setItemSlot(EquipmentSlot.FEET, new ItemStack(LOTRCombatItems.ANGMAR_BOOTS));
+        setItemSlot(EquipmentSlot.LEGS, new ItemStack(LOTRCombatItems.ANGMAR_LEGGINGS));
+        setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.ANGMAR_CHESTPLATE));
+        setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+        return data;
+    }
+}

@@ -1,0 +1,22 @@
+{
+  "model": {
+    "type": "minecraft:condition",
+    "property": "lotr:village_structure",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "lotr:item/structure_spawner_village",
+      "tints": [
+        { "type": "lotr:structure_spawner", "layer": 0 },
+        { "type": "lotr:structure_spawner", "layer": 1 }
+      ]
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "lotr:item/structure_spawner",
+      "tints": [
+        { "type": "lotr:structure_spawner", "layer": 0 },
+        { "type": "lotr:structure_spawner", "layer": 1 }
+      ]
+    }
+  }
+}

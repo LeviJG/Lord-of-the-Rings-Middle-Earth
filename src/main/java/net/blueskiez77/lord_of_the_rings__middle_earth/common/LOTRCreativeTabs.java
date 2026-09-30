@@ -1,5 +1,9 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common;
 
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Set;
+
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
@@ -7,21 +11,26 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBl
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCommandHornItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTREntDraughtItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmithsScrollItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmokingPipeItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStructureSpawnerItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTrollStatueItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRWarhornItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructures;
 
 import net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab;
 
@@ -33,12 +42,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 
 // Creative inventory tabs. The 1.7.10 mod had ten tabs (LOTRCreativeTabs: blocks, util, decorations, food, materials, misc, tools, combat, story, spawning). This ports the first of them -- tabBlock, shown as "Middle-earth Blocks" -- faithfully: it holds building materials only, and nothing else. Membership is derived from the original by reading which block classes called setCreativeTab(LOTRCreativeTabs.tabBlock). Forty classes did, and they map onto the family lists in LOTRBlocks: rock and brick cubes, ores and storage blocks, planks, logs, beams, pillars, slabs, stairs, walls, glass, smooth stone, gravels/sands, soils and paths. Deliberately NOT here, because the original put them in other tabs: fences, leaves, saplings, flowers, vines, ladders, torches, chandeliers, panes and treasure piles (tabDeco, ported below); fence gates, doors, crafting tables, chests and beacons (tabUtil); buttons and pressure plates (tabMisc); kebabs, barrels and marzipan (tabFood).
 public final class LOTRCreativeTabs {
@@ -83,6 +86,10 @@ public final class LOTRCreativeTabs {
     public static final ResourceKey<CreativeModeTab> STORY_KEY = ResourceKey.create(
             BuiltInRegistries.CREATIVE_MODE_TAB.key(),
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "09_story"));
+
+    public static final ResourceKey<CreativeModeTab> SPAWNING_KEY = ResourceKey.create(
+            BuiltInRegistries.CREATIVE_MODE_TAB.key(),
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "10_spawning"));
 
     // Blocks that sit in ALL_CUBES for registration convenience but belonged to a different tab in 1.7.10, so they must not appear in this one. The Utumno return portal pieces are a third case: the original never called setCreativeTab on them at all, so they were creative-unobtainable by design.
     // Blocks kept out of BOTH tabs. The bone block duplicates vanilla's, so it
@@ -297,6 +304,24 @@ public final class LOTRCreativeTabs {
                     output.accept(LOTRTrollStatueItem.stack(outfit, false));
                     output.accept(LOTRTrollStatueItem.stack(outfit, true));
                 }
+
+                // --- Rugs -----------------------------------------------
+                // LOTRItemRugBase.getSubItems, in registration order: the
+                // wargskin rug's seven, the lion rug's two, the bear rug's three,
+                // then the giraffe rug.
+                output.accept(LOTRItems.BROWN_WARGSKIN_RUG);
+                output.accept(LOTRItems.GREY_WARGSKIN_RUG);
+                output.accept(LOTRItems.BLACK_WARGSKIN_RUG);
+                output.accept(LOTRItems.WHITE_WARGSKIN_RUG);
+                output.accept(LOTRItems.ICE_WARGSKIN_RUG);
+                output.accept(LOTRItems.OBSIDIAN_WARGSKIN_RUG);
+                output.accept(LOTRItems.FIRE_WARGSKIN_RUG);
+                output.accept(LOTRItems.LION_RUG);
+                output.accept(LOTRItems.LIONESS_RUG);
+                output.accept(LOTRItems.LIGHT_BEAR_RUG);
+                output.accept(LOTRItems.DARK_BEAR_RUG);
+                output.accept(LOTRItems.BLACK_BEAR_RUG);
+                output.accept(LOTRItems.GIRAFFE_RUG);
 
                 // --- Treasure -------------------------------------------
                 // getSubBlocks offered two forms of each hoard, metadata 0 and
@@ -647,6 +672,7 @@ public final class LOTRCreativeTabs {
                 output.accept(LOTRMiscItems.ANCIENT_BOOTS);
                 output.accept(LOTRMiscItems.DWARVEN_MARRIAGE_RING);
                 output.accept(LOTRMiscItems.RED_BOOK);
+                output.accept(LOTRMiscItems.NPC_RESPAWNER);
                 output.accept(LOTRMiscItems.KEY_OF_ICE);
                 output.accept(LOTRMiscItems.KEY_OF_OBSIDIAN);
                 output.accept(LOTRMiscItems.ICE_KEY_HANDLE);
@@ -1299,6 +1325,23 @@ public final class LOTRCreativeTabs {
             })
             .build();
 
+    // tabSpawn: the spawn eggs, then a structure spawner for every structure
+    // not hidden (getSubItems). Its LOTRBlockMobSpawner is left to vanilla's
+    // spawner.
+    public static final CreativeModeTab SPAWNING = FabricCreativeModeTab.builder()
+            // LOTRCreativeTabs.setupIcons: tabSpawn.theIcon = the Ent's egg (id 55).
+            .icon(() -> new ItemStack(LOTRSpawnItems.ENT_SPAWN_EGG))
+            .title(Component.translatable("creativeTab.lotr.spawning"))
+            .displayItems((params, output) -> {
+                LOTRSpawnItems.eggs().forEach(output::accept);
+                for (LOTRStructures.StructureInfo info : LOTRStructures.all()) {
+                    if (!info.isHidden()) {
+                        output.accept(LOTRStructureSpawnerItem.of(info.id()));
+                    }
+                }
+            })
+            .build();
+
     private LOTRCreativeTabs() {
     }
 
@@ -1313,5 +1356,6 @@ public final class LOTRCreativeTabs {
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, TOOLS_KEY, TOOLS);
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, COMBAT_KEY, COMBAT);
         Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, STORY_KEY, STORY);
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, SPAWNING_KEY, SPAWNING);
     }
 }

@@ -148,8 +148,11 @@ public class LOTRBossTrophyEntity extends Entity {
         // The same gravity and friction the stone troll uses, transcribed from
         // the original rather than replaced with applyGravity().
         this.setDeltaMovement(this.getDeltaMovement().subtract(0.0, 0.04, 0.0));
-        this.moveTowardsClosestSpace(this.getX(),
-                (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
+        // func_145771_j only when inside a block (see LOTRStoneTrollEntity.tick).
+        if (!this.level().noCollision(this, this.getBoundingBox().deflate(1.0E-7))) {
+            this.moveTowardsClosestSpace(this.getX(),
+                    (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
+        }
         this.move(MoverType.SELF, this.getDeltaMovement());
 
         float friction = 0.98f;

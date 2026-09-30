@@ -127,6 +127,7 @@ public class LOTROrcBombBlock extends Block {
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5,
                 explosion.getIndirectSourceEntity(), state);
         bomb.setFuseFromExplosion();
+        bomb.droppedByPlayer = true;
         level.addFreshEntity(bomb);
         super.onExplosionHit(state, level, pos, explosion, dropConsumer);
     }
@@ -145,6 +146,7 @@ public class LOTROrcBombBlock extends Block {
         // position. A modern entity stands at its feet, as vanilla TntBlock's does.
         LOTROrcBombEntity bomb = new LOTROrcBombEntity(LOTREntities.ORC_BOMB, level,
                 pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, igniter, state);
+        bomb.droppedByPlayer = true;
         level.addFreshEntity(bomb);
         level.playSound(null, bomb.getX(), bomb.getY(), bomb.getZ(),
                 SoundEvents.TNT_PRIMED, SoundSource.BLOCKS, 1.0f, 1.0f);

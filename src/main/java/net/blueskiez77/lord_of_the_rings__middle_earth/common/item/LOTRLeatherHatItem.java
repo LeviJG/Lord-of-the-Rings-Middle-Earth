@@ -24,6 +24,19 @@ public class LOTRLeatherHatItem extends Item implements LOTRTooltipItem {
         super(properties);
     }
 
+    /** setHatColor: the hat dyed this colour. */
+    public static ItemStack setHatColor(ItemStack stack, int color) {
+        stack.set(net.minecraft.core.component.DataComponents.DYED_COLOR,
+                new net.minecraft.world.item.component.DyedItemColor(color));
+        return stack;
+    }
+
+    /** setFeatherColor: a feather in the hat, this colour. */
+    public static ItemStack setFeatherColor(ItemStack stack, int color) {
+        stack.set(LOTRDataComponents.HAT_FEATHER, color);
+        return stack;
+    }
+
     public static boolean hasFeather(ItemStack stack) {
         return stack.has(LOTRDataComponents.HAT_FEATHER);
     }

@@ -1,19 +1,107 @@
 new_id,kind,name
+angmar_banner_bearer_spawn_egg,item,Angmar Banner Bearer Spawn Egg
+angmar_hillman_axe_thrower_spawn_egg,item,Rhudaur Hillman Axe-thrower Spawn Egg
+angmar_hillman_banner_bearer_spawn_egg,item,Rhudaur Hillman Banner Bearer Spawn Egg
+angmar_hillman_chieftain_spawn_egg,item,Rhudaur Hillman Chieftain Spawn Egg
+angmar_hillman_spawn_egg,item,Rhudaur Hillman Spawn Egg
+angmar_hillman_warrior_spawn_egg,item,Rhudaur Hillman Warrior Spawn Egg
+angmar_orc_archer_spawn_egg,item,Angmar Orc Archer Spawn Egg
+angmar_orc_bombardier_spawn_egg,item,Angmar Orc Bombardier Spawn Egg
+angmar_orc_mercenary_captain_spawn_egg,item,Angmar Orc Chieftain Spawn Egg
+angmar_orc_spawn_egg,item,Angmar Orc Spawn Egg
+angmar_orc_trader_spawn_egg,item,Angmar Orc Trader Spawn Egg
 angmar_wall_banner,block,Banner of Angmar
+angmar_warg_bombardier_spawn_egg,item,Angmar Warg Bombardier Spawn Egg
+angmar_warg_spawn_egg,item,Angmar Warg Spawn Egg
 anorien_wall_banner,block,Banner of Anórien
 anvil,block,LOTR Anvil
+aurochs_spawn_egg,item,Aurochs Spawn Egg
+bear_spawn_egg,item,Bear Spawn Egg
+bird_spawn_egg,item,Bird Spawn Egg
+black_bear_rug,item,Bearskin Rug
+black_uruk_archer_spawn_egg,item,Black Uruk Archer Spawn Egg
+black_uruk_banner_bearer_spawn_egg,item,Black Uruk Banner Bearer Spawn Egg
+black_uruk_captain_spawn_egg,item,Black Uruk Captain Spawn Egg
+black_uruk_spawn_egg,item,Black Uruk Spawn Egg
 black_uruk_wall_banner,block,Banner of the Black Uruks
+black_wargskin_rug,item,Wargskin Rug
+blackroot_archer_spawn_egg,item,Blackroot Vale Bowman Spawn Egg
+blackroot_banner_bearer_spawn_egg,item,Blackroot Vale Banner Bearer Spawn Egg
+blackroot_captain_spawn_egg,item,Blackroot Vale Bowlord Spawn Egg
+blackroot_soldier_spawn_egg,item,Blackroot Vale Soldier Spawn Egg
 blackroot_vale_wall_banner,block,Banner of Blackroot Vale
 blue_dalish_cracker,item,Dalish Cracker
+blue_dwarf_axe_thrower_spawn_egg,item,Blue Mountains Axe-thrower Spawn Egg
+blue_dwarf_banner_bearer_spawn_egg,item,Blue Mountains Banner Bearer Spawn Egg
+blue_dwarf_commander_spawn_egg,item,Blue Mountains Commander Spawn Egg
+blue_dwarf_merchant_spawn_egg,item,Blue Mountains Merchant Spawn Egg
+blue_dwarf_miner_spawn_egg,item,Blue Mountains Miner Spawn Egg
+blue_dwarf_smith_spawn_egg,item,Blue Mountains Smith Spawn Egg
+blue_dwarf_spawn_egg,item,Blue Mountains Dwarf Spawn Egg
+blue_dwarf_warrior_spawn_egg,item,Blue Mountains Warrior Spawn Egg
 blue_mountains_wall_banner,block,Banner of the Blue Mountains
+bree_baker_spawn_egg,item,Bree-land Baker Spawn Egg
+bree_banner_bearer_spawn_egg,item,Bree-land Banner Bearer Spawn Egg
+bree_blacksmith_spawn_egg,item,Bree-land Blacksmith Spawn Egg
+bree_brewer_spawn_egg,item,Bree-land Brewer Spawn Egg
+bree_butcher_spawn_egg,item,Bree-land Butcher Spawn Egg
+bree_captain_spawn_egg,item,Bree-land Sherriff Spawn Egg
+bree_farmer_spawn_egg,item,Bree-land Farmer Spawn Egg
+bree_farmhand_spawn_egg,item,Bree-land Farmhand Spawn Egg
+bree_florist_spawn_egg,item,Bree-land Florist Spawn Egg
+bree_guard_spawn_egg,item,Bree-land Guard Spawn Egg
+bree_hobbit_baker_spawn_egg,item,Bree-hobbit Baker Spawn Egg
+bree_hobbit_brewer_spawn_egg,item,Bree-hobbit Brewer Spawn Egg
+bree_hobbit_butcher_spawn_egg,item,Bree-hobbit Butcher Spawn Egg
+bree_hobbit_florist_spawn_egg,item,Bree-hobbit Florist Spawn Egg
+bree_hobbit_innkeeper_spawn_egg,item,Bree-hobbit Innkeeper Spawn Egg
+bree_hobbit_spawn_egg,item,Bree-hobbit Spawn Egg
+bree_innkeeper_spawn_egg,item,Bree-land Innkeeper Spawn Egg
+bree_lumberman_spawn_egg,item,Bree-land Lumberman Spawn Egg
+bree_man_spawn_egg,item,Bree-Man Spawn Egg
+bree_mason_spawn_egg,item,Bree-land Stonemason Spawn Egg
 bree_wall_banner,block,Banner of Bree-land
+butterfly_spawn_egg,item,Butterfly Spawn Egg
+camel_spawn_egg,item,Camel Spawn Egg
 carved_numenorean_brick,block,Carved Númenórean Brick
 command_horn,item,Horn of Command
 command_horn[sound],item,Horn of Command
+corsair_captain_spawn_egg,item,Corsair Captain Spawn Egg
+corsair_slaver_spawn_egg,item,Corsair Slaver Spawn Egg
+corsair_spawn_egg,item,Corsair of Umbar Spawn Egg
 cracker[empty],item,Unsealed %s
+crebain_spawn_egg,item,Crebain Spawn Egg
+crocodile_spawn_egg,item,Crocodile Spawn Egg
 dale_wall_banner,block,Banner of Dale
+dark_bear_rug,item,Bearskin Rug
+desert_scorpion_spawn_egg,item,Desert Scorpion Spawn Egg
+dik_dik_spawn_egg,item,Dik-dik Spawn Egg
+dol_amroth_archer_spawn_egg,item,Dol Amroth Archer Spawn Egg
+dol_amroth_banner_bearer_spawn_egg,item,Dol Amroth Banner Bearer Spawn Egg
+dol_amroth_captain_spawn_egg,item,Dol Amroth Captain Spawn Egg
+dol_amroth_soldier_spawn_egg,item,Dol Amroth Man-at-arms Spawn Egg
 dol_amroth_wall_banner,block,Banner of Dol Amroth
+dol_guldur_banner_bearer_spawn_egg,item,Dol Guldur Banner Bearer Spawn Egg
+dol_guldur_orc_archer_spawn_egg,item,Dol Guldur Orc Archer Spawn Egg
+dol_guldur_orc_chieftain_spawn_egg,item,Dol Guldur Orc Chieftain Spawn Egg
+dol_guldur_orc_spawn_egg,item,Dol Guldur Orc Spawn Egg
+dol_guldur_orc_trader_spawn_egg,item,Dol Guldur Orc Trader Spawn Egg
 dol_guldur_wall_banner,block,Banner of Dol Guldur
+dorwinion_banner_bearer_spawn_egg,item,Dorwinion Banner Bearer Spawn Egg
+dorwinion_captain_spawn_egg,item,Vintner Guard Captain Spawn Egg
+dorwinion_crossbower_spawn_egg,item,Vintner Guard Crossbower Spawn Egg
+dorwinion_elf_archer_spawn_egg,item,Archer of Bladorthin Spawn Egg
+dorwinion_elf_banner_bearer_spawn_egg,item,Dorwinion Elf Banner Bearer Spawn Egg
+dorwinion_elf_captain_spawn_egg,item,Captain of Bladorthin Spawn Egg
+dorwinion_elf_spawn_egg,item,Dorwinion Elf Spawn Egg
+dorwinion_elf_vintner_spawn_egg,item,Dorwinion Vintner-elf Spawn Egg
+dorwinion_elf_warrior_spawn_egg,item,Warrior of Bladorthin Spawn Egg
+dorwinion_guard_spawn_egg,item,Vintner Guard Spawn Egg
+dorwinion_man_spawn_egg,item,Dorwinman Spawn Egg
+dorwinion_merchant_elf_spawn_egg,item,Dorwinion Elf Merchant Spawn Egg
+dorwinion_merchant_man_spawn_egg,item,Dorwinion Merchant Spawn Egg
+dorwinion_vinehand_spawn_egg,item,Dorwinion Vinehand Spawn Egg
+dorwinion_vinekeeper_spawn_egg,item,Dorwinion Vinekeeper Spawn Egg
 dorwinion_wall_banner,block,Banner of Dorwinion
 double_strength_orc_bomb,block,Orc Bomb
 double_strength_orc_fire_bomb,block,Orc Bomb
@@ -29,7 +117,23 @@ drystone_slab,block,Drystone Slab
 drystone_stairs,block,Drystone Stairs
 drystone_wall,block,Drystone Wall
 dunland_wall_banner,block,Banner of Dunland
+dunlending_archer_spawn_egg,item,Dunlending Bowman Spawn Egg
+dunlending_axe_thrower_spawn_egg,item,Dunlending Axe-thrower Spawn Egg
+dunlending_banner_bearer_spawn_egg,item,Dunlending Banner Bearer Spawn Egg
+dunlending_bartender_spawn_egg,item,Dunlending Bartender Spawn Egg
+dunlending_berserker_spawn_egg,item,Dunlending Berserker Spawn Egg
+dunlending_spawn_egg,item,Dunlending Spawn Egg
+dunlending_warlord_spawn_egg,item,Dunlending Warlord Spawn Egg
+dunlending_warrior_spawn_egg,item,Dunlending Warrior Spawn Egg
 durin_wall_banner,block,Banner of Durin's Folk
+dwarf_axe_thrower_spawn_egg,item,Dwarf Axe-thrower Spawn Egg
+dwarf_banner_bearer_spawn_egg,item,Dwarf Banner Bearer Spawn Egg
+dwarf_commander_spawn_egg,item,Dwarf Commander Spawn Egg
+dwarf_miner_spawn_egg,item,Dwarf Miner Spawn Egg
+dwarf_smith_spawn_egg,item,Dwarven Smith Spawn Egg
+dwarf_spawn_egg,item,Dwarf Spawn Egg
+dwarf_warrior_spawn_egg,item,Dwarf Warrior Spawn Egg
+elk_spawn_egg,item,Elk Spawn Egg
 ent_draught,item,Ent-draught
 esgaroth_wall_banner,block,Banner of Esgaroth
 fallen_acacia_leaves,item,
@@ -75,29 +179,121 @@ fallen_redwood_leaves,item,
 fallen_shire_pine_leaves,item,
 fallen_spruce_leaves,item,
 fallen_willow_leaves,item,
+fire_wargskin_rug,item,Wargskin Rug
+flamingo_spawn_egg,item,Flamingo Spawn Egg
+galadhrim_banner_bearer_spawn_egg,item,Galadhrim Banner Bearer Spawn Egg
+galadhrim_elf_spawn_egg,item,Galadhrim Elf Spawn Egg
+galadhrim_lord_spawn_egg,item,Galadhrim Lord Spawn Egg
+galadhrim_smith_spawn_egg,item,Galadhrim Smith Spawn Egg
+galadhrim_trader_spawn_egg,item,Galadhrim Wanderer Spawn Egg
+galadhrim_warden_spawn_egg,item,Galadhrim Warden Spawn Egg
+galadhrim_warrior_spawn_egg,item,Galadhrim Warrior Spawn Egg
+gemsbok_spawn_egg,item,Gemsbok Spawn Egg
+giraffe_spawn_egg,item,Giraffe Spawn Egg
 gold_dalish_cracker,item,Dalish Cracker
+gondor_archer_spawn_egg,item,Gondor Archer Spawn Egg
+gondor_baker_spawn_egg,item,Gondor Baker Spawn Egg
+gondor_banner_bearer_spawn_egg,item,Gondor Banner Bearer Spawn Egg
+gondor_bartender_spawn_egg,item,Gondor Bartender Spawn Egg
+gondor_blacksmith_spawn_egg,item,Gondor Blacksmith Spawn Egg
+gondor_brewer_spawn_egg,item,Gondor Brewer Spawn Egg
+gondor_butcher_spawn_egg,item,Gondor Butcher Spawn Egg
+gondor_farmer_spawn_egg,item,Gondor Farmer Spawn Egg
+gondor_farmhand_spawn_egg,item,Gondor Farmhand Spawn Egg
+gondor_fishmonger_spawn_egg,item,Gondor Fishmonger Spawn Egg
+gondor_florist_spawn_egg,item,Gondor Florist Spawn Egg
+gondor_greengrocer_spawn_egg,item,Gondor Greengrocer Spawn Egg
+gondor_levyman_spawn_egg,item,Gondor Levyman Spawn Egg
+gondor_lumberman_spawn_egg,item,Gondor Lumberman Spawn Egg
+gondor_man_spawn_egg,item,Gondorian Spawn Egg
+gondor_mason_spawn_egg,item,Gondor Stonemason Spawn Egg
+gondor_renegade_spawn_egg,item,Gondorian Renegade Spawn Egg
+gondor_soldier_spawn_egg,item,Gondor Soldier Spawn Egg
 gondor_steward_wall_banner,block,Banner of the Stewards of Gondor
+gondor_tower_guard_spawn_egg,item,Gondor Tower Guard Spawn Egg
 gondor_wall_banner,block,Banner of Gondor
+gondorian_captain_spawn_egg,item,Gondorian Captain Spawn Egg
 goran_rock,block,Cargoran
+gorcrow_spawn_egg,item,Gorcrow Spawn Egg
 green_dalish_cracker,item,Dalish Cracker
+grey_wargskin_rug,item,Wargskin Rug
 gulduril_mordor_ore,block,Gulduril Mordor Ore
+gundabad_banner_bearer_spawn_egg,item,Gundabad Banner Bearer Spawn Egg
+gundabad_orc_archer_spawn_egg,item,Gundabad Orc Archer Spawn Egg
+gundabad_orc_mercenary_captain_spawn_egg,item,Gundabad Orc Chieftain Spawn Egg
+gundabad_orc_spawn_egg,item,Gundabad Orc Spawn Egg
+gundabad_orc_trader_spawn_egg,item,Gundabad Orc Scrounger Spawn Egg
+gundabad_uruk_archer_spawn_egg,item,Gundabad Uruk Archer Spawn Egg
+gundabad_uruk_spawn_egg,item,Gundabad Uruk Spawn Egg
 gundabad_wall_banner,block,Banner of Gundabad
+gundabad_warg_spawn_egg,item,Gundabad Warg Spawn Egg
 half_troll_wall_banner,block,Banner of the Half-trolls
 harad_gulf_wall_banner,block,Banner of the Gulf of Harad
 harad_nomad_wall_banner,block,Banner of the Southron Nomads
+harad_slave_spawn_egg,item,Slave of Harad Spawn Egg
+harnedhrim_spawn_egg,item,Harnedhrim Spawn Egg
+harnedor_archer_spawn_egg,item,Harnennor Archer Spawn Egg
+harnedor_baker_spawn_egg,item,Harnennor Baker Spawn Egg
+harnedor_banner_bearer_spawn_egg,item,Harnennor Banner Bearer Spawn Egg
+harnedor_bartender_spawn_egg,item,Harnennor Bartender Spawn Egg
+harnedor_blacksmith_spawn_egg,item,Harnennor Bronzesmith Spawn Egg
+harnedor_brewer_spawn_egg,item,Harnennor Brewer Spawn Egg
+harnedor_butcher_spawn_egg,item,Harnennor Butcher Spawn Egg
+harnedor_farmer_spawn_egg,item,Harnennor Farmer Spawn Egg
+harnedor_farmhand_spawn_egg,item,Harnennor Farmhand Spawn Egg
+harnedor_fishmonger_spawn_egg,item,Harnennor Fishmonger Spawn Egg
+harnedor_hunter_spawn_egg,item,Harnennor Huntsman Spawn Egg
+harnedor_lumberman_spawn_egg,item,Harnennor Lumberman Spawn Egg
+harnedor_mason_spawn_egg,item,Harnennor Stonemason Spawn Egg
+harnedor_miner_spawn_egg,item,Harnennor Miner Spawn Egg
+harnedor_warlord_spawn_egg,item,Harnennor Warlord Spawn Egg
+harnedor_warrior_spawn_egg,item,Harnennor Warrior Spawn Egg
 hat[dyed],item,Dyed
 hat[feathered],item,Feathered
+high_elf_banner_bearer_spawn_egg,item,Lindon Banner Bearer Spawn Egg
+high_elf_lord_spawn_egg,item,Lindon Lord Spawn Egg
+high_elf_smith_spawn_egg,item,Lindon Smith Spawn Egg
+high_elf_spawn_egg,item,Lindon Elf Spawn Egg
 high_elf_wall_banner,block,Banner of Lindon
+high_elf_warrior_spawn_egg,item,Lindon Warrior Spawn Egg
 high_elven_wall_torch,block,High Elven Wall Torch
+hobbit_bartender_spawn_egg,item,Hobbit Bartender Spawn Egg
+hobbit_bounder_spawn_egg,item,Hobbit Bounder Spawn Egg
+hobbit_farmer_spawn_egg,item,Hobbit Farmer Spawn Egg
+hobbit_farmhand_spawn_egg,item,Hobbit Farmhand Spawn Egg
+hobbit_orcharder_spawn_egg,item,Hobbit Orcharder Spawn Egg
+hobbit_shirriff_spawn_egg,item,Hobbit Shirriff Spawn Egg
+hobbit_spawn_egg,item,Hobbit Spawn Egg
 hobbit_wall_banner,block,Banner of the Hobbits
+horse_spawn_egg,item,Horse Spawn Egg
+ice_wargskin_rug,item,Wargskin Rug
+iron_hills_merchant_spawn_egg,item,Iron Hills Merchant Spawn Egg
+isengard_snaga_archer_spawn_egg,item,Isengard Snaga Archer Spawn Egg
+isengard_snaga_spawn_egg,item,Isengard Snaga Spawn Egg
 isengard_wall_banner,block,Banner of Isengard
 ithilien_wall_banner,block,Banner of Ithilien
 ivy,block,Ivy
+jungle_scorpion_spawn_egg,item,Jungle Scorpion Spawn Egg
 kebab_stand[cooked],block,Cooked
 kebab_stand[meats],block,%d meat
 khamuls_fire_jar[warning],block,Extremely volatile
+kine_of_araw_spawn_egg,item,Kine of Araw Spawn Egg
+lamedon_archer_spawn_egg,item,Lamedon Archer Spawn Egg
+lamedon_banner_bearer_spawn_egg,item,Lamedon Banner Bearer Spawn Egg
+lamedon_captain_spawn_egg,item,Lamedon Captain Spawn Egg
+lamedon_hillman_spawn_egg,item,Lamedon Hillman Spawn Egg
+lamedon_soldier_spawn_egg,item,Lamedon Warrior Spawn Egg
 lamedon_wall_banner,block,Banner of Lamedon
+lebennin_banner_bearer_spawn_egg,item,Lebennin Banner Bearer Spawn Egg
+lebennin_captain_spawn_egg,item,Lebennin Levymaster Spawn Egg
+lebennin_levyman_spawn_egg,item,Lebennin Levyman Spawn Egg
 lebennin_wall_banner,block,Banner of Lebennin
+lion_spawn_egg,item,Lion Spawn Egg
+lioness_rug,item,Lionskin Rug
+lioness_spawn_egg,item,Lioness Spawn Egg
+lossarnach_axeman_spawn_egg,item,Lossarnach Axeman Spawn Egg
+lossarnach_banner_bearer_spawn_egg,item,Lossarnach Banner Bearer Spawn Egg
+lossarnach_captain_spawn_egg,item,Lossarnach Captain Spawn Egg
 lossarnach_wall_banner,block,Banner of Lossarnach
 lothlorien_wall_banner,block,Banner of Lothlórien
 mallorn_blue_wall_torch,block,Mallorn Blue Wall Torch
@@ -105,33 +301,105 @@ mallorn_gold_wall_torch,block,Mallorn Gold Wall Torch
 mallorn_green_wall_torch,block,Mallorn Green Wall Torch
 mallorn_wall_torch,block,Mallorn Wall Torch
 mechanised_rail,block,Mechanised Rail
+midges_spawn_egg,item,Midges Spawn Egg
+minas_morgul_banner_bearer_spawn_egg,item,Minas Morgul Banner Bearer Spawn Egg
 minas_morgul_wall_banner,block,Banner of Minas Morgul
+mirkwood_spider_spawn_egg,item,Mirkwood Spider Spawn Egg
 mirkwood_wall_banner,block,Banner of the Woodland Realm
+mordor_banner_bearer_spawn_egg,item,Mordor Banner Bearer Spawn Egg
 mordor_moss_rock,block,Mossy Mordor Rock
+mordor_orc_archer_spawn_egg,item,Mordor Orc Archer Spawn Egg
+mordor_orc_bombardier_spawn_egg,item,Mordor Orc Bombardier Spawn Egg
+mordor_orc_mercenary_captain_spawn_egg,item,Mordor Orc Commander Spawn Egg
+mordor_orc_spawn_egg,item,Mordor Orc Spawn Egg
+mordor_orc_spider_keeper_spawn_egg,item,Mordor Spider Keeper Spawn Egg
+mordor_orc_trader_spawn_egg,item,Mordor Orc Trader Spawn Egg
+mordor_spider_spawn_egg,item,Mordor Spider Spawn Egg
 mordor_wall_banner,block,Banner of Mordor
+mordor_warg_bombardier_spawn_egg,item,Mordor Warg Bombardier Spawn Egg
+mordor_warg_spawn_egg,item,Mordor Warg Spawn Egg
 moredain_wall_banner,block,Banner of the Morwaith
 morgul_iron_mordor_ore,block,Morgul Iron Mordor Ore
 morgul_wall_torch,block,Morgul Wall Torch
+nan_ungol_banner_bearer_spawn_egg,item,Nan Ungol Banner Bearer Spawn Egg
 nan_ungol_wall_banner,block,Banner of Nan Ungol
+near_harad_banner_bearer_spawn_egg,item,Coast Southron Banner Bearer Spawn Egg
+near_harad_blacksmith_spawn_egg,item,Coast Southron Blacksmith Spawn Egg
+near_harad_merchant_spawn_egg,item,Merchant of Harad Spawn Egg
 near_harad_wall_banner,block,Banner of Near Harad
+near_haradrim_archer_spawn_egg,item,Coast Southron Archer Spawn Egg
+near_haradrim_spawn_egg,item,Coast Southron Spawn Egg
+near_haradrim_warlord_spawn_egg,item,Coast Southron Warlord Spawn Egg
+near_haradrim_warrior_spawn_egg,item,Coast Southron Warrior Spawn Egg
 obsidian_key_handle,item,Key Handle
 obsidian_key_pin,item,Key Pin
 obsidian_key_shaft,item,Key Shaft
+obsidian_wargskin_rug,item,Wargskin Rug
 orc_bomb[double_strength],block,Double Strength
 orc_bomb[fire],block,Fire
 orc_bomb[triple_strength],block,Triple Strength
 orc_fire_bomb,block,Orc Bomb
+pelargir_banner_bearer_spawn_egg,item,Pelargir Banner Bearer Spawn Egg
+pelargir_captain_spawn_egg,item,Pelargir Commander Spawn Egg
+pelargir_marine_spawn_egg,item,Pelargir Marine Spawn Egg
 pelargir_wall_banner,block,Banner of Pelargir
+pinnath_gelin_banner_bearer_spawn_egg,item,Pinnath Gelin Banner Bearer Spawn Egg
+pinnath_gelin_captain_spawn_egg,item,Pinnath Gelin Captain Spawn Egg
+pinnath_gelin_soldier_spawn_egg,item,Pinnath Gelin Soldier Spawn Egg
 pinnath_gelin_wall_banner,block,Banner of Pinnath Gelin
 ranger_wall_banner,block,Banner of the Dúnedain of the North
 red_ivy,block,Red Ivy
+rhino_spawn_egg,item,Rhino Spawn Egg
 rhudaur_wall_banner,block,Banner of the Rhudaur Hillmen
 rhun_wall_banner,block,Banner of Rhúdel
+rivendell_banner_bearer_spawn_egg,item,Rivendell Banner Bearer Spawn Egg
+rivendell_elf_spawn_egg,item,Rivendell Elf Spawn Egg
+rivendell_lord_spawn_egg,item,Rivendell Captain Spawn Egg
+rivendell_smith_spawn_egg,item,Rivendell Smith Spawn Egg
+rivendell_trader_spawn_egg,item,Rivendell Wanderer Spawn Egg
 rivendell_wall_banner,block,Banner of Rivendell
+rivendell_warrior_spawn_egg,item,Rivendell Warrior Spawn Egg
+rohan_baker_spawn_egg,item,Rohirrim Baker Spawn Egg
+rohan_banner_bearer_spawn_egg,item,Rohan Banner Bearer Spawn Egg
+rohan_blacksmith_spawn_egg,item,Rohirrim Blacksmith Spawn Egg
+rohan_brewer_spawn_egg,item,Rohirrim Brewer Spawn Egg
+rohan_builder_spawn_egg,item,Rohirrim Builder Spawn Egg
+rohan_butcher_spawn_egg,item,Rohirrim Butcher Spawn Egg
+rohan_farmer_spawn_egg,item,Rohirrim Farmer Spawn Egg
+rohan_farmhand_spawn_egg,item,Rohirrim Farmhand Spawn Egg
+rohan_fishmonger_spawn_egg,item,Rohirrim Fishmonger Spawn Egg
+rohan_lumberman_spawn_egg,item,Rohirrim Lumberman Spawn Egg
+rohan_man_spawn_egg,item,Rohirrim Spawn Egg
+rohan_meadhost_spawn_egg,item,Rohirrim Meadhost Spawn Egg
+rohan_orcharder_spawn_egg,item,Rohirrim Orcharder Spawn Egg
+rohan_shieldmaiden_spawn_egg,item,Shieldmaiden of Rohan Spawn Egg
+rohan_stablemaster_spawn_egg,item,Rohirrim Stablemaster Spawn Egg
 rohan_wall_banner,block,Banner of Rohan
+rohirrim_archer_spawn_egg,item,Rohirrim Bowman Spawn Egg
+rohirrim_marshal_spawn_egg,item,Rohirrim Marshal Spawn Egg
+rohirrim_warrior_spawn_egg,item,Rohirrim Warrior Spawn Egg
+ruffian_brute_spawn_egg,item,Ruffian Brute Spawn Egg
+ruffian_spy_spawn_egg,item,Ruffian Spy Spawn Egg
+seagull_spawn_egg,item,Seagull Spawn Egg
+shire_pony_spawn_egg,item,Shire Pony Spawn Egg
 silver_dalish_cracker,item,Dalish Cracker
 smiths_scroll,item,Smith's Scroll
+southron_baker_spawn_egg,item,Coast Southron Baker Spawn Egg
+southron_bartender_spawn_egg,item,Coast Southron Bartender Spawn Egg
+southron_brewer_spawn_egg,item,Coast Southron Brewer Spawn Egg
+southron_butcher_spawn_egg,item,Coast Southron Butcher Spawn Egg
+southron_champion_spawn_egg,item,Southron Champion Spawn Egg
+southron_farmer_spawn_egg,item,Coast Southron Farmer Spawn Egg
+southron_fishmonger_spawn_egg,item,Coast Southron Fishmonger Spawn Egg
+southron_florist_spawn_egg,item,Coast Southron Florist Spawn Egg
+southron_goldsmith_spawn_egg,item,Coast Southron Goldsmith Spawn Egg
+southron_lumberman_spawn_egg,item,Coast Southron Lumberman Spawn Egg
+southron_mason_spawn_egg,item,Coast Southron Stonemason Spawn Egg
+southron_miner_spawn_egg,item,Coast Southron Miner Spawn Egg
+swan_knight_spawn_egg,item,Swan Knight Spawn Egg
+swan_spawn_egg,item,Swan Spawn Egg
 tauredain_wall_banner,block,Banner of the Taurethrim
+termite_spawn_egg,item,Exploding Termite Spawn Egg
 treasure_copper_carpet,item,Copper Treasure Pile
 treasure_gold_carpet,item,Gold Treasure Pile
 treasure_silver_carpet,item,Silver Treasure Pile
@@ -139,5 +407,42 @@ triple_strength_orc_bomb,block,Orc Bomb
 triple_strength_orc_fire_bomb,block,Orc Bomb
 troll_statue,item,
 troll_statue[two_heads],item,Two-headed
+umbar_archer_spawn_egg,item,Umbar Archer Spawn Egg
+umbar_baker_spawn_egg,item,Umbar Baker Spawn Egg
+umbar_banner_bearer_spawn_egg,item,Umbar Banner Bearer Spawn Egg
+umbar_bartender_spawn_egg,item,Umbar Bartender Spawn Egg
+umbar_blacksmith_spawn_egg,item,Umbar Blacksmith Spawn Egg
+umbar_brewer_spawn_egg,item,Umbar Brewer Spawn Egg
+umbar_butcher_spawn_egg,item,Umbar Butcher Spawn Egg
+umbar_captain_spawn_egg,item,Umbar Captain Spawn Egg
+umbar_farmer_spawn_egg,item,Umbar Farmer Spawn Egg
+umbar_fishmonger_spawn_egg,item,Umbar Fishmonger Spawn Egg
+umbar_florist_spawn_egg,item,Umbar Florist Spawn Egg
+umbar_goldsmith_spawn_egg,item,Umbar Goldsmith Spawn Egg
+umbar_lumberman_spawn_egg,item,Umbar Lumberman Spawn Egg
+umbar_mason_spawn_egg,item,Umbar Stonemason Spawn Egg
+umbar_miner_spawn_egg,item,Umbar Miner Spawn Egg
 umbar_wall_banner,block,Banner of Umbar
+umbar_warrior_spawn_egg,item,Umbar Soldier Spawn Egg
+umbarian_spawn_egg,item,Umbarian Spawn Egg
+uruk_hai_banner_bearer_spawn_egg,item,Uruk Banner Bearer Spawn Egg
+uruk_hai_berserker_spawn_egg,item,Uruk Berserker Spawn Egg
+uruk_hai_crossbower_spawn_egg,item,Uruk Crossbower Spawn Egg
+uruk_hai_mercenary_captain_spawn_egg,item,Uruk Chieftain Spawn Egg
+uruk_hai_sapper_spawn_egg,item,Uruk Sapper Spawn Egg
+uruk_hai_spawn_egg,item,Uruk Spawn Egg
+uruk_hai_trader_spawn_egg,item,Uruk Trader Spawn Egg
+uruk_warg_bombardier_spawn_egg,item,Isengard Warg Bombardier Spawn Egg
+uruk_warg_spawn_egg,item,Isengard Warg Spawn Egg
+white_oryx_spawn_egg,item,White Oryx Spawn Egg
+white_wargskin_rug,item,Wargskin Rug
+wicked_dwarf_spawn_egg,item,Wicked Dwarf Spawn Egg
+wild_boar_spawn_egg,item,Wild Boar Spawn Egg
+wood_elf_banner_bearer_spawn_egg,item,Wood-elf Banner Bearer Spawn Egg
+wood_elf_captain_spawn_egg,item,Wood-elf Captain Spawn Egg
+wood_elf_scout_spawn_egg,item,Wood-elf Scout Spawn Egg
+wood_elf_smith_spawn_egg,item,Wood-elven Smith Spawn Egg
+wood_elf_spawn_egg,item,Wood-elf Spawn Egg
+wood_elf_warrior_spawn_egg,item,Wood-elf Warrior Spawn Egg
 wood_elven_wall_torch,block,Wood Elven Wall Torch
+zebra_spawn_egg,item,Zebra Spawn Egg

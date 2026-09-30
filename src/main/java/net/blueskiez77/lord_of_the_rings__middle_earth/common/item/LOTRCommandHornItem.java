@@ -3,12 +3,15 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import java.util.function.Consumer;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredNPCInfo;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -16,6 +19,7 @@ import net.minecraft.world.item.InstrumentItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.EntityTypeTest;
 
 /**
  * LOTRItemCommandHorn: the horn a captain uses to order his hired units about.
@@ -34,12 +38,8 @@ import net.minecraft.world.level.Level;
  * ready swap after each blow, exactly as the original did, so one horn toggles a
  * squadron between held and moving.
  *
- * <p>WHAT IT DOES NOT DO, and cannot yet: give the order. onEaten walked the
- * loaded entities for LOTREntityNPCs hired by the blower whose squadron matched
- * the horn's, and called halt, ready or tryTeleportToHiringPlayer on each. There
- * are no NPCs in the port, so {@link #command} is where that goes and is empty.
- * The horn sounds, names itself, remembers its squadron and toggles; it commands
- * nobody.
+ * <p>Blown, it gives its order to the player's hired units of its squadron
+ * ({@link #command}).
  */
 public class LOTRCommandHornItem extends InstrumentItem {
 
@@ -163,15 +163,27 @@ public class LOTRCommandHornItem extends InstrumentItem {
     }
 
     /**
-     * Where the order goes when there is anybody to take it.
-     *
-     * <p>The original: every loaded LOTREntityNPC hired by this player whose
-     * squadron matches the horn's, then halt(), ready() or
-     * tryTeleportToHiringPlayer(true) by form -- and halt and ready were further
-     * gated on getObeyHornHaltReady, summon on getObeyHornSummon. All of that
-     * waits on the NPCs.
+     * onEaten: every hired unit of this player, anywhere loaded, whose
+     * squadron matches the horn's -- halted, readied or summoned to the
+     * player, if it is a warrior not on guard.
      */
     private static void command(Level level, Player player, ItemStack stack) {
-        // Intentionally empty. See the class note.
+        if (!(level instanceof ServerLevel server)) {
+            return;
+        }
+        Mode mode = getMode(stack);
+        String squadron = getSquadron(stack);
+        for (LOTRNPCEntity npc : server.getEntities(EntityTypeTest.forClass(LOTRNPCEntity.class),
+                npc -> npc.hiredNPCInfo.isActive && npc.hiredNPCInfo.getHiringPlayer() == player
+                        && npc.hiredNPCInfo.isSquadronCompatible(squadron))) {
+            LOTRHiredNPCInfo hired = npc.hiredNPCInfo;
+            if (mode == Mode.HALT && hired.getObeyHornHaltReady()) {
+                hired.halt();
+            } else if (mode == Mode.READY && hired.getObeyHornHaltReady()) {
+                hired.ready();
+            } else if (mode == Mode.SUMMON && hired.getObeyHornSummon()) {
+                hired.tryTeleportToHiringPlayer(true);
+            }
+        }
     }
 }

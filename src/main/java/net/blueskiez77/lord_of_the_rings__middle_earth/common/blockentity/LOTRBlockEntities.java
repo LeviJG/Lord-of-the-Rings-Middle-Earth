@@ -21,6 +21,7 @@ public final class LOTRBlockEntities {
     public static BlockEntityType<LOTRHobbitOvenBlockEntity> HOBBIT_OVEN;
     public static BlockEntityType<LOTRDwarvenDoorBlockEntity> DWARVEN_DOOR;
     public static BlockEntityType<LOTREntJarBlockEntity> ENT_JAR;
+    public static BlockEntityType<LOTRCorruptMallornBlockEntity> CORRUPT_MALLORN;
     public static BlockEntityType<LOTRTrollTotemBlockEntity> TROLL_TOTEM;
     public static BlockEntityType<LOTRTableOfCommandBlockEntity> TABLE_OF_COMMAND;
     public static BlockEntityType<LOTRUnsmelteryBlockEntity> UNSMELTERY;
@@ -107,6 +108,11 @@ public final class LOTRBlockEntities {
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "ent_jar"),
                 new BlockEntityType<>(LOTREntJarBlockEntity::new,
                         Set.of(LOTRUtilityBlocks.ENT_JAR)));
+
+        CORRUPT_MALLORN = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "corrupt_mallorn"),
+                new BlockEntityType<>(LOTRCorruptMallornBlockEntity::new,
+                        Set.of(LOTRDecorationBlocks.CORRUPT_MALLORN)));
 
         // All three parts carry one: the renderer needs a block entity on each
         // to draw from, even though only the head thinks.

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnItems;
 import java.util.ArrayList;
 import net.minecraft.client.renderer.block.dispatch.Variant;
 import java.util.List;
@@ -714,6 +716,26 @@ public class LOTRModelProvider extends FabricModelProvider {
         generators.generateFlatItem(LOTRItems.PIPEWEED, ModelTemplates.FLAT_ITEM);
         LOTRFlatItemModels.generate(generators);
         LOTRBlocks.ALL_FALLEN_LEAVES.forEach(block -> fallenLeavesItem(generators, block));
+        spawnEggs(generators);
+    }
+
+    /**
+     * LOTRItemSpawnEgg drew vanilla's two-pass spawn egg, the egg and its spots
+     * tinted with the creature's two colours. One shared model of 1.7.10's
+     * egg and spots textures; each egg tints it with constant colours.
+     */
+    private static void spawnEggs(ItemModelGenerators generators) {
+        Identifier model = ModelTemplates.TWO_LAYERED_ITEM.create(
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "item/spawn_egg"),
+                TextureMapping.layered(
+                        new Material(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "item/spawn_egg")),
+                        new Material(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "item/spawn_egg_overlay"))),
+                generators.modelOutput);
+        for (LOTRSpawnEggItem egg : LOTRSpawnItems.eggs()) {
+            generators.itemModelOutput.accept(egg, ItemModelUtils.tintedModel(model,
+                    ItemModelUtils.constantTint(0xFF000000 | egg.primaryColour()),
+                    ItemModelUtils.constantTint(0xFF000000 | egg.secondaryColour())));
+        }
     }
 
     @Override

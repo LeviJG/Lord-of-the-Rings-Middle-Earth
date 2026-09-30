@@ -26,17 +26,12 @@ tile.lotr,tile.lotr.fenceVanilla.2.name,Birch Fence
 tile.lotr,tile.lotr.fenceVanilla.3.name,Jungle Fence
 tile.lotr,tile.lotr.fenceVanilla.4.name,Acacia Fence
 tile.lotr,tile.lotr.fenceVanilla.5.name,Dark Oak Fence
-tile.lotr,tile.lotr.fallenLeaves,Fallen %s
 item.lotr,item.lotr.crossbow.loaded,%s (Loaded)
 item.lotr,item.lotr.crossbow.loadedItem,Loaded with: %s
-item.lotr,item.lotr.hat.dyed,Dyed
-item.lotr,item.lotr.hat.feathered,Feathered
 item.lotr,item.lotr.pouch.slots,%d of %d slots in use
-item.lotr,item.lotr.pouch.dyed,Dyed
 item.lotr,item.lotr.banner.protect,Carries protection data
 item.lotr,item.lotr.banner.toggleRepossess,%s-click while placing to keep banner's previous owner
 item.lotr,item.lotr.redBook.activeQuests,%d active quests
-item.lotr,item.lotr.haradRobes.dyed,Dyed
 item.lotr,item.lotr.haradRobes.ornament,Ornament
 item.lotr,item.lotr.brandingIron.unnamed,Unnamed %s
 item.lotr,item.lotr.generic.stolen,§c§lSTOLEN§r§c from: %s!
@@ -52,22 +47,6 @@ lotr.weaponstat,lotr.weaponstat.rangedDamage,Ranged Damage: %d%%
 lotr.weaponstat,lotr.weaponstat.range,Range: %d%%
 lotr.weaponstat,lotr.weaponstat.poison,Inflicts poison
 lotr.weaponstat,lotr.weaponstat.protection,Common Protection: +%d (%d%%)
-lotr.enchant,lotr.enchant.baneElf,Elfbane
-lotr.enchant,lotr.enchant.baneElf.desc,%s melee damage vs. Elves
-lotr.enchant,lotr.enchant.baneElf.earn,"Your %s has claimed the lives of many Elves, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneElf.earnName,"%s's %s has claimed the lives of many Elves, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneOrc,Orcbane
-lotr.enchant,lotr.enchant.baneOrc.desc,%s melee damage vs. Orcs
-lotr.enchant,lotr.enchant.baneOrc.earn,"Your %s has claimed the lives of many Orcs, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneOrc.earnName,"%s's %s has claimed the lives of many Orcs, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneDwarf,Dwarfbane
-lotr.enchant,lotr.enchant.baneDwarf.desc,%s melee damage vs. Dwarves
-lotr.enchant,lotr.enchant.baneDwarf.earn,"Your %s has claimed the lives of many Dwarves, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneDwarf.earnName,"%s's %s has claimed the lives of many Dwarves, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneWarg,Wargbane
-lotr.enchant,lotr.enchant.baneWarg.desc,%s melee damage vs. Wargs
-lotr.enchant,lotr.enchant.baneWarg.earn,"Your %s has claimed the lives of many Wargs, and it shall be their bane evermore!"
-lotr.enchant,lotr.enchant.baneWarg.earnName,"%s's %s has claimed the lives of many Wargs, and it shall be their bane evermore!"
 lotr.enchant,lotr.enchant.baneTroll,Trollbane
 lotr.enchant,lotr.enchant.baneTroll.desc,%s melee damage vs. Trolls
 lotr.enchant,lotr.enchant.baneTroll.earn,"Your %s has claimed the lives of many Trolls, and it shall be their bane evermore!"
@@ -409,7 +388,6 @@ lotr.title,lotr.title.MULTI_freePeoples,Free Peoples
 lotr.title,lotr.title.MULTI_elf,Elf
 lotr.title,lotr.title.MULTI_orc,Orc
 lotr.title,lotr.title.MULTI_goblin,Goblin
-lotr.title,lotr.title.MULTI_dwarf,Dwarf
 lotr.title,lotr.title.MULTI_dunedain,Dúnedain
 lotr.title,lotr.title.MULTI_moria,Moria
 lotr.title,lotr.title.MULTI_easterling,Easterling
@@ -426,8 +404,6 @@ lotr.title,lotr.title.MULTI_sunlands,Sunlands
 lotr.title,lotr.title.MULTI_swerting,Swerting
 lotr.title,lotr.title.MULTI_sutherland,Sutherland
 lotr.title,lotr.title.MULTI_rhudaur,Rhudaur
-lotr.title,lotr.title.MULTI_wickedDwarf,Wicked Dwarf
-lotr.title,lotr.title.HOBBIT_hobbit,Hobbit
 lotr.title,lotr.title.HOBBIT_halfling,Halfling
 lotr.title,lotr.title.HOBBIT_shire,The Shire
 lotr.title,lotr.title.HOBBIT_hobbiton,Hobbiton
@@ -446,7 +422,6 @@ lotr.title,lotr.title.BREE_bree,Bree
 lotr.title,lotr.title.BREE_staddle,Staddle
 lotr.title,lotr.title.BREE_combe,Combe
 lotr.title,lotr.title.BREE_archet,Archet
-lotr.title,lotr.title.BREE_hobbit,Bree-hobbit
 lotr.title,lotr.title.BREE_chetwood,Chetwood
 lotr.title,lotr.title.RANGER_northDunedain,Northern Dúnedain
 lotr.title,lotr.title.RANGER_arnor,Arnor
@@ -465,21 +440,16 @@ lotr.title,lotr.title.HIGH_ELF_eregion,Eregion
 lotr.title,lotr.title.HIGH_ELF_forlindon,Forlindon
 lotr.title,lotr.title.HIGH_ELF_harlindon,Harlindon
 lotr.title,lotr.title.HIGH_ELF_imladris,Imladris
-lotr.title,lotr.title.GUNDABAD_gundabadOrc,Gundabad Orc
 lotr.title,lotr.title.GUNDABAD_moriaOrc,Moria Orc
 lotr.title,lotr.title.GUNDABAD_goblinTown,Goblin-town
 lotr.title,lotr.title.GUNDABAD_mountGundabad,Mount Gundabad
 lotr.title,lotr.title.GUNDABAD_mountGram,Mount Gram
-lotr.title,lotr.title.GUNDABAD_gundabadUruk,Gundabad Uruk
-lotr.title,lotr.title.ANGMAR_angmarOrc,Angmar Orc
 lotr.title,lotr.title.ANGMAR_troll,Troll
 lotr.title,lotr.title.ANGMAR_carnDum,Carn Dûm
 lotr.title,lotr.title.ANGMAR_hillman,Hillman
 lotr.title,lotr.title.ANGMAR_rhudaur,Rhudaur
 lotr.title,lotr.title.ANGMAR_ettenmoors,Ettenmoors
 lotr.title,lotr.title.ANGMAR_coldfells,Coldfells
-lotr.title,lotr.title.WOOD_ELF_woodElf,Wood-elf
-lotr.title,lotr.title.DOL_GULDUR_dolGuldurOrc,Dol Guldur Orc
 lotr.title,lotr.title.DOL_GULDUR_necromancer,Necromancer
 lotr.title,lotr.title.DOL_GULDUR_sorcerer,Sorcerer
 lotr.title,lotr.title.DOL_GULDUR_spiderRider,Spider Rider
@@ -492,15 +462,12 @@ lotr.title,lotr.title.DWARF_erebor,Erebor
 lotr.title,lotr.title.DWARF_khazadDum,Khazad-dûm
 lotr.title,lotr.title.GALADHRIM_galadhrim,Galadhrim
 lotr.title,lotr.title.GALADHRIM_carasGaladhon,Caras Galadhon
-lotr.title,lotr.title.DUNLAND_dunlending,Dunlending
 lotr.title,lotr.title.DUNLAND_wildman,Wildman
 lotr.title,lotr.title.DUNLAND_barbarian,Barbarian
 lotr.title,lotr.title.DUNLAND_adorn,Adorning
-lotr.title,lotr.title.URUK_uruk,Uruk
 lotr.title,lotr.title.URUK_urukHai,Uruk-hai
 lotr.title,lotr.title.URUK_whiteHand,White Hand
 lotr.title,lotr.title.FANGORN_ent,Ent
-lotr.title,lotr.title.ROHAN_rohirrim,Rohirrim
 lotr.title,lotr.title.ROHAN_eorlingas,Eorling
 lotr.title,lotr.title.ROHAN_strawhead,Strawhead
 lotr.title,lotr.title.ROHAN_edoras,Edoras
@@ -514,9 +481,7 @@ lotr.title,lotr.title.ROHAN_eastemnet,Eastemnet
 lotr.title,lotr.title.ROHAN_wold,The Wold
 lotr.title,lotr.title.ROHAN_shieldmaiden,Shieldmaiden
 lotr.title,lotr.title.ROHAN_horselord,Horse-lord
-lotr.title,lotr.title.GONDOR_gondorian,Gondorian
 lotr.title,lotr.title.GONDOR_southDunedain,Southern Dúnedain
-lotr.title,lotr.title.GONDOR_swanKnight,Swan Knight
 lotr.title,lotr.title.GONDOR_ithilien,Ithilien
 lotr.title,lotr.title.GONDOR_ithilienRanger,Ithilien Ranger
 lotr.title,lotr.title.GONDOR_minasTirith,Minas Tirith
@@ -534,8 +499,6 @@ lotr.title,lotr.title.GONDOR_calembel,Calembel
 lotr.title,lotr.title.GONDOR_ethring,Ethring
 lotr.title,lotr.title.GONDOR_erech,Erech
 lotr.title,lotr.title.GONDOR_ethirAnduin,Ethir Anduin
-lotr.title,lotr.title.MORDOR_mordorOrc,Mordor Orc
-lotr.title,lotr.title.MORDOR_blackUruk,Black Uruk
 lotr.title,lotr.title.MORDOR_nurn,Nurn
 lotr.title,lotr.title.MORDOR_baradDur,Barad-dûr
 lotr.title,lotr.title.MORDOR_morannon,Morannon
@@ -543,8 +506,6 @@ lotr.title,lotr.title.MORDOR_minasMorgul,Minas Morgul
 lotr.title,lotr.title.MORDOR_cirithUngol,Cirith Ungol
 lotr.title,lotr.title.MORDOR_blackNumenorean,Black Númenórean
 lotr.title,lotr.title.DORWINION_vintner,Vintner
-lotr.title,lotr.title.DORWINION_dorwinrim,Dorwinman
-lotr.title,lotr.title.DORWINION_dorwinionElf,Dorwinion Elf
 lotr.title,lotr.title.DORWINION_bladorthin,Order of Bladorthin
 lotr.title,lotr.title.DORWINION_wineTaster,Wine Taster
 lotr.title,lotr.title.RHUN_rhunaer,Rhúnaer
@@ -562,9 +523,6 @@ lotr.title,lotr.title.NEAR_HARAD_khopakadar,Khôpakadar
 lotr.title,lotr.title.NEAR_HARAD_yaphu,Yaphurushi
 lotr.title,lotr.title.NEAR_HARAD_serpent,Serpent
 lotr.title,lotr.title.NEAR_HARAD_gulfing,Gulfing
-lotr.title,lotr.title.NEAR_HARAD_coastling,Coast Southron
-lotr.title,lotr.title.MOREDAIN_lion,Lion
-lotr.title,lotr.title.MOREDAIN_lioness,Lioness
 lotr.title,lotr.title.HALF_TROLL_halfTroll,Half-troll
 lotr.title,lotr.title.HALF_TROLL_pertorogwaith,Perdorogwaith
 lotr.title,lotr.title.trollSlayer,Master Trollslayer
@@ -849,204 +807,47 @@ lotr.hiredNPC,lotr.hiredNPC.status.ready,Ready
 lotr.hiredNPC,lotr.hiredNPC.status.guard,Guarding
 lotr.hiredNPC,lotr.hiredNPC.status.farming,Farming
 lotr.hiredNPC,lotr.hiredNPC.status.following,Following
-lotr.hiredNPC,lotr.hiredNPC.death,Your hired unit %s
-lotr.hiredNPC,lotr.hiredNPC.desert,Your hired unit %s has deserted
-lotr.hiredNPC,lotr.hiredNPC.dismiss,Your hired unit %s was relieved of duty
 lotr.hiredNPC,lotr.hiredNPC.trollStone,Your hired unit %s has turned to stone
-lotr.hiredNPC,lotr.hiredNPC.levelUp,Your hired unit %s has reached combat level %d
 lotr.hiredNPC,lotr.hiredNPC.commandReq,Command requires:
 lotr.hiredNPC,lotr.hiredNPC.commandReq.align,%s alignment with %s
 lotr.hiredNPC,lotr.hiredNPC.commandReq.pledge.FACTION,Pledged to %s
 lotr.hiredNPC,lotr.hiredNPC.commandReq.pledge.ANY_ELF,Pledged to any Elven faction
 lotr.hiredNPC,lotr.hiredNPC.commandReq.pledge.ANY_DWARF,Pledged to any Dwarven faction
-entity.lotr,entity.lotr.generic.entityName,"%s, the %s"
-entity.lotr,entity.lotr.GondorMan.entityName,%s of Gondor
-entity.lotr,entity.lotr.RohanMan.entityName,%s of the Rohirrim
 entity.lotr,entity.lotr.Dunedain.entityName,%s of the Dúnedain
 entity.lotr,entity.lotr.Moredain.entityName,%s of the Morwaith
 entity.lotr,entity.lotr.Tauredain.entityName,%s of the Taurethrim
 entity.lotr,entity.lotr.DaleMan.entityName,%s of Dale
-entity.lotr,entity.lotr.DorwinionMan.entityName,%s of Dorwinion
-entity.lotr,entity.lotr.Harnedhrim.entityName,%s of Harnennor
-entity.lotr,entity.lotr.Umbarian.entityName,%s of Umbar
-entity.lotr,entity.lotr.HobbitBartender.locationName,%s's Tavern
-entity.lotr,entity.lotr.DunlendingBartender.locationName,%s's Tavern
-entity.lotr,entity.lotr.RohanMeadhost.locationName,%s's Hall
 entity.lotr,entity.lotr.DaleBaker.locationName,%s's Bakery
-entity.lotr,entity.lotr.GondorBartender.locationName,%s's Tavern
-entity.lotr,entity.lotr.EasterlingBartender.locationName,%s's Tavern
-entity.lotr,entity.lotr.HarnedorBartender.locationName,%s's Tavern
-entity.lotr,entity.lotr.SouthronBartender.locationName,%s's Tavern
-entity.lotr,entity.lotr.UmbarBartender.locationName,%s's Tavern
-entity.lotr,entity.lotr.GulfBartender.locationName,%s's Tavern
-entity.lotr,entity.lotr.BreeInnkeeper.locationName,%s's Inn
-entity.lotr,entity.lotr.BreeHobbitInnkeeper.locationName,%s's Inn
-entity.lotr,entity.lotr.Horse.name,Horse
-entity.lotr,entity.lotr.Hobbit.name,Hobbit
-entity.lotr,entity.lotr.MordorOrc.name,Mordor Orc
-entity.lotr,entity.lotr.ShirePony.name,Shire Pony
-entity.lotr,entity.lotr.MordorWarg.name,Mordor Warg
-entity.lotr,entity.lotr.GondorMan.name,Gondorian
-entity.lotr,entity.lotr.GaladhrimElf.name,Galadhrim Elf
-entity.lotr,entity.lotr.HobbitBartender.name,Hobbit Bartender
-entity.lotr,entity.lotr.RohanMan.name,Rohirrim
-entity.lotr,entity.lotr.GaladhrimWarrior.name,Galadhrim Warrior
-entity.lotr,entity.lotr.MordorOrcBombardier.name,Mordor Orc Bombardier
-entity.lotr,entity.lotr.MordorOrcTrader.name,Mordor Orc Trader
-entity.lotr,entity.lotr.MordorOrcArcher.name,Mordor Orc Archer
 entity.lotr,entity.lotr.GondorRuinsWraith.name,Gondor Ruins Wraith
-entity.lotr,entity.lotr.GondorBlacksmith.name,Gondor Blacksmith
-entity.lotr,entity.lotr.GaladhrimTrader.name,Galadhrim Wanderer
-entity.lotr,entity.lotr.Dwarf.name,Dwarf
-entity.lotr,entity.lotr.DwarfWarrior.name,Dwarf Warrior
-entity.lotr,entity.lotr.DwarfMiner.name,Dwarf Miner
 entity.lotr,entity.lotr.MarshWraith.name,Marsh Wraith
-entity.lotr,entity.lotr.MordorWargBombardier.name,Mordor Warg Bombardier
-entity.lotr,entity.lotr.MordorOrcMercenaryCaptain.name,Mordor Orc Commander
-entity.lotr,entity.lotr.GondorianCaptain.name,Gondorian Captain
-entity.lotr,entity.lotr.DwarfCommander.name,Dwarf Commander
-entity.lotr,entity.lotr.DwarfAxeThrower.name,Dwarf Axe-thrower
-entity.lotr,entity.lotr.GondorArcher.name,Gondor Archer
-entity.lotr,entity.lotr.UrukHai.name,Uruk
-entity.lotr,entity.lotr.UrukHaiCrossbower.name,Uruk Crossbower
-entity.lotr,entity.lotr.UrukHaiBerserker.name,Uruk Berserker
-entity.lotr,entity.lotr.UrukHaiTrader.name,Uruk Trader
-entity.lotr,entity.lotr.UrukHaiMercenaryCaptain.name,Uruk Chieftain
 entity.lotr,entity.lotr.Troll.name,Troll
 entity.lotr,entity.lotr.OlogHai.name,Olog-hai
-entity.lotr,entity.lotr.GaladhrimLord.name,Galadhrim Lord
-entity.lotr,entity.lotr.UrukHaiSapper.name,Uruk Sapper
-entity.lotr,entity.lotr.MirkwoodSpider.name,Mirkwood Spider
-entity.lotr,entity.lotr.WoodElf.name,Wood-elf
-entity.lotr,entity.lotr.WoodElfScout.name,Wood-elf Scout
 entity.lotr,entity.lotr.RohanBarrowWraith.name,Rohan Barrow Wraith
-entity.lotr,entity.lotr.Rohirrim.name,Rohirrim Warrior
-entity.lotr,entity.lotr.RohirrimArcher.name,Rohirrim Bowman
-entity.lotr,entity.lotr.RohirrimMarshal.name,Rohirrim Marshal
-entity.lotr,entity.lotr.HobbitShirriff.name,Hobbit Bounder
-entity.lotr,entity.lotr.HobbitShirriffChief.name,Hobbit Shirriff
-entity.lotr,entity.lotr.RohanBlacksmith.name,Rohirrim Blacksmith
 entity.lotr,entity.lotr.RangerIthilien.name,Ranger of Ithilien
-entity.lotr,entity.lotr.DunlendingArcher.name,Dunlending Bowman
-entity.lotr,entity.lotr.Dunlending.name,Dunlending
-entity.lotr,entity.lotr.DunlendingBartender.name,Dunlending Bartender
-entity.lotr,entity.lotr.RohanShieldmaiden.name,Shieldmaiden of Rohan
 entity.lotr,entity.lotr.Ent.name,Ent
 entity.lotr,entity.lotr.MountainTroll.name,Hill-troll
 entity.lotr,entity.lotr.MountainTrollChieftain.name,Hill-troll Chieftain
 entity.lotr,entity.lotr.Huorn.name,Huorn
 entity.lotr,entity.lotr.DarkHuorn.name,Dark Huorn
-entity.lotr,entity.lotr.WoodElfWarrior.name,Wood-elf Warrior
-entity.lotr,entity.lotr.WoodElfCaptain.name,Wood-elf Captain
-entity.lotr,entity.lotr.RohanMeadhost.name,Rohirrim Meadhost
-entity.lotr,entity.lotr.Butterfly.name,Butterfly
-entity.lotr,entity.lotr.Midges.name,Midges
-entity.lotr,entity.lotr.AngmarOrcMercenaryCaptain.name,Angmar Orc Chieftain
 entity.lotr,entity.lotr.Dunedain.name,Dúnedain
 entity.lotr,entity.lotr.NurnSlave.name,Slave of Nurn
 entity.lotr,entity.lotr.Rabbit.name,Rabbit
-entity.lotr,entity.lotr.Boar.name,Wild Boar
-entity.lotr,entity.lotr.HobbitOrcharder.name,Hobbit Orcharder
 entity.lotr,entity.lotr.MordorOrcSlaver.name,Mordor Slaver
-entity.lotr,entity.lotr.MordorSpider.name,Mordor Spider
-entity.lotr,entity.lotr.MordorOrcSpiderKeeper.name,Mordor Spider Keeper
-entity.lotr,entity.lotr.AngmarOrc.name,Angmar Orc
-entity.lotr,entity.lotr.AngmarOrcArcher.name,Angmar Orc Archer
-entity.lotr,entity.lotr.AngmarOrcBombardier.name,Angmar Orc Bombardier
-entity.lotr,entity.lotr.GundabadOrc.name,Gundabad Orc
-entity.lotr,entity.lotr.GundabadOrcArcher.name,Gundabad Orc Archer
-entity.lotr,entity.lotr.GundabadOrcMercenaryCaptain.name,Gundabad Orc Chieftain
 entity.lotr,entity.lotr.RangerNorthCaptain.name,Ranger Captain of the North
-entity.lotr,entity.lotr.GundabadWarg.name,Gundabad Warg
-entity.lotr,entity.lotr.AngmarWarg.name,Angmar Warg
-entity.lotr,entity.lotr.AngmarWargBombardier.name,Angmar Warg Bombardier
-entity.lotr,entity.lotr.UrukWarg.name,Isengard Warg
-entity.lotr,entity.lotr.UrukWargBombardier.name,Isengard Warg Bombardier
-entity.lotr,entity.lotr.Lion.name,Lion
-entity.lotr,entity.lotr.Lioness.name,Lioness
-entity.lotr,entity.lotr.Giraffe.name,Giraffe
-entity.lotr,entity.lotr.Zebra.name,Zebra
-entity.lotr,entity.lotr.Rhino.name,Rhino
-entity.lotr,entity.lotr.Crocodile.name,Crocodile
-entity.lotr,entity.lotr.NearHaradrim.name,Coast Southron
-entity.lotr,entity.lotr.NearHaradrimWarrior.name,Coast Southron Warrior
-entity.lotr,entity.lotr.HighElf.name,Lindon Elf
-entity.lotr,entity.lotr.Gemsbok.name,Gemsbok
-entity.lotr,entity.lotr.Flamingo.name,Flamingo
-entity.lotr,entity.lotr.HobbitFarmer.name,Hobbit Farmer
-entity.lotr,entity.lotr.HobbitFarmhand.name,Hobbit Farmhand
-entity.lotr,entity.lotr.HighElfWarrior.name,Lindon Warrior
-entity.lotr,entity.lotr.HighElfLord.name,Lindon Lord
-entity.lotr,entity.lotr.GondorBannerBearer.name,Gondor Banner Bearer
-entity.lotr,entity.lotr.RohanBannerBearer.name,Rohan Banner Bearer
-entity.lotr,entity.lotr.MordorBannerBearer.name,Mordor Banner Bearer
-entity.lotr,entity.lotr.GaladhrimBannerBearer.name,Galadhrim Banner Bearer
-entity.lotr,entity.lotr.WoodElfBannerBearer.name,Wood-elf Banner Bearer
-entity.lotr,entity.lotr.DunlendingBannerBearer.name,Dunlending Banner Bearer
-entity.lotr,entity.lotr.UrukHaiBannerBearer.name,Uruk Banner Bearer
-entity.lotr,entity.lotr.DwarfBannerBearer.name,Dwarf Banner Bearer
-entity.lotr,entity.lotr.AngmarBannerBearer.name,Angmar Banner Bearer
-entity.lotr,entity.lotr.NearHaradBannerBearer.name,Coast Southron Banner Bearer
-entity.lotr,entity.lotr.HighElfBannerBearer.name,Lindon Banner Bearer
-entity.lotr,entity.lotr.JungleScorpion.name,Jungle Scorpion
-entity.lotr,entity.lotr.DesertScorpion.name,Desert Scorpion
-entity.lotr,entity.lotr.Bird.name,Bird
 entity.lotr,entity.lotr.Crebain.name,Craban
-entity.lotr,entity.lotr.Camel.name,Camel
-entity.lotr,entity.lotr.NearHaradrimArcher.name,Coast Southron Archer
-entity.lotr,entity.lotr.NearHaradrimWarlord.name,Coast Southron Warlord
-entity.lotr,entity.lotr.BlueDwarf.name,Blue Mountains Dwarf
-entity.lotr,entity.lotr.BlueDwarfWarrior.name,Blue Mountains Warrior
-entity.lotr,entity.lotr.BlueDwarfAxeThrower.name,Blue Mountains Axe-thrower
-entity.lotr,entity.lotr.BlueDwarfBannerBearer.name,Blue Mountains Banner Bearer
-entity.lotr,entity.lotr.BlueDwarfCommander.name,Blue Mountains Commander
-entity.lotr,entity.lotr.BlueDwarfMiner.name,Blue Mountains Miner
-entity.lotr,entity.lotr.NearHaradDrinksTrader.name,Coast Southron Brewer
-entity.lotr,entity.lotr.NearHaradMineralsTrader.name,Coast Southron Miner
-entity.lotr,entity.lotr.NearHaradPlantsTrader.name,Coast Southron Florist
-entity.lotr,entity.lotr.NearHaradFoodTrader.name,Coast Southron Butcher
-entity.lotr,entity.lotr.BlueDwarfMerchant.name,Blue Mountains Merchant
 entity.lotr,entity.lotr.Bandit.name,Bandit
 entity.lotr,entity.lotr.RangerNorthBannerBearer.name,Ranger Banner Bearer
-entity.lotr,entity.lotr.Elk.name,Elk
-entity.lotr,entity.lotr.GondorTowerGuard.name,Gondor Tower Guard
-entity.lotr,entity.lotr.NearHaradMerchant.name,Merchant of Harad
 entity.lotr,entity.lotr.HaradPyramidWraith.name,Harad Pyramid Wraith
-entity.lotr,entity.lotr.DolGuldurOrc.name,Dol Guldur Orc
-entity.lotr,entity.lotr.DolGuldurOrcArcher.name,Dol Guldur Orc Archer
-entity.lotr,entity.lotr.DolGuldurBannerBearer.name,Dol Guldur Banner Bearer
-entity.lotr,entity.lotr.DolGuldurChieftain.name,Dol Guldur Orc Chieftain
 entity.lotr,entity.lotr.MirkTroll.name,Mirk-troll
-entity.lotr,entity.lotr.GundabadBannerBearer.name,Gundabad Banner Bearer
-entity.lotr,entity.lotr.DikDik.name,Dik-dik
-entity.lotr,entity.lotr.BlackUruk.name,Black Uruk
-entity.lotr,entity.lotr.BlackUrukArcher.name,Black Uruk Archer
 entity.lotr,entity.lotr.HalfTroll.name,Half-troll
 entity.lotr,entity.lotr.RangerIthilienCaptain.name,Ithilien Ranger Captain
 entity.lotr,entity.lotr.RangerIthilienBannerBearer.name,Ithilien Banner Bearer
 entity.lotr,entity.lotr.HalfTrollBannerBearer.name,Half-troll Banner Bearer
-entity.lotr,entity.lotr.AngmarOrcTrader.name,Angmar Orc Trader
-entity.lotr,entity.lotr.DolGuldurOrcTrader.name,Dol Guldur Orc Trader
-entity.lotr,entity.lotr.GaladhrimSmith.name,Galadhrim Smith
-entity.lotr,entity.lotr.HighElfSmith.name,Lindon Smith
-entity.lotr,entity.lotr.WoodElfSmith.name,Wood-elven Smith
-entity.lotr,entity.lotr.SwanKnight.name,Swan Knight
-entity.lotr,entity.lotr.DolAmrothCaptain.name,Dol Amroth Captain
-entity.lotr,entity.lotr.DolAmrothBannerBearer.name,Dol Amroth Banner Bearer
-entity.lotr,entity.lotr.Swan.name,Swan
 entity.lotr,entity.lotr.MoredainWarrior.name,Morwaith Warrior
 entity.lotr,entity.lotr.MoredainBannerBearer.name,Morwaith Banner Bearer
 entity.lotr,entity.lotr.MoredainChieftain.name,Morwaith Chieftain
 entity.lotr,entity.lotr.MoredainHuntsman.name,Morwaith Huntsman
 entity.lotr,entity.lotr.MoredainHutmaker.name,Morwaith Hutmaker
-entity.lotr,entity.lotr.DunlendingBerserker.name,Dunlending Berserker
-entity.lotr,entity.lotr.AngmarHillman.name,Rhudaur Hillman
-entity.lotr,entity.lotr.AngmarHillmanWarrior.name,Rhudaur Hillman Warrior
-entity.lotr,entity.lotr.AngmarHillmanChieftain.name,Rhudaur Hillman Chieftain
-entity.lotr,entity.lotr.AngmarHillmanBannerBearer.name,Rhudaur Hillman Banner Bearer
-entity.lotr,entity.lotr.AngmarHillmanAxeThrower.name,Rhudaur Hillman Axe-thrower
-entity.lotr,entity.lotr.DunlendingAxeThrower.name,Dunlending Axe-thrower
-entity.lotr,entity.lotr.IronHillsMerchant.name,Iron Hills Merchant
 entity.lotr,entity.lotr.MallornEnt.name,Mallorn Ent
 entity.lotr,entity.lotr.ScrapTrader.name,Oddment Collector
 entity.lotr,entity.lotr.TauredainWarrior.name,Taurethrim Warrior
@@ -1055,97 +856,24 @@ entity.lotr,entity.lotr.TauredainChieftain.name,Taurethrim Chieftain
 entity.lotr,entity.lotr.TauredainBlowgunner.name,Taurethrim Blowgunner
 entity.lotr,entity.lotr.BarrowWight.name,Barrow-wight
 entity.lotr,entity.lotr.TauredainShaman.name,Taurethrim Shaman
-entity.lotr,entity.lotr.GaladhrimWarden.name,Galadhrim Warden
 entity.lotr,entity.lotr.TauredainFarmer.name,Taurethrim Farmer
 entity.lotr,entity.lotr.TauredainFarmhand.name,Taurethrim Farmhand
-entity.lotr,entity.lotr.DwarfSmith.name,Dwarven Smith
-entity.lotr,entity.lotr.BlueDwarfSmith.name,Blue Mountains Smith
 entity.lotr,entity.lotr.TauredainPyramidWraith.name,Taurethrim Pyramid Wraith
-entity.lotr,entity.lotr.GundabadUruk.name,Gundabad Uruk
-entity.lotr,entity.lotr.GundabadUrukArcher.name,Gundabad Uruk Archer
-entity.lotr,entity.lotr.IsengardSnagaArcher.name,Isengard Snaga Archer
 entity.lotr,entity.lotr.BanditHarad.name,Harad Bandit
-entity.lotr,entity.lotr.Deer.name,Deer
 entity.lotr,entity.lotr.DaleMan.name,Dalishman
 entity.lotr,entity.lotr.DaleLevyman.name,Dalish Levyman
 entity.lotr,entity.lotr.DaleArcher.name,Dalish Longbowman
 entity.lotr,entity.lotr.DaleBannerBearer.name,Dalish Banner Bearer
 entity.lotr,entity.lotr.DaleBlacksmith.name,Dalish Blacksmith
-entity.lotr,entity.lotr.DorwinionMan.name,Dorwinman
-entity.lotr,entity.lotr.DorwinionCaptain.name,Vintner Guard Captain
-entity.lotr,entity.lotr.DorwinionBannerBearer.name,Dorwinion Banner Bearer
-entity.lotr,entity.lotr.DorwinionElf.name,Dorwinion Elf
-entity.lotr,entity.lotr.DorwinionElfWarrior.name,Warrior of Bladorthin
-entity.lotr,entity.lotr.DorwinionElfBannerBearer.name,Dorwinion Elf Banner Bearer
-entity.lotr,entity.lotr.DorwinionElfCaptain.name,Captain of Bladorthin
 entity.lotr,entity.lotr.DaleBaker.name,Dalish Baker
-entity.lotr,entity.lotr.DorwinionElfVintner.name,Dorwinion Vintner-elf
-entity.lotr,entity.lotr.DorwinionVinehand.name,Dorwinion Vinehand
-entity.lotr,entity.lotr.DorwinionVinekeeper.name,Dorwinion Vinekeeper
-entity.lotr,entity.lotr.DorwinionMerchant.name,Dorwinion Elf Merchant
 entity.lotr,entity.lotr.DaleMerchant.name,Dalish Merchant
-entity.lotr,entity.lotr.Aurochs.name,Aurochs
-entity.lotr,entity.lotr.KineAraw.name,Kine of Araw
-entity.lotr,entity.lotr.DorwinionCrossbower.name,Vintner Guard Crossbower
-entity.lotr,entity.lotr.LossarnachAxeman.name,Lossarnach Axeman
-entity.lotr,entity.lotr.LossarnachBannerBearer.name,Lossarnach Banner Bearer
-entity.lotr,entity.lotr.BlackUrukBannerBearer.name,Black Uruk Banner Bearer
-entity.lotr,entity.lotr.PelargirMarine.name,Pelargir Marine
-entity.lotr,entity.lotr.PelargirBannerBearer.name,Pelargir Banner Bearer
-entity.lotr,entity.lotr.PinnathGelinSoldier.name,Pinnath Gelin Soldier
-entity.lotr,entity.lotr.PinnathGelinBannerBearer.name,Pinnath Gelin Banner Bearer
-entity.lotr,entity.lotr.BlackrootSoldier.name,Blackroot Vale Soldier
-entity.lotr,entity.lotr.BlackrootBannerBearer.name,Blackroot Vale Banner Bearer
-entity.lotr,entity.lotr.BlackrootArcher.name,Blackroot Vale Bowman
-entity.lotr,entity.lotr.GondorLevyman.name,Gondor Levyman
-entity.lotr,entity.lotr.NanUngolBannerBearer.name,Nan Ungol Banner Bearer
-entity.lotr,entity.lotr.MinasMorgulBannerBearer.name,Minas Morgul Banner Bearer
-entity.lotr,entity.lotr.DolAmrothSoldier.name,Dol Amroth Man-at-arms
-entity.lotr,entity.lotr.DolAmrothArcher.name,Dol Amroth Archer
-entity.lotr,entity.lotr.GondorFarmer.name,Gondor Farmer
-entity.lotr,entity.lotr.GondorFarmhand.name,Gondor Farmhand
-entity.lotr,entity.lotr.LebenninLevyman.name,Lebennin Levyman
-entity.lotr,entity.lotr.LebenninBannerBearer.name,Lebennin Banner Bearer
-entity.lotr,entity.lotr.GondorBartender.name,Gondor Bartender
-entity.lotr,entity.lotr.GondorGreengrocer.name,Gondor Greengrocer
-entity.lotr,entity.lotr.GondorLumberman.name,Gondor Lumberman
-entity.lotr,entity.lotr.GondorMason.name,Gondor Stonemason
-entity.lotr,entity.lotr.GondorBrewer.name,Gondor Brewer
-entity.lotr,entity.lotr.GondorFlorist.name,Gondor Florist
-entity.lotr,entity.lotr.GondorButcher.name,Gondor Butcher
-entity.lotr,entity.lotr.GondorFishmonger.name,Gondor Fishmonger
-entity.lotr,entity.lotr.GondorBaker.name,Gondor Baker
-entity.lotr,entity.lotr.LossarnachCaptain.name,Lossarnach Captain
-entity.lotr,entity.lotr.PelargirCaptain.name,Pelargir Commander
-entity.lotr,entity.lotr.PinnathGelinCaptain.name,Pinnath Gelin Captain
-entity.lotr,entity.lotr.BlackrootCaptain.name,Blackroot Vale Bowlord
-entity.lotr,entity.lotr.LebenninCaptain.name,Lebennin Levymaster
-entity.lotr,entity.lotr.LamedonSoldier.name,Lamedon Warrior
-entity.lotr,entity.lotr.LamedonArcher.name,Lamedon Archer
-entity.lotr,entity.lotr.LamedonBannerBearer.name,Lamedon Banner Bearer
-entity.lotr,entity.lotr.LamedonCaptain.name,Lamedon Captain
-entity.lotr,entity.lotr.LamedonHillman.name,Lamedon Hillman
-entity.lotr,entity.lotr.RohanFarmhand.name,Rohirrim Farmhand
-entity.lotr,entity.lotr.Gorcrow.name,Gorcrow
-entity.lotr,entity.lotr.Seagull.name,Seagull
-entity.lotr,entity.lotr.RohanFarmer.name,Rohirrim Farmer
-entity.lotr,entity.lotr.RohanLumberman.name,Rohirrim Lumberman
-entity.lotr,entity.lotr.RohanBuilder.name,Rohirrim Builder
-entity.lotr,entity.lotr.RohanBrewer.name,Rohirrim Brewer
-entity.lotr,entity.lotr.RohanButcher.name,Rohirrim Butcher
-entity.lotr,entity.lotr.RohanFishmonger.name,Rohirrim Fishmonger
-entity.lotr,entity.lotr.RohanBaker.name,Rohirrim Baker
-entity.lotr,entity.lotr.RohanOrcharder.name,Rohirrim Orcharder
 entity.lotr,entity.lotr.DunedainBlacksmith.name,Dúnedain Blacksmith
-entity.lotr,entity.lotr.RohanStablemaster.name,Rohirrim Stablemaster
-entity.lotr,entity.lotr.Bear.name,Bear
 entity.lotr,entity.lotr.Easterling.name,Easterling
 entity.lotr,entity.lotr.EasterlingBannerBearer.name,Easterling Banner Bearer
 entity.lotr,entity.lotr.EasterlingArcher.name,Easterling Archer
 entity.lotr,entity.lotr.EasterlingBlacksmith.name,Easterling Blacksmith
 entity.lotr,entity.lotr.EasterlingWarlord.name,Easterling Warlord
 entity.lotr,entity.lotr.EasterlingFireThrower.name,Easterling Fire-thrower
-entity.lotr,entity.lotr.DorwinionMerchantMan.name,Dorwinion Merchant
 entity.lotr,entity.lotr.EasterlingLumberman.name,Easterling Lumberman
 entity.lotr,entity.lotr.EasterlingMason.name,Easterling Stonemason
 entity.lotr,entity.lotr.EasterlingButcher.name,Easterling Butcher
@@ -1156,72 +884,23 @@ entity.lotr,entity.lotr.EasterlingHunter.name,Easterling Huntsman
 entity.lotr,entity.lotr.EasterlingFarmer.name,Easterling Farmer
 entity.lotr,entity.lotr.EasterlingGoldsmith.name,Easterling Goldsmith
 entity.lotr,entity.lotr.EasterlingBartender.name,Easterling Bartender
-entity.lotr,entity.lotr.DorwinionElfArcher.name,Archer of Bladorthin
 entity.lotr,entity.lotr.EasterlingFarmhand.name,Easterling Farmhand
-entity.lotr,entity.lotr.RivendellElf.name,Rivendell Elf
-entity.lotr,entity.lotr.RivendellWarrior.name,Rivendell Warrior
-entity.lotr,entity.lotr.RivendellLord.name,Rivendell Captain
-entity.lotr,entity.lotr.RivendellBannerBearer.name,Rivendell Banner Bearer
-entity.lotr,entity.lotr.RivendellSmith.name,Rivendell Smith
 entity.lotr,entity.lotr.EsgarothBannerBearer.name,Esgaroth Banner Bearer
-entity.lotr,entity.lotr.RivendellTrader.name,Rivendell Wanderer
 entity.lotr,entity.lotr.Fish.name,Fish
-entity.lotr,entity.lotr.GundabadOrcTrader.name,Gundabad Orc Scrounger
-entity.lotr,entity.lotr.NearHaradBlacksmith.name,Coast Southron Blacksmith
 entity.lotr,entity.lotr.SnowTroll.name,Snow-troll
-entity.lotr,entity.lotr.Harnedhrim.name,Harnedhrim
-entity.lotr,entity.lotr.HarnedorWarrior.name,Harnennor Warrior
-entity.lotr,entity.lotr.HarnedorArcher.name,Harnennor Archer
-entity.lotr,entity.lotr.HarnedorBannerBearer.name,Harnennor Banner Bearer
-entity.lotr,entity.lotr.Umbarian.name,Umbarian
-entity.lotr,entity.lotr.UmbarWarrior.name,Umbar Soldier
-entity.lotr,entity.lotr.UmbarArcher.name,Umbar Archer
-entity.lotr,entity.lotr.UmbarBannerBearer.name,Umbar Banner Bearer
 entity.lotr,entity.lotr.MoredainMercenary.name,Morwaith Mercenary
 entity.lotr,entity.lotr.GulfHaradrim.name,Gulfing
 entity.lotr,entity.lotr.GulfWarrior.name,Gulfing Warrior
 entity.lotr,entity.lotr.GulfArcher.name,Gulfing Archer
 entity.lotr,entity.lotr.GulfBannerBearer.name,Gulfing Banner Bearer
-entity.lotr,entity.lotr.Corsair.name,Corsair of Umbar
 entity.lotr,entity.lotr.Nomad.name,Harad Nomad
 entity.lotr,entity.lotr.NomadWarrior.name,Nomad Guard
 entity.lotr,entity.lotr.NomadArcher.name,Nomad Archer
 entity.lotr,entity.lotr.NomadBannerBearer.name,Nomad Banner Bearer
-entity.lotr,entity.lotr.HarnedorWarlord.name,Harnennor Warlord
-entity.lotr,entity.lotr.UmbarCaptain.name,Umbar Captain
-entity.lotr,entity.lotr.CorsairCaptain.name,Corsair Captain
 entity.lotr,entity.lotr.NomadChieftain.name,Nomad Chieftain
 entity.lotr,entity.lotr.GulfWarlord.name,Gulfing Warlord
-entity.lotr,entity.lotr.HaradSlave.name,Slave of Harad
-entity.lotr,entity.lotr.CorsairSlaver.name,Corsair Slaver
-entity.lotr,entity.lotr.HarnedorBlacksmith.name,Harnennor Bronzesmith
-entity.lotr,entity.lotr.UmbarBlacksmith.name,Umbar Blacksmith
 entity.lotr,entity.lotr.GulfBlacksmith.name,Gulfing Blacksmith
-entity.lotr,entity.lotr.GondorRenegade.name,Gondorian Renegade
 entity.lotr,entity.lotr.NomadMerchant.name,Nomad Merchant
-entity.lotr,entity.lotr.HarnedorBartender.name,Harnennor Bartender
-entity.lotr,entity.lotr.HarnedorLumberman.name,Harnennor Lumberman
-entity.lotr,entity.lotr.HarnedorMason.name,Harnennor Stonemason
-entity.lotr,entity.lotr.HarnedorButcher.name,Harnennor Butcher
-entity.lotr,entity.lotr.HarnedorBrewer.name,Harnennor Brewer
-entity.lotr,entity.lotr.HarnedorFishmonger.name,Harnennor Fishmonger
-entity.lotr,entity.lotr.HarnedorBaker.name,Harnennor Baker
-entity.lotr,entity.lotr.HarnedorHunter.name,Harnennor Huntsman
-entity.lotr,entity.lotr.HarnedorMiner.name,Harnennor Miner
-entity.lotr,entity.lotr.SouthronLumberman.name,Coast Southron Lumberman
-entity.lotr,entity.lotr.SouthronMason.name,Coast Southron Stonemason
-entity.lotr,entity.lotr.SouthronFishmonger.name,Coast Southron Fishmonger
-entity.lotr,entity.lotr.SouthronBaker.name,Coast Southron Baker
-entity.lotr,entity.lotr.SouthronGoldsmith.name,Coast Southron Goldsmith
-entity.lotr,entity.lotr.UmbarLumberman.name,Umbar Lumberman
-entity.lotr,entity.lotr.UmbarButcher.name,Umbar Butcher
-entity.lotr,entity.lotr.UmbarBrewer.name,Umbar Brewer
-entity.lotr,entity.lotr.UmbarFishmonger.name,Umbar Fishmonger
-entity.lotr,entity.lotr.UmbarBaker.name,Umbar Baker
-entity.lotr,entity.lotr.UmbarFlorist.name,Umbar Florist
-entity.lotr,entity.lotr.UmbarMiner.name,Umbar Miner
-entity.lotr,entity.lotr.UmbarGoldsmith.name,Umbar Goldsmith
-entity.lotr,entity.lotr.UmbarMason.name,Umbar Stonemason
 entity.lotr,entity.lotr.NomadMason.name,Nomad Stonemason
 entity.lotr,entity.lotr.NomadBrewer.name,Nomad Brewer
 entity.lotr,entity.lotr.NomadMiner.name,Nomad Miner
@@ -1235,40 +914,9 @@ entity.lotr,entity.lotr.GulfGoldsmith.name,Gulfing Goldsmith
 entity.lotr,entity.lotr.GulfLumberman.name,Gulfing Lumberman
 entity.lotr,entity.lotr.GulfHunter.name,Gulfing Huntsman
 entity.lotr,entity.lotr.NomadArmourer.name,Nomad Armourer
-entity.lotr,entity.lotr.SouthronBartender.name,Coast Southron Bartender
-entity.lotr,entity.lotr.UmbarBartender.name,Umbar Bartender
 entity.lotr,entity.lotr.GulfBartender.name,Gulfing Bartender
-entity.lotr,entity.lotr.HarnedorFarmhand.name,Harnennor Farmhand
-entity.lotr,entity.lotr.HarnedorFarmer.name,Harnennor Farmer
-entity.lotr,entity.lotr.SouthronFarmer.name,Coast Southron Farmer
-entity.lotr,entity.lotr.UmbarFarmer.name,Umbar Farmer
 entity.lotr,entity.lotr.GulfFarmer.name,Gulfing Farmer
 entity.lotr,entity.lotr.TauredainSmith.name,Taurethrim Smith
-entity.lotr,entity.lotr.WhiteOryx.name,White Oryx
-entity.lotr,entity.lotr.BlackUrukCaptain.name,Black Uruk Captain
-entity.lotr,entity.lotr.WickedDwarf.name,Wicked Dwarf
-entity.lotr,entity.lotr.BreeMan.name,Bree-Man
-entity.lotr,entity.lotr.BreeGuard.name,Bree-land Guard
-entity.lotr,entity.lotr.BreeBannerBearer.name,Bree-land Banner Bearer
-entity.lotr,entity.lotr.BreeCaptain.name,Bree-land Sherriff
-entity.lotr,entity.lotr.BreeBlacksmith.name,Bree-land Blacksmith
-entity.lotr,entity.lotr.BreeInnkeeper.name,Bree-land Innkeeper
-entity.lotr,entity.lotr.BreeHobbit.name,Bree-hobbit
-entity.lotr,entity.lotr.RuffianSpy.name,Ruffian Spy
-entity.lotr,entity.lotr.RuffianBrute.name,Ruffian Brute
-entity.lotr,entity.lotr.BreeHobbitInnkeeper.name,Bree-hobbit Innkeeper
-entity.lotr,entity.lotr.BreeBaker.name,Bree-land Baker
-entity.lotr,entity.lotr.BreeButcher.name,Bree-land Butcher
-entity.lotr,entity.lotr.BreeBrewer.name,Bree-land Brewer
-entity.lotr,entity.lotr.BreeMason.name,Bree-land Stonemason
-entity.lotr,entity.lotr.BreeLumberman.name,Bree-land Lumberman
-entity.lotr,entity.lotr.BreeFlorist.name,Bree-land Florist
-entity.lotr,entity.lotr.BreeFarmer.name,Bree-land Farmer
-entity.lotr,entity.lotr.BreeFarmhand.name,Bree-land Farmhand
-entity.lotr,entity.lotr.BreeHobbitBaker.name,Bree-hobbit Baker
-entity.lotr,entity.lotr.BreeHobbitButcher.name,Bree-hobbit Butcher
-entity.lotr,entity.lotr.BreeHobbitBrewer.name,Bree-hobbit Brewer
-entity.lotr,entity.lotr.BreeHobbitFlorist.name,Bree-hobbit Florist
 entity.lotr,entity.lotr.UtumnoOrc.name,Utumno Orc
 entity.lotr,entity.lotr.UtumnoOrcArcher.name,Utumno Orc Archer
 entity.lotr,entity.lotr.UtumnoWarg.name,Utumno Warg
@@ -1287,7 +935,6 @@ entity.lotr,entity.lotr.Gandalf.name,Grey Wanderer
 entity.lotr,entity.lotr.Portal.name,Ring Portal
 entity.lotr,entity.lotr.GandalfFireball.name,Gandalf Fireball
 entity.lotr,entity.lotr.Spear.name,Spear
-entity.lotr,entity.lotr.WargRug.name,Wargskin Rug
 entity.lotr,entity.lotr.MarshWraithBall.name,Marsh Wraith Spell
 entity.lotr,entity.lotr.StoneTroll.name,Troll Statue
 entity.lotr,entity.lotr.TraderRespawn.name,Trader Respawn
@@ -1299,17 +946,9 @@ entity.lotr,entity.lotr.LOTRTNT.name,TNT
 entity.lotr,entity.lotr.MallornLeafBomb.name,Mallorn Leaf Bomb
 entity.lotr,entity.lotr.LOTRFishHook.name,Fishing Hook
 entity.lotr,entity.lotr.NPCRespawner.name,NPC Respawner
-entity.lotr,entity.lotr.FallingTreasure.name,Falling Treasure
 entity.lotr,entity.lotr.FallingFireJar.name,Falling Fire Jar
 entity.lotr,entity.lotr.ThrownFirePot.name,Fire Pot
 entity.lotr,entity.lotr.TrollSnowball.name,Troll Snowball
-entity.lotr,entity.lotr.LionRug.name,Lion Rug
-entity.lotr,entity.lotr.BearRug.name,Bear Rug
-entity.lotr,entity.lotr.GiraffeRug.name,Giraffe Rug
-lotr.travellingTrader,lotr.travellingTrader.arrive,%s has arrived nearby
-lotr.travellingTrader,lotr.travellingTrader.arriveMP,%s has arrived near %s
-lotr.travellingTrader,lotr.travellingTrader.depart,%s has left the area
-lotr.unitinfo,lotr.unitinfo.Banner,Banner Bearers provide various combat improvements to other nearby NPCs of the same faction
 lotr.unit,lotr.unit.MordorOrc_Warg,Warg Rider
 lotr.unit,lotr.unit.MordorOrcArcher_Warg,Warg Archer Rider
 lotr.unit,lotr.unit.GondorSoldier_Horse,Gondorian Knight
@@ -1351,7 +990,6 @@ lotr.unit,lotr.unit.RivendellWarrior_Horse,Rivendell Rider
 lotr.unit,lotr.unit.HarnedorWarrior_Horse,Harnennor Horseman
 lotr.unit,lotr.unit.HarnedorArcher_Horse,Harnennor Horse Archer
 lotr.unit,lotr.unit.UmbarWarrior_Horse,Umbar Horseman
-lotr.unitinfo,lotr.unitinfo.Corsair,Corsairs are better at looting coins from slain enemies
 lotr.unit,lotr.unit.NomadWarrior_Camel,Nomad Camelman
 lotr.unit,lotr.unit.NomadArcher_Camel,Nomad Camel Archer
 lotr.unit,lotr.unit.GulfWarrior_Horse,Gulfing Horseman
@@ -1922,12 +1560,10 @@ chat.lotr,chat.lotr.banStructures,You have been banned from spawning structures
 chat.lotr,chat.lotr.spawnStructure.disabled,Structure spawning is disabled on this server
 chat.lotr,chat.lotr.spawnStructure.banned,You are banned from spawning structures
 chat.lotr,chat.lotr.spawnStructure.wait,You must wait %d seconds before spawning another structure
-chat.lotr,chat.lotr.mountOwnedByNPC,This mount was owned by an NPC - you cannot interact with it
 chat.lotr,chat.lotr.protectedLand,This land is under the protection of %s!
 chat.lotr,chat.lotr.protectedStructure,an ancient power
 chat.lotr,chat.lotr.alreadyProtected,You may not place a protection banner where it would overlap with another banner's protection
 chat.lotr,chat.lotr.banditSteal,A bandit stole some items from your inventory!
-chat.lotr,chat.lotr.ruffianSteal,A ruffian stole some items from your inventory!
 chat.lotr,chat.lotr.invasion.start,%s have launched an invasion nearby!
 chat.lotr,chat.lotr.tameGollum,%s has tamed %s
 chat.lotr,chat.lotr.ftDisabled,Fast travel is disabled on this server
@@ -2178,13 +1814,9 @@ lotr.achievement,lotr.achievement.eatManFlesh.title,I Smell Man-flesh!
 lotr.achievement,lotr.achievement.eatManFlesh.desc,Eat a hunk of man-flesh
 lotr.achievement,lotr.achievement.craftSaltedFlesh.title,Suspicious...
 lotr.achievement,lotr.achievement.craftSaltedFlesh.desc,Produce some suspicious meat from questionable ingredients
-lotr.achievement,lotr.achievement.enchantBaneElf.title,Elfbane
 lotr.achievement,lotr.achievement.enchantBaneElf.desc,Earn a weapon renowned for slaying Elves
-lotr.achievement,lotr.achievement.enchantBaneOrc.title,Orcbane
 lotr.achievement,lotr.achievement.enchantBaneOrc.desc,Earn a weapon renowned for slaying Orcs
-lotr.achievement,lotr.achievement.enchantBaneDwarf.title,Dwarfbane
 lotr.achievement,lotr.achievement.enchantBaneDwarf.desc,Earn a weapon renowned for slaying Dwarves
-lotr.achievement,lotr.achievement.enchantBaneWarg.title,Wargbane
 lotr.achievement,lotr.achievement.enchantBaneWarg.desc,Earn a weapon renowned for slaying Wargs
 lotr.achievement,lotr.achievement.enchantBaneTroll.title,Trollbane
 lotr.achievement,lotr.achievement.enchantBaneTroll.desc,Earn a weapon renowned for slaying Trolls
@@ -2250,7 +1882,6 @@ lotr.achievement,lotr.achievement.hireHobbitFarmer.title,Hired Hands
 lotr.achievement,lotr.achievement.hireHobbitFarmer.desc,Hire a farmhand from a Hobbit Farmer
 lotr.achievement,lotr.achievement.enterBlueMountains.title,Firebeards and Broadbeams
 lotr.achievement,lotr.achievement.enterBlueMountains.desc,Enter the Blue Mountains
-lotr.achievement,lotr.achievement.smeltBlueDwarfSteel.title,Blue Mountains Smith
 lotr.achievement,lotr.achievement.smeltBlueDwarfSteel.desc,Smelt an ingot of Blue Dwarven Steel in the Dwarven Forge
 lotr.achievement,lotr.achievement.killBlueDwarf.title,Blue Dwarf Slayer
 lotr.achievement,lotr.achievement.killBlueDwarf.desc,Kill a Blue Mountains Dwarf
@@ -2552,7 +2183,6 @@ lotr.achievement,lotr.achievement.tradeDwarfCommander.title,Khazâd ai-mênu!
 lotr.achievement,lotr.achievement.tradeDwarfCommander.desc,Hire a unit from a Dwarf Commander
 lotr.achievement,lotr.achievement.mineGlowstone.title,In Dark Places
 lotr.achievement,lotr.achievement.mineGlowstone.desc,Mine some glowstone ore
-lotr.achievement,lotr.achievement.smeltDwarfSteel.title,Dwarven Smith
 lotr.achievement,lotr.achievement.smeltDwarfSteel.desc,Smelt an ingot of Dwarven Steel in the Dwarven Forge
 lotr.achievement,lotr.achievement.drinkDwarvenTonic.title,Eyes of the Dwarves
 lotr.achievement,lotr.achievement.drinkDwarvenTonic.desc,Drink a mug of Dwarven Tonic
@@ -2692,7 +2322,6 @@ lotr.achievement,lotr.achievement.tradeRangerIthilienCaptain.title,Windows on th
 lotr.achievement,lotr.achievement.tradeRangerIthilienCaptain.desc,Hire a unit from an Ithilien Ranger Captain
 lotr.achievement,lotr.achievement.useDolAmrothTable.title,Dol Amroth Crafter
 lotr.achievement,lotr.achievement.useDolAmrothTable.desc,Craft an item on the Dol Amroth Crafting Table
-lotr.achievement,lotr.achievement.wearFullDolAmroth.title,Swan Knight
 lotr.achievement,lotr.achievement.wearFullDolAmroth.desc,Equip a full suit of Dol Amroth armor
 lotr.achievement,lotr.achievement.killSwanKnight.title,Swan Slayer
 lotr.achievement,lotr.achievement.killSwanKnight.desc,Kill a Swan Knight of Dol Amroth
@@ -2825,7 +2454,6 @@ lotr.achievement,lotr.achievement.doMiniquestDorwinion.desc,Complete a Dorwinion
 lotr.achievement,lotr.achievement.useDorwinionTable.title,Dorwinion Crafter
 lotr.achievement,lotr.achievement.useDorwinionTable.desc,Craft an item on the Dorwinion Crafting Table
 lotr.achievement,lotr.achievement.wearFullDorwinion.desc,Equip a full suit of Dorwinion armor
-lotr.achievement,lotr.achievement.wearFullDorwinionElf.title,Warrior of Bladorthin
 lotr.achievement,lotr.achievement.wearFullDorwinionElf.desc,Equip a full suit of Dorwinion Elven armor
 lotr.achievement,lotr.achievement.killDorwinion.title,Dorwinman Slayer
 lotr.achievement,lotr.achievement.killDorwinion.desc,Kill a Man of Dorwinion
@@ -2929,7 +2557,6 @@ lotr.achievement,lotr.achievement.useGulfTable.title,Gulfen Crafter
 lotr.achievement,lotr.achievement.useGulfTable.desc,Craft an item on the Gulfen Crafting Table
 lotr.achievement,lotr.achievement.wearFullGulfHarad.title,Gulfen Warrior
 lotr.achievement,lotr.achievement.wearFullGulfHarad.desc,Equip a full suit of Gulfen armor
-lotr.achievement,lotr.achievement.wearFullCorsair.title,Corsair of Umbar
 lotr.achievement,lotr.achievement.wearFullCorsair.desc,Equip a full suit of Corsair armor
 lotr.achievement,lotr.achievement.wearFullUmbar.title,Soldier of Umbar
 lotr.achievement,lotr.achievement.wearFullUmbar.desc,Equip a full suit of Umbaric armor

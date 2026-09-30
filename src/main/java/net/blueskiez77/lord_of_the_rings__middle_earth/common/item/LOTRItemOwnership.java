@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTRItemOwnership: a name engraved on an item at the anvil. Engraving a new
  * one moves the old owner onto a list of up to three previous owners, most
- * recent first. Kept in the stack's custom data under the original's keys.
+ * recent first; an NPC's drops go onto that list with the NPC's name. Kept in the stack's custom data under the original's keys.
  */
 public final class LOTRItemOwnership {
 
@@ -38,6 +38,26 @@ public final class LOTRItemOwnership {
             entry.asString().ifPresent(owners::add);
         }
         return owners;
+    }
+
+    /**
+     * addPreviousOwner: a name at the head of the previous owners (at most
+     * three) -- as an NPC's drops remember whose they were.
+     */
+    public static void addPreviousOwner(ItemStack stack, String name) {
+        List<String> previous = getPreviousOwners(stack);
+        previous.add(0, name);
+        while (previous.size() > MAX_PREVIOUS) {
+            previous.remove(previous.size() - 1);
+        }
+        CustomData data = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        stack.set(DataComponents.CUSTOM_DATA, data.update(tag -> {
+            ListTag list = new ListTag();
+            for (String owner : previous) {
+                list.add(StringTag.valueOf(owner));
+            }
+            tag.put(PREVIOUS, list);
+        }));
     }
 
     /** setCurrentOwner: the present owner, if any, goes to the head of the previous list. */

@@ -1,0 +1,21 @@
+{
+  "values": [
+    "lotr:dwarf",
+    "lotr:dwarf_warrior",
+    "lotr:dwarf_miner",
+    "lotr:dwarf_commander",
+    "lotr:dwarf_axe_thrower",
+    "lotr:dwarf_banner_bearer",
+    "lotr:blue_dwarf",
+    "lotr:blue_dwarf_warrior",
+    "lotr:blue_dwarf_axe_thrower",
+    "lotr:blue_dwarf_banner_bearer",
+    "lotr:blue_dwarf_commander",
+    "lotr:blue_dwarf_miner",
+    "lotr:blue_dwarf_merchant",
+    "lotr:iron_hills_merchant",
+    "lotr:dwarf_smith",
+    "lotr:blue_dwarf_smith",
+    "lotr:wicked_dwarf"
+  ]
+}

@@ -28,7 +28,8 @@ import org.jspecify.annotations.Nullable;
 /**
  * The world-wide state LOTRLevelData and faction_relations.dat kept: whether
  * control zones ("alignment areas of influence") are on, and the relations a
- * /facRelations has overridden. Both stay in the statics the rest of the mod
+ * /facRelations has overridden, and the Grey Wanderers abroad
+ * (LOTRGreyWandererTracker). All stay in the statics the rest of the mod
  * reads, as in the original; this saves them with the world and tells
  * clients -- the whole set on login, again on every change.
  */
@@ -36,6 +37,10 @@ public final class LOTRLevelData extends SavedData {
 
     /** enableAlignmentZones: on unless a save says otherwise. */
     public static boolean enableAlignmentZones = true;
+    /** gollumSpawned: whether Gollum is abroad in the world, so that LOTRGollumSpawner makes only one. */
+    public static boolean gollumSpawned;
+    /** structuresBanned: 1 when /banStructures has turned structure spawners off for everyone. */
+    public static int structuresBanned;
 
     private static @Nullable LOTRLevelData instance;
     private static @Nullable MinecraftServer server;
@@ -50,8 +55,16 @@ public final class LOTRLevelData extends SavedData {
 
     private static final Codec<LOTRLevelData> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.BOOL.optionalFieldOf("AlignmentZones", true).forGetter(d -> enableAlignmentZones),
-            Override.CODEC.listOf().optionalFieldOf("Overrides", List.of()).forGetter(d -> currentOverrides())
-    ).apply(i, (zones, overrides) -> {
+            Override.CODEC.listOf().optionalFieldOf("Overrides", List.of()).forGetter(d -> currentOverrides()),
+            LOTRGreyWandererTracker.Entry.CODEC.listOf().optionalFieldOf("GreyWanderers", List.of())
+                    .forGetter(d -> LOTRGreyWandererTracker.save()),
+            Codec.INT.optionalFieldOf("GWSpawnTick", 2400).forGetter(d -> LOTRGreyWandererTracker.spawnCooldown),
+            Codec.BOOL.optionalFieldOf("GollumSpawned", false).forGetter(d -> gollumSpawned),
+            Codec.INT.optionalFieldOf("StructuresBanned", 0).forGetter(d -> structuresBanned)
+    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned) -> {
+        gollumSpawned = gollum;
+        structuresBanned = banned;
+        LOTRGreyWandererTracker.load(wanderers, gwSpawnTick);
         enableAlignmentZones = zones;
         LOTRFactionRelations.overrideMap.clear();
         for (Override o : overrides) {
@@ -68,6 +81,9 @@ public final class LOTRLevelData extends SavedData {
     private static LOTRLevelData fresh() {
         enableAlignmentZones = true;
         LOTRFactionRelations.overrideMap.clear();
+        LOTRGreyWandererTracker.reset();
+        gollumSpawned = false;
+        structuresBanned = 0;
         return new LOTRLevelData();
     }
 
@@ -99,10 +115,24 @@ public final class LOTRLevelData extends SavedData {
         return new LOTRFactionRelationsPayload(Map.copyOf(LOTRFactionRelations.overrideMap));
     }
 
-    private static void markDirty() {
+    static void markDirty() {
         if (instance != null) {
             instance.setDirty();
         }
+    }
+
+    public static boolean structuresBanned() {
+        return structuresBanned == 1;
+    }
+
+    public static void setStructuresBanned(boolean banned) {
+        structuresBanned = banned ? 1 : 0;
+        markDirty();
+    }
+
+    public static void setGollumSpawned(boolean flag) {
+        gollumSpawned = flag;
+        markDirty();
     }
 
     /** setEnableAlignmentZones: saved, and every player told. */

@@ -50,7 +50,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock
  *
  * <p>Poisoning is LOTRPoisonedDrinks'.
  *
- * <p>NOT ported: the achievements and drinking by NPCs.
+ * <p>An NPC drinks through {@link #applyToNPC}.
+ *
+ * <p>NOT ported: the achievements.
  */
 public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
 
@@ -111,6 +113,29 @@ public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
         return this.brewable;
     }
 
+    public float alcoholicity() {
+        return this.alcoholicity;
+    }
+
+    /**
+     * applyToNPC: an NPC (LOTREntityAIDrink) is healed by the drink's food
+     * value and gets its effects and damage, all by strength, and milk-like
+     * drinks cure its effects. Drunkenness is the AI's business.
+     */
+    public void applyToNPC(LivingEntity npc, ItemStack stack) {
+        float strength = strength(stack);
+        npc.heal(this.foodHeal * strength);
+        for (MobEffectInstance effect : effectsFor(strength)) {
+            npc.addEffect(effect);
+        }
+        if (this.damageAmount > 0 && npc.level() instanceof net.minecraft.server.level.ServerLevel level) {
+            npc.hurtServer(level, npc.damageSources().magic(), this.damageAmount * strength);
+        }
+        if (this.curesEffects) {
+            npc.removeAllEffects();
+        }
+    }
+
     /** canPlayerDrink: a food drink wants an appetite, anything else goes down any time. */
     public boolean canPlayerDrink(Player player) {
         return !this.foodDrink || player.canEat(false);
@@ -157,7 +182,8 @@ public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
         return this.brewable ? STRENGTHS[strengthIndex(stack)] : 1.0f;
     }
 
-    private float foodStrength(ItemStack stack) {
+    /** getFoodStrength. */
+    public float foodStrength(ItemStack stack) {
         return this.brewable ? FOOD_STRENGTHS[strengthIndex(stack)] : 1.0f;
     }
 

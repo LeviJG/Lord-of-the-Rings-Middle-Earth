@@ -1,0 +1,96 @@
+package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
+
+import org.jspecify.annotations.Nullable;
+
+/**
+ * LOTREntityGondorianCaptain: a captain of Gondor, bare-headed in Gondorian
+ * armour with a sword. Unlike his soldiers he seeks no one out -- he only
+ * answers attacks.
+ *
+ * He hires out levymen, soldiers (on foot or mounted), archers, banner
+ * bearers, and -- to those pledged to Gondor -- the Tower Guard, to those at
+ * +200 or better.
+ *
+ * <p>NOT ported yet: his cape (LOTRCapes.GONDOR), his warhorn
+ * (LOTRInvasions.GONDOR, D12), and the tradeGondorianCaptain achievement.
+ */
+public class LOTRGondorianCaptainEntity extends LOTRGondorSoldierEntity implements LOTRUnitTradeable {
+
+    public LOTRGondorianCaptainEntity(EntityType<? extends LOTRGondorianCaptainEntity> type, Level level) {
+        super(type, level);
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return LOTRGondorSoldierEntity.createAttributes()
+                .add(Attributes.MAX_HEALTH, 25.0);
+    }
+
+    @Override
+    protected void registerGoals() {
+        super.registerGoals();
+        addTargetTasks(false);
+    }
+
+    @Override
+    protected Goal createGondorAttackAI() {
+        return new LOTRAttackOnCollideGoal(this, 1.6, false);
+    }
+
+    @Override
+    public LOTRUnitTradeEntries getUnits() {
+        return LOTRUnitTradeEntries.GONDORIAN_CAPTAIN;
+    }
+
+    /** canTradeWith: +200 alignment and friendly. */
+    @Override
+    public boolean canTradeWith(Player player) {
+        return LOTRPlayerAlignments.getAlignment(player, getFaction()) >= 200.0f && isFriendly(player);
+    }
+
+    @Override
+    public float getAlignmentBonus() {
+        return 5.0f;
+    }
+
+    @Override
+    public @Nullable String getSpeechBank(Player player) {
+        if (isFriendly(player)) {
+            return canTradeWith(player) ? "gondor/captain/friendly" : "gondor/captain/neutral";
+        }
+        return "gondor/soldier/hostile";
+    }
+
+    @Override
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
+                                                  EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
+        SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
+        this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.GONDOR_SWORD));
+        this.npcItemsInv.setMeleeWeaponMounted(this.npcItemsInv.getMeleeWeapon().copy());
+        this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
+        this.npcItemsInv.setIdleItemMounted(this.npcItemsInv.getMeleeWeaponMounted().copy());
+        setItemSlot(EquipmentSlot.FEET, new ItemStack(LOTRCombatItems.GONDOR_BOOTS));
+        setItemSlot(EquipmentSlot.LEGS, new ItemStack(LOTRCombatItems.GONDOR_LEGGINGS));
+        setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.GONDOR_CHESTPLATE));
+        setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
+        return data;
+    }
+}

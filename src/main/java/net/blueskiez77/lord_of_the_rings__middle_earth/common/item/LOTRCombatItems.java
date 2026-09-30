@@ -649,10 +649,11 @@ public final class LOTRCombatItems {
     public static final Item BLUE_DWARVEN_BOOTS = registerArmor("blue_dwarven_boots",
             LOTRToolMaterials.BLUE_DWARVEN_ARMOR, ArmorType.BOOTS);
 
-    // LOTRItemMountArmor(material, Mount.HORSE). Properties.horseArmor is the
-    // vanilla equivalent and reads ArmorType.BODY off the material, which is
-    // where the original's chestplate + leggings figure now lives; the barding
-    // texture is the horse_body layer of the material's equipment asset.
+    // LOTRItemMountArmor(material, Mount.HORSE). registerHorseArmor builds on
+    // Properties.horseArmor, which reads ArmorType.BODY off the material (the
+    // original's chestplate + leggings figure), but lets only the LOTR horse,
+    // pony and zebra wear it. LOTRMountRenderer draws it from the material's
+    // horse_body sheet, which is in 1.7.10's horse layout.
     public static final Item GONDOR_HORSE_ARMOR = registerHorseArmor("gondor_horse_armor",
             LOTRToolMaterials.GONDOR_ARMOR);
     public static final Item ROHIRRIC_HORSE_ARMOR = registerHorseArmor("rohirric_horse_armor",
@@ -673,19 +674,20 @@ public final class LOTRCombatItems {
     public static final Item UMBARIC_HORSE_ARMOR = registerHorseArmor("umbaric_horse_armor",
             LOTRToolMaterials.UMBARIC_ARMOR);
 
-    // LOTRItemMountArmor(material, Mount.WARG). Registered as PLAIN ITEMS, not
-    // through Properties.horseArmor: that restricts a barding to
-    // #minecraft:can_wear_horse_armor, and a warg is not a horse. There are no
-    // wargs in the port at all yet, so there is nothing for these to go on --
-    // they carry their name and their sprite and wait. When the warg lands they
-    // want an Equippable on EquipmentSlot.BODY allowed to that entity, and a
-    // warg_body layer on each material's asset.
-    public static final Item ISENGARD_WARG_ARMOR = register("isengard_warg_armor",
-            LOTRModifiableItem::new, new Item.Properties().stacksTo(1));
-    public static final Item MORDOR_WARG_ARMOR = register("mordor_warg_armor",
-            LOTRModifiableItem::new, new Item.Properties().stacksTo(1));
-    public static final Item ANGMAR_WARG_ARMOR = register("angmar_warg_armor",
-            LOTRModifiableItem::new, new Item.Properties().stacksTo(1));
+    // LOTRItemMountArmor(material, Mount.WARG): any warg may wear it (isValid).
+    // Its protection is the material's chestplate and leggings together.
+    public static final Item ISENGARD_WARG_ARMOR = registerMountArmor("isengard_warg_armor",
+            LOTRToolMaterials.URUK_ARMOR, () -> LOTREntities.MORDOR_WARG, () -> LOTREntities.URUK_WARG, () -> LOTREntities.GUNDABAD_WARG,
+            () -> LOTREntities.ANGMAR_WARG, () -> LOTREntities.MORDOR_WARG_BOMBARDIER, () -> LOTREntities.URUK_WARG_BOMBARDIER,
+            () -> LOTREntities.ANGMAR_WARG_BOMBARDIER);
+    public static final Item MORDOR_WARG_ARMOR = registerMountArmor("mordor_warg_armor",
+            LOTRToolMaterials.MORDOR_ARMOR, () -> LOTREntities.MORDOR_WARG, () -> LOTREntities.URUK_WARG, () -> LOTREntities.GUNDABAD_WARG,
+            () -> LOTREntities.ANGMAR_WARG, () -> LOTREntities.MORDOR_WARG_BOMBARDIER, () -> LOTREntities.URUK_WARG_BOMBARDIER,
+            () -> LOTREntities.ANGMAR_WARG_BOMBARDIER);
+    public static final Item ANGMAR_WARG_ARMOR = registerMountArmor("angmar_warg_armor",
+            LOTRToolMaterials.ANGMAR_ARMOR, () -> LOTREntities.MORDOR_WARG, () -> LOTREntities.URUK_WARG, () -> LOTREntities.GUNDABAD_WARG,
+            () -> LOTREntities.ANGMAR_WARG, () -> LOTREntities.MORDOR_WARG_BOMBARDIER, () -> LOTREntities.URUK_WARG_BOMBARDIER,
+            () -> LOTREntities.ANGMAR_WARG_BOMBARDIER);
 
     // LOTRItemOrcSkullStaff: a LOTRItemSword(MORDOR), so 2.5 + 4 = 6.5, whose
     // getIsRepairable OVERRIDES rather than extends -- skulls mend it and orc
@@ -1084,10 +1086,9 @@ public final class LOTRCombatItems {
     public static final Item POISONED_TAURETHRIM_DART = register("poisoned_taurethrim_dart",
             props -> new LOTRDartItem(true, props), new Item.Properties());
 
-    // rhinoArmorHalfTroll. A plain item for the reason the warg armours are
-    // plain: a rhinoceros is not a horse and there are no rhinos in the port.
-    public static final Item HALF_TROLL_RHINO_ARMOR = register("half_troll_rhino_armor",
-            LOTRModifiableItem::new, new Item.Properties().stacksTo(1));
+    // rhinoArmorHalfTroll: LOTRItemMountArmor(HALF_TROLL, Mount.RHINO).
+    public static final Item HALF_TROLL_RHINO_ARMOR = registerMountArmor("half_troll_rhino_armor",
+            LOTRToolMaterials.HALF_TROLL_ARMOR, () -> LOTREntities.RHINO);
 
     // The Galadhrim cloak: a HITHLAIN set, hood and tunic rather than helmet
     // and chestplate.
@@ -1100,12 +1101,11 @@ public final class LOTRCombatItems {
     public static final Item GALADHRIM_CLOAK_BOOTS = registerArmor("galadhrim_cloak_boots",
             LOTRToolMaterials.GALADHRIM_CLOAK_ARMOR, ArmorType.BOOTS);
 
-    // boarArmorDwarven and boarArmorBlueDwarven. Plain items, as the warg and
-    // rhino armours are: a boar is not a horse, and there are none in the port.
-    public static final Item DWARVEN_BOAR_ARMOR = register("dwarven_boar_armor",
-            LOTRModifiableItem::new, new Item.Properties().stacksTo(1));
-    public static final Item BLUE_DWARVEN_BOAR_ARMOR = register("blue_dwarven_boar_armor",
-            LOTRModifiableItem::new, new Item.Properties().stacksTo(1));
+    // boarArmorDwarven and boarArmorBlueDwarven: Mount.BOAR.
+    public static final Item DWARVEN_BOAR_ARMOR = registerMountArmor("dwarven_boar_armor",
+            LOTRToolMaterials.DWARVEN_ARMOR, () -> LOTREntities.WILD_BOAR);
+    public static final Item BLUE_DWARVEN_BOAR_ARMOR = registerMountArmor("blue_dwarven_boar_armor",
+            LOTRToolMaterials.BLUE_DWARVEN_ARMOR, () -> LOTREntities.WILD_BOAR);
 
     // pikeHalfTroll and pikeIron: LOTRItemPike, so 2.5 + 4 = 6.5 and 2.0 + 4 =
     // 6.0, both on the long polearm's slow swing and six blocks of reach.
@@ -1445,10 +1445,9 @@ public final class LOTRCombatItems {
     public static final Item POISONED_ANGMAR_DAGGER = register("poisoned_angmar_dagger",
             LOTRPoisonedDaggerItem::new, dagger(LOTRToolMaterials.ANGMAR, 0.0f));
 
-    // elkArmorWoodElven. A plain item for the reason the warg armours are plain:
-    // there are no elks in the port to wear it.
-    public static final Item WOOD_ELVEN_ELK_ARMOR = register("wood_elven_elk_armor",
-            LOTRModifiableItem::new, new Item.Properties().stacksTo(1));
+    // elkArmorWoodElven: Mount.ELK.
+    public static final Item WOOD_ELVEN_ELK_ARMOR = registerMountArmor("wood_elven_elk_armor",
+            LOTRToolMaterials.WOOD_ELVEN_ARMOR, () -> LOTREntities.ELK);
 
     // blackUrukBow: LOTRItemBow(BLACK_URUK, 1.25).setDrawTime(30).
     public static final Item BLACK_URUK_BOW = register("black_uruk_bow",

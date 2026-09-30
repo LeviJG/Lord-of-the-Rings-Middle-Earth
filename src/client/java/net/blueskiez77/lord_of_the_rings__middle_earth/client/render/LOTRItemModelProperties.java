@@ -1,9 +1,13 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.render;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-
 import com.mojang.serialization.MapCodec;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStructureSpawnerItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructures;
+
+import net.minecraft.client.color.item.ItemTintSource;
+import net.minecraft.client.color.item.ItemTintSources;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperties;
 import net.minecraft.client.renderer.item.properties.conditional.ConditionalItemModelProperty;
@@ -23,7 +27,9 @@ import org.jspecify.annotations.Nullable;
  * holder through a registered condition, and vanilla has none for sneaking or
  * swinging, so these two add them as {@code lotr:sneaking} and
  * {@code lotr:swinging}. ConditionalItemModelProperties.ID_MAPPER is widened to
- * public by Fabric's transitive access wideners.
+ * public by Fabric's transitive access wideners. The structure spawner adds
+ * {@code lotr:village_structure} and its tint {@code lotr:structure_spawner}
+ * (ItemTintSources.ID_MAPPER widened by the mod's own).
  */
 public final class LOTRItemModelProperties {
 
@@ -36,6 +42,48 @@ public final class LOTRItemModelProperties {
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "sneaking"), Sneaking.MAP_CODEC);
         ConditionalItemModelProperties.ID_MAPPER.put(
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "swinging"), Swinging.MAP_CODEC);
+        ConditionalItemModelProperties.ID_MAPPER.put(
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "village_structure"), VillageStructure.MAP_CODEC);
+        ItemTintSources.ID_MAPPER.put(
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "structure_spawner"), StructureSpawnerTint.MAP_CODEC);
+    }
+
+    /** A structure spawner for a village, drawn with the village icon. */
+    public record VillageStructure() implements ConditionalItemModelProperty {
+        public static final MapCodec<VillageStructure> MAP_CODEC = MapCodec.unit(new VillageStructure());
+
+        @Override
+        public boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity owner,
+                int seed, ItemDisplayContext displayContext) {
+            LOTRStructures.StructureInfo info = LOTRStructureSpawnerItem.getStructure(stack);
+            return info != null && info.isVillage();
+        }
+
+        @Override
+        public MapCodec<VillageStructure> type() {
+            return MAP_CODEC;
+        }
+    }
+
+    /** getColorFromItemStack: the structure's background colour, then its foreground; white for none. */
+    public record StructureSpawnerTint(int layer) implements ItemTintSource {
+        public static final MapCodec<StructureSpawnerTint> MAP_CODEC = com.mojang.serialization.codecs.RecordCodecBuilder
+                .mapCodec(i -> i.group(com.mojang.serialization.Codec.INT.fieldOf("layer")
+                        .forGetter(StructureSpawnerTint::layer)).apply(i, StructureSpawnerTint::new));
+
+        @Override
+        public int calculate(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity owner) {
+            LOTRStructures.StructureInfo info = LOTRStructureSpawnerItem.getStructure(stack);
+            if (info == null) {
+                return -1;
+            }
+            return 0xFF000000 | (this.layer == 0 ? info.colorBackground() : info.colorForeground());
+        }
+
+        @Override
+        public MapCodec<StructureSpawnerTint> type() {
+            return MAP_CODEC;
+        }
     }
 
     /** entityliving.isSneaking(). */

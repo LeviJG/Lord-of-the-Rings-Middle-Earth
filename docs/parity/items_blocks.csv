@@ -1525,7 +1525,7 @@ item,battleaxeRohan,battleaxeRohan,,Rohirric Battleaxe,rohirric_battleaxe,ported
 item,battleaxeTauredain,battleaxeTauredain,,Taurethrim Battleaxe,taurethrim_battleaxe,ported,name,
 item,battleaxeUruk,battleaxeUruk,,Uruk Battleaxe,uruk_battleaxe,ported,name,
 item,battleaxeUtumno,battleaxeUtumno,,Utumno Battleaxe,utumno_battleaxe,ported,name,
-item,bearRug,bearRug,,Bearskin Rug,,missing,,
+item,bearRug,bearRug,,Bearskin Rug,light_bear_rug,ported,name,also: dark_bear_rug black_bear_rug
 item,berryPieItem,berryPie,,Berry Pie,berry_pie,ported,name,
 item,blackUrukBow,blackUrukBow,,Black Uruk Bow,black_uruk_bow,ported,name,
 item,blackUrukSteel,blackUrukSteel,,Black Uruk Steel Ingot,black_uruk_steel_ingot,ported,name,
@@ -1804,7 +1804,7 @@ item,gateGear,gateGear,,Gate Gears,gate_gears,ported,name,
 item,gemsbokHide,gemsbokHide,,Gemsbok Hide,gemsbok_hide,ported,name,
 item,gemsbokHorn,gemsbokHorn,,Gemsbok Horn,gemsbok_horn,ported,name,
 item,gildedIron,gildedIron,,Gilded Iron Ingot,gilded_iron_ingot,ported,name,
-item,giraffeRug,giraffeRug,,Giraffeskin Rug,,missing,,
+item,giraffeRug,giraffeRug,,Giraffeskin Rug,giraffe_rug,ported,name,
 item,glamdring,glamdring,,Glamdring,glamdring,ported,name,
 item,gobletCopper,gobletCopper,,Copper Goblet,copper_goblet,ported,name,also: copper_goblet_block
 item,gobletGold,gobletGold,,Golden Goblet,golden_goblet,ported,name,also: golden_goblet_block
@@ -2010,7 +2010,7 @@ item,lionBedItem,lionBed,,Lion Fur Bed,lion_fur_bed,ported,override,
 item,lionCooked,lionCooked,,Cooked Lion,cooked_lion,ported,name,
 item,lionFur,lionFur,,Lion Fur,lion_fur,ported,name,
 item,lionRaw,lionRaw,,Raw Lion,raw_lion,ported,name,
-item,lionRug,lionRug,,Lionskin Rug,,missing,,
+item,lionRug,lionRug,,Lionskin Rug,lion_rug,ported,name,also: lioness_rug
 item,longspearDolAmroth,longspearDolAmroth,,Dol Amroth Longspear,dol_amroth_longspear,ported,name,
 item,longspearElven,longspearElven,,Galadhrim Longspear,galadhrim_longspear,ported,name,
 item,longspearHighElven,longspearHighElven,,Lindon Longspear,lindon_longspear,ported,name,
@@ -2210,7 +2210,7 @@ item,silverNugget,silverNugget,,Silver Nugget,silver_nugget,ported,name,
 item,silverRing,silverRing,,Silver Ring,silver_ring,ported,name,
 item,skullCup,skullCup,,Skull Cup,skull_cup,ported,name,also: skull_cup_block
 item,sling,sling,,Sling,sling,ported,name,
-item,spawnEgg,spawnEgg,,Spawn,,missing,override,user: keep; add with NPCs/animals (Track D)
+item,spawnEgg,spawnEgg,,Spawn,deer_spawn_egg,ported,override,one item per creature now (LOTRSpawnItems); each egg is added with its creature in D8/D9
 item,spearAngmar,spearAngmar,,Angmar Spear,angmar_spear,ported,name,
 item,spearArnor,spearArnor,,Arnorian Spear,arnor_spear,ported,name,
 item,spearBlackNumenorean,spearBlackNumenorean,,Black Númenórean Spear,black_numenorean_spear,ported,name,
@@ -2313,7 +2313,7 @@ item,wargArmorUruk,wargArmorUruk,,Isengard Warg Armor,isengard_warg_armor,ported
 item,wargBone,wargBone,,Warg Bone,warg_bone,ported,name,
 item,fur,wargFur,,Fur,fur,ported,name,
 item,furBedItem,wargFurBed,,Fur Bed,fur_bed,ported,name,
-item,wargskinRug,wargskinRug,,Wargskin Rug,,missing,,
+item,wargskinRug,wargskinRug,,Wargskin Rug,brown_wargskin_rug,ported,name,also: grey_wargskin_rug black_wargskin_rug white_wargskin_rug ice_wargskin_rug obsidian_wargskin_rug fire_wargskin_rug
 item,waterskin,waterskin,,Waterskin,waterskin,ported,name,
 item,wildberry,wildberry,,Wildberries,wildberries,ported,name,
 item,wineGlass,wineGlass,,Wine Glass,wine_glass,ported,name,also: wine_glass_block

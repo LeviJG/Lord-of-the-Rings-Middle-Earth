@@ -1,6 +1,8 @@
 {
   "values": [
-    "minecraft:parrot",
-    "minecraft:chicken"
+    "lotr:bird",
+    "lotr:crebain",
+    "lotr:gorcrow",
+    "lotr:seagull"
   ]
 }

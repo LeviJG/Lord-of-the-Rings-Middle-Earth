@@ -246,9 +246,15 @@ public class LOTRStoneTrollEntity extends Entity {
         // times 0.98 on the floor. Transcribed rather than replaced with
         // applyGravity() so a statue slides and settles the way it always did.
         this.setDeltaMovement(this.getDeltaMovement().subtract(0.0, 0.03999999910593033, 0.0));
-        // func_145771_j: nudged out of any block it has ended up inside.
-        this.moveTowardsClosestSpace(this.getX(),
-                (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
+        // func_145771_j: nudged out of any block it has ended up inside. Only
+        // then: the 1.7.10 method returned early when the box was clear, but
+        // 26.2's moveTowardsClosestSpace always pushes (its callers check, as
+        // ItemEntity does). Unguarded, it lifted the statue every tick and it
+        // jittered on the spot.
+        if (!this.level().noCollision(this, this.getBoundingBox().deflate(1.0E-7))) {
+            this.moveTowardsClosestSpace(this.getX(),
+                    (this.getBoundingBox().minY + this.getBoundingBox().maxY) / 2.0, this.getZ());
+        }
         this.move(net.minecraft.world.entity.MoverType.SELF, this.getDeltaMovement());
 
         float friction = 0.98f;

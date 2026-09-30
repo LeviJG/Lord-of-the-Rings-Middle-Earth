@@ -3,13 +3,17 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTROrcBombBlock;
 
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import org.jspecify.annotations.Nullable;
@@ -27,12 +31,16 @@ import org.jspecify.annotations.Nullable;
  * its own -- 0.04 of gravity a tick, 0.98 drag, and on the ground a 0.7 skid
  * with a 0.5 bounce, where vanilla TNT simply stops.
  *
- * <p>NOT ported: droppedByHiredUnit and droppedTargetingPlayer, which asked
- * LOTRMod.canGrief whether a bomb an NPC dropped should break terrain. There are
- * no NPCs in the port, so every bomb here is one a player set off, and every
- * bomb breaks terrain -- which is what droppedByPlayer meant.
+ * <p>Whether it breaks terrain depends on who set it off: a bomb a player lit
+ * (or a dispenser, or another blast) always does; one an orc bombardier
+ * dropped does only if the orc was hired or aiming at a player, and then only
+ * with mobGriefing on (LOTRMod.canGrief); otherwise it only hurts.
  */
 public class LOTROrcBombEntity extends PrimedTnt {
+
+    public boolean droppedByPlayer;
+    public boolean droppedByHiredUnit;
+    public boolean droppedTargetingPlayer;
 
     public LOTROrcBombEntity(EntityType<? extends LOTROrcBombEntity> type, Level level) {
         super(type, level);
@@ -90,9 +98,16 @@ public class LOTROrcBombEntity extends PrimedTnt {
         // the bomb, so setting the owner bought nothing: kills read as the
         // bomb's. damageSources().explosion(this, getOwner()) is what credits
         // them to whoever lit it.
+        boolean doTerrainDamage = false;
+        if (this.droppedByPlayer) {
+            doTerrainDamage = true;
+        } else if (this.droppedByHiredUnit || this.droppedTargetingPlayer) {
+            doTerrainDamage = this.level() instanceof ServerLevel server
+                    && server.getGameRules().get(GameRules.MOB_GRIEFING);
+        }
         this.level().explode(this, this.damageSources().explosion(this, this.getOwner()), null,
                 this.getX(), this.getY(), this.getZ(), power, isFireBomb(),
-                Level.ExplosionInteraction.TNT);
+                doTerrainDamage ? Level.ExplosionInteraction.TNT : Level.ExplosionInteraction.NONE);
     }
 
     @Override
@@ -130,4 +145,19 @@ public class LOTROrcBombEntity extends PrimedTnt {
         }
     }
 
+    @Override
+    protected void addAdditionalSaveData(ValueOutput output) {
+        super.addAdditionalSaveData(output);
+        output.putBoolean("DroppedByPlayer", this.droppedByPlayer);
+        output.putBoolean("DroppedByHiredUnit", this.droppedByHiredUnit);
+        output.putBoolean("DroppedTargetingPlayer", this.droppedTargetingPlayer);
+    }
+
+    @Override
+    protected void readAdditionalSaveData(ValueInput input) {
+        super.readAdditionalSaveData(input);
+        this.droppedByPlayer = input.getBooleanOr("DroppedByPlayer", false);
+        this.droppedByHiredUnit = input.getBooleanOr("DroppedByHiredUnit", false);
+        this.droppedTargetingPlayer = input.getBooleanOr("DroppedTargetingPlayer", false);
+    }
 }

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRMirkwoodSpiderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
@@ -39,8 +41,9 @@ public class LOTRMysteryWebEntity extends ThrowableItemProjectile {
 
     /**
      * onImpact: nothing when it hits its thrower. Otherwise, one time in four,
-     * a small Mirkwood spider comes out to attack the thrower; when there is no
-     * spider -- always, until Mirkwood spiders are ported -- it pops out one
+     * a small Mirkwood spider comes out to attack the thrower -- where one fits,
+     * a block to the -X/-Z side at one of four heights; when there is no
+     * spider it pops out one
      * piece of Mirkwood chest loot, or one time in 500 a stack of 64 melon
      * slices, which waits ten ticks before it can be picked up.
      */
@@ -51,8 +54,33 @@ public class LOTRMysteryWebEntity extends ThrowableItemProjectile {
         }
         super.onHit(hit);
         if (level() instanceof ServerLevel server) {
-            // rand.nextInt(4) == 0 would try the spider here (Track D).
-            this.random.nextInt(4);
+            boolean spawnedSpider = false;
+            if (this.random.nextInt(4) == 0) {
+                LOTRMirkwoodSpiderEntity spider = LOTREntities.MIRKWOOD_SPIDER.create(server, EntitySpawnReason.MOB_SUMMONED);
+                if (spider != null) {
+                    spider.setSpiderScale(0);
+                    // The original's loops ran i and k from -2 to -2: one column.
+                    for (int j = 0; j <= 3 && !spawnedSpider; ++j) {
+                        spider.snapTo(getX() - 1.0, getY() + j / 3.0, getZ() - 1.0, this.random.nextFloat() * 360.0f, 0.0f);
+                        if (!server.noCollision(spider)) {
+                            continue;
+                        }
+                        spider.finalizeSpawn(server, server.getCurrentDifficultyAt(spider.blockPosition()),
+                                EntitySpawnReason.MOB_SUMMONED, null);
+                        server.addFreshEntity(spider);
+                        if (getOwner() instanceof LivingEntity thrower) {
+                            spider.setTarget(thrower);
+                        }
+                        spawnedSpider = true;
+                    }
+                }
+            }
+            if (spawnedSpider) {
+                playSound(SoundEvents.ITEM_PICKUP, 0.2f,
+                        ((this.random.nextFloat() - this.random.nextFloat()) * 0.7f + 1.0f) * 2.0f);
+                discard();
+                return;
+            }
             ItemStack item = LOTRChestContents.pick(LOTRChestContents.MIRKWOOD_LOOT, this.random, false);
             if (this.random.nextInt(500) == 0) {
                 item = new ItemStack(Items.MELON_SLICE, 64);

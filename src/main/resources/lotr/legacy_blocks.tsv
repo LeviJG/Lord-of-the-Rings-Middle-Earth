@@ -1,0 +1,1578 @@
+# old LOTRMod block field	metadata (* any)	port block	forced properties	unlocalized name (as scans name it)
+Gravel	*	minecraft:gravel		Gravel
+aleHornBlock	*	lotr:ale_horn_block		aleHorn
+aleHornGoldBlock	*	lotr:golden_ale_horn_block		aleHornGold
+alloyForge	*	lotr:alloy_forge		alloyForge
+angmarTable	*	lotr:angmar_crafting_table		angmarCraftingTable
+appleCrumble	*	lotr:apple_crumble		appleCrumble
+aridGrass	*	lotr:arid_grass		aridGrass
+asphodel	*	lotr:asphodel		asphodel
+athelas	*	lotr:athelas		athelas
+bananaBlock	*	lotr:banana_block		banana
+bananaCake	*	lotr:banana_cake		bananaCake
+barrel	*	lotr:barrel		barrel
+beacon	*	lotr:beacon_of_gondor		beacon
+berryBush	0	lotr:berry_bush_blueberry	has_berries=false	berryBush
+berryBush	1	lotr:berry_bush_blackberry	has_berries=false	berryBush
+berryBush	10	lotr:berry_bush_raspberry		berryBush
+berryBush	11	lotr:berry_bush_cranberry		berryBush
+berryBush	12	lotr:berry_bush_elderberry		berryBush
+berryBush	13	lotr:berry_bush_wildberry		berryBush
+berryBush	2	lotr:berry_bush_raspberry	has_berries=false	berryBush
+berryBush	3	lotr:berry_bush_cranberry	has_berries=false	berryBush
+berryBush	4	lotr:berry_bush_elderberry	has_berries=false	berryBush
+berryBush	5	lotr:berry_bush_wildberry	has_berries=false	berryBush
+berryBush	8	lotr:berry_bush_blueberry		berryBush
+berryBush	9	lotr:berry_bush_blackberry		berryBush
+berryPie	*	lotr:berry_pie		berryPie
+birdCage	0	lotr:bronze_bird_cage		birdCage
+birdCage	1	lotr:iron_bird_cage		birdCage
+birdCage	2	lotr:silver_bird_cage		birdCage
+birdCage	3	lotr:gold_bird_cage		birdCage
+birdCageWood	0	lotr:wooden_bird_cage		birdCageWood
+blackroot	*	lotr:blackroot		blackroot
+blockGem	0	lotr:topaz_block		blockGem
+blockGem	1	lotr:amethyst_block		blockGem
+blockGem	2	lotr:sapphire_block		blockGem
+blockGem	3	lotr:ruby_block		blockGem
+blockGem	4	lotr:amber_block		blockGem
+blockGem	5	lotr:diamond_block		blockGem
+blockGem	6	lotr:pearl_block		blockGem
+blockGem	7	lotr:opal_block		blockGem
+blockGem	8	lotr:coral_block		blockGem
+blockGem	9	lotr:emerald_block		blockGem
+blueDwarfBars	*	lotr:blue_dwarf_bars		blueDwarfBars
+blueDwarvenTable	*	lotr:blue_dwarven_crafting_table		blueDwarvenCraftingTable
+bluebell	*	lotr:bluebell		bluebell
+boneBlock	*	lotr:bone_block		boneBlock
+breeTable	*	lotr:bree_crafting_table		breeCraftingTable
+brick	0	lotr:mordor_brick		brick
+brick	1	lotr:gondor_brick		brick
+brick	10	lotr:dwarven_mithril_brick		brick
+brick	11	lotr:galadhrim_brick		brick
+brick	12	lotr:mossy_galadhrim_brick		brick
+brick	13	lotr:cracked_galadhrim_brick		brick
+brick	14	lotr:blue_rock_brick		brick
+brick	15	lotr:near_harad_brick		brick
+brick	2	lotr:mossy_gondor_brick		brick
+brick	3	lotr:cracked_gondor_brick		brick
+brick	4	lotr:rohan_brick		brick
+brick	5	lotr:carved_gondor_brick		brick
+brick	6	lotr:dwarven_brick		brick
+brick	7	lotr:cracked_mordor_brick		brick
+brick	8	lotr:dwarven_silver_brick		brick
+brick	9	lotr:dwarven_gold_brick		brick
+brick2	0	lotr:angmar_brick		brick2
+brick2	1	lotr:cracked_angmar_brick		brick2
+brick2	10	lotr:carved_mordor_brick		brick2
+brick2	11	lotr:numenorean_brick		brick2
+brick2	12	lotr:carved_dwarven_brick		brick2
+brick2	13	lotr:carved_high_elven_brick		brick2
+brick2	14	lotr:carved_wood_elven_brick		brick2
+brick2	15	lotr:carved_galadhrim_brick		brick2
+brick2	2	lotr:red_rock_brick		brick2
+brick2	3	lotr:arnor_brick		brick2
+brick2	4	lotr:mossy_arnor_brick		brick2
+brick2	5	lotr:cracked_arnor_brick		brick2
+brick2	6	lotr:carved_arnor_brick		brick2
+brick2	7	lotr:uruk_brick		brick2
+brick2	8	lotr:dol_guldur_brick		brick2
+brick2	9	lotr:cracked_dol_guldur_brick		brick2
+brick3	0	lotr:blue_carved_brick		brick3
+brick3	1	lotr:red_carved_brick		brick3
+brick3	10	lotr:morwaith_brick		brick3
+brick3	11	lotr:near_harad_cracked_brick		brick3
+brick3	12	lotr:glowing_dwarven_brick		brick3
+brick3	13	lotr:near_harad_red_brick		brick3
+brick3	14	lotr:near_harad_red_cracked_brick		brick3
+brick3	15	lotr:near_harad_red_carved_brick		brick3
+brick3	2	lotr:high_elven_brick		brick3
+brick3	3	lotr:mossy_high_elven_brick		brick3
+brick3	4	lotr:cracked_high_elven_brick		brick3
+brick3	5	lotr:wood_elven_brick		brick3
+brick3	6	lotr:mossy_wood_elven_brick		brick3
+brick3	7	lotr:cracked_wood_elven_brick		brick3
+brick3	8	lotr:near_harad_carved_brick		brick3
+brick3	9	lotr:dol_amroth_brick		brick3
+brick4	0	lotr:tauredain_brick		brick4
+brick4	1	lotr:tauredain_mossy_brick		brick4
+brick4	10	lotr:wood_elven_silver_brick		brick4
+brick4	11	lotr:high_elven_gold_brick		brick4
+brick4	12	lotr:galadhrim_gold_brick		brick4
+brick4	13	lotr:wood_elven_gold_brick		brick4
+brick4	14	lotr:obsidian_dwarven_brick		brick4
+brick4	15	lotr:chalk_brick		brick4
+brick4	2	lotr:tauredain_cracked_brick		brick4
+brick4	3	lotr:tauredain_gold_brick		brick4
+brick4	4	lotr:tauredain_obsidian_brick		brick4
+brick4	5	lotr:cracked_dwarven_brick		brick4
+brick4	6	lotr:carved_black_gondor_brick		brick4
+brick4	7	lotr:near_harad_lapis_brick		brick4
+brick4	8	lotr:high_elven_silver_brick		brick4
+brick4	9	lotr:galadhrim_silver_brick		brick4
+brick5	0	lotr:mud_brick		brick5
+brick5	1	lotr:dale_brick		brick5
+brick5	10	lotr:cracked_gondor_cobblebrick		brick5
+brick5	11	lotr:rhun_brick		brick5
+brick5	12	lotr:rhun_carved_brick		brick5
+brick5	13	lotr:rhun_mossy_brick		brick5
+brick5	14	lotr:rhun_cracked_brick		brick5
+brick5	15	lotr:rhun_flowers_brick		brick5
+brick5	2	lotr:dorwinion_brick		brick5
+brick5	3	lotr:carved_rohan_brick		brick5
+brick5	4	lotr:mossy_dorwinion_brick		brick5
+brick5	5	lotr:cracked_dorwinion_brick		brick5
+brick5	6	lotr:carved_dorwinion_brick		brick5
+brick5	7	lotr:dorwinion_flowers_brick		brick5
+brick5	8	lotr:gondor_cobblebrick		brick5
+brick5	9	lotr:mossy_gondor_cobblebrick		brick5
+brick6	0	lotr:rhun_gold_brick		brick6
+brick6	1	lotr:rhun_red_brick		brick6
+brick6	10	lotr:angmar_snow_brick		brick6
+brick6	11	lotr:mossy_dol_guldur_brick		brick6
+brick6	12	lotr:carved_dol_guldur_brick		brick6
+brick6	13	lotr:cracked_morwaith_brick		brick6
+brick6	2	lotr:rhun_red_carved_brick		brick6
+brick6	3	lotr:dale_mossy_brick		brick6
+brick6	4	lotr:dale_cracked_brick		brick6
+brick6	5	lotr:dale_carved_brick		brick6
+brick6	6	lotr:umbar_brick		brick6
+brick6	7	lotr:cracked_umbar_brick		brick6
+brick6	8	lotr:carved_umbar_brick		brick6
+brick6	9	lotr:carved_black_umbar_brick		brick6
+bronzeBars	*	lotr:bronze_bars		bronzeBars
+butterflyJar	0	lotr:butterfly_jar		butterflyJar
+buttonBlueRock	*	lotr:blue_rock_button		buttonBlueRock
+buttonChalk	*	lotr:chalk_button		buttonChalk
+buttonGondorRock	*	lotr:gondor_rock_button		buttonGondorRock
+buttonMordorRock	*	lotr:mordor_rock_button		buttonMordorRock
+buttonRedRock	*	lotr:red_rock_button		buttonRedRock
+buttonRohanRock	*	lotr:rohan_rock_button		buttonRohanRock
+ceramicMugBlock	*	lotr:ceramic_mug_block		ceramicMug
+ceramicPlateBlock	*	lotr:stoneware_plate		ceramicPlate
+chandelier	0	lotr:bronze_chandelier		chandelier
+chandelier	1	lotr:iron_chandelier		chandelier
+chandelier	10	lotr:high_elven_chandelier		chandelier
+chandelier	11	lotr:blue_dwarven_chandelier		chandelier
+chandelier	12	lotr:morgul_chandelier		chandelier
+chandelier	13	lotr:blue_mallorn_chandelier		chandelier
+chandelier	14	lotr:mallorn_gold_chandelier		chandelier
+chandelier	15	lotr:green_mallorn_chandelier		chandelier
+chandelier	2	lotr:silver_chandelier		chandelier
+chandelier	3	lotr:gold_chandelier		chandelier
+chandelier	4	lotr:mithril_chandelier		chandelier
+chandelier	5	lotr:silver_mallorn_chandelier		chandelier
+chandelier	6	lotr:wood_elven_chandelier		chandelier
+chandelier	7	lotr:orc_chandelier		chandelier
+chandelier	8	lotr:dwarven_chandelier		chandelier
+chandelier	9	lotr:uruk_chandelier		chandelier
+cherryPie	*	lotr:cherry_pie		cherryPie
+chestAncientHarad	*	lotr:ancient_haradric_chest		chestAncientHarad
+chestBasket	*	lotr:reed_basket		chestBasket
+chestLebethron	*	lotr:lebethron_casket		chestLebethron
+chestMallorn	*	lotr:mallorn_box		chestMallorn
+chestStone	*	lotr:stone_chest		chestStone
+clayTile	*	lotr:clay_tile		clayTile
+clayTileDyed	0	lotr:clay_tile_dyed_white		clayTileDyed
+clayTileDyed	1	lotr:clay_tile_dyed_orange		clayTileDyed
+clayTileDyed	10	lotr:clay_tile_dyed_purple		clayTileDyed
+clayTileDyed	11	lotr:clay_tile_dyed_blue		clayTileDyed
+clayTileDyed	12	lotr:clay_tile_dyed_brown		clayTileDyed
+clayTileDyed	13	lotr:clay_tile_dyed_green		clayTileDyed
+clayTileDyed	14	lotr:clay_tile_dyed_red		clayTileDyed
+clayTileDyed	15	lotr:clay_tile_dyed_black		clayTileDyed
+clayTileDyed	2	lotr:clay_tile_dyed_magenta		clayTileDyed
+clayTileDyed	3	lotr:clay_tile_dyed_light_blue		clayTileDyed
+clayTileDyed	4	lotr:clay_tile_dyed_yellow		clayTileDyed
+clayTileDyed	5	lotr:clay_tile_dyed_lime		clayTileDyed
+clayTileDyed	6	lotr:clay_tile_dyed_pink		clayTileDyed
+clayTileDyed	7	lotr:clay_tile_dyed_gray		clayTileDyed
+clayTileDyed	8	lotr:clay_tile_dyed_silver		clayTileDyed
+clayTileDyed	9	lotr:clay_tile_dyed_cyan		clayTileDyed
+clover	0	lotr:clover		clover
+clover	1	lotr:four_leaf_clover		clover
+cobblebrick	0	lotr:drystone		cobblebrick
+commandTable	*	lotr:table_of_command		commandTable
+cornStalk	*	lotr:corn_stalk		cornStalk
+corruptMallorn	*	lotr:corrupt_mallorn		corruptMallorn
+daleTable	*	lotr:dale_crafting_table		daleCraftingTable
+dalishPastry	*	lotr:dalish_pastry		dalishPastry
+dateBlock	*	lotr:date_block		date
+daub	*	lotr:daub		daub
+deadPlant	*	lotr:dead_marsh_plant		deadMarshPlant
+dirtPath	0	minecraft:dirt_path		dirtPath
+dirtPath	1	lotr:dirt_path_mud		dirtPath
+dolAmrothTable	*	lotr:dol_amroth_crafting_table		dolAmrothCraftingTable
+dolGuldurTable	*	lotr:dol_guldur_crafting_table		dolGuldurCraftingTable
+doorAcacia	*	minecraft:acacia_door		doorAcacia
+doorAlmond	*	lotr:almond_door		doorAlmond
+doorApple	*	lotr:apple_door		doorApple
+doorAspen	*	lotr:aspen_door		doorAspen
+doorBanana	*	lotr:banana_door		doorBanana
+doorBaobab	*	lotr:baobab_door		doorBaobab
+doorBeech	*	lotr:beech_door		doorBeech
+doorBirch	*	minecraft:birch_door		doorBirch
+doorCedar	*	lotr:cedar_door		doorCedar
+doorCharred	*	lotr:charred_door		doorCharred
+doorCherry	*	lotr:cherry_door		doorCherry
+doorChestnut	*	lotr:chestnut_door		doorChestnut
+doorCypress	*	lotr:cypress_door		doorCypress
+doorDarkOak	*	minecraft:dark_oak_door		doorDarkOak
+doorDatePalm	*	lotr:date_palm_door		doorDatePalm
+doorDragon	*	lotr:dragon_door		doorDragon
+doorFir	*	lotr:fir_door		doorFir
+doorGreenOak	*	lotr:green_oak_door		doorGreenOak
+doorHolly	*	lotr:holly_door		doorHolly
+doorJungle	*	minecraft:jungle_door		doorJungle
+doorKanuka	*	lotr:kanuka_door		doorKanuka
+doorLairelosse	*	lotr:lairelosse_door		doorLairelosse
+doorLarch	*	lotr:larch_door		doorLarch
+doorLebethron	*	lotr:lebethron_door		doorLebethron
+doorLemon	*	lotr:lemon_door		doorLemon
+doorLime	*	lotr:lime_door		doorLime
+doorMahogany	*	lotr:mahogany_door		doorMahogany
+doorMallorn	*	lotr:mallorn_door		doorMallorn
+doorMango	*	lotr:mango_door		doorMango
+doorMangrove	*	lotr:mangrove_door		doorMangrove
+doorMaple	*	lotr:maple_door		doorMaple
+doorMirkOak	*	lotr:mirk_oak_door		doorMirkOak
+doorOlive	*	lotr:olive_door		doorOlive
+doorOrange	*	lotr:orange_door		doorOrange
+doorPalm	*	lotr:palm_door		doorPalm
+doorPear	*	lotr:pear_door		doorPear
+doorPine	*	lotr:pine_door		doorPine
+doorPlum	*	lotr:plum_door		doorPlum
+doorPomegranate	*	lotr:pomegranate_door		doorPomegranate
+doorRedwood	*	lotr:redwood_door		doorRedwood
+doorRotten	*	lotr:rotten_door		doorRotten
+doorShirePine	*	lotr:shire_pine_door		doorShirePine
+doorSpruce	*	minecraft:spruce_door		doorSpruce
+doorWillow	*	lotr:willow_door		doorWillow
+dorwinionTable	*	lotr:dorwinion_crafting_table		dorwinionCraftingTable
+doubleFlower	0	lotr:black_iris		doubleFlower
+doubleFlower	1	lotr:yellow_iris		doubleFlower
+doubleFlower	2	lotr:hibiscus		doubleFlower
+doubleFlower	3	lotr:flame_of_harad		doubleFlower
+driedReeds	*	lotr:dried_reeds		driedReeds
+dunlendingTable	*	lotr:dunlending_crafting_table		dunlendingCraftingTable
+dwarfBars	*	lotr:dwarf_bars		dwarfBars
+dwarfHerb	*	lotr:dwarf_herb		dwarfHerb
+dwarvenBed	*	lotr:dwarven_bed		dwarvenBed
+dwarvenTable	*	lotr:dwarven_crafting_table		dwarvenCraftingTable
+dwarvenDoor	*	lotr:dwarven_door		dwarvenDoor
+dwarvenDoorIthildin	*	lotr:ithildin_dwarven_door		dwarvenDoorIthildin
+dwarvenForge	*	lotr:dwarven_forge		dwarvenForge
+elanor	*	lotr:elanor		elanor
+elvenBed	*	lotr:galadhrim_bed		elvenBed
+elvenTable	*	lotr:elven_crafting_table		elvenCraftingTable
+elvenForge	*	lotr:elven_forge		elvenForge
+entJar	*	lotr:ent_jar		entJar
+fallenLeaves	*	lotr:fallen_oak_leaves		fallenLeaves
+fallenLeavesLOTR	*	lotr:fallen_mallorn_leaves		fallenLeavesLOTR
+fallenLeavesLOTR2	*	lotr:fallen_mallorn_leaves		fallenLeavesLOTR2
+fallenLeavesLOTR3	*	lotr:fallen_mallorn_leaves		fallenLeavesLOTR3
+fangornPlant	0	lotr:fangorn_plant_green		fangornPlant
+fangornPlant	1	lotr:fangorn_plant_brown		fangornPlant
+fangornPlant	2	lotr:fangorn_plant_gold		fangornPlant
+fangornPlant	3	lotr:fangorn_plant_yellow		fangornPlant
+fangornPlant	4	lotr:fangorn_plant_red		fangornPlant
+fangornPlant	5	lotr:fangorn_plant_silver		fangornPlant
+fangornRiverweed	*	lotr:fangorn_riverweed		fangornRiverweed
+fence	0	lotr:shire_pine_fence		fence
+fence	1	lotr:mallorn_fence		fence
+fence	10	lotr:holly_fence		fence
+fence	11	lotr:banana_fence		fence
+fence	12	lotr:maple_fence		fence
+fence	13	lotr:larch_fence		fence
+fence	14	lotr:date_palm_fence		fence
+fence	15	lotr:mangrove_fence		fence
+fence	2	lotr:mirk_oak_fence		fence
+fence	3	lotr:charred_fence		fence
+fence	4	lotr:apple_fence		fence
+fence	5	lotr:pear_fence		fence
+fence	6	lotr:cherry_fence		fence
+fence	7	lotr:mango_fence		fence
+fence	8	lotr:lebethron_fence		fence
+fence	9	lotr:beech_fence		fence
+fence2	0	lotr:chestnut_fence		fence2
+fence2	1	lotr:baobab_fence		fence2
+fence2	10	lotr:cypress_fence		fence2
+fence2	11	lotr:olive_fence		fence2
+fence2	12	lotr:aspen_fence		fence2
+fence2	13	lotr:green_oak_fence		fence2
+fence2	14	lotr:lairelosse_fence		fence2
+fence2	15	lotr:almond_fence		fence2
+fence2	2	lotr:cedar_fence		fence2
+fence2	3	lotr:fir_fence		fence2
+fence2	4	lotr:pine_fence		fence2
+fence2	5	lotr:lemon_fence		fence2
+fence2	6	lotr:orange_fence		fence2
+fence2	7	lotr:lime_fence		fence2
+fence2	8	lotr:mahogany_fence		fence2
+fence2	9	lotr:willow_fence		fence2
+fence3	0	lotr:plum_fence		fence3
+fence3	1	lotr:redwood_fence		fence3
+fence3	2	lotr:pomegranate_fence		fence3
+fence3	3	lotr:palm_fence		fence3
+fence3	4	lotr:dragon_fence		fence3
+fence3	5	lotr:kanuka_fence		fence3
+fenceGateAcacia	*	minecraft:acacia_fence_gate		fenceGateAcacia
+fenceGateAlmond	*	lotr:almond_fence_gate		fenceGateAlmond
+fenceGateApple	*	lotr:apple_fence_gate		fenceGateApple
+fenceGateAspen	*	lotr:aspen_fence_gate		fenceGateAspen
+fenceGateBanana	*	lotr:banana_fence_gate		fenceGateBanana
+fenceGateBaobab	*	lotr:baobab_fence_gate		fenceGateBaobab
+fenceGateBeech	*	lotr:beech_fence_gate		fenceGateBeech
+fenceGateBirch	*	minecraft:birch_fence_gate		fenceGateBirch
+fenceGateCedar	*	lotr:cedar_fence_gate		fenceGateCedar
+fenceGateCharred	*	lotr:charred_fence_gate		fenceGateCharred
+fenceGateCherry	*	lotr:cherry_fence_gate		fenceGateCherry
+fenceGateChestnut	*	lotr:chestnut_fence_gate		fenceGateChestnut
+fenceGateCypress	*	lotr:cypress_fence_gate		fenceGateCypress
+fenceGateDarkOak	*	minecraft:dark_oak_fence_gate		fenceGateDarkOak
+fenceGateDatePalm	*	lotr:date_palm_fence_gate		fenceGateDatePalm
+fenceGateDragon	*	lotr:dragon_fence_gate		fenceGateDragon
+fenceGateFir	*	lotr:fir_fence_gate		fenceGateFir
+fenceGateGreenOak	*	lotr:green_oak_fence_gate		fenceGateGreenOak
+fenceGateHolly	*	lotr:holly_fence_gate		fenceGateHolly
+fenceGateJungle	*	minecraft:jungle_fence_gate		fenceGateJungle
+fenceGateKanuka	*	lotr:kanuka_fence_gate		fenceGateKanuka
+fenceGateLairelosse	*	lotr:lairelosse_fence_gate		fenceGateLairelosse
+fenceGateLarch	*	lotr:larch_fence_gate		fenceGateLarch
+fenceGateLebethron	*	lotr:lebethron_fence_gate		fenceGateLebethron
+fenceGateLemon	*	lotr:lemon_fence_gate		fenceGateLemon
+fenceGateLime	*	lotr:lime_fence_gate		fenceGateLime
+fenceGateMahogany	*	lotr:mahogany_fence_gate		fenceGateMahogany
+fenceGateMallorn	*	lotr:mallorn_fence_gate		fenceGateMallorn
+fenceGateMango	*	lotr:mango_fence_gate		fenceGateMango
+fenceGateMangrove	*	lotr:mangrove_fence_gate		fenceGateMangrove
+fenceGateMaple	*	lotr:maple_fence_gate		fenceGateMaple
+fenceGateMirkOak	*	lotr:mirk_oak_fence_gate		fenceGateMirkOak
+fenceGateOlive	*	lotr:olive_fence_gate		fenceGateOlive
+fenceGateOrange	*	lotr:orange_fence_gate		fenceGateOrange
+fenceGatePalm	*	lotr:palm_fence_gate		fenceGatePalm
+fenceGatePear	*	lotr:pear_fence_gate		fenceGatePear
+fenceGatePine	*	lotr:pine_fence_gate		fenceGatePine
+fenceGatePlum	*	lotr:plum_fence_gate		fenceGatePlum
+fenceGatePomegranate	*	lotr:pomegranate_fence_gate		fenceGatePomegranate
+fenceGateRedwood	*	lotr:redwood_fence_gate		fenceGateRedwood
+fenceGateRotten	*	lotr:rotten_fence_gate		fenceGateRotten
+fenceGateShirePine	*	lotr:shire_pine_fence_gate		fenceGateShirePine
+fenceGateSpruce	*	minecraft:spruce_fence_gate		fenceGateSpruce
+fenceGateWillow	*	lotr:willow_fence_gate		fenceGateWillow
+fenceRotten	0	lotr:rotten_fence		fenceRotten
+flaxCrop	*	lotr:flax_crop		flax
+flaxPlant	*	lotr:flax_plant		flaxPlant
+flowerPot	*	minecraft:flower_pot		flowerPot
+fruitLeaves	0	lotr:apple_leaves		fruitLeaves
+fruitLeaves	1	lotr:pear_leaves		fruitLeaves
+fruitLeaves	2	lotr:cherry_leaves		fruitLeaves
+fruitLeaves	3	lotr:mango_leaves		fruitLeaves
+fruitSapling	0	lotr:apple_sapling		fruitSapling
+fruitSapling	1	lotr:pear_sapling		fruitSapling
+fruitSapling	2	lotr:cherry_sapling		fruitSapling
+fruitSapling	3	lotr:mango_sapling		fruitSapling
+fruitWood	0	lotr:apple_log		fruitWood
+fruitWood	1	lotr:pear_log		fruitWood
+fruitWood	2	lotr:cherry_log		fruitWood
+fruitWood	3	lotr:mango_log		fruitWood
+galadhrimBars	*	lotr:galadhrim_bars		galadhrimBars
+galadhrimWoodBars	*	lotr:galadhrim_wood_bars		galadhrimWoodBars
+gateBronzeBars	*	lotr:gate_bronze_bars		gateBronzeBars
+gateDolAmroth	*	lotr:dol_amroth_gate		gateDolAmroth
+gateDwarven	*	lotr:dwarven_gate		gateDwarven
+gateElven	*	lotr:elven_gate		gateElven
+gateGold	*	lotr:gold_gate		gateGold
+gateGondor	*	lotr:gondor_gate		gateGondor
+gateHighElven	*	lotr:high_elven_gate		gateHighElven
+gateHobbitBlue	*	lotr:blue_hobbit_gate		gateHobbitBlue
+gateHobbitGreen	*	lotr:green_hobbit_gate		gateHobbitGreen
+gateHobbitRed	*	lotr:red_hobbit_gate		gateHobbitRed
+gateHobbitYellow	*	lotr:yellow_hobbit_gate		gateHobbitYellow
+gateIronBars	*	lotr:gate_iron_bars		gateIronBars
+gateMithril	*	lotr:mithril_gate		gateMithril
+gateNearHarad	*	lotr:near_harad_gate		gateNearHarad
+gateOrc	*	lotr:orc_gate		gateOrc
+gateRhun	*	lotr:rhun_gate		gateRhun
+gateRohan	*	lotr:rohan_gate		gateRohan
+gateSilver	*	lotr:silver_gate		gateSilver
+gateTauredain	*	lotr:tauredain_gate		gateTauredain
+gateUruk	*	lotr:uruk_gate		gateUruk
+gateWoodElven	*	lotr:wood_elven_gate		gateWoodElven
+gateWooden	*	lotr:wooden_gate		gateWooden
+gateWoodenCross	*	lotr:gate_wooden_cross		gateWoodenCross
+glass	*	lotr:glass		glass
+glassBottleBlock	*	lotr:bottle_block		glassBottle
+glassPane	*	lotr:glass_pane		glassPane
+gobletCopperBlock	*	lotr:copper_goblet_block		gobletCopper
+gobletGoldBlock	*	lotr:golden_goblet_block		gobletGold
+gobletSilverBlock	*	lotr:silver_goblet_block		gobletSilver
+gobletWoodBlock	*	lotr:wooden_cup_block		gobletWood
+goldBars	*	lotr:gold_bars		goldBars
+gondorianTable	*	lotr:gondorian_crafting_table		gondorianCraftingTable
+goran	*	lotr:goran		goran
+grapevine	*	lotr:grapevine		grapevine
+grapevineRed	*	lotr:red_grapevine		grapevineRed
+grapevineWhite	*	lotr:green_grapevine		grapevineWhite
+guldurilBrick	0	lotr:gulduril_mordor_brick		guldurilBrick
+guldurilBrick	1	lotr:gulduril_cracked_mordor_brick		guldurilBrick
+guldurilBrick	2	lotr:gulduril_angmar_brick		guldurilBrick
+guldurilBrick	3	lotr:gulduril_cracked_angmar_brick		guldurilBrick
+guldurilBrick	4	lotr:gulduril_dol_guldur_brick		guldurilBrick
+guldurilBrick	5	lotr:gulduril_cracked_dol_guldur_brick		guldurilBrick
+guldurilBrick	6	lotr:gulduril_gondor_brick		guldurilBrick
+guldurilBrick	7	lotr:gulduril_mossy_gondor_brick		guldurilBrick
+guldurilBrick	8	lotr:gulduril_cracked_gondor_brick		guldurilBrick
+guldurilBrick	9	lotr:gulduril_numenorean_brick		guldurilBrick
+gulfTable	*	lotr:gulf_crafting_table		gulfCraftingTable
+gundabadTable	*	lotr:gundabad_crafting_table		gundabadCraftingTable
+halfTrollTable	*	lotr:half_troll_crafting_table		halfTrollCraftingTable
+haradFlower	0	lotr:red_harad_flower		haradFlower
+haradFlower	1	lotr:yellow_harad_flower		haradFlower
+haradFlower	2	lotr:harad_flower_daisy		haradFlower
+haradFlower	3	lotr:pink_harad_flower		haradFlower
+hearth	*	lotr:hearth		hearth
+highElfBars	*	lotr:high_elf_bars		highElfBars
+highElfWoodBars	*	lotr:high_elf_wood_bars		highElfWoodBars
+highElvenBed	*	lotr:high_elven_bed		highElvenBed
+highElvenTable	*	lotr:high_elven_crafting_table		highElvenCraftingTable
+highElvenTorch	*	lotr:high_elven_torch		highElvenTorch
+hithlainLadder	*	lotr:hithlain_ladder		hithlainLadder
+hobbitTable	*	lotr:hobbit_crafting_table		hobbitCraftingTable
+hobbitOven	*	lotr:hobbit_oven		hobbitOven
+kebabBlock	*	lotr:kebab_block		kebabBlock
+kebabStand	*	lotr:kebab_stand		kebabStand
+kebabStandSand	*	lotr:kebab_stand_sand		kebabStandSand
+lavender	*	lotr:lavender		lavender
+leaves	0	lotr:shire_pine_leaves		leaves
+leaves	1	lotr:mallorn_leaves		leaves
+leaves	2	lotr:mirk_oak_leaves		leaves
+leaves	3	lotr:mirk_oak_red_leaves		leaves
+leaves2	0	lotr:lebethron_leaves		leaves2
+leaves2	1	lotr:beech_leaves		leaves2
+leaves2	2	lotr:holly_leaves		leaves2
+leaves2	3	lotr:banana_leaves		leaves2
+leaves3	0	lotr:maple_leaves		leaves3
+leaves3	1	lotr:larch_leaves		leaves3
+leaves3	2	lotr:date_palm_leaves		leaves3
+leaves3	3	lotr:mangrove_leaves		leaves3
+leaves4	0	lotr:chestnut_leaves		leaves4
+leaves4	1	lotr:baobab_leaves		leaves4
+leaves4	2	lotr:cedar_leaves		leaves4
+leaves4	3	lotr:fir_leaves		leaves4
+leaves5	0	lotr:pine_leaves		leaves5
+leaves5	1	lotr:lemon_leaves		leaves5
+leaves5	2	lotr:orange_leaves		leaves5
+leaves5	3	lotr:lime_leaves		leaves5
+leaves6	0	lotr:mahogany_leaves		leaves6
+leaves6	1	lotr:willow_leaves		leaves6
+leaves6	2	lotr:cypress_leaves		leaves6
+leaves6	3	lotr:olive_leaves		leaves6
+leaves7	0	lotr:aspen_leaves		leaves7
+leaves7	1	lotr:green_oak_leaves		leaves7
+leaves7	2	lotr:lairelosse_leaves		leaves7
+leaves7	3	lotr:almond_leaves		leaves7
+leaves8	0	lotr:plum_leaves		leaves8
+leaves8	1	lotr:redwood_leaves		leaves8
+leaves8	2	lotr:pomegranate_leaves		leaves8
+leaves8	3	lotr:palm_leaves		leaves8
+leaves9	0	lotr:dragon_leaves		leaves9
+leaves9	1	lotr:kanuka_leaves		leaves9
+leekCrop	*	lotr:leek_crop		leek
+lemonCake	*	lotr:lemon_cake		lemonCake
+lettuceCrop	*	lotr:lettuce_crop		lettuce
+lionBed	*	lotr:lion_fur_bed		lionBed
+mallornLadder	*	lotr:mallorn_ladder		mallornLadder
+mallornTorchSilver	*	lotr:mallorn_torch		mallornTorch
+mallornTorchBlue	*	lotr:blue_mallorn_torch		mallornTorchBlue
+mallornTorchGold	*	lotr:mallorn_gold_torch		mallornTorchGold
+mallornTorchGreen	*	lotr:green_mallorn_torch		mallornTorchGreen
+marigold	*	lotr:marigold		marigold
+marshLights	*	lotr:marsh_lights		marshLights
+marzipanBlock	*	lotr:marchpane_block		marzipanBlock
+mechanisedRailOff	*	lotr:mechanised_rail_off		mechanisedRailOff
+mechanisedRailOn	*	lotr:mechanised_rail	powered=true	mechanisedRailOn
+millstone	*	lotr:millstone		millstone
+mirkVines	*	lotr:mirk_vines		mirkVines
+mithrilBars	*	lotr:mithril_bars		mithrilBars
+mobSpawner	*	minecraft:spawner		mobSpawner
+mordorDirt	*	lotr:mordor_dirt		mordorDirt
+mordorGrass	*	lotr:mordor_grass		mordorGrass
+mordorGravel	*	lotr:mordor_gravel		mordorGravel
+mordorMoss	*	lotr:mordor_moss		mordorMoss
+mordorThorn	*	lotr:mordor_thorn		mordorThorn
+moredainTable	*	lotr:moredain_crafting_table		moredainCraftingTable
+morgulTable	*	lotr:morgul_crafting_table		morgulCraftingTable
+morgulFlower	*	lotr:morgul_flower		morgulFlower
+morgulShroom	*	lotr:morgul_shroom		morgulShroom
+morgulTorch	*	lotr:morgul_torch		morgulTorch
+mud	0	lotr:mud		mud
+mud	1	lotr:barren_jungle_mud		mud
+mudFarmland	*	lotr:mud_farmland		mudFarmland
+mudGrass	*	lotr:mud_grass		mudGrass
+mugBlock	*	lotr:mug_block		mug
+nearHaradTable	*	lotr:near_harad_crafting_table		nearHaradCraftingTable
+niphredil	*	lotr:niphredil		niphredil
+obsidianGravel	*	lotr:obsidian_gravel		obsidianGravel
+orcBed	*	lotr:orc_bed		orcBed
+orcBomb	*	lotr:orc_bomb		orcBomb
+orcChain	*	lotr:orc_chain		orcChain
+orcForge	*	lotr:orc_forge		orcForge
+orcPlating	0	lotr:orc_plating_iron		orcPlating
+orcPlating	1	lotr:orc_plating_rust		orcPlating
+orcSteelBars	*	lotr:orc_steel_bars		orcSteelBars
+orcTorch	*	lotr:orc_torch		orcTorch
+oreCopper	*	minecraft:copper_ore		oreCopper
+oreGem	0	lotr:topaz_ore		oreGem
+oreGem	1	lotr:amethyst_ore		oreGem
+oreGem	2	lotr:sapphire_ore		oreGem
+oreGem	3	lotr:ruby_ore		oreGem
+oreGem	4	lotr:amber_ore		oreGem
+oreGem	5	lotr:diamond_ore		oreGem
+oreGem	6	lotr:opal_ore		oreGem
+oreGem	7	lotr:emerald_ore		oreGem
+oreGlowstone	*	lotr:glowstone_ore		oreGlowstone
+oreGulduril	0	lotr:gulduril_ore		oreGulduril
+oreGulduril	1	lotr:gulduril_ore		oreGulduril
+oreMithril	*	lotr:mithril_ore		oreMithril
+oreMorgulIron	0	lotr:morgul_iron_ore		oreMorgulIron
+oreMorgulIron	1	lotr:morgul_iron_ore		oreMorgulIron
+oreNaurite	*	lotr:naurite_ore		oreNaurite
+oreQuendite	*	lotr:quendite_ore		oreQuendite
+oreSalt	*	lotr:salt_ore		oreSalt
+oreSaltpeter	*	lotr:saltpeter_ore		oreSaltpeter
+oreSilver	*	lotr:silver_ore		oreSilver
+blockOreStorage	0	minecraft:copper_block		oreStorage
+blockOreStorage	1	lotr:tin_block		oreStorage
+blockOreStorage	10	lotr:naurite_block		oreStorage
+blockOreStorage	11	lotr:gulduril_block		oreStorage
+blockOreStorage	12	lotr:morgul_steel_block		oreStorage
+blockOreStorage	13	lotr:sulfur_block		oreStorage
+blockOreStorage	14	lotr:saltpeter_block		oreStorage
+blockOreStorage	15	lotr:blue_dwarf_steel_block		oreStorage
+blockOreStorage	2	lotr:bronze_block		oreStorage
+blockOreStorage	3	lotr:silver_block		oreStorage
+blockOreStorage	4	lotr:mithril_block		oreStorage
+blockOreStorage	5	lotr:orc_steel_block		oreStorage
+blockOreStorage	6	lotr:quendite_block		oreStorage
+blockOreStorage	7	lotr:dwarf_steel_block		oreStorage
+blockOreStorage	8	lotr:galvorn_block		oreStorage
+blockOreStorage	9	lotr:uruk_steel_block		oreStorage
+blockOreStorage2	0	lotr:black_uruk_steel_block		oreStorage2
+blockOreStorage2	1	lotr:elf_steel_block		oreStorage2
+blockOreStorage2	2	lotr:gilded_iron_block		oreStorage2
+blockOreStorage2	3	lotr:salt_block		oreStorage2
+oreSulfur	*	lotr:sulfur_ore		oreSulfur
+oreTin	*	lotr:tin_ore		oreTin
+pillar	0	lotr:dwarven_pillar		pillar
+pillar	1	lotr:galadhrim_pillar		pillar
+pillar	10	lotr:high_elven_pillar		pillar
+pillar	11	lotr:cracked_high_elven_pillar		pillar
+pillar	12	lotr:wood_elven_pillar		pillar
+pillar	13	lotr:cracked_wood_elven_pillar		pillar
+pillar	14	lotr:tauredain_pillar		pillar
+pillar	15	lotr:near_harad_red_pillar		pillar
+pillar	2	lotr:cracked_galadhrim_pillar		pillar
+pillar	3	lotr:blue_rock_pillar		pillar
+pillar	4	lotr:red_rock_pillar		pillar
+pillar	5	lotr:near_harad_pillar		pillar
+pillar	6	lotr:gondor_pillar		pillar
+pillar	7	lotr:mordor_pillar		pillar
+pillar	8	lotr:rohan_pillar		pillar
+pillar	9	lotr:numenorean_pillar		pillar
+pillar2	0	lotr:cracked_dwarven_pillar		pillar2
+pillar2	1	lotr:chalk_pillar		pillar2
+pillar2	10	lotr:umbar_pillar		pillar2
+pillar2	11	lotr:taur_gold_pillar		pillar2
+pillar2	12	lotr:taur_obsidian_pillar		pillar2
+pillar2	13	lotr:arnor_pillar		pillar2
+pillar2	14	lotr:cracked_arnor_pillar		pillar2
+pillar2	15	lotr:uruk_pillar		pillar2
+pillar2	2	lotr:stone_pillar		pillar2
+pillar2	3	lotr:brick_pillar		pillar2
+pillar2	4	lotr:angmar_pillar		pillar2
+pillar2	5	lotr:dale_pillar		pillar2
+pillar2	6	lotr:dorwinion_pillar		pillar2
+pillar2	7	lotr:mossy_dorwinion_pillar		pillar2
+pillar2	8	lotr:rhun_pillar		pillar2
+pillar2	9	lotr:rhun_red_pillar		pillar2
+pillar3	0	lotr:dol_guldur_pillar		pillar3
+pipeweedCrop	*	lotr:pipeweed_crop		pipeweed
+pipeweedPlant	*	lotr:pipeweed_plant		pipeweedPlant
+planks	0	lotr:shire_pine_planks		planks
+planks	1	lotr:mallorn_planks		planks
+planks	10	lotr:holly_planks		planks
+planks	11	lotr:banana_planks		planks
+planks	12	lotr:maple_planks		planks
+planks	13	lotr:larch_planks		planks
+planks	14	lotr:date_palm_planks		planks
+planks	15	lotr:mangrove_planks		planks
+planks	2	lotr:mirk_oak_planks		planks
+planks	3	lotr:charred_planks		planks
+planks	4	lotr:apple_planks		planks
+planks	5	lotr:pear_planks		planks
+planks	6	lotr:cherry_planks		planks
+planks	7	lotr:mango_planks		planks
+planks	8	lotr:lebethron_planks		planks
+planks	9	lotr:beech_planks		planks
+planks2	0	lotr:chestnut_planks		planks2
+planks2	1	lotr:baobab_planks		planks2
+planks2	10	lotr:cypress_planks		planks2
+planks2	11	lotr:olive_planks		planks2
+planks2	12	lotr:aspen_planks		planks2
+planks2	13	lotr:green_oak_planks		planks2
+planks2	14	lotr:lairelosse_planks		planks2
+planks2	15	lotr:almond_planks		planks2
+planks2	2	lotr:cedar_planks		planks2
+planks2	3	lotr:fir_planks		planks2
+planks2	4	lotr:pine_planks		planks2
+planks2	5	lotr:lemon_planks		planks2
+planks2	6	lotr:orange_planks		planks2
+planks2	7	lotr:lime_planks		planks2
+planks2	8	lotr:mahogany_planks		planks2
+planks2	9	lotr:willow_planks		planks2
+planks3	0	lotr:plum_planks		planks3
+planks3	1	lotr:redwood_planks		planks3
+planks3	2	lotr:pomegranate_planks		planks3
+planks3	3	lotr:palm_planks		planks3
+planks3	4	lotr:dragon_planks		planks3
+planks3	5	lotr:kanuka_planks		planks3
+planksRotten	0	lotr:rotten_planks		planksRotten
+plateBlock	*	lotr:fine_plate		plate
+pressurePlateBlueRock	*	lotr:blue_rock_pressure_plate		pressurePlateBlueRock
+pressurePlateChalk	*	lotr:chalk_pressure_plate		pressurePlateChalk
+pressurePlateGondorRock	*	lotr:gondor_rock_pressure_plate		pressurePlateGondorRock
+pressurePlateMordorRock	*	lotr:mordor_rock_pressure_plate		pressurePlateMordorRock
+pressurePlateRedRock	*	lotr:red_rock_pressure_plate		pressurePlateRedRock
+pressurePlateRohanRock	*	lotr:rohan_rock_pressure_plate		pressurePlateRohanRock
+quagmire	*	lotr:quagmire		quagmire
+quenditeGrass	*	lotr:quendite_grass		quenditeGrass
+rangerTable	*	lotr:ranger_crafting_table		rangerCraftingTable
+redBrick	0	lotr:red_brick_mossy		redBrick
+redBrick	1	lotr:red_brick_cracked		redBrick
+redClay	*	lotr:red_clay		redClay
+redSandstone	*	minecraft:red_sandstone		redSandstone
+reedBars	*	lotr:reed_bars		reedBars
+reeds	*	lotr:reeds		reeds
+remains	*	lotr:remains		remains
+rhunTable	*	lotr:rhun_crafting_table		rhunCraftingTable
+rhunFire	*	lotr:khamuls_fire		rhunFire
+rhunFireJar	*	lotr:khamuls_fire_jar		rhunFireJar
+rhunFlower	0	lotr:rhun_flower_chrys_blue		rhunFlower
+rhunFlower	1	lotr:rhun_flower_chrys_orange		rhunFlower
+rhunFlower	2	lotr:rhun_flower_chrys_pink		rhunFlower
+rhunFlower	3	lotr:rhun_flower_chrys_yellow		rhunFlower
+rhunFlower	4	lotr:rhun_flower_chrys_white		rhunFlower
+rivendellTable	*	lotr:rivendell_crafting_table		rivendellCraftingTable
+rock	0	lotr:mordor_rock		rock
+rock	1	lotr:gondor_rock		rock
+rock	2	lotr:rohan_rock		rock
+rock	3	lotr:blue_rock		rock
+rock	4	lotr:red_rock		rock
+rock	5	lotr:chalk		rock
+rohirricTable	*	lotr:rohirric_crafting_table		rohirricCraftingTable
+rope	*	lotr:rope		rope
+rottenLog	0	lotr:rotten_log		rottenLog
+rottenSlabSingle	0	lotr:rotten_slab		rottenSlabSingle
+sapling	0	lotr:shire_pine_sapling		sapling
+sapling	1	lotr:mallorn_sapling		sapling
+sapling	2	lotr:mirk_oak_sapling		sapling
+sapling	3	lotr:mirk_oak_red_sapling		sapling
+sapling2	0	lotr:lebethron_sapling		sapling2
+sapling2	1	lotr:beech_sapling		sapling2
+sapling2	2	lotr:holly_sapling		sapling2
+sapling2	3	lotr:banana_sapling		sapling2
+sapling3	0	lotr:maple_sapling		sapling3
+sapling3	1	lotr:larch_sapling		sapling3
+sapling3	2	lotr:date_palm_sapling		sapling3
+sapling3	3	lotr:mangrove_sapling		sapling3
+sapling4	0	lotr:chestnut_sapling		sapling4
+sapling4	1	lotr:baobab_sapling		sapling4
+sapling4	2	lotr:cedar_sapling		sapling4
+sapling4	3	lotr:fir_sapling		sapling4
+sapling5	0	lotr:pine_sapling		sapling5
+sapling5	1	lotr:lemon_sapling		sapling5
+sapling5	2	lotr:orange_sapling		sapling5
+sapling5	3	lotr:lime_sapling		sapling5
+sapling6	0	lotr:mahogany_sapling		sapling6
+sapling6	1	lotr:willow_sapling		sapling6
+sapling6	2	lotr:cypress_sapling		sapling6
+sapling6	3	lotr:olive_sapling		sapling6
+sapling7	0	lotr:aspen_sapling		sapling7
+sapling7	1	lotr:green_oak_sapling		sapling7
+sapling7	2	lotr:lairelosse_sapling		sapling7
+sapling7	3	lotr:almond_sapling		sapling7
+sapling8	0	lotr:plum_sapling		sapling8
+sapling8	1	lotr:redwood_sapling		sapling8
+sapling8	2	lotr:pomegranate_sapling		sapling8
+sapling8	3	lotr:palm_sapling		sapling8
+sapling9	0	lotr:dragon_sapling		sapling9
+sapling9	1	lotr:kanuka_sapling		sapling9
+scorchedSlabSingle	0	lotr:scorched_stone_slab		scorchedSlabSingle
+scorchedStone	*	lotr:scorched_stone		scorchedStone
+scorchedWall	*	lotr:scorched_stone_wall		scorchedWall
+shireHeather	*	lotr:shire_heather		shireHeather
+signCarved	*	lotr:carved_sign		signCarved
+signCarvedIthildin	*	lotr:carved_ithildin_sign		signCarvedIthildin
+silverBars	*	lotr:silver_bars		silverBars
+simbelmyne	*	lotr:simbelmyne		simbelmyne
+skullCupBlock	*	lotr:skull_cup_block		skullCup
+slabBoneSingle	0	lotr:bone_slab		slabBoneSingle
+slabClayTileDyedSingle	0	lotr:clay_tile_dyed_white_slab		slabClayTileDyedSingle
+slabClayTileDyedSingle	1	lotr:clay_tile_dyed_orange_slab		slabClayTileDyedSingle
+slabClayTileDyedSingle	2	lotr:clay_tile_dyed_magenta_slab		slabClayTileDyedSingle
+slabClayTileDyedSingle	3	lotr:clay_tile_dyed_light_blue_slab		slabClayTileDyedSingle
+slabClayTileDyedSingle	4	lotr:clay_tile_dyed_yellow_slab		slabClayTileDyedSingle
+slabClayTileDyedSingle	5	lotr:clay_tile_dyed_lime_slab		slabClayTileDyedSingle
+slabClayTileDyedSingle	6	lotr:clay_tile_dyed_pink_slab		slabClayTileDyedSingle
+slabClayTileDyedSingle	7	lotr:clay_tile_dyed_gray_slab		slabClayTileDyedSingle
+slabClayTileDyedSingle2	0	lotr:clay_tile_dyed_silver_slab		slabClayTileDyedSingle2
+slabClayTileDyedSingle2	1	lotr:clay_tile_dyed_cyan_slab		slabClayTileDyedSingle2
+slabClayTileDyedSingle2	2	lotr:clay_tile_dyed_purple_slab		slabClayTileDyedSingle2
+slabClayTileDyedSingle2	3	lotr:clay_tile_dyed_blue_slab		slabClayTileDyedSingle2
+slabClayTileDyedSingle2	4	lotr:clay_tile_dyed_brown_slab		slabClayTileDyedSingle2
+slabClayTileDyedSingle2	5	lotr:clay_tile_dyed_green_slab		slabClayTileDyedSingle2
+slabClayTileDyedSingle2	6	lotr:clay_tile_dyed_red_slab		slabClayTileDyedSingle2
+slabClayTileDyedSingle2	7	lotr:clay_tile_dyed_black_slab		slabClayTileDyedSingle2
+slabClayTileSingle	0	lotr:clay_tile_slab		slabClayTileSingle
+slabSingle	0	lotr:smooth_mordor_rock_slab		slabSingle
+slabSingle	1	lotr:mordor_brick_slab		slabSingle
+slabSingle	2	lotr:smooth_gondor_rock_slab		slabSingle
+slabSingle	3	lotr:gondor_brick_slab		slabSingle
+slabSingle	4	lotr:mossy_gondor_brick_slab		slabSingle
+slabSingle	5	lotr:cracked_gondor_brick_slab		slabSingle
+slabSingle	6	lotr:rohan_brick_slab		slabSingle
+slabSingle	7	lotr:dwarven_brick_slab		slabSingle
+slabSingle10	0	lotr:dale_pillar_slab		slabSingle10
+slabSingle10	1	lotr:mossy_dorwinion_brick_slab		slabSingle10
+slabSingle10	2	lotr:cracked_dorwinion_brick_slab		slabSingle10
+slabSingle10	3	lotr:dorwinion_flowers_brick_slab		slabSingle10
+slabSingle10	4	lotr:dorwinion_pillar_slab		slabSingle10
+slabSingle10	5	lotr:mossy_dorwinion_pillar_slab		slabSingle10
+slabSingle10	6	lotr:white_sandstone_slab		slabSingle10
+slabSingle10	7	lotr:mordor_rock_slab		slabSingle10
+slabSingle11	0	lotr:gondor_cobblebrick_slab		slabSingle11
+slabSingle11	1	lotr:mossy_gondor_cobblebrick_slab		slabSingle11
+slabSingle11	2	lotr:cracked_gondor_cobblebrick_slab		slabSingle11
+slabSingle11	3	lotr:gondor_rock_slab		slabSingle11
+slabSingle11	4	lotr:rohan_rock_slab		slabSingle11
+slabSingle11	5	lotr:blue_rock_slab		slabSingle11
+slabSingle11	6	lotr:red_rock_slab		slabSingle11
+slabSingle11	7	lotr:chalk_slab		slabSingle11
+slabSingle12	0	lotr:rhun_brick_slab		slabSingle12
+slabSingle12	1	lotr:rhun_mossy_brick_slab		slabSingle12
+slabSingle12	2	lotr:rhun_cracked_brick_slab		slabSingle12
+slabSingle12	3	lotr:rhun_flowers_brick_slab		slabSingle12
+slabSingle12	4	lotr:rhun_pillar_slab		slabSingle12
+slabSingle12	5	lotr:rhun_red_brick_slab		slabSingle12
+slabSingle12	6	lotr:rhun_red_pillar_slab		slabSingle12
+slabSingle12	7	lotr:angmar_snow_brick_slab		slabSingle12
+slabSingle13	0	lotr:dale_mossy_brick_slab		slabSingle13
+slabSingle13	1	lotr:dale_cracked_brick_slab		slabSingle13
+slabSingle13	2	lotr:umbar_brick_slab		slabSingle13
+slabSingle13	3	lotr:cracked_umbar_brick_slab		slabSingle13
+slabSingle13	4	lotr:umbar_pillar_slab		slabSingle13
+slabSingle13	5	lotr:taur_gold_pillar_slab		slabSingle13
+slabSingle13	6	lotr:taur_obsidian_pillar_slab		slabSingle13
+slabSingle13	7	lotr:arnor_pillar_slab		slabSingle13
+slabSingle14	0	lotr:cracked_arnor_pillar_slab		slabSingle14
+slabSingle14	1	lotr:mossy_dol_guldur_brick_slab		slabSingle14
+slabSingle14	2	lotr:cracked_morwaith_brick_slab		slabSingle14
+slabSingle14	3	lotr:uruk_pillar_slab		slabSingle14
+slabSingle14	4	lotr:dol_guldur_pillar_slab		slabSingle14
+slabSingle2	0	lotr:dwarven_pillar_slab		slabSingle2
+slabSingle2	1	lotr:smooth_rohan_rock_slab		slabSingle2
+slabSingle2	2	lotr:cracked_mordor_brick_slab		slabSingle2
+slabSingle2	3	lotr:galadhrim_brick_slab		slabSingle2
+slabSingle2	4	lotr:mossy_galadhrim_brick_slab		slabSingle2
+slabSingle2	5	lotr:cracked_galadhrim_brick_slab		slabSingle2
+slabSingle2	6	lotr:galadhrim_pillar_slab		slabSingle2
+slabSingle2	7	lotr:cracked_galadhrim_pillar_slab		slabSingle2
+slabSingle3	0	lotr:smooth_blue_rock_slab		slabSingle3
+slabSingle3	1	lotr:blue_rock_brick_slab		slabSingle3
+slabSingle3	2	lotr:blue_rock_pillar_slab		slabSingle3
+slabSingle3	3	lotr:angmar_brick_slab		slabSingle3
+slabSingle3	4	lotr:cracked_angmar_brick_slab		slabSingle3
+slabSingle3	5	lotr:smooth_red_rock_slab		slabSingle3
+slabSingle3	6	lotr:red_rock_brick_slab		slabSingle3
+slabSingle3	7	lotr:red_rock_pillar_slab		slabSingle3
+slabSingle4	0	lotr:near_harad_brick_slab		slabSingle4
+slabSingle4	1	lotr:arnor_brick_slab		slabSingle4
+slabSingle4	2	lotr:mossy_arnor_brick_slab		slabSingle4
+slabSingle4	3	lotr:cracked_arnor_brick_slab		slabSingle4
+slabSingle4	4	lotr:uruk_brick_slab		slabSingle4
+slabSingle4	5	lotr:dol_guldur_brick_slab		slabSingle4
+slabSingle4	6	lotr:cracked_dol_guldur_brick_slab		slabSingle4
+slabSingle4	7	lotr:near_harad_pillar_slab		slabSingle4
+slabSingle5	0	lotr:gondor_pillar_slab		slabSingle5
+slabSingle5	1	lotr:mordor_pillar_slab		slabSingle5
+slabSingle5	2	lotr:rohan_pillar_slab		slabSingle5
+slabSingle5	3	lotr:numenorean_brick_slab		slabSingle5
+slabSingle5	4	lotr:numenorean_pillar_slab		slabSingle5
+slabSingle5	5	lotr:high_elven_brick_slab		slabSingle5
+slabSingle5	6	lotr:mossy_high_elven_brick_slab		slabSingle5
+slabSingle5	7	lotr:cracked_high_elven_brick_slab		slabSingle5
+slabSingle6	0	lotr:high_elven_pillar_slab		slabSingle6
+slabSingle6	1	lotr:cracked_high_elven_pillar_slab		slabSingle6
+slabSingle6	2	lotr:wood_elven_brick_slab		slabSingle6
+slabSingle6	3	lotr:mossy_wood_elven_brick_slab		slabSingle6
+slabSingle6	4	lotr:cracked_wood_elven_brick_slab		slabSingle6
+slabSingle6	5	lotr:wood_elven_pillar_slab		slabSingle6
+slabSingle6	6	lotr:cracked_wood_elven_pillar_slab		slabSingle6
+slabSingle6	7	lotr:dol_amroth_brick_slab		slabSingle6
+slabSingle7	0	lotr:morwaith_brick_slab		slabSingle7
+slabSingle7	1	lotr:near_harad_cracked_brick_slab		slabSingle7
+slabSingle7	2	lotr:near_harad_red_brick_slab		slabSingle7
+slabSingle7	3	lotr:near_harad_red_cracked_brick_slab		slabSingle7
+slabSingle7	4	lotr:near_harad_red_pillar_slab		slabSingle7
+slabSingle7	5	minecraft:red_sandstone_slab		slabSingle7
+slabSingle7	6	lotr:cracked_dwarven_brick_slab		slabSingle7
+slabSingle7	7	lotr:cracked_dwarven_pillar_slab		slabSingle7
+slabSingle8	0	lotr:tauredain_brick_slab		slabSingle8
+slabSingle8	1	lotr:tauredain_mossy_brick_slab		slabSingle8
+slabSingle8	2	lotr:tauredain_cracked_brick_slab		slabSingle8
+slabSingle8	3	lotr:tauredain_gold_brick_slab		slabSingle8
+slabSingle8	4	lotr:tauredain_obsidian_brick_slab		slabSingle8
+slabSingle8	5	lotr:tauredain_pillar_slab		slabSingle8
+slabSingle8	6	lotr:obsidian_dwarven_brick_slab		slabSingle8
+slabSingle8	7	lotr:smooth_chalk_slab		slabSingle8
+slabSingle9	0	lotr:chalk_brick_slab		slabSingle9
+slabSingle9	1	lotr:chalk_pillar_slab		slabSingle9
+slabSingle9	2	lotr:stone_pillar_slab		slabSingle9
+slabSingle9	3	lotr:brick_pillar_slab		slabSingle9
+slabSingle9	4	lotr:angmar_pillar_slab		slabSingle9
+slabSingle9	5	lotr:mud_brick_slab		slabSingle9
+slabSingle9	6	lotr:dale_brick_slab		slabSingle9
+slabSingle9	7	lotr:dorwinion_brick_slab		slabSingle9
+slabSingleDirt	0	lotr:dirt_slab		slabSingleDirt
+slabSingleDirt	1	lotr:dirt_path_slab		slabSingleDirt
+slabSingleDirt	2	lotr:mud_slab		slabSingleDirt
+slabSingleDirt	3	lotr:mordor_dirt_slab		slabSingleDirt
+slabSingleDirt	4	lotr:dirt_path_mud_slab		slabSingleDirt
+slabSingleGravel	0	lotr:gravel_slab		slabSingleGravel
+slabSingleGravel	1	lotr:mordor_gravel_slab		slabSingleGravel
+slabSingleGravel	2	lotr:obsidian_gravel_slab		slabSingleGravel
+slabSingleSand	0	lotr:sand_slab		slabSingleSand
+slabSingleSand	1	lotr:red_sand_slab		slabSingleSand
+slabSingleSand	2	lotr:white_sand_slab		slabSingleSand
+slabSingleThatch	0	lotr:thatch_thatch_slab		slabSingleThatch
+slabSingleThatch	1	lotr:thatch_reed_slab		slabSingleThatch
+slabSingleV	0	minecraft:mossy_stone_brick_slab		slabSingleV
+slabSingleV	1	lotr:cracked_stone_brick_slab		slabSingleV
+slabSingleV	2	lotr:red_brick_mossy_slab		slabSingleV
+slabSingleV	3	lotr:red_brick_cracked_slab		slabSingleV
+slabSingleV	4	minecraft:mossy_cobblestone_slab		slabSingleV
+slabSingleV	5	minecraft:stone_slab		slabSingleV
+slabUtumnoSingle	0	lotr:fire_utumno_brick_slab		slabUtumnoSingle
+slabUtumnoSingle	1	lotr:ice_utumno_brick_slab		slabUtumnoSingle
+slabUtumnoSingle	2	lotr:obsidian_utumno_brick_slab		slabUtumnoSingle
+slabUtumnoSingle	3	lotr:fire_utumno_pillar_slab		slabUtumnoSingle
+slabUtumnoSingle	4	lotr:ice_utumno_pillar_slab		slabUtumnoSingle
+slabUtumnoSingle	5	lotr:obsidian_utumno_pillar_slab		slabUtumnoSingle
+slabUtumnoSingle2	0	lotr:utumno_ice_tile_brick_slab		slabUtumnoSingle2
+slabUtumnoSingle2	1	lotr:utumno_obsidian_tile_brick_slab		slabUtumnoSingle2
+slabUtumnoSingle2	2	lotr:utumno_fire_tile_brick_slab		slabUtumnoSingle2
+smoothStone	0	lotr:smooth_mordor_rock		smoothStone
+smoothStone	1	lotr:smooth_gondor_rock		smoothStone
+smoothStone	2	lotr:smooth_rohan_rock		smoothStone
+smoothStone	3	lotr:smooth_blue_rock		smoothStone
+smoothStone	4	lotr:smooth_red_rock		smoothStone
+smoothStone	5	lotr:smooth_chalk		smoothStone
+smoothStoneV	0	minecraft:smooth_stone		smoothStoneV
+stainedGlass	0	lotr:white_stained_glass		stainedGlass
+stainedGlass	1	lotr:orange_stained_glass		stainedGlass
+stainedGlass	10	lotr:purple_stained_glass		stainedGlass
+stainedGlass	11	lotr:blue_stained_glass		stainedGlass
+stainedGlass	12	lotr:brown_stained_glass		stainedGlass
+stainedGlass	13	lotr:green_stained_glass		stainedGlass
+stainedGlass	14	lotr:red_stained_glass		stainedGlass
+stainedGlass	15	lotr:black_stained_glass		stainedGlass
+stainedGlass	2	lotr:magenta_stained_glass		stainedGlass
+stainedGlass	3	lotr:light_blue_stained_glass		stainedGlass
+stainedGlass	4	lotr:yellow_stained_glass		stainedGlass
+stainedGlass	5	lotr:lime_stained_glass		stainedGlass
+stainedGlass	6	lotr:pink_stained_glass		stainedGlass
+stainedGlass	7	lotr:gray_stained_glass		stainedGlass
+stainedGlass	8	lotr:silver_stained_glass		stainedGlass
+stainedGlass	9	lotr:cyan_stained_glass		stainedGlass
+stainedGlassPane	0	lotr:white_stained_glass_pane		stainedGlassPane
+stainedGlassPane	1	lotr:orange_stained_glass_pane		stainedGlassPane
+stainedGlassPane	10	lotr:purple_stained_glass_pane		stainedGlassPane
+stainedGlassPane	11	lotr:blue_stained_glass_pane		stainedGlassPane
+stainedGlassPane	12	lotr:brown_stained_glass_pane		stainedGlassPane
+stainedGlassPane	13	lotr:green_stained_glass_pane		stainedGlassPane
+stainedGlassPane	14	lotr:red_stained_glass_pane		stainedGlassPane
+stainedGlassPane	15	lotr:black_stained_glass_pane		stainedGlassPane
+stainedGlassPane	2	lotr:magenta_stained_glass_pane		stainedGlassPane
+stainedGlassPane	3	lotr:light_blue_stained_glass_pane		stainedGlassPane
+stainedGlassPane	4	lotr:yellow_stained_glass_pane		stainedGlassPane
+stainedGlassPane	5	lotr:lime_stained_glass_pane		stainedGlassPane
+stainedGlassPane	6	lotr:pink_stained_glass_pane		stainedGlassPane
+stainedGlassPane	7	lotr:gray_stained_glass_pane		stainedGlassPane
+stainedGlassPane	8	lotr:silver_stained_glass_pane		stainedGlassPane
+stainedGlassPane	9	lotr:cyan_stained_glass_pane		stainedGlassPane
+stairsAlmond	*	lotr:almond_stairs		stairsAlmond
+stairsAngmarBrick	*	lotr:angmar_brick_stairs		stairsAngmarBrick
+stairsAngmarBrickCracked	*	lotr:cracked_angmar_brick_stairs		stairsAngmarBrickCracked
+stairsAngmarBrickSnow	*	lotr:angmar_snow_brick_stairs		stairsAngmarBrickSnow
+stairsApple	*	lotr:apple_stairs		stairsApple
+stairsArnorBrick	*	lotr:arnor_brick_stairs		stairsArnorBrick
+stairsArnorBrickCracked	*	lotr:cracked_arnor_brick_stairs		stairsArnorBrickCracked
+stairsArnorBrickMossy	*	lotr:mossy_arnor_brick_stairs		stairsArnorBrickMossy
+stairsAspen	*	lotr:aspen_stairs		stairsAspen
+stairsBanana	*	lotr:banana_stairs		stairsBanana
+stairsBaobab	*	lotr:baobab_stairs		stairsBaobab
+stairsBeech	*	lotr:beech_stairs		stairsBeech
+stairsBlackGondorBrick	*	lotr:numenorean_brick_stairs		stairsBlackGondorBrick
+stairsBlueRock	*	lotr:blue_rock_stairs		stairsBlueRock
+stairsBlueRockBrick	*	lotr:blue_rock_brick_stairs		stairsBlueRockBrick
+stairsBone	*	lotr:bone_stairs		stairsBone
+stairsBrickCracked	*	lotr:red_brick_cracked_stairs		stairsBrickCracked
+stairsBrickMossy	*	lotr:red_brick_mossy_stairs		stairsBrickMossy
+stairsCedar	*	lotr:cedar_stairs		stairsCedar
+stairsChalk	*	lotr:chalk_stairs		stairsChalk
+stairsChalkBrick	*	lotr:chalk_brick_stairs		stairsChalkBrick
+stairsCharred	*	lotr:charred_stairs		stairsCharred
+stairsCherry	*	lotr:cherry_stairs		stairsCherry
+stairsChestnut	*	lotr:chestnut_stairs		stairsChestnut
+stairsClayTile	*	lotr:clay_tile_stairs		stairsClayTile
+stairsClayTileDyedBlack	*	lotr:clay_tile_dyed_black_stairs		stairsClayTileDyedBlack
+stairsClayTileDyedBlue	*	lotr:clay_tile_dyed_blue_stairs		stairsClayTileDyedBlue
+stairsClayTileDyedBrown	*	lotr:clay_tile_dyed_brown_stairs		stairsClayTileDyedBrown
+stairsClayTileDyedCyan	*	lotr:clay_tile_dyed_cyan_stairs		stairsClayTileDyedCyan
+stairsClayTileDyedGray	*	lotr:clay_tile_dyed_gray_stairs		stairsClayTileDyedGray
+stairsClayTileDyedGreen	*	lotr:clay_tile_dyed_green_stairs		stairsClayTileDyedGreen
+stairsClayTileDyedLightBlue	*	lotr:clay_tile_dyed_light_blue_stairs		stairsClayTileDyedLightBlue
+stairsClayTileDyedLightGray	*	lotr:clay_tile_dyed_silver_stairs		stairsClayTileDyedLightGray
+stairsClayTileDyedLime	*	lotr:clay_tile_dyed_lime_stairs		stairsClayTileDyedLime
+stairsClayTileDyedMagenta	*	lotr:clay_tile_dyed_magenta_stairs		stairsClayTileDyedMagenta
+stairsClayTileDyedOrange	*	lotr:clay_tile_dyed_orange_stairs		stairsClayTileDyedOrange
+stairsClayTileDyedPink	*	lotr:clay_tile_dyed_pink_stairs		stairsClayTileDyedPink
+stairsClayTileDyedPurple	*	lotr:clay_tile_dyed_purple_stairs		stairsClayTileDyedPurple
+stairsClayTileDyedRed	*	lotr:clay_tile_dyed_red_stairs		stairsClayTileDyedRed
+stairsClayTileDyedWhite	*	lotr:clay_tile_dyed_white_stairs		stairsClayTileDyedWhite
+stairsClayTileDyedYellow	*	lotr:clay_tile_dyed_yellow_stairs		stairsClayTileDyedYellow
+stairsCobblestoneMossy	*	minecraft:mossy_cobblestone_stairs		stairsCobblestoneMossy
+stairsCypress	*	lotr:cypress_stairs		stairsCypress
+stairsDaleBrick	*	lotr:dale_brick_stairs		stairsDaleBrick
+stairsDaleBrickCracked	*	lotr:dale_cracked_brick_stairs		stairsDaleBrickCracked
+stairsDaleBrickMossy	*	lotr:dale_mossy_brick_stairs		stairsDaleBrickMossy
+stairsDatePalm	*	lotr:date_palm_stairs		stairsDatePalm
+stairsDolAmrothBrick	*	lotr:dol_amroth_brick_stairs		stairsDolAmrothBrick
+stairsDolGuldurBrick	*	lotr:dol_guldur_brick_stairs		stairsDolGuldurBrick
+stairsDolGuldurBrickCracked	*	lotr:cracked_dol_guldur_brick_stairs		stairsDolGuldurBrickCracked
+stairsDolGuldurBrickMossy	*	lotr:mossy_dol_guldur_brick_stairs		stairsDolGuldurBrickMossy
+stairsDorwinionBrick	*	lotr:dorwinion_brick_stairs		stairsDorwinionBrick
+stairsDorwinionBrickCracked	*	lotr:cracked_dorwinion_brick_stairs		stairsDorwinionBrickCracked
+stairsDorwinionBrickFlowers	*	lotr:dorwinion_flowers_brick_stairs		stairsDorwinionBrickFlowers
+stairsDorwinionBrickMossy	*	lotr:mossy_dorwinion_brick_stairs		stairsDorwinionBrickMossy
+stairsDragon	*	lotr:dragon_stairs		stairsDragon
+stairsDwarvenBrick	*	lotr:dwarven_brick_stairs		stairsDwarvenBrick
+stairsDwarvenBrickCracked	*	lotr:cracked_dwarven_brick_stairs		stairsDwarvenBrickCracked
+stairsDwarvenBrickObsidian	*	lotr:obsidian_dwarven_brick_stairs		stairsDwarvenBrickObsidian
+stairsElvenBrick	*	lotr:galadhrim_brick_stairs		stairsElvenBrick
+stairsElvenBrickCracked	*	lotr:cracked_galadhrim_brick_stairs		stairsElvenBrickCracked
+stairsElvenBrickMossy	*	lotr:mossy_galadhrim_brick_stairs		stairsElvenBrickMossy
+stairsFir	*	lotr:fir_stairs		stairsFir
+stairsGondorBrick	*	lotr:gondor_brick_stairs		stairsGondorBrick
+stairsGondorBrickCracked	*	lotr:cracked_gondor_brick_stairs		stairsGondorBrickCracked
+stairsGondorBrickMossy	*	lotr:mossy_gondor_brick_stairs		stairsGondorBrickMossy
+stairsGondorBrickRustic	*	lotr:gondor_cobblebrick_stairs		stairsGondorBrickRustic
+stairsGondorBrickRusticCracked	*	lotr:cracked_gondor_cobblebrick_stairs		stairsGondorBrickRusticCracked
+stairsGondorBrickRusticMossy	*	lotr:mossy_gondor_cobblebrick_stairs		stairsGondorBrickRusticMossy
+stairsGondorRock	*	lotr:gondor_rock_stairs		stairsGondorRock
+stairsGreenOak	*	lotr:green_oak_stairs		stairsGreenOak
+stairsHighElvenBrick	*	lotr:high_elven_brick_stairs		stairsHighElvenBrick
+stairsHighElvenBrickCracked	*	lotr:cracked_high_elven_brick_stairs		stairsHighElvenBrickCracked
+stairsHighElvenBrickMossy	*	lotr:mossy_high_elven_brick_stairs		stairsHighElvenBrickMossy
+stairsHolly	*	lotr:holly_stairs		stairsHolly
+stairsKanuka	*	lotr:kanuka_stairs		stairsKanuka
+stairsLairelosse	*	lotr:lairelosse_stairs		stairsLairelosse
+stairsLarch	*	lotr:larch_stairs		stairsLarch
+stairsLebethron	*	lotr:lebethron_stairs		stairsLebethron
+stairsLemon	*	lotr:lemon_stairs		stairsLemon
+stairsLime	*	lotr:lime_stairs		stairsLime
+stairsMahogany	*	lotr:mahogany_stairs		stairsMahogany
+stairsMallorn	*	lotr:mallorn_stairs		stairsMallorn
+stairsMango	*	lotr:mango_stairs		stairsMango
+stairsMangrove	*	lotr:mangrove_stairs		stairsMangrove
+stairsMaple	*	lotr:maple_stairs		stairsMaple
+stairsMirkOak	*	lotr:mirk_oak_stairs		stairsMirkOak
+stairsMordorBrick	*	lotr:mordor_brick_stairs		stairsMordorBrick
+stairsMordorBrickCracked	*	lotr:cracked_mordor_brick_stairs		stairsMordorBrickCracked
+stairsMordorRock	*	lotr:mordor_rock_stairs		stairsMordorRock
+stairsMoredainBrick	*	lotr:morwaith_brick_stairs		stairsMoredainBrick
+stairsMorwaithBrickCracked	*	lotr:cracked_morwaith_brick_stairs		stairsMorwaithBrickCracked
+stairsMudBrick	*	lotr:mud_brick_stairs		stairsMudBrick
+stairsNearHaradBrick	*	lotr:near_harad_brick_stairs		stairsNearHaradBrick
+stairsNearHaradBrickCracked	*	lotr:near_harad_cracked_brick_stairs		stairsNearHaradBrickCracked
+stairsNearHaradBrickRed	*	lotr:near_harad_red_brick_stairs		stairsNearHaradBrickRed
+stairsNearHaradBrickRedCracked	*	lotr:near_harad_red_cracked_brick_stairs		stairsNearHaradBrickRedCracked
+stairsOlive	*	lotr:olive_stairs		stairsOlive
+stairsOrange	*	lotr:orange_stairs		stairsOrange
+stairsPalm	*	lotr:palm_stairs		stairsPalm
+stairsPear	*	lotr:pear_stairs		stairsPear
+stairsShirePine	*	lotr:shire_pine_stairs		stairsPine
+stairsPine	*	lotr:pine_stairs		stairsPinePine
+stairsPlum	*	lotr:plum_stairs		stairsPlum
+stairsPomegranate	*	lotr:pomegranate_stairs		stairsPomegranate
+stairsRedRock	*	lotr:red_rock_stairs		stairsRedRock
+stairsRedRockBrick	*	lotr:red_rock_brick_stairs		stairsRedRockBrick
+stairsRedSandstone	*	minecraft:red_sandstone_stairs		stairsRedSandstone
+stairsRedwood	*	lotr:redwood_stairs		stairsRedwood
+stairsReed	*	lotr:thatch_reed_stairs		stairsReed
+stairsRhunBrick	*	lotr:rhun_brick_stairs		stairsRhunBrick
+stairsRhunBrickCracked	*	lotr:rhun_cracked_brick_stairs		stairsRhunBrickCracked
+stairsRhunBrickFlowers	*	lotr:rhun_flowers_brick_stairs		stairsRhunBrickFlowers
+stairsRhunBrickMossy	*	lotr:rhun_mossy_brick_stairs		stairsRhunBrickMossy
+stairsRhunBrickRed	*	lotr:rhun_red_brick_stairs		stairsRhunBrickRed
+stairsRohanBrick	*	lotr:rohan_brick_stairs		stairsRohanBrick
+stairsRohanRock	*	lotr:rohan_rock_stairs		stairsRohanRock
+stairsRotten	*	lotr:rotten_stairs		stairsRotten
+stairsScorchedStone	*	lotr:scorched_stone_stairs		stairsScorchedStone
+stairsStone	*	minecraft:stone_stairs		stairsStone
+stairsStoneBrickCracked	*	lotr:cracked_stone_brick_stairs		stairsStoneBrickCracked
+stairsStoneBrickMossy	*	minecraft:mossy_stone_brick_stairs		stairsStoneBrickMossy
+stairsTauredainBrick	*	lotr:tauredain_brick_stairs		stairsTauredainBrick
+stairsTauredainBrickCracked	*	lotr:tauredain_cracked_brick_stairs		stairsTauredainBrickCracked
+stairsTauredainBrickGold	*	lotr:tauredain_gold_brick_stairs		stairsTauredainBrickGold
+stairsTauredainBrickMossy	*	lotr:tauredain_mossy_brick_stairs		stairsTauredainBrickMossy
+stairsTauredainBrickObsidian	*	lotr:tauredain_obsidian_brick_stairs		stairsTauredainBrickObsidian
+stairsThatch	*	lotr:thatch_thatch_stairs		stairsThatch
+stairsUmbarBrick	*	lotr:umbar_brick_stairs		stairsUmbarBrick
+stairsUmbarBrickCracked	*	lotr:cracked_umbar_brick_stairs		stairsUmbarBrickCracked
+stairsUrukBrick	*	lotr:uruk_brick_stairs		stairsUrukBrick
+stairsUtumnoBrickFire	*	lotr:fire_utumno_brick_stairs		stairsUtumnoBrickFire
+stairsUtumnoBrickIce	*	lotr:ice_utumno_brick_stairs		stairsUtumnoBrickIce
+stairsUtumnoBrickObsidian	*	lotr:obsidian_utumno_brick_stairs		stairsUtumnoBrickObsidian
+stairsUtumnoTileFire	*	lotr:utumno_fire_tile_brick_stairs		stairsUtumnoTileFire
+stairsUtumnoTileIce	*	lotr:utumno_ice_tile_brick_stairs		stairsUtumnoTileIce
+stairsUtumnoTileObsidian	*	lotr:utumno_obsidian_tile_brick_stairs		stairsUtumnoTileObsidian
+stairsWhiteSandstone	*	lotr:white_sandstone_stairs		stairsWhiteSandstone
+stairsWillow	*	lotr:willow_stairs		stairsWillow
+stairsWoodElvenBrick	*	lotr:wood_elven_brick_stairs		stairsWoodElvenBrick
+stairsWoodElvenBrickCracked	*	lotr:cracked_wood_elven_brick_stairs		stairsWoodElvenBrickCracked
+stairsWoodElvenBrickMossy	*	lotr:mossy_wood_elven_brick_stairs		stairsWoodElvenBrickMossy
+stalactite	0	lotr:stalactite		stalactite
+stalactite	1	lotr:stalagmite		stalactite
+stalactiteIce	0	lotr:ice_stalactite		stalactiteIce
+stalactiteIce	1	lotr:ice_stalagmite		stalactiteIce
+stalactiteObsidian	0	lotr:obsidian_stalactite		stalactiteObsidian
+stalactiteObsidian	1	lotr:obsidian_stalagmite		stalactiteObsidian
+strawBed	*	lotr:straw_bed		strawBed
+tallGrass	0	lotr:tall_grass_short		tallGrass
+tallGrass	1	lotr:tall_grass_flower		tallGrass
+tallGrass	2	lotr:tall_grass_wheat		tallGrass
+tallGrass	3	lotr:tall_grass_thistle		tallGrass
+tallGrass	4	lotr:tall_grass_nettle		tallGrass
+tallGrass	5	lotr:tall_grass_fernsprout		tallGrass
+tauredainTable	*	lotr:tauredain_crafting_table		tauredainCraftingTable
+tauredainDartTrap	*	lotr:tauredain_dart_trap		tauredainDartTrap
+tauredainDartTrapGold	*	lotr:gold_tauredain_dart_trap		tauredainDartTrapGold
+tauredainDartTrapObsidian	*	lotr:obsidian_tauredain_dart_trap		tauredainDartTrapObsidian
+tauredainDoubleTorch	*	lotr:tauredain_double_torch		tauredainDoubleTorch
+termiteMound	0	lotr:infested_termite_mound		termiteMound
+termiteMound	1	lotr:termite_mound		termiteMound
+thatch	0	lotr:thatch_thatch		thatch
+thatch	1	lotr:thatch_reed		thatch
+thatchFloor	*	lotr:thatch_floor		thatchFloor
+trapdoorAcacia	*	minecraft:acacia_trapdoor		trapdoorAcacia
+trapdoorAlmond	*	lotr:almond_trapdoor		trapdoorAlmond
+trapdoorApple	*	lotr:apple_trapdoor		trapdoorApple
+trapdoorAspen	*	lotr:aspen_trapdoor		trapdoorAspen
+trapdoorBanana	*	lotr:banana_trapdoor		trapdoorBanana
+trapdoorBaobab	*	lotr:baobab_trapdoor		trapdoorBaobab
+trapdoorBeech	*	lotr:beech_trapdoor		trapdoorBeech
+trapdoorBirch	*	minecraft:birch_trapdoor		trapdoorBirch
+trapdoorCedar	*	lotr:cedar_trapdoor		trapdoorCedar
+trapdoorCharred	*	lotr:charred_trapdoor		trapdoorCharred
+trapdoorCherry	*	lotr:cherry_trapdoor		trapdoorCherry
+trapdoorChestnut	*	lotr:chestnut_trapdoor		trapdoorChestnut
+trapdoorCypress	*	lotr:cypress_trapdoor		trapdoorCypress
+trapdoorDarkOak	*	minecraft:dark_oak_trapdoor		trapdoorDarkOak
+trapdoorDatePalm	*	lotr:date_palm_trapdoor		trapdoorDatePalm
+trapdoorDragon	*	lotr:dragon_trapdoor		trapdoorDragon
+trapdoorFir	*	lotr:fir_trapdoor		trapdoorFir
+trapdoorGreenOak	*	lotr:green_oak_trapdoor		trapdoorGreenOak
+trapdoorHolly	*	lotr:holly_trapdoor		trapdoorHolly
+trapdoorJungle	*	minecraft:jungle_trapdoor		trapdoorJungle
+trapdoorKanuka	*	lotr:kanuka_trapdoor		trapdoorKanuka
+trapdoorLairelosse	*	lotr:lairelosse_trapdoor		trapdoorLairelosse
+trapdoorLarch	*	lotr:larch_trapdoor		trapdoorLarch
+trapdoorLebethron	*	lotr:lebethron_trapdoor		trapdoorLebethron
+trapdoorLemon	*	lotr:lemon_trapdoor		trapdoorLemon
+trapdoorLime	*	lotr:lime_trapdoor		trapdoorLime
+trapdoorMahogany	*	lotr:mahogany_trapdoor		trapdoorMahogany
+trapdoorMallorn	*	lotr:mallorn_trapdoor		trapdoorMallorn
+trapdoorMango	*	lotr:mango_trapdoor		trapdoorMango
+trapdoorMangrove	*	lotr:mangrove_trapdoor		trapdoorMangrove
+trapdoorMaple	*	lotr:maple_trapdoor		trapdoorMaple
+trapdoorMirkOak	*	lotr:mirk_oak_trapdoor		trapdoorMirkOak
+trapdoorOlive	*	lotr:olive_trapdoor		trapdoorOlive
+trapdoorOrange	*	lotr:orange_trapdoor		trapdoorOrange
+trapdoorPalm	*	lotr:palm_trapdoor		trapdoorPalm
+trapdoorPear	*	lotr:pear_trapdoor		trapdoorPear
+trapdoorPine	*	lotr:pine_trapdoor		trapdoorPine
+trapdoorPlum	*	lotr:plum_trapdoor		trapdoorPlum
+trapdoorPomegranate	*	lotr:pomegranate_trapdoor		trapdoorPomegranate
+trapdoorRedwood	*	lotr:redwood_trapdoor		trapdoorRedwood
+trapdoorRotten	*	lotr:rotten_trapdoor		trapdoorRotten
+trapdoorShirePine	*	lotr:shire_pine_trapdoor		trapdoorShirePine
+trapdoorSpruce	*	minecraft:spruce_trapdoor		trapdoorSpruce
+trapdoorWillow	*	lotr:willow_trapdoor		trapdoorWillow
+treasureCopper	*	lotr:treasure_copper		treasureCopper
+treasureGold	*	lotr:treasure_gold		treasureGold
+treasureSilver	*	lotr:treasure_silver		treasureSilver
+trollTotem	0	lotr:troll_totem_head		trollTotem
+trollTotem	1	lotr:troll_totem_body		trollTotem
+trollTotem	2	lotr:troll_totem_base		trollTotem
+turnipCrop	*	lotr:turnip_crop		turnip
+umbarTable	*	lotr:umbar_crafting_table		umbarCraftingTable
+unsmeltery	*	lotr:unsmeltery		unsmeltery
+urukBars	*	lotr:uruk_bars		urukBars
+urukTable	*	lotr:uruk_crafting_table		urukCraftingTable
+utumnoBrick	0	lotr:fire_utumno_brick		utumnoBrick
+utumnoBrick	1	lotr:burning_utumno_brick		utumnoBrick
+utumnoBrick	2	lotr:ice_utumno_brick		utumnoBrick
+utumnoBrick	3	lotr:glowing_ice_utumno_brick		utumnoBrick
+utumnoBrick	4	lotr:obsidian_utumno_brick		utumnoBrick
+utumnoBrick	5	lotr:utumno_obsidian_fire_brick		utumnoBrick
+utumnoBrick	6	lotr:utumno_ice_tile_brick		utumnoBrick
+utumnoBrick	7	lotr:utumno_obsidian_tile_brick		utumnoBrick
+utumnoBrick	8	lotr:utumno_fire_tile_brick		utumnoBrick
+utumnoPillar	0	lotr:fire_utumno_pillar		utumnoPillar
+utumnoPillar	1	lotr:ice_utumno_pillar		utumnoPillar
+utumnoPillar	2	lotr:obsidian_utumno_pillar		utumnoPillar
+utumnoReturnLight	*	lotr:utumno_return_light		utumnoReturnLight
+utumnoReturnPortalBase	*	lotr:utumno_return_portal_base		utumnoReturnPortalBase
+wallBone	0	lotr:bone_wall		wallBone
+wallClayTile	0	lotr:clay_tile_wall		wallClayTile
+wallClayTileDyed	0	lotr:clay_tile_dyed_white_wall		wallClayTileDyed
+wallClayTileDyed	1	lotr:clay_tile_dyed_orange_wall		wallClayTileDyed
+wallClayTileDyed	10	lotr:clay_tile_dyed_purple_wall		wallClayTileDyed
+wallClayTileDyed	11	lotr:clay_tile_dyed_blue_wall		wallClayTileDyed
+wallClayTileDyed	12	lotr:clay_tile_dyed_brown_wall		wallClayTileDyed
+wallClayTileDyed	13	lotr:clay_tile_dyed_green_wall		wallClayTileDyed
+wallClayTileDyed	14	lotr:clay_tile_dyed_red_wall		wallClayTileDyed
+wallClayTileDyed	15	lotr:clay_tile_dyed_black_wall		wallClayTileDyed
+wallClayTileDyed	2	lotr:clay_tile_dyed_magenta_wall		wallClayTileDyed
+wallClayTileDyed	3	lotr:clay_tile_dyed_light_blue_wall		wallClayTileDyed
+wallClayTileDyed	4	lotr:clay_tile_dyed_yellow_wall		wallClayTileDyed
+wallClayTileDyed	5	lotr:clay_tile_dyed_lime_wall		wallClayTileDyed
+wallClayTileDyed	6	lotr:clay_tile_dyed_pink_wall		wallClayTileDyed
+wallClayTileDyed	7	lotr:clay_tile_dyed_gray_wall		wallClayTileDyed
+wallClayTileDyed	8	lotr:clay_tile_dyed_silver_wall		wallClayTileDyed
+wallClayTileDyed	9	lotr:clay_tile_dyed_cyan_wall		wallClayTileDyed
+wall	0	lotr:mordor_rock_wall		wallStone
+wall	1	lotr:mordor_brick_wall		wallStone
+wall	10	lotr:galadhrim_brick_wall		wallStone
+wall	11	lotr:mossy_galadhrim_brick_wall		wallStone
+wall	12	lotr:cracked_galadhrim_brick_wall		wallStone
+wall	13	lotr:blue_rock_wall		wallStone
+wall	14	lotr:blue_rock_brick_wall		wallStone
+wall	15	lotr:near_harad_brick_wall		wallStone
+wall	2	lotr:gondor_rock_wall		wallStone
+wall	3	lotr:gondor_brick_wall		wallStone
+wall	4	lotr:mossy_gondor_brick_wall		wallStone
+wall	5	lotr:cracked_gondor_brick_wall		wallStone
+wall	6	lotr:rohan_brick_wall		wallStone
+wall	7	lotr:dwarven_brick_wall		wallStone
+wall	8	lotr:rohan_rock_wall		wallStone
+wall	9	lotr:cracked_mordor_brick_wall		wallStone
+wall2	0	lotr:angmar_brick_wall		wallStone2
+wall2	1	lotr:cracked_angmar_brick_wall		wallStone2
+wall2	10	lotr:numenorean_brick_wall		wallStone2
+wall2	11	lotr:high_elven_brick_wall		wallStone2
+wall2	12	lotr:mossy_high_elven_brick_wall		wallStone2
+wall2	13	lotr:cracked_high_elven_brick_wall		wallStone2
+wall2	14	lotr:dol_amroth_brick_wall		wallStone2
+wall2	15	lotr:morwaith_brick_wall		wallStone2
+wall2	2	lotr:red_rock_wall		wallStone2
+wall2	3	lotr:red_rock_brick_wall		wallStone2
+wall2	4	lotr:arnor_brick_wall		wallStone2
+wall2	5	lotr:mossy_arnor_brick_wall		wallStone2
+wall2	6	lotr:cracked_arnor_brick_wall		wallStone2
+wall2	7	lotr:uruk_brick_wall		wallStone2
+wall2	8	lotr:dol_guldur_brick_wall		wallStone2
+wall2	9	lotr:cracked_dol_guldur_brick_wall		wallStone2
+wall3	0	lotr:wood_elven_brick_wall		wallStone3
+wall3	1	lotr:mossy_wood_elven_brick_wall		wallStone3
+wall3	10	lotr:dorwinion_brick_wall		wallStone3
+wall3	11	lotr:mossy_dorwinion_brick_wall		wallStone3
+wall3	12	lotr:cracked_dorwinion_brick_wall		wallStone3
+wall3	13	lotr:dorwinion_flowers_brick_wall		wallStone3
+wall3	14	lotr:white_sandstone_wall		wallStone3
+wall3	15	lotr:rhun_brick_wall		wallStone3
+wall3	2	lotr:cracked_wood_elven_brick_wall		wallStone3
+wall3	3	lotr:near_harad_cracked_brick_wall		wallStone3
+wall3	4	lotr:near_harad_red_brick_wall		wallStone3
+wall3	5	lotr:near_harad_red_cracked_brick_wall		wallStone3
+wall3	6	lotr:chalk_wall		wallStone3
+wall3	7	lotr:chalk_brick_wall		wallStone3
+wall3	8	lotr:mud_brick_wall		wallStone3
+wall3	9	lotr:dale_brick_wall		wallStone3
+wall4	0	lotr:tauredain_brick_wall		wallStone4
+wall4	1	lotr:tauredain_mossy_brick_wall		wallStone4
+wall4	10	lotr:rhun_mossy_brick_wall		wallStone4
+wall4	11	lotr:rhun_cracked_brick_wall		wallStone4
+wall4	12	lotr:rhun_flowers_brick_wall		wallStone4
+wall4	13	lotr:rhun_red_brick_wall		wallStone4
+wall4	14	lotr:dale_mossy_brick_wall		wallStone4
+wall4	15	lotr:dale_cracked_brick_wall		wallStone4
+wall4	2	lotr:tauredain_cracked_brick_wall		wallStone4
+wall4	3	lotr:tauredain_gold_brick_wall		wallStone4
+wall4	4	lotr:tauredain_obsidian_brick_wall		wallStone4
+wall4	5	lotr:cracked_dwarven_brick_wall		wallStone4
+wall4	6	lotr:obsidian_dwarven_brick_wall		wallStone4
+wall4	7	lotr:gondor_cobblebrick_wall		wallStone4
+wall4	8	lotr:mossy_gondor_cobblebrick_wall		wallStone4
+wall4	9	lotr:cracked_gondor_cobblebrick_wall		wallStone4
+wall5	0	lotr:umbar_brick_wall		wallStone5
+wall5	1	lotr:cracked_umbar_brick_wall		wallStone5
+wall5	2	lotr:angmar_snow_brick_wall		wallStone5
+wall5	3	lotr:mossy_dol_guldur_brick_wall		wallStone5
+wall5	4	lotr:cracked_morwaith_brick_wall		wallStone5
+wallStoneV	0	lotr:stone_wall		wallStoneV
+wallStoneV	1	minecraft:stone_brick_wall		wallStoneV
+wallStoneV	2	minecraft:mossy_stone_brick_wall		wallStoneV
+wallStoneV	3	lotr:cracked_stone_brick_wall		wallStoneV
+wallStoneV	4	minecraft:sandstone_wall		wallStoneV
+wallStoneV	5	minecraft:red_sandstone_wall		wallStoneV
+wallStoneV	6	minecraft:brick_wall		wallStoneV
+wallStoneV	7	lotr:red_brick_mossy_wall		wallStoneV
+wallStoneV	8	lotr:red_brick_cracked_wall		wallStoneV
+wallUtumno	0	lotr:fire_utumno_brick_wall		wallUtumno
+wallUtumno	1	lotr:ice_utumno_brick_wall		wallUtumno
+wallUtumno	2	lotr:obsidian_utumno_brick_wall		wallUtumno
+wallUtumno	3	lotr:utumno_ice_tile_brick_wall		wallUtumno
+wallUtumno	4	lotr:utumno_obsidian_tile_brick_wall		wallUtumno
+wallUtumno	5	lotr:utumno_fire_tile_brick_wall		wallUtumno
+furBed	*	lotr:fur_bed		wargFurBed
+wasteBlock	*	lotr:waste_block		wasteBlock
+weaponRack	*	lotr:weapon_rack		weaponRack
+webUngoliant	*	lotr:web_ungoliant		webUngoliant
+whiteSand	*	lotr:white_sand		whiteSand
+whiteSandstone	*	lotr:white_sandstone		whiteSandstone
+willowVines	*	lotr:willow_vines		willowVines
+wineGlassBlock	*	lotr:wine_glass_block		wineGlass
+wood	0	lotr:shire_pine_log		wood
+wood	1	lotr:mallorn_log		wood
+wood	2	lotr:mirk_oak_log		wood
+wood	3	lotr:charred_log		wood
+wood2	0	lotr:lebethron_log		wood2
+wood2	1	lotr:beech_log		wood2
+wood2	2	lotr:holly_log		wood2
+wood2	3	lotr:banana_log		wood2
+wood3	0	lotr:maple_log		wood3
+wood3	1	lotr:larch_log		wood3
+wood3	2	lotr:date_palm_log		wood3
+wood3	3	lotr:mangrove_log		wood3
+wood4	0	lotr:chestnut_log		wood4
+wood4	1	lotr:baobab_log		wood4
+wood4	2	lotr:cedar_log		wood4
+wood4	3	lotr:fir_log		wood4
+wood5	0	lotr:pine_log		wood5
+wood5	1	lotr:lemon_log		wood5
+wood5	2	lotr:orange_log		wood5
+wood5	3	lotr:lime_log		wood5
+wood6	0	lotr:mahogany_log		wood6
+wood6	1	lotr:willow_log		wood6
+wood6	2	lotr:cypress_log		wood6
+wood6	3	lotr:olive_log		wood6
+wood7	0	lotr:aspen_log		wood7
+wood7	1	lotr:green_oak_log		wood7
+wood7	2	lotr:lairelosse_log		wood7
+wood7	3	lotr:almond_log		wood7
+wood8	0	lotr:plum_log		wood8
+wood8	1	lotr:redwood_log		wood8
+wood8	2	lotr:pomegranate_log		wood8
+wood8	3	lotr:palm_log		wood8
+wood9	0	lotr:dragon_log		wood9
+wood9	1	lotr:kanuka_log		wood9
+woodBeam1	0	lotr:shire_pine_beam		woodBeam1
+woodBeam1	1	lotr:mallorn_beam		woodBeam1
+woodBeam1	2	lotr:mirk_oak_beam		woodBeam1
+woodBeam1	3	lotr:charred_beam		woodBeam1
+woodBeam2	0	lotr:lebethron_beam		woodBeam2
+woodBeam2	1	lotr:beech_beam		woodBeam2
+woodBeam2	2	lotr:holly_beam		woodBeam2
+woodBeam2	3	lotr:banana_beam		woodBeam2
+woodBeam3	0	lotr:maple_beam		woodBeam3
+woodBeam3	1	lotr:larch_beam		woodBeam3
+woodBeam3	2	lotr:date_palm_beam		woodBeam3
+woodBeam3	3	lotr:mangrove_beam		woodBeam3
+woodBeam4	0	lotr:chestnut_beam		woodBeam4
+woodBeam4	1	lotr:baobab_beam		woodBeam4
+woodBeam4	2	lotr:cedar_beam		woodBeam4
+woodBeam4	3	lotr:fir_beam		woodBeam4
+woodBeam5	0	lotr:pine_beam		woodBeam5
+woodBeam5	1	lotr:lemon_beam		woodBeam5
+woodBeam5	2	lotr:orange_beam		woodBeam5
+woodBeam5	3	lotr:lime_beam		woodBeam5
+woodBeam6	0	lotr:mahogany_beam		woodBeam6
+woodBeam6	1	lotr:willow_beam		woodBeam6
+woodBeam6	2	lotr:cypress_beam		woodBeam6
+woodBeam6	3	lotr:olive_beam		woodBeam6
+woodBeam7	0	lotr:aspen_beam		woodBeam7
+woodBeam7	1	lotr:green_oak_beam		woodBeam7
+woodBeam7	2	lotr:lairelosse_beam		woodBeam7
+woodBeam7	3	lotr:almond_beam		woodBeam7
+woodBeam8	0	lotr:plum_beam		woodBeam8
+woodBeam8	1	lotr:redwood_beam		woodBeam8
+woodBeam8	2	lotr:pomegranate_beam		woodBeam8
+woodBeam8	3	lotr:palm_beam		woodBeam8
+woodBeam9	0	lotr:dragon_beam		woodBeam9
+woodBeam9	1	lotr:kanuka_beam		woodBeam9
+woodBeamFruit	0	lotr:apple_beam		woodBeamFruit
+woodBeamFruit	1	lotr:pear_beam		woodBeamFruit
+woodBeamFruit	2	lotr:cherry_beam		woodBeamFruit
+woodBeamFruit	3	lotr:mango_beam		woodBeamFruit
+woodBeamRotten	0	lotr:rotten_beam		woodBeamRotten
+woodBeamS	0	lotr:rohan_beam		woodBeamS
+woodBeamS	1	lotr:rohan_gold_beam		woodBeamS
+woodBeamV1	0	lotr:oak_beam		woodBeamV1
+woodBeamV1	1	lotr:spruce_beam		woodBeamV1
+woodBeamV1	2	lotr:birch_beam		woodBeamV1
+woodBeamV1	3	lotr:jungle_beam		woodBeamV1
+woodBeamV2	0	lotr:acacia_beam		woodBeamV2
+woodBeamV2	1	lotr:dark_oak_beam		woodBeamV2
+woodElfBars	*	lotr:wood_elf_bars		woodElfBars
+woodElfWoodBars	*	lotr:wood_elf_wood_bars		woodElfWoodBars
+woodElvenBed	*	lotr:wood_elven_bed		woodElvenBed
+woodElvenTable	*	lotr:wood_elven_crafting_table		woodElvenCraftingTable
+woodElvenTorch	*	lotr:wood_elven_torch		woodElvenTorch
+woodPlateBlock	*	lotr:wooden_plate		woodPlate
+woodSlabSingle	0	lotr:shire_pine_slab		woodSlabSingle
+woodSlabSingle	1	lotr:mallorn_slab		woodSlabSingle
+woodSlabSingle	2	lotr:mirk_oak_slab		woodSlabSingle
+woodSlabSingle	3	lotr:charred_slab		woodSlabSingle
+woodSlabSingle	4	lotr:apple_slab		woodSlabSingle
+woodSlabSingle	5	lotr:pear_slab		woodSlabSingle
+woodSlabSingle	6	lotr:cherry_slab		woodSlabSingle
+woodSlabSingle	7	lotr:mango_slab		woodSlabSingle
+woodSlabSingle2	0	lotr:lebethron_slab		woodSlabSingle2
+woodSlabSingle2	1	lotr:beech_slab		woodSlabSingle2
+woodSlabSingle2	2	lotr:holly_slab		woodSlabSingle2
+woodSlabSingle2	3	lotr:banana_slab		woodSlabSingle2
+woodSlabSingle2	4	lotr:maple_slab		woodSlabSingle2
+woodSlabSingle2	5	lotr:larch_slab		woodSlabSingle2
+woodSlabSingle2	6	lotr:date_palm_slab		woodSlabSingle2
+woodSlabSingle2	7	lotr:mangrove_slab		woodSlabSingle2
+woodSlabSingle3	0	lotr:chestnut_slab		woodSlabSingle3
+woodSlabSingle3	1	lotr:baobab_slab		woodSlabSingle3
+woodSlabSingle3	2	lotr:cedar_slab		woodSlabSingle3
+woodSlabSingle3	3	lotr:fir_slab		woodSlabSingle3
+woodSlabSingle3	4	lotr:pine_slab		woodSlabSingle3
+woodSlabSingle3	5	lotr:lemon_slab		woodSlabSingle3
+woodSlabSingle3	6	lotr:orange_slab		woodSlabSingle3
+woodSlabSingle3	7	lotr:lime_slab		woodSlabSingle3
+woodSlabSingle4	0	lotr:mahogany_slab		woodSlabSingle4
+woodSlabSingle4	1	lotr:willow_slab		woodSlabSingle4
+woodSlabSingle4	2	lotr:cypress_slab		woodSlabSingle4
+woodSlabSingle4	3	lotr:olive_slab		woodSlabSingle4
+woodSlabSingle4	4	lotr:aspen_slab		woodSlabSingle4
+woodSlabSingle4	5	lotr:green_oak_slab		woodSlabSingle4
+woodSlabSingle4	6	lotr:lairelosse_slab		woodSlabSingle4
+woodSlabSingle4	7	lotr:almond_slab		woodSlabSingle4
+woodSlabSingle5	0	lotr:plum_slab		woodSlabSingle5
+woodSlabSingle5	1	lotr:redwood_slab		woodSlabSingle5
+woodSlabSingle5	2	lotr:pomegranate_slab		woodSlabSingle5
+woodSlabSingle5	3	lotr:palm_slab		woodSlabSingle5
+woodSlabSingle5	4	lotr:dragon_slab		woodSlabSingle5
+woodSlabSingle5	5	lotr:kanuka_slab		woodSlabSingle5
+yamCrop	*	lotr:yam_crop		yam
+rottenSlabDouble	0	lotr:rotten_slab	type=double	rottenSlabDouble
+scorchedSlabDouble	0	lotr:scorched_stone_slab	type=double	scorchedSlabDouble
+slabBoneDouble	0	lotr:bone_slab	type=double	slabBoneDouble
+slabClayTileDouble	0	lotr:clay_tile_slab	type=double	slabClayTileDouble
+slabClayTileDyedDouble	0	lotr:clay_tile_dyed_white_slab	type=double	slabClayTileDyedDouble
+slabClayTileDyedDouble	1	lotr:clay_tile_dyed_orange_slab	type=double	slabClayTileDyedDouble
+slabClayTileDyedDouble	2	lotr:clay_tile_dyed_magenta_slab	type=double	slabClayTileDyedDouble
+slabClayTileDyedDouble	3	lotr:clay_tile_dyed_light_blue_slab	type=double	slabClayTileDyedDouble
+slabClayTileDyedDouble	4	lotr:clay_tile_dyed_yellow_slab	type=double	slabClayTileDyedDouble
+slabClayTileDyedDouble	5	lotr:clay_tile_dyed_lime_slab	type=double	slabClayTileDyedDouble
+slabClayTileDyedDouble	6	lotr:clay_tile_dyed_pink_slab	type=double	slabClayTileDyedDouble
+slabClayTileDyedDouble	7	lotr:clay_tile_dyed_gray_slab	type=double	slabClayTileDyedDouble
+slabClayTileDyedDouble2	0	lotr:clay_tile_dyed_silver_slab	type=double	slabClayTileDyedDouble2
+slabClayTileDyedDouble2	1	lotr:clay_tile_dyed_cyan_slab	type=double	slabClayTileDyedDouble2
+slabClayTileDyedDouble2	2	lotr:clay_tile_dyed_purple_slab	type=double	slabClayTileDyedDouble2
+slabClayTileDyedDouble2	3	lotr:clay_tile_dyed_blue_slab	type=double	slabClayTileDyedDouble2
+slabClayTileDyedDouble2	4	lotr:clay_tile_dyed_brown_slab	type=double	slabClayTileDyedDouble2
+slabClayTileDyedDouble2	5	lotr:clay_tile_dyed_green_slab	type=double	slabClayTileDyedDouble2
+slabClayTileDyedDouble2	6	lotr:clay_tile_dyed_red_slab	type=double	slabClayTileDyedDouble2
+slabClayTileDyedDouble2	7	lotr:clay_tile_dyed_black_slab	type=double	slabClayTileDyedDouble2
+slabDouble	0	lotr:smooth_mordor_rock_slab	type=double	slabDouble
+slabDouble	1	lotr:mordor_brick_slab	type=double	slabDouble
+slabDouble	2	lotr:smooth_gondor_rock_slab	type=double	slabDouble
+slabDouble	3	lotr:gondor_brick_slab	type=double	slabDouble
+slabDouble	4	lotr:mossy_gondor_brick_slab	type=double	slabDouble
+slabDouble	5	lotr:cracked_gondor_brick_slab	type=double	slabDouble
+slabDouble	6	lotr:rohan_brick_slab	type=double	slabDouble
+slabDouble	7	lotr:dwarven_brick_slab	type=double	slabDouble
+slabDouble10	0	lotr:dale_pillar_slab	type=double	slabDouble10
+slabDouble10	1	lotr:mossy_dorwinion_brick_slab	type=double	slabDouble10
+slabDouble10	2	lotr:cracked_dorwinion_brick_slab	type=double	slabDouble10
+slabDouble10	3	lotr:dorwinion_flowers_brick_slab	type=double	slabDouble10
+slabDouble10	4	lotr:dorwinion_pillar_slab	type=double	slabDouble10
+slabDouble10	5	lotr:mossy_dorwinion_pillar_slab	type=double	slabDouble10
+slabDouble10	6	lotr:white_sandstone_slab	type=double	slabDouble10
+slabDouble10	7	lotr:mordor_rock_slab	type=double	slabDouble10
+slabDouble11	0	lotr:gondor_cobblebrick_slab	type=double	slabDouble11
+slabDouble11	1	lotr:mossy_gondor_cobblebrick_slab	type=double	slabDouble11
+slabDouble11	2	lotr:cracked_gondor_cobblebrick_slab	type=double	slabDouble11
+slabDouble11	3	lotr:gondor_rock_slab	type=double	slabDouble11
+slabDouble11	4	lotr:rohan_rock_slab	type=double	slabDouble11
+slabDouble11	5	lotr:blue_rock_slab	type=double	slabDouble11
+slabDouble11	6	lotr:red_rock_slab	type=double	slabDouble11
+slabDouble11	7	lotr:chalk_slab	type=double	slabDouble11
+slabDouble12	0	lotr:rhun_brick_slab	type=double	slabDouble12
+slabDouble12	1	lotr:rhun_mossy_brick_slab	type=double	slabDouble12
+slabDouble12	2	lotr:rhun_cracked_brick_slab	type=double	slabDouble12
+slabDouble12	3	lotr:rhun_flowers_brick_slab	type=double	slabDouble12
+slabDouble12	4	lotr:rhun_pillar_slab	type=double	slabDouble12
+slabDouble12	5	lotr:rhun_red_brick_slab	type=double	slabDouble12
+slabDouble12	6	lotr:rhun_red_pillar_slab	type=double	slabDouble12
+slabDouble12	7	lotr:angmar_snow_brick_slab	type=double	slabDouble12
+slabDouble13	0	lotr:dale_mossy_brick_slab	type=double	slabDouble13
+slabDouble13	1	lotr:dale_cracked_brick_slab	type=double	slabDouble13
+slabDouble13	2	lotr:umbar_brick_slab	type=double	slabDouble13
+slabDouble13	3	lotr:cracked_umbar_brick_slab	type=double	slabDouble13
+slabDouble13	4	lotr:umbar_pillar_slab	type=double	slabDouble13
+slabDouble13	5	lotr:taur_gold_pillar_slab	type=double	slabDouble13
+slabDouble13	6	lotr:taur_obsidian_pillar_slab	type=double	slabDouble13
+slabDouble13	7	lotr:arnor_pillar_slab	type=double	slabDouble13
+slabDouble14	0	lotr:cracked_arnor_pillar_slab	type=double	slabDouble14
+slabDouble14	1	lotr:mossy_dol_guldur_brick_slab	type=double	slabDouble14
+slabDouble14	2	lotr:cracked_morwaith_brick_slab	type=double	slabDouble14
+slabDouble14	3	lotr:uruk_pillar_slab	type=double	slabDouble14
+slabDouble14	4	lotr:dol_guldur_pillar_slab	type=double	slabDouble14
+slabDouble2	0	lotr:dwarven_pillar_slab	type=double	slabDouble2
+slabDouble2	1	lotr:smooth_rohan_rock_slab	type=double	slabDouble2
+slabDouble2	2	lotr:cracked_mordor_brick_slab	type=double	slabDouble2
+slabDouble2	3	lotr:galadhrim_brick_slab	type=double	slabDouble2
+slabDouble2	4	lotr:mossy_galadhrim_brick_slab	type=double	slabDouble2
+slabDouble2	5	lotr:cracked_galadhrim_brick_slab	type=double	slabDouble2
+slabDouble2	6	lotr:galadhrim_pillar_slab	type=double	slabDouble2
+slabDouble2	7	lotr:cracked_galadhrim_pillar_slab	type=double	slabDouble2
+slabDouble3	0	lotr:smooth_blue_rock_slab	type=double	slabDouble3
+slabDouble3	1	lotr:blue_rock_brick_slab	type=double	slabDouble3
+slabDouble3	2	lotr:blue_rock_pillar_slab	type=double	slabDouble3
+slabDouble3	3	lotr:angmar_brick_slab	type=double	slabDouble3
+slabDouble3	4	lotr:cracked_angmar_brick_slab	type=double	slabDouble3
+slabDouble3	5	lotr:smooth_red_rock_slab	type=double	slabDouble3
+slabDouble3	6	lotr:red_rock_brick_slab	type=double	slabDouble3
+slabDouble3	7	lotr:red_rock_pillar_slab	type=double	slabDouble3
+slabDouble4	0	lotr:near_harad_brick_slab	type=double	slabDouble4
+slabDouble4	1	lotr:arnor_brick_slab	type=double	slabDouble4
+slabDouble4	2	lotr:mossy_arnor_brick_slab	type=double	slabDouble4
+slabDouble4	3	lotr:cracked_arnor_brick_slab	type=double	slabDouble4
+slabDouble4	4	lotr:uruk_brick_slab	type=double	slabDouble4
+slabDouble4	5	lotr:dol_guldur_brick_slab	type=double	slabDouble4
+slabDouble4	6	lotr:cracked_dol_guldur_brick_slab	type=double	slabDouble4
+slabDouble4	7	lotr:near_harad_pillar_slab	type=double	slabDouble4
+slabDouble5	0	lotr:gondor_pillar_slab	type=double	slabDouble5
+slabDouble5	1	lotr:mordor_pillar_slab	type=double	slabDouble5
+slabDouble5	2	lotr:rohan_pillar_slab	type=double	slabDouble5
+slabDouble5	3	lotr:numenorean_brick_slab	type=double	slabDouble5
+slabDouble5	4	lotr:numenorean_pillar_slab	type=double	slabDouble5
+slabDouble5	5	lotr:high_elven_brick_slab	type=double	slabDouble5
+slabDouble5	6	lotr:mossy_high_elven_brick_slab	type=double	slabDouble5
+slabDouble5	7	lotr:cracked_high_elven_brick_slab	type=double	slabDouble5
+slabDouble6	0	lotr:high_elven_pillar_slab	type=double	slabDouble6
+slabDouble6	1	lotr:cracked_high_elven_pillar_slab	type=double	slabDouble6
+slabDouble6	2	lotr:wood_elven_brick_slab	type=double	slabDouble6
+slabDouble6	3	lotr:mossy_wood_elven_brick_slab	type=double	slabDouble6
+slabDouble6	4	lotr:cracked_wood_elven_brick_slab	type=double	slabDouble6
+slabDouble6	5	lotr:wood_elven_pillar_slab	type=double	slabDouble6
+slabDouble6	6	lotr:cracked_wood_elven_pillar_slab	type=double	slabDouble6
+slabDouble6	7	lotr:dol_amroth_brick_slab	type=double	slabDouble6
+slabDouble7	0	lotr:morwaith_brick_slab	type=double	slabDouble7
+slabDouble7	1	lotr:near_harad_cracked_brick_slab	type=double	slabDouble7
+slabDouble7	2	lotr:near_harad_red_brick_slab	type=double	slabDouble7
+slabDouble7	3	lotr:near_harad_red_cracked_brick_slab	type=double	slabDouble7
+slabDouble7	4	lotr:near_harad_red_pillar_slab	type=double	slabDouble7
+slabDouble7	5	minecraft:red_sandstone_slab	type=double	slabDouble7
+slabDouble7	6	lotr:cracked_dwarven_brick_slab	type=double	slabDouble7
+slabDouble7	7	lotr:cracked_dwarven_pillar_slab	type=double	slabDouble7
+slabDouble8	0	lotr:tauredain_brick_slab	type=double	slabDouble8
+slabDouble8	1	lotr:tauredain_mossy_brick_slab	type=double	slabDouble8
+slabDouble8	2	lotr:tauredain_cracked_brick_slab	type=double	slabDouble8
+slabDouble8	3	lotr:tauredain_gold_brick_slab	type=double	slabDouble8
+slabDouble8	4	lotr:tauredain_obsidian_brick_slab	type=double	slabDouble8
+slabDouble8	5	lotr:tauredain_pillar_slab	type=double	slabDouble8
+slabDouble8	6	lotr:obsidian_dwarven_brick_slab	type=double	slabDouble8
+slabDouble8	7	lotr:smooth_chalk_slab	type=double	slabDouble8
+slabDouble9	0	lotr:chalk_brick_slab	type=double	slabDouble9
+slabDouble9	1	lotr:chalk_pillar_slab	type=double	slabDouble9
+slabDouble9	2	lotr:stone_pillar_slab	type=double	slabDouble9
+slabDouble9	3	lotr:brick_pillar_slab	type=double	slabDouble9
+slabDouble9	4	lotr:angmar_pillar_slab	type=double	slabDouble9
+slabDouble9	5	lotr:mud_brick_slab	type=double	slabDouble9
+slabDouble9	6	lotr:dale_brick_slab	type=double	slabDouble9
+slabDouble9	7	lotr:dorwinion_brick_slab	type=double	slabDouble9
+slabDoubleDirt	0	lotr:dirt_slab	type=double	slabDoubleDirt
+slabDoubleDirt	1	lotr:dirt_path_slab	type=double	slabDoubleDirt
+slabDoubleDirt	2	lotr:mud_slab	type=double	slabDoubleDirt
+slabDoubleDirt	3	lotr:mordor_dirt_slab	type=double	slabDoubleDirt
+slabDoubleDirt	4	lotr:dirt_path_mud_slab	type=double	slabDoubleDirt
+slabDoubleGravel	0	lotr:gravel_slab	type=double	slabDoubleGravel
+slabDoubleGravel	1	lotr:mordor_gravel_slab	type=double	slabDoubleGravel
+slabDoubleGravel	2	lotr:obsidian_gravel_slab	type=double	slabDoubleGravel
+slabDoubleSand	0	lotr:sand_slab	type=double	slabDoubleSand
+slabDoubleSand	1	lotr:red_sand_slab	type=double	slabDoubleSand
+slabDoubleSand	2	lotr:white_sand_slab	type=double	slabDoubleSand
+slabDoubleThatch	0	lotr:thatch_thatch_slab	type=double	slabDoubleThatch
+slabDoubleThatch	1	lotr:thatch_reed_slab	type=double	slabDoubleThatch
+slabDoubleV	0	minecraft:mossy_stone_brick_slab	type=double	slabDoubleV
+slabDoubleV	1	lotr:cracked_stone_brick_slab	type=double	slabDoubleV
+slabDoubleV	2	lotr:red_brick_mossy_slab	type=double	slabDoubleV
+slabDoubleV	3	lotr:red_brick_cracked_slab	type=double	slabDoubleV
+slabDoubleV	4	minecraft:mossy_cobblestone_slab	type=double	slabDoubleV
+slabDoubleV	5	minecraft:stone_slab	type=double	slabDoubleV
+slabUtumnoDouble	0	lotr:fire_utumno_brick_slab	type=double	slabUtumnoDouble
+slabUtumnoDouble	1	lotr:ice_utumno_brick_slab	type=double	slabUtumnoDouble
+slabUtumnoDouble	2	lotr:obsidian_utumno_brick_slab	type=double	slabUtumnoDouble
+slabUtumnoDouble	3	lotr:fire_utumno_pillar_slab	type=double	slabUtumnoDouble
+slabUtumnoDouble	4	lotr:ice_utumno_pillar_slab	type=double	slabUtumnoDouble
+slabUtumnoDouble	5	lotr:obsidian_utumno_pillar_slab	type=double	slabUtumnoDouble
+slabUtumnoDouble2	0	lotr:utumno_ice_tile_brick_slab	type=double	slabUtumnoDouble2
+slabUtumnoDouble2	1	lotr:utumno_obsidian_tile_brick_slab	type=double	slabUtumnoDouble2
+slabUtumnoDouble2	2	lotr:utumno_fire_tile_brick_slab	type=double	slabUtumnoDouble2
+woodSlabDouble	0	lotr:shire_pine_slab	type=double	woodSlabDouble
+woodSlabDouble	1	lotr:mallorn_slab	type=double	woodSlabDouble
+woodSlabDouble	2	lotr:mirk_oak_slab	type=double	woodSlabDouble
+woodSlabDouble	3	lotr:charred_slab	type=double	woodSlabDouble
+woodSlabDouble	4	lotr:apple_slab	type=double	woodSlabDouble
+woodSlabDouble	5	lotr:pear_slab	type=double	woodSlabDouble
+woodSlabDouble	6	lotr:cherry_slab	type=double	woodSlabDouble
+woodSlabDouble	7	lotr:mango_slab	type=double	woodSlabDouble
+woodSlabDouble2	0	lotr:lebethron_slab	type=double	woodSlabDouble2
+woodSlabDouble2	1	lotr:beech_slab	type=double	woodSlabDouble2
+woodSlabDouble2	2	lotr:holly_slab	type=double	woodSlabDouble2
+woodSlabDouble2	3	lotr:banana_slab	type=double	woodSlabDouble2
+woodSlabDouble2	4	lotr:maple_slab	type=double	woodSlabDouble2
+woodSlabDouble2	5	lotr:larch_slab	type=double	woodSlabDouble2
+woodSlabDouble2	6	lotr:date_palm_slab	type=double	woodSlabDouble2
+woodSlabDouble2	7	lotr:mangrove_slab	type=double	woodSlabDouble2
+woodSlabDouble3	0	lotr:chestnut_slab	type=double	woodSlabDouble3
+woodSlabDouble3	1	lotr:baobab_slab	type=double	woodSlabDouble3
+woodSlabDouble3	2	lotr:cedar_slab	type=double	woodSlabDouble3
+woodSlabDouble3	3	lotr:fir_slab	type=double	woodSlabDouble3
+woodSlabDouble3	4	lotr:pine_slab	type=double	woodSlabDouble3
+woodSlabDouble3	5	lotr:lemon_slab	type=double	woodSlabDouble3
+woodSlabDouble3	6	lotr:orange_slab	type=double	woodSlabDouble3
+woodSlabDouble3	7	lotr:lime_slab	type=double	woodSlabDouble3
+woodSlabDouble4	0	lotr:mahogany_slab	type=double	woodSlabDouble4
+woodSlabDouble4	1	lotr:willow_slab	type=double	woodSlabDouble4
+woodSlabDouble4	2	lotr:cypress_slab	type=double	woodSlabDouble4
+woodSlabDouble4	3	lotr:olive_slab	type=double	woodSlabDouble4
+woodSlabDouble4	4	lotr:aspen_slab	type=double	woodSlabDouble4
+woodSlabDouble4	5	lotr:green_oak_slab	type=double	woodSlabDouble4
+woodSlabDouble4	6	lotr:lairelosse_slab	type=double	woodSlabDouble4
+woodSlabDouble4	7	lotr:almond_slab	type=double	woodSlabDouble4
+woodSlabDouble5	0	lotr:plum_slab	type=double	woodSlabDouble5
+woodSlabDouble5	1	lotr:redwood_slab	type=double	woodSlabDouble5
+woodSlabDouble5	2	lotr:pomegranate_slab	type=double	woodSlabDouble5
+woodSlabDouble5	3	lotr:palm_slab	type=double	woodSlabDouble5
+woodSlabDouble5	4	lotr:dragon_slab	type=double	woodSlabDouble5
+woodSlabDouble5	5	lotr:kanuka_slab	type=double	woodSlabDouble5

@@ -20,11 +20,10 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
  * totem: the sheet is a 128x128 entity texture and hand-computing those faces
  * would be a transcription error waiting to happen.
  *
- * <p>Only what the stone troll needs is here. The original's {@code headHurt}
- * part and its four weapons -- club, spiked club, warhammer, battleaxe --
- * belong to LOTREntityTroll and its kin, which the port has no NPCs for yet;
- * they are left out rather than carried as dead geometry, and this note is
- * where to start when the trolls themselves are ported.
+ * <p>Only what the stone troll (and the chieftain's trophy head) needs is
+ * here. The living trolls, with the {@code headHurt} part, the four weapons
+ * and the animation, are drawn by {@link LOTRTrollLivingModel}, on the same
+ * boxes.
  *
  * <p>The original built three of these for one troll and the renderer drew all
  * three: the body at f = 0, then a shirt inflated by 1.0 and trousers by 0.75,

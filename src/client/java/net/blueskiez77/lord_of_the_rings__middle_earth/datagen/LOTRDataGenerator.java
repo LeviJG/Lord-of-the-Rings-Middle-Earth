@@ -9,6 +9,8 @@ public class LOTRDataGenerator implements DataGeneratorEntrypoint {
         FabricDataGenerator.Pack pack = generator.createPack();
         pack.addProvider(LOTRModelProvider::new);
         pack.addProvider(LOTRBlockLootProvider::new);
+        pack.addProvider(LOTREntityLootProvider::new);
+        pack.addProvider(LOTREntityTypeTagProvider::new);
         LOTRBlockTagProvider blockTags = pack.addProvider(LOTRBlockTagProvider::new);
         pack.addProvider((output, registries) -> new LOTRItemTagProvider(output, registries, blockTags));
         pack.addProvider(LOTRRecipeProvider::new);

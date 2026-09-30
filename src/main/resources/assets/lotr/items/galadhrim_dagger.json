@@ -1,0 +1,13 @@
+{
+  "model": {
+    "type": "lotr:elven_blade",
+    "model": {
+      "type": "minecraft:model",
+      "model": "lotr:item/galadhrim_dagger"
+    },
+    "glowing": {
+      "type": "minecraft:model",
+      "model": "lotr:item/galadhrim_dagger_glowing"
+    }
+  }
+}

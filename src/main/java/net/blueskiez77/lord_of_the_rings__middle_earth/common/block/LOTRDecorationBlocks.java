@@ -412,7 +412,7 @@ public final class LOTRDecorationBlocks {
     public static final Block BLACKROOT = registerFlower("blackroot", LOTRPlantBlock.Shape.WIDE);
     // LOTRBlockCorruptMallorn: setLightLevel(0.625f), light 9.
     public static final Block CORRUPT_MALLORN = track(ALL_FLOWERS, register("corrupt_mallorn",
-            props -> new LOTRPlantBlock(LOTRPlantBlock.Shape.GRASS, LOTRPlantBlock.Ground.SOIL, props),
+            LOTRCorruptMallornBlock::new,
             plantProperties().offsetType(BlockBehaviour.OffsetType.XZ).lightLevel(state -> 9), true));
     public static final Block DEAD_MARSH_PLANT = registerFlower("dead_marsh_plant", LOTRPlantBlock.Shape.GRASS);
     public static final Block FANGORN_PLANT_BROWN = registerFlower("fangorn_plant_brown", LOTRPlantBlock.Shape.MEDIUM);

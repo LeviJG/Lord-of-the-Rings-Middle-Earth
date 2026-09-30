@@ -1,0 +1,13 @@
+{
+  "model": {
+    "type": "lotr:elven_blade",
+    "model": {
+      "type": "minecraft:model",
+      "model": "lotr:item/lindon_dagger"
+    },
+    "glowing": {
+      "type": "minecraft:model",
+      "model": "lotr:item/lindon_dagger_glowing"
+    }
+  }
+}

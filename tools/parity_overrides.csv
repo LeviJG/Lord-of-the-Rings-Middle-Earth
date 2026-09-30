@@ -76,7 +76,7 @@ horseArmorIron,,vanilla,user confirmed vanilla duplicate
 ironNugget,,vanilla,user confirmed vanilla duplicate
 rabbitCooked,,vanilla,user confirmed vanilla duplicate
 rabbitRaw,,vanilla,user confirmed vanilla duplicate
-spawnEgg,,missing,user: keep; add with NPCs/animals (Track D)
+spawnEgg,deer_spawn_egg,ported,one item per creature now (LOTRSpawnItems); each egg is added with its creature in D8/D9
 rhunFire,khamuls_fire,ported,fire block left by the Khamul's Fire jar (no item)
 redClayBall,red_clay_ball,ported,the ball item; name-matching paired it with the red_clay block
 stalactite.0,stalactite,ported,LOTRBlockStalactite meta 0 (hanging)

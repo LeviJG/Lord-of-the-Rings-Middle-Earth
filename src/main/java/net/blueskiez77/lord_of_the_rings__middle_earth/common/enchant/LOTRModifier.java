@@ -6,6 +6,8 @@ import java.util.EnumSet;
 import java.util.Locale;
 import java.util.Set;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREntityTags;
+
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.TagKey;
@@ -28,8 +30,10 @@ import net.minecraft.world.entity.EntityType;
  * their foe (LOTRModifiers.onKill). So are "True" (protectMithril) and the three
  * weapon specials -- Infernal, Chilling, Headhunting -- which the LOTR anvil
  * puts on from the Book of True-silver, the Flame of Udûn, the Chill of
- * Daedelos and the Headhunter's Trophy. NOT here: the Elf, Orc, Dwarf, Warg,
- * Troll and Wraith banes, which wait on those NPCs.
+ * Daedelos and the Headhunter's Trophy. Elfbane, Orcbane,
+ * Dwarfbane, Wargbane and Trollbane are here with their NPCs; so is
+ * Wraithbane, which no kill earns and which alone lets a blow touch a marsh
+ * wraith -- an ancient item sometimes comes with it.
  */
 public enum LOTRModifier implements StringRepresentable {
 
@@ -44,8 +48,15 @@ public enum LOTRModifier implements StringRepresentable {
 
     // --- LOTREnchantmentBane: extra melee damage against one kind of foe. ----
     // Weight 0: never rolled, only put on by applyRandom's special cases.
+    BANE_ELF("baneElf", Effect.BANE, 4.0f, 0, false, LOTREntityTags.ELVES),
+    BANE_ORC("baneOrc", Effect.BANE, 4.0f, 0, false, LOTREntityTags.ORCS),
+    BANE_DWARF("baneDwarf", Effect.BANE, 4.0f, 0, false, LOTREntityTags.DWARVES),
+    BANE_WARG("baneWarg", Effect.BANE, 4.0f, 0, false, LOTREntityTags.WARGS),
+    BANE_TROLL("baneTroll", Effect.BANE, 4.0f, 0, false, LOTREntityTags.TROLLS),
     BANE_SPIDER("baneSpider", Effect.BANE, 4.0f, 0, false, EntityTypeTags.SENSITIVE_TO_BANE_OF_ARTHROPODS),
     BANE_WIGHT("baneWight", Effect.BANE, 4.0f, 0, false, EntityTypeTags.SENSITIVE_TO_SMITE),
+    // setUnachievable: no number of kills earns it.
+    BANE_WRAITH("baneWraith", Effect.BANE, 0.0f, 0, false, LOTREntityTags.MARSH_WRAITHS, false),
 
     // --- LOTREnchantmentDurability: the chance a use costs no durability. ----
     DURABLE_1("durable1", Effect.DURABILITY, 1.25f, 15, false),
@@ -190,6 +201,7 @@ public enum LOTRModifier implements StringRepresentable {
     private final int weight;
     private final boolean skilful;
     private final TagKey<EntityType<?>> baneOf;
+    private final boolean achievable;
 
     LOTRModifier(String name, Effect effect, float value, int weight, boolean skilful) {
         this(name, effect, value, weight, skilful, null);
@@ -197,12 +209,18 @@ public enum LOTRModifier implements StringRepresentable {
 
     LOTRModifier(String name, Effect effect, float value, int weight, boolean skilful,
             TagKey<EntityType<?>> baneOf) {
+        this(name, effect, value, weight, skilful, baneOf, true);
+    }
+
+    LOTRModifier(String name, Effect effect, float value, int weight, boolean skilful,
+            TagKey<EntityType<?>> baneOf, boolean achievable) {
         this.name = name;
         this.effect = effect;
         this.value = value;
         this.weight = weight;
         this.skilful = skilful;
         this.baneOf = baneOf;
+        this.achievable = achievable;
     }
 
     @Override
@@ -239,6 +257,11 @@ public enum LOTRModifier implements StringRepresentable {
     /** LOTREnchantmentBane: the creatures it bites harder, or null. */
     public TagKey<EntityType<?>> baneOf() {
         return this.baneOf;
+    }
+
+    /** LOTREnchantmentBane.isAchievable: whether enough kills earn the bane. */
+    public boolean isAchievable() {
+        return this.achievable;
     }
 
     /** lotr.enchant.&lt;name&gt; -- "Keen", "Crooked", "Lasting". */

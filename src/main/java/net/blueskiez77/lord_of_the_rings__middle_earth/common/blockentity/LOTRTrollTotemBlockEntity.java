@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRTrollTotemBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRTrollTotemBlock.Part;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRMountainTrollChieftainEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,9 +14,6 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -46,13 +45,6 @@ public class LOTRTrollTotemBlockEntity extends BlockEntity {
 
     /** getJawRotation: the fully open jaw hangs 35 degrees down. */
     public static final float JAW_MAX_DEGREES = -35.0f;
-
-    /**
-     * What a completed totem calls up. PLACEHOLDER -- this is
-     * LOTREntityMountainTrollChieftain in the original, and a chicken here only
-     * until the chieftain is ported (tracked for D9). One line to change.
-     */
-    private static final EntityType<? extends Mob> SUMMONED = EntityTypes.CHICKEN;
 
     private int jawTick;
     private int prevJawTick;
@@ -120,14 +112,6 @@ public class LOTRTrollTotemBlockEntity extends BlockEntity {
      * LOTRTileEntityTrollTotem.summon. The three blocks are consumed and a
      * Mountain Troll Chieftain rises in their place, at the BASE position --
      * two below the head -- facing a random direction.
-     *
-     * <p>PLACEHOLDER: it spawns a CHICKEN. {@code
-     * LOTREntityMountainTrollChieftain} does not exist because the port has no
-     * entities at all yet, so the summon is wired end to end against a stand-in
-     * that proves the plumbing -- the blocks vanish, something appears at the
-     * right spot with a random yaw. Swap {@link #SUMMONED} for the chieftain's
-     * type when entities land (PORT_PLAN Track D); nothing else here needs
-     * to change.
      */
     public void summon() {
         if (!(level instanceof ServerLevel serverLevel)) {
@@ -139,14 +123,13 @@ public class LOTRTrollTotemBlockEntity extends BlockEntity {
         serverLevel.removeBlock(worldPosition.below(), false);
         serverLevel.removeBlock(basePos, false);
 
-        Mob summoned = SUMMONED.create(serverLevel, EntitySpawnReason.TRIGGERED);
+        LOTRMountainTrollChieftainEntity summoned = LOTREntities.MOUNTAIN_TROLL_CHIEFTAIN.create(serverLevel, EntitySpawnReason.TRIGGERED);
         if (summoned == null) {
             return;
         }
         summoned.snapTo(basePos.getX() + 0.5, basePos.getY(), basePos.getZ() + 0.5,
                 serverLevel.getRandom().nextFloat() * 360.0f, 0.0f);
-        // onSpawnWithEgg(null) in the original -- the hook that rolls a mob's
-        // random starting equipment and variant.
+        // onSpawnWithEgg(null)
         summoned.finalizeSpawn(serverLevel, serverLevel.getCurrentDifficultyAt(basePos),
                 EntitySpawnReason.TRIGGERED, null);
         serverLevel.addFreshEntity(summoned);

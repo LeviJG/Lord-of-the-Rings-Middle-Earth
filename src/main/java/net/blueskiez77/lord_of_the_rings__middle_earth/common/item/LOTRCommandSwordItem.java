@@ -1,11 +1,28 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRAttackRules;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTRItemCommandSword: not a sword at all, but a pointing stick for an army.
@@ -23,10 +40,8 @@ import net.minecraft.world.level.Level;
  * unbreakable, getItemEnchantability returns zero, and lotrWeaponDamage is set
  * to 1.0 -- less than a fist. You carry it in place of a weapon, not as one.
  *
- * <p>WHAT IT DOES NOT DO, and cannot yet: give the order. There are no NPCs in
- * the port, so {@link #command} is where the target search and the squadron
- * test go and is empty, exactly as LOTRCommandHornItem's is. The sword aims,
- * swings and names its squadron; it commands nobody.
+ * <p>NOT ported yet: naming the sword's squadron (LOTRGuiSquadronItem, D16);
+ * until then it speaks to units of no squadron.
  */
 public class LOTRCommandSwordItem extends Item {
 
@@ -61,17 +76,105 @@ public class LOTRCommandSwordItem extends Item {
         return InteractionResult.SUCCESS;
     }
 
+    /** LOTRSquadrons.getSquadron: the sword names its squadron as the horn does. */
+    public static String getSquadron(ItemStack stack) {
+        return LOTRCommandHornItem.getSquadron(stack);
+    }
+
     /**
-     * Where the order goes when there is anybody to take it.
-     *
-     * <p>The original: raycast COMMAND_RANGE for an entity, else for a block,
-     * else nothing; gather every living thing within SPREAD_RANGE of the hit;
-     * then for each hired NPC within UNIT_RANGE whose squadron matches and
-     * whose getObeyCommandSword is set, sort those targets by the NPC's own
-     * TargetSorter and set it on the nearest -- or, with no target at all, call
-     * commandSwordCancel. All of that waits on the NPCs.
+     * onItemRightClick's aim: the creature looked at within COMMAND_RANGE,
+     * else the block, else nothing -- then the order.
      */
     private static void command(Level level, Player player, ItemStack stack) {
-        // Intentionally empty. See the class note.
+        Entity entity = getEntityTarget(player);
+        if (entity != null) {
+            command(level, player, stack, new Vec3(entity.getX(), entity.getBoundingBox().minY + entity.getBbHeight() / 2.0f,
+                    entity.getZ()));
+            return;
+        }
+        Vec3 eyePos = player.getEyePosition();
+        Vec3 sight = eyePos.add(player.getLookAngle().scale(COMMAND_RANGE));
+        BlockHitResult hit = level.clip(new ClipContext(eyePos, sight, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player));
+        command(level, player, stack, hit.getType() == HitResult.Type.BLOCK ? hit.getLocation() : null);
+    }
+
+    /**
+     * command: every hired unit within UNIT_RANGE that obeys the sword and
+     * shares its squadron is set on the best of the creatures it may attack
+     * within SPREAD_RANGE of the spot -- by its own target sorting -- or, with
+     * none, stands down.
+     *
+     * <p>NOT ported yet: the marker shown where the order fell
+     * (LOTRPacketLocationFX SWORD_COMMAND), with the fx (D16).
+     */
+    private static void command(Level level, Player player, ItemStack stack, @Nullable Vec3 hit) {
+        player.setLastHurtByMob(null);
+        List<LivingEntity> spreadTargets = hit == null ? List.of() : level.getEntitiesOfClass(LivingEntity.class,
+                new AABB(hit, hit).inflate(SPREAD_RANGE),
+                e -> e.isAlive() && LOTRAttackRules.canPlayerAttackEntity(player, e, false));
+        String squadron = getSquadron(stack);
+        for (LOTRNPCEntity npc : level.getEntitiesOfClass(LOTRNPCEntity.class, player.getBoundingBox().inflate(UNIT_RANGE))) {
+            if (!npc.hiredNPCInfo.isActive || npc.hiredNPCInfo.getHiringPlayer() != player
+                    || !npc.hiredNPCInfo.getObeyCommandSword() || !npc.hiredNPCInfo.isSquadronCompatible(squadron)) {
+                continue;
+            }
+            List<LivingEntity> validTargets = new ArrayList<>();
+            for (LivingEntity target : spreadTargets) {
+                if (LOTRAttackRules.canNPCAttackEntity(npc, target, true)) {
+                    validTargets.add(target);
+                }
+            }
+            if (!validTargets.isEmpty()) {
+                validTargets.sort(Comparator.comparingDouble(t -> LOTRNearestAttackableTargetGoal.targetSortMetric(npc, t)));
+                npc.hiredNPCInfo.commandSwordAttack(validTargets.get(0));
+                npc.hiredNPCInfo.wasAttackCommanded = true;
+            } else {
+                npc.hiredNPCInfo.commandSwordCancel();
+            }
+        }
+    }
+
+    /**
+     * getEntityTarget: the nearest living, clickable thing whose box, grown by
+     * a block all round, the player's line of sight passes through within
+     * COMMAND_RANGE -- or one the player's eyes are already inside.
+     */
+    private static @Nullable Entity getEntityTarget(Player player) {
+        Vec3 eyePos = player.getEyePosition();
+        Vec3 look = player.getLookAngle();
+        Vec3 sight = eyePos.add(look.scale(COMMAND_RANGE));
+        Entity pointedEntity = null;
+        double entityDist = COMMAND_RANGE;
+        for (Entity entity : player.level().getEntities(player,
+                player.getBoundingBox().expandTowards(look.scale(COMMAND_RANGE)).inflate(1.0))) {
+            if (!(entity instanceof LivingEntity) || !entity.isPickable()) {
+                continue;
+            }
+            AABB box = entity.getBoundingBox().inflate(1.0);
+            java.util.Optional<Vec3> intercept = box.clip(eyePos, sight);
+            if (box.contains(eyePos)) {
+                if (entityDist >= 0.0) {
+                    pointedEntity = entity;
+                    entityDist = 0.0;
+                }
+                continue;
+            }
+            if (intercept.isEmpty()) {
+                continue;
+            }
+            double d = eyePos.distanceTo(intercept.get());
+            if (d >= entityDist && entityDist != 0.0) {
+                continue;
+            }
+            if (entity == player.getVehicle()) {
+                if (entityDist == 0.0) {
+                    pointedEntity = entity;
+                }
+                continue;
+            }
+            pointedEntity = entity;
+            entityDist = d;
+        }
+        return pointedEntity;
     }
 }

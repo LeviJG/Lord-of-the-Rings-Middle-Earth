@@ -24,7 +24,13 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGreyWandererTracker;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureScan;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureSpawning;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructures;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCauldronWashing;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDispenserBehaviours;
@@ -51,7 +57,15 @@ public class LOTRMod implements ModInitializer {
 
         LOTRPlayerAlignments.init();
         LOTRLevelData.init();
+        LOTRLegacyBlocks.init();
+        LOTRLegacyItems.init();
+        LOTRStructureScan.loadAllScans();
+        LOTRStructures.init();
+        LOTRStructureSpawning.init();
+        LOTRGreyWandererTracker.init();
         LOTRAlcoholTolerance.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRPlayerNPCOptions.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRAttackRules.init();
 
         LOTRRecipeTypes.init();
         LOTRMenus.init();
@@ -66,7 +80,11 @@ public class LOTRMod implements ModInitializer {
         // After the items, as the original built its recipes after registration.
         LOTRMillstoneRecipes.createRecipes();
 
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes.init();
         LOTREntities.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSpeech.loadAllSpeechBanks();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames.loadAllNameBanks();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCKillEvents.init();
 
         DispenserBlock.registerProjectileBehavior(LOTRCombatItems.CROSSBOW_BOLT);
         DispenserBlock.registerProjectileBehavior(LOTRCombatItems.PEBBLE);
@@ -102,6 +120,13 @@ public class LOTRMod implements ModInitializer {
         LOTRAlignmentCommand.register();
 
         LOGGER.info("LOTR factions initialized: {} factions loaded.", LOTRFaction.values().length);
+    }
+
+    /** isChristmas: the 24th to the 26th of December, when the elk's nose glows red. */
+    public static boolean isChristmas() {
+        java.time.LocalDate today = java.time.LocalDate.now();
+        int day = today.getDayOfMonth();
+        return today.getMonth() == java.time.Month.DECEMBER && (day == 24 || day == 25 || day == 26);
     }
 
     /** isAprilFools: the first of April, when faction and drink names turn silly. */

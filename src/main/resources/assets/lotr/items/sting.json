@@ -1,0 +1,14 @@
+{
+  "model": {
+    "type": "lotr:elven_blade",
+    "model": {
+      "type": "minecraft:model",
+      "model": "lotr:item/sting"
+    },
+    "glowing": {
+      "type": "minecraft:model",
+      "model": "lotr:item/sting_glowing"
+    },
+    "distance": 40.0
+  }
+}

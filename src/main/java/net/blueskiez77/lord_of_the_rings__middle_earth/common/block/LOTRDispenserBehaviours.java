@@ -43,6 +43,7 @@ public final class LOTRDispenserBehaviours {
                 LOTROrcBombEntity bomb = new LOTROrcBombEntity(LOTREntities.ORC_BOMB, level,
                         pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, null,
                         blockItem.getBlock().defaultBlockState());
+                bomb.droppedByPlayer = true;
                 level.addFreshEntity(bomb);
                 stack.shrink(1);
             }

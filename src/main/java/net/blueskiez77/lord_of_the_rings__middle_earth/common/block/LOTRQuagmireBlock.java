@@ -16,8 +16,9 @@ import net.minecraft.world.phys.Vec3;
  * cobweb -- the original called entity.setInWeb(), which is makeStuckInBlock
  * with cobweb's own vector.
  *
- * <p>The original let LOTR spiders cross freely (setInQuag); that waits for
- * the spiders themselves (Track D).
+ * <p>A LOTR spider walks through cobwebs (its setInWeb does nothing), but the
+ * original's setInQuag caught it here all the same; the spider only ignores
+ * WebBlocks (LOTRSpiderEntity.makeStuckInBlock), so the quagmire holds it.
  */
 public class LOTRQuagmireBlock extends Block {
     public static final MapCodec<LOTRQuagmireBlock> CODEC = simpleCodec(LOTRQuagmireBlock::new);

@@ -1,22 +1,22 @@
 old_package,old_class,new_class,status,notes
 client,LOTRAlignmentTicker,,missing,
 client,LOTRAttackTiming,,missing,
-client,LOTRClientProxy,,referenced,named in: LOTRModClient
+client,LOTRClientProxy,,referenced,named in: LOTRModClient LOTRParticles
 client,LOTREntityRenderer,,missing,
 client,LOTRGuiHandler,,missing,
 client,LOTRItemRendererManager,,missing,
 client,LOTRKeyHandler,,missing,
 client,LOTRReflectionClient,,missing,
-client,LOTRSpeechClient,,missing,
+client,LOTRSpeechClient,LOTRSpeechClient,ported,
 client,LOTRTextBody,,missing,
-client,LOTRTextures,,missing,
+client,LOTRTextures,,referenced,named in: LOTRGlowingEyes
 client,LOTRTickHandlerClient,,referenced,named in: LOTRDrunkCamera LOTRModClient
 client.fx,LOTREffectRenderer,,missing,
 client.fx,LOTREntityAlignmentBonus,,missing,
 client.fx,LOTREntityAngryFX,,missing,
 client.fx,LOTREntityBlueFlameFX,,missing,
 client.fx,LOTREntityBossSpawnFX,,missing,
-client.fx,LOTREntityChillFX,,missing,
+client.fx,LOTREntityChillFX,,referenced,named in: LOTRParticles LOTRSmokeParticle
 client.fx,LOTREntityDeadMarshFace,,missing,
 client.fx,LOTREntityElvenGlowFX,,missing,
 client.fx,LOTREntityGandalfFireballExplodeFX,,referenced,named in: LOTRGandalfFireballEntity
@@ -25,23 +25,23 @@ client.fx,LOTREntityLeafFX,,missing,
 client.fx,LOTREntityMTCHealFX,,missing,
 client.fx,LOTREntityMallornEntHealFX,,missing,
 client.fx,LOTREntityMallornEntSummonFX,,missing,
-client.fx,LOTREntityMarshFlameFX,,missing,
-client.fx,LOTREntityMarshLightFX,,missing,
-client.fx,LOTREntityMorgulPortalFX,,missing,
+client.fx,LOTREntityMarshFlameFX,,referenced,named in: LOTRMarshParticle LOTRParticles
+client.fx,LOTREntityMarshLightFX,,referenced,named in: LOTRMarshParticle LOTRParticles
+client.fx,LOTREntityMorgulPortalFX,,referenced,named in: LOTRParticles LOTRSpellParticle
 client.fx,LOTREntityMusicFX,,missing,
 client.fx,LOTREntityPickpocketFX,,missing,
 client.fx,LOTREntityPickpocketFailFX,,missing,
-client.fx,LOTREntityQuenditeSmokeFX,,missing,
-client.fx,LOTREntityRiverWaterFX,,missing,
+client.fx,LOTREntityQuenditeSmokeFX,,referenced,named in: LOTRParticles LOTRSmokeParticle
+client.fx,LOTREntityRiverWaterFX,,referenced,named in: LOTRParticles LOTRSpellParticle
 client.fx,LOTREntitySwordCommandMarker,,missing,
 client.fx,LOTREntityUtumnoKillFX,,missing,
 client.fx,LOTREntityWaveFX,,missing,
-client.fx,LOTREntityWhiteSmokeFX,,missing,
+client.fx,LOTREntityWhiteSmokeFX,,referenced,named in: LOTRParticles LOTRSmokeParticle
 client.gui,LOTRGuiAchievementHoverEvent,,missing,
 client.gui,LOTRGuiAchievements,,missing,
 client.gui,LOTRGuiAlignmentChoices,,missing,
 client.gui,LOTRGuiAlloyForge,,referenced,named in: LOTRForgeScreen
-client.gui,LOTRGuiAnvil,,missing,
+client.gui,LOTRGuiAnvil,LOTRAnvilScreen,ported,
 client.gui,LOTRGuiArmorStand,,excluded,
 client.gui,LOTRGuiBanner,LOTRBannerBlock LOTRBannerBlockEntity LOTRBannerRenderState LOTRBannerRenderer LOTRBannerModel,ported,
 client.gui,LOTRGuiBannerButton,,missing,
@@ -63,7 +63,7 @@ client.gui,LOTRGuiButtonMenu,,missing,
 client.gui,LOTRGuiButtonOptions,,missing,
 client.gui,LOTRGuiButtonPledge,,missing,
 client.gui,LOTRGuiButtonRedBook,,missing,
-client.gui,LOTRGuiButtonReforge,,missing,
+client.gui,LOTRGuiButtonReforge,,referenced,named in: LOTRAnvilScreen
 client.gui,LOTRGuiButtonRestockPouch,,missing,
 client.gui,LOTRGuiButtonShieldsArrows,,missing,
 client.gui,LOTRGuiChestWithPouch,,missing,
@@ -82,7 +82,7 @@ client.gui,LOTRGuiHiredFarmer,,missing,
 client.gui,LOTRGuiHiredFarmerInventory,,missing,
 client.gui,LOTRGuiHiredInteract,,missing,
 client.gui,LOTRGuiHiredNPC,,base,extended by: LOTRGuiHiredFarmer LOTRGuiHiredWarrior
-client.gui,LOTRGuiHiredWarrior,,missing,
+client.gui,LOTRGuiHiredWarrior,,referenced,named in: LOTRHiredNPCInfo
 client.gui,LOTRGuiHiredWarriorInventory,,missing,
 client.gui,LOTRGuiHobbitOven,LOTRHobbitOvenScreen,ported,
 client.gui,LOTRGuiHornSelect,LOTRHornSelectScreen,ported,
@@ -111,56 +111,56 @@ client.gui,LOTRGuiScreenBase,,base,extended by: LOTRGuiAlignmentChoices LOTRGuiB
 client.gui,LOTRGuiScrollPane,,missing,
 client.gui,LOTRGuiShields,,missing,
 client.gui,LOTRGuiSlider,,missing,
-client.gui,LOTRGuiSquadronItem,,referenced,named in: LOTRHornSelectScreen
+client.gui,LOTRGuiSquadronItem,,referenced,named in: LOTRCommandSwordItem LOTRHornSelectScreen
 client.gui,LOTRGuiTitles,,missing,
-client.gui,LOTRGuiTrade,,missing,
+client.gui,LOTRGuiTrade,,referenced,named in: LOTRTradeable
 client.gui,LOTRGuiTradeButton,,missing,
 client.gui,LOTRGuiTradeInteract,,missing,
 client.gui,LOTRGuiTradeUnitTradeInteract,,missing,
-client.gui,LOTRGuiUnitTrade,,missing,
+client.gui,LOTRGuiUnitTrade,,referenced,named in: LOTRUnitTradeable
 client.gui,LOTRGuiUnitTradeButton,,missing,
 client.gui,LOTRGuiUnitTradeInteract,,missing,
 client.gui,LOTRGuiUnsmeltery,LOTRUnsmelteryScreen,ported,
 client.gui,LOTRMapLabels,,missing,
 client.gui.config,LOTRGuiConfig,,missing,
 client.gui.config,LOTRGuiFactory,,missing,
-client.model,LOTRArmorModels,,referenced,named in: LOTRArmorRenderers LOTRArnorHelmetModel LOTRBlackNumenoreanHelmetModel LOTRDorwinionElvenHelmetModel ...
+client.model,LOTRArmorModels,,referenced,named in: LOTRArmorRenderers LOTRArnorHelmetModel LOTRBipedRenderer LOTRBlackNumenoreanHelmetModel ...
 client.model,LOTRModelAleHorn,,referenced,named in: LOTRVesselModels
 client.model,LOTRModelArmorStand,,excluded,
 client.model,LOTRModelArnorHelmet,LOTRArnorHelmetModel,ported,
-client.model,LOTRModelAurochs,,missing,
+client.model,LOTRModelAurochs,LOTRAurochsModel,ported,
 client.model,LOTRModelBalrog,,missing,
 client.model,LOTRModelBanner,LOTRBannerModel,ported,
 client.model,LOTRModelBannerWall,LOTRWallBannerBlock,ported,
 client.model,LOTRModelBarrowWight,,missing,
 client.model,LOTRModelBeacon,LOTRBeaconBlock LOTRBeaconBlockEntity LOTRBeaconScreen,ported,
-client.model,LOTRModelBear,,missing,
-client.model,LOTRModelBearRug,,missing,
-client.model,LOTRModelBiped,,referenced,named in: LOTRGondorHelmetModel
-client.model,LOTRModelBird,,missing,
+client.model,LOTRModelBear,LOTRBearModel,ported,
+client.model,LOTRModelBearRug,LOTRBearRugEntity,ported,
+client.model,LOTRModelBiped,LOTRBipedModel,ported,
+client.model,LOTRModelBird,LOTRBirdModel,ported,
 client.model,LOTRModelBlackNumenoreanHelmet,LOTRBlackNumenoreanHelmetModel,ported,
-client.model,LOTRModelBlackUrukHelmet,,missing,
+client.model,LOTRModelBlackUrukHelmet,LOTRBlackUrukHelmetModel,ported,
 client.model,LOTRModelBlock,,missing,
-client.model,LOTRModelBoar,,missing,
-client.model,LOTRModelButterfly,,missing,
-client.model,LOTRModelCamel,,missing,
+client.model,LOTRModelBoar,LOTRBoarModel,ported,
+client.model,LOTRModelButterfly,LOTRButterflyModel,ported,
+client.model,LOTRModelCamel,LOTRCamelModel,ported,
 client.model,LOTRModelCompass,,missing,
-client.model,LOTRModelCrocodile,,missing,
-client.model,LOTRModelDeer,,missing,
-client.model,LOTRModelDikDik,,missing,
+client.model,LOTRModelCrocodile,LOTRCrocodileModel,ported,
+client.model,LOTRModelDeer,LOTRDeerModel,ported,
+client.model,LOTRModelDikDik,LOTRDikDikModel,ported,
 client.model,LOTRModelDorwinionElfHelmet,,referenced,named in: LOTRDorwinionElvenHelmetModel
-client.model,LOTRModelDwarf,,missing,
+client.model,LOTRModelDwarf,LOTRDwarfModel,ported,
 client.model,LOTRModelEasterlingHelmet,LOTREasterlingHelmetModel,ported,
-client.model,LOTRModelElf,,missing,
-client.model,LOTRModelElk,,missing,
+client.model,LOTRModelElf,LOTRElfModel,ported,
+client.model,LOTRModelElk,LOTRElkModel,ported,
 client.model,LOTRModelEnt,,referenced,named in: LOTREntTrunkModel
 client.model,LOTRModelFish,,missing,
-client.model,LOTRModelFlamingo,,missing,
+client.model,LOTRModelFlamingo,LOTRFlamingoModel,ported,
 client.model,LOTRModelGaladhrimHelmet,LOTRGaladhrimHelmetModel,ported,
-client.model,LOTRModelGemsbok,,missing,
+client.model,LOTRModelGemsbok,LOTRGemsbokModel,ported,
 client.model,LOTRModelGemsbokHelmet,LOTRGemsbokHelmetModel,ported,
-client.model,LOTRModelGiraffe,,missing,
-client.model,LOTRModelGiraffeRug,,missing,
+client.model,LOTRModelGiraffe,LOTRGiraffeModel,ported,
+client.model,LOTRModelGiraffeRug,LOTRGiraffeRugEntity,ported,
 client.model,LOTRModelGlassBottle,,referenced,named in: LOTRVesselModels
 client.model,LOTRModelGoblet,,referenced,named in: LOTRVesselModels
 client.model,LOTRModelGollum,,missing,
@@ -170,51 +170,51 @@ client.model,LOTRModelGulfChestplate,,referenced,named in: LOTRGulfenChestplateM
 client.model,LOTRModelGundabadUrukHelmet,LOTRGundabadUrukHelmetModel,ported,
 client.model,LOTRModelHalfTroll,,missing,
 client.model,LOTRModelHaradRobes,,missing,
-client.model,LOTRModelHaradTurban,,missing,
+client.model,LOTRModelHaradTurban,,referenced,named in: LOTRDyedHeadModel
 client.model,LOTRModelHarnedorChestplate,,referenced,named in: LOTRHarnennorChestplateModel
 client.model,LOTRModelHarnedorHelmet,,referenced,named in: LOTRHarnennorHelmetModel
 client.model,LOTRModelHeadPlate,LOTRPlateHeadRenderer,ported,
 client.model,LOTRModelHighElvenHelmet,,referenced,named in: LOTRArmorRenderers LOTRLindonHelmetModel
-client.model,LOTRModelHobbit,,missing,
-client.model,LOTRModelHuman,,missing,
+client.model,LOTRModelHobbit,LOTRHobbitModel,ported,
+client.model,LOTRModelHuman,LOTRHumanModel,ported,
 client.model,LOTRModelHuorn,,missing,
 client.model,LOTRModelKebabStand,LOTRKebabStandModel,ported,
-client.model,LOTRModelLeatherHat,,missing,
-client.model,LOTRModelLion,,missing,
-client.model,LOTRModelLionOld,,missing,
-client.model,LOTRModelLionRug,,missing,
+client.model,LOTRModelLeatherHat,LOTRLeatherHatItem,ported,
+client.model,LOTRModelLion,LOTRLionModel,ported,
+client.model,LOTRModelLionOld,LOTRLionOldModel,ported,
+client.model,LOTRModelLionRug,LOTRLionRugEntity,ported,
 client.model,LOTRModelMallornEntTrophy,,missing,
 client.model,LOTRModelMarshWraith,,missing,
-client.model,LOTRModelMidge,,missing,
+client.model,LOTRModelMidge,LOTRMidgeModel,ported,
 client.model,LOTRModelMoredainLionHelmet,,referenced,named in: LOTRMorwaithChieftainHelmetModel
 client.model,LOTRModelMorgulHelmet,LOTRMorgulHelmetModel,ported,
 client.model,LOTRModelMug,LOTRMugBlock LOTRMugBlockEntity LOTRMugRenderState LOTRMugRenderer,ported,
 client.model,LOTRModelNearHaradWarlordHelmet,,referenced,named in: LOTRSouthronChampionHelmetModel
-client.model,LOTRModelOrc,,missing,
-client.model,LOTRModelPartyHat,,missing,
+client.model,LOTRModelOrc,LOTROrcModel,ported,
+client.model,LOTRModelPartyHat,,referenced,named in: LOTRDyedHeadModel
 client.model,LOTRModelPortal,,missing,
 client.model,LOTRModelRabbit,,missing,
-client.model,LOTRModelRhino,,missing,
+client.model,LOTRModelRhino,LOTRRhinoModel,ported,
 client.model,LOTRModelRohanMarshalHelmet,,referenced,named in: LOTRRohirricMarshalHelmetModel
 client.model,LOTRModelSauron,,missing,
-client.model,LOTRModelScorpion,,missing,
+client.model,LOTRModelScorpion,LOTRScorpionModel,ported,
 client.model,LOTRModelSkeleton,,missing,
 client.model,LOTRModelSkullCup,,referenced,named in: LOTRVesselModels
-client.model,LOTRModelSmokeShip,,missing,
-client.model,LOTRModelSpider,,missing,
-client.model,LOTRModelSwan,,missing,
-client.model,LOTRModelSwanChestplate,,missing,
+client.model,LOTRModelSmokeShip,LOTRSmokeShipModel,ported,
+client.model,LOTRModelSpider,LOTRSpiderModel,ported,
+client.model,LOTRModelSwan,LOTRSwanModel,ported,
+client.model,LOTRModelSwanChestplate,LOTRSwanChestplateModel,ported,
 client.model,LOTRModelSwanHelmet,LOTRSwanHelmetModel,ported,
 client.model,LOTRModelTauredainChieftainHelmet,,referenced,named in: LOTRTaurethrimChieftainHelmetModel
 client.model,LOTRModelTauredainGoldHelmet,,referenced,named in: LOTRGoldenTaurethrimHelmetModel
-client.model,LOTRModelTermite,,missing,
+client.model,LOTRModelTermite,LOTRTermiteModel,ported,
 client.model,LOTRModelTroll,LOTRTrollModel,ported,
 client.model,LOTRModelTrollTotem,LOTRTrollTotemModel,ported,
 client.model,LOTRModelUmbarHelmet,,referenced,named in: LOTRUmbaricHelmetModel
 client.model,LOTRModelUnsmeltery,LOTRUnsmelteryModel,ported,
 client.model,LOTRModelUrukHelmet,LOTRUrukHelmetModel,ported,
-client.model,LOTRModelWarg,,missing,
-client.model,LOTRModelWargskinRug,,missing,
+client.model,LOTRModelWarg,LOTRWargModel,ported,
+client.model,LOTRModelWargskinRug,LOTRWargskinRugEntity,ported,
 client.model,LOTRModelWeaponRack,LOTRWeaponRackModel,ported,
 client.model,LOTRModelWineGlass,,referenced,named in: LOTRVesselModels
 client.model,LOTRModelWingedHelmet,,referenced,named in: LOTRGondorWingedHelmetModel
@@ -229,143 +229,143 @@ client.render,LOTRRenderPlayer,,missing,
 client.render,LOTRRenderShield,,missing,
 client.render,LOTRSkyRenderer,,missing,
 client.render,LOTRWeatherRenderer,,missing,
-client.render.entity,LOTRGlowingEyes,,missing,
+client.render.entity,LOTRGlowingEyes,LOTRGlowingEyes,ported,
 client.render.entity,LOTRHuornTextures,,missing,
-client.render.entity,LOTRNPCRendering,,missing,
-client.render.entity,LOTRRandomSkins,,missing,
+client.render.entity,LOTRNPCRendering,,referenced,named in: LOTRBipedRenderer
+client.render.entity,LOTRRandomSkins,LOTRRandomSkins,ported,
 client.render.entity,LOTRRenderAlignmentBonus,,missing,
-client.render.entity,LOTRRenderAngmarHillman,,missing,
+client.render.entity,LOTRRenderAngmarHillman,LOTRAngmarHillmanRenderer,ported,
 client.render.entity,LOTRRenderArrowPoisoned,LOTRPoisonedArrowRenderer,ported,
-client.render.entity,LOTRRenderAurochs,,missing,
+client.render.entity,LOTRRenderAurochs,LOTRAurochsRenderer,ported,
 client.render.entity,LOTRRenderBalrog,,missing,
-client.render.entity,LOTRRenderBandit,,missing,
+client.render.entity,LOTRRenderBandit,,missing,with LOTREntityBandit
 client.render.entity,LOTRRenderBanner,LOTRBannerRenderer,ported,
 client.render.entity,LOTRRenderBannerWall,LOTRWallBannerBlock,ported,
 client.render.entity,LOTRRenderBarrowWight,,missing,
-client.render.entity,LOTRRenderBear,,missing,
-client.render.entity,LOTRRenderBearRug,,missing,
-client.render.entity,LOTRRenderBiped,,base,extended by: LOTRRenderAngmarHillman LOTRRenderBandit LOTRRenderBarrowWight LOTRRenderBlacksmith LOTRRenderBreeMan LOTRRenderDaleMan ...
-client.render.entity,LOTRRenderBird,,missing,
+client.render.entity,LOTRRenderBear,LOTRBearRenderer,ported,
+client.render.entity,LOTRRenderBearRug,LOTRBearRugEntity,ported,
+client.render.entity,LOTRRenderBiped,LOTRBipedRenderer,ported,
+client.render.entity,LOTRRenderBird,LOTRBirdRenderer,ported,
 client.render.entity,LOTRRenderBlacksmith,,missing,
 client.render.entity,LOTRRenderBossTrophy,LOTRBossTrophyRenderer,ported,
-client.render.entity,LOTRRenderBreeMan,,missing,
-client.render.entity,LOTRRenderBreeRuffian,,missing,
-client.render.entity,LOTRRenderBreeTrader,,missing,
-client.render.entity,LOTRRenderButterfly,,missing,
-client.render.entity,LOTRRenderCamel,,missing,
-client.render.entity,LOTRRenderCrocodile,,missing,
+client.render.entity,LOTRRenderBreeMan,LOTRBreeManRenderer,ported,
+client.render.entity,LOTRRenderBreeRuffian,LOTRBreeManRenderer,merged,LOTRBreeManRenderer.ruffian (D9d-b)
+client.render.entity,LOTRRenderBreeTrader,LOTRBreeManRenderer,merged,the trader outfit is LOTRBreeManRenderer.trader(outfit) (D9d)
+client.render.entity,LOTRRenderButterfly,LOTRButterflyRenderer,ported,
+client.render.entity,LOTRRenderCamel,LOTRCamelEntity LOTRCamelModel,ported,
+client.render.entity,LOTRRenderCrocodile,LOTRCrocodileRenderer,ported,
 client.render.entity,LOTRRenderCrossbowBolt,LOTRCrossbowBoltRenderer,ported,
 client.render.entity,LOTRRenderDaleMan,,missing,
 client.render.entity,LOTRRenderDaleTrader,,missing,
 client.render.entity,LOTRRenderDart,LOTRDartRenderer,ported,
 client.render.entity,LOTRRenderDeadMarshFace,,missing,
-client.render.entity,LOTRRenderDeer,,missing,
-client.render.entity,LOTRRenderDikDik,,missing,
-client.render.entity,LOTRRenderDorwinionElfVintner,,missing,
-client.render.entity,LOTRRenderDorwinionMan,,missing,
+client.render.entity,LOTRRenderDeer,LOTRDeerRenderer,ported,
+client.render.entity,LOTRRenderDikDik,LOTRDikDikRenderer,ported,
+client.render.entity,LOTRRenderDorwinionElfVintner,LOTRElfRenderer,merged,"LOTRElfRenderer.cloaked(""dorwinion_vintner_cloak"") (D9g-d)"
+client.render.entity,LOTRRenderDorwinionMan,LOTRDorwinionManRenderer,ported,
 client.render.entity,LOTRRenderDunedain,,missing,
 client.render.entity,LOTRRenderDunedainTrader,,missing,
-client.render.entity,LOTRRenderDunlending,,missing,
-client.render.entity,LOTRRenderDunlendingBase,,missing,
-client.render.entity,LOTRRenderDwarf,,missing,
-client.render.entity,LOTRRenderDwarfCommander,,missing,
-client.render.entity,LOTRRenderDwarfSmith,,missing,
+client.render.entity,LOTRRenderDunlending,LOTRDunlendingRenderer,ported,
+client.render.entity,LOTRRenderDunlendingBase,LOTRDunlendingRenderer,ported,
+client.render.entity,LOTRRenderDwarf,LOTRDwarfRenderer,ported,
+client.render.entity,LOTRRenderDwarfCommander,LOTRDwarfRenderer,merged,the cloak is LOTRDwarfRenderer.of(Kind.COMMANDER) (D9h)
+client.render.entity,LOTRRenderDwarfSmith,LOTRDwarfRenderer,merged,the apron is LOTRDwarfRenderer.of(Kind.SMITH) (D9h)
 client.render.entity,LOTRRenderEasterling,,missing,
 client.render.entity,LOTRRenderEasterlingTrader,,missing,
-client.render.entity,LOTRRenderElf,,missing,
-client.render.entity,LOTRRenderElk,,missing,
-client.render.entity,LOTRRenderElvenSmith,,missing,
-client.render.entity,LOTRRenderElvenTrader,,missing,
+client.render.entity,LOTRRenderElf,LOTRElfRenderer,ported,
+client.render.entity,LOTRRenderElk,LOTRElkEntity LOTRElkModel,ported,
+client.render.entity,LOTRRenderElvenSmith,LOTRElfRenderer,merged,LOTRElfRenderer.cloaked(cloak); the cape waits for NPC capes (D9g-a)
+client.render.entity,LOTRRenderElvenTrader,LOTRElfRenderer,merged,LOTRElfRenderer.cloaked(cloak) (D9g-a)
 client.render.entity,LOTRRenderEnt,,missing,
 client.render.entity,LOTRRenderEntityBarrel,LOTRBarrelItem LOTRBarrelBlock LOTRBarrelMenu LOTRBarrelBlockEntity LOTRBarrelScreen,ported,
 client.render.entity,LOTRRenderFallingCoinPile,,missing,
 client.render.entity,LOTRRenderFallingFireJar,,missing,
 client.render.entity,LOTRRenderFish,,missing,
-client.render.entity,LOTRRenderFlamingo,,missing,
-client.render.entity,LOTRRenderGaladhrimWarden,,missing,
+client.render.entity,LOTRRenderFlamingo,LOTRFlamingoRenderer,ported,
+client.render.entity,LOTRRenderGaladhrimWarden,LOTRElfRenderer,merged,the unseen warden in LOTRElfRenderer (D9g-a)
 client.render.entity,LOTRRenderGandalf,,missing,
-client.render.entity,LOTRRenderGandalfFireball,LOTRGandalfFireballEntity,ported,
-client.render.entity,LOTRRenderGemsbok,,missing,
-client.render.entity,LOTRRenderGiraffe,,missing,
-client.render.entity,LOTRRenderGiraffeRug,,missing,
+client.render.entity,LOTRRenderGandalfFireball,LOTRGandalfFireballRenderer,ported,
+client.render.entity,LOTRRenderGemsbok,LOTRGemsbokRenderer,ported,
+client.render.entity,LOTRRenderGiraffe,LOTRGiraffeEntity LOTRGiraffeModel,ported,
+client.render.entity,LOTRRenderGiraffeRug,LOTRGiraffeRugEntity,ported,
 client.render.entity,LOTRRenderGollum,,missing,
-client.render.entity,LOTRRenderGondorMan,,missing,
-client.render.entity,LOTRRenderGondorRenegade,,missing,
-client.render.entity,LOTRRenderGondorTrader,,missing,
+client.render.entity,LOTRRenderGondorMan,LOTRGondorManRenderer,ported,
+client.render.entity,LOTRRenderGondorRenegade,LOTRGondorManRenderer,merged,LOTRGondorManRenderer.renegade (D9f-a)
+client.render.entity,LOTRRenderGondorTrader,LOTRGondorManRenderer,merged,LOTRGondorManRenderer.trader(outfit) (D9f-a)
 client.render.entity,LOTRRenderHalfTroll,,missing,
 client.render.entity,LOTRRenderHalfTrollScavenger,,missing,
-client.render.entity,LOTRRenderHaradSlave,,missing,
-client.render.entity,LOTRRenderHaradrimTrader,,missing,
-client.render.entity,LOTRRenderHobbit,,missing,
-client.render.entity,LOTRRenderHobbitTrader,,missing,
-client.render.entity,LOTRRenderHorse,,missing,
+client.render.entity,LOTRRenderHaradSlave,LOTRHaradSlaveRenderer,ported,
+client.render.entity,LOTRRenderHaradrimTrader,LOTRNearHaradrimRenderer,merged,the trader outfit is LOTRNearHaradrimRenderer.trader(outfit) (D9k-a)
+client.render.entity,LOTRRenderHobbit,LOTRHobbitRenderer,ported,
+client.render.entity,LOTRRenderHobbitTrader,,referenced,named in: LOTRHobbitRenderer
+client.render.entity,LOTRRenderHorse,LOTRHorseEntity,ported,
 client.render.entity,LOTRRenderHuorn,,missing,
 client.render.entity,LOTRRenderInvasionSpawner,,missing,
-client.render.entity,LOTRRenderKineAraw,,missing,
-client.render.entity,LOTRRenderLion,,missing,
-client.render.entity,LOTRRenderLionRug,,missing,
+client.render.entity,LOTRRenderKineAraw,LOTRKineArawEntity,ported,
+client.render.entity,LOTRRenderLion,LOTRLionRenderer,ported,
+client.render.entity,LOTRRenderLionRug,LOTRLionRugEntity,ported,
 client.render.entity,LOTRRenderMallornEnt,,missing,
 client.render.entity,LOTRRenderMallornLeafBomb,,missing,
 client.render.entity,LOTRRenderMarshWraith,,missing,
-client.render.entity,LOTRRenderMidges,,missing,
+client.render.entity,LOTRRenderMidges,LOTRMidgesRenderer,ported,
 client.render.entity,LOTRRenderMirkTroll,,missing,
-client.render.entity,LOTRRenderMirkwoodSpider,,missing,
-client.render.entity,LOTRRenderMordorSpider,,missing,
+client.render.entity,LOTRRenderMirkwoodSpider,LOTRMirkwoodSpiderEntity,ported,
+client.render.entity,LOTRRenderMordorSpider,LOTRMordorSpiderEntity,ported,
 client.render.entity,LOTRRenderMoredain,,missing,
 client.render.entity,LOTRRenderMountainTroll,,missing,
 client.render.entity,LOTRRenderMountainTrollChieftain,,missing,
 client.render.entity,LOTRRenderNPCRespawner,,missing,
-client.render.entity,LOTRRenderNearHaradTrader,,missing,
-client.render.entity,LOTRRenderNearHaradrim,,missing,
-client.render.entity,LOTRRenderNearHaradrimWarlord,,missing,
+client.render.entity,LOTRRenderNearHaradTrader,LOTRNearHaradrimRenderer,merged,the trader outfit is LOTRNearHaradrimRenderer.trader(outfit) (D9k-a)
+client.render.entity,LOTRRenderNearHaradrim,LOTRNearHaradrimRenderer,ported,
+client.render.entity,LOTRRenderNearHaradrimWarlord,LOTRNearHaradrimWarlordEntity,ported,
 client.render.entity,LOTRRenderNurnSlave,,missing,
 client.render.entity,LOTRRenderOlogHai,,missing,
-client.render.entity,LOTRRenderOrc,,missing,
+client.render.entity,LOTRRenderOrc,LOTROrcRenderer,ported,
 client.render.entity,LOTRRenderOrcBomb,LOTROrcBombBlock LOTROrcBombEntity,ported,
 client.render.entity,LOTRRenderPlate,LOTRPlateEntityRenderer LOTRPlateRenderer,ported,
 client.render.entity,LOTRRenderPortal,,missing,
 client.render.entity,LOTRRenderRabbit,,missing,
 client.render.entity,LOTRRenderRanger,,missing,
-client.render.entity,LOTRRenderRhino,,missing,
-client.render.entity,LOTRRenderRohanTrader,,missing,
-client.render.entity,LOTRRenderRohirrim,,missing,
-client.render.entity,LOTRRenderRugBase,,base,extended by: LOTRRenderBearRug LOTRRenderGiraffeRug LOTRRenderLionRug LOTRRenderWargskinRug
+client.render.entity,LOTRRenderRhino,LOTRRhinoEntity LOTRRhinoModel,ported,
+client.render.entity,LOTRRenderRohanTrader,LOTRRohirrimRenderer,merged,LOTRRohirrimRenderer.trader(outfit) (D9e)
+client.render.entity,LOTRRenderRohirrim,LOTRRohirrimRenderer,ported,
+client.render.entity,LOTRRenderRugBase,LOTRRugRenderer,ported,
 client.render.entity,LOTRRenderSaruman,,missing,
 client.render.entity,LOTRRenderSauron,,missing,
-client.render.entity,LOTRRenderScorpion,,missing,
+client.render.entity,LOTRRenderScorpion,LOTRScorpionRenderer,ported,
 client.render.entity,LOTRRenderScrapTrader,,missing,
-client.render.entity,LOTRRenderShirePony,,missing,
+client.render.entity,LOTRRenderShirePony,LOTRShirePonyEntity,ported,
 client.render.entity,LOTRRenderSkeleton,,missing,
-client.render.entity,LOTRRenderSmokeRing,,missing,
+client.render.entity,LOTRRenderSmokeRing,LOTRSmokeRingRenderer,ported,
 client.render.entity,LOTRRenderSnowTroll,,missing,
 client.render.entity,LOTRRenderSpear,,missing,
-client.render.entity,LOTRRenderSpiderBase,,base,extended by: LOTRRenderMirkwoodSpider LOTRRenderMordorSpider LOTRRenderUtumnoIceSpider
+client.render.entity,LOTRRenderSpiderBase,LOTRSpiderRenderer,ported,
 client.render.entity,LOTRRenderStoneTroll,LOTRStoneTrollRenderer,ported,
-client.render.entity,LOTRRenderSwan,,missing,
-client.render.entity,LOTRRenderSwanKnight,,missing,
+client.render.entity,LOTRRenderSwan,LOTRSwanRenderer,ported,
+client.render.entity,LOTRRenderSwanKnight,LOTRGondorManRenderer,merged,LOTRGondorManRenderer.swanKnight (D9f-b)
 client.render.entity,LOTRRenderSwordCommandMarker,,missing,
 client.render.entity,LOTRRenderTauredain,,missing,
 client.render.entity,LOTRRenderTauredainShaman,,missing,
-client.render.entity,LOTRRenderTermite,,missing,
+client.render.entity,LOTRRenderTermite,LOTRTermiteRenderer,ported,
 client.render.entity,LOTRRenderThrowingAxe,LOTRThrowingAxeRenderer,ported,
 client.render.entity,LOTRRenderThrownRock,,missing,
-client.render.entity,LOTRRenderTraderRespawn,,missing,
+client.render.entity,LOTRRenderTraderRespawn,LOTRTraderRespawnRenderer,ported,
 client.render.entity,LOTRRenderTroll,LOTRTrollModel,ported,
 client.render.entity,LOTRRenderUtumnoIceSpider,,missing,
 client.render.entity,LOTRRenderUtumnoTroll,,missing,
-client.render.entity,LOTRRenderWarg,,missing,
-client.render.entity,LOTRRenderWargskinRug,,missing,
-client.render.entity,LOTRRenderWhiteOryx,,missing,
-client.render.entity,LOTRRenderWickedDwarf,,missing,
-client.render.entity,LOTRRenderWildBoar,,missing,
+client.render.entity,LOTRRenderWarg,LOTRWargRenderer,ported,
+client.render.entity,LOTRRenderWargskinRug,LOTRWargskinRugEntity,ported,
+client.render.entity,LOTRRenderWhiteOryx,LOTRWhiteOryxEntity,ported,
+client.render.entity,LOTRRenderWickedDwarf,LOTRDwarfRenderer,merged,skins and apron are LOTRDwarfRenderer.of(Kind.WICKED) (D9h)
+client.render.entity,LOTRRenderWildBoar,LOTRWildBoarEntity,ported,
 client.render.entity,LOTRRenderWraithBall,,missing,
-client.render.entity,LOTRRenderZebra,,missing,
+client.render.entity,LOTRRenderZebra,LOTRZebraEntity,ported,
 client.render.entity,LOTRSwingHandler,,missing,
 client.render.item,LOTRRenderBannerItem,LOTRBannerRenderer,ported,
 client.render.item,LOTRRenderBlownItem,,missing,
 client.render.item,LOTRRenderBow,LOTRBowItem,ported,
 client.render.item,LOTRRenderCrossbow,LOTRCrossbowItem,ported,
-client.render.item,LOTRRenderElvenBlade,,referenced,named in: LOTRItems
+client.render.item,LOTRRenderElvenBlade,LOTRElvenBladeItemModel,ported,
 client.render.item,LOTRRenderInvTableCommand,,missing,
 client.render.item,LOTRRenderLargeItem,,referenced,named in: LOTRItemModelProperties LOTRTridentItem
 client.render.item,LOTRRenderSkullStaff,,missing,
@@ -405,35 +405,35 @@ client.sound,LOTRTrackSorter,,missing,
 common,LOTRAchievement,,referenced,named in: LOTRDwarvenDoorBlock
 common,LOTRAchievementRank,,missing,
 common,LOTRBannerProtection,,referenced,named in: LOTRBalrogWhipItem
-common,LOTRCapes,,missing,
+common,LOTRCapes,,referenced,named in: LOTRBlackrootCaptainEntity LOTRDolAmrothCaptainEntity LOTRDorwinionCaptainEntity LOTRDorwinionElfCaptainEntity ...
 common,LOTRChatEvents,,missing,
-common,LOTRCommonProxy,,referenced,named in: LOTRDartTrapBlock LOTRDartTrapBlockEntity
-common,LOTRConfig,,missing,
+common,LOTRCommonProxy,,referenced,named in: LOTRBeaconBlock LOTRDartTrapBlock LOTRDartTrapBlockEntity
+common,LOTRConfig,,referenced,named in: LOTRHiredNPCInfo LOTRNPCEntity LOTROrcSkirmishGoal LOTRSpeechClient ...
 common,LOTRConfigBiomeID,,missing,
 common,LOTRCreativeTabs,LOTRCreativeTabs,ported,
 common,LOTRDamage,,referenced,named in: LOTRDamageTypes
 common,LOTRDate,,missing,
 common,LOTRDimension,LOTRDimension,ported,
-common,LOTRDrunkenSpeech,,missing,
-common,LOTREventHandler,,referenced,named in: LOTRItems LOTRMechanisedRailBlock LOTRPlayerMixin LOTRPoisonedArrowEntity ...
-common,LOTRFoods,,missing,
+common,LOTRDrunkenSpeech,LOTRDrunkenSpeech,ported,
+common,LOTREventHandler,,referenced,named in: LOTRArmourSets LOTRAttackRules LOTRBlockBehaviours LOTRCauldronWashing ...
+common,LOTRFoods,LOTRFoods,ported,
 common,LOTRGreyWandererTracker,,missing,
-common,LOTRGuiMessageTypes,,missing,
+common,LOTRGuiMessageTypes,,referenced,named in: LOTRAttackRules
 common,LOTRInterModComms,,missing,
-common,LOTRLevelData,,missing,
+common,LOTRLevelData,LOTRLevelData,ported,
 common,LOTRLore,,missing,
 common,LOTRMod,LOTRMod,ported,
 common,LOTRModInfo,,missing,
 common,LOTRNetHandlerPlayServer,,missing,
-common,LOTROptions,,missing,
+common,LOTROptions,,referenced,named in: LOTRPlayerNPCOptions
 common,LOTRPatron,,missing,
-common,LOTRPlayerData,,referenced,named in: LOTRAlcoholTolerance LOTRPlayerAlignments
+common,LOTRPlayerData,,referenced,named in: LOTRAlcoholTolerance LOTRPlayerAlignments LOTRPlayerNPCOptions LOTRPledgeCooldowns
 common,LOTRPlayerQuestData,,missing,
 common,LOTRPotionChanges,,missing,
 common,LOTRReflection,,missing,
-common,LOTRShields,,missing,
+common,LOTRShields,,referenced,named in: LOTRAngmarHillmanWarriorEntity LOTRBlackUrukEntity LOTRBlackrootSoldierEntity LOTRBlueDwarfWarriorEntity ...
 common,LOTRSpawnDamping,,missing,
-common,LOTRSquadrons,,referenced,named in: LOTRCommandHornItem LOTRHornSelectScreen
+common,LOTRSquadrons,,referenced,named in: LOTRCommandHornItem LOTRCommandSwordItem LOTRHiredNPCInfo LOTRHornSelectScreen
 common,LOTRTickHandlerServer,,missing,
 common,LOTRTime,,missing,
 common,LOTRTitle,,missing,
@@ -460,7 +460,7 @@ common.block,LOTRBlockBreeTable,,absorbed,backs 1 field(s): breeTable
 common.block,LOTRBlockBrick,,absorbed,backs 1 field(s): brick
 common.block,LOTRBlockBrick2,,absorbed,backs 1 field(s): brick2
 common.block,LOTRBlockBrick3,,absorbed,backs 1 field(s): brick3
-common.block,LOTRBlockBrick4,,partial,backs 1 field(s): brick4
+common.block,LOTRBlockBrick4,,absorbed,backs 1 field(s): brick4
 common.block,LOTRBlockBrick5,,absorbed,backs 1 field(s): brick5
 common.block,LOTRBlockBrick6,,absorbed,backs 1 field(s): brick6
 common.block,LOTRBlockBrickBase,,base,extended by: LOTRBlockBrick LOTRBlockBrick2 LOTRBlockBrick3 LOTRBlockBrick4 LOTRBlockBrick5 LOTRBlockBrick6 ...
@@ -498,7 +498,7 @@ common.block,LOTRBlockElvenPortal,,missing,backs 1 field(s): elvenPortal
 common.block,LOTRBlockElvenTable,,absorbed,backs 1 field(s): elvenTable
 common.block,LOTRBlockElvenTorch,,absorbed,backs 1 field(s): highElvenTorch
 common.block,LOTRBlockEntJar,LOTREntJarBlock,ported,
-common.block,LOTRBlockFallenLeaves,,missing,backs 4 field(s): fallenLeaves fallenLeavesLOTR fallenLeavesLOTR2 fallenLeavesLOTR3
+common.block,LOTRBlockFallenLeaves,LOTRFallenLeavesBlock,ported,
 common.block,LOTRBlockFangornPlant,,absorbed,backs 1 field(s): fangornPlant
 common.block,LOTRBlockFangornRiverweed,,absorbed,backs 1 field(s): fangornRiverweed
 common.block,LOTRBlockFence,,absorbed,backs 4 field(s): fence fence2 fence3 fenceRotten
@@ -520,7 +520,7 @@ common.block,LOTRBlockGlassBottle,,absorbed,backs 1 field(s): glassBottleBlock
 common.block,LOTRBlockGlassPane,,absorbed,backs 1 field(s): glassPane
 common.block,LOTRBlockGoblet,,absorbed,backs 4 field(s): gobletCopperBlock gobletGoldBlock gobletSilverBlock gobletWoodBlock
 common.block,LOTRBlockGondorianTable,,absorbed,backs 1 field(s): gondorianTable
-common.block,LOTRBlockGoran,,missing,backs 1 field(s): goran
+common.block,LOTRBlockGoran,LOTRGoranBlock,ported,
 common.block,LOTRBlockGrapevine,LOTRGrapevineBlock,ported,
 common.block,LOTRBlockGrapevineRed,,absorbed,backs 1 field(s): grapevineRed
 common.block,LOTRBlockGrapevineWhite,,absorbed,backs 1 field(s): grapevineWhite
@@ -549,13 +549,13 @@ common.block,LOTRBlockLeaves6,,absorbed,backs 1 field(s): leaves6
 common.block,LOTRBlockLeaves7,,absorbed,backs 1 field(s): leaves7
 common.block,LOTRBlockLeaves8,,absorbed,backs 1 field(s): leaves8
 common.block,LOTRBlockLeaves9,,absorbed,backs 1 field(s): leaves9
-common.block,LOTRBlockLeavesBase,,referenced,named in: LOTRBlockLootProvider LOTRBlocks LOTRCreativeTabs
+common.block,LOTRBlockLeavesBase,,referenced,named in: LOTRBlockLootProvider LOTRBlocks LOTRCreativeTabs LOTRFallenLeavesPlugin ...
 common.block,LOTRBlockLeavesVanilla1,,missing,
 common.block,LOTRBlockLeavesVanilla2,,missing,
 common.block,LOTRBlockLeekCrop,,absorbed,backs 1 field(s): leekCrop
 common.block,LOTRBlockLettuceCrop,,absorbed,backs 1 field(s): lettuceCrop
 common.block,LOTRBlockMallornTorch,,absorbed,backs 4 field(s): mallornTorchBlue mallornTorchGold mallornTorchGreen mallornTorchSilver
-common.block,LOTRBlockMarshLights,,missing,backs 1 field(s): marshLights
+common.block,LOTRBlockMarshLights,LOTRMarshLightsBlock,ported,
 common.block,LOTRBlockMechanisedRail,LOTRMechanisedRailBlock,ported,
 common.block,LOTRBlockMillstone,LOTRMillstoneBlock,ported,
 common.block,LOTRBlockMobSpawner,,absorbed,backs 1 field(s): mobSpawner
@@ -612,7 +612,7 @@ common.block,LOTRBlockReedBars,,absorbed,backs 1 field(s): reedBars
 common.block,LOTRBlockReedDry,,absorbed,backs 1 field(s): driedReeds
 common.block,LOTRBlockRemains,,absorbed,backs 1 field(s): remains
 common.block,LOTRBlockReplacement,,missing,
-common.block,LOTRBlockRhunFire,,missing,backs 1 field(s): rhunFire
+common.block,LOTRBlockRhunFire,,absorbed,backs 1 field(s): rhunFire
 common.block,LOTRBlockRhunFireJar,,absorbed,backs 1 field(s): rhunFireJar
 common.block,LOTRBlockRhunFlower,,absorbed,backs 1 field(s): rhunFlower
 common.block,LOTRBlockRhunTable,,absorbed,backs 1 field(s): rhunTable
@@ -653,7 +653,7 @@ common.block,LOTRBlockSlab6,,absorbed,backs 2 field(s): slabDouble6 slabSingle6
 common.block,LOTRBlockSlab7,,absorbed,backs 2 field(s): slabDouble7 slabSingle7
 common.block,LOTRBlockSlab8,,absorbed,backs 2 field(s): slabDouble8 slabSingle8
 common.block,LOTRBlockSlab9,,absorbed,backs 2 field(s): slabDouble9 slabSingle9
-common.block,LOTRBlockSlabBase,,base,extended by: LOTRBlockRottenSlab LOTRBlockScorchedSlab LOTRBlockSlab LOTRBlockSlab10 LOTRBlockSlab11 LOTRBlockSlab12 ...
+common.block,LOTRBlockSlabBase,,referenced,named in: LOTRBlockTagProvider
 common.block,LOTRBlockSlabBone,,absorbed,backs 2 field(s): slabBoneDouble slabBoneSingle
 common.block,LOTRBlockSlabClayTile,,absorbed,backs 2 field(s): slabClayTileDouble slabClayTileSingle
 common.block,LOTRBlockSlabClayTileDyed,,absorbed,backs 2 field(s): slabClayTileDyedDouble slabClayTileDyedSingle
@@ -671,10 +671,10 @@ common.block,LOTRBlockSpawnerChest,,missing,backs 3 field(s): spawnerChest spawn
 common.block,LOTRBlockStainedGlass,,absorbed,backs 1 field(s): stainedGlass
 common.block,LOTRBlockStainedGlassPane,,absorbed,backs 1 field(s): stainedGlassPane
 common.block,LOTRBlockStairs,,absorbed,backs 136 field(s): stairsAlmond stairsAngmarBrick stairsAngmarBrickCracked stairsAngmarBrickSnow stairsApple stairsArnorBrick ...
-common.block,LOTRBlockStalactite,,missing,backs 3 field(s): stalactite stalactiteIce stalactiteObsidian
+common.block,LOTRBlockStalactite,LOTRStalactiteBlock,ported,
 common.block,LOTRBlockTallGrass,,absorbed,backs 1 field(s): tallGrass
 common.block,LOTRBlockTauredainTable,,absorbed,backs 1 field(s): tauredainTable
-common.block,LOTRBlockTermite,,absorbed,backs 1 field(s): termiteMound
+common.block,LOTRBlockTermite,LOTRTermiteEntity LOTRTermiteRenderer LOTRTermiteModel,ported,
 common.block,LOTRBlockThatch,,absorbed,backs 1 field(s): thatch
 common.block,LOTRBlockThatchFloor,,absorbed,backs 1 field(s): thatchFloor
 common.block,LOTRBlockTorch,LOTRTorchBlock,ported,
@@ -708,7 +708,7 @@ common.block,LOTRBlockWallBone,,absorbed,backs 1 field(s): wallBone
 common.block,LOTRBlockWallClayTile,,absorbed,backs 1 field(s): wallClayTile
 common.block,LOTRBlockWallClayTileDyed,,absorbed,backs 1 field(s): wallClayTileDyed
 common.block,LOTRBlockWallV,,absorbed,backs 1 field(s): wallStoneV
-common.block,LOTRBlockWaste,,absorbed,backs 1 field(s): wasteBlock
+common.block,LOTRBlockWaste,LOTRWasteBlock,ported,
 common.block,LOTRBlockWeaponRack,LOTRWeaponRackBlock,ported,
 common.block,LOTRBlockWineGlass,,absorbed,backs 1 field(s): wineGlassBlock
 common.block,LOTRBlockWood,,absorbed,backs 1 field(s): wood
@@ -758,9 +758,9 @@ common.command,LOTRCommandAllowStructures,,missing,
 common.command,LOTRCommandBanStructures,,missing,
 common.command,LOTRCommandConquest,,missing,
 common.command,LOTRCommandDate,,missing,
-common.command,LOTRCommandEnableAlignmentZones,,missing,
+common.command,LOTRCommandEnableAlignmentZones,,referenced,named in: LOTRAlignmentCommand
 common.command,LOTRCommandEnchant,,missing,
-common.command,LOTRCommandFactionRelations,,missing,
+common.command,LOTRCommandFactionRelations,,referenced,named in: LOTRAlignmentCommand
 common.command,LOTRCommandFastTravelClock,,missing,
 common.command,LOTRCommandFellowship,,missing,
 common.command,LOTRCommandFellowshipMessage,,missing,
@@ -780,21 +780,21 @@ common.coremod,LOTRLoadingPlugin,,missing,
 common.coremod,LOTRReplacedMethods,,referenced,named in: LOTREnchantmentHelperMixin LOTRMechanisedRailBlock
 common.coremod,RandomTexturePatchCheck,,missing,
 common.dispenser,LOTRDispenseArrowPoisoned,,referenced,named in: LOTRPoisonedArrowItem
-common.dispenser,LOTRDispenseConker,,missing,
+common.dispenser,LOTRDispenseConker,,referenced,named in: LOTRThrownMiscItem
 common.dispenser,LOTRDispenseCrossbowBolt,,referenced,named in: LOTRCrossbowBoltItem
 common.dispenser,LOTRDispenseDart,,missing,
 common.dispenser,LOTRDispenseFirePot,,referenced,named in: LOTRFirePotItem
-common.dispenser,LOTRDispenseMysteryWeb,,missing,
-common.dispenser,LOTRDispenseOrcBomb,,missing,
+common.dispenser,LOTRDispenseMysteryWeb,,referenced,named in: LOTRThrownMiscItem
+common.dispenser,LOTRDispenseOrcBomb,,referenced,named in: LOTRDispenserBehaviours
 common.dispenser,LOTRDispensePebble,,referenced,named in: LOTRPebbleItem
 common.dispenser,LOTRDispensePlate,,referenced,named in: LOTRPlateItem
-common.dispenser,LOTRDispenseRhunFireJar,,missing,
-common.dispenser,LOTRDispenseSpawnEgg,,missing,
+common.dispenser,LOTRDispenseRhunFireJar,,referenced,named in: LOTRDispenserBehaviours
+common.dispenser,LOTRDispenseSpawnEgg,,referenced,named in: LOTRSpawnEggItem
 common.dispenser,LOTRDispenseSpear,,missing,
-common.dispenser,LOTRDispenseTermite,,missing,
-common.dispenser,LOTRDispenseThrowingAxe,,referenced,named in: LOTRThrowingAxeItem
+common.dispenser,LOTRDispenseTermite,,referenced,named in: LOTRThrownMiscItem
+common.dispenser,LOTRDispenseThrowingAxe,,referenced,named in: LOTRThrowingAxeEntity LOTRThrowingAxeItem
 common.enchant,LOTREnchantment,,referenced,named in: LOTRModifier LOTRModifiers
-common.enchant,LOTREnchantmentBane,,referenced,named in: LOTRModifier
+common.enchant,LOTREnchantmentBane,,referenced,named in: LOTREntityTags LOTRModifier
 common.enchant,LOTREnchantmentCombining,,missing,
 common.enchant,LOTREnchantmentDamage,,referenced,named in: LOTRModifier
 common.enchant,LOTREnchantmentDurability,,referenced,named in: LOTRModifier
@@ -806,7 +806,7 @@ common.enchant,LOTREnchantmentMeleeSpeed,,referenced,named in: LOTRModifier
 common.enchant,LOTREnchantmentProtection,,referenced,named in: LOTRModifier
 common.enchant,LOTREnchantmentProtectionFall,,missing,
 common.enchant,LOTREnchantmentProtectionFire,,missing,
-common.enchant,LOTREnchantmentProtectionMithril,,missing,
+common.enchant,LOTREnchantmentProtectionMithril,,referenced,named in: LOTRModifier LOTRModifiers
 common.enchant,LOTREnchantmentProtectionRanged,,missing,
 common.enchant,LOTREnchantmentProtectionSpecial,,referenced,named in: LOTRModifier
 common.enchant,LOTREnchantmentRangedDamage,,referenced,named in: LOTRModifier
@@ -814,196 +814,196 @@ common.enchant,LOTREnchantmentRangedKnockback,,missing,
 common.enchant,LOTREnchantmentSilkTouch,,referenced,named in: LOTRModifier
 common.enchant,LOTREnchantmentToolSpeed,,referenced,named in: LOTRModifier
 common.enchant,LOTREnchantmentType,,referenced,named in: LOTRCrossbowItem LOTRModifier LOTRModifiers LOTRThrowingAxeItem
-common.enchant,LOTREnchantmentWeaponSpecial,,missing,
+common.enchant,LOTREnchantmentWeaponSpecial,,referenced,named in: LOTRModifier LOTRModifierSpecials
 common.entity,AnimalJarUpdater,,missing,
-common.entity,LOTRBannerProtectable,,referenced,named in: LOTRStoneTrollEntity
+common.entity,LOTRBannerProtectable,,referenced,named in: LOTRRugEntity LOTRStoneTrollEntity
 common.entity,LOTREntities,LOTREntities,ported,
 common.entity,LOTREntityFallingFireJar,,missing,
 common.entity,LOTREntityInvasionSpawner,,referenced,named in: LOTRWarhornItem
 common.entity,LOTREntityNPCRespawner,,missing,
-common.entity,LOTREntityRegistry,,missing,
+common.entity,LOTREntityRegistry,,referenced,named in: LOTRAttackRules LOTRNPCKillEvents
 common.entity,LOTREntityUtils,,missing,
 common.entity,LOTRInvasionStatus,,missing,
-common.entity,LOTRMobSpawnerCondition,,missing,
-common.entity,LOTRMountFunctions,,missing,
+common.entity,LOTRMobSpawnerCondition,,referenced,named in: LOTRScorpionEntity
+common.entity,LOTRMountFunctions,,referenced,named in: LOTRNPCMount LOTRNPCRideableEntity
 common.entity,LOTRNPCSelectByFaction,,missing,
 common.entity,LOTRNPCSelectForInfluence,,missing,
 common.entity,LOTRPlateFallingInfo,,referenced,named in: LOTRPlateHeadRenderer
-common.entity,LOTRRandomSkinEntity,,missing,
-common.entity,LOTRScarecrows,,missing,
-common.entity.ai,LOTREntityAIAttackOnCollide,,missing,
+common.entity,LOTRRandomSkinEntity,,referenced,named in: LOTRDeerEntity LOTRRandomSkins
+common.entity,LOTRScarecrows,LOTRScarecrows,ported,
+common.entity.ai,LOTREntityAIAttackOnCollide,,referenced,named in: LOTRAttackOnCollideGoal
 common.entity.ai,LOTREntityAIAvoidHuorn,,missing,
-common.entity.ai,LOTREntityAIAvoidWithChance,,missing,
+common.entity.ai,LOTREntityAIAvoidWithChance,,referenced,named in: LOTRAvoidWithChanceGoal
 common.entity.ai,LOTREntityAIBalrogCharge,,missing,
-common.entity.ai,LOTREntityAIBanditFlee,,missing,
-common.entity.ai,LOTREntityAIBanditSteal,,missing,
+common.entity.ai,LOTREntityAIBanditFlee,LOTRBanditFleeGoal,ported,(D9d-b)
+common.entity.ai,LOTREntityAIBanditSteal,LOTRBanditStealGoal,ported,(D9d-b)
 common.entity.ai,LOTREntityAIBossJumpAttack,,missing,
-common.entity.ai,LOTREntityAIBreeEat,,missing,
-common.entity.ai,LOTREntityAIBurningPanic,,missing,
-common.entity.ai,LOTREntityAIConsumeBase,,base,extended by: LOTREntityAIDrink LOTREntityAIEat LOTREntityAIHobbitSmoke
-common.entity.ai,LOTREntityAIDrink,,missing,
-common.entity.ai,LOTREntityAIEat,,missing,
+common.entity.ai,LOTREntityAIBreeEat,LOTRBreeEatGoal,ported,(D9d)
+common.entity.ai,LOTREntityAIBurningPanic,,referenced,named in: LOTRBurningPanicGoal
+common.entity.ai,LOTREntityAIConsumeBase,,referenced,named in: LOTRConsumeGoal
+common.entity.ai,LOTREntityAIDrink,,referenced,named in: LOTRDrinkGoal LOTRDrinkItem LOTRFoods
+common.entity.ai,LOTREntityAIEat,,referenced,named in: LOTREatGoal LOTRFoods
 common.entity.ai,LOTREntityAIEntHealSapling,,missing,
-common.entity.ai,LOTREntityAIFarm,,missing,
+common.entity.ai,LOTREntityAIFarm,,referenced,named in: LOTRFarmGoal
 common.entity.ai,LOTREntityAIFarmhandAttackRabbit,,missing,
 common.entity.ai,LOTREntityAIFlee,,missing,
-common.entity.ai,LOTREntityAIFollowHiringPlayer,,missing,
+common.entity.ai,LOTREntityAIFollowHiringPlayer,,referenced,named in: LOTRFollowHiringPlayerGoal
 common.entity.ai,LOTREntityAIGandalfSmoke,,missing,
 common.entity.ai,LOTREntityAIGollumAvoidEntity,,missing,
 common.entity.ai,LOTREntityAIGollumFishing,,missing,
 common.entity.ai,LOTREntityAIGollumFollowOwner,,missing,
 common.entity.ai,LOTREntityAIGollumPanic,,missing,
 common.entity.ai,LOTREntityAIGollumRemainStill,,missing,
-common.entity.ai,LOTREntityAIHiredHorseRemainStill,,missing,
-common.entity.ai,LOTREntityAIHiredRemainStill,,missing,
-common.entity.ai,LOTREntityAIHiringPlayerHurtByTarget,,missing,
-common.entity.ai,LOTREntityAIHiringPlayerHurtTarget,,missing,
-common.entity.ai,LOTREntityAIHobbitChildFollowGoodPlayer,,missing,
-common.entity.ai,LOTREntityAIHobbitSmoke,,missing,
-common.entity.ai,LOTREntityAIHobbitTargetRuffian,,missing,
-common.entity.ai,LOTREntityAIHorseFollowHiringPlayer,,missing,
-common.entity.ai,LOTREntityAIHorseMoveToRiderTarget,,missing,
-common.entity.ai,LOTREntityAILionChase,,missing,
-common.entity.ai,LOTREntityAIMFMate,,missing,
-common.entity.ai,LOTREntityAINPCAvoidEvilPlayer,,missing,
-common.entity.ai,LOTREntityAINPCFollowParent,,missing,
-common.entity.ai,LOTREntityAINPCFollowSpouse,,missing,
-common.entity.ai,LOTREntityAINPCHurtByTarget,,missing,
-common.entity.ai,LOTREntityAINPCMarry,,missing,
-common.entity.ai,LOTREntityAINPCMate,,missing,
+common.entity.ai,LOTREntityAIHiredHorseRemainStill,,referenced,named in: LOTRNPCMount
+common.entity.ai,LOTREntityAIHiredRemainStill,,referenced,named in: LOTRHiredRemainStillGoal
+common.entity.ai,LOTREntityAIHiringPlayerHurtByTarget,,referenced,named in: LOTRHiringPlayerHurtByTargetGoal
+common.entity.ai,LOTREntityAIHiringPlayerHurtTarget,,referenced,named in: LOTRHiringPlayerHurtTargetGoal
+common.entity.ai,LOTREntityAIHobbitChildFollowGoodPlayer,,referenced,named in: LOTRHobbitChildFollowGoodPlayerGoal
+common.entity.ai,LOTREntityAIHobbitSmoke,,referenced,named in: LOTRHobbitSmokeGoal
+common.entity.ai,LOTREntityAIHobbitTargetRuffian,,referenced,named in: LOTRHobbitBounderEntity
+common.entity.ai,LOTREntityAIHorseFollowHiringPlayer,,referenced,named in: LOTRFollowHiringPlayerGoal
+common.entity.ai,LOTREntityAIHorseMoveToRiderTarget,,referenced,named in: LOTRAttackOnCollideGoal LOTRRangedAttackGoal
+common.entity.ai,LOTREntityAILionChase,,referenced,named in: LOTRLionChaseGoal
+common.entity.ai,LOTREntityAIMFMate,,referenced,named in: LOTRLionBaseEntity
+common.entity.ai,LOTREntityAINPCAvoidEvilPlayer,,referenced,named in: LOTRNPCAvoidEvilPlayerGoal
+common.entity.ai,LOTREntityAINPCFollowParent,,referenced,named in: LOTRNPCFollowParentGoal
+common.entity.ai,LOTREntityAINPCFollowSpouse,,referenced,named in: LOTRNPCFollowSpouseGoal
+common.entity.ai,LOTREntityAINPCHurtByTarget,,referenced,named in: LOTRNPCHurtByTargetGoal
+common.entity.ai,LOTREntityAINPCMarry,,referenced,named in: LOTRNPCMarryGoal
+common.entity.ai,LOTREntityAINPCMate,,referenced,named in: LOTRNPCMateGoal
 common.entity.ai,LOTREntityAINearestAttackableTargetBandit,,missing,
-common.entity.ai,LOTREntityAINearestAttackableTargetBasic,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetBasic,,referenced,named in: LOTRNearestAttackableTargetGoal
 common.entity.ai,LOTREntityAINearestAttackableTargetHuorn,,missing,
-common.entity.ai,LOTREntityAINearestAttackableTargetOrc,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetOrc,LOTROrcTargetGoal,ported,(D9i-a)
 common.entity.ai,LOTREntityAINearestAttackableTargetTroll,,missing,
-common.entity.ai,LOTREntityAINearestAttackableTargetWoodElf,,missing,
-common.entity.ai,LOTREntityAIOrcAvoidGoodPlayer,,missing,
-common.entity.ai,LOTREntityAIOrcPlaceBomb,,missing,
-common.entity.ai,LOTREntityAIOrcSkirmish,,missing,
+common.entity.ai,LOTREntityAINearestAttackableTargetWoodElf,LOTRWoodElfTargetGoal,ported,(D9g-c)
+common.entity.ai,LOTREntityAIOrcAvoidGoodPlayer,LOTROrcAvoidGoodPlayerGoal,ported,(D9i-a)
+common.entity.ai,LOTREntityAIOrcPlaceBomb,LOTROrcPlaceBombGoal,ported,(D9i-a)
+common.entity.ai,LOTREntityAIOrcSkirmish,LOTROrcSkirmishGoal,ported,(D9i-a)
 common.entity.ai,LOTREntityAIRabbitEatCrops,,missing,
-common.entity.ai,LOTREntityAIRangedAttack,,missing,
+common.entity.ai,LOTREntityAIRangedAttack,,referenced,named in: LOTRRangedAttackGoal
 common.entity.ai,LOTREntityAISauronUseMace,,missing,
 common.entity.ai,LOTREntityAITrollFleeSun,,missing,
-common.entity.ai,LOTREntityAIUntamedPanic,,missing,
-common.entity.ai,LOTREntityAIWargBombardierAttack,,missing,
-common.entity.ai,LOTRNPCTargetSelector,,missing,
-common.entity.animal,LOTRAmbientCreature,,missing,
-common.entity.animal,LOTRAmbientSpawnChecks,,missing,
-common.entity.animal,LOTRAnimalSpawnConditions,,missing,
-common.entity.animal,LOTREntityAnimalMF,,base,extended by: LOTREntityDeer LOTREntityLionBase
-common.entity.animal,LOTREntityAurochs,,missing,
-common.entity.animal,LOTREntityBear,,missing,
-common.entity.animal,LOTREntityBird,,referenced,named in: LOTRAnimalJarItem LOTREntityTags
-common.entity.animal,LOTREntityButterfly,,referenced,named in: LOTREntityTags
-common.entity.animal,LOTREntityCamel,,missing,
-common.entity.animal,LOTREntityCrebain,,missing,
-common.entity.animal,LOTREntityCrocodile,,missing,
-common.entity.animal,LOTREntityDeer,,missing,
-common.entity.animal,LOTREntityDesertScorpion,,missing,
-common.entity.animal,LOTREntityDikDik,,missing,
-common.entity.animal,LOTREntityElk,,missing,
+common.entity.ai,LOTREntityAIUntamedPanic,,referenced,named in: LOTRUntamedPanicGoal
+common.entity.ai,LOTREntityAIWargBombardierAttack,,referenced,named in: LOTRWargBombardierAttackGoal
+common.entity.ai,LOTRNPCTargetSelector,,referenced,named in: LOTRNearestAttackableTargetGoal
+common.entity.animal,LOTRAmbientCreature,,referenced,named in: LOTRDikDikEntity
+common.entity.animal,LOTRAmbientSpawnChecks,,referenced,named in: LOTRBirdEntity LOTRButterflyEntity LOTRDikDikEntity LOTRSwanEntity
+common.entity.animal,LOTRAnimalSpawnConditions,,referenced,named in: LOTRBearEntity
+common.entity.animal,LOTREntityAnimalMF,LOTRAnimalMF,ported,
+common.entity.animal,LOTREntityAurochs,LOTRAurochsEntity,ported,
+common.entity.animal,LOTREntityBear,LOTRBearEntity,ported,
+common.entity.animal,LOTREntityBird,LOTRBirdEntity,ported,
+common.entity.animal,LOTREntityButterfly,LOTRButterflyEntity,ported,
+common.entity.animal,LOTREntityCamel,LOTRCamelEntity,ported,
+common.entity.animal,LOTREntityCrebain,LOTRCrebainEntity,ported,
+common.entity.animal,LOTREntityCrocodile,LOTRCrocodileEntity,ported,
+common.entity.animal,LOTREntityDeer,LOTRDeerEntity,ported,
+common.entity.animal,LOTREntityDesertScorpion,LOTRDesertScorpionEntity,ported,
+common.entity.animal,LOTREntityDikDik,LOTRDikDikEntity,ported,
+common.entity.animal,LOTREntityElk,LOTRElkEntity,ported,
 common.entity.animal,LOTREntityFish,,missing,
-common.entity.animal,LOTREntityFlamingo,,missing,
-common.entity.animal,LOTREntityGemsbok,,missing,
-common.entity.animal,LOTREntityGiraffe,,missing,
-common.entity.animal,LOTREntityGorcrow,,missing,
-common.entity.animal,LOTREntityHorse,,missing,
-common.entity.animal,LOTREntityJungleScorpion,,missing,
-common.entity.animal,LOTREntityKineAraw,,missing,
-common.entity.animal,LOTREntityLion,,missing,
-common.entity.animal,LOTREntityLionBase,,base,extended by: LOTREntityLion LOTREntityLioness
-common.entity.animal,LOTREntityLioness,,missing,
-common.entity.animal,LOTREntityMidges,,missing,
-common.entity.animal,LOTREntityRabbit,,missing,
-common.entity.animal,LOTREntityRhino,,missing,
-common.entity.animal,LOTREntityScorpion,,base,extended by: LOTREntityDesertScorpion LOTREntityJungleScorpion
-common.entity.animal,LOTREntitySeagull,,missing,
-common.entity.animal,LOTREntityShirePony,,missing,
-common.entity.animal,LOTREntitySwan,,missing,
-common.entity.animal,LOTREntityTermite,,missing,
-common.entity.animal,LOTREntityWhiteOryx,,missing,
-common.entity.animal,LOTREntityWildBoar,,missing,
-common.entity.animal,LOTREntityZebra,,missing,
+common.entity.animal,LOTREntityFlamingo,LOTRFlamingoEntity,ported,
+common.entity.animal,LOTREntityGemsbok,LOTRGemsbokEntity,ported,
+common.entity.animal,LOTREntityGiraffe,LOTRGiraffeEntity,ported,
+common.entity.animal,LOTREntityGorcrow,LOTRGorcrowEntity,ported,
+common.entity.animal,LOTREntityHorse,LOTRHorseEntity,ported,
+common.entity.animal,LOTREntityJungleScorpion,LOTRJungleScorpionEntity,ported,
+common.entity.animal,LOTREntityKineAraw,LOTRKineArawEntity,ported,
+common.entity.animal,LOTREntityLion,LOTRLionBaseEntity LOTRLionEntity,ported,
+common.entity.animal,LOTREntityLionBase,LOTRLionBaseEntity LOTRLionEntity,ported,
+common.entity.animal,LOTREntityLioness,LOTRLionessEntity,ported,
+common.entity.animal,LOTREntityMidges,LOTRMidgesEntity,ported,
+common.entity.animal,LOTREntityRabbit,,referenced,named in: LOTROrcEntity
+common.entity.animal,LOTREntityRhino,LOTRRhinoEntity,ported,
+common.entity.animal,LOTREntityScorpion,LOTRScorpionEntity,ported,
+common.entity.animal,LOTREntitySeagull,LOTRSeagullEntity,ported,
+common.entity.animal,LOTREntityShirePony,LOTRShirePonyEntity,ported,
+common.entity.animal,LOTREntitySwan,LOTRSwanEntity,ported,
+common.entity.animal,LOTREntityTermite,LOTRTermiteEntity,ported,
+common.entity.animal,LOTREntityWhiteOryx,LOTRWhiteOryxEntity,ported,
+common.entity.animal,LOTREntityWildBoar,LOTRWildBoarEntity,ported,
+common.entity.animal,LOTREntityZebra,LOTRZebraEntity,ported,
 common.entity.item,LOTRBannerWhitelistEntry,,missing,
 common.entity.item,LOTREntityArrowPoisoned,LOTRPoisonedArrowEntity,ported,
 common.entity.item,LOTREntityBanner,LOTRBannerBlockEntity,ported,
 common.entity.item,LOTREntityBannerWall,LOTRWallBannerBlock,ported,
 common.entity.item,LOTREntityBarrel,LOTRBarrelBlockEntity,ported,
-common.entity.item,LOTREntityBearRug,,missing,
+common.entity.item,LOTREntityBearRug,LOTRBearRugEntity,ported,
 common.entity.item,LOTREntityBossTrophy,LOTRBossTrophyEntity,ported,
-common.entity.item,LOTREntityFallingTreasure,,missing,
-common.entity.item,LOTREntityGiraffeRug,,missing,
-common.entity.item,LOTREntityLionRug,,missing,
+common.entity.item,LOTREntityFallingTreasure,LOTRFallingTreasureEntity,ported,
+common.entity.item,LOTREntityGiraffeRug,LOTRGiraffeRugEntity,ported,
+common.entity.item,LOTREntityLionRug,LOTRLionRugEntity,ported,
 common.entity.item,LOTREntityOrcBomb,LOTROrcBombEntity,ported,
 common.entity.item,LOTREntityPortal,,missing,
-common.entity.item,LOTREntityRugBase,,base,extended by: LOTREntityBearRug LOTREntityGiraffeRug LOTREntityLionRug LOTREntityWargskinRug
+common.entity.item,LOTREntityRugBase,LOTRRugEntity,ported,
 common.entity.item,LOTREntityStoneTroll,LOTRStoneTrollEntity,ported,
-common.entity.item,LOTREntityTraderRespawn,,missing,
-common.entity.item,LOTREntityWargskinRug,,missing,
-common.entity.npc,IBandit,,missing,
-common.entity.npc,LOTRBannerBearer,,missing,
+common.entity.item,LOTREntityTraderRespawn,LOTRTraderRespawnEntity,ported,
+common.entity.item,LOTREntityWargskinRug,LOTRWargskinRugEntity,ported,
+common.entity.npc,IBandit,LOTRBandit,ported,(D9d-b)
+common.entity.npc,LOTRBannerBearer,LOTRBannerBearer,ported,
 common.entity.npc,LOTRBoss,,missing,
 common.entity.npc,LOTRBossInfo,,missing,
 common.entity.npc,LOTRCharacter,,missing,
-common.entity.npc,LOTREntityAngmarBannerBearer,,missing,
-common.entity.npc,LOTREntityAngmarHillman,,missing,
-common.entity.npc,LOTREntityAngmarHillmanAxeThrower,,missing,
-common.entity.npc,LOTREntityAngmarHillmanBannerBearer,,missing,
-common.entity.npc,LOTREntityAngmarHillmanChieftain,,missing,
-common.entity.npc,LOTREntityAngmarHillmanWarrior,,missing,
-common.entity.npc,LOTREntityAngmarOrc,,missing,
-common.entity.npc,LOTREntityAngmarOrcArcher,,missing,
-common.entity.npc,LOTREntityAngmarOrcBombardier,,missing,
-common.entity.npc,LOTREntityAngmarOrcMercenaryCaptain,,missing,
-common.entity.npc,LOTREntityAngmarOrcTrader,,missing,
-common.entity.npc,LOTREntityAngmarWarg,,missing,
-common.entity.npc,LOTREntityAngmarWargBombardier,,missing,
+common.entity.npc,LOTREntityAngmarBannerBearer,LOTRAngmarBannerBearerEntity,ported,
+common.entity.npc,LOTREntityAngmarHillman,LOTRAngmarHillmanEntity,ported,
+common.entity.npc,LOTREntityAngmarHillmanAxeThrower,LOTRAngmarHillmanAxeThrowerEntity,ported,
+common.entity.npc,LOTREntityAngmarHillmanBannerBearer,LOTRAngmarHillmanBannerBearerEntity,ported,
+common.entity.npc,LOTREntityAngmarHillmanChieftain,LOTRAngmarHillmanChieftainEntity,ported,
+common.entity.npc,LOTREntityAngmarHillmanWarrior,LOTRAngmarHillmanWarriorEntity,ported,
+common.entity.npc,LOTREntityAngmarOrc,LOTRAngmarOrcEntity,ported,
+common.entity.npc,LOTREntityAngmarOrcArcher,LOTRAngmarOrcArcherEntity,ported,
+common.entity.npc,LOTREntityAngmarOrcBombardier,LOTRAngmarOrcBombardierEntity,ported,
+common.entity.npc,LOTREntityAngmarOrcMercenaryCaptain,LOTRAngmarOrcMercenaryCaptainEntity,ported,
+common.entity.npc,LOTREntityAngmarOrcTrader,LOTRAngmarOrcTraderEntity,ported,
+common.entity.npc,LOTREntityAngmarWarg,LOTRAngmarWargEntity,ported,
+common.entity.npc,LOTREntityAngmarWargBombardier,LOTRAngmarWargBombardierEntity,ported,
 common.entity.npc,LOTREntityBalrog,,missing,
-common.entity.npc,LOTREntityBandit,,missing,
+common.entity.npc,LOTREntityBandit,,missing,the bandit NPC; its theft AI is LOTRBandit/LOTRBanditStealGoal (D9d-b)
 common.entity.npc,LOTREntityBanditHarad,,missing,
 common.entity.npc,LOTREntityBarrowWight,,missing,
-common.entity.npc,LOTREntityBlackUruk,,missing,
-common.entity.npc,LOTREntityBlackUrukArcher,,missing,
-common.entity.npc,LOTREntityBlackUrukBannerBearer,,missing,
-common.entity.npc,LOTREntityBlackUrukCaptain,,missing,
-common.entity.npc,LOTREntityBlackrootArcher,,missing,
-common.entity.npc,LOTREntityBlackrootBannerBearer,,missing,
-common.entity.npc,LOTREntityBlackrootCaptain,,missing,
-common.entity.npc,LOTREntityBlackrootSoldier,,missing,
-common.entity.npc,LOTREntityBlueDwarf,,missing,
-common.entity.npc,LOTREntityBlueDwarfAxeThrower,,missing,
-common.entity.npc,LOTREntityBlueDwarfBannerBearer,,missing,
-common.entity.npc,LOTREntityBlueDwarfCommander,,missing,
-common.entity.npc,LOTREntityBlueDwarfMerchant,,missing,
-common.entity.npc,LOTREntityBlueDwarfMiner,,missing,
-common.entity.npc,LOTREntityBlueDwarfWarrior,,missing,
-common.entity.npc,LOTREntityBlueMountainsSmith,,missing,
-common.entity.npc,LOTREntityBreeBaker,,missing,
-common.entity.npc,LOTREntityBreeBannerBearer,,missing,
-common.entity.npc,LOTREntityBreeBlacksmith,,missing,
-common.entity.npc,LOTREntityBreeBrewer,,missing,
-common.entity.npc,LOTREntityBreeButcher,,missing,
-common.entity.npc,LOTREntityBreeCaptain,,missing,
-common.entity.npc,LOTREntityBreeFarmer,,missing,
-common.entity.npc,LOTREntityBreeFarmhand,,missing,
-common.entity.npc,LOTREntityBreeFlorist,,missing,
-common.entity.npc,LOTREntityBreeGuard,,missing,
-common.entity.npc,LOTREntityBreeHobbit,,missing,
-common.entity.npc,LOTREntityBreeHobbitBaker,,missing,
-common.entity.npc,LOTREntityBreeHobbitBrewer,,missing,
-common.entity.npc,LOTREntityBreeHobbitButcher,,missing,
-common.entity.npc,LOTREntityBreeHobbitFlorist,,missing,
-common.entity.npc,LOTREntityBreeHobbitInnkeeper,,missing,
-common.entity.npc,LOTREntityBreeHobbitTrader,,base,extended by: LOTREntityBreeHobbitBaker LOTREntityBreeHobbitBrewer LOTREntityBreeHobbitButcher LOTREntityBreeHobbitFlorist
-common.entity.npc,LOTREntityBreeInnkeeper,,missing,
-common.entity.npc,LOTREntityBreeLumberman,,missing,
-common.entity.npc,LOTREntityBreeMan,,missing,
-common.entity.npc,LOTREntityBreeMarketTrader,,base,extended by: LOTREntityBreeBaker LOTREntityBreeBrewer LOTREntityBreeButcher LOTREntityBreeFlorist LOTREntityBreeLumberman LOTREntityBreeMason
-common.entity.npc,LOTREntityBreeMason,,missing,
-common.entity.npc,LOTREntityBreeRuffian,,base,extended by: LOTREntityRuffianBrute LOTREntityRuffianSpy
-common.entity.npc,LOTREntityCorsair,,missing,
-common.entity.npc,LOTREntityCorsairCaptain,,missing,
-common.entity.npc,LOTREntityCorsairSlaver,,missing,
+common.entity.npc,LOTREntityBlackUruk,LOTRBlackUrukEntity,ported,
+common.entity.npc,LOTREntityBlackUrukArcher,LOTRBlackUrukArcherEntity,ported,
+common.entity.npc,LOTREntityBlackUrukBannerBearer,LOTRBlackUrukBannerBearerEntity,ported,
+common.entity.npc,LOTREntityBlackUrukCaptain,LOTRBlackUrukCaptainEntity,ported,
+common.entity.npc,LOTREntityBlackrootArcher,LOTRBlackrootArcherEntity,ported,
+common.entity.npc,LOTREntityBlackrootBannerBearer,LOTRBlackrootBannerBearerEntity,ported,
+common.entity.npc,LOTREntityBlackrootCaptain,LOTRBlackrootCaptainEntity,ported,
+common.entity.npc,LOTREntityBlackrootSoldier,LOTRBlackrootSoldierEntity,ported,
+common.entity.npc,LOTREntityBlueDwarf,LOTRBlueDwarfEntity,ported,
+common.entity.npc,LOTREntityBlueDwarfAxeThrower,LOTRBlueDwarfAxeThrowerEntity,ported,
+common.entity.npc,LOTREntityBlueDwarfBannerBearer,LOTRBlueDwarfBannerBearerEntity,ported,
+common.entity.npc,LOTREntityBlueDwarfCommander,LOTRBlueDwarfCommanderEntity,ported,
+common.entity.npc,LOTREntityBlueDwarfMerchant,LOTRBlueDwarfMerchantEntity,ported,
+common.entity.npc,LOTREntityBlueDwarfMiner,LOTRBlueDwarfMinerEntity,ported,
+common.entity.npc,LOTREntityBlueDwarfWarrior,LOTRBlueDwarfWarriorEntity,ported,
+common.entity.npc,LOTREntityBlueMountainsSmith,LOTRBlueMountainsSmithEntity,ported,
+common.entity.npc,LOTREntityBreeBaker,LOTRBreeBakerEntity,ported,
+common.entity.npc,LOTREntityBreeBannerBearer,LOTRBreeBannerBearerEntity,ported,
+common.entity.npc,LOTREntityBreeBlacksmith,LOTRBreeBlacksmithEntity,ported,
+common.entity.npc,LOTREntityBreeBrewer,LOTRBreeBrewerEntity,ported,
+common.entity.npc,LOTREntityBreeButcher,LOTRBreeButcherEntity,ported,
+common.entity.npc,LOTREntityBreeCaptain,LOTRBreeCaptainEntity,ported,
+common.entity.npc,LOTREntityBreeFarmer,LOTRBreeFarmerEntity,ported,
+common.entity.npc,LOTREntityBreeFarmhand,LOTRBreeFarmhandEntity,ported,
+common.entity.npc,LOTREntityBreeFlorist,LOTRBreeFloristEntity,ported,
+common.entity.npc,LOTREntityBreeGuard,LOTRBreeGuardEntity,ported,
+common.entity.npc,LOTREntityBreeHobbit,LOTRBreeHobbitEntity,ported,
+common.entity.npc,LOTREntityBreeHobbitBaker,LOTRBreeHobbitBakerEntity,ported,
+common.entity.npc,LOTREntityBreeHobbitBrewer,LOTRBreeHobbitBrewerEntity,ported,
+common.entity.npc,LOTREntityBreeHobbitButcher,LOTRBreeHobbitButcherEntity,ported,
+common.entity.npc,LOTREntityBreeHobbitFlorist,LOTRBreeHobbitFloristEntity,ported,
+common.entity.npc,LOTREntityBreeHobbitInnkeeper,LOTRBreeHobbitInnkeeperEntity,ported,
+common.entity.npc,LOTREntityBreeHobbitTrader,LOTRBreeHobbitTraderEntity,ported,
+common.entity.npc,LOTREntityBreeInnkeeper,LOTRBreeInnkeeperEntity,ported,
+common.entity.npc,LOTREntityBreeLumberman,LOTRBreeLumbermanEntity,ported,
+common.entity.npc,LOTREntityBreeMan,LOTRBreeManEntity,ported,
+common.entity.npc,LOTREntityBreeMarketTrader,LOTRBreeMarketTraderEntity,ported,
+common.entity.npc,LOTREntityBreeMason,LOTRBreeMasonEntity,ported,
+common.entity.npc,LOTREntityBreeRuffian,LOTRBreeRuffianEntity,ported,
+common.entity.npc,LOTREntityCorsair,LOTRCorsairEntity,ported,
+common.entity.npc,LOTREntityCorsairCaptain,LOTRCorsairCaptainEntity,ported,
+common.entity.npc,LOTREntityCorsairSlaver,LOTRCorsairSlaverEntity,ported,
 common.entity.npc,LOTREntityDaleArcher,,missing,
 common.entity.npc,LOTREntityDaleBaker,,missing,
 common.entity.npc,LOTREntityDaleBannerBearer,,missing,
@@ -1014,47 +1014,47 @@ common.entity.npc,LOTREntityDaleMan,,missing,
 common.entity.npc,LOTREntityDaleMerchant,,missing,
 common.entity.npc,LOTREntityDaleSoldier,,missing,
 common.entity.npc,LOTREntityDarkHuorn,,missing,
-common.entity.npc,LOTREntityDolAmrothArcher,,missing,
-common.entity.npc,LOTREntityDolAmrothBannerBearer,,missing,
-common.entity.npc,LOTREntityDolAmrothCaptain,,missing,
-common.entity.npc,LOTREntityDolAmrothSoldier,,missing,
-common.entity.npc,LOTREntityDolGuldurBannerBearer,,missing,
-common.entity.npc,LOTREntityDolGuldurOrc,,missing,
-common.entity.npc,LOTREntityDolGuldurOrcArcher,,missing,
-common.entity.npc,LOTREntityDolGuldurOrcChieftain,,missing,
-common.entity.npc,LOTREntityDolGuldurOrcTrader,,missing,
-common.entity.npc,LOTREntityDorwinionBannerBearer,,missing,
-common.entity.npc,LOTREntityDorwinionCaptain,,missing,
-common.entity.npc,LOTREntityDorwinionCrossbower,,missing,
-common.entity.npc,LOTREntityDorwinionElf,,missing,
-common.entity.npc,LOTREntityDorwinionElfArcher,,missing,
-common.entity.npc,LOTREntityDorwinionElfBannerBearer,,missing,
-common.entity.npc,LOTREntityDorwinionElfCaptain,,missing,
-common.entity.npc,LOTREntityDorwinionElfVintner,,missing,
-common.entity.npc,LOTREntityDorwinionElfWarrior,,missing,
-common.entity.npc,LOTREntityDorwinionGuard,,missing,
-common.entity.npc,LOTREntityDorwinionMan,,missing,
-common.entity.npc,LOTREntityDorwinionMerchantElf,,missing,
-common.entity.npc,LOTREntityDorwinionMerchantMan,,missing,
-common.entity.npc,LOTREntityDorwinionVinehand,,missing,
-common.entity.npc,LOTREntityDorwinionVinekeeper,,missing,
+common.entity.npc,LOTREntityDolAmrothArcher,LOTRDolAmrothArcherEntity,ported,
+common.entity.npc,LOTREntityDolAmrothBannerBearer,LOTRDolAmrothBannerBearerEntity,ported,
+common.entity.npc,LOTREntityDolAmrothCaptain,LOTRDolAmrothCaptainEntity,ported,
+common.entity.npc,LOTREntityDolAmrothSoldier,LOTRDolAmrothSoldierEntity,ported,
+common.entity.npc,LOTREntityDolGuldurBannerBearer,LOTRDolGuldurBannerBearerEntity,ported,
+common.entity.npc,LOTREntityDolGuldurOrc,LOTRDolGuldurOrcEntity,ported,
+common.entity.npc,LOTREntityDolGuldurOrcArcher,LOTRDolGuldurOrcArcherEntity,ported,
+common.entity.npc,LOTREntityDolGuldurOrcChieftain,LOTRDolGuldurOrcChieftainEntity,ported,
+common.entity.npc,LOTREntityDolGuldurOrcTrader,LOTRDolGuldurOrcTraderEntity,ported,
+common.entity.npc,LOTREntityDorwinionBannerBearer,LOTRDorwinionBannerBearerEntity,ported,
+common.entity.npc,LOTREntityDorwinionCaptain,LOTRDorwinionCaptainEntity,ported,
+common.entity.npc,LOTREntityDorwinionCrossbower,LOTRDorwinionCrossbowerEntity,ported,
+common.entity.npc,LOTREntityDorwinionElf,LOTRDorwinionElfEntity,ported,
+common.entity.npc,LOTREntityDorwinionElfArcher,LOTRDorwinionElfArcherEntity,ported,
+common.entity.npc,LOTREntityDorwinionElfBannerBearer,LOTRDorwinionElfBannerBearerEntity,ported,
+common.entity.npc,LOTREntityDorwinionElfCaptain,LOTRDorwinionElfCaptainEntity,ported,
+common.entity.npc,LOTREntityDorwinionElfVintner,LOTRDorwinionElfVintnerEntity,ported,
+common.entity.npc,LOTREntityDorwinionElfWarrior,LOTRDorwinionElfWarriorEntity,ported,
+common.entity.npc,LOTREntityDorwinionGuard,LOTRDorwinionGuardEntity,ported,
+common.entity.npc,LOTREntityDorwinionMan,LOTRDorwinionManEntity,ported,
+common.entity.npc,LOTREntityDorwinionMerchantElf,LOTRDorwinionMerchantElfEntity,ported,
+common.entity.npc,LOTREntityDorwinionMerchantMan,LOTRDorwinionMerchantManEntity,ported,
+common.entity.npc,LOTREntityDorwinionVinehand,LOTRDorwinionVinehandEntity,ported,
+common.entity.npc,LOTREntityDorwinionVinekeeper,LOTRDorwinionVinekeeperEntity,ported,
 common.entity.npc,LOTREntityDunedain,,missing,
 common.entity.npc,LOTREntityDunedainBlacksmith,,missing,
-common.entity.npc,LOTREntityDunlending,,missing,
-common.entity.npc,LOTREntityDunlendingArcher,,missing,
-common.entity.npc,LOTREntityDunlendingAxeThrower,,missing,
-common.entity.npc,LOTREntityDunlendingBannerBearer,,missing,
-common.entity.npc,LOTREntityDunlendingBartender,,missing,
-common.entity.npc,LOTREntityDunlendingBerserker,,missing,
-common.entity.npc,LOTREntityDunlendingWarlord,,missing,
-common.entity.npc,LOTREntityDunlendingWarrior,,missing,
-common.entity.npc,LOTREntityDwarf,,missing,
-common.entity.npc,LOTREntityDwarfAxeThrower,,missing,
-common.entity.npc,LOTREntityDwarfBannerBearer,,missing,
-common.entity.npc,LOTREntityDwarfCommander,,missing,
-common.entity.npc,LOTREntityDwarfMiner,,missing,
-common.entity.npc,LOTREntityDwarfSmith,,missing,
-common.entity.npc,LOTREntityDwarfWarrior,,missing,
+common.entity.npc,LOTREntityDunlending,LOTRDunlendingEntity,ported,
+common.entity.npc,LOTREntityDunlendingArcher,LOTRDunlendingArcherEntity,ported,
+common.entity.npc,LOTREntityDunlendingAxeThrower,LOTRDunlendingAxeThrowerEntity,ported,
+common.entity.npc,LOTREntityDunlendingBannerBearer,LOTRDunlendingBannerBearerEntity,ported,
+common.entity.npc,LOTREntityDunlendingBartender,LOTRDunlendingBartenderEntity,ported,
+common.entity.npc,LOTREntityDunlendingBerserker,LOTRDunlendingBerserkerEntity,ported,
+common.entity.npc,LOTREntityDunlendingWarlord,LOTRDunlendingWarlordEntity,ported,
+common.entity.npc,LOTREntityDunlendingWarrior,LOTRDunlendingWarriorEntity,ported,
+common.entity.npc,LOTREntityDwarf,LOTRDwarfEntity,ported,
+common.entity.npc,LOTREntityDwarfAxeThrower,LOTRDwarfAxeThrowerEntity,ported,
+common.entity.npc,LOTREntityDwarfBannerBearer,LOTRDwarfBannerBearerEntity,ported,
+common.entity.npc,LOTREntityDwarfCommander,LOTRDwarfCommanderEntity,ported,
+common.entity.npc,LOTREntityDwarfMiner,LOTRDwarfMinerEntity,ported,
+common.entity.npc,LOTREntityDwarfSmith,LOTRDwarfSmithEntity,ported,
+common.entity.npc,LOTREntityDwarfWarrior,LOTRDwarfWarriorEntity,ported,
 common.entity.npc,LOTREntityEasterling,,missing,
 common.entity.npc,LOTREntityEasterlingArcher,,missing,
 common.entity.npc,LOTREntityEasterlingBaker,,missing,
@@ -1076,40 +1076,40 @@ common.entity.npc,LOTREntityEasterlingMarketTrader,,base,extended by: LOTREntity
 common.entity.npc,LOTREntityEasterlingMason,,missing,
 common.entity.npc,LOTREntityEasterlingWarlord,,missing,
 common.entity.npc,LOTREntityEasterlingWarrior,,missing,
-common.entity.npc,LOTREntityElf,,base,extended by: LOTREntityDorwinionElf LOTREntityGaladhrimElf LOTREntityHighElfBase LOTREntityTormentedElf LOTREntityWoodElf
+common.entity.npc,LOTREntityElf,LOTRElfEntity,ported,
 common.entity.npc,LOTREntityEnt,,missing,
 common.entity.npc,LOTREntityEsgarothBannerBearer,,missing,
-common.entity.npc,LOTREntityGaladhrimBannerBearer,,missing,
-common.entity.npc,LOTREntityGaladhrimElf,,missing,
-common.entity.npc,LOTREntityGaladhrimLord,,missing,
-common.entity.npc,LOTREntityGaladhrimSmith,,missing,
-common.entity.npc,LOTREntityGaladhrimTrader,,missing,
-common.entity.npc,LOTREntityGaladhrimWarden,,missing,
-common.entity.npc,LOTREntityGaladhrimWarrior,,missing,
+common.entity.npc,LOTREntityGaladhrimBannerBearer,LOTRGaladhrimBannerBearerEntity,ported,
+common.entity.npc,LOTREntityGaladhrimElf,LOTRGaladhrimElfEntity,ported,
+common.entity.npc,LOTREntityGaladhrimLord,LOTRGaladhrimLordEntity,ported,
+common.entity.npc,LOTREntityGaladhrimSmith,LOTRGaladhrimSmithEntity,ported,
+common.entity.npc,LOTREntityGaladhrimTrader,LOTRGaladhrimTraderEntity,ported,
+common.entity.npc,LOTREntityGaladhrimWarden,LOTRGaladhrimWardenEntity,ported,
+common.entity.npc,LOTREntityGaladhrimWarrior,LOTRGaladhrimWarriorEntity,ported,
 common.entity.npc,LOTREntityGandalf,,missing,
 common.entity.npc,LOTREntityGollum,,missing,
-common.entity.npc,LOTREntityGondorArcher,,missing,
-common.entity.npc,LOTREntityGondorBaker,,missing,
-common.entity.npc,LOTREntityGondorBannerBearer,,missing,
-common.entity.npc,LOTREntityGondorBartender,,missing,
-common.entity.npc,LOTREntityGondorBlacksmith,,missing,
-common.entity.npc,LOTREntityGondorBrewer,,missing,
-common.entity.npc,LOTREntityGondorButcher,,missing,
-common.entity.npc,LOTREntityGondorFarmer,,missing,
-common.entity.npc,LOTREntityGondorFarmhand,,missing,
-common.entity.npc,LOTREntityGondorFishmonger,,missing,
-common.entity.npc,LOTREntityGondorFlorist,,missing,
-common.entity.npc,LOTREntityGondorGreengrocer,,missing,
-common.entity.npc,LOTREntityGondorLevyman,,missing,
-common.entity.npc,LOTREntityGondorLumberman,,missing,
-common.entity.npc,LOTREntityGondorMan,,missing,
-common.entity.npc,LOTREntityGondorMarketTrader,,base,extended by: LOTREntityGondorBaker LOTREntityGondorBrewer LOTREntityGondorButcher LOTREntityGondorFishmonger LOTREntityGondorFlorist LOTREntityGondorGreengrocer ...
-common.entity.npc,LOTREntityGondorMason,,missing,
-common.entity.npc,LOTREntityGondorRenegade,,missing,
+common.entity.npc,LOTREntityGondorArcher,LOTRGondorArcherEntity,ported,
+common.entity.npc,LOTREntityGondorBaker,LOTRGondorBakerEntity,ported,
+common.entity.npc,LOTREntityGondorBannerBearer,LOTRGondorBannerBearerEntity,ported,
+common.entity.npc,LOTREntityGondorBartender,LOTRGondorBartenderEntity,ported,
+common.entity.npc,LOTREntityGondorBlacksmith,LOTRGondorBlacksmithEntity,ported,
+common.entity.npc,LOTREntityGondorBrewer,LOTRGondorBrewerEntity,ported,
+common.entity.npc,LOTREntityGondorButcher,LOTRGondorButcherEntity,ported,
+common.entity.npc,LOTREntityGondorFarmer,LOTRGondorFarmerEntity,ported,
+common.entity.npc,LOTREntityGondorFarmhand,LOTRGondorFarmhandEntity,ported,
+common.entity.npc,LOTREntityGondorFishmonger,LOTRGondorFishmongerEntity,ported,
+common.entity.npc,LOTREntityGondorFlorist,LOTRGondorFloristEntity,ported,
+common.entity.npc,LOTREntityGondorGreengrocer,LOTRGondorGreengrocerEntity,ported,
+common.entity.npc,LOTREntityGondorLevyman,LOTRGondorLevymanEntity,ported,
+common.entity.npc,LOTREntityGondorLumberman,LOTRGondorLumbermanEntity,ported,
+common.entity.npc,LOTREntityGondorMan,LOTRGondorManEntity,ported,
+common.entity.npc,LOTREntityGondorMarketTrader,LOTRGondorMarketTraderEntity,ported,
+common.entity.npc,LOTREntityGondorMason,LOTRGondorMasonEntity,ported,
+common.entity.npc,LOTREntityGondorRenegade,LOTRGondorRenegadeEntity,ported,
 common.entity.npc,LOTREntityGondorRuinsWraith,,missing,
-common.entity.npc,LOTREntityGondorSoldier,,missing,
-common.entity.npc,LOTREntityGondorTowerGuard,,missing,
-common.entity.npc,LOTREntityGondorianCaptain,,missing,
+common.entity.npc,LOTREntityGondorSoldier,LOTRGondorSoldierEntity,ported,
+common.entity.npc,LOTREntityGondorTowerGuard,LOTRGondorTowerGuardEntity,ported,
+common.entity.npc,LOTREntityGondorianCaptain,LOTRGondorianCaptainEntity,ported,
 common.entity.npc,LOTREntityGulfBaker,,missing,
 common.entity.npc,LOTREntityGulfBartender,,missing,
 common.entity.npc,LOTREntityGulfBlacksmith,,missing,
@@ -1128,85 +1128,85 @@ common.entity.npc,LOTREntityGulfLumberman,,missing,
 common.entity.npc,LOTREntityGulfMason,,missing,
 common.entity.npc,LOTREntityGulfMiner,,missing,
 common.entity.npc,LOTREntityGulfTrader,,base,extended by: LOTREntityGulfBaker LOTREntityGulfBrewer LOTREntityGulfButcher LOTREntityGulfFishmonger LOTREntityGulfGoldsmith LOTREntityGulfHunter ...
-common.entity.npc,LOTREntityGundabadBannerBearer,,missing,
-common.entity.npc,LOTREntityGundabadOrc,,missing,
-common.entity.npc,LOTREntityGundabadOrcArcher,,missing,
-common.entity.npc,LOTREntityGundabadOrcMercenaryCaptain,,missing,
-common.entity.npc,LOTREntityGundabadOrcTrader,,missing,
-common.entity.npc,LOTREntityGundabadUruk,,missing,
-common.entity.npc,LOTREntityGundabadUrukArcher,,missing,
-common.entity.npc,LOTREntityGundabadWarg,,missing,
+common.entity.npc,LOTREntityGundabadBannerBearer,LOTRGundabadBannerBearerEntity,ported,
+common.entity.npc,LOTREntityGundabadOrc,LOTRGundabadOrcEntity,ported,
+common.entity.npc,LOTREntityGundabadOrcArcher,LOTRGundabadOrcArcherEntity,ported,
+common.entity.npc,LOTREntityGundabadOrcMercenaryCaptain,LOTRGundabadOrcMercenaryCaptainEntity,ported,
+common.entity.npc,LOTREntityGundabadOrcTrader,LOTRGundabadOrcTraderEntity,ported,
+common.entity.npc,LOTREntityGundabadUruk,LOTRGundabadUrukEntity,ported,
+common.entity.npc,LOTREntityGundabadUrukArcher,LOTRGundabadUrukArcherEntity,ported,
+common.entity.npc,LOTREntityGundabadWarg,LOTRGundabadWargEntity,ported,
 common.entity.npc,LOTREntityHalfTroll,,missing,
 common.entity.npc,LOTREntityHalfTrollBannerBearer,,missing,
 common.entity.npc,LOTREntityHalfTrollScavenger,,missing,
 common.entity.npc,LOTREntityHalfTrollWarlord,,missing,
 common.entity.npc,LOTREntityHalfTrollWarrior,,missing,
 common.entity.npc,LOTREntityHaradPyramidWraith,,missing,
-common.entity.npc,LOTREntityHaradSlave,,missing,
-common.entity.npc,LOTREntityHarnedhrim,,missing,
-common.entity.npc,LOTREntityHarnedorArcher,,missing,
-common.entity.npc,LOTREntityHarnedorBaker,,missing,
-common.entity.npc,LOTREntityHarnedorBannerBearer,,missing,
-common.entity.npc,LOTREntityHarnedorBartender,,missing,
-common.entity.npc,LOTREntityHarnedorBlacksmith,,missing,
-common.entity.npc,LOTREntityHarnedorBrewer,,missing,
-common.entity.npc,LOTREntityHarnedorButcher,,missing,
-common.entity.npc,LOTREntityHarnedorFarmer,,missing,
-common.entity.npc,LOTREntityHarnedorFarmhand,,missing,
-common.entity.npc,LOTREntityHarnedorFishmonger,,missing,
-common.entity.npc,LOTREntityHarnedorHunter,,missing,
-common.entity.npc,LOTREntityHarnedorLumberman,,missing,
-common.entity.npc,LOTREntityHarnedorMason,,missing,
-common.entity.npc,LOTREntityHarnedorMiner,,missing,
-common.entity.npc,LOTREntityHarnedorTrader,,base,extended by: LOTREntityHarnedorBaker LOTREntityHarnedorBrewer LOTREntityHarnedorButcher LOTREntityHarnedorFishmonger LOTREntityHarnedorHunter LOTREntityHarnedorLumberman ...
-common.entity.npc,LOTREntityHarnedorWarlord,,missing,
-common.entity.npc,LOTREntityHarnedorWarrior,,missing,
-common.entity.npc,LOTREntityHighElf,,missing,
-common.entity.npc,LOTREntityHighElfBannerBearer,,missing,
-common.entity.npc,LOTREntityHighElfBase,,base,extended by: LOTREntityHighElf LOTREntityRivendellElf
-common.entity.npc,LOTREntityHighElfLord,,missing,
-common.entity.npc,LOTREntityHighElfSmith,,missing,
-common.entity.npc,LOTREntityHighElfWarrior,,missing,
-common.entity.npc,LOTREntityHobbit,,missing,
-common.entity.npc,LOTREntityHobbitBartender,,missing,
-common.entity.npc,LOTREntityHobbitBounder,,missing,
-common.entity.npc,LOTREntityHobbitFarmer,,missing,
-common.entity.npc,LOTREntityHobbitFarmhand,,missing,
-common.entity.npc,LOTREntityHobbitOrcharder,,missing,
-common.entity.npc,LOTREntityHobbitShirriff,,missing,
+common.entity.npc,LOTREntityHaradSlave,LOTRHaradSlaveEntity,ported,
+common.entity.npc,LOTREntityHarnedhrim,LOTRHarnedhrimEntity,ported,
+common.entity.npc,LOTREntityHarnedorArcher,LOTRHarnedorArcherEntity,ported,
+common.entity.npc,LOTREntityHarnedorBaker,LOTRHarnedorBakerEntity,ported,
+common.entity.npc,LOTREntityHarnedorBannerBearer,LOTRHarnedorBannerBearerEntity,ported,
+common.entity.npc,LOTREntityHarnedorBartender,LOTRHarnedorBartenderEntity,ported,
+common.entity.npc,LOTREntityHarnedorBlacksmith,LOTRHarnedorBlacksmithEntity,ported,
+common.entity.npc,LOTREntityHarnedorBrewer,LOTRHarnedorBrewerEntity,ported,
+common.entity.npc,LOTREntityHarnedorButcher,LOTRHarnedorButcherEntity,ported,
+common.entity.npc,LOTREntityHarnedorFarmer,LOTRHarnedorFarmerEntity,ported,
+common.entity.npc,LOTREntityHarnedorFarmhand,LOTRHarnedorFarmhandEntity,ported,
+common.entity.npc,LOTREntityHarnedorFishmonger,LOTRHarnedorFishmongerEntity,ported,
+common.entity.npc,LOTREntityHarnedorHunter,LOTRHarnedorHunterEntity,ported,
+common.entity.npc,LOTREntityHarnedorLumberman,LOTRHarnedorLumbermanEntity,ported,
+common.entity.npc,LOTREntityHarnedorMason,LOTRHarnedorMasonEntity,ported,
+common.entity.npc,LOTREntityHarnedorMiner,LOTRHarnedorMinerEntity,ported,
+common.entity.npc,LOTREntityHarnedorTrader,LOTRHarnedorTraderEntity,ported,
+common.entity.npc,LOTREntityHarnedorWarlord,LOTRHarnedorWarlordEntity,ported,
+common.entity.npc,LOTREntityHarnedorWarrior,LOTRHarnedorWarriorEntity,ported,
+common.entity.npc,LOTREntityHighElf,LOTRHighElfBaseEntity LOTRHighElfEntity,ported,
+common.entity.npc,LOTREntityHighElfBannerBearer,LOTRHighElfBannerBearerEntity,ported,
+common.entity.npc,LOTREntityHighElfBase,LOTRHighElfBaseEntity LOTRHighElfEntity,ported,
+common.entity.npc,LOTREntityHighElfLord,LOTRHighElfLordEntity,ported,
+common.entity.npc,LOTREntityHighElfSmith,LOTRHighElfSmithEntity,ported,
+common.entity.npc,LOTREntityHighElfWarrior,LOTRHighElfWarriorEntity,ported,
+common.entity.npc,LOTREntityHobbit,LOTRHobbitEntity,ported,
+common.entity.npc,LOTREntityHobbitBartender,LOTRHobbitBartenderEntity,ported,
+common.entity.npc,LOTREntityHobbitBounder,LOTRHobbitBounderEntity,ported,
+common.entity.npc,LOTREntityHobbitFarmer,LOTRHobbitFarmerEntity,ported,
+common.entity.npc,LOTREntityHobbitFarmhand,LOTRHobbitFarmhandEntity,ported,
+common.entity.npc,LOTREntityHobbitOrcharder,LOTRHobbitOrcharderEntity,ported,
+common.entity.npc,LOTREntityHobbitShirriff,LOTRHobbitShirriffEntity,ported,
 common.entity.npc,LOTREntityHuorn,,missing,
 common.entity.npc,LOTREntityHuornBase,,base,extended by: LOTREntityDarkHuorn LOTREntityHuorn
-common.entity.npc,LOTREntityIronHillsMerchant,,missing,
-common.entity.npc,LOTREntityIsengardSnaga,,missing,
-common.entity.npc,LOTREntityIsengardSnagaArcher,,missing,
-common.entity.npc,LOTREntityLamedonArcher,,missing,
-common.entity.npc,LOTREntityLamedonBannerBearer,,missing,
-common.entity.npc,LOTREntityLamedonCaptain,,missing,
-common.entity.npc,LOTREntityLamedonHillman,,missing,
-common.entity.npc,LOTREntityLamedonSoldier,,missing,
-common.entity.npc,LOTREntityLebenninBannerBearer,,missing,
-common.entity.npc,LOTREntityLebenninCaptain,,missing,
-common.entity.npc,LOTREntityLebenninLevyman,,missing,
-common.entity.npc,LOTREntityLossarnachAxeman,,missing,
-common.entity.npc,LOTREntityLossarnachBannerBearer,,missing,
-common.entity.npc,LOTREntityLossarnachCaptain,,missing,
+common.entity.npc,LOTREntityIronHillsMerchant,LOTRIronHillsMerchantEntity,ported,
+common.entity.npc,LOTREntityIsengardSnaga,LOTRIsengardSnagaEntity,ported,
+common.entity.npc,LOTREntityIsengardSnagaArcher,LOTRIsengardSnagaArcherEntity,ported,
+common.entity.npc,LOTREntityLamedonArcher,LOTRLamedonArcherEntity,ported,
+common.entity.npc,LOTREntityLamedonBannerBearer,LOTRLamedonBannerBearerEntity,ported,
+common.entity.npc,LOTREntityLamedonCaptain,LOTRLamedonCaptainEntity,ported,
+common.entity.npc,LOTREntityLamedonHillman,LOTRLamedonHillmanEntity,ported,
+common.entity.npc,LOTREntityLamedonSoldier,LOTRLamedonSoldierEntity,ported,
+common.entity.npc,LOTREntityLebenninBannerBearer,LOTRLebenninBannerBearerEntity,ported,
+common.entity.npc,LOTREntityLebenninCaptain,LOTRLebenninCaptainEntity,ported,
+common.entity.npc,LOTREntityLebenninLevyman,LOTRLebenninLevymanEntity,ported,
+common.entity.npc,LOTREntityLossarnachAxeman,LOTRLossarnachAxemanEntity,ported,
+common.entity.npc,LOTREntityLossarnachBannerBearer,LOTRLossarnachBannerBearerEntity,ported,
+common.entity.npc,LOTREntityLossarnachCaptain,LOTRLossarnachCaptainEntity,ported,
 common.entity.npc,LOTREntityMallornEnt,,missing,
-common.entity.npc,LOTREntityMan,,base,extended by: LOTREntityAngmarHillman LOTREntityBandit LOTREntityBreeMan LOTREntityDaleMan LOTREntityDorwinionMan LOTREntityDunedain ...
+common.entity.npc,LOTREntityMan,LOTRManEntity,ported,
 common.entity.npc,LOTREntityMarshWraith,,missing,
-common.entity.npc,LOTREntityMinasMorgulBannerBearer,,missing,
+common.entity.npc,LOTREntityMinasMorgulBannerBearer,LOTRMinasMorgulBannerBearerEntity,ported,
 common.entity.npc,LOTREntityMirkTroll,,missing,
-common.entity.npc,LOTREntityMirkwoodSpider,,missing,
-common.entity.npc,LOTREntityMordorBannerBearer,,missing,
-common.entity.npc,LOTREntityMordorOrc,,missing,
-common.entity.npc,LOTREntityMordorOrcArcher,,missing,
-common.entity.npc,LOTREntityMordorOrcBombardier,,missing,
-common.entity.npc,LOTREntityMordorOrcMercenaryCaptain,,missing,
+common.entity.npc,LOTREntityMirkwoodSpider,LOTRMirkwoodSpiderEntity,ported,
+common.entity.npc,LOTREntityMordorBannerBearer,LOTRMordorBannerBearerEntity,ported,
+common.entity.npc,LOTREntityMordorOrc,LOTRMordorOrcEntity,ported,
+common.entity.npc,LOTREntityMordorOrcArcher,LOTRMordorOrcArcherEntity,ported,
+common.entity.npc,LOTREntityMordorOrcBombardier,LOTRMordorOrcBombardierEntity,ported,
+common.entity.npc,LOTREntityMordorOrcMercenaryCaptain,LOTRMordorOrcMercenaryCaptainEntity,ported,
 common.entity.npc,LOTREntityMordorOrcSlaver,,missing,
-common.entity.npc,LOTREntityMordorOrcSpiderKeeper,,missing,
-common.entity.npc,LOTREntityMordorOrcTrader,,missing,
-common.entity.npc,LOTREntityMordorSpider,,missing,
-common.entity.npc,LOTREntityMordorWarg,,missing,
-common.entity.npc,LOTREntityMordorWargBombardier,,missing,
+common.entity.npc,LOTREntityMordorOrcSpiderKeeper,LOTRMordorOrcSpiderKeeperEntity,ported,
+common.entity.npc,LOTREntityMordorOrcTrader,LOTRMordorOrcTraderEntity,ported,
+common.entity.npc,LOTREntityMordorSpider,LOTRMordorSpiderEntity,ported,
+common.entity.npc,LOTREntityMordorWarg,LOTRMordorWargEntity,ported,
+common.entity.npc,LOTREntityMordorWargBombardier,LOTRMordorWargBombardierEntity,ported,
 common.entity.npc,LOTREntityMoredain,,missing,
 common.entity.npc,LOTREntityMoredainBannerBearer,,missing,
 common.entity.npc,LOTREntityMoredainChieftain,,missing,
@@ -1217,17 +1217,17 @@ common.entity.npc,LOTREntityMoredainVillageTrader,,base,extended by: LOTREntityM
 common.entity.npc,LOTREntityMoredainWarrior,,missing,
 common.entity.npc,LOTREntityMountainTroll,,missing,
 common.entity.npc,LOTREntityMountainTrollChieftain,,referenced,named in: LOTRTrollTotemBlockEntity
-common.entity.npc,LOTREntityNPC,,referenced,named in: LOTRCommandHornItem
-common.entity.npc,LOTREntityNPCRideable,,base,extended by: LOTREntitySpiderBase LOTREntityWarg
-common.entity.npc,LOTREntityNanUngolBannerBearer,,missing,
-common.entity.npc,LOTREntityNearHaradBannerBearer,,missing,
-common.entity.npc,LOTREntityNearHaradBlacksmith,,missing,
-common.entity.npc,LOTREntityNearHaradMerchant,,missing,
-common.entity.npc,LOTREntityNearHaradrim,,missing,
-common.entity.npc,LOTREntityNearHaradrimArcher,,missing,
-common.entity.npc,LOTREntityNearHaradrimBase,,base,extended by: LOTREntityGulfHaradrim LOTREntityHarnedhrim LOTREntityNearHaradrim LOTREntityNomad LOTREntityUmbarian
-common.entity.npc,LOTREntityNearHaradrimWarlord,,missing,
-common.entity.npc,LOTREntityNearHaradrimWarrior,,missing,
+common.entity.npc,LOTREntityNPC,,referenced,named in: LOTRBannerBearer LOTRBreeManEntity LOTRDorwinionManEntity LOTRElfEntity ...
+common.entity.npc,LOTREntityNPCRideable,,referenced,named in: LOTRNPCRideableEntity
+common.entity.npc,LOTREntityNanUngolBannerBearer,LOTRNanUngolBannerBearerEntity,ported,
+common.entity.npc,LOTREntityNearHaradBannerBearer,LOTRNearHaradBannerBearerEntity,ported,
+common.entity.npc,LOTREntityNearHaradBlacksmith,LOTRNearHaradBlacksmithEntity,ported,
+common.entity.npc,LOTREntityNearHaradMerchant,LOTRNearHaradMerchantEntity,ported,
+common.entity.npc,LOTREntityNearHaradrim,LOTRNearHaradrimBaseEntity LOTRNearHaradrimEntity,ported,
+common.entity.npc,LOTREntityNearHaradrimArcher,LOTRNearHaradrimArcherEntity,ported,
+common.entity.npc,LOTREntityNearHaradrimBase,LOTRNearHaradrimBaseEntity LOTRNearHaradrimEntity,ported,
+common.entity.npc,LOTREntityNearHaradrimWarlord,LOTRNearHaradrimWarlordEntity,ported,
+common.entity.npc,LOTREntityNearHaradrimWarrior,LOTRNearHaradrimWarriorEntity,ported,
 common.entity.npc,LOTREntityNomad,,missing,
 common.entity.npc,LOTREntityNomadArcher,,missing,
 common.entity.npc,LOTREntityNomadArmourer,,missing,
@@ -1241,14 +1241,14 @@ common.entity.npc,LOTREntityNomadTrader,,base,extended by: LOTREntityNomadBrewer
 common.entity.npc,LOTREntityNomadWarrior,,missing,
 common.entity.npc,LOTREntityNurnSlave,,missing,
 common.entity.npc,LOTREntityOlogHai,,missing,
-common.entity.npc,LOTREntityOrc,,base,extended by: LOTREntityAngmarOrc LOTREntityDolGuldurOrc LOTREntityGundabadOrc LOTREntityIsengardSnaga LOTREntityMordorOrc LOTREntityUrukHai ...
-common.entity.npc,LOTREntityPelargirBannerBearer,,missing,
-common.entity.npc,LOTREntityPelargirCaptain,,missing,
-common.entity.npc,LOTREntityPelargirMarine,,missing,
-common.entity.npc,LOTREntityPinnathGelinBannerBearer,,missing,
-common.entity.npc,LOTREntityPinnathGelinCaptain,,missing,
-common.entity.npc,LOTREntityPinnathGelinSoldier,,missing,
-common.entity.npc,LOTREntityQuestInfo,,missing,
+common.entity.npc,LOTREntityOrc,LOTROrcEntity,ported,
+common.entity.npc,LOTREntityPelargirBannerBearer,LOTRPelargirBannerBearerEntity,ported,
+common.entity.npc,LOTREntityPelargirCaptain,LOTRPelargirCaptainEntity,ported,
+common.entity.npc,LOTREntityPelargirMarine,LOTRPelargirMarineEntity,ported,
+common.entity.npc,LOTREntityPinnathGelinBannerBearer,LOTRPinnathGelinBannerBearerEntity,ported,
+common.entity.npc,LOTREntityPinnathGelinCaptain,LOTRPinnathGelinCaptainEntity,ported,
+common.entity.npc,LOTREntityPinnathGelinSoldier,LOTRPinnathGelinSoldierEntity,ported,
+common.entity.npc,LOTREntityQuestInfo,,referenced,named in: LOTRNPCEntity
 common.entity.npc,LOTREntityRanger,,base,extended by: LOTREntityRangerIthilien LOTREntityRangerNorth
 common.entity.npc,LOTREntityRangerIthilien,,missing,
 common.entity.npc,LOTREntityRangerIthilienBannerBearer,,missing,
@@ -1256,54 +1256,54 @@ common.entity.npc,LOTREntityRangerIthilienCaptain,,missing,
 common.entity.npc,LOTREntityRangerNorth,,missing,
 common.entity.npc,LOTREntityRangerNorthBannerBearer,,missing,
 common.entity.npc,LOTREntityRangerNorthCaptain,,missing,
-common.entity.npc,LOTREntityRivendellBannerBearer,,missing,
-common.entity.npc,LOTREntityRivendellElf,,missing,
-common.entity.npc,LOTREntityRivendellLord,,missing,
-common.entity.npc,LOTREntityRivendellSmith,,missing,
-common.entity.npc,LOTREntityRivendellTrader,,missing,
-common.entity.npc,LOTREntityRivendellWarrior,,missing,
-common.entity.npc,LOTREntityRohanBaker,,missing,
-common.entity.npc,LOTREntityRohanBannerBearer,,missing,
+common.entity.npc,LOTREntityRivendellBannerBearer,LOTRRivendellBannerBearerEntity,ported,
+common.entity.npc,LOTREntityRivendellElf,LOTRRivendellElfEntity,ported,
+common.entity.npc,LOTREntityRivendellLord,LOTRRivendellLordEntity,ported,
+common.entity.npc,LOTREntityRivendellSmith,LOTRRivendellSmithEntity,ported,
+common.entity.npc,LOTREntityRivendellTrader,LOTRRivendellTraderEntity,ported,
+common.entity.npc,LOTREntityRivendellWarrior,LOTRRivendellWarriorEntity,ported,
+common.entity.npc,LOTREntityRohanBaker,LOTRRohanBakerEntity,ported,
+common.entity.npc,LOTREntityRohanBannerBearer,LOTRRohanBannerBearerEntity,ported,
 common.entity.npc,LOTREntityRohanBarrowWraith,,missing,
-common.entity.npc,LOTREntityRohanBlacksmith,,missing,
-common.entity.npc,LOTREntityRohanBrewer,,missing,
-common.entity.npc,LOTREntityRohanBuilder,,missing,
-common.entity.npc,LOTREntityRohanButcher,,missing,
-common.entity.npc,LOTREntityRohanFarmer,,missing,
-common.entity.npc,LOTREntityRohanFarmhand,,missing,
-common.entity.npc,LOTREntityRohanFishmonger,,missing,
-common.entity.npc,LOTREntityRohanLumberman,,missing,
-common.entity.npc,LOTREntityRohanMan,,missing,
-common.entity.npc,LOTREntityRohanMarketTrader,,base,extended by: LOTREntityRohanBaker LOTREntityRohanBrewer LOTREntityRohanBuilder LOTREntityRohanButcher LOTREntityRohanFishmonger LOTREntityRohanLumberman ...
-common.entity.npc,LOTREntityRohanMeadhost,,missing,
-common.entity.npc,LOTREntityRohanOrcharder,,missing,
-common.entity.npc,LOTREntityRohanShieldmaiden,,missing,
-common.entity.npc,LOTREntityRohanStablemaster,,missing,
-common.entity.npc,LOTREntityRohirrimArcher,,missing,
-common.entity.npc,LOTREntityRohirrimMarshal,,missing,
-common.entity.npc,LOTREntityRohirrimWarrior,,missing,
-common.entity.npc,LOTREntityRuffianBrute,,missing,
-common.entity.npc,LOTREntityRuffianSpy,,missing,
+common.entity.npc,LOTREntityRohanBlacksmith,LOTRRohanBlacksmithEntity,ported,
+common.entity.npc,LOTREntityRohanBrewer,LOTRRohanBrewerEntity,ported,
+common.entity.npc,LOTREntityRohanBuilder,LOTRRohanBuilderEntity,ported,
+common.entity.npc,LOTREntityRohanButcher,LOTRRohanButcherEntity,ported,
+common.entity.npc,LOTREntityRohanFarmer,LOTRRohanFarmerEntity,ported,
+common.entity.npc,LOTREntityRohanFarmhand,LOTRRohanFarmhandEntity,ported,
+common.entity.npc,LOTREntityRohanFishmonger,LOTRRohanFishmongerEntity,ported,
+common.entity.npc,LOTREntityRohanLumberman,LOTRRohanLumbermanEntity,ported,
+common.entity.npc,LOTREntityRohanMan,LOTRRohanManEntity,ported,
+common.entity.npc,LOTREntityRohanMarketTrader,LOTRRohanMarketTraderEntity,ported,
+common.entity.npc,LOTREntityRohanMeadhost,LOTRRohanMeadhostEntity,ported,
+common.entity.npc,LOTREntityRohanOrcharder,LOTRRohanOrcharderEntity,ported,
+common.entity.npc,LOTREntityRohanShieldmaiden,LOTRRohanShieldmaidenEntity,ported,
+common.entity.npc,LOTREntityRohanStablemaster,LOTRRohanStablemasterEntity,ported,
+common.entity.npc,LOTREntityRohirrimArcher,LOTRRohirrimArcherEntity,ported,
+common.entity.npc,LOTREntityRohirrimMarshal,LOTRRohirrimMarshalEntity,ported,
+common.entity.npc,LOTREntityRohirrimWarrior,LOTRRohirrimWarriorEntity,ported,
+common.entity.npc,LOTREntityRuffianBrute,LOTRRuffianBruteEntity,ported,
+common.entity.npc,LOTREntityRuffianSpy,LOTRRuffianSpyEntity,ported,
 common.entity.npc,LOTREntitySaruman,,missing,
 common.entity.npc,LOTREntitySauron,,missing,
 common.entity.npc,LOTREntityScrapTrader,,missing,
 common.entity.npc,LOTREntitySkeletalWraith,,base,extended by: LOTREntityGondorRuinsWraith LOTREntityHaradPyramidWraith LOTREntityRohanBarrowWraith LOTREntityTauredainPyramidWraith
 common.entity.npc,LOTREntitySnowTroll,,missing,
-common.entity.npc,LOTREntitySouthronBaker,,missing,
-common.entity.npc,LOTREntitySouthronBartender,,missing,
-common.entity.npc,LOTREntitySouthronBrewer,,missing,
-common.entity.npc,LOTREntitySouthronButcher,,missing,
-common.entity.npc,LOTREntitySouthronChampion,,missing,
-common.entity.npc,LOTREntitySouthronFarmer,,missing,
-common.entity.npc,LOTREntitySouthronFishmonger,,missing,
-common.entity.npc,LOTREntitySouthronFlorist,,missing,
-common.entity.npc,LOTREntitySouthronGoldsmith,,missing,
-common.entity.npc,LOTREntitySouthronLumberman,,missing,
-common.entity.npc,LOTREntitySouthronMason,,missing,
-common.entity.npc,LOTREntitySouthronMiner,,missing,
-common.entity.npc,LOTREntitySouthronTrader,,base,extended by: LOTREntitySouthronBaker LOTREntitySouthronBrewer LOTREntitySouthronButcher LOTREntitySouthronFishmonger LOTREntitySouthronFlorist LOTREntitySouthronGoldsmith ...
-common.entity.npc,LOTREntitySpiderBase,,base,extended by: LOTREntityMirkwoodSpider LOTREntityMordorSpider LOTREntityUtumnoIceSpider
-common.entity.npc,LOTREntitySwanKnight,,missing,
+common.entity.npc,LOTREntitySouthronBaker,LOTRSouthronBakerEntity,ported,
+common.entity.npc,LOTREntitySouthronBartender,LOTRSouthronBartenderEntity,ported,
+common.entity.npc,LOTREntitySouthronBrewer,LOTRSouthronBrewerEntity,ported,
+common.entity.npc,LOTREntitySouthronButcher,LOTRSouthronButcherEntity,ported,
+common.entity.npc,LOTREntitySouthronChampion,LOTRSouthronChampionEntity,ported,
+common.entity.npc,LOTREntitySouthronFarmer,LOTRSouthronFarmerEntity,ported,
+common.entity.npc,LOTREntitySouthronFishmonger,LOTRSouthronFishmongerEntity,ported,
+common.entity.npc,LOTREntitySouthronFlorist,LOTRSouthronFloristEntity,ported,
+common.entity.npc,LOTREntitySouthronGoldsmith,LOTRSouthronGoldsmithEntity,ported,
+common.entity.npc,LOTREntitySouthronLumberman,LOTRSouthronLumbermanEntity,ported,
+common.entity.npc,LOTREntitySouthronMason,LOTRSouthronMasonEntity,ported,
+common.entity.npc,LOTREntitySouthronMiner,LOTRSouthronMinerEntity,ported,
+common.entity.npc,LOTREntitySouthronTrader,LOTRSouthronTraderEntity,ported,
+common.entity.npc,LOTREntitySpiderBase,LOTRSpiderEntity,ported,
+common.entity.npc,LOTREntitySwanKnight,LOTRSwanKnightEntity,ported,
 common.entity.npc,LOTREntityTauredain,,missing,
 common.entity.npc,LOTREntityTauredainBannerBearer,,missing,
 common.entity.npc,LOTREntityTauredainBlowgunner,,missing,
@@ -1317,33 +1317,33 @@ common.entity.npc,LOTREntityTauredainWarrior,,missing,
 common.entity.npc,LOTREntityTormentedElf,,missing,
 common.entity.npc,LOTREntityTree,,base,extended by: LOTREntityEnt LOTREntityHuornBase
 common.entity.npc,LOTREntityTroll,LOTRTrollModel,ported,
-common.entity.npc,LOTREntityUmbarArcher,,missing,
-common.entity.npc,LOTREntityUmbarBaker,,missing,
-common.entity.npc,LOTREntityUmbarBannerBearer,,missing,
-common.entity.npc,LOTREntityUmbarBartender,,missing,
-common.entity.npc,LOTREntityUmbarBlacksmith,,missing,
-common.entity.npc,LOTREntityUmbarBrewer,,missing,
-common.entity.npc,LOTREntityUmbarButcher,,missing,
-common.entity.npc,LOTREntityUmbarCaptain,,missing,
-common.entity.npc,LOTREntityUmbarFarmer,,missing,
-common.entity.npc,LOTREntityUmbarFishmonger,,missing,
-common.entity.npc,LOTREntityUmbarFlorist,,missing,
-common.entity.npc,LOTREntityUmbarGoldsmith,,missing,
-common.entity.npc,LOTREntityUmbarLumberman,,missing,
-common.entity.npc,LOTREntityUmbarMason,,missing,
-common.entity.npc,LOTREntityUmbarMiner,,missing,
-common.entity.npc,LOTREntityUmbarTrader,,base,extended by: LOTREntityUmbarBaker LOTREntityUmbarBrewer LOTREntityUmbarButcher LOTREntityUmbarFishmonger LOTREntityUmbarFlorist LOTREntityUmbarGoldsmith ...
-common.entity.npc,LOTREntityUmbarWarrior,,missing,
-common.entity.npc,LOTREntityUmbarian,,missing,
-common.entity.npc,LOTREntityUrukHai,,missing,
-common.entity.npc,LOTREntityUrukHaiBannerBearer,,missing,
-common.entity.npc,LOTREntityUrukHaiBerserker,,missing,
-common.entity.npc,LOTREntityUrukHaiCrossbower,,missing,
-common.entity.npc,LOTREntityUrukHaiMercenaryCaptain,,missing,
-common.entity.npc,LOTREntityUrukHaiSapper,,missing,
-common.entity.npc,LOTREntityUrukHaiTrader,,missing,
-common.entity.npc,LOTREntityUrukWarg,,missing,
-common.entity.npc,LOTREntityUrukWargBombardier,,missing,
+common.entity.npc,LOTREntityUmbarArcher,LOTRUmbarArcherEntity,ported,
+common.entity.npc,LOTREntityUmbarBaker,LOTRUmbarBakerEntity,ported,
+common.entity.npc,LOTREntityUmbarBannerBearer,LOTRUmbarBannerBearerEntity,ported,
+common.entity.npc,LOTREntityUmbarBartender,LOTRUmbarBartenderEntity,ported,
+common.entity.npc,LOTREntityUmbarBlacksmith,LOTRUmbarBlacksmithEntity,ported,
+common.entity.npc,LOTREntityUmbarBrewer,LOTRUmbarBrewerEntity,ported,
+common.entity.npc,LOTREntityUmbarButcher,LOTRUmbarButcherEntity,ported,
+common.entity.npc,LOTREntityUmbarCaptain,LOTRUmbarCaptainEntity,ported,
+common.entity.npc,LOTREntityUmbarFarmer,LOTRUmbarFarmerEntity,ported,
+common.entity.npc,LOTREntityUmbarFishmonger,LOTRUmbarFishmongerEntity,ported,
+common.entity.npc,LOTREntityUmbarFlorist,LOTRUmbarFloristEntity,ported,
+common.entity.npc,LOTREntityUmbarGoldsmith,LOTRUmbarGoldsmithEntity,ported,
+common.entity.npc,LOTREntityUmbarLumberman,LOTRUmbarLumbermanEntity,ported,
+common.entity.npc,LOTREntityUmbarMason,LOTRUmbarMasonEntity,ported,
+common.entity.npc,LOTREntityUmbarMiner,LOTRUmbarMinerEntity,ported,
+common.entity.npc,LOTREntityUmbarTrader,LOTRUmbarTraderEntity,ported,
+common.entity.npc,LOTREntityUmbarWarrior,LOTRUmbarWarriorEntity,ported,
+common.entity.npc,LOTREntityUmbarian,LOTRUmbarianEntity,ported,
+common.entity.npc,LOTREntityUrukHai,LOTRUrukHaiEntity,ported,
+common.entity.npc,LOTREntityUrukHaiBannerBearer,LOTRUrukHaiBannerBearerEntity,ported,
+common.entity.npc,LOTREntityUrukHaiBerserker,LOTRUrukHaiBerserkerEntity,ported,
+common.entity.npc,LOTREntityUrukHaiCrossbower,LOTRUrukHaiCrossbowerEntity,ported,
+common.entity.npc,LOTREntityUrukHaiMercenaryCaptain,LOTRUrukHaiMercenaryCaptainEntity,ported,
+common.entity.npc,LOTREntityUrukHaiSapper,LOTRUrukHaiSapperEntity,ported,
+common.entity.npc,LOTREntityUrukHaiTrader,LOTRUrukHaiTraderEntity,ported,
+common.entity.npc,LOTREntityUrukWarg,LOTRUrukWargEntity,ported,
+common.entity.npc,LOTREntityUrukWargBombardier,LOTRUrukWargBombardierEntity,ported,
 common.entity.npc,LOTREntityUtumnoFireWarg,,missing,
 common.entity.npc,LOTREntityUtumnoIceSpider,,missing,
 common.entity.npc,LOTREntityUtumnoIceWarg,,missing,
@@ -1353,37 +1353,37 @@ common.entity.npc,LOTREntityUtumnoOrcArcher,,missing,
 common.entity.npc,LOTREntityUtumnoSnowTroll,,missing,
 common.entity.npc,LOTREntityUtumnoTroll,,missing,
 common.entity.npc,LOTREntityUtumnoWarg,,missing,
-common.entity.npc,LOTREntityWarg,,base,extended by: LOTREntityAngmarWarg LOTREntityGundabadWarg LOTREntityMordorWarg LOTREntityUrukWarg LOTREntityUtumnoWarg LOTREntityWargBombardier
-common.entity.npc,LOTREntityWargBombardier,,base,extended by: LOTREntityAngmarWargBombardier LOTREntityMordorWargBombardier LOTREntityUrukWargBombardier
-common.entity.npc,LOTREntityWickedDwarf,,missing,
-common.entity.npc,LOTREntityWoodElf,,missing,
-common.entity.npc,LOTREntityWoodElfBannerBearer,,missing,
-common.entity.npc,LOTREntityWoodElfCaptain,,missing,
-common.entity.npc,LOTREntityWoodElfScout,,missing,
-common.entity.npc,LOTREntityWoodElfSmith,,missing,
-common.entity.npc,LOTREntityWoodElfWarrior,,missing,
-common.entity.npc,LOTRFamilyInfo,,missing,
-common.entity.npc,LOTRFarmhand,,missing,
-common.entity.npc,LOTRHireableBase,,missing,
-common.entity.npc,LOTRHiredNPCInfo,,missing,
+common.entity.npc,LOTREntityWarg,LOTRWargEntity,ported,
+common.entity.npc,LOTREntityWargBombardier,LOTRWargBombardierEntity,ported,
+common.entity.npc,LOTREntityWickedDwarf,LOTRWickedDwarfEntity,ported,
+common.entity.npc,LOTREntityWoodElf,LOTRWoodElfEntity,ported,
+common.entity.npc,LOTREntityWoodElfBannerBearer,LOTRWoodElfBannerBearerEntity,ported,
+common.entity.npc,LOTREntityWoodElfCaptain,LOTRWoodElfCaptainEntity,ported,
+common.entity.npc,LOTREntityWoodElfScout,LOTRWoodElfScoutEntity,ported,
+common.entity.npc,LOTREntityWoodElfSmith,LOTRWoodElfSmithEntity,ported,
+common.entity.npc,LOTREntityWoodElfWarrior,LOTRWoodElfWarriorEntity,ported,
+common.entity.npc,LOTRFamilyInfo,LOTRFamilyInfo,ported,
+common.entity.npc,LOTRFarmhand,LOTRFarmhand,ported,
+common.entity.npc,LOTRHireableBase,LOTRHireableBase,ported,
+common.entity.npc,LOTRHiredNPCInfo,LOTRHiredNPCInfo,ported,
 common.entity.npc,LOTRInventoryHiredReplacedItems,,missing,
-common.entity.npc,LOTRInventoryNPCItems,,missing,
-common.entity.npc,LOTRMercenary,,missing,
+common.entity.npc,LOTRInventoryNPCItems,LOTRInventoryNPCItems,ported,
+common.entity.npc,LOTRMercenary,,referenced,named in: LOTRNPCEntity
 common.entity.npc,LOTRMercenaryTradeEntry,,missing,
-common.entity.npc,LOTRNPCMount,,missing,
-common.entity.npc,LOTRNames,,missing,
-common.entity.npc,LOTRSpeech,,missing,
-common.entity.npc,LOTRTradeEntries,,missing,
-common.entity.npc,LOTRTradeEntry,,missing,
-common.entity.npc,LOTRTradeEntryBarrel,,missing,
-common.entity.npc,LOTRTradeSellResult,,missing,
-common.entity.npc,LOTRTradeable,,missing,
-common.entity.npc,LOTRTraderNPCInfo,,missing,
-common.entity.npc,LOTRTravellingTrader,,missing,
-common.entity.npc,LOTRTravellingTraderInfo,,missing,
-common.entity.npc,LOTRUnitTradeEntries,,missing,
-common.entity.npc,LOTRUnitTradeEntry,,missing,
-common.entity.npc,LOTRUnitTradeable,,missing,
+common.entity.npc,LOTRNPCMount,LOTRNPCMount,ported,
+common.entity.npc,LOTRNames,LOTRNames,ported,
+common.entity.npc,LOTRSpeech,LOTRSpeech,ported,
+common.entity.npc,LOTRTradeEntries,LOTRTradeEntries,ported,
+common.entity.npc,LOTRTradeEntry,LOTRTradeEntry,ported,
+common.entity.npc,LOTRTradeEntryBarrel,LOTRTradeEntries,merged,a barrel(...) pool entry built by LOTRTradeEntries.barrelOf (D9d)
+common.entity.npc,LOTRTradeSellResult,LOTRTradeSellResult,ported,
+common.entity.npc,LOTRTradeable,LOTRTradeable,ported,
+common.entity.npc,LOTRTraderNPCInfo,LOTRTraderNPCInfo,ported,
+common.entity.npc,LOTRTravellingTrader,LOTRTravellingTrader,ported,
+common.entity.npc,LOTRTravellingTraderInfo,LOTRTravellingTraderInfo,ported,
+common.entity.npc,LOTRUnitTradeEntries,LOTRUnitTradeEntries,ported,
+common.entity.npc,LOTRUnitTradeEntry,LOTRUnitTradeEntry,ported,
+common.entity.npc,LOTRUnitTradeable,LOTRUnitTradeable,ported,
 common.entity.projectile,LOTREntityConker,LOTRConkerEntity,ported,
 common.entity.projectile,LOTREntityCrossbowBolt,LOTRCrossbowBoltEntity,ported,
 common.entity.projectile,LOTREntityDart,LOTRDartEntity,ported,
@@ -1396,19 +1396,19 @@ common.entity.projectile,LOTREntityMysteryWeb,LOTRMysteryWebEntity,ported,
 common.entity.projectile,LOTREntityPebble,LOTRPebbleEntity,ported,
 common.entity.projectile,LOTREntityPlate,LOTRPlateBlockEntity LOTRPlateEntity,ported,
 common.entity.projectile,LOTREntityProjectileBase,,referenced,named in: LOTRCrossbowBoltEntity LOTRThrowingAxeEntity LOTRThrowingAxeItem
-common.entity.projectile,LOTREntitySmokeRing,,missing,
-common.entity.projectile,LOTREntitySpear,,missing,
+common.entity.projectile,LOTREntitySmokeRing,LOTRSmokeRingEntity,ported,
+common.entity.projectile,LOTREntitySpear,,referenced,named in: LOTRAttackOnCollideGoal
 common.entity.projectile,LOTREntityThrowingAxe,LOTRThrowingAxeEntity,ported,
 common.entity.projectile,LOTREntityThrownRock,,missing,
-common.entity.projectile,LOTREntityThrownTermite,,missing,
+common.entity.projectile,LOTREntityThrownTermite,,referenced,named in: LOTREntities
 common.entity.projectile,LOTREntityTrollSnowball,,missing,
 common.entity.projectile,LOTRFishing,,missing,
 common.fac,LOTRAlignmentBonusMap,LOTRAlignmentBonusMap,ported,
 common.fac,LOTRAlignmentValues,LOTRAlignmentValues,ported,
 common.fac,LOTRControlZone,LOTRControlZone,ported,
 common.fac,LOTRFaction,LOTRFaction,ported,
-common.fac,LOTRFactionBounties,,missing,
-common.fac,LOTRFactionData,,missing,
+common.fac,LOTRFactionBounties,,referenced,named in: LOTRNPCKillEvents
+common.fac,LOTRFactionData,,referenced,named in: LOTRHiredNPCInfo LOTRNPCKillEvents LOTRTraderNPCInfo
 common.fac,LOTRFactionRank,LOTRFactionRank,ported,
 common.fac,LOTRFactionRelations,LOTRFactionRelations,ported,
 common.fac,LOTRMapRegion,LOTRMapRegion,ported,
@@ -1419,7 +1419,7 @@ common.fellowship,LOTRFellowshipData,,missing,
 common.fellowship,LOTRFellowshipInvite,,missing,
 common.fellowship,LOTRFellowshipProfile,,missing,
 common.inventory,LOTRContainerAlloyForge,,referenced,named in: LOTRForgeMenu
-common.inventory,LOTRContainerAnvil,,referenced,named in: LOTRModifiers
+common.inventory,LOTRContainerAnvil,LOTRAnvilMenu,ported,
 common.inventory,LOTRContainerArmorStand,,excluded,
 common.inventory,LOTRContainerBarrel,LOTRBarrelMenu,ported,
 common.inventory,LOTRContainerBookshelf,,missing,
@@ -1435,15 +1435,15 @@ common.inventory,LOTRContainerMillstone,LOTRMillstoneMenu,ported,
 common.inventory,LOTRContainerMountInventory,,missing,
 common.inventory,LOTRContainerNPCMountInventory,,missing,
 common.inventory,LOTRContainerPouch,,excluded,
-common.inventory,LOTRContainerTrade,,missing,
-common.inventory,LOTRContainerUnitTrade,,missing,
+common.inventory,LOTRContainerTrade,,referenced,named in: LOTRTradeable
+common.inventory,LOTRContainerUnitTrade,,referenced,named in: LOTRUnitTradeable
 common.inventory,LOTRContainerUnsmeltery,LOTRUnsmelteryMenu,ported,
-common.inventory,LOTREntityInventory,,missing,
+common.inventory,LOTREntityInventory,,referenced,named in: LOTRInventoryNPC LOTRInventoryNPCItems
 common.inventory,LOTRInventoryGollum,,missing,
-common.inventory,LOTRInventoryNPC,,missing,
+common.inventory,LOTRInventoryNPC,LOTRInventoryNPC,ported,
 common.inventory,LOTRInventoryPouch,,excluded,
 common.inventory,LOTRSlotAlignmentReward,,missing,
-common.inventory,LOTRSlotAnvilOutput,,missing,
+common.inventory,LOTRSlotAnvilOutput,,referenced,named in: LOTRAnvilMenu
 common.inventory,LOTRSlotArmorStand,,missing,
 common.inventory,LOTRSlotBarrel,,referenced,named in: LOTRBarrelMenu
 common.inventory,LOTRSlotBarrelResult,,referenced,named in: LOTRBarrelMenu
@@ -1459,12 +1459,12 @@ common.inventory,LOTRSlotPouch,,missing,
 common.inventory,LOTRSlotProtected,,missing,
 common.inventory,LOTRSlotSaddle,,missing,
 common.inventory,LOTRSlotSeeds,,missing,
-common.inventory,LOTRSlotStackSize,,missing,
+common.inventory,LOTRSlotStackSize,,referenced,named in: LOTRForgeBlockEntity LOTRHobbitOvenBlockEntity
 common.inventory,LOTRSlotTrade,,missing,
 common.inventory,LOTRSlotUnsmeltResult,,referenced,named in: LOTRUnsmelteryMenu
 common.inventory,OddmentCollectorNameMischief,,missing,
 common.item,AnvilNameColorProvider,,missing,
-common.item,LOTRItemAncientItem,,absorbed,backs 1 field(s): ancientItem
+common.item,LOTRItemAncientItem,LOTRAncientItem,ported,
 common.item,LOTRItemAncientItemParts,,absorbed,backs 1 field(s): ancientItemParts
 common.item,LOTRItemAnduril,,absorbed,backs 1 field(s): anduril
 common.item,LOTRItemAnimalJar,LOTRAnimalJarItem,ported,
@@ -1476,10 +1476,10 @@ common.item,LOTRItemBalrogWhip,LOTRBalrogWhipItem,ported,
 common.item,LOTRItemBanner,LOTRBannerBlock LOTRBannerBlockEntity LOTRBannerRenderState LOTRBannerRenderer LOTRBannerModel,ported,
 common.item,LOTRItemBarrel,LOTRBarrelItem,ported,
 common.item,LOTRItemBattleaxe,,absorbed,backs 20 field(s): battleaxeAngmar battleaxeBlackUruk battleaxeBlueDwarven battleaxeBronze battleaxeCorsair battleaxeDale ...
-common.item,LOTRItemBearRug,,missing,backs 1 field(s): bearRug
+common.item,LOTRItemBearRug,LOTRBearRugEntity,ported,
 common.item,LOTRItemBed,LOTRBedBlock,ported,
 common.item,LOTRItemBerry,,absorbed,backs 6 field(s): blackberry blueberry cranberry elderberry raspberry wildberry
-common.item,LOTRItemBlockGoran,,missing,
+common.item,LOTRItemBlockGoran,LOTRGoranBlock,ported,
 common.item,LOTRItemBlockMetadata,,missing,
 common.item,LOTRItemBlowgun,LOTRBlowgunItem,ported,
 common.item,LOTRItemBone,,absorbed,backs 6 field(s): dwarfBone elfBone hobbitBone orcBone trollBone wargBone
@@ -1504,8 +1504,8 @@ common.item,LOTRItemDoubleTorch,LOTRDoubleTorchBlock,ported,
 common.item,LOTRItemDye,,absorbed,backs 1 field(s): dye
 common.item,LOTRItemEnchantment,,absorbed,backs 4 field(s): balrogFire bountyTrophy chilling mithrilBook
 common.item,LOTRItemEntDraught,LOTREntDraughtItem,ported,
-common.item,LOTRItemFallenLeaves,,missing,
-common.item,LOTRItemFeatherDyed,,missing,backs 1 field(s): featherDyed
+common.item,LOTRItemFallenLeaves,LOTRFallenLeavesItem,ported,
+common.item,LOTRItemFeatherDyed,,absorbed,backs 1 field(s): featherDyed
 common.item,LOTRItemFenceVanilla,,missing,
 common.item,LOTRItemFirePot,LOTRFirePotItem,ported,
 common.item,LOTRItemFood,,absorbed,backs 47 field(s): almond appleGreen bananaBread camelCooked camelRaw cherry ...
@@ -1514,10 +1514,10 @@ common.item,LOTRItemGandalfStaffWhite,LOTRGandalfStaffWhiteItem,ported,
 common.item,LOTRItemGate,LOTRGateBlock LOTRGateModel,ported,
 common.item,LOTRItemGem,,absorbed,backs 2 field(s): coral pearl
 common.item,LOTRItemGemWithAnvilNameColor,,absorbed,backs 8 field(s): amber amethyst diamond emerald opal ruby ...
-common.item,LOTRItemGiraffeRug,,missing,backs 1 field(s): giraffeRug
+common.item,LOTRItemGiraffeRug,LOTRGiraffeRugEntity,ported,
 common.item,LOTRItemGlamdring,,absorbed,backs 1 field(s): glamdring
 common.item,LOTRItemGlassBottle,,referenced,named in: LOTRVanillaVessels
-common.item,LOTRItemGrapeSeeds,,absorbed,backs 2 field(s): seedsGrapeRed seedsGrapeWhite
+common.item,LOTRItemGrapeSeeds,LOTRGrapeSeedsItem,ported,
 common.item,LOTRItemGuldurilCrystal,LOTRGuldurilCrystalItem,ported,
 common.item,LOTRItemHammer,,absorbed,backs 20 field(s): blacksmithHammer clubMoredain dunlendingClub hammerAngmar hammerBlackUruk hammerBlueDwarven ...
 common.item,LOTRItemHangingFruit,LOTRHangingFruitItem,ported,
@@ -1527,11 +1527,11 @@ common.item,LOTRItemHobbitPipe,,absorbed,backs 1 field(s): hobbitPipe
 common.item,LOTRItemHoe,LOTRHoeItem,ported,
 common.item,LOTRItemKaftan,,absorbed,backs 2 field(s): bodyKaftan legsKaftan
 common.item,LOTRItemKebab,LOTRKebabItem,ported,
-common.item,LOTRItemKebabStand,LOTRKebabStandBlock LOTRKebabStandBlockEntity LOTRKebabStandRenderState LOTRKebabStandRenderer LOTRKebabStandModel,ported,
+common.item,LOTRItemKebabStand,LOTRKebabStandItem,ported,
 common.item,LOTRItemLance,,absorbed,backs 3 field(s): lanceDolAmroth lanceGondor lanceRohan
-common.item,LOTRItemLeatherHat,,absorbed,backs 1 field(s): leatherHat
+common.item,LOTRItemLeatherHat,LOTRLeatherHatItem,ported,
 common.item,LOTRItemLeaves,,missing,
-common.item,LOTRItemLionRug,,missing,backs 1 field(s): lionRug
+common.item,LOTRItemLionRug,LOTRLionRugEntity,ported,
 common.item,LOTRItemManFlesh,LOTRManFleshItem,ported,
 common.item,LOTRItemMatch,LOTRMatchItem,ported,
 common.item,LOTRItemMattock,,absorbed,backs 3 field(s): mattockBlueDwarven mattockDwarven mattockMithril
@@ -1548,7 +1548,7 @@ common.item,LOTRItemMysteryWeb,LOTRMysteryWebEntity,ported,
 common.item,LOTRItemNPCRespawner,,missing,backs 1 field(s): npcRespawner
 common.item,LOTRItemOrcBomb,LOTROrcBombBlock LOTROrcBombEntity,ported,
 common.item,LOTRItemOrcSkullStaff,,absorbed,backs 1 field(s): orcSkullStaff
-common.item,LOTRItemOwnership,,missing,
+common.item,LOTRItemOwnership,LOTRItemOwnership,ported,
 common.item,LOTRItemPartyHat,,absorbed,backs 1 field(s): partyHat
 common.item,LOTRItemPebble,LOTRPebbleItem,ported,
 common.item,LOTRItemPickaxe,,absorbed,backs 15 field(s): pickaxeAngmar pickaxeBlueDwarven pickaxeBronze pickaxeDolGuldur pickaxeDwarven pickaxeElven ...
@@ -1565,20 +1565,20 @@ common.item,LOTRItemReeds,,missing,
 common.item,LOTRItemRhunFireJar,,missing,
 common.item,LOTRItemRing,,absorbed,backs 3 field(s): goldRing mithrilRing silverRing
 common.item,LOTRItemRingil,,absorbed,backs 1 field(s): ringil
-common.item,LOTRItemRugBase,,referenced,named in: LOTRCreativeTabs
+common.item,LOTRItemRugBase,LOTRRugItem,ported,
 common.item,LOTRItemSalt,LOTRSaltItem,ported,
 common.item,LOTRItemSauronMace,LOTRSauronMaceItem,ported,
 common.item,LOTRItemSeeds,,absorbed,backs 2 field(s): flaxSeeds pipeweedSeeds
 common.item,LOTRItemShovel,LOTRShovelItem,ported,
 common.item,LOTRItemSling,LOTRSlingItem,ported,
-common.item,LOTRItemSpawnEgg,,absorbed,backs 1 field(s): spawnEgg
+common.item,LOTRItemSpawnEgg,LOTRSpawnEggItem,ported,
 common.item,LOTRItemSpear,,absorbed,backs 29 field(s): spearAngmar spearArnor spearBlackNumenorean spearBlackUruk spearBladorthin spearBlueDwarven ...
 common.item,LOTRItemStew,,absorbed,backs 5 field(s): leekSoup mapleSyrup melonSoup rabbitStew torogStew
 common.item,LOTRItemSting,,absorbed,backs 1 field(s): sting
 common.item,LOTRItemStructureSpawner,,missing,backs 1 field(s): structureSpawner
 common.item,LOTRItemSword,,absorbed,backs 36 field(s): morgulBlade rollingPin scimitarBlackUruk scimitarHalfTroll scimitarNearHarad scimitarOrc ...
 common.item,LOTRItemTallGrass,,missing,
-common.item,LOTRItemTermite,,absorbed,backs 1 field(s): termite
+common.item,LOTRItemTermite,LOTRTermiteEntity LOTRTermiteRenderer LOTRTermiteModel,ported,
 common.item,LOTRItemThrowingAxe,LOTRThrowingAxeItem,ported,
 common.item,LOTRItemTreasurePile,LOTRTreasurePileItem,ported,
 common.item,LOTRItemTrident,LOTRTridentItem,ported,
@@ -1586,18 +1586,18 @@ common.item,LOTRItemTrollStatue,LOTRTrollStatueItem,ported,
 common.item,LOTRItemUtumnoKey,,absorbed,backs 1 field(s): utumnoKey
 common.item,LOTRItemVessel,LOTRVesselItem,ported,
 common.item,LOTRItemVine,,missing,
-common.item,LOTRItemWargskinRug,,missing,backs 1 field(s): wargskinRug
-common.item,LOTRItemWaterPlant,,referenced,named in: LOTRBlocks
+common.item,LOTRItemWargskinRug,LOTRWargskinRugEntity,ported,
+common.item,LOTRItemWaterPlant,,referenced,named in: LOTRBlocks LOTRFallenLeavesItem
 common.item,LOTRItemWithAnvilNameColor,,absorbed,backs 1 field(s): nauriteGem
-common.item,LOTRMaterial,,referenced,named in: LOTRItemTags LOTRItems LOTRToolMaterials
+common.item,LOTRMaterial,,referenced,named in: LOTRCombatItems LOTRFactionDyeRecipe LOTRItemTags LOTRManEntity ...
 common.item,LOTRPoisonedDrinks,LOTRPoisonedDrinks,ported,
 common.item,LOTRPotionPoisonKilling,,referenced,named in: LOTRDrinkPoisonMobEffect
 common.item,LOTRStoryItem,,referenced,named in: LOTRCreativeTabs
-common.item,LOTRValuableItems,,missing,
-common.item,LOTRWeaponStats,,referenced,named in: LOTRGateBlock LOTRItemTags LOTRItems LOTRModifier ...
+common.item,LOTRValuableItems,LOTRValuableItems,ported,
+common.item,LOTRWeaponStats,,referenced,named in: LOTRAttackOnCollideGoal LOTRCombatItems LOTRGateBlock LOTRItemTags ...
 common.network,LOTRPacketAchievement,,missing,
 common.network,LOTRPacketAchievementRemove,,missing,
-common.network,LOTRPacketAlignDrain,,missing,
+common.network,LOTRPacketAlignDrain,,referenced,named in: LOTRPlayerAlignments
 common.network,LOTRPacketAlignment,,missing,
 common.network,LOTRPacketAlignmentBonus,,missing,
 common.network,LOTRPacketAlignmentChoiceOffer,,missing,
@@ -1605,17 +1605,17 @@ common.network,LOTRPacketAlignmentChoices,,missing,
 common.network,LOTRPacketAlignmentSee,,missing,
 common.network,LOTRPacketAnvilEngraveOwner,,missing,
 common.network,LOTRPacketAnvilReforge,,missing,
-common.network,LOTRPacketAnvilRename,,missing,
+common.network,LOTRPacketAnvilRename,,referenced,named in: LOTRAnvilRenamePayload LOTRPackets
 common.network,LOTRPacketBannerData,,missing,
 common.network,LOTRPacketBannerRequestInvalidName,,missing,
 common.network,LOTRPacketBannerValidate,,missing,
-common.network,LOTRPacketBeaconEdit,,referenced,named in: LOTRBeaconEditPayload
+common.network,LOTRPacketBeaconEdit,,referenced,named in: LOTRBeaconBlock LOTRBeaconEditPayload LOTRPackets
 common.network,LOTRPacketBiomeVariantsUnwatch,,missing,
 common.network,LOTRPacketBiomeVariantsWatch,,missing,
 common.network,LOTRPacketBlockFX,,missing,
 common.network,LOTRPacketBrandingIron,,missing,
 common.network,LOTRPacketBrewingButton,,referenced,named in: LOTRBrewingButtonPayload LOTRPackets
-common.network,LOTRPacketBrokenPledge,,missing,
+common.network,LOTRPacketBrokenPledge,,referenced,named in: LOTRBrokenPledgePayload LOTRClientFactionState
 common.network,LOTRPacketBuyUnit,,missing,
 common.network,LOTRPacketCWPProtectionMessage,,missing,
 common.network,LOTRPacketCWPSharedHide,,missing,
@@ -1638,7 +1638,7 @@ common.network,LOTRPacketDeleteMiniquest,,missing,
 common.network,LOTRPacketEditBanner,,missing,
 common.network,LOTRPacketEditNPCRespawner,,missing,
 common.network,LOTRPacketEditSign,,referenced,named in: LOTRCarvedSignBlockEntity LOTRPackets LOTRSignEditPayload
-common.network,LOTRPacketEnableAlignmentZones,,missing,
+common.network,LOTRPacketEnableAlignmentZones,,referenced,named in: LOTRAlignmentZonesPayload
 common.network,LOTRPacketEntityUUID,,missing,
 common.network,LOTRPacketEnvironmentOverlay,,missing,
 common.network,LOTRPacketFTBounceClient,,missing,
@@ -1647,8 +1647,8 @@ common.network,LOTRPacketFTCooldown,,missing,
 common.network,LOTRPacketFTScreen,,missing,
 common.network,LOTRPacketFTTimer,,missing,
 common.network,LOTRPacketFactionData,,missing,
-common.network,LOTRPacketFactionRelations,,missing,
-common.network,LOTRPacketFamilyInfo,,missing,
+common.network,LOTRPacketFactionRelations,,referenced,named in: LOTRFactionRelationsPayload
+common.network,LOTRPacketFamilyInfo,,referenced,named in: LOTRFamilyInfo
 common.network,LOTRPacketFastTravel,,missing,
 common.network,LOTRPacketFellowship,,missing,
 common.network,LOTRPacketFellowshipAcceptInviteResult,,missing,
@@ -1666,17 +1666,17 @@ common.network,LOTRPacketFellowshipRespondInvite,,missing,
 common.network,LOTRPacketFellowshipSetIcon,,missing,
 common.network,LOTRPacketFellowshipToggle,,missing,
 common.network,LOTRPacketHandler,,missing,
-common.network,LOTRPacketHiredGui,,missing,
-common.network,LOTRPacketHiredInfo,,missing,
+common.network,LOTRPacketHiredGui,,referenced,named in: LOTRHiredNPCInfo
+common.network,LOTRPacketHiredInfo,,referenced,named in: LOTRHiredInfoPayload LOTRSpeechClient
 common.network,LOTRPacketHiredUnitCommand,,missing,
 common.network,LOTRPacketHiredUnitDismiss,,missing,
 common.network,LOTRPacketHiredUnitInteract,,missing,
-common.network,LOTRPacketHornSelect,,missing,
+common.network,LOTRPacketHornSelect,,referenced,named in: LOTRPackets
 common.network,LOTRPacketInvasionWatch,,missing,
 common.network,LOTRPacketIsOpRequest,,missing,
 common.network,LOTRPacketIsOpResponse,,missing,
-common.network,LOTRPacketItemSquadron,,missing,
-common.network,LOTRPacketLocationFX,,missing,
+common.network,LOTRPacketItemSquadron,,referenced,named in: LOTRPackets
+common.network,LOTRPacketLocationFX,,referenced,named in: LOTRCommandSwordItem
 common.network,LOTRPacketLogin,,missing,
 common.network,LOTRPacketLoginPlayerData,,missing,
 common.network,LOTRPacketMallornEntHeal,,missing,
@@ -1694,17 +1694,17 @@ common.network,LOTRPacketMobSpawner,,missing,
 common.network,LOTRPacketMountControl,,missing,
 common.network,LOTRPacketMountControlServerEnforce,,missing,
 common.network,LOTRPacketMountOpenInv,,missing,
-common.network,LOTRPacketNPCCombatStance,,missing,
+common.network,LOTRPacketNPCCombatStance,,referenced,named in: LOTRNPCEntity
 common.network,LOTRPacketNPCFX,,missing,
-common.network,LOTRPacketNPCIsEating,,missing,
+common.network,LOTRPacketNPCIsEating,,referenced,named in: LOTRNPCEntity
 common.network,LOTRPacketNPCIsOfferingQuest,,missing,
 common.network,LOTRPacketNPCRespawner,,missing,
-common.network,LOTRPacketNPCSpeech,,missing,
+common.network,LOTRPacketNPCSpeech,,referenced,named in: LOTRNPCSpeechPayload LOTRSpeechClient
 common.network,LOTRPacketNPCSquadron,,missing,
 common.network,LOTRPacketOpenSignEditor,,referenced,named in: LOTROpenSignEditorPayload
 common.network,LOTRPacketOptions,,missing,
 common.network,LOTRPacketPledge,,missing,
-common.network,LOTRPacketPledgeSet,,missing,
+common.network,LOTRPacketPledgeSet,,referenced,named in: LOTRPackets LOTRPlayerAlignments LOTRPledgeSetPayload LOTRScreenFactions
 common.network,LOTRPacketPortalPos,,missing,
 common.network,LOTRPacketRenameCWP,,missing,
 common.network,LOTRPacketRenameCWPClient,,missing,
@@ -1722,7 +1722,7 @@ common.network,LOTRPacketShield,,missing,
 common.network,LOTRPacketSpawnMob,,missing,
 common.network,LOTRPacketStopItemUse,,missing,
 common.network,LOTRPacketTitle,,missing,
-common.network,LOTRPacketTraderInfo,,missing,
+common.network,LOTRPacketTraderInfo,,referenced,named in: LOTRTraderNPCInfo
 common.network,LOTRPacketTraderInteract,,missing,
 common.network,LOTRPacketUnitTraderInteract,,missing,
 common.network,LOTRPacketUpdatePlayerLocations,,missing,
@@ -1731,7 +1731,7 @@ common.network,LOTRPacketUtumnoKill,,missing,
 common.network,LOTRPacketUtumnoReturn,,missing,
 common.network,LOTRPacketWaypointRegion,,missing,
 common.network,LOTRPacketWaypointUseCount,,missing,
-common.network,LOTRPacketWeaponFX,,referenced,named in: LOTRGandalfStaffWhiteItem LOTRSauronMaceItem
+common.network,LOTRPacketWeaponFX,,referenced,named in: LOTRGandalfStaffWhiteItem LOTRModifierSpecials LOTRSauronMaceItem
 common.playerdetails,ExclusiveGroup,,missing,
 common.playerdetails,LOTRPlayerDetailsCache,,missing,
 common.playerdetails,PlayerDetails,,missing,
@@ -1754,14 +1754,14 @@ common.recipe,LOTRBrewingRecipes,LOTRBrewingRecipes,ported,
 common.recipe,LOTREntJarRecipes,,referenced,named in: LOTREntJarBlock LOTREntJarBlockEntity
 common.recipe,LOTRMillstoneRecipes,LOTRMillstoneRecipes,ported,
 common.recipe,LOTRRecipeFeatherDye,,missing,
-common.recipe,LOTRRecipeHaradRobesDye,,missing,
+common.recipe,LOTRRecipeHaradRobesDye,,referenced,named in: LOTRFactionDyeRecipe
 common.recipe,LOTRRecipeHaradTurbanOrnament,,missing,
 common.recipe,LOTRRecipeHobbitPipe,,referenced,named in: LOTRSmokingPipeDyeRecipe LOTRSmokingPipeItem
-common.recipe,LOTRRecipeLeatherHatDye,,missing,
-common.recipe,LOTRRecipeLeatherHatFeather,,missing,
+common.recipe,LOTRRecipeLeatherHatDye,LOTRLeatherHatDyeRecipe,ported,
+common.recipe,LOTRRecipeLeatherHatFeather,LOTRLeatherHatFeatherRecipe,ported,
 common.recipe,LOTRRecipePartyHatDye,,missing,
-common.recipe,LOTRRecipePoisonWeapon,,referenced,named in: LOTRFactionTransmuteRecipe
-common.recipe,LOTRRecipes,,referenced,named in: LOTRCraftingTable LOTRFactionShapelessRecipe LOTRItemTagProvider LOTRRecipeProvider ...
+common.recipe,LOTRRecipePoisonWeapon,,referenced,named in: LOTRAnvilMenu LOTRCauldronWashing LOTRFactionTransmuteRecipe
+common.recipe,LOTRRecipes,,referenced,named in: LOTRCraftingTable LOTRFactionShapelessRecipe LOTRForgeBlockEntity LOTRItemTagProvider ...
 common.recipe,LOTRRecipesArmorDyes,,missing,
 common.recipe,LOTRRecipesBanners,,missing,
 common.recipe,LOTRRecipesPoisonDrinks,,referenced,named in: LOTRDrinkItem LOTRPoisonDrinkRecipe
@@ -1807,7 +1807,7 @@ common.tileentity,LOTRTileEntityUtumnoPortal,,missing,
 common.tileentity,LOTRTileEntityUtumnoReturnPortal,LOTRUtumnoReturnPortalBaseBlock,ported,
 common.tileentity,LOTRTileEntityWeaponRack,LOTRWeaponRackBlockEntity,ported,
 common.util,CentredSquareArray,,missing,
-common.util,LOTRColorUtil,,missing,
+common.util,LOTRColorUtil,,referenced,named in: LOTRBreeGuardEntity
 common.util,LOTRCommonIcons,,missing,
 common.util,LOTRFunctions,,missing,
 common.util,LOTRLog,,missing,
@@ -1931,10 +1931,10 @@ common.world.biome,LOTRBiomeGenMistyMountains,,missing,
 common.world.biome,LOTRBiomeGenMistyMountainsFoothills,,missing,
 common.world.biome,LOTRBiomeGenMordor,,referenced,named in: LOTRBlockTagProvider LOTRBlockTags LOTRPlantBlock
 common.world.biome,LOTRBiomeGenMordorMountains,,missing,
-common.world.biome,LOTRBiomeGenMorgulVale,,missing,
+common.world.biome,LOTRBiomeGenMorgulVale,,referenced,named in: LOTRSpellParticle
 common.world.biome,LOTRBiomeGenNanCurunir,,missing,
 common.world.biome,LOTRBiomeGenNanUngol,,missing,
-common.world.biome,LOTRBiomeGenNearHarad,,missing,
+common.world.biome,LOTRBiomeGenNearHarad,,referenced,named in: LOTRDesertScorpionEntity
 common.world.biome,LOTRBiomeGenNearHaradFertile,,missing,
 common.world.biome,LOTRBiomeGenNearHaradFertileForest,,missing,
 common.world.biome,LOTRBiomeGenNearHaradHills,,missing,
@@ -2127,7 +2127,7 @@ common.world.spawning,LOTRSpawnList,,missing,
 common.world.spawning,LOTRSpawnerAnimals,,missing,
 common.world.spawning,LOTRSpawnerNPCs,,missing,
 common.world.spawning,LOTRTravellingTraderSpawner,,missing,
-common.world.structure,LOTRChestContents,,referenced,named in: LOTRBlockLootProvider LOTRDaleCrackerItem
+common.world.structure,LOTRChestContents,LOTRChestContents,ported,
 common.world.structure,LOTRStructures,,missing,
 common.world.structure,LOTRWorldGenAngmarShrine,,missing,
 common.world.structure,LOTRWorldGenAngmarTower,,missing,
@@ -2251,7 +2251,7 @@ common.world.structure2,LOTRWorldGenEasterlingTownWall,,missing,
 common.world.structure2,LOTRWorldGenEasterlingVillageFarm,,base,extended by: 
 common.world.structure2,LOTRWorldGenEasterlingVillageSign,,missing,
 common.world.structure2,LOTRWorldGenEasterlingWell,,missing,
-common.world.structure2,LOTRWorldGenElfHouse,,missing,
+common.world.structure2,LOTRWorldGenElfHouse,,referenced,named in: LOTRButterflyEntity
 common.world.structure2,LOTRWorldGenElvenForge,,base,extended by: LOTRWorldGenGaladhrimForge LOTRWorldGenHighElvenForge LOTRWorldGenWoodElvenForge
 common.world.structure2,LOTRWorldGenGaladhrimForge,,missing,
 common.world.structure2,LOTRWorldGenGondorBarn,,missing,

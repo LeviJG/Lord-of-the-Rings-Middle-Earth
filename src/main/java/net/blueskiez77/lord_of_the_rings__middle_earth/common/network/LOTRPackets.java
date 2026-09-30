@@ -31,6 +31,20 @@ public final class LOTRPackets {
 
     public static void init() {
         PayloadTypeRegistry.clientboundPlay()
+                .register(LOTRNPCSpeechPayload.TYPE, LOTRNPCSpeechPayload.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay()
+                .register(LOTRHiredInfoPayload.TYPE, LOTRHiredInfoPayload.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay()
+                .register(LOTRMallornEntHealPayload.TYPE, LOTRMallornEntHealPayload.STREAM_CODEC);
+        PayloadTypeRegistry.clientboundPlay()
+                .register(LOTRMallornEntSummonPayload.TYPE, LOTRMallornEntSummonPayload.STREAM_CODEC);
+        // onPlayerStartTracking: an NPC's hired data to the player who comes to see it.
+        net.fabricmc.fabric.api.networking.v1.EntityTrackingEvents.START_TRACKING.register((entity, player) -> {
+            if (entity instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity npc) {
+                ServerPlayNetworking.send(player, LOTRHiredInfoPayload.of(npc));
+            }
+        });
+        PayloadTypeRegistry.clientboundPlay()
                 .register(LOTROpenSignEditorPayload.TYPE, LOTROpenSignEditorPayload.STREAM_CODEC);
         PayloadTypeRegistry.serverboundPlay()
                 .register(LOTRSignEditPayload.TYPE, LOTRSignEditPayload.STREAM_CODEC);

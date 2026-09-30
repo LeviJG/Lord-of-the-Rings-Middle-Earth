@@ -1,5 +1,11 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
+
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -15,9 +21,10 @@ import net.minecraft.world.level.Level;
  * becomes one random item from its chest pool, worn and possibly bearing
  * modifiers, with a pop.
  *
- * <p>NOT yet: the one-in-four Wraithbane the original put on the result, which
- * waits on the marsh wraith, and the craftAncientItem achievement (both on the
- * deferred-port tracker in PORT_PLAN.md).
+ * One time in four the result is also Wraithbane, if it can be.
+ *
+ * <p>NOT yet: the craftAncientItem achievement (on the deferred-port tracker
+ * in PORT_PLAN.md).
  */
 public class LOTRAncientItem extends Item {
 
@@ -32,6 +39,14 @@ public class LOTRAncientItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (level instanceof ServerLevel) {
             ItemStack result = LOTRChestContents.pick(this.pool, level.getRandom(), false);
+            if (!result.isEmpty() && LOTRModifiers.canApply(LOTRModifier.BANE_WRAITH, result, false)
+                    && level.getRandom().nextInt(4) == 0) {
+                List<LOTRModifier> modifiers = new ArrayList<>(LOTRModifiers.get(result));
+                if (!modifiers.contains(LOTRModifier.BANE_WRAITH)) {
+                    modifiers.add(LOTRModifier.BANE_WRAITH);
+                    LOTRModifiers.set(result, modifiers);
+                }
+            }
             level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ITEM_PICKUP,
                     SoundSource.PLAYERS, 0.2f,
                     ((level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.7f + 1.0f) * 2.0f);

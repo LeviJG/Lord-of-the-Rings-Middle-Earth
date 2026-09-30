@@ -5,6 +5,15 @@
       "lotr:event/pledge"
     ]
   },
+  "event.trade": {
+    "category": "player",
+    "sounds": [
+      "lotr:event/trade1",
+      "lotr:event/trade2",
+      "lotr:event/trade3",
+      "lotr:event/trade4"
+    ]
+  },
   "event.unpledge": {
     "category": "player",
     "sounds": [
@@ -51,6 +60,12 @@
     "category": "block",
     "sounds": [
       "lotr:item/mug_fill"
+    ]
+  },
+  "item.structureSpawner": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:item/structure_spawner"
     ]
   },
   "item.puff": {
@@ -105,6 +120,490 @@
     "category": "block",
     "sounds": [
       "lotr:block/treasure/place1"
+    ]
+  },
+  "deer.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:deer/death"
+    ]
+  },
+  "deer.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:deer/hurt"
+    ]
+  },
+  "deer.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:deer/say1",
+      "lotr:deer/say2"
+    ]
+  },
+  "aurochs.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:aurochs/hurt1"
+    ]
+  },
+  "aurochs.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:aurochs/say1",
+      "lotr:aurochs/say2",
+      "lotr:aurochs/say3"
+    ]
+  },
+  "flamingo.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:flamingo/death"
+    ]
+  },
+  "flamingo.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:flamingo/hurt1",
+      "lotr:flamingo/hurt2"
+    ]
+  },
+  "flamingo.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:flamingo/say1",
+      "lotr:flamingo/say2"
+    ]
+  },
+  "lion.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:lion/say"
+    ]
+  },
+  "lion.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:lion/hurt"
+    ]
+  },
+  "lion.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:lion/death"
+    ]
+  },
+  "bear.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bear/say1",
+      "lotr:bear/say2"
+    ]
+  },
+  "bear.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bear/hurt1",
+      "lotr:bear/hurt2"
+    ]
+  },
+  "bear.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bear/death"
+    ]
+  },
+  "crocodile.say": {
+    "category": "hostile",
+    "sounds": [
+      "lotr:crocodile/say"
+    ]
+  },
+  "crocodile.death": {
+    "category": "hostile",
+    "sounds": [
+      "lotr:crocodile/death"
+    ]
+  },
+  "crocodile.snap": {
+    "category": "hostile",
+    "sounds": [
+      "lotr:crocodile/snap"
+    ]
+  },
+  "elk.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:elk/say1",
+      "lotr:elk/say2"
+    ]
+  },
+  "elk.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:elk/hurt"
+    ]
+  },
+  "elk.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:elk/death"
+    ]
+  },
+  "zebra.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:zebra/say"
+    ]
+  },
+  "zebra.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:zebra/hurt"
+    ]
+  },
+  "zebra.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:zebra/death"
+    ]
+  },
+  "rhino.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:rhino/say"
+    ]
+  },
+  "rhino.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:rhino/hurt"
+    ]
+  },
+  "rhino.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:rhino/death"
+    ]
+  },
+  "troll.olog_hai_hammer": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:troll/olog_hai_hammer"
+    ]
+  },
+  "troll.rockSmash": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:troll/rock_smash"
+    ]
+  },
+  "troll.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:troll/say"
+    ]
+  },
+  "troll.sneeze": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:troll/sneeze"
+    ]
+  },
+  "troll.sniff": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:troll/sniff"
+    ]
+  },
+  "troll.step": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:troll/step"
+    ]
+  },
+  "troll.transform": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:troll/transform"
+    ]
+  },
+  "midges.swarm": {
+    "category": "ambient",
+    "sounds": [
+      "lotr:midges/swarm1",
+      "lotr:midges/swarm2",
+      "lotr:midges/swarm3"
+    ]
+  },
+  "swan.hiss": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:swan/hiss"
+    ]
+  },
+  "bird.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bird/say1",
+      "lotr:bird/say2",
+      "lotr:bird/say3",
+      "lotr:bird/say4",
+      "lotr:bird/say5",
+      "lotr:bird/say6",
+      "lotr:bird/say7",
+      "lotr:bird/say8",
+      "lotr:bird/say9",
+      "lotr:bird/say10",
+      "lotr:bird/say11",
+      "lotr:bird/say12",
+      "lotr:bird/say13",
+      "lotr:bird/say14",
+      "lotr:bird/say15"
+    ]
+  },
+  "bird.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bird/hurt1"
+    ]
+  },
+  "bird.crow.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bird/crow/say1",
+      "lotr:bird/crow/say2",
+      "lotr:bird/crow/say3"
+    ]
+  },
+  "bird.crow.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bird/crow/hurt1",
+      "lotr:bird/crow/hurt2"
+    ]
+  },
+  "bird.seagull.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bird/seagull/say1",
+      "lotr:bird/seagull/say2",
+      "lotr:bird/seagull/say3"
+    ]
+  },
+  "bird.seagull.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:bird/seagull/hurt1"
+    ]
+  },
+  "warg.attack": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:warg/attack1",
+      "lotr:warg/attack2",
+      "lotr:warg/attack3"
+    ]
+  },
+  "warg.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:warg/death1",
+      "lotr:warg/death2",
+      "lotr:warg/death3",
+      "lotr:warg/death4"
+    ]
+  },
+  "warg.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:warg/hurt1",
+      "lotr:warg/hurt2",
+      "lotr:warg/hurt3",
+      "lotr:warg/hurt4"
+    ]
+  },
+  "warg.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:warg/say1",
+      "lotr:warg/say2",
+      "lotr:warg/say3",
+      "lotr:warg/say4",
+      "lotr:warg/say5",
+      "lotr:warg/say6",
+      "lotr:warg/say7"
+    ]
+  },
+  "elf.male.attack": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:elf/male/attack"
+    ]
+  },
+  "elf.male.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:elf/male/say1",
+      "lotr:elf/male/say2"
+    ]
+  },
+  "elf.woodElf_teleport": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:elf/wood_elf_teleport"
+    ]
+  },
+  "dwarf.attack": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:dwarf/attack"
+    ]
+  },
+  "dwarf.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:dwarf/hurt"
+    ]
+  },
+  "dwarf.kill": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:dwarf/kill1",
+      "lotr:dwarf/kill2"
+    ]
+  },
+  "wight.ambience": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:wight/noise1",
+      "lotr:wight/noise2",
+      "lotr:wight/noise3",
+      "lotr:wight/noise4",
+      "lotr:wight/noise5",
+      "lotr:wight/voice1",
+      "lotr:wight/voice2",
+      "lotr:wight/voice3",
+      "lotr:wight/voice4",
+      "lotr:wight/voice5",
+      "lotr:wight/voice6",
+      "lotr:wight/voice7",
+      "lotr:wight/voice8",
+      "lotr:wight/scream1",
+      "lotr:wight/scream2",
+      "lotr:wight/whisper1"
+    ]
+  },
+  "wight.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:wight/death1",
+      "lotr:wight/death2",
+      "lotr:wight/death3"
+    ]
+  },
+  "wight.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:wight/hurt1",
+      "lotr:wight/hurt2",
+      "lotr:wight/hurt3",
+      "lotr:wight/hurt4"
+    ]
+  },
+  "wraith.marshWraith_shoot": {
+    "category": "hostile",
+    "sounds": [
+      "lotr:wraith/marsh_wraith_shoot"
+    ]
+  },
+  "wraith.spawn": {
+    "category": "hostile",
+    "sounds": [
+      "lotr:wraith/spawn"
+    ]
+  },
+  "ent.step": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:ent/step"
+    ]
+  },
+  "ent.mallorn.leafAttack": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:ent/mallorn/leaf_attack"
+    ]
+  },
+  "ent.mallorn.summonEnt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:ent/mallorn/summon_ent"
+    ]
+  },
+  "gollum.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:gollum/death"
+    ]
+  },
+  "gollum.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:gollum/hurt1",
+      "lotr:gollum/hurt2"
+    ]
+  },
+  "gollum.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:gollum/say1",
+      "lotr:gollum/say2"
+    ]
+  },
+  "halfTroll.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:half_troll/death"
+    ]
+  },
+  "halfTroll.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:half_troll/hurt1",
+      "lotr:half_troll/hurt2"
+    ]
+  },
+  "halfTroll.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:half_troll/say1",
+      "lotr:half_troll/say2"
+    ]
+  },
+  "orc.death": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:orc/death"
+    ]
+  },
+  "orc.fire": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:orc/fire"
+    ]
+  },
+  "orc.hurt": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:orc/hurt1",
+      "lotr:orc/hurt2"
+    ]
+  },
+  "orc.say": {
+    "category": "neutral",
+    "sounds": [
+      "lotr:orc/say"
     ]
   }
 }

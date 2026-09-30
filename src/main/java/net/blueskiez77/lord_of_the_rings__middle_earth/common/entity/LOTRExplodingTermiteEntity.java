@@ -26,6 +26,23 @@ public class LOTRExplodingTermiteEntity extends ThrowableItemProjectile {
         super(LOTREntities.EXPLODING_TERMITE, thrower, level, new ItemStack(LOTRMiscItems.EXPLODING_TERMITE));
     }
 
+    /**
+     * 1.7.10 drew a thrown termite from the moment it was thrown. 26.2's
+     * ThrowableProjectile hides one for its first two ticks while it is within
+     * 3.5 blocks, so with the game's tick frozen a termite just thrown stayed
+     * invisible up close. The rest of the check -- the size-based range -- is
+     * vanilla's.
+     */
+    @Override
+    public boolean shouldRenderAtSqrDistance(double distance) {
+        double size = this.getBoundingBox().getSize() * 4.0;
+        if (Double.isNaN(size)) {
+            size = 4.0;
+        }
+        size *= 64.0;
+        return distance < size * size;
+    }
+
     @Override
     protected Item getDefaultItem() {
         return LOTRMiscItems.EXPLODING_TERMITE;

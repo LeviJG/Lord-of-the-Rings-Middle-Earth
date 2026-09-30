@@ -17,8 +17,15 @@
       }
     ],
     "fallback": {
-      "type": "minecraft:model",
-      "model": "lotr:item/dorwinion_elven_sword_in_hand"
+      "type": "lotr:elven_blade",
+      "model": {
+        "type": "minecraft:model",
+        "model": "lotr:item/dorwinion_elven_sword_in_hand"
+      },
+      "glowing": {
+        "type": "minecraft:model",
+        "model": "lotr:item/dorwinion_elven_sword_in_hand_glowing"
+      }
     }
   }
 }

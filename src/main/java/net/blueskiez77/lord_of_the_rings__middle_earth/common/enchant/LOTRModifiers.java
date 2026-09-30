@@ -409,6 +409,38 @@ public final class LOTRModifiers {
         return baseAttackDamage(stack).map(amount -> (float) (amount + 1.0)).orElse(0.0f);
     }
 
+    /** LOTRWeaponStats.getMeleeDamageBonus, without the enchantments (see LOTRNPCEntity.doHurtTarget). */
+    public static float getMeleeDamageBonus(ItemStack stack) {
+        return meleeDamageBonus(stack);
+    }
+
+    /**
+     * LOTRWeaponStats.getAttackTimeMob: the 20 ticks between a mob's blows,
+     * divided by the weapon's speed against a sword's. A hand, or an item
+     * with no swing speed of its own, keeps the 20.
+     */
+    public static int mobAttackTime(ItemStack stack) {
+        if (stack.isEmpty() || !hasAttribute(stack, Attributes.ATTACK_SPEED)) {
+            return 20;
+        }
+        return Math.round(Math.max(20.0f / meleeSpeed(stack), 1.0f));
+    }
+
+    /** LOTRWeaponStats.getMeleeReachFactor: a sword (or a hand) is 1, a long polearm 2. */
+    public static float getMeleeReachFactor(ItemStack stack) {
+        return stack.isEmpty() ? 1.0f : meleeReachFactor(stack);
+    }
+
+    private static boolean hasAttribute(ItemStack stack, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute) {
+        for (ItemAttributeModifiers.Entry entry : stack.getOrDefault(DataComponents.ATTRIBUTE_MODIFIERS,
+                ItemAttributeModifiers.EMPTY).modifiers()) {
+            if (entry.attribute().equals(attribute)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** getMeleeSpeed, in the original's terms: a sword is 1, a dagger 1.5. */
     private static float meleeSpeed(ItemStack stack) {
         return (float) ((BASE_ATTACK_SPEED + sum(stack, Attributes.ATTACK_SPEED)) / SWORD_ATTACK_SPEED);
@@ -533,7 +565,7 @@ public final class LOTRModifiers {
             return;
         }
         for (LOTRModifier bane : LOTRModifier.values()) {
-            if (bane.effect() != LOTRModifier.Effect.BANE || bane.baneOf() == null
+            if (bane.effect() != LOTRModifier.Effect.BANE || bane.baneOf() == null || !bane.isAchievable()
                     || !target.is(bane.baneOf()) || !canApply(bane, weapon, false)) {
                 continue;
             }
@@ -585,6 +617,18 @@ public final class LOTRModifiers {
     }
 
     /** applyRandomEnchantments without keepBanes: a fresh roll. */
+    /** calcTradeValueFactor: each modifier's worth, and half as much again for a skilful one. */
+    public static float tradeValueFactor(ItemStack stack) {
+        float value = 1.0f;
+        for (LOTRModifier modifier : get(stack)) {
+            value *= modifier.valueModifier();
+            if (modifier.isSkilful()) {
+                value *= 1.5f;
+            }
+        }
+        return value;
+    }
+
     public static void applyRandom(ItemStack stack, RandomSource random, boolean skilful) {
         applyRandom(stack, random, skilful, false);
     }

@@ -30,18 +30,18 @@ import net.minecraft.world.level.block.Block;
  * the two, as setVessel and getEquivalentDrink did.
  */
 public enum LOTRVessel implements StringRepresentable {
-    MUG("mug", "mug"),
-    MUG_CLAY("ceramic_mug", "clay"),
-    GOBLET_GOLD("golden_goblet", "gobletGold"),
-    GOBLET_SILVER("silver_goblet", "gobletSilver"),
-    GOBLET_COPPER("copper_goblet", "gobletCopper"),
-    GOBLET_WOOD("wooden_cup", "gobletWood"),
-    SKULL("skull_cup", "skull"),
-    GLASS("wine_glass", "glass"),
-    BOTTLE("bottle", "bottle"),
-    SKIN("waterskin", "skin"),
-    HORN("ale_horn", "horn"),
-    HORN_GOLD("golden_ale_horn", "hornGold");
+    MUG("mug", "mug", 0),
+    MUG_CLAY("ceramic_mug", "clay", 1),
+    GOBLET_GOLD("golden_goblet", "gobletGold", 10),
+    GOBLET_SILVER("silver_goblet", "gobletSilver", 8),
+    GOBLET_COPPER("copper_goblet", "gobletCopper", 5),
+    GOBLET_WOOD("wooden_cup", "gobletWood", 0),
+    SKULL("skull_cup", "skull", 3),
+    GLASS("wine_glass", "glass", 3),
+    BOTTLE("bottle", "bottle", 2),
+    SKIN("waterskin", "skin", 0),
+    HORN("ale_horn", "horn", 5),
+    HORN_GOLD("golden_ale_horn", "hornGold", 8);
 
     public static final Codec<LOTRVessel> CODEC = StringRepresentable.fromEnum(LOTRVessel::values);
     public static final StreamCodec<ByteBuf, LOTRVessel> STREAM_CODEC = ByteBufCodecs.idMapper(
@@ -49,10 +49,17 @@ public enum LOTRVessel implements StringRepresentable {
 
     private final String name;
     private final String icon;
+    /** extraPrice: what a trader adds to a drink's price for serving it in this. */
+    private final int extraPrice;
 
-    LOTRVessel(String name, String icon) {
+    LOTRVessel(String name, String icon, int extraPrice) {
         this.name = name;
         this.icon = icon;
+        this.extraPrice = extraPrice;
+    }
+
+    public int extraPrice() {
+        return this.extraPrice;
     }
 
     @Override

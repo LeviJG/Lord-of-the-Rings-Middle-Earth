@@ -35,10 +35,9 @@ import net.minecraft.world.phys.shapes.VoxelShape;
  * block drops every block above it, through the same neighbour-change cascade
  * that {@link #updateShape} reproduces on VegetationBlock's behalf.
  *
- * <p>Two things differ from the 1.7.10 class on purpose, both asked for:
- * MAX_HEIGHT is 2 rather than the original's 3, and the stalk will only stand on
- * tilled soil. The original also accepted the Forge Beach plant type, which let
- * corn grow on riverside sand.
+ * <p>One thing differs from the 1.7.10 class on purpose, as asked for: the
+ * stalk will only stand on tilled soil. The original also accepted the Forge
+ * Beach plant type, which let corn grow on riverside sand.
  *
  * <p>{@link #HAS_CORN} is the original's metadata bit 8: a stalk with a stalk
  * below it eventually grows an ear, which changes its texture. Harvesting the
