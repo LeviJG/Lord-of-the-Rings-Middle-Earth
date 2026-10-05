@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith
 
 import java.util.UUID;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
@@ -23,7 +24,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -152,7 +152,7 @@ public class LOTRMarshWraithEntity extends LOTRNPCEntity {
             double newY = getY();
             for (int j1 = 0; j1 <= hover; ++j1) {
                 BlockState state = level().getBlockState(new BlockPos(i, j - j1, k));
-                if (!state.isSolid() && !state.liquid()) {
+                if (!LOTRLegacyWorld.isSolid(state) && !LOTRLegacyWorld.isLiquid(state)) {
                     continue;
                 }
                 newY = Math.max(newY, j + j1 + 1);
@@ -225,11 +225,6 @@ public class LOTRMarshWraithEntity extends LOTRNPCEntity {
     }
 
     @Override
-    public boolean canReEquipHired(EquipmentSlot slot, ItemStack stack) {
-        return false;
-    }
-
-    @Override
     protected void dropNPCItems(ServerLevel level, boolean killedByPlayer, int looting) {
         super.dropNPCItems(level, killedByPlayer, looting);
         int flesh = 1 + this.random.nextInt(3) + this.random.nextInt(looting + 1);
@@ -272,5 +267,11 @@ public class LOTRMarshWraithEntity extends LOTRNPCEntity {
         setDeathFadeTime(input.getIntOr("DeathFadeTime", 0));
         input.getLong("TargetUUIDMost").ifPresent(most -> input.getLong("TargetUUIDLeast")
                 .ifPresent(least -> this.attackTargetUUID = new UUID(most, least)));
+    }
+
+    /** canReEquipHired: its player cannot dress it. */
+    @Override
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        return false;
     }
 }

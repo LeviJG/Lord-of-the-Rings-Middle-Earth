@@ -194,6 +194,13 @@ public class LOTRHorseEntity extends Horse implements LOTRNPCMount {
 
     // --- State ------------------------------------------------------------
 
+    /** saddleMountForWorldGen: a structure's horse, grown, saddled and tame. */
+    public void saddleMountForWorldGen() {
+        setAge(0);
+        setItemSlot(net.minecraft.world.entity.EquipmentSlot.SADDLE, new ItemStack(net.minecraft.world.item.Items.SADDLE));
+        setTamed(true);
+    }
+
     @Override
     public boolean isMountSaddled() {
         return isSaddled();
@@ -450,10 +457,16 @@ public class LOTRHorseEntity extends Horse implements LOTRNPCMount {
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity target && entity != rider
                     && LOTRAttackRules.riderCanAttack(rider, target)) {
-                target.hurtServer(level, damageSources().mobAttack(this), strength);
-                float knockback = strength * KNOCKBACK_MULTIPLIER;
-                float yaw = getYRot() * Mth.DEG_TO_RAD;
-                target.push(-Mth.sin(yaw) * knockback, knockback, Mth.cos(yaw) * knockback);
+                boolean hit = target.hurtServer(level, damageSources().mobAttack(this), strength);
+                // addVelocity every tick of the charge, as the original -- but a player's
+                // client heard of it only on a tick the blow landed (1.7.10 sent a player
+                // new motion only when struck), where 26.2 sends every push. So a player
+                // is pushed only by a blow that lands, instead of being lifted every tick.
+                if (hit || !(target instanceof Player)) {
+                    float knockback = strength * KNOCKBACK_MULTIPLIER;
+                    float yaw = getYRot() * Mth.DEG_TO_RAD;
+                    target.push(-Mth.sin(yaw) * knockback, knockback, Mth.cos(yaw) * knockback);
+                }
             }
         }
     }

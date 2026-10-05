@@ -25,7 +25,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -154,11 +153,6 @@ public class LOTRBarrowWightEntity extends LOTRNPCEntity {
     }
 
     @Override
-    public boolean canReEquipHired(EquipmentSlot slot, ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public boolean canDropRares() {
         return true;
     }
@@ -193,5 +187,11 @@ public class LOTRBarrowWightEntity extends LOTRNPCEntity {
     @Override
     protected int getBaseExperienceReward(ServerLevel level) {
         return 4 + this.random.nextInt(5);
+    }
+
+    /** canReEquipHired: its player cannot dress it. */
+    @Override
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        return false;
     }
 }

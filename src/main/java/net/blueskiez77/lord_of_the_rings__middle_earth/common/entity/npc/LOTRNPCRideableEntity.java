@@ -2,16 +2,29 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
 import java.util.UUID;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRNPCMountInventoryMenu;
+
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -25,8 +38,6 @@ import org.jspecify.annotations.Nullable;
  * it gives in (LOTRUntamedPanicGoal), tame. A tamed, saddled one goes where
  * its player steers (LOTRMountFunctions.move): half speed sideways, a quarter
  * backwards, climbing a full block. It mends a half-heart now and then.
- *
- * <p>NOT ported yet: the mount's inventory screen (openGUI, D16).
  */
 public abstract class LOTRNPCRideableEntity extends LOTRNPCEntity implements LOTRNPCMount {
 
@@ -84,6 +95,36 @@ public abstract class LOTRNPCRideableEntity extends LOTRNPCEntity implements LOT
     /** getMountInventory: its saddle and armour, if it has them. */
     public @Nullable Container getMountInventory() {
         return null;
+    }
+
+    /** isMountArmorValid: barding made for this kind of mount. */
+    public boolean isMountArmorValid(ItemStack stack) {
+        Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
+        return equippable != null && equippable.slot() == EquipmentSlot.BODY && equippable.canBeEquippedBy(BuiltInRegistries.ENTITY_TYPE.wrapAsHolder(getType()));
+    }
+
+    /** openGUI: the saddle-and-armour screen, for a tame one no one else is riding (gui 29). */
+    public void openGUI(Player player) {
+        Container inv = getMountInventory();
+        if (inv != null && player instanceof ServerPlayer serverPlayer && (!isVehicle() || getFirstPassenger() == player)
+                && isNPCTamed()) {
+            serverPlayer.openMenu(new ExtendedMenuProvider<Integer>() {
+                @Override
+                public Integer getScreenOpeningData(ServerPlayer p) {
+                    return getId();
+                }
+
+                @Override
+                public Component getDisplayName() {
+                    return LOTRNPCRideableEntity.this.getDisplayName();
+                }
+
+                @Override
+                public AbstractContainerMenu createMenu(int containerId, Inventory inventory, Player p) {
+                    return new LOTRNPCMountInventoryMenu(containerId, inventory, LOTRNPCRideableEntity.this);
+                }
+            });
+        }
     }
 
     @Override

@@ -137,13 +137,17 @@ public class LOTRAnvilScreen extends AbstractContainerScreen<LOTRAnvilMenu> {
         int y = this.topPos;
         graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x, y, 0.0F, 0.0F,
                 this.imageWidth, this.imageHeight, 256, 256);
+        // A smith takes coins: its anvil's material slot is covered over.
+        if (this.menu.isTrader()) {
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 75, y + 69, 176.0F, 21.0F, 18, 18, 256, 256);
+        }
         // The name box: lit with an item in, dim without.
         graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, x + 59, y + 20, 0.0F,
                 this.imageHeight + (this.menu.inputItem().isEmpty() ? 16 : 0), 110, 16, 256, 256);
         // The cross over the arrow when there is something in but nothing out.
         if (this.menu.resultItem().isEmpty()) {
             boolean any = false;
-            for (int i = 0; i < LOTRAnvilMenu.RESULT; i++) {
+            for (int i = 0; i < this.menu.resultIndex(); i++) {
                 any |= this.menu.getSlot(i).hasItem();
             }
             if (any) {
@@ -167,13 +171,14 @@ public class LOTRAnvilScreen extends AbstractContainerScreen<LOTRAnvilMenu> {
         if (!this.menu.inputItem().isEmpty()) {
             if (reforge.visible && reforge.isHovered()) {
                 cost = Component.translatable("container.lotr.anvil.reforgeCost", this.menu.reforgeCost());
-                affordable = this.menu.hasMaterialAmount(this.menu.reforgeCost());
+                affordable = this.menu.hasMaterialOrCoinAmount(this.menu.reforgeCost());
             } else if (engrave.visible && engrave.isHovered()) {
                 cost = Component.translatable("container.lotr.anvil.engraveOwnerCost", this.menu.engraveOwnerCost());
-                affordable = this.menu.hasMaterialAmount(this.menu.engraveOwnerCost());
+                affordable = this.menu.hasMaterialOrCoinAmount(this.menu.engraveOwnerCost());
             } else if (this.menu.materialCost() > 0 && !this.menu.resultItem().isEmpty()) {
-                cost = Component.translatable("container.lotr.anvil.cost", this.menu.materialCost());
-                affordable = this.menu.getSlot(LOTRAnvilMenu.RESULT).mayPickup(this.minecraft.player);
+                cost = Component.translatable(this.menu.isTrader() ? "container.lotr.smith.cost" : "container.lotr.anvil.cost",
+                        this.menu.materialCost());
+                affordable = this.menu.getSlot(this.menu.resultIndex()).mayPickup(this.minecraft.player);
             }
         }
         if (cost != null) {

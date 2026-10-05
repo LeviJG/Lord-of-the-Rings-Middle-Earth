@@ -112,7 +112,7 @@ public class LOTRNPCMarryGoal extends Goal {
     private static void rewardRingGiver(LOTRNPCEntity npc) {
         Player player = npc.familyInfo.getRingGivingPlayer();
         if (player != null) {
-            LOTRPlayerAlignments.addAlignment(player, LOTRAlignmentValues.MARRIAGE_BONUS, npc.getFaction());
+            LOTRPlayerAlignments.addAlignment(player, LOTRAlignmentValues.MARRIAGE_BONUS, npc.getFaction(), npc);
         }
     }
 }

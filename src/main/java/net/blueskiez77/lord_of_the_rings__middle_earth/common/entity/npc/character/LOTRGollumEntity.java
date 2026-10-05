@@ -1,5 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.character;
 
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.server.level.ServerPlayer;
+import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRGollumMenu;
 import java.util.List;
 import java.util.UUID;
 
@@ -68,9 +73,8 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>NOT ported yet: his natural spawning near the High Pass
  * (LOTRGollumSpawner, with the Middle-earth dimension and waypoints; the
- * gollumSpawned flag is kept and saved meanwhile), his pack's screen for
- * his owner (sneak-use), his health bar over his head for his owner (with
- * the hired units' bars), and the tameGollum achievement (D7).
+ * gollumSpawned flag is kept and saved meanwhile) and the tameGollum
+ * achievement (D7).
  */
 public class LOTRGollumEntity extends LOTRNPCEntity implements LOTRCharacter {
 
@@ -187,11 +191,6 @@ public class LOTRGollumEntity extends LOTRNPCEntity implements LOTRCharacter {
     }
 
     @Override
-    public boolean canReEquipHired(EquipmentSlot slot, ItemStack stack) {
-        return false;
-    }
-
-    @Override
     protected @Nullable SoundEvent getAmbientSound() {
         return LOTRSounds.GOLLUM_SAY;
     }
@@ -248,7 +247,24 @@ public class LOTRGollumEntity extends LOTRNPCEntity implements LOTRCharacter {
                 return InteractionResult.SUCCESS;
             }
             if (player.isShiftKeyDown()) {
-                // The pack's screen is not ported yet.
+                if (player instanceof ServerPlayer serverPlayer) {
+                    serverPlayer.openMenu(new ExtendedMenuProvider<Integer>() {
+                        @Override
+                        public Integer getScreenOpeningData(ServerPlayer p) {
+                            return getId();
+                        }
+
+                        @Override
+                        public Component getDisplayName() {
+                            return LOTRGollumEntity.this.getName();
+                        }
+
+                        @Override
+                        public AbstractContainerMenu createMenu(int containerId, Inventory inv, Player p) {
+                            return new LOTRGollumMenu(containerId, inv, LOTRGollumEntity.this);
+                        }
+                    });
+                }
                 return InteractionResult.SUCCESS;
             }
             setGollumSitting(!isGollumSitting());
@@ -376,5 +392,11 @@ public class LOTRGollumEntity extends LOTRNPCEntity implements LOTRCharacter {
             this.fishRequired = i;
             this.prevFishRequired = input.getIntOr("FishReqPrev", 20);
         });
+    }
+
+    /** canReEquipHired: its player cannot dress it. */
+    @Override
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        return false;
     }
 }

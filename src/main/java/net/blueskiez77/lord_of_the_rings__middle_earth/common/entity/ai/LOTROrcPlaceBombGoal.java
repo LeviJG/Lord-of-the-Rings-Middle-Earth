@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRInventoryHiredReplacedItems;
 import java.util.EnumSet;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
@@ -96,6 +97,9 @@ public class LOTROrcPlaceBombGoal extends Goal {
             this.attacker.playSound(LOTRSounds.ORC_FIRE, 1.0f,
                     (this.attacker.getRandom().nextFloat() - this.attacker.getRandom().nextFloat()) * 0.2f + 1.0f);
             this.attacker.npcItemsInv.setBomb(ItemStack.EMPTY);
+            if (this.attacker.hiredReplacedInv.hasReplacedEquipment(LOTRInventoryHiredReplacedItems.BOMB)) {
+                this.attacker.hiredReplacedInv.onEquipmentChanged(LOTRInventoryHiredReplacedItems.BOMB, ItemStack.EMPTY);
+            }
             this.attacker.refreshCurrentAttackMode();
         }
     }

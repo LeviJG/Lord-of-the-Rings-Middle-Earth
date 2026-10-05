@@ -408,4 +408,10 @@ public abstract class LOTRSpiderEntity extends LOTRNPCRideableEntity {
         getAttribute(LOTRNPCAttributes.NPC_ATTACK_DAMAGE).setBaseValue(2.0 + getSpiderScale());
         setSpiderClimbTime(input.getShortOr("SpiderRideTime", (short) 0));
     }
+
+    /** canReEquipHired: its player cannot dress it. */
+    @Override
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        return false;
+    }
 }

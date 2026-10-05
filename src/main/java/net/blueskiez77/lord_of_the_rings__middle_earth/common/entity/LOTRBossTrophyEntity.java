@@ -31,7 +31,7 @@ import net.minecraft.world.phys.Vec3;
  * same figures the stone troll uses; a hanging one does not fall at all, but
  * drops itself the moment the wall behind it goes.
  */
-public class LOTRBossTrophyEntity extends Entity {
+public class LOTRBossTrophyEntity extends Entity implements LOTRBannerProtectable {
 
     private static final EntityDataAccessor<Byte> DATA_TYPE =
             SynchedEntityData.defineId(LOTRBossTrophyEntity.class, EntityDataSerializers.BYTE);

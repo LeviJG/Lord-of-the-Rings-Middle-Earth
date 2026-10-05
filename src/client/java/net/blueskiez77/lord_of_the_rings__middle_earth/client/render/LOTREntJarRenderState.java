@@ -1,6 +1,5 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.render;
 
-import net.minecraft.data.AtlasIds;
 import net.minecraft.resources.Identifier;
 import net.minecraft.client.renderer.blockentity.state.BlockEntityRenderState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,7 +18,7 @@ public class LOTREntJarRenderState extends BlockEntityRenderState {
     public @Nullable TextureAtlasSprite sprite;
 
     /** The atlas the sprite lives on: blocks for water, items for a draught. */
-    public Identifier atlas = AtlasIds.BLOCKS;
+    public Identifier atlas = LOTRAtlases.BLOCKS;
 
     /** Which sixteenths of the sprite are stretched over the surface. */
     public float uvFrom;

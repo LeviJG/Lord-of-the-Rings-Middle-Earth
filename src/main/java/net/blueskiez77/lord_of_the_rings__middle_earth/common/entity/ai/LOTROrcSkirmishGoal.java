@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -8,9 +9,8 @@ import net.minecraft.world.entity.LivingEntity;
  * LOTREntityAIOrcSkirmish: now and then an orc picks a fight with another --
  * one chance in 20000 a tick, a tenth as long for every skirmishing orc within
  * 16 blocks (never better than one in 40). Neither may be a trader, hired, or
- * riding, and some kinds (the Black Uruks) never skirmish. The config switch
- * for it (LOTRConfig.enableOrcSkirmish, on by default) is not ported; it is
- * always on.
+ * riding, and some kinds (the Black Uruks) never skirmish; nor does any, with
+ * "Enable Orc Skirmishes" off.
  */
 public class LOTROrcSkirmishGoal extends LOTRNearestAttackableTargetGoal {
 
@@ -28,7 +28,7 @@ public class LOTROrcSkirmishGoal extends LOTRNearestAttackableTargetGoal {
 
     @Override
     public boolean canUse() {
-        if (!canOrcSkirmish(this.orc)) {
+        if (!LOTRConfig.enableOrcSkirmish || !canOrcSkirmish(this.orc)) {
             return false;
         }
         if (!this.orc.isOrcSkirmishing()) {

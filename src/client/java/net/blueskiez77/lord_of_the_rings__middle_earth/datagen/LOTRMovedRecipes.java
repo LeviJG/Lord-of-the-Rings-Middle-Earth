@@ -899,7 +899,6 @@ final class LOTRMovedRecipes {
         r.in(RecipeCategory.FOOD).smelting("smelting/food/cooked_camel", "lotr:cooked_camel", "lotr:raw_camel", 0.35f);
         r.in(RecipeCategory.FOOD).smelting("smelting/food/cooked_corn", "lotr:cooked_corn", "lotr:corn", 0.3f);
         r.in(RecipeCategory.FOOD).smelting("smelting/food/cooked_lion", "lotr:cooked_lion", "lotr:raw_lion", 0.35f);
-        r.in(RecipeCategory.FOOD).smelting("smelting/food/cooked_mutton", "lotr:cooked_mutton", "lotr:raw_mutton", 0.35f);
         r.in(RecipeCategory.FOOD).smelting("smelting/food/cooked_rhino", "lotr:cooked_rhino", "lotr:raw_rhino", 0.35f);
         r.in(RecipeCategory.FOOD).smelting("smelting/food/cooked_venison", "lotr:cooked_venison", "lotr:raw_venison", 0.35f);
         r.in(RecipeCategory.FOOD).smelting("smelting/food/cooked_zebra", "lotr:cooked_zebra", "lotr:raw_zebra", 0.35f);

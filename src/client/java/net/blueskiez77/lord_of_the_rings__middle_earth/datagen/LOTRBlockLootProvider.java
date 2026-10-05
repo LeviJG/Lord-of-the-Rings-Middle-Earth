@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import net.minecraft.advancements.predicates.StatePropertiesPredicate;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.BonusLevelTableCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
@@ -222,6 +225,14 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
                 .add(LootItem.lootTableItem(LOTRMiscItems.ANCIENT_ARMOR_PLATE).setWeight(120));
     }
 
+    private LootTable.Builder bannerDrop(Block item) {
+        return LootTable.lootTable().withPool(applyExplosionCondition(item, LootPool.lootPool()
+                .setRolls(ConstantValue.exactly(1.0f))
+                .add(LootItem.lootTableItem(item).apply(
+                        CopyComponentsFunction.copyComponentsFromBlockEntity(LootContextParams.BLOCK_ENTITY)
+                                .include(DataComponents.CUSTOM_DATA)))));
+    }
+
     @Override
     public void generate() {
         // LOTRBlockStalactite.quantityDropped was the model block's: stone and
@@ -418,9 +429,11 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         LOTRBlocks.ALL_TREASURE_PILES.forEach(pile -> add(pile, this::treasurePileDrops));
 
         // Banners: the standing form drops itself, and the wall form drops the
-        // standing one, since the two share a single item.
-        LOTRBlocks.ALL_BANNERS.forEach(this::dropSelf);
-        LOTRBlocks.BANNER_WALL_FORM.forEach((standing, wall) -> dropOther(wall, standing));
+        // standing one, since the two share a single item -- carrying any
+        // protection the banner holds (LOTREntityBanner.getBannerItem), which
+        // the block entity puts in the item's custom data.
+        LOTRBlocks.ALL_BANNERS.forEach(banner -> add(banner, bannerDrop(banner)));
+        LOTRBlocks.BANNER_WALL_FORM.forEach((standing, wall) -> add(wall, bannerDrop(standing)));
         // Two blocks, one torch: only the lower half drops, the way vanilla's
         // double plants do.
         add(LOTRDecorationBlocks.ORC_TORCH, createSinglePropConditionTable(LOTRDecorationBlocks.ORC_TORCH,

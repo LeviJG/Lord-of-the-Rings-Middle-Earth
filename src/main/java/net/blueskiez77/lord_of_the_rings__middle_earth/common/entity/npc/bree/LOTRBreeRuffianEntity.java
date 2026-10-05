@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRRangerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
@@ -33,13 +34,12 @@ import org.jspecify.annotations.Nullable;
  * hidden Ruffian faction (their influence zone is Isengard's). Always men,
  * named as Dunlendings or Bree-folk half and half, armed with an iron sword,
  * dagger or battleaxe, one in four in a black or brown hat with a white
- * feather. They keep clear of Bree-land's guards, and strike now and then at
+ * feather. They keep clear of the Rangers and Bree-land's guards, and strike now and then at
  * a player reeling with nausea. Hurt one and those nearby join in -- more
  * of them the more it is hurt. Slain, they leave silver coins and sometimes
  * a skull cup.
  *
- * <p>NOT ported yet: keeping clear of the Rangers of the North (with them),
- * mini-quests and their colour (D14).
+ * <p>NOT ported yet: mini-quests and their colour (D14).
  */
 public abstract class LOTRBreeRuffianEntity extends LOTRBreeManEntity {
 
@@ -59,6 +59,7 @@ public abstract class LOTRBreeRuffianEntity extends LOTRBreeManEntity {
 
     @Override
     protected void addBreeAvoidAI(int prio) {
+        this.goalSelector.addGoal(prio, new AvoidEntityGoal<>(this, LOTRRangerEntity.class, 12.0f, 1.0, 1.5));
         this.goalSelector.addGoal(prio, new AvoidEntityGoal<>(this, LOTRBreeGuardEntity.class, 12.0f, 1.0, 1.5));
     }
 

@@ -1,92 +1,81 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeManEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRRuffianBruteEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRRuffianSpyEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeGuardEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeBlacksmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeInnkeeperEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitInnkeeperEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.*;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBartenderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitFarmerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitFarmhandEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitOrcharderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitShirriffEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanAxeThrowerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanChieftainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcBombardierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcMercenaryCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcTraderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeBakerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeButcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeBlacksmithEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeBrewerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeMasonEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeLumbermanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeFloristEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeButcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeCaptainEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeFarmerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeFarmhandEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeFloristEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeGuardEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitBakerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitButcherEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitBrewerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitButcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitFloristEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanManEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohirrimWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohirrimArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohirrimMarshalEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBlacksmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanShieldmaidenEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanMeadhostEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanFarmhandEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanFarmerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanLumbermanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBuilderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBrewerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanButcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanFishmongerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBakerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanOrcharderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanStablemasterEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorSoldierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorManEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBlacksmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorianCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorTowerGuardEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorLevymanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorFarmerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorFarmhandEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBartenderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorGreengrocerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorLumbermanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorMasonEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBrewerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorFloristEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorButcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorFishmongerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBakerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorRenegadeEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRSwanKnightEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRDolAmrothCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRDolAmrothBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLossarnachAxemanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLossarnachBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPelargirMarineEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPelargirBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPinnathGelinSoldierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPinnathGelinBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRBlackrootSoldierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRBlackrootBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRBlackrootArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRDolAmrothSoldierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRDolAmrothArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLebenninLevymanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLebenninBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLossarnachCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPelargirCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPinnathGelinCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRBlackrootCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLebenninCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonSoldierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonHillmanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeHobbitInnkeeperEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeInnkeeperEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeLumbermanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeManEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeMasonEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRRuffianBruteEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRRuffianSpyEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.character.LOTRGandalfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.character.LOTRGollumEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.character.LOTRSarumanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleBakerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleBlacksmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleLevymanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleManEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleMerchantEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTRDaleSoldierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale.LOTREsgarothBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurOrcArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurOrcChieftainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurOrcEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurOrcTraderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionCrossbowerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionGuardEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionManEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionMerchantManEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionVinehandEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionVinekeeperEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingAxeThrowerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingBartenderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingBerserkerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingWarlordEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingWarriorEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRBlueDwarfAxeThrowerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRBlueDwarfBannerBearerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRBlueDwarfCommanderEntity;
@@ -104,24 +93,105 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.L
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRDwarfWarriorEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRIronHillsMerchantEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRWickedDwarfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRBlackUrukArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRBlackUrukBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRBlackUrukCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRBlackUrukEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMinasMorgulBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcBombardierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcMercenaryCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcTraderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRNanUngolBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcBombardierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcMercenaryCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarOrcTraderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfVintnerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionMerchantElfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRElfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimElfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimLordEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimSmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimTraderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimWardenEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfLordEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfSmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellElfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellLordEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellSmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellTraderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfScoutEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfSmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRDarkHuornEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTREntEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRHuornBaseEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRHuornEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRMallornEntEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainChieftainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainHuntsmanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainHutmakerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainMercenaryEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainBlowgunnerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainChieftainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainFarmerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainFarmhandEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainShamanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainSmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRBlackrootArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRBlackrootBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRBlackrootCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRBlackrootSoldierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRDolAmrothArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRDolAmrothBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRDolAmrothCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRDolAmrothSoldierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBakerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBartenderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBlacksmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorBrewerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorButcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorFarmerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorFarmhandEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorFishmongerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorFloristEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorGreengrocerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorLevymanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorLumbermanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorManEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorMasonEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorRenegadeEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorSoldierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorTowerGuardEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRGondorianCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonHillmanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLamedonSoldierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLebenninBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLebenninCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLebenninLevymanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLossarnachAxemanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLossarnachBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRLossarnachCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPelargirBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPelargirCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPelargirMarineEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPinnathGelinBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPinnathGelinCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRPinnathGelinSoldierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor.LOTRSwanKnightEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad.LOTRGundabadBannerBearerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad.LOTRGundabadOrcArcherEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad.LOTRGundabadOrcEntity;
@@ -129,105 +199,14 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundaba
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad.LOTRGundabadOrcTraderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad.LOTRGundabadUrukArcherEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad.LOTRGundabadUrukEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurOrcArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurOrcChieftainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurOrcEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur.LOTRDolGuldurOrcTraderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcSpiderKeeperEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRMirkwoodSpiderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRMordorSpiderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanChieftainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanAxeThrowerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRIsengardSnagaArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRIsengardSnagaEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiBerserkerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiCrossbowerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiMercenaryCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiSapperEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiTraderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingAxeThrowerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingBartenderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingBerserkerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingWarlordEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland.LOTRDunlendingWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradBlacksmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradMerchantEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimBaseEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimWarlordEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronBakerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronBartenderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronBrewerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronButcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronChampionEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronFarmerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronFishmongerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronFloristEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronGoldsmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronLumbermanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronMasonEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronMinerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollScavengerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollWarlordEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollWarriorEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRCorsairCaptainEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRCorsairEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRCorsairSlaverEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHaradSlaveEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBakerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBartenderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBlacksmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBrewerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarButcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarFarmerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarFishmongerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarFloristEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarGoldsmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarLumbermanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarMasonEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarMinerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarianEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedhrimEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBakerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBartenderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBlacksmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBrewerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorButcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorFarmerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorFarmhandEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorFishmongerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorHunterEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorLumbermanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorMasonEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorMinerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorWarlordEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadArmourerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadBrewerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadChieftainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadMasonEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadMerchantEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadMinerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadWarriorEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRGulfBakerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRGulfBartenderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRGulfBlacksmithEntity;
@@ -245,6 +224,105 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.L
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRGulfLumbermanEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRGulfMasonEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRGulfMinerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHaradSlaveEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedhrimEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBakerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBartenderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBlacksmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorBrewerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorButcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorFarmerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorFarmhandEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorFishmongerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorHunterEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorLumbermanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorMasonEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorMinerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorWarlordEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRHarnedorWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradBlacksmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradMerchantEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimBaseEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimWarlordEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadArmourerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadBrewerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadChieftainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadMasonEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadMerchantEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadMinerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNomadWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronBakerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronBartenderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronBrewerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronButcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronChampionEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronFarmerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronFishmongerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronFloristEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronGoldsmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronLumbermanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronMasonEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRSouthronMinerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBakerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBartenderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBlacksmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarBrewerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarButcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarFarmerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarFishmongerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarFloristEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarGoldsmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarLumbermanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarMasonEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarMinerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRUmbarianEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRIsengardSnagaArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRIsengardSnagaEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiBerserkerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiCrossbowerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiMercenaryCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiSapperEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard.LOTRUrukHaiTraderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRBlackUrukArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRBlackUrukBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRBlackUrukCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRBlackUrukEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMinasMorgulBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcBombardierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcMercenaryCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcSlaverEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcSpiderKeeperEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRMordorOrcTraderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRNanUngolBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor.LOTRNurnSlaveEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRDunedainBlacksmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRDunedainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRRangerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRRangerIthilienBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRRangerIthilienCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRRangerIthilienEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRRangerNorthBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRRangerNorthCaptainEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger.LOTRRangerNorthEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun.LOTREasterlingArcherEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun.LOTREasterlingBakerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun.LOTREasterlingBannerBearerEntity;
@@ -265,38 +343,41 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun.LO
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun.LOTREasterlingMasonEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun.LOTREasterlingWarlordEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun.LOTREasterlingWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainChieftainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainHuntsmanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainHutmakerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainMercenaryEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRMoredainWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainBlowgunnerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainChieftainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainFarmerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainFarmhandEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainShamanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainSmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad.LOTRTauredainWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollScavengerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollWarlordEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll.LOTRHalfTrollWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBakerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBannerBearerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBlacksmithEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBrewerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanBuilderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanButcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanFarmerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanFarmhandEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanFishmongerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanLumbermanEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanManEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanMeadhostEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanOrcharderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanShieldmaidenEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanStablemasterEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohirrimArcherEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohirrimMarshalEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohirrimWarriorEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRMirkwoodSpiderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRMordorSpiderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRMirkTrollEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTROlogHaiEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRTrollEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRMountainTrollChieftainEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRMountainTrollEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTROlogHaiEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRSnowTrollEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRDarkHuornEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTREntEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRMallornEntEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRHuornBaseEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRHuornEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRTrollEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRAngmarWargBombardierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRAngmarWargEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRGundabadWargEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRMordorWargBombardierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRMordorWargEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRUrukWargBombardierEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRUrukWargEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRWargEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.LOTRBarrowWightEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.LOTRGondorRuinsWraithEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.LOTRHaradPyramidWraithEntity;
@@ -304,66 +385,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.LOTRRohanBarrowWraithEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.LOTRSkeletalWraithEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.LOTRTauredainPyramidWraithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.character.LOTRGandalfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.character.LOTRSarumanEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.character.LOTRGollumEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimElfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimTraderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimLordEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimSmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRGaladhrimWardenEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRElfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfLordEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRHighElfSmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellElfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellLordEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellSmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRRivendellTraderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfScoutEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRWoodElfSmithEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionManEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionGuardEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfWarriorEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfBannerBearerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfCaptainEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfVintnerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionVinehandEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionVinekeeperEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionMerchantElfEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionCrossbowerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionMerchantManEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfArcherEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRMordorWargEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRMordorWargBombardierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRGundabadWargEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRAngmarWargEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRAngmarWargBombardierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRUrukWargEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRUrukWargBombardierEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRWargEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBartenderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitShirriffEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitOrcharderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitFarmerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitFarmhandEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.*;
+
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 
 import net.minecraft.core.Registry;
@@ -371,6 +393,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 
@@ -406,6 +429,22 @@ public final class LOTREntities {
      * LOTREntityOrcBomb. Sized like vanilla's primed TNT, which it extends; the
      * fuse and blast come from the bomb block it carries.
      */
+    /** LOTREntitySwordCommandMarker: client-only, never sent or saved. */
+    public static final EntityType<LOTRSwordCommandMarkerEntity> SWORD_COMMAND_MARKER = register("sword_command_marker",
+            EntityType.Builder.<LOTRSwordCommandMarkerEntity>of(LOTRSwordCommandMarkerEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .noSave()
+                    .noSummon()
+                    .clientTrackingRange(0));
+
+    /** LOTREntityAlignmentBonus: client-only, never sent or saved. */
+    public static final EntityType<LOTRAlignmentBonusEntity> ALIGNMENT_BONUS = register("alignment_bonus",
+            EntityType.Builder.<LOTRAlignmentBonusEntity>of(LOTRAlignmentBonusEntity::new, MobCategory.MISC)
+                    .sized(0.5f, 0.5f)
+                    .noSave()
+                    .noSummon()
+                    .clientTrackingRange(0));
+
     public static final EntityType<LOTROrcBombEntity> ORC_BOMB = register("orc_bomb",
             EntityType.Builder.<LOTROrcBombEntity>of(LOTROrcBombEntity::new, MobCategory.MISC)
                     .sized(0.98f, 0.98f)
@@ -1904,6 +1943,86 @@ public final class LOTREntities {
     public static final EntityType<LOTRGollumEntity> GOLLUM = register("gollum",
             creature(LOTRGollumEntity::new, 0.6f, 1.2f));
 
+    /** LOTREntityRangerNorth: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRRangerNorthEntity> RANGER_NORTH = register("ranger_north",
+            creature(LOTRRangerNorthEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityRangerIthilien: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRRangerIthilienEntity> RANGER_ITHILIEN = register("ranger_ithilien",
+            creature(LOTRRangerIthilienEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDunedain: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDunedainEntity> DUNEDAIN = register("dunedain",
+            creature(LOTRDunedainEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityRangerNorthCaptain: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRRangerNorthCaptainEntity> RANGER_NORTH_CAPTAIN = register("ranger_north_captain",
+            creature(LOTRRangerNorthCaptainEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityRangerNorthBannerBearer: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRRangerNorthBannerBearerEntity> RANGER_NORTH_BANNER_BEARER = register("ranger_north_banner_bearer",
+            creature(LOTRRangerNorthBannerBearerEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityRangerIthilienCaptain: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRRangerIthilienCaptainEntity> RANGER_ITHILIEN_CAPTAIN = register("ranger_ithilien_captain",
+            creature(LOTRRangerIthilienCaptainEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityRangerIthilienBannerBearer: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRRangerIthilienBannerBearerEntity> RANGER_ITHILIEN_BANNER_BEARER = register("ranger_ithilien_banner_bearer",
+            creature(LOTRRangerIthilienBannerBearerEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDunedainBlacksmith: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDunedainBlacksmithEntity> DUNEDAIN_BLACKSMITH = register("dunedain_blacksmith",
+            creature(LOTRDunedainBlacksmithEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleMan: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleManEntity> DALE_MAN = register("dale_man",
+            creature(LOTRDaleManEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleLevyman: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleLevymanEntity> DALE_LEVYMAN = register("dale_levyman",
+            creature(LOTRDaleLevymanEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleSoldier: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleSoldierEntity> DALE_SOLDIER = register("dale_soldier",
+            creature(LOTRDaleSoldierEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleArcher: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleArcherEntity> DALE_ARCHER = register("dale_archer",
+            creature(LOTRDaleArcherEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleBannerBearer: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleBannerBearerEntity> DALE_BANNER_BEARER = register("dale_banner_bearer",
+            creature(LOTRDaleBannerBearerEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleCaptain: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleCaptainEntity> DALE_CAPTAIN = register("dale_captain",
+            creature(LOTRDaleCaptainEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleBlacksmith: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleBlacksmithEntity> DALE_BLACKSMITH = register("dale_blacksmith",
+            creature(LOTRDaleBlacksmithEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleBaker: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleBakerEntity> DALE_BAKER = register("dale_baker",
+            creature(LOTRDaleBakerEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityDaleMerchant: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRDaleMerchantEntity> DALE_MERCHANT = register("dale_merchant",
+            creature(LOTRDaleMerchantEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityEsgarothBannerBearer: setSize(0.6, 1.8). */
+    public static final EntityType<LOTREsgarothBannerBearerEntity> ESGAROTH_BANNER_BEARER = register("esgaroth_banner_bearer",
+            creature(LOTREsgarothBannerBearerEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityNurnSlave: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRNurnSlaveEntity> NURN_SLAVE = register("nurn_slave",
+            creature(LOTRNurnSlaveEntity::new, 0.6f, 1.8f));
+
+    /** LOTREntityMordorOrcSlaver: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRMordorOrcSlaverEntity> MORDOR_ORC_SLAVER = register("mordor_orc_slaver",
+            creature(LOTRMordorOrcSlaverEntity::new, 0.6f, 1.8f));
+
     /** LOTREntityRohanMan: setSize(0.6, 1.8). */
     public static final EntityType<LOTRRohanManEntity> ROHAN_MAN = register("rohan_man",
             creature(LOTRRohanManEntity::new, 0.6f, 1.8f));
@@ -2143,12 +2262,15 @@ public final class LOTREntities {
                     .clientTrackingRange(5)
                     .updateInterval(3));
 
-    private static <T extends net.minecraft.world.entity.Entity> EntityType.Builder<T> mount(
+    /** How far above the original's mounted height (half the mount's) an animal mount carries its passenger. */
+    public static final float MOUNT_PASSENGER_RAISE = 0.51875f;
+
+    private static <T extends Entity> EntityType.Builder<T> mount(
             EntityType.EntityFactory<T> factory, float width, float height) {
-        return creature(factory, width, height).passengerAttachments(height * 0.5f + 0.51875f);
+        return creature(factory, width, height).passengerAttachments(height * 0.5f + MOUNT_PASSENGER_RAISE);
     }
 
-    private static <T extends net.minecraft.world.entity.Entity> EntityType.Builder<T> ambient(
+    private static <T extends Entity> EntityType.Builder<T> ambient(
             EntityType.EntityFactory<T> factory, float width, float height) {
         return EntityType.Builder.of(factory, MobCategory.AMBIENT)
                 .sized(width, height)
@@ -2156,7 +2278,7 @@ public final class LOTREntities {
                 .updateInterval(3);
     }
 
-    private static <T extends net.minecraft.world.entity.Entity> EntityType.Builder<T> monster(
+    private static <T extends Entity> EntityType.Builder<T> monster(
             EntityType.EntityFactory<T> factory, float width, float height) {
         return EntityType.Builder.of(factory, MobCategory.MONSTER)
                 .sized(width, height)
@@ -2164,7 +2286,7 @@ public final class LOTREntities {
                 .updateInterval(3);
     }
 
-    private static <T extends net.minecraft.world.entity.Entity> EntityType.Builder<T> creature(
+    private static <T extends Entity> EntityType.Builder<T> creature(
             EntityType.EntityFactory<T> factory, float width, float height) {
         return EntityType.Builder.of(factory, MobCategory.CREATURE)
                 .sized(width, height)
@@ -2172,7 +2294,7 @@ public final class LOTREntities {
                 .updateInterval(3);
     }
 
-    private static <T extends net.minecraft.world.entity.Entity> EntityType<T> register(
+    private static <T extends Entity> EntityType<T> register(
             String name, EntityType.Builder<T> builder) {
         ResourceKey<EntityType<?>> key = ResourceKey.create(Registries.ENTITY_TYPE,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, name));
@@ -2525,6 +2647,26 @@ public final class LOTREntities {
         FabricDefaultAttributeRegistry.register(SARUMAN, LOTRSarumanEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(GANDALF, LOTRGandalfEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(GOLLUM, LOTRGollumEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(RANGER_NORTH, LOTRRangerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(RANGER_ITHILIEN, LOTRRangerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DUNEDAIN, LOTRDunedainEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(RANGER_NORTH_CAPTAIN, LOTRRangerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(RANGER_NORTH_BANNER_BEARER, LOTRRangerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(RANGER_ITHILIEN_CAPTAIN, LOTRRangerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(RANGER_ITHILIEN_BANNER_BEARER, LOTRRangerEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DUNEDAIN_BLACKSMITH, LOTRDunedainBlacksmithEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_MAN, LOTRDaleManEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_LEVYMAN, LOTRDaleManEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_SOLDIER, LOTRDaleManEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_ARCHER, LOTRDaleManEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_BANNER_BEARER, LOTRDaleManEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_CAPTAIN, LOTRDaleCaptainEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_BLACKSMITH, LOTRDaleBlacksmithEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_BAKER, LOTRDaleManEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(DALE_MERCHANT, LOTRDaleManEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(ESGAROTH_BANNER_BEARER, LOTRDaleManEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(NURN_SLAVE, LOTRNurnSlaveEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(MORDOR_ORC_SLAVER, LOTRMordorOrcSlaverEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ROHAN_MAN, LOTRRohanManEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ROHIRRIM_WARRIOR, LOTRRohirrimWarriorEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ROHIRRIM_ARCHER, LOTRRohirrimWarriorEntity.createAttributes());

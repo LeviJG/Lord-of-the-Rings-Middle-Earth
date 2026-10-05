@@ -22,12 +22,26 @@ public final class LOTRCoins {
     private LOTRCoins() {
     }
 
-    private static Item coin(int i) {
+    /** LOTRItemCoin.values.length: the silver coin, the stack and the pile. */
+    public static final int TYPES = VALUES.length;
+
+    /** The coin of this kind: 0 the coin, 1 the stack, 2 the pile (the original's damage values). */
+    public static Item coin(int i) {
         return switch (i) {
             case 0 -> LOTRMiscItems.SILVER_COIN;
             case 1 -> LOTRMiscItems.SILVER_COIN_STACK;
             default -> LOTRMiscItems.SILVER_COIN_PILE;
         };
+    }
+
+    /** The coin's kind, as its damage value was; -1 for anything else. */
+    public static int coinType(ItemStack stack) {
+        for (int i = 0; i < VALUES.length; ++i) {
+            if (stack.is(coin(i))) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public static int getSingleItemValue(ItemStack stack) {

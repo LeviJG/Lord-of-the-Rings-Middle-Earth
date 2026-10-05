@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDartItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDartItem;
 
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;

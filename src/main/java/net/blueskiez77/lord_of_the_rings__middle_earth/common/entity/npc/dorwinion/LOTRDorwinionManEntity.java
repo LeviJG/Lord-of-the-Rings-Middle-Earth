@@ -125,12 +125,6 @@ public class LOTRDorwinionManEntity extends LOTRManEntity {
         return isFriendly(player) ? "dorwinion/man/friendly" : "dorwinion/man/hostile";
     }
 
-    /** LOTREntityNPC.getExperiencePoints: 4 to 6. */
-    @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
-    }
-
     /** dropFewItems: bones, and one time in five something from a Dorwinion house. */
     @Override
     protected void dropNPCItems(ServerLevel level, boolean killedByPlayer, int looting) {

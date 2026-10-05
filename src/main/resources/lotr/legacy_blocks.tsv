@@ -879,6 +879,9 @@ smoothStone	3	lotr:smooth_blue_rock		smoothStone
 smoothStone	4	lotr:smooth_red_rock		smoothStone
 smoothStone	5	lotr:smooth_chalk		smoothStone
 smoothStoneV	0	minecraft:smooth_stone		smoothStoneV
+spawnerChest	*	minecraft:chest		spawnerChest
+spawnerChestAncientHarad	*	lotr:ancient_haradric_chest		spawnerChestAncientHarad
+spawnerChestStone	*	lotr:stone_chest		spawnerChestStone
 stainedGlass	0	lotr:white_stained_glass		stainedGlass
 stainedGlass	1	lotr:orange_stained_glass		stainedGlass
 stainedGlass	10	lotr:purple_stained_glass		stainedGlass

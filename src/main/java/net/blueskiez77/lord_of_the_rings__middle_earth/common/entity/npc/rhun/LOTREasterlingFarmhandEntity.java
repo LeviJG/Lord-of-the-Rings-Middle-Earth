@@ -27,7 +27,7 @@ import org.jspecify.annotations.Nullable;
  */
 public class LOTREasterlingFarmhandEntity extends LOTREasterlingEntity implements LOTRFarmhand {
 
-    private @Nullable Item seedsItem;
+    public @Nullable Item seedsItem;
 
     public LOTREasterlingFarmhandEntity(EntityType<? extends LOTREasterlingFarmhandEntity> type, Level level) {
         super(type, level);

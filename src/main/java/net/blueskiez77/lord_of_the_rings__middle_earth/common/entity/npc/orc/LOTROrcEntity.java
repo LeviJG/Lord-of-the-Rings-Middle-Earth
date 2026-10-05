@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAvoidOrcBombGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTREatGoal;
@@ -76,7 +77,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>NOT ported yet: mini-quests' hold on skirmishing (D14);
  * spawning in darkness and the dwarven biomes' top-block rule, and the biomes
- * that let hostiles walk by day (D10/D12); the config switch for skirmishes.
+ * that let hostiles walk by day (D10/D12).
  */
 public abstract class LOTROrcEntity extends LOTRNPCEntity {
 
@@ -210,7 +211,9 @@ public abstract class LOTROrcEntity extends LOTRNPCEntity {
                     && this.tickCount % 20 == 0) {
                 addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 200));
             }
-            if (isOrcSkirmishing() && !(getTarget() instanceof LOTROrcEntity)) {
+            if (isOrcSkirmishing() && !LOTRConfig.enableOrcSkirmish) {
+                this.orcSkirmishTick = 0;
+            } else if (isOrcSkirmishing() && !(getTarget() instanceof LOTROrcEntity)) {
                 --this.orcSkirmishTick;
             }
             if (isOrcBombardier()) {
@@ -276,11 +279,6 @@ public abstract class LOTROrcEntity extends LOTRNPCEntity {
     @Override
     protected SoundEvent getDeathSound() {
         return LOTRSounds.ORC_DEATH;
-    }
-
-    @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
     }
 
     /**

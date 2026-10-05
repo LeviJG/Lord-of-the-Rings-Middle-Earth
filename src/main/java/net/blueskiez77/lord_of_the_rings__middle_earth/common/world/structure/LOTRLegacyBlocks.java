@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.mojang.serialization.Dynamic;
@@ -131,6 +132,10 @@ public final class LOTRLegacyBlocks {
                         forced.put(pair[0], pair[1]);
                     }
                 }
+                if (!cols[1].equals("*") && !cols[1].matches("\\d+")) {
+                    LOTRMod.LOGGER.warn("Skipping legacy table row with non-numeric meta: {}", line);
+                    continue;
+                }
                 int meta = cols[1].equals("*") ? -1 : Integer.parseInt(cols[1]);
                 MOD_ROWS.computeIfAbsent(cols[0], k -> new ArrayList<>())
                         .add(new Row(meta, Identifier.parse(cols[2]), forced));
@@ -143,11 +148,23 @@ public final class LOTRLegacyBlocks {
         }
     }
 
+    /**
+     * The original's blocks the port drops on purpose, as vanilla duplicates, so
+     * a structure naming one places air without a warning. The armour stand is
+     * vanilla's now; structures place that through placeArmorStand, and only a
+     * stray half of the mod's two-block stand (one in the Southron bazaar scan,
+     * with no base under it) still names the old block.
+     */
+    private static final Set<String> DROPPED = Set.of("armorStand");
+
     /** {@code LOTRMod.<field>}. */
     public static LegacyBlock mod(String field) {
         return BLOCKS.computeIfAbsent("lotr:" + field, k -> {
             List<Row> rows = MOD_ROWS.get(field);
             if (rows == null) {
+                if (DROPPED.contains(field)) {
+                    return meta -> Blocks.AIR.defaultBlockState();
+                }
                 LOTRMod.LOGGER.warn("No port block for the original's LOTRMod.{}", field);
                 return meta -> Blocks.AIR.defaultBlockState();
             }

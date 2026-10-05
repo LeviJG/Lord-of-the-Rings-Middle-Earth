@@ -2,9 +2,10 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import java.util.UUID;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCMount;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCMount;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRPlayerNPCOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -29,12 +30,12 @@ import org.jspecify.annotations.Nullable;
  * fighting them. An NPC may not hurt its own player or that player's other
  * units of a friendly faction, nor anything of a faction it is friendly with
  * unless it is already fighting it; and unless a player ordered it, not a
- * player with any standing with its faction who is not its target.
+ * player with any standing with its faction who is not its target. A
+ * player stopped by Friendly Fire is told so once (FRIENDLY_FIRE).
  *
  * <p>NOT ported yet: fellowships' PVP and hired-unit friendly-fire
- * protections and siege mode (D14), the one-time Friendly Fire notice screen
- * (LOTRGuiMessageTypes.FRIENDLY_FIRE, D16), and NPCs registered from other
- * mods' config (LOTREntityRegistry).
+ * protections and siege mode (D14), and NPCs registered from other mods'
+ * config (LOTREntityRegistry).
  */
 public final class LOTRAttackRules {
 
@@ -86,7 +87,13 @@ public final class LOTRAttackRules {
                 friendlyFire = true;
             }
         }
-        return !friendlyFire || LOTRPlayerNPCOptions.getFriendlyFire(attacker);
+        if (friendlyFire && !LOTRPlayerNPCOptions.getFriendlyFire(attacker)) {
+            if (warnFriendlyFire) {
+                LOTRGuiMessageTypes.sendMessageIfNotReceived(attacker, LOTRGuiMessageTypes.FRIENDLY_FIRE);
+            }
+            return false;
+        }
+        return true;
     }
 
     public static boolean canNPCAttackEntity(PathfinderMob attacker, LivingEntity target) {

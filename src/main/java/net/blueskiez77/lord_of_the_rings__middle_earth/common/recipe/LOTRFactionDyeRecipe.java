@@ -64,7 +64,8 @@ public class LOTRFactionDyeRecipe implements CraftingRecipe {
 
     @Override
     public boolean showNotification() {
-        return delegate.showNotification();
+        // A faction table's recipe unlocks without the recipe-book toast (B6a).
+        return false;
     }
 
     @Override

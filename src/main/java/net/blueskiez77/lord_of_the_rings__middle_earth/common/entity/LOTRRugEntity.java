@@ -3,7 +3,6 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -11,6 +10,7 @@ import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
@@ -21,10 +21,9 @@ import org.jspecify.annotations.Nullable;
  * like a dropped item, breaks at any hit -- giving its rug back outside
  * creative, with wool's break sound -- and every few minutes lets out the
  * growl of the animal it was.
- *
- * <p>NOT ported yet: LOTRBannerProtectable (banner protection, D14).
+ * Banner protection keeps it from players a banner turns away.
  */
-public abstract class LOTRRugEntity extends Entity {
+public abstract class LOTRRugEntity extends Entity implements LOTRBannerProtectable {
 
     private int timeSinceLastGrowl = getTimeUntilGrowl();
 

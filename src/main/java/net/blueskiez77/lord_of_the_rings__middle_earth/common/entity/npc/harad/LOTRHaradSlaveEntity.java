@@ -83,7 +83,7 @@ public class LOTRHaradSlaveEntity extends LOTRManEntity implements LOTRFarmhand 
     private static final EntityDataAccessor<Byte> DATA_TYPE =
             SynchedEntityData.defineId(LOTRHaradSlaveEntity.class, EntityDataSerializers.BYTE);
 
-    private @Nullable Item seedsItem;
+    public @Nullable Item seedsItem;
 
     public LOTRHaradSlaveEntity(EntityType<? extends LOTRHaradSlaveEntity> type, Level level) {
         super(type, level);
@@ -197,11 +197,6 @@ public class LOTRHaradSlaveEntity extends LOTRManEntity implements LOTRFarmhand 
     @Override
     public @Nullable String getSpeechBank(Player player) {
         return this.hiredNPCInfo.getHiringPlayer() == player ? "nearHarad/slave/hired" : "nearHarad/slave/neutral";
-    }
-
-    @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
     }
 
     @Override

@@ -5,7 +5,15 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRTableOfCommandBlockEntity;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredPayloads;
+
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -25,9 +33,8 @@ import org.jspecify.annotations.Nullable;
  * every side, with a map of Middle-earth projected onto the top. Commanders use
  * it to review conquest and to direct squadrons of hired troops.
  *
- * <p>PARTIAL PORT -- the block, its shape and its zoom control are here; the
- * two screens it opens and the map drawn on its surface are not (PORT_PLAN
- * Track D).
+ * <p>NOT ported yet: the conquest map screen it opens and the map drawn on its
+ * surface, with conquest (D14).
  */
 public class LOTRTableOfCommandBlock extends Block implements EntityBlock {
 
@@ -51,17 +58,30 @@ public class LOTRTableOfCommandBlock extends Block implements EntityBlock {
     }
 
     /**
-     * LOTRBlockCommandTable.onBlockActivated, minus the two GUI branches.
+     * LOTRBlockCommandTable.onBlockActivated, with a squadron item in hand:
+     * the screen to name the company it speaks to (gui 33), with the table's
+     * clack.
+     */
+    @Override
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
+                                          InteractionHand hand, BlockHitResult hitResult) {
+        if (player.isSecondaryUseActive() || hand != InteractionHand.MAIN_HAND || !LOTRHiredNetworking.isSquadronItem(stack)) {
+            return InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+        if (player instanceof ServerPlayer serverPlayer) {
+            ServerPlayNetworking.send(serverPlayer, new LOTRHiredPayloads.OpenSquadronItem());
+            level.playSound(null, pos, getSoundType(state).getBreakSound(), SoundSource.BLOCKS,
+                    (getSoundType(state).getVolume() + 1.0f) / 2.0f, getSoundType(state).getPitch() * 0.5f);
+        }
+        return InteractionResult.SUCCESS;
+    }
+
+    /**
+     * LOTRBlockCommandTable.onBlockActivated: SNEAK-right-click cycles the
+     * map's zoom.
      *
-     * <p>What survives: SNEAK-right-click cycles the map's zoom, which is the
-     * one interaction that needs no interface. The original then had two more
-     * branches, both of which opened a screen -- holding a squadron banner
-     * opened the squadron orders GUI (id 33), and otherwise, if conquest was
-     * enabled for the world, it opened the conquest map (id 60).
-     *
-     * <p>Neither is ported: there are no squadrons and no conquest grid yet.
-     * The zoom is still stored and synced, so it will already be right when the
-     * map lands.
+     * <p>NOT ported yet: otherwise, with conquest on, the conquest map (gui
+     * 60), with conquest (D14).
      */
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,

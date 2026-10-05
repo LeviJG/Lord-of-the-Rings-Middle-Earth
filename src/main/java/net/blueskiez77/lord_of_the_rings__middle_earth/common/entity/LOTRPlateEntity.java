@@ -1,6 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,7 +33,7 @@ import net.minecraft.world.phys.Vec3;
  * <p>The plate is whichever of the three the item was, read back off the item
  * the entity carries rather than a block ID in its spawn data.
  *
- * <p>NOT ported: banner protection (no banners that protect in the port yet).
+ * <p>Glass in land a banner protects against the thrower is left whole.
  */
 public class LOTRPlateEntity extends ThrowableItemProjectile {
     /** func_70182_d. */
@@ -97,7 +99,7 @@ public class LOTRPlateEntity extends ThrowableItemProjectile {
                 return;
             }
             entityHit.getEntity().hurtServer(server, damageSources().thrown(this, getOwner()), 1.0f);
-        } else if (hit instanceof BlockHitResult blockHit && breakGlass(server, blockHit.getBlockPos())) {
+        } else if (hit instanceof BlockHitResult blockHit && breakGlass(server, blockHit.getBlockPos(), this)) {
             BlockPos centre = blockHit.getBlockPos();
             int range = 2;
             for (int dx = -range; dx <= range; ++dx) {
@@ -106,7 +108,7 @@ public class LOTRPlateEntity extends ThrowableItemProjectile {
                         if (this.random.nextInt(4) == 0) {
                             continue;
                         }
-                        breakGlass(server, centre.offset(dx, dy, dz));
+                        breakGlass(server, centre.offset(dx, dy, dz), this);
                     }
                 }
             }
@@ -119,8 +121,9 @@ public class LOTRPlateEntity extends ThrowableItemProjectile {
     }
 
     /** breakGlass: Material.glass, which is what sounds like glass now. */
-    private static boolean breakGlass(ServerLevel level, BlockPos pos) {
-        if (level.getBlockState(pos).getSoundType() == SoundType.GLASS) {
+    private static boolean breakGlass(ServerLevel level, BlockPos pos, LOTRPlateEntity plate) {
+        if (level.getBlockState(pos).getSoundType() == SoundType.GLASS
+                && !LOTRBannerProtection.isProtected(level, pos, LOTRBannerProtection.forThrown(plate), true)) {
             level.destroyBlock(pos, false);
             return true;
         }

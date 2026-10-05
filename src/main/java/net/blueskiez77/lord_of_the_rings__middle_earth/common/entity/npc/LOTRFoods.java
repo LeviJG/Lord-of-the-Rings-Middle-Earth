@@ -56,6 +56,33 @@ public final class LOTRFoods {
             () -> LOTRFoodItems.APPLE_JUICE))
             .setDrinkVessels(LOTRVessel.MUG, LOTRVessel.MUG_CLAY, LOTRVessel.GOBLET_COPPER, LOTRVessel.GOBLET_WOOD);
 
+    public static final LOTRFoods DALE = new LOTRFoods(List.of(
+            () -> Items.COOKED_PORKCHOP, () -> Items.COOKED_CHICKEN, () -> Items.COOKED_BEEF,
+            () -> LOTRFoodItems.COOKED_MUTTON, () -> Items.BAKED_POTATO, () -> Items.APPLE,
+            () -> LOTRFoodItems.GREEN_APPLE, () -> LOTRFoodItems.PEAR, () -> LOTRFoodItems.PLUM, () -> Items.BREAD,
+            () -> Items.COOKED_RABBIT, () -> LOTRFoodItems.COOKED_VENISON, () -> LOTRFoodItems.CRAM,
+            () -> LOTRFoodItems.CRAM, () -> LOTRFoodItems.CRAM, () -> LOTRFoodItems.CRAM, () -> LOTRFoodItems.MARCHPANE,
+            () -> LOTRFoodItems.CHOCOLATE_MARCHPANE));
+
+    public static final LOTRFoods DALE_DRINK = new LOTRFoods(List.of(
+            () -> LOTRFoodItems.MEAD, () -> LOTRFoodItems.ALE, () -> LOTRFoodItems.CIDER, () -> LOTRFoodItems.PERRY,
+            () -> LOTRFoodItems.VODKA, () -> LOTRFoodItems.PLUM_KVASS, () -> LOTRFoodItems.DWARVEN_ALE,
+            () -> LOTRFoodItems.RED_WINE, () -> LOTRFoodItems.WHITE_WINE, () -> LOTRFoodItems.APPLE_JUICE))
+            .setDrinkVessels(LOTRVessel.MUG, LOTRVessel.MUG_CLAY, LOTRVessel.GOBLET_GOLD, LOTRVessel.GOBLET_SILVER,
+                    LOTRVessel.GOBLET_COPPER, LOTRVessel.GOBLET_WOOD, LOTRVessel.BOTTLE, LOTRVessel.HORN);
+
+    public static final LOTRFoods RANGER = new LOTRFoods(List.of(
+            () -> Items.COOKED_PORKCHOP, () -> Items.COOKED_CHICKEN, () -> Items.COOKED_BEEF, () -> Items.COOKED_COD,
+            () -> LOTRFoodItems.COOKED_MUTTON, () -> LOTRFoodItems.COOKED_VENISON, () -> Items.BAKED_POTATO,
+            () -> Items.APPLE, () -> LOTRFoodItems.GREEN_APPLE, () -> LOTRFoodItems.PEAR, () -> Items.BREAD,
+            () -> LOTRFoodItems.BLUEBERRIES, () -> LOTRFoodItems.BLACKBERRIES, () -> LOTRFoodItems.CRANBERRIES,
+            () -> LOTRFoodItems.RASPBERRIES, () -> LOTRFoodItems.ELDERBERRIES));
+
+    public static final LOTRFoods RANGER_DRINK = new LOTRFoods(List.of(
+            () -> LOTRFoodItems.ALE, () -> LOTRFoodItems.ALE, () -> LOTRFoodItems.CIDER, () -> LOTRFoodItems.PERRY,
+            () -> LOTRFoodItems.APPLE_JUICE))
+            .setDrinkVessels(LOTRVessel.MUG, LOTRVessel.GOBLET_WOOD, LOTRVessel.BOTTLE, LOTRVessel.SKIN, LOTRVessel.HORN);
+
     public static final LOTRFoods ROHAN = new LOTRFoods(List.of(
             () -> Items.COOKED_PORKCHOP, () -> Items.COOKED_CHICKEN, () -> Items.COOKED_BEEF,
             () -> LOTRFoodItems.COOKED_MUTTON, () -> Items.BAKED_POTATO, () -> Items.APPLE,
@@ -247,6 +274,11 @@ public final class LOTRFoods {
     public static final LOTRFoods HALF_TROLL_DRINK = new LOTRFoods(List.of(() -> LOTRFoodItems.TOROG_DRAUGHT))
             .setDrinkVessels(LOTRVessel.MUG, LOTRVessel.SKULL, LOTRVessel.SKIN);
 
+    public static final LOTRFoods NURN_SLAVE = new LOTRFoods(List.of(() -> LOTRFoodItems.MAGGOTY_BREAD));
+
+    public static final LOTRFoods NURN_SLAVE_DRINK = new LOTRFoods(List.of(() -> LOTRFoodItems.WATER, () -> LOTRFoodItems.ORC_DRAUGHT))
+            .setDrinkVessels(LOTRVessel.SKIN);
+
     public static final LOTRFoods HARAD_SLAVE = new LOTRFoods(List.of(() -> Items.BREAD, () -> LOTRFoodItems.DATE,
             () -> LOTRItems.KEBAB));
 
@@ -280,6 +312,10 @@ public final class LOTRFoods {
 
     public LOTRVessel[] getDrinkVessels() {
         return this.drinkVessels;
+    }
+
+    public LOTRVessel getRandomVessel(RandomSource random) {
+        return this.drinkVessels[random.nextInt(this.drinkVessels.length)];
     }
 
     /** getPlaceableDrinkVessels: the vessels that can be set down, or a mug if none can. */

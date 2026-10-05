@@ -1,8 +1,41 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateFallingInfo;
+import net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSwordCommandMarkerRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRGollumScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCRespawnerScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRRespawnerPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRCompassRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTREnvironmentOverlayHud;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRAlignmentHud;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRAlignmentBonusRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRFactionsScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRAlignmentTicker;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMessageScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCMountInventoryScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRSquadronItemScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredFarmerInventoryScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredFarmerScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredInteractScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredWarriorInventoryScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredWarriorScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredTask;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnitTradeInteractScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnitTradeScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCoinExchangeScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRTradeInteractScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRTradeScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRTradeMenu;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRTradePayloads;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRAnvilScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBarrelScreen;
@@ -72,7 +105,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRCon
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRAngmarHillmanRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRBarrowWightRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRBreeManRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRDaleManRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRDorwinionManRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRDunedainRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRDunlendingRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRDwarfRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTREasterlingRenderer;
@@ -83,6 +118,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRGol
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRGondorManRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRHalfTrollRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRHaradSlaveRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRNurnSlaveRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRHobbitRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRHuornRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRMallornEntRenderer;
@@ -117,6 +153,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSources;
@@ -468,6 +505,8 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.DOL_GULDUR_ORC_TRADER, LOTROrcRenderer::new);
         EntityRenderers.register(LOTREntities.DOL_GULDUR_BANNER_BEARER, LOTROrcRenderer::new);
         EntityRenderers.register(LOTREntities.MORDOR_ORC_SPIDER_KEEPER, LOTROrcRenderer::new);
+        EntityRenderers.register(LOTREntities.NURN_SLAVE, LOTRNurnSlaveRenderer::new);
+        EntityRenderers.register(LOTREntities.MORDOR_ORC_SLAVER, LOTROrcRenderer::new);
         EntityRenderers.register(LOTREntities.MIRKWOOD_SPIDER, LOTRSpiderRenderer::mirkwood);
         EntityRenderers.register(LOTREntities.MORDOR_SPIDER, LOTRSpiderRenderer::mordor);
         EntityRenderers.register(LOTREntities.HARNEDHRIM, LOTRNearHaradrimRenderer::new);
@@ -564,6 +603,24 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.SNOW_TROLL, LOTRTrollRenderer.of(LOTRTrollRenderer.Kind.SNOW_TROLL));
         EntityRenderers.register(LOTREntities.ENT, LOTREntRenderer::new);
         EntityRenderers.register(LOTREntities.MALLORN_ENT, LOTRMallornEntRenderer::new);
+        EntityRenderers.register(LOTREntities.DALE_MAN, LOTRDaleManRenderer::new);
+        EntityRenderers.register(LOTREntities.DALE_LEVYMAN, LOTRDaleManRenderer::new);
+        EntityRenderers.register(LOTREntities.DALE_SOLDIER, LOTRDaleManRenderer::new);
+        EntityRenderers.register(LOTREntities.DALE_ARCHER, LOTRDaleManRenderer::new);
+        EntityRenderers.register(LOTREntities.DALE_BANNER_BEARER, LOTRDaleManRenderer::new);
+        EntityRenderers.register(LOTREntities.DALE_CAPTAIN, LOTRDaleManRenderer::new);
+        EntityRenderers.register(LOTREntities.DALE_BLACKSMITH, LOTRDaleManRenderer.trader("blacksmith_apron"));
+        EntityRenderers.register(LOTREntities.DALE_BAKER, LOTRDaleManRenderer.trader("baker_apron"));
+        EntityRenderers.register(LOTREntities.DALE_MERCHANT, LOTRDaleManRenderer::new);
+        EntityRenderers.register(LOTREntities.ESGAROTH_BANNER_BEARER, LOTRDaleManRenderer::new);
+        EntityRenderers.register(LOTREntities.RANGER_NORTH, LOTRDunedainRenderer::new);
+        EntityRenderers.register(LOTREntities.RANGER_ITHILIEN, LOTRDunedainRenderer::new);
+        EntityRenderers.register(LOTREntities.DUNEDAIN, LOTRDunedainRenderer::new);
+        EntityRenderers.register(LOTREntities.RANGER_NORTH_CAPTAIN, LOTRDunedainRenderer::new);
+        EntityRenderers.register(LOTREntities.RANGER_NORTH_BANNER_BEARER, LOTRDunedainRenderer::new);
+        EntityRenderers.register(LOTREntities.RANGER_ITHILIEN_CAPTAIN, LOTRDunedainRenderer::new);
+        EntityRenderers.register(LOTREntities.RANGER_ITHILIEN_BANNER_BEARER, LOTRDunedainRenderer::new);
+        EntityRenderers.register(LOTREntities.DUNEDAIN_BLACKSMITH, LOTRDunedainRenderer.trader("outfit_blacksmith"));
         EntityRenderers.register(LOTREntities.GOLLUM, LOTRGollumRenderer::new);
         EntityRenderers.register(LOTREntities.SARUMAN, LOTRSarumanRenderer::new);
         EntityRenderers.register(LOTREntities.GANDALF, LOTRGandalfRenderer::new);
@@ -747,6 +804,94 @@ public class LOTRModClient implements ClientModInitializer {
                 LOTRAnvilScreen::new);
         MenuScreens.register(LOTRMenus.DALE_CRACKER,
                 LOTRDaleCrackerScreen::new);
+        MenuScreens.register(LOTRMenus.TRADE, LOTRTradeScreen::new);
+        MenuScreens.register(LOTRMenus.COIN_EXCHANGE, LOTRCoinExchangeScreen::new);
+        MenuScreens.register(LOTRMenus.SMITH, LOTRAnvilScreen::new);
+        MenuScreens.register(LOTRMenus.UNIT_TRADE, LOTRUnitTradeScreen::new);
+        MenuScreens.register(LOTRMenus.HIRED_WARRIOR_INVENTORY, LOTRHiredWarriorInventoryScreen::new);
+        MenuScreens.register(LOTRMenus.HIRED_FARMER_INVENTORY, LOTRHiredFarmerInventoryScreen::new);
+        MenuScreens.register(LOTRMenus.NPC_MOUNT_INVENTORY, LOTRNPCMountInventoryScreen::new);
+        MenuScreens.register(LOTRMenus.GOLLUM, LOTRGollumScreen::new);
+
+        // The LOTR menu: its key, and the one-time messages (LOTRPacketMessage).
+        LOTRKeyBindings.register();
+        LOTRAlignmentTicker.init();
+        LOTRAlignmentHud.init();
+        LOTRPlateFallingInfo.init();
+        ClientPlayNetworking.registerGlobalReceiver(LOTRRespawnerPayloads.Open.TYPE, (payload, context) ->
+                context.client().execute(() -> {
+                    if (context.client().level != null && context.client().level.getEntity(payload.entityId())
+                            instanceof LOTRNPCRespawnerEntity spawner) {
+                        spawner.readSpawnerData(payload.data());
+                        context.client().setScreenAndShow(new LOTRNPCRespawnerScreen(spawner));
+                    }
+                }));
+        LOTREnvironmentOverlayHud.init();
+        PictureInPictureRendererRegistry.register(context -> new LOTRCompassRenderer());
+        EntityRenderers.register(LOTREntities.ALIGNMENT_BONUS, LOTRAlignmentBonusRenderer::new);
+        EntityRenderers.register(LOTREntities.SWORD_COMMAND_MARKER, LOTRSwordCommandMarkerRenderer::new);
+        // LOTRPacketLocationFX SWORD_COMMAND: the marker six blocks above the spot, to fall onto it.
+        ClientPlayNetworking.registerGlobalReceiver(LOTRHiredPayloads.SwordCommandFX.TYPE, (payload, context) ->
+                context.client().execute(() -> {
+                    var level = context.client().level;
+                    if (level != null) {
+                        var marker = LOTREntities.SWORD_COMMAND_MARKER.create(level, net.minecraft.world.entity.EntitySpawnReason.TRIGGERED);
+                        if (marker != null) {
+                            marker.setPos(payload.x(), payload.y() + 6.0, payload.z());
+                            level.addEntity(marker);
+                        }
+                    }
+                }));
+        ClientPlayNetworking.registerGlobalReceiver(LOTRMenuPayloads.AlignmentSee.TYPE, (payload, context) ->
+                context.client().execute(() -> context.client().setScreenAndShow(
+                        new LOTRFactionsScreen().setOtherPlayer(payload.username(), payload.alignments()))));
+        ClientPlayNetworking.registerGlobalReceiver(LOTRMenuPayloads.Message.TYPE, (payload, context) ->
+                context.client().execute(() -> {
+                    LOTRGuiMessageTypes[] types = LOTRGuiMessageTypes.values();
+                    if (payload.message() >= 0 && payload.message() < types.length) {
+                        context.client().setScreenAndShow(new LOTRMessageScreen(types[payload.message()]));
+                    }
+                }));
+
+        ClientPlayNetworking.registerGlobalReceiver(LOTRHiredPayloads.OpenSquadronItem.TYPE, (payload, context) ->
+                context.client().execute(() -> context.client().setScreenAndShow(new LOTRSquadronItemScreen())));
+
+        // LOTRPacketHiredGui: the unit's state, and openHiredNPCGui by its task.
+        ClientPlayNetworking.registerGlobalReceiver(LOTRHiredPayloads.HiredGui.TYPE, (payload, context) ->
+                context.client().execute(() -> {
+                    if (context.player().level().getEntity(payload.entityId()) instanceof LOTRNPCEntity npc
+                            && npc.hiredNPCInfo.getHiringPlayer() == context.player()) {
+                        npc.hiredNPCInfo.receiveClientPacket(payload);
+                        if (payload.openGui()) {
+                            if (npc.hiredNPCInfo.getTask() == LOTRHiredTask.WARRIOR) {
+                                context.client().setScreenAndShow(new LOTRHiredWarriorScreen(npc));
+                            } else if (npc.hiredNPCInfo.getTask() == LOTRHiredTask.FARMER) {
+                                context.client().setScreenAndShow(new LOTRHiredFarmerScreen(npc));
+                            }
+                        }
+                    }
+                }));
+
+        // LOTRPacketTraderInfo: only into the trade screen open on that trader.
+        ClientPlayNetworking.registerGlobalReceiver(LOTRTradePayloads.TraderInfo.TYPE, (payload, context) ->
+                context.client().execute(() -> {
+                    if (context.player().containerMenu instanceof LOTRTradeMenu menu && menu.theTraderNPC != null
+                            && menu.theTraderNPC.getId() == payload.entityId() && menu.theTraderNPC.traderNPCInfo != null) {
+                        menu.theTraderNPC.traderNPCInfo.receiveClientPacket(payload.data());
+                    }
+                }));
+        ClientPlayNetworking.registerGlobalReceiver(LOTRTradePayloads.OpenInteract.TYPE, (payload, context) ->
+                context.client().execute(() -> {
+                    if (context.player().level().getEntity(payload.entityId()) instanceof LOTRNPCEntity npc) {
+                        context.client().setScreenAndShow(switch (payload.kind()) {
+                            case LOTRTradePayloads.OpenInteract.TRADE_UNIT_TRADE -> new LOTRTradeInteractScreen(npc, true);
+                            case LOTRTradePayloads.OpenInteract.UNIT_TRADE, LOTRTradePayloads.OpenInteract.MERCENARY ->
+                                    new LOTRUnitTradeInteractScreen(npc);
+                            case LOTRTradePayloads.OpenInteract.HIRED -> new LOTRHiredInteractScreen(npc);
+                            default -> new LOTRTradeInteractScreen(npc, false);
+                        });
+                    }
+                }));
 
         for (LOTRCraftingTable table : LOTRCraftingTable.values()) {
             MenuScreens.register(LOTRMenus.forTable(table), LOTRCraftingScreen::new);

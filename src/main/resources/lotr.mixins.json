@@ -5,11 +5,18 @@
   "compatibilityLevel": "JAVA_25",
   "mixins": [
     "LOTRAbstractMinecartMixin",
+    "LOTRAnvilMenuMixin",
     "LOTRBlockMixin",
     "LOTREnchantmentHelperMixin",
+    "LOTRFireBlockMixin",
+    "LOTRFoodDataMixin",
+    "LOTRLightningBoltMixin",
     "LOTRLivingEntityMixin",
+    "LOTRMobMixin",
+    "LOTRMobSpawnMixin",
     "LOTRNewMinecartBehaviorMixin",
     "LOTROldMinecartBehaviorMixin",
+    "LOTRPistonBaseBlockMixin",
     "LOTRPlayerMixin",
     "LOTRProjectileWeaponItemMixin"
   ],

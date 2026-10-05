@@ -14,7 +14,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -147,11 +146,6 @@ public abstract class LOTRTreeEntity extends LOTRNPCEntity {
     }
 
     @Override
-    public boolean canReEquipHired(EquipmentSlot slot, ItemStack stack) {
-        return false;
-    }
-
-    @Override
     public boolean canDropRares() {
         return false;
     }
@@ -180,5 +174,11 @@ public abstract class LOTRTreeEntity extends LOTRNPCEntity {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         setTreeType(input.getByteOr("EntType", (byte) 0));
+    }
+
+    /** canReEquipHired: its player cannot dress it. */
+    @Override
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        return false;
     }
 }

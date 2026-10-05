@@ -27,6 +27,8 @@ import net.minecraft.world.item.crafting.display.SlotDisplay;
  * the same per-table recipe type as {@link LOTRFactionCraftingRecipe}.
  */
 public class LOTRFactionShapelessRecipe extends ShapelessRecipe {
+
+    private static final Recipe.CommonInfo NO_NOTIFICATION = new Recipe.CommonInfo(false);
     public static final MapCodec<LOTRFactionShapelessRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
                     Recipe.CommonInfo.MAP_CODEC.forGetter(o -> o.commonInfo),
                     CraftingRecipe.CraftingBookInfo.MAP_CODEC.forGetter(o -> o.bookInfo),
@@ -53,7 +55,8 @@ public class LOTRFactionShapelessRecipe extends ShapelessRecipe {
 
     public LOTRFactionShapelessRecipe(Recipe.CommonInfo commonInfo, CraftingRecipe.CraftingBookInfo bookInfo,
                                       LOTRCraftingTable table, ItemStackTemplate result, List<Ingredient> ingredients) {
-        super(commonInfo, bookInfo, result, ingredients);
+        // A faction table's recipe unlocks without the recipe-book toast (B6a).
+        super(NO_NOTIFICATION, bookInfo, result, ingredients);
         this.table = table;
         this.result = result;
         this.ingredients = ingredients;

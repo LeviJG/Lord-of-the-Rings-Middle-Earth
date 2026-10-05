@@ -98,6 +98,11 @@ public class LOTRCommandHornItem extends InstrumentItem {
         return data == null ? "" : data.copyTag().getStringOr(TAG_SQUADRON, "");
     }
 
+    /** LOTRSquadrons.checkAcceptableLength: no more than 200 characters. */
+    public static String checkAcceptableLength(String squadron) {
+        return squadron.length() > SQUADRON_LENGTH_MAX ? squadron.substring(0, SQUADRON_LENGTH_MAX) : squadron;
+    }
+
     /** LOTRSquadrons.setSquadron, trimming to the same 200 characters. */
     public static void setSquadron(ItemStack stack, String squadron) {
         String trimmed = squadron == null ? "" : squadron;

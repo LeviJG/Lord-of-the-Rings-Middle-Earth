@@ -12,6 +12,7 @@ import java.util.function.UnaryOperator;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREntityTags;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAnimalJarItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRBannerItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 
 import net.minecraft.core.Registry;
@@ -371,9 +372,19 @@ public final class LOTRBlocks {
         Block banner = track(ALL_BANNERS, register(name,
                 props -> new LOTRBannerBlock(type, DyeColor.WHITE, props),
                 bannerProperties(), true, props -> props.stacksTo(16),
-                (block, props) -> new StandingAndWallBlockItem(block, wallForm, Direction.DOWN, props)));
+                (block, props) -> new LOTRBannerItem(block, wallForm, props)));
         BANNER_WALL_FORM.put(banner, wallForm);
         return banner;
+    }
+
+    /** The standing banner block of this type (its wall form is BANNER_WALL_FORM's). */
+    public static Block standingBanner(LOTRBannerType type) {
+        for (Block block : ALL_BANNERS) {
+            if (block instanceof LOTRBannerBlock banner && banner.getBannerType() == type) {
+                return block;
+            }
+        }
+        throw new IllegalArgumentException("No banner block for " + type);
     }
 
     /** No item: the standing banner's StandingAndWallBlockItem places both. */

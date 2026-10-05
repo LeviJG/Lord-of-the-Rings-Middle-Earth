@@ -667,8 +667,8 @@ say what the user should check in game.
     (string, iron, paper, planks for Morwaith wood, mallorn planks, a
     mallorn log for the charred mace, bones for bone armour — as the original:
     bone armour mends only here, never at a vanilla anvil).
-    Waiting on D: the smith NPCs' trader anvil (coins, scroll combining via
-    `LOTREnchantmentCombining`, the scrap trader's mischief), achievements.
+    Waiting on D: the scrap trader's mischief and half prices, achievements.
+    (The smith NPCs' trader anvil came with G1.)
   - [x] **B11d Special modifiers, earned banes, fixes.** Added to the table:
     True (`protectMithril`, mithril armour only, +4 protection vs melee from a
     weapon of base reach ≥1.3), Infernal, Chilling, Headhunting (not on the
@@ -918,6 +918,63 @@ say what the user should check in game.
   - Found out of scope, logged in the findings backlog: 703 mechanical
     recipes still generate under the mod-id namespace, 49 possibly
     duplicating `lotr` ones [B15→B6].
+- [ ] **B16 NPCs and mobs** (user, after the GUI unit: "go through the npcs
+  and mobs and find bugs, clean up the code and make necessary
+  adjustments"). Every NPC and mob against its 1.7.10 class -- attributes,
+  size, AI and its priorities, targeting, equipment, drops, speech, sounds,
+  alignment, spawning hooks, interaction, saving -- and its renderer; stale
+  and noisy comments cleaned as found. Sub-units:
+  - [x] **B16a NPC core**: `LOTRNPCEntity`, `LOTRNPCRideableEntity`,
+    `LOTRNPCMount`, the shared NPC pieces in `entity/npc/*.java`, and the
+    entity-level helpers in `entity/*.java`. *Result:* Fixed:
+    - **XP:** the 4–6 base now lives in `LOTRNPCEntity` (17 per-faction
+      copies removed); wargs, huorns, skeletal and marsh wraiths, Gandalf,
+      Gollum, Saruman and Nurn slaves had dropped none.
+    - **Mob basics:** NPCs cannot be leashed (wargs and spiders still when
+      tame), their living sound is every 200 ticks, and a name tag or
+      dispensed armour no longer makes one persistent (`func_110163_bv`).
+    - **Spawn rules** (`getCanSpawnHere` → `checkSpawnRules`): creatures of
+      the dark need darkness (26.2's monster light test, modern-vanilla
+      rule), and no NPC spawns where a banner protects the land against it
+      or a respawner blocks its faction (`liftBannerRestrictions` added).
+      Respawners and the trader respawn coin go through it; the coin also
+      spawns its trader unmounted, as the original.
+    - **Respawners** count their kinds' subclasses too (a Gondorian man's
+      counts the soldiers), as `isAssignableFrom` did.
+    - **Traders:** the respawn coin, the kidnap home and the
+      `TraderShouldRespawn` default are for traders and hirers only, not
+      mercenaries; one trader in 10,000 is called Noah; a dispensed spawn
+      egg's NPC is kept for good too.
+    - **Kills** (`LOTRNPCKillEvents`): kill credit (fire, falls) counts; a
+      hired unit's kill earns its player the bonus if within 64 blocks;
+      killing a hired unit its player set on you costs nothing; your own
+      hired units (and others while you still stand well) no longer turn on
+      you; `addAlignment` takes forced bonus factions.
+    - **Boss jump attack** removes blocks silently, each drop falling with
+      a chance of resistance/100, as the original.
+    - Chill particle is `lotr:chill`; Halloween pumpkins and Christmas hats
+      on NPCs' heads (client only); "Tbh" on every line on April Fools';
+      NPC spear-with-backup check works for the mod's spears.
+    - Clean-up: stale `canReEquipHired(EquipmentSlot, …)` overloads and
+      stale javadoc removed, fully qualified names and import blocks tidied,
+      `isHalloween`/`isNewYearsDay` moved to `LOTRMod`.
+    Matched: family info, item store, names and speech banks (byte-identical),
+    foods, attributes, attack rules, scarecrows, target concealment, man
+    flesh, bartenders and smiths. `hire/` and `trade/` were checked in G1–G2.
+    Kept: siblings are told apart by `equals` (the original compared UUIDs
+    with `==`). The April Fools speech bank and every NPC named Gandalf on
+    the first of April were restored (user).
+  - [ ] **B16b AI goals** (`entity/ai`).
+  - [ ] **B16c Animals** (`entity/animal`).
+  - [ ] **B16d Men of the West**: hobbits, Bree, Rangers, Gondor (and fiefs),
+    Rohan, Dale, Dorwinion, Dunland.
+  - [ ] **B16e Elves, dwarves, Ents and Huorns**.
+  - [ ] **B16f Orcs, trolls, wargs, spiders, wraiths**: the orc base, Mordor,
+    Isengard, Gundabad, Angmar, Dol Guldur, trolls and half-trolls.
+  - [ ] **B16g South and East**: Harad (Near Harad, Umbar, Gulf, Nomads,
+    Harnedor, corsairs), Far Harad, Rhûn.
+  - [ ] **B16h Characters** (Gandalf, Gollum, Saruman, the boss NPCs...).
+  - [ ] **B16i Renderers and models** of all of the above.
 
 ## Track C — Code clean-up (behaviour-neutral only)
 
@@ -1142,7 +1199,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     trolls, D9n-b; the marsh-wraith ball with the marsh wraith, D9p.)
   - **Tracked for the dimension (D10):** `LOTREntityFishHook`, which the
     event handler swapped in for vanilla's hook inside Middle-earth.
-- [ ] **D4 Decorative entities**: rugs (wargskin/bear/lion/giraffe), banners as
+- [x] **D4 Decorative entities**: rugs (wargskin/bear/lion/giraffe), banners as
   entities + banner protection, barrel entity, falling treasure.
   - **Rugs → D8.** `LOTRModelBearRug`/`LionRug`/`WargskinRug`/`GiraffeRug`
     lay the animals' own models flat, and rugs only drop from those animals,
@@ -1164,8 +1221,34 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       rocking when struck, no shadow.
     - Pick-block gives a plain barrel (26.2's boat `getPickResult` is final).
     - The two stale "not ported" comments are fixed.
-  - **Banners as entities and banner protection → D14 (user):** wait for
-    fellowships, whose members a banner could whitelist.
+  - [x] **D4c Banner protection** (user: banners stay blocks, as B5e made
+    them; the banner screen comes with them). `common/banner/`:
+    - `LOTRBannerProtection`: the permissions, the filters (any banner,
+      faction, NPC, player, player with message, thrown), the 8/16/32 ranges
+      of bronze, silver and gold, `isProtected` over the level's loaded
+      banners, and the warning cooldown.
+    - `LOTRBannerBlockEntity` carries all of `LOTREntityBanner`'s protection
+      (saved as its `ProtectData`, carried by the item as `LOTRBannerData`
+      custom data and copied by the loot tables); only a standing banner
+      protects. Owner on placement (a creative player sneaking keeps the
+      carried one), the owner's screen on right-click, explosions shrugged
+      off while protecting, the self-protection rules for breaking it.
+    - `LOTRBannerItem`: +1 alignment and no overlap with another banner's
+      land to place a protecting one; the "Carries protection data" line.
+    - `LOTRBannerEvents` (block break, use by permission, putting out fire,
+      hanging and protectable entities, buckets), `LOTRPistonBaseBlockMixin`,
+      `LOTRMobSpawnMixin`; Khamûl's fire, the balrog whip, the plate;
+      `LOTRBannerProtectable` on the stone troll, boss trophies and rugs.
+    - The packets (`LOTRBannerDataPayload`, `LOTRBannerEditPayload`,
+      `LOTRBannerNamePayloads`) and `LOTRBannerScreen`; the F3 protection
+      box and permitted silhouettes (`LOTRDebugRendererMixin`, a green
+      gizmo where the original drew the banner model in green).
+    - The copy/clear recipe (`LOTRBannerProtectionRecipe`), structures'
+      standing and wall banners (with structure protection and ranges).
+    - Fixed (user): the original reloaded whitelist entries by their place
+      in the saved list, not their slot, shifting names up past any gap.
+    - Not ported: the TNT/minecart filters, whose explosion check the
+      original had switched off; the Thaumcraft golem hook.
   - [x] **D4b Falling treasure** (`LOTREntityFallingTreasure` →
     `LOTRFallingTreasureEntity`, a FallingBlockEntity subclass, `blockState`
     access-widened).
@@ -1214,7 +1297,29 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
   - **`LOTRLevelData`:** portal positions (D15); `gollumSpawned` (D9);
     waypoint cooldowns (D13); `conquestRate`, `difficulty` lock and the
     `clientside_thisServer_*` mirrors (D6 config).
-- [ ] **D6 Config** (`LOTRConfig`, client options).
+- [x] **D6 Config** (`LOTRConfig`, client options). *Result:* `common/config/`:
+  - `LOTRConfigFile` reads and writes `config/lotr.cfg` in Forge 1.7.10's own
+    layout (categories and properties in name order, `B:"Name"=value`,
+    comments with `[default: ...]`), so the original's file carries over;
+    anything it does not ask for (the `dimension` category) is kept.
+  - `LOTRConfig`: all 92 options, with the original's categories, names,
+    defaults and comments (generated from its `load()`), the toggles and
+    setters, and the side-aware accessors.
+  - `LOTRConfigSync`: the login packet's config half (feast mode, fellowship
+    creation and size, both enchanting systems, strict titles, waypoint
+    floor) into the client's `clientside_thisServer_*` fields.
+  - Wired into what is ported: orc skirmishes; unit levelling; LOTR
+    enchanting (trades, chest and cracker loot, ancient items, player and mob
+    rolls); hired-unit kills and banes; trader kidnap; alignment drain;
+    immersive speech and its chat log; the elven blade glow; vanilla
+    enchanting (enchanting table, vanilla anvil and LOTR anvil books);
+    auto-removing vanilla enchantments; potion brewing; villager trading;
+    hunger changes and feast mode (`LOTRFoodDataMixin`, `LOTRPlayerMixin`);
+    fire spread (`LOTRFireBlockMixin`) and lightning grief
+    (`LOTRLightningBoltMixin`).
+  - Default kept from the original: vanilla enchanting OFF (the port's anvil
+    had always taken the enabled path).
+  - Every other option waits on its system, listed on the tracker.
 - [ ] **D7 Titles, capes, shields, achievements** (achievements → advancements
   or custom tracker; decide with user).
 - [x] **D8 Animals & mounts** (`entity/animal`): horses, wargs, elk, boars,
@@ -1322,6 +1427,11 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     saddle and barding (the warg armour now works), sounds and eggs; the
     seven wargskin rugs; the NPC half of `LOTRAttackOnCollideGoal`; the
     NPC attack sound; scorpions, crocodiles and termites hunting NPCs.
+    - Later fixes (user): a mounted NPC charges at its mount's own speed,
+      a vanilla horse's pace, not the original's horse attack speed (1.7 or
+      2.0 times) -- confirmed again after B16a; NPC riders sit at the original's height on the animal
+      mounts; a galloping mount's ram pushes a player only on a blow that
+      lands (1.7.10 sent a player's motion only when struck).
   - [x] **D9d onward, one faction per unit:** ~~Bree~~, ~~Rohan~~, ~~Gondor and its fiefs~~, ~~Elves~~, ~~Dwarves~~, ~~Orcs/Mordor~~, ~~Isengard/Dunland~~, ~~Near Harad~~ (done)
     → ~~Rhûn~~ → ~~Far Harad~~; then ~~trolls~~, spiders (the Utumno ice spider; the Mirkwood and Mordor ones are done), ~~ents/huorns~~ (the Mallorn Ent with the bosses), ~~wraiths~~, ~~bosses~~
     and characters (~~Gandalf, Saruman, Gollum~~; the Balrog and the tormented elf go with Utumno).
@@ -1859,6 +1969,36 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
         spawn sink, full-bright scrolling shield overlay), lang.
       - Leaf healings save `healTime` as "Time" and read it as "healTime",
         so a reloaded healing comes back spent, as in the original.
+- [x] **D9t Dale** (`npc/dale/`, missed by D9 and found at D11): the man of
+    Dale (20, Dalish names, dagger or axe, Dale foods and drinks, "Name of
+    Dale"), levyman (militia in dyed leather and a Dale gambeson), soldier
+    (Dale armour, sword/battleaxe/pitchfork, one in six with a spear first,
+    one in eight mounted in Dale barding), archer (Dale bow, 16 blocks),
+    captain (+100, `DALE_CAPTAIN`), the Dale and Esgaroth banner bearers,
+    blacksmith (+50), baker (his bakery, rolling pin and bread) and the
+    travelling merchant (feathered hat, a man of Dale for escort).
+    `DALE_BLACKSMITH/BAKER/MERCHANT_BUY/SELL`, `DALE_HOUSE`,
+    `LOTRDaleManRenderer` (soldiers' skins for levymen and soldiers, the
+    blacksmith's and baker's aprons), eggs, lang.
+- [x] **D9s Rangers and Dúnedain** (`npc/ranger/`, missed by D9d-D9r and
+    found when the ranger structures needed them): the Dúnadan (20, Gondorian
+    names, dagger or axe, seeks out its people's enemies, wanders anywhere at
+    20, iron-barded mounts, Ranger foods and drinks) and blacksmith (+50,
+    `DUNEDAIN_BLACKSMITH_BUY/SELL`); the ranger base (always a man, 25, quick,
+    Ranger armour, dagger and bow at 20 blocks, hiding on a new target --
+    silent, drawn at 0.15 opacity, dropped from any creature's targeting --
+    until a second without one, struck, striking or mounted); the Ranger of
+    the North (captain +300 with `RANGER_NORTH_CAPTAIN`, banner bearer) and
+    of Ithilien (Gondor's; captain with `RANGER_ITHILIEN_CAPTAIN`, banner
+    bearer). `LOTRDunedainRenderer` (Dúnedain and Ithilien skins, the
+    blacksmith's outfit). Wired up with them: the Bree ruffians keeping 12
+    blocks from Rangers, and LOTREventHandler.onLivingSetAttackTarget
+    (`LOTRTargetConcealment`, `LOTRMobMixin`): no creature can target a
+    hiding Ranger, a sneaking Galadhrim warden, a Huorn at rest, or a player
+    in the full Galadhrim cloak who has not just struck it and is 8+ blocks
+    off -- the warden, Huorn and cloak halves had never been ported.
+    - A hiding ranger's armour and held items are not drawn at all: the
+      port's armour and item layers cannot be faded as the original's were.
 - [x] **D9r Characters** (`npc/character/`):
     - [x] **D9r-a Gandalf and Saruman.** The Grey Wanderer (`LOTRGandalfEntity`):
       30 health, sees 40, unhurt by all but creative players and never a
@@ -1894,6 +2034,190 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
         `LOTRLevelData.gollumSpawned` ("GollumSpawned"), `gollum.*` sounds,
         `LOTRGollumModel`, `LOTRGollumRenderer` (0.85, fish in his mouth,
         name 0.5 higher unless speaking), `chat.lotr.tameGollum`, egg, lang.
+- [ ] **GUI Screens and HUD** (user: after structures, before world gen; the
+  GUI items on the D16 tracker below are worked through here). One sub-unit
+  per group, each with its menus, packets and the systems the screen drives:
+  - [x] **G1 Trading**: `LOTRGuiTrade`/`LOTRContainerTrade` (buy and sell,
+    coins, `LOTRPacketTraderInfo`, the smith's anvil button),
+    `LOTRGuiTradeInteract`/`LOTRGuiUnitTradeInteract`/
+    `LOTRGuiTradeUnitTradeInteract` (the talk/trade/hire choice), the coin
+    exchange (`LOTRGuiCoinExchange`), and the NPC keeping still while a screen
+    is open.
+    Result: a right click on a trader who will deal with the player (the
+    event handler's branch, ahead of talking) opens `LOTRTradeInteractScreen`
+    -- Talk, Trade, Exchange Coins, and Smith for a `LOTRSmith` -- through
+    `LOTRTradePayloads.OpenInteract`; its buttons send `Interact` (the
+    original's actions 0-3). `LOTRTradeMenu` (buy row restocking at once,
+    coins taken; sell row for show; offers row handed back on close; sell as
+    menu button 0; shift-click buys again while affordable, as 1.7.10's retry
+    did) and `LOTRTradeScreen` (prices, half-size when wide, lock shading,
+    sell total; `gui/npc/trade.png` copied). `LOTRTraderNPCInfo` sends the
+    trades on opening, after each trade and when availability changes, and
+    a refresh restocks open screens. `LOTRCoinExchangeMenu`/`Screen`
+    (`gui/coin_exchange.png` copied). The smith's anvil is `LOTRAnvilMenu`'s
+    trader half (menu `lotr:smith`): no material slot, coin costs priced
+    from the smith's sell trades or pool (a dwarf prices mithril at 200),
+    and two smith's scrolls of a kind combine (`LOTRModifierCombining`).
+    Traders stand still (and their mounts) while one of the three is open.
+    The Hire button of a trader who also sells units waits on G2.
+  - [x] **G2a Hiring** (G2 split): `LOTRGuiUnitTradeInteract`,
+    `LOTRGuiTradeUnitTradeInteract`'s Hire button, `LOTRGuiMercenaryInteract`,
+    `LOTRGuiHireBase` (`LOTRGuiUnitTrade`, `LOTRGuiMercenaryHire`),
+    `LOTRContainerUnitTrade`, `LOTRPacketUnitTraderInteract`/
+    `MercenaryInteract`/`BuyUnit`, `LOTRMercenaryTradeEntry`.
+    Result: right-clicking opens Talk/Hire for a hirer (gui 20), Talk/Trade/
+    Exchange plus Hire for a trader who hires too (24), and Talk/Hire for a
+    mercenary no one has (58), in the event handler's order.
+    `LOTRUnitTradeScreen`: the unit (and its mount) following the mouse,
+    name, price, alignment, pledge with its terms on hover, the extra-info
+    icon, the company box, the arrows and Hire (`unit_trade.png`,
+    `unit_trade_buttons.png`, `alignment.png` copied; 54 unit-name and
+    pledge lang keys added). The client cannot equip a unit any more
+    (`initCreatureForHire` needs the server), so the server rolls each unit
+    and mount on opening and sends them saved as the menu's opening data. A
+    mercenary hires himself where he stands and the screen closes. Hirers
+    keep still while the screen is open.
+    The warhorn reward slot waits on invasions (D12, tracked).
+  - [x] **G2b Hired units**: `LOTRGuiHiredInteract`,
+    `LOTRGuiHiredWarrior`/`Farmer`/`Dismiss` and their inventories,
+    squadrons (`LOTRGuiSquadronItem`), and their packets.
+    Result: right-clicking one's own unit (gui 21) offers Talk (only if it has
+    something to say), Command and Dismiss (which asks first and names a
+    mount or rider of the player's going too). Command opens the warrior's
+    two pages (overview: health, status, level with its XP bar, kills, and
+    its inventory; options: guard mode and range, teleport, company) or the
+    farmer's (status, farming mode and range, company, inventory). The
+    warrior's inventory takes the player's armour, melee weapon and a
+    bombardier's bomb, keeping the unit's own in the new
+    `LOTRInventoryHiredReplacedItems` (saved, dropped on death, the bomb hook
+    in `LOTROrcPlaceBombGoal`); `canReEquipHired` refuses for wights, wargs,
+    Gollum, trolls, marsh wraiths, spiders and Ents/Huorns, and limits
+    half-trolls to half-troll armour. The farmer's holds seeds, harvest and
+    bone meal. `LOTRHiredNPCInfo.sendClientPacket` (LOTRPacketHiredGui) keeps
+    the screens current; a unit keeps still while its screen is open
+    (`isGuiOpen`). At a table of command, the command sword or horn in hand
+    opens the squadron naming screen. Textures `hired.png`,
+    `hired_warrior.png`, `hired_farmer.png`, `widgets.png`,
+    `squadron_item.png` and the melee and bomb slot icons copied; 36 lang keys.
+    The command sword's marker stays with the fx (D16, tracked).
+  - [x] **G2c Mounts**: the mount inventory (`LOTRGuiNPCMountInventory`,
+    `LOTRGuiMountInventory`, saddling and barding wargs) and its packets.
+    Result: `LOTRNPCRideableEntity.openGUI` opens `LOTRNPCMountInventoryMenu`
+    (saddle and barding over the warg's SADDLE/BODY equipment, laid out on
+    vanilla's horse screen) for a tame warg no one else rides: on
+    sneak-right-click, on using a saddle on an unsaddled one, and on the
+    inventory key while riding it (`HasCustomInventoryScreen`, in place of
+    LOTRPacketMountOpenInv and the GuiInventory intercept).
+    `isMountArmorValid` reads the barding's `Equippable` allowed mounts.
+    `LOTRGuiMountInventory` needed nothing: the port's horse is a vanilla
+    `Horse`, so vanilla's horse screen serves it. Also fixed: the event
+    handler's NPC branches (trade, hire, mercenary, own hired unit) now run in
+    `LOTRNPCEntity.interact`, before every subclass's `mobInteract`; a hired
+    warg or spider never reached them.
+  - [x] **G3a The LOTR menu, options and messages**: the menu key (L),
+    `LOTRGuiMenu`, `LOTRGuiMenuBase`, `LOTRGuiOptions`, `LOTRGuiMessage` and
+    the one-time notices.
+    Result: L opens `LOTRMenuScreen` (eight icons off `menu_icons.png`, each
+    with its key; the menu key reopens the last screen opened from it).
+    Factions opens the port's `LOTRScreenFactions` until G3b; Options opens
+    `LOTROptionsScreen` (Friendly Fire, Hired Unit Death Messages, Show
+    Alignment, Feminine Rank Override, with the original's two-setting
+    tooltips; `LOTRMenuPayloads.SetOption`). The NPC options now sync to
+    their player, and the feminine-rank override is a new attachment
+    (`LOTRRankOptions`). `LOTRGuiMessageTypes` remembers which one-time
+    messages were sent and shows `LOTRMessageScreen` (parchment, red-book
+    Dismiss after a moment, the drain icons): friendly fire (from
+    `LOTRAttackRules`), the disabled enchanting table and alignment drain.
+    `LOTRGuiButtonLeftRight` is shared as `LOTRLeftRightButton`.
+    Textures `menu_icons.png`, `message.png`, `quest/red_book.png` copied;
+    37 lang keys; the key is "Menu" in category "LOTR" as in 1.7.10.
+  - [x] **G3b Factions**: the full `LOTRGuiFactions` (replacing
+    `LOTRScreenFactions`), `LOTRGuiAlignmentChoices`, and the in-game config
+    screen.
+    Result: `LOTRFactionsScreen` -- the alignment bar, subtitle, the region's
+    faction bar (dragged or wheeled) and region button; the front page
+    (alignment, rank, the pledge-lock icon, kills/trades/hires/mini-quests,
+    the pledge ring and "Pledged"), ranks, allies and enemies (scrolling,
+    colours contrasted against the page); pledging and unpledging with their
+    explanations, the enemies in the way and the break-cooldown bar; the
+    war-crimes icon. `/alignmentsee <player>` opens it on another online
+    player's alignments. New player systems it needed: `LOTRFactionData`
+    (per-faction kills, enemy kills, trades, hires, kept and synced; counted
+    in `LOTRNPCKillEvents`, `LOTRTraderNPCInfo.onTrade`,
+    `LOTRHiredNPCInfo.hireUnit`) and `LOTRViewingFaction` (viewing faction
+    and last viewed per region, kept, synced, set from the client by
+    `ClientInfo`). Shared for G4: `LOTRAlignmentTicker` and
+    `LOTRAlignmentBarRenderer`. Also shared now: `LOTRRedBookButton`,
+    `LOTRScrollPane`. Textures `factions.png`, `factions_full.png`; 31 lang
+    keys. `LOTRScreenFactions` removed.
+    Not ported, by question to the user: `LOTRGuiAlignmentChoices` (a
+    one-time choice for players with alignment from before the original's
+    Update 35 -- no port save can have such a player) and the in-game config
+    screen (Forge's mod-list config button; on Fabric that needs Mod Menu).
+  - [x] **G4a Alignment HUD** (G4 split): the alignment bar and
+    `LOTRAlignmentTicker`, the drain notice, the floating alignment popups.
+    Result: `LOTRAlignmentHud` (a Fabric HUD element) draws the viewing
+    faction's bar at the top, sliding in and out a frame at a time as the
+    original did (out while a screen other than a message, the player list
+    or the debug screen is up), with the config offsets and the drain icon
+    for ten seconds after `LOTRAlignmentHudPayloads.AlignDrain`.
+    `LOTRPlayerAlignments.addAlignment` now takes the spot the change was
+    earned and sends `AlignmentBonus`; the client spawns the never-saved
+    `LOTRAlignmentBonusEntity` there, drawn by `LOTRAlignmentBonusRenderer`
+    (which faction to show by the original's rules, icon and bordered text
+    seen through walls, fading in its last quarter). Kills, the Rohan horse,
+    marriage and the pledge-break penalty (two blocks along the player's
+    sight) pass their spots. Every world counts as Middle-earth for the bar
+    until D10.
+  - [x] **G4b Over heads**: alignment above other players, hired units'
+    icons and health bars.
+    Result: `LOTROverheadRendering`, drawn for every renderer through
+    `LOTREntityRendererMixin` (read off the entity into a field
+    `LOTREntityRenderStateMixin` adds to every render state, drawn as the
+    renderer finishes). Over one's own hired unit -- from the biped, warg
+    and spider renderers at +0.5, trolls +1.0, Huorns +3.5, raised above any
+    speech, none for a mount carrying an NPC -- its company's name, its held
+    item (its level while the viewer sneaks) and its health bar with its
+    mount's; over Gollum, his master's health bar for him; over another
+    player (not sneaking, not invisible, not hiding it), the icon and their
+    alignment with the faction one views. All see-through, within 64 blocks,
+    not with the HUD hidden, with the config switches.
+  - [x] **G4c The rest of the HUD**: the on-screen compass, the melee attack
+    meter, the FROST overlay, recipe unlock toasts.
+    Result: the compass (`LOTRCompassRenderer`, a picture-in-picture renderer
+    drawing `LOTRModelCompass` with the Ring Portal's ring and writing --
+    `compass.png`, `portal.png`, `portal_writing.png` copied) in the top
+    right with the coordinates beneath, by the config, hidden under a screen
+    or the debug screen. `LOTREnvironmentOverlayHud`: the frost overlay
+    (gradients and `frost_overlay.png`, four seconds) and the burn overlay
+    (`burn_overlay.png`, two), sent by `EnvironmentOverlay`; the chilling
+    modifier now frosts a struck player's screen. Faction recipes no longer
+    raise the recipe-book toast (their `CommonInfo` is set to no
+    notification). The melee attack meter is dropped from the mod (user,
+    G4c); its config option "Melee attack meter" remains, unused.
+  - [x] **G5 The rest that has its system**: the NPC respawner screen, the
+    mob spawner screen, Gollum's inventory, the bookshelf, the custom main
+    menu, and anything left on the D16 tracker that does not wait on a later
+    unit.
+    Result: `LOTRNPCRespawnerScreen` (a creative player's right-click; kinds
+    by entity id, ranges, cap, enemy blocking, home range, mounts, interval,
+    player range; Destroy; `LOTRRespawnerPayloads`; the shared
+    `LOTRIntSlider`); the respawner no longer breaks when struck, as in the
+    original. Gollum's pack (`LOTRGollumMenu`/`Screen`, sneak-use by his
+    master; `gollum.png`). The command sword's falling marker
+    (`LOTRSwordCommandMarkerEntity`, client-only). A creative operator's
+    clock on a hired unit names its owner. The worn plate's food pile and
+    `LOTRPlateFallingInfo` (the pile lagging behind a jump), sharing
+    `LOTRPlateRenderer.submitFood`. Reeds' lowest segment on solid ground
+    takes `_lower` (a `lower` state on `LOTRReedBlock`; reeds already
+    placed take it at their next neighbour update).
+    Not here: the mob spawner screen -- the LOTR spawner was dropped as a
+    vanilla duplicate (D2), and vanilla's has none; the bookshelf
+    (excluded, user); the custom main menu, whose background is the map
+    following a waypoint route (D13, tracked).
+  - Left for their units: the map, fast travel and waypoints (D13);
+    fellowships, the red book and mini-quests (D14); achievements, titles and
+    shields and their notifications (D7); the branding iron (its item).
 - [ ] **D10 Dimension & world gen**: Middle-earth dimension, biome registry
   from `world/biome` + variants, genlayer → map-image-driven biome source,
   features (trees for saplings!), ores, `world/feature`. Large; plan it in its
@@ -1905,14 +2229,14 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     Middle-earth;
   - the "Middle-earth Classic" world type is ported later, as a late D10
     sub-unit, once the map-driven world works.
-- [ ] **D11 Structures & villages** (`structure`, `structure2`, `village`,
+- [x] **D11 Structures & villages** (`structure`, `structure2`, `village`,
   mapgen dwarven mines/tpyr). Ported before D10 (user): each structure is
   built and tested through the structure spawner item, as the original's
   could be; placing them in generated terrain comes with D10.
   Scope: 327 `structure2` classes (~53k lines), 30 older `structure` classes
   (~8k), 14 village generators (~4k), 75 `.strscan` scans, and the
   `LOTRStructures` registry (341 entries, each a structure-spawner subtype).
-  - [x] **D11a Foundation.** Done except the spawner chests (below).
+  - [x] **D11a Foundation.**
     - `LOTRLegacyBlocks`: the original's (block, metadata) pairs as port
       `BlockState`s -- built from `docs/parity/items_blocks.csv` for the
       mod's blocks and 1.7.10's ids for vanilla's, with per-shape metadata
@@ -1960,26 +2284,41 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     - The structures themselves are transliterated from the original by a
       script (block and item references, entities, math) and finished by
       hand.
-    - [ ] The spawner chests (`spawnerChest`, `spawnerChestStone`,
-      `spawnerChestAncientHarad`): chests that let out a creature when
-      opened, which ruins and barrows place. With the first structure that
-      needs them.
-  - [ ] **D11b Older structures** (`structure/`, `LOTRWorldGenStructureBase`)
-    that the registry still lists, alongside the faction that owns them.
-  - [ ] **D11c onward, one group per unit, in the NPC order:** Shire
+    - [x] The spawner chests (`LOTRSpawnerChests`): each is placed as the
+      chest it looked like, with its creature kept as a block-entity
+      attachment; opened (it lets the creature out instead of opening) or
+      broken by a player, out it comes, a pyramid wraith with four desert
+      scorpions and lightning. One broken by anything but a player keeps it.
+  - [x] **D11b Older structures** (`structure/`, `LOTRWorldGenStructureBase`)
+    that the registry still lists, alongside the faction that owns them
+    (ported with each group in D11c; every registry entry now has its structure).
+  - [x] **D11c onward, one group per unit, in the NPC order:** Shire
     (done in D11a: hole, tavern, picnic bench, windmill, farm, hay bales,
-    house, burrow) and Bree; Rangers, Barrow-downs and the ruins; the elves (High Elves,
-    Rivendell, Galadhrim, Wood-elves, Dorwinion); dwarves and Dale; Rohan;
-    Gondor and its fiefs; Mordor, Dol Guldur, Uruks, Angmar, Gundabad and
-    the half-trolls; Dunland; Near Harad (Southron, Umbar, Corsairs,
-    Harnedor, nomads, Gulf); Rhûn; Far Harad (Moredain, Tauredain).
-  - [ ] **D11 villages** (`village/`, `LOTRVillageGen` and the twelve
+    house, burrow), ~~Bree~~ (ids 20-39, 42-43), ~~Rangers, Barrow-downs and
+    the ruins~~ (ids 80-93, 95, with the camp, tent and stone-ruin bases); ~~the elves (High Elves,
+    Rivendell, Galadhrim, Wood-elves, Dorwinion)~~ (ids 60-71, 200-204, 280-282, 700-706; with them
+    the Gondor structure base and bath, and three tree generators the elves build in -- the
+    extreme mallorn, the mirk-oak and the web of Ungoliant -- on the older base, ready for D10); ~~dwarves and Dale~~ (ids 50-52, 240-245, 260-265); ~~Rohan~~ (ids 300-322, 351; with Gondor's barn, which Rohan's is built on);
+    ~~Gondor and its fiefs~~ (ids 400-433, 450, 452, 500-562; the town trees and Ithilien hideout oak wait on the tree features like the elves'; the Smithy's four absolute-coordinate metadata calls, which only ever touched bedrock near the world origin, are left out with a note); ~~Mordor, Dol Guldur, Uruks, Angmar, Gundabad and
+    the half-trolls~~ (ids 120-123, 140-145, 160-162, 220-225, 350-354, 600-605, 650-651, 670, 1700-1701; with them the Mordor orc slaver and the Nurn slaves the slaver tower and Nurn farms need; the orc dungeon's orcs from the biome's spawn list wait on D10 and it spawns its Gundabad fallback until then); ~~Dunland~~ (ids 380-383); ~~Near Harad (Southron, Umbar, Corsairs,
+    Harnedor, nomads, Gulf)~~ (ids 1000-1263; the town trees and the Corsair cove's palm wait on the tree features, and the town flowers on the biomes' flowers, as elsewhere); ~~Rhûn~~ (ids 750-777; the village farms' orchard trees wait on the tree features); ~~Far Harad (Moredain, Tauredain)~~ (ids 1500-1559; with the original's maze generator for the Tauredain pyramid; the village trees wait on the tree features); ~~the hidden Ticket Booth~~ (id 1994, on the Easterling town base; its fixed spot on the map, LOTRFixedStructures at map image 1583, 2527, waits on D10).
+  - [x] **D11 villages** (`village/`, `LOTRVillageGen` and the twelve
     peoples'), each spawnable from its structure-spawner subtype.
+    *Result:* `common/world/village/`: `LOTRVillageGen` (layout, the
+    rotation and relative/world coordinates, the seeded random per village
+    and per spot, paths with their slab steps, each structure built on the
+    surface above 62) and `LocationInfo`; the eleven generators (Bree,
+    Dúnedain, Gondor and its fiefs, Rohan, Rhûn, Harnedor, Southron, Umbar,
+    nomads, Gulf, Tauredain); the 47 village spawners (`registerVillage`,
+    turned to face the player); `LOTRRoadType` (`common/world/map/`) for the
+    paths; the twenty walls, palisades, fences and gates only villages place,
+    and `LOTRNPCRespawnerStructure`. The Gondor villages' biome road is
+    Dor-en-Ernil's own or Gondor's mixed one. Village buildings get the same
+    shape pass as spawned structures.
   - Left for D10: placing any of it in generated terrain (biome decorators'
     structure chances, fixed structures, the village position caches), the
     dwarven mines and Tauredain pyramids (`mapgen`), and conquest.
-  - Banners among the structures wait for the banner entities (D14, user);
-    until then their `placeBanner` calls place nothing and are tracked.
+  - Banners among the structures are placed since D4c.
 - [ ] **D12 NPC spawning, invasions, spawn damping** (extend `LOTRInvasions`).
 - [ ] **D13 Map & waypoints / fast travel** (map GUI, `world/map`).
 - [ ] **D14 Quests, fellowships, mini-quests, Grey Wanderer.**
@@ -2013,34 +2352,74 @@ only to the unit's *Result*.
 - [ ] Fallen leaves (and their charcoal/recipes) [B6b]
 
 ### D4 — decorative entities and banners
-- [ ] Banner protection (`LOTRBannerProtection`), then its checks in:
+- [x] Banner protection (`LOTRBannerProtection`), then its checks in:
   Khamûl's fire `isBannered` (`LOTRKhamulsFireBlock`), the balrog whip's lash
   (`LOTRBalrogWhipItem`), the plate's glass smashing (`LOTRPlateEntity`),
   `LOTRBannerProtectable` on the stone troll, boss trophy and rugs
   (`LOTRRugEntity`), the banner block
   entity's owner/protection data, and the banner copy/clear recipes
-  (`LOTRRecipesBanners`) [B4, B5e, B6d, B7d, B13a]
-- [ ] Floating barrel entity: `LOTRItemBarrel.onItemRightClick` puts a
-  rideable barrel on water → `LOTRBarrelItem` [B5b]
+  (`LOTRRecipesBanners`) [B4, B5e, B6d, B7d, B13a] -- D4c
+- [x] Floating barrel entity: `LOTRItemBarrel.onItemRightClick` puts a
+  rideable barrel on water → `LOTRBarrelItem` [B5b] -- D4a
+- [ ] Banner protection waiting on other units [D4c]: fellowships on a
+  banner's whitelist and `getPlacersFellowshipByName` (D14); the
+  `bannerProtect` achievement (D7); NPCs' `getCanSpawnHere` refusing
+  protected land, the invasion spawner's and conquest horn's checks (D12);
+  custom waypoints in protected land (`LOTRPacketCreateCWP`, D13).
 
 ### D5/D6 — player data, config
-- [ ] `LOTRConfig` "Immersive Speech" (default on) and "Immersive Speech
-  Chat Logs" (default off), fixed at their defaults in `LOTRSpeechClient`
-  [D9a]
-- [ ] `LOTRConfig` "Enable hired unit levelling" (on) and "Prevent trader
-  transport range" (0, off -- the initial home is already recorded), fixed
-  at their defaults [D9b]
-- [ ] Fellowships' PVP and hired-unit friendly-fire protections and siege
-  mode in `LOTRAttackRules` (D14) [D9b]
-- [ ] `LOTRConfig`: `alignmentDrain` (drain always on until then),
-  `alwaysShowAlignment`, `alignmentXOffset`/`YOffset`, `enchantingLOTR`
-  [B12b]
+- [ ] Config options waiting on their systems (all read into `LOTRConfig`
+  already) [D6]:
+  - D7: `enableTitles`, `strictFactionTitleRequirements`,
+    `protectHobbitKillers`.
+  - D10: the `dimension` category, `middleEarthRespawning` and the four
+    `MER*` values, `generateMapFeatures`, `generateFixedSettlements`, XP
+    orbs removed in Middle-earth with vanilla enchanting off, the environment
+    options (`enableLOTRSky`, `enableMistyMountainsMist`, `enableAmbience`,
+    `enableSunFlare`, `cloudRange`, `newWeather`, `aurora`), and
+    `snowyStone`/`naturalBlocks` (coremod texture patches).
+  - D11: `strTimelapse`/`strTimelapseInterval` and `/strTimelapse`.
+  - D12: `enableBandits`, `enableInvasions`, `invasionProgressReverts`,
+    `fixMobSpawning`, `mobSpawnInterval`.
+  - D13: `enableFastTravel`, `forceMapLocations`, `customWaypointMinY`,
+    `cwpLog`.
+  - D14: `allowMiniquests`, `allowBountyQuests`,
+    `enableFellowshipCreation`, `fellowshipMaxSize`, `enableConquest`.
+  - D15: `enablePortals`, `disableEnderChestsUtumno`, Utumno kills not
+    counting towards banes.
+  - GUIs/D16: the in-game config screen (`LOTRGuiConfig`, and `load()` on
+    its change event); the ENCHANTING message; `alwaysShowAlignment`,
+    `alignmentXOffset`/`YOffset`, `displayAlignmentAboveHead`, the map
+    options (`enableSepiaMap`, `osrsMap`, `mapLabels`, `mapLabelsConquest`),
+    `enableOnscreenCompass`, `compassExtraInfo`, `hiredUnitHealthBars`,
+    `hiredUnitIcons`, `meleeAttackMeter`, `enableQuestTracker`,
+    `trackingQuestRight`, `customMainMenu`, `fellowPlayerHealthBars`,
+    `displayCoinCounts`, `balrogWings`, the music options,
+    `drunkMessages` (players' own drunken chat), `preventMessageExploit`
+    (the `/msg` fix), `playerDataClearingInterval`, `enableAttackCooldown`,
+    `fixRenderDistance`, `checkUpdates`, `updateLangFiles`.
+  - Not ported (user): `dropMutton` -- 26.2's sheep drop vanilla mutton, and
+    the mod's own mutton smelting recipe is removed too.
+  - To decide with the user: `removeGoldenAppleRecipes`/
+    `removeDiamondArmorRecipes` (they alter vanilla recipes).
+- [ ] `LOTREntityRegistry`: other mods' NPCs given LOTR factions and
+  targeting from `config/LOTR_EntityRegistry.txt` [D6]
 - [ ] Feminine rank option: `setFemRankOverride`, `useFeminineRanks` (also
   via titles) → `LOTRPlayerAlignments` [B12a/b]
 - [ ] Viewing faction per dimension region (`getViewingFaction`,
   `prevRegionFactions`) [B12c]
+- [ ] The rest of `LOTRClassTransformer`/`LOTRReplacedMethods`' vanilla
+  patches, never audited as a unit: the anvil's collision box, natural block
+  rendering, cauldron render type, horse-jump key, dirt and pumpkin metadata,
+  the enchantment hooks (partly in `LOTREnchantmentHelperMixin`), mob spawn
+  packets, fences/walls connecting to mod blocks, pressure plates, grass and
+  still-liquid tick optimisations, minecart rails (partly in the minecart
+  mixins), client movement packets, pistons, strength potions, the spawner
+  optimisation, stone side textures, trapdoor placement [D6]
 
 ### D7 — achievements and titles
+- [ ] Trading achievements: `earnManyCoins` (selling 1000 coins' worth at
+  once), `combineSmithScrolls` (taking a combined scroll from a smith) [G1]
 - [ ] `rideWarg` (a tamed, saddled warg ridden) [D9c]
 - [ ] Hobbit achievements: `killHobbit`, `marryHobbit` (the marriage goal's
   `marriageAchievement`), `speakToDrunkard` (`LOTREntityHobbit.speakTo`),
@@ -2146,10 +2525,11 @@ only to the unit's *Result*.
   trades, hires, mini-quests, conquest, conquest horn; save keys `NPCKill`,
   `EnemyKill`, `Trades`, `Hired`, `MiniQuests`, `Conquest`, `ConquestHorn`)
   and `LOTRFactionBounties` (per faction, per player, kill records;
-  `recordNewKill` on NPC death) [B12d]
-- [ ] Alignment from kills: `LOTRAlignmentValues.Bonuses` (every NPC's kill
-  value), `addAlignment`'s `forcedBonusFactions`, and callers of
-  `LOTRPlayerAlignments.onPledgeKill` [B12a/b]
+  `recordNewKill` on NPC death) [B12d] -- the stats exist (G3); bounties
+  and the mini-quest and conquest counts wait on D14
+- [ ] Alignment from kills: every NPC's kill value
+  (`LOTRAlignmentValues.Bonuses`), checked per NPC in B16d–h [B12a/b]
+  (forced bonus factions and `onPledgeKill`: B16a)
 - [ ] NPC-influence check in control zones (`LOTRFaction` control-zone
   multiplier) [B12a]
 - [x] ~~Mountain troll chieftain: the troll totem summons a CHICKEN stand-in
@@ -2165,22 +2545,32 @@ only to the unit's *Result*.
   Utumno [D15] [D9r-a]
 - [ ] Gollum: natural spawning within 128 of the High Pass waypoint
   (`LOTRGollumSpawner`, with the Middle-earth dimension and waypoints)
-  [D12, D13]; his pack's screen for his owner (sneak-use, GUI 10) with the
-  GUIs [D16]; his health bar for his owner, with the hired units' bars;
-  `tameGollum` achievement [D7] [D9r-b]
+  [D12, D13]; `tameGollum` achievement [D7] [D9r-b] (his pack's screen
+  and health bar: G4b/G5)
 - [ ] Structures (D11) until the biomes (D10): a structure's biome top and
   filler blocks are grass and dirt; its flowers and grass are vanilla's
   dandelion, poppy and grass (the original's outside its biomes); a biome's
   own trees (`placeBiomeTree`, e.g. the hobbit hole's Shire tree) grow
   nothing; and natural generation's biome checks (`isBiome`) match nothing
   [D11a]
-- [ ] Structures' banners (`placeBanner`, `placeWallBanner`) place nothing
-  until the banner entities (D14) [D11a]
+- [x] Structures' banners (`placeBanner`, `placeWallBanner`) place nothing
+  until the banner entities (D14) [D11a] -- D4c
 - [ ] Structures' flower pots hold only plants vanilla can pot; the mod's own
   plants need their potted forms (the original's pot was its own block) [D11a]
-- [ ] The NPC respawner's screen (set its kinds, ranges, interval, mounts,
-  enemy blocking; destroy it), with the GUIs; until then a creative player
-  breaks it by striking it [D11a]
+- [ ] NPCs D9 missed, found at D11 (compared against the original's
+  registerCreature list): ~~Dale's nine and the Esgaroth banner bearer~~
+  (D9t); the scrap trader, and with it its smith's-anvil mischief (garbled
+  names, random modifiers, its remark on closing) and half prices
+  (`LOTRContainerAnvil`) [D9, G1]
+- [ ] Dale's warhorn (`LOTRInvasions.DALE`, D12), the captain's cape, the Dale
+  and Esgaroth shields (D7), mini-quests (D14), Dale's pull and spawn check
+  (D10), the merchant's travelling-trader spawning (D12) [D9t]
+- [ ] Structures' trees (`LOTRTreeType...generate`, `placeTree`) grow
+  nothing until the tree features (D10) [D11c]
+- [ ] The Rangers of the North's warhorn (`LOTRInvasions.RANGER_NORTH`) and
+  the Ithilien captain's (`GONDOR_ITHILIEN`), with D12; their and the
+  Dúnedain's mini-quests (D14); the rangers' capes; the Dúnedain's natural
+  spawn check and Ithilien's pull on its rangers (D10) [D9s]
 - [ ] NPC faction checks: Sauron's mace exemption, Gandalf's fireball
   (`!HIGH_ELF.isGoodRelation(npcFaction)`), rope/Lothlórien
   [B7, B10, B13b]
@@ -2188,8 +2578,8 @@ only to the unit's *Result*.
 - [ ] Hobbits flee trolls (12 blocks) -- orcs, wargs, spiders and ruffian
   brutes are done -- and huorns (`LOTREntityAIAvoidHuorn`): each `AvoidEntityGoal`
   arrives with its creature (`LOTRHobbitEntity`) [D9a]
-- [ ] Drinking near a friendly bartender makes an NPC drunk: implement
-  `LOTRBartender` on the remaining innkeepers and bartenders (the Hobbit bartender, both Bree innkeepers, the Rohan meadhost, the Gondor and Dunlending bartenders have it) [D9a]
+- [x] ~~Drinking near a friendly bartender makes an NPC drunk: `LOTRBartender`
+  on every innkeeper and bartender [D9a]~~ — all eleven have it (B16a)
 - [ ] The shirriff's warhorn (`LOTRInvasions.HOBBIT`), with invasions (D12)
   [D9a]
 - [ ] The Bree captain's warhorn (`LOTRInvasions.BREE`), with invasions
@@ -2221,19 +2611,18 @@ only to the unit's *Result*.
   `PINNATH_GELIN`, `LAMEDON`), with D12 and NPC capes [D9f]
 - [ ] The branding iron in the Gondor and Harad farmers' buy pools (16 coins), with the
   branding iron item [D9f]
-- [ ] The Mordor orc slaver (`LOTREntityMordorOrcSlaver`, hires Nurn slaves
-  as farmers at +200, with the branding iron in hand), with the Nurn slaves
-  [D9i]
+- [ ] The Mordor orc slaver's branding iron (his idle item) and the
+  hireNurnSlave achievement; the Nurn slaves' pull towards the Nurn biome
+  while unfree (getBlockPathWeight +20), with the biomes (D10) [D9i, D11c]
 - [ ] The Mordor orc commander's and Black Uruk captain's warhorns
   (`LOTRInvasions.MORDOR`, `MORDOR_BLACK_URUK`), with D12 [D9i]
-- [ ] Orc spawning in darkness, the dwarven biomes' top-block rule, and the
-  biomes where hostiles walk by day (no daylight slowness there), with the
-  biomes (D10) [D9i]
+- [ ] The dwarven biomes' top-block rule, and the biomes where hostiles walk
+  by day (no daylight slowness there, and no darkness needed to spawn), with
+  the biomes (D10) [D9i] (spawning in darkness: B16a)
 - [ ] Orc achievements: `killMordorOrc`, `killBlackUruk`, `tradeOrcTrader`,
   `tradeOrcCaptain`, `tradeBlackUrukCaptain`, `killBombardier`,
   `hitByOrcSpear`; the Black Uruk shield (`ALIGNMENT_BLACK_URUK`) [D9i]
-- [ ] The hired bombardier's bomb slot in the hired-warrior inventory, with
-  that screen (D16) [D9i]
+- [x] ~~The hired bombardier's bomb slot in the hired-warrior inventory [D9i]~~ — G2b
 - [ ] The Gundabad and Angmar chieftains' warhorns (`LOTRInvasions.GUNDABAD`,
   `ANGMAR`), with D12 [D9i]
 - [ ] Gundabad and Angmar achievements: `killGundabadOrc`, `killGundabadUruk`,
@@ -2288,8 +2677,7 @@ only to the unit's *Result*.
 - [ ] The Moredain: the chieftain's warhorn (`LOTRInvasions.MOREDAIN`, D12);
   the Moredain shield (`ALIGNMENT_MOREDAIN`) on warriors and mercenaries;
   `killMoredain`, `tradeMoredainChieftain`, `tradeMoredainVillager`,
-  `hireMoredainMercenary`; the mercenary's screens and `LOTRPacketBuyUnit`'s
-  mercenary branch (D16); the pull of Far Harad and the y > 62 grass/sand
+  `hireMoredainMercenary`; the pull of Far Harad and the y > 62 grass/sand
   spawn rule (D10); mini-quests; the hut's lore books and pouches; bosses
   among the non-civilians of `isCivilianNPC`, with the bosses [D9m]
 - [ ] The Tauredain: the chieftain's warhorn (`LOTRInvasions.TAUREDAIN`, D12)
@@ -2300,18 +2688,15 @@ only to the unit's *Result*.
   spawn rule (D10); mini-quests; the house's lore books and pouches [D9m]
 - [ ] The half-trolls: the warlord's warhorn (`LOTRInvasions.HALF_TROLL`, D12);
   the half-troll shield (`ALIGNMENT_HALF_TROLL`); `killHalfTroll`,
-  `tradeHalfTrollWarlord`, `tradeHalfTrollScavenger`; mini-quests; the hired
-  inventory's use of `canReEquipHired` (D16) [D9m]
+  `tradeHalfTrollWarlord`, `tradeHalfTrollScavenger`; mini-quests [D9m]
 - [ ] The trolls: `killTroll`, `killTrollFleeingSun`, `makeTrollSneeze`,
   `killOlogHai`, `killMirkTroll`, `killMountainTroll`, `killSnowTroll` (D7); the biomes where hostiles walk by day,
   which the sun does not trouble and where creatures of the dark are at home
   (`canSpawnHostilesInDay`, D10); conquest spawning's exemption from the
-  dark (D12); the hired unit's icon and health bar over trolls (with the hire
-  screens) [D9n]
+  dark (D12) [D9n]
 - [ ] Ents and huorns: `killEnt`, `talkEnt`, `killHuorn`, `killDarkHuorn` (D7);
   the pull of Fangorn (the Old Forest for Dark Huorns) and the y > 62
-  grass-or-dirt spawn rule (D10); the hired unit's icon and health bar over
-  huorns (with the hire screens) [D9o]
+  grass-or-dirt spawn rule (D10) [D9o]
 - [ ] Wraiths and wights: the marsh wraiths rising in the Dead Marshes for
   whoever wades there (`LOTREventHandler.spawnMarshWraithIfConditionsMet`,
   with `wraith.spawn`) and the wight's y > 62 top-block spawn rule, with
@@ -2328,13 +2713,11 @@ only to the unit's *Result*.
   time in 200 anywhere; miners never above ground; wicked dwarves above
   y 62 on the biome's top block) and the dwarven mountains' pull on their
   wandering (`getBlockPathWeight`), with the biomes (D10) [D9h]
-- [ ] The LOTR anvil's free mithril repair at a dwarf trader
-  (`LOTRContainerAnvil`: `theTrader instanceof LOTREntityDwarf`), with the
-  smith's anvil screen (D16) [D9h]
+- [x] ~~The LOTR anvil's free mithril repair at a dwarf trader [D9h]~~ — G1
 - [ ] The dwarven lore books in `DWARVEN_TOWER`, `BLUE_MOUNTAINS_STRONGHOLD`
   and `DWARVEN_MINE_CORRIDOR`, with lore books [D9h]
-- [ ] Ruffians keeping clear of the Rangers of the North (12 blocks), with
-  the Rangers [D9d]
+- [x] ~~Ruffians keeping clear of the Rangers of the North (12 blocks), with
+  the Rangers [D9d]~~ — D9s
 - [ ] Ruffian spy's bounty help (paid off with coins, gold, silver, a gem or
   a ring) and the ruffian mini-quests, with D14; the thief cancelling the
   victim's fast travel, with D13 [D9d]
@@ -2346,11 +2729,10 @@ only to the unit's *Result*.
   `BREE_PICKPOCKET`), with the pickpocket mini-quest (D14) [D9d]
 - [ ] The branding iron in the Hobbit farmer's buy pool (16 coins), with the
   branding iron item [D9b]
-- [ ] Mercenaries (`LOTRMercenary`, `LOTRMercenaryTradeEntry`) and travelling
-  traders (the visit itself is ported, D9g; each travelling trader comes with
-  its faction); hired units hunting bandits (`LOTREntityBandit`) [D9b]
-- [ ] Faction trade and hire counters (`LOTRFactionData.addTrade`/`addHire`)
-  [D9b]
+- [ ] Hired units hunting bandits (`LOTREntityBandit`) [D9b] (mercenaries:
+  G2a)
+- [x] ~~Faction trade and hire counters (`LOTRFactionData.addTrade`/`addHire`)
+  [D9b]~~ — G1/G2
 - [ ] Refusing pickpocketed coins and trade items (`IPickpocketable`), with
   the pickpocket mini-quest (D14) [D9b]
 - [ ] Bounders hunt Bree ruffians (`LOTREntityAIHobbitTargetRuffian`) --
@@ -2362,6 +2744,14 @@ only to the unit's *Result*.
   with the first NPC that uses it [D9a]
 - [ ] Other mods' NPCs given a faction by config (`LOTREntityRegistry`),
   which `getNPCFaction` and the attack rules also read [D9a]
+- [ ] NPCs' part in invasions (`invasionID`, saved as `InvasionID`: kills
+  of and by invasion NPCs credited to the invasion, players set watching
+  it), conquest spawning's exemptions, and the biome spawn count multiplier
+  (`getSpawnCountValue`), with D10/D12 [B16a]
+- [ ] Utumno NPCs' drops (`LOTREntityNPC.dropFewItems`): key parts on the ice
+  and obsidian levels (1 in 12), Chill of Daedelos from chilly NPCs on the
+  ice level, the Utumno pickaxe on the fire level, mithril nuggets (1 in
+  20), with Utumno (D15) [B16a]
 - [ ] Utumno's creatures, with Utumno (D15): the wargs (plain, ice, obsidian,
   fire; their rugs are already in) [D9c], orc and orc archer [D9j], troll
   and snow troll [D9n], ice spider [D9i], the Balrog and the tormented elf
@@ -2371,6 +2761,13 @@ only to the unit's *Result*.
   (`LOTRUtumnoReturnPortalBaseBlock`), with D15 [B4]
 
 ### D10 — dimension and world gen
+- [ ] Villages in the world: `LOTRVillageGen.isVillageCentre` (the grid,
+  spawn chance, `LOTRVillagePositionCache`, the road/mountain/fixed-structure
+  checks, `areBiomesViable`/`areVariantsSuitableVillage`), `generateInChunk`
+  from the biome decorators, the fixed settlements at waypoints
+  (`addFixedLocation`, e.g. Bree, with `hasFixedSettlements` and
+  "Generate fixed settlements"), each village's spawn biome list, and the
+  roads and bridges themselves (`LOTRRoads`, `LOTRRoadType.BridgeType`) [D11]
 - [ ] Hobbits' wandering drawn to the Shire biomes (`getBlockPathWeight`
   +20) and their natural spawn check (above y 62 on the biome's top block,
   `getCanSpawnHere`), with the biomes and D12 spawning [D9a]
@@ -2425,46 +2822,47 @@ only to the unit's *Result*.
   `onConquestKill`) [B12]
 
 ### D16 — GUIs, HUD, fx (user: HUD in a later release, after entities and structures)
-- [ ] Hired units' icon and health bars over their heads
-  (`LOTRNPCRendering.renderHiredIcon`/`renderNPCHealthBar`) [D9a]
-- [ ] The trade, unit-trade and hired-unit screens with their containers and
-  packets (`LOTRGuiTrade`, `LOTRContainerTrade`, `LOTRGuiUnitTrade`,
-  `LOTRGuiHiredWarrior`/`Farmer`/`Dismiss`, `LOTRPacketTraderInfo`,
-  `LOTRPacketHiredGui`/`UnitCommand`/`UnitDismiss`/`UnitInteract`,
-  `LOTRPacketNPCSquadron`), the replaced-item store they use
-  (`LOTRInventoryHiredReplacedItems`), and an NPC keeping still while one is
-  open (`checkGUIOpenAndNavigation`); naming a squadron on an item
-  (`LOTRGuiSquadronItem`); the mount inventory screen through which a tame
-  warg is saddled and barded (`openGUI`, gui 29 -- until then no player can
-  saddle one); the command sword's location marker
-  (`LOTRPacketLocationFX`); the one-time Friendly Fire notice and the Options
-  screen toggles (Friendly Fire, hired death messages) [D9b]
-- [ ] HUD alignment bar and `LOTRAlignmentTicker`; alignment-drain notice
-  (`LOTRPacketAlignDrain`); floating gain/loss popup
-  (`LOTREntityAlignmentBonus`, `sendAlignmentBonusPacket`, and with it the
-  position arguments to `addAlignment`) [B12c]
-- [ ] Full `LOTRGuiFactions` (the port's screen is a list with pledge and
-  unpledge only: pledge requirements and descriptions, break-cooldown text,
-  enemies preventing a pledge, rank limits, map) [B12c]
-- [ ] Alignment shown above other players' heads (data already synced to
-  trackers) [B12b]
-- [ ] Chilling's FROST screen overlay (`LOTRModifierSpecials`) [B11]
-- [ ] Worn plate's food pile and `LOTRPlateFallingInfo`
-  (`LOTRPlateHeadRenderer`) [B9]
+- [ ] The hire screen's alignment reward slot: a captain's warhorn for 2000
+  coins at +1500 (`LOTRSlotAlignmentReward`, `getWarhorn`), with its frame,
+  lock and "Requires +1500 alignment" tooltip -- with invasions (D12) [G2a]
+- [ ] The custom main menu (`LOTRGuiMainMenu`, config "Custom main menu"):
+  the Middle-earth map drifting along a route of waypoints behind red-book
+  buttons and the title -- with the map renderer and waypoints (D13) [G5]
+- [ ] The LOTR menu's other screens, whose icons are greyed out until then:
+  achievements and titles (D7), the map (D13; greyed only on a classic
+  world in the original), fellowships (D14), shields (D7); the menu's title
+  names the dimension the player is in (D10); openMenu's welcome
+  mini-quest forcing the map or factions (D14) [G3a]
+- [ ] Options: Show Map Location (the map, D13) and Conquest Kills
+  (conquest, D14); feminine ranks from a feminine title (D7); the other
+  keys (alignment cycling, map, dismount) [G3a]
+- [ ] The Utumno warning message's trigger, the Utumno portal (D10) [G3a]
+- [ ] The factions screen's map of the faction and its button to the
+  faction's control zone on the full map (LOTRGuiMap, D13); the mini-quest
+  events of opening it and cycling factions (D14); /alignmentsee for an
+  offline player; the menu's and factions screen's dimension (always
+  Middle-earth until Utumno, D10) [G3b]
+- [ ] An operator in creative right-clicking a branded creature with a clock
+  is told who branded it ("Entity was branded by ..."), with the branding
+  iron; the hired-unit half is done (G5) [G2b]
+- [ ] The alignment bar moving down for a LOTR boss's bar or a watched
+  invasion's (D12/D14); the popup's conquest line, with conquest (D14) [G4a]
+- [ ] With fellowships (D14): a fellow's alignment shown overhead even when
+  they hide it, and fellow players' health bars (`fellowPlayerHealthBars`)
+  [G4b]
+- [ ] The Fangorn tree penalty: `LOTRAlignmentValues.FANGORN_TREE_PENALTY`
+  exists but nothing applies it (the original's LOTREventHandler took a
+  point of Fangorn alignment for breaking a tree in Fangorn's land) --
+  found during G4a, awaiting the user's word [G4a]
+- [ ] The frost overlay's other sources, frost damage (`LOTRDamage.frost`)
+  and Utumno's ice wargs and spiders, and the burn overlay's, the desert
+  heat; the biome's name above the compass (D10) [G4c]
 - [ ] Leaf particles (user: "leave the leaves for now") [B4]; also the
   Galadhrim trader's burst of gold leaves on death and departure, and the
   Wood-elf scout's green leaves as it vanishes [D9g], the gold leaves an
   Ent lets fall as it heals a corrupt mallorn [D9o], and the Mallorn Ent's
   gold leaves (falling from its crown, swirling as it rises, bursting as it
   dies, and ringing its leaf bomb) [D9q]
-- [ ] Faction recipe unlock toasts still fire (`showNotification`) [B6a]
-- [ ] The menu key: the original's **L** (`LOTRKeyHandler.keyBindingMenu`,
-  key 38) opened the LOTR menu, and from it the factions screen.
-  `LOTRKeyBindings` is commented out, so `LOTRScreenFactions` (pledge and
-  unpledge included) cannot be opened in game [C4]
-- [ ] Reeds' lowest segment on solid ground should use `reeds_lower` /
-  `dried_reeds_lower`, as `LOTRRenderBlocks.renderReeds` did; the blockstate
-  has only `top`/`mid` [C4]
 
 ## Suggested order
 

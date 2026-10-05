@@ -3,11 +3,10 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRKhamulsFireJarBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
-
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;

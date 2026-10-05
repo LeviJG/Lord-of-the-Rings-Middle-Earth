@@ -23,7 +23,10 @@ import net.minecraft.world.item.Items;
  */
 public class LOTRThrownRockRenderer extends EntityRenderer<LOTRThrownRockEntity, LOTRThrownRockRenderState> {
 
-    private static final ItemStack STONE = new ItemStack(Items.STONE);
+    // Made on first use, not with the renderer: an ItemStack needs the item
+    // components bound, and renderers are built in the first resource reload,
+    // before they are.
+    private @org.jspecify.annotations.Nullable ItemStack stone;
 
     private final ItemModelResolver items;
 
@@ -42,7 +45,7 @@ public class LOTRThrownRockRenderer extends EntityRenderer<LOTRThrownRockEntity,
         super.extractRenderState(rock, state, partialTick);
         state.yaw = rock.getYRot(partialTick);
         state.pitch = rock.getXRot(partialTick);
-        ItemStack block = rock.getSpawnsTroll() ? new ItemStack(LOTRUtilityBlocks.TROLL_TOTEM_HEAD) : STONE;
+        ItemStack block = rock.getSpawnsTroll() ? new ItemStack(LOTRUtilityBlocks.TROLL_TOTEM_HEAD) : stone();
         this.items.updateForNonLiving(state.block, block, ItemDisplayContext.NONE, rock);
     }
 
@@ -55,5 +58,12 @@ public class LOTRThrownRockRenderer extends EntityRenderer<LOTRThrownRockEntity,
         state.block.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, state.outlineColor);
         poseStack.popPose();
         super.submit(state, poseStack, collector, camera);
+    }
+
+    private ItemStack stone() {
+        if (this.stone == null) {
+            this.stone = new ItemStack(Items.STONE);
+        }
+        return this.stone;
     }
 }

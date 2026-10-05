@@ -1,5 +1,9 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.command;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -67,7 +71,30 @@ public final class LOTRAlignmentCommand {
             registerAlignment(dispatcher);
             registerFacRelations(dispatcher);
             registerAlignmentZones(dispatcher);
+            registerAlignmentSee(dispatcher);
         });
+    }
+
+    /**
+     * LOTRCommandAlignmentSee: the named player's alignments, shown to the
+     * sender in the factions screen.
+     *
+     * <p>NOT ported yet: an offline player's (the original read their saved
+     * data by name).
+     */
+    private static void registerAlignmentSee(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("alignmentsee")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .then(Commands.argument("player", EntityArgument.player()).executes(ctx -> {
+                    ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
+                    ServerPlayer sender = ctx.getSource().getPlayerOrException();
+                    Map<LOTRFaction, Float> alignments = new HashMap<>();
+                    for (LOTRFaction f : LOTRFaction.getPlayableAlignmentFactions()) {
+                        alignments.put(f, LOTRPlayerAlignments.getAlignment(target, f));
+                    }
+                    ServerPlayNetworking.send(sender, new LOTRMenuPayloads.AlignmentSee(target.getName().getString(), alignments));
+                    return 1;
+                })));
     }
 
     private static void registerAlignment(CommandDispatcher<CommandSourceStack> dispatcher) {

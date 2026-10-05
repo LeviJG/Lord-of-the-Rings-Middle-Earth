@@ -28,7 +28,7 @@ import org.jspecify.annotations.Nullable;
 public class LOTRBreeFarmhandEntity extends LOTRBreeManEntity implements LOTRFarmhand {
 
     /** What it plants unhired; wheat seeds unless set. */
-    private @Nullable Item seedsItem;
+    public @Nullable Item seedsItem;
 
     public LOTRBreeFarmhandEntity(EntityType<? extends LOTRBreeFarmhandEntity> type, Level level) {
         super(type, level);

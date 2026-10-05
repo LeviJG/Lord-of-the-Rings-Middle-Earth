@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredTask;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredInfoPayload;
@@ -22,17 +23,13 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTRSpeechClient and LOTRPacketNPCSpeech.Handler (with the hired-info
  * packet's handler, LOTRPacketHiredInfo): what each NPC is saying,
- * shown over its head for ten seconds (immersive speech), or else -- and
- * always when the server insists -- in chat as {@code <name> line}.
- *
- * <p>NOT ported yet: the "Immersive Speech" and "Immersive Speech Chat Logs"
- * config options (LOTRConfig); their defaults, on and off, are fixed here.
+ * shown over its head for ten seconds ("Immersive Speech"), or else -- and
+ * also with "Immersive Speech Chat Logs", and always when the server insists
+ * -- in chat as {@code <name> line}.
  */
 public final class LOTRSpeechClient {
 
     public static final int DISPLAY_TIME = 200;
-    private static final boolean IMMERSIVE_SPEECH = true;
-    private static final boolean IMMERSIVE_SPEECH_CHAT_LOG = false;
 
     private static final Map<UUID, TimedSpeech> NPC_SPEECHES = new HashMap<>();
 
@@ -62,10 +59,10 @@ public final class LOTRSpeechClient {
             if (!(context.client().level.getEntity(payload.entityId()) instanceof LOTRNPCEntity npc)) {
                 return;
             }
-            if (IMMERSIVE_SPEECH) {
+            if (LOTRConfig.immersiveSpeech) {
                 NPC_SPEECHES.put(npc.getUUID(), new TimedSpeech(payload.speech(), DISPLAY_TIME));
             }
-            if (!IMMERSIVE_SPEECH || IMMERSIVE_SPEECH_CHAT_LOG || payload.forceChatMsg()) {
+            if (!LOTRConfig.immersiveSpeech || LOTRConfig.immersiveSpeechChatLog || payload.forceChatMsg()) {
                 context.player().sendSystemMessage(Component.empty()
                         .append(Component.literal("<").append(npc.getName()).append("> ").withStyle(ChatFormatting.YELLOW))
                         .append(Component.literal(payload.speech()).withStyle(ChatFormatting.WHITE)));

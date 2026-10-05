@@ -147,12 +147,6 @@ public class LOTRRohanManEntity extends LOTRManEntity {
         return isFriendly(player) ? "rohan/man/friendly" : "rohan/man/hostile";
     }
 
-    /** LOTREntityNPC.getExperiencePoints: 4 to 6. */
-    @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
-    }
-
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {

@@ -33,7 +33,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnGroupData;
@@ -236,11 +235,6 @@ public class LOTRTrollEntity extends LOTRNPCEntity {
                           boolean comesFromEffect) {
         super.knockback(strength, x, z, source, damage, comesFromEffect);
         setDeltaMovement(getDeltaMovement().scale(0.5));
-    }
-
-    @Override
-    public boolean canReEquipHired(EquipmentSlot slot, ItemStack stack) {
-        return false;
     }
 
     // --- Tickling -----------------------------------------------------------------
@@ -495,5 +489,11 @@ public class LOTRTrollEntity extends LOTRNPCEntity {
         this.trollImmuneToSun = input.getBooleanOr("ImmuneToSun", false);
         setHasTwoHeads(input.getBooleanOr("TwoHeads", false));
         input.getString("TrollName").ifPresent(this.familyInfo::setName);
+    }
+
+    /** canReEquipHired: its player cannot dress it. */
+    @Override
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        return false;
     }
 }

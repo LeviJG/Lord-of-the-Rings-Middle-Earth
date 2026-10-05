@@ -143,12 +143,6 @@ public class LOTRBreeManEntity extends LOTRManEntity {
         return isFriendlyAndAligned(player) ? "bree/man/friendly" : "bree/man/hostile";
     }
 
-    /** LOTREntityNPC.getExperiencePoints: 4 to 6. */
-    @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
-    }
-
     /** onSpawnWithEgg: a dagger or an axe, and nothing in hand at rest. */
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,

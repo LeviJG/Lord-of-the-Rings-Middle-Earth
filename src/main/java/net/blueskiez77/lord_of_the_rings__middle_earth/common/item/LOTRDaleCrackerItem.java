@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRDaleCrackerMenu;
 import net.minecraft.core.component.DataComponents;
@@ -206,7 +207,9 @@ public class LOTRDaleCrackerItem extends Item implements LOTRTooltipItem {
             if (stack.isDamageableItem()) {
                 stack.setDamageValue(Mth.floor(stack.getMaxDamage() * Mth.randomBetween(random, 0.0f, 0.75f)));
             }
-            LOTRModifiers.applyRandom(stack, random, random.nextInt(5) == 0);
+            if (LOTRConfig.enchantingLOTR) {
+                LOTRModifiers.applyRandom(stack, random, random.nextInt(5) == 0);
+            }
             result.add(stack);
         }
         return result;

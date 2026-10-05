@@ -3,13 +3,22 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Function;
+
+import com.mojang.serialization.Codec;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRCrossbowBoltEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRPlateEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRPoisonedArrowEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRTraderRespawnEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRBurningPanicGoal;
@@ -18,8 +27,10 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRHiri
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNPCHurtByTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredNPCInfo;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRInventoryHiredReplacedItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRMercenary;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeNetworking;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTraderNPCInfo;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTravellingTrader;
@@ -31,24 +42,34 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestCont
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCrossbowItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRLeatherHatItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredInfoPayload;
 
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ItemParticleOption;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -62,15 +83,21 @@ import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.RangedAttackMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.ProjectileUtil;
 import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
@@ -99,11 +126,10 @@ import org.jspecify.annotations.Nullable;
  *     when it dies; for a hired unit, its service ({@link #hiredNPCInfo}).</li>
  * </ul>
  *
- * <p>NOT ported yet: the trade and hire screens (D16), riding mounts (D9c),
- * mini-quests (LOTREntityQuestInfo, D14), bosses, the travelling traders'
- * spawner (D12) and
- * mercenaries (D9d), invasions (D12), banner protection (D14), conquest spawning (D12), the kill and talk achievements (D7), and
- * Utumno's drops (D15). Pouches are left out (user).
+ * <p>NOT ported yet: mini-quests (LOTREntityQuestInfo, D14); invasions and
+ * conquest spawning (D12); the biomes' part in spawning -- where hostiles
+ * walk by day, and the spawn count multiplier (D10); the kill and talk
+ * achievements (D7); and Utumno's drops (D15). Pouches are left out (user).
  */
 public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttackMob {
 
@@ -127,6 +153,8 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     public final LOTRFamilyInfo familyInfo = new LOTRFamilyInfo(this);
     public final LOTRInventoryNPCItems npcItemsInv = new LOTRInventoryNPCItems(this);
     public final LOTRHiredNPCInfo hiredNPCInfo = new LOTRHiredNPCInfo(this);
+    /** What a hired unit had on before its player re-equipped it. */
+    public final LOTRInventoryHiredReplacedItems hiredReplacedInv = new LOTRInventoryHiredReplacedItems(this);
 
     public boolean isPassive;
     public boolean isImmuneToFrost;
@@ -136,6 +164,8 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     /** A boss's own record (LOTRBoss); null for any other NPC. */
     public final @Nullable LOTRBossInfo bossInfo;
     public boolean liftSpawnRestrictions;
+    /** Spawns even where a banner protects the land against it (the Grey Wanderer's arrival, D12). */
+    public boolean liftBannerRestrictions;
     public boolean isTargetSeeker;
     public final List<LOTRFaction> killBonusFactions = new ArrayList<>();
     public @Nullable String npcLocationName;
@@ -163,6 +193,9 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     public int npcTalkTick;
     private boolean addedBurningPanic;
     private boolean loadingFromNBT;
+    /** The festive hat or pumpkin its client shows on its head, and the entity ID it was chosen for. */
+    private @Nullable ItemStack festiveHead;
+    private int festiveHeadId;
 
     protected LOTRNPCEntity(EntityType<? extends LOTRNPCEntity> type, Level level) {
         super(type, level);
@@ -274,6 +307,12 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         return 40;
     }
 
+    /** getTalkInterval: an NPC's living sound, every ten seconds or so. */
+    @Override
+    public int getAmbientSoundInterval() {
+        return 200;
+    }
+
     /**
      * getHeldItemLeft, where a kind holds something of its own in the left hand
      * (an orc bombardier's bomb); empty for the usual banner or trader's coin.
@@ -315,14 +354,6 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     }
 
     /**
-     * canReEquipHired: whether the hired-unit inventory (LOTRSlotHiredReplaceItem,
-     * with the hire screens, D16) may put this stack in this slot.
-     */
-    public boolean canReEquipHired(EquipmentSlot slot, ItemStack stack) {
-        return true;
-    }
-
-    /**
      * getBlockPathWeight: anywhere, once spawn restrictions are lifted; for a
      * creature of the dark, the darker the better (half less the light's
      * brightness); otherwise nowhere in particular.
@@ -337,9 +368,38 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             return 1.0f;
         }
         if (this.spawnsInDarkness) {
-            return 0.5f - level.getLightLevelDependentMagicValue(pos);
+            return 0.5f - LOTRLegacyWorld.brightness(level, pos);
         }
         return 0.0f;
+    }
+
+    /**
+     * getCanSpawnHere: a creature of the dark only where it is dark enough,
+     * unless its spawn restrictions are lifted; and no NPC where a banner
+     * protects the land against it or a respawner blocks its faction's
+     * spawns, unless its banner restrictions are lifted.
+     *
+     * <p>NOT ported yet: the biomes where hostiles walk by day (D10) and
+     * conquest spawning's exemptions (D12).
+     */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        if ((!this.spawnsInDarkness || this.liftSpawnRestrictions || isValidLightLevelForDarkSpawn(level))
+                && super.checkSpawnRules(level, reason)) {
+            return this.liftBannerRestrictions
+                    || !LOTRBannerProtection.isProtected(level(), this, LOTRBannerProtection.forNPC(this), false)
+                    && !LOTRNPCRespawnerEntity.isSpawnBlocked(this);
+        }
+        return false;
+    }
+
+    /**
+     * isValidLightLevelForDarkSpawn: a monster's darkness. The original copied
+     * 1.7.10's monster light check, so this is 26.2's.
+     */
+    private boolean isValidLightLevelForDarkSpawn(LevelAccessor level) {
+        return level instanceof ServerLevelAccessor serverLevel
+                && Monster.isDarkEnoughToSpawn(serverLevel, blockPosition(), this.random);
     }
 
     /** Hired by a player (LOTRHiredNPCInfo, D9b). */
@@ -347,9 +407,22 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         return this.hiredNPCInfo.isActive;
     }
 
+    /** canReEquipHired: whether its player may put this on it in this slot (the hired inventory). */
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        return true;
+    }
+
     /** isTrader: a trader, a hirer or a mercenary. */
     public boolean isTrader() {
         return this instanceof LOTRTradeable || this instanceof LOTRUnitTradeable || this instanceof LOTRMercenary;
+    }
+
+    /**
+     * A trader or a hirer, but not a mercenary: those whose structure home
+     * holds them (preventTraderKidnap) and who leave a respawner on death.
+     */
+    private boolean tradesOrHires() {
+        return this instanceof LOTRTradeable || this instanceof LOTRUnitTradeable;
     }
 
     public boolean canBeFreelyTargetedBy(Mob attacker) {
@@ -358,14 +431,14 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     // --- Names ------------------------------------------------------------------
 
-    /** getCommandSenderName: "Name, the Kind" (entity.lotr.generic.entityName). */
+    /** getCommandSenderName: "Name, the Kind" (entity.lotr.generic.entityName); every NPC is Gandalf on the first of April. */
     @Override
     public Component getName() {
         if (hasCustomName()) {
             return super.getName();
         }
         Component kind = getEntityClassName();
-        String npcName = getNPCName();
+        String npcName = LOTRMod.isAprilFools() ? "Gandalf" : getNPCName();
         if (npcName.equals(kind.getString())) {
             return kind;
         }
@@ -373,7 +446,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     }
 
     /** getEntityClassName: the kind of NPC it is, as its name shows it. */
-    protected Component getEntityClassName() {
+    public Component getEntityClassName() {
         return getType().getDescription();
     }
 
@@ -424,6 +497,46 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     // --- Items -------------------------------------------------------------------
 
+    /**
+     * getEquipmentInSlot: on its client, at Halloween one NPC in three wears a
+     * pumpkin (one in ten of those lit), and at Christmas one in three a red
+     * hat with a white feather or a party hat of any colour. Each NPC's is
+     * chosen once; none of it is real.
+     */
+    @Override
+    public ItemStack getItemBySlot(EquipmentSlot slot) {
+        if (slot == EquipmentSlot.HEAD && level().isClientSide()) {
+            if (this.festiveHead == null || this.festiveHeadId != getId()) {
+                this.festiveHead = createFestiveHead();
+                this.festiveHeadId = getId();
+            }
+            if (!this.festiveHead.isEmpty()) {
+                return this.festiveHead;
+            }
+        }
+        return super.getItemBySlot(slot);
+    }
+
+    private ItemStack createFestiveHead() {
+        RandomSource festiveRand = RandomSource.create(getId() * 341873128712L);
+        if (LOTRMod.isHalloween()) {
+            if (festiveRand.nextInt(3) == 0) {
+                return new ItemStack(festiveRand.nextInt(10) == 0 ? Items.JACK_O_LANTERN : Items.CARVED_PUMPKIN);
+            }
+        } else if (LOTRMod.isChristmas() && festiveRand.nextInt(3) == 0) {
+            if (this.random.nextBoolean()) {
+                ItemStack hat = new ItemStack(LOTRMiscItems.LEATHER_HAT);
+                LOTRLeatherHatItem.setHatColor(hat, 0xCC231B);
+                LOTRLeatherHatItem.setFeatherColor(hat, LOTRLeatherHatItem.FEATHER_WHITE);
+                return hat;
+            }
+            ItemStack hat = new ItemStack(LOTRMiscItems.PARTY_HAT);
+            hat.set(DataComponents.DYED_COLOR, new DyedItemColor(Mth.hsvToRgb(this.random.nextFloat(), 1.0f, 1.0f)));
+            return hat;
+        }
+        return ItemStack.EMPTY;
+    }
+
     public boolean isEating() {
         return this.entityData.get(DATA_EATING);
     }
@@ -439,7 +552,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     /** isAimingRanged: a bow (not a spear or trident) drawn on a target in range. */
     public boolean isAimingRanged() {
         ItemStack stack = getMainHandItem();
-        if (!stack.isEmpty() && stack.getUseAnimation() == net.minecraft.world.item.ItemUseAnimation.BOW) {
+        if (!stack.isEmpty() && stack.getUseAnimation() == ItemUseAnimation.BOW) {
             LivingEntity target = getTarget();
             return target != null && distanceToSqr(target) < getMaxCombatRangeSq();
         }
@@ -469,9 +582,9 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     /**
      * addTargetTasks: retaliate against whoever hurts it and, for a target
-     * seeker, look for players of low alignment and NPCs of hostile factions.
-     * The hiring-player target tasks come with hiring (D9b). Returns the last
-     * priority used.
+     * seeker, look for players of low alignment and NPCs of hostile factions;
+     * a hired unit also takes on whoever hurts its player or whom its player
+     * hurts. Returns the last priority used.
      */
     public int addTargetTasks(boolean seekTargets) {
         return addTargetTasks(seekTargets, LOTRNearestAttackableTargetGoal::forPlayers);
@@ -482,7 +595,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
      * seeking out players (the Wood-elves' is warier).
      */
     public int addTargetTasks(boolean seekTargets,
-                              java.util.function.Function<PathfinderMob, LOTRNearestAttackableTargetGoal> playerGoal) {
+                              Function<PathfinderMob, LOTRNearestAttackableTargetGoal> playerGoal) {
         return addTargetTasks(seekTargets, playerGoal, LOTRNearestAttackableTargetGoal::forFactions);
     }
 
@@ -491,8 +604,8 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
      * NPC targets too (the huorns'): the original built both goals of it.
      */
     public int addTargetTasks(boolean seekTargets,
-                              java.util.function.Function<PathfinderMob, LOTRNearestAttackableTargetGoal> playerGoal,
-                              java.util.function.Function<PathfinderMob, LOTRNearestAttackableTargetGoal> factionGoal) {
+                              Function<PathfinderMob, LOTRNearestAttackableTargetGoal> playerGoal,
+                              Function<PathfinderMob, LOTRNearestAttackableTargetGoal> factionGoal) {
         this.targetSelector.removeAllGoals(g -> true);
         this.targetSelector.addGoal(1, new LOTRHiringPlayerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new LOTRHiringPlayerHurtTargetGoal(this));
@@ -579,6 +692,33 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         return hit;
     }
 
+    /**
+     * The original sat every rider of an animal mount with its feet at half the
+     * mount's height (getMountedYOffset). The port's animal mounts carry their
+     * passengers 0.51875 above that (LOTREntities.mount), so an NPC rider
+     * sits back down by the same amount. Mounts that are NPCs themselves (wargs,
+     * spiders) already carry riders at the original's height.
+     */
+    @Override
+    public Vec3 getVehicleAttachmentPoint(Entity vehicle) {
+        if (!(vehicle instanceof LOTRNPCEntity)) {
+            return new Vec3(0.0, LOTREntities.MOUNT_PASSENGER_RAISE, 0.0);
+        }
+        return super.getVehicleAttachmentPoint(vehicle);
+    }
+
+    /**
+     * EntityAITarget.isSuitableTarget never asked the difficulty: on Peaceful an
+     * NPC still turns on a player who hurts it (or one it seeks out), as in the
+     * original -- its blows then do nothing, as mob damage to players does on
+     * Peaceful. 26.2's LivingEntity.canAttack refuses players outright there,
+     * which left NPCs ignoring every attack; only that refusal is dropped.
+     */
+    @Override
+    public boolean canAttack(LivingEntity target) {
+        return target.canBeSeenAsEnemy();
+    }
+
     /** attackEntityFrom: nearby banners soften the blow, a twelfth each. */
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
@@ -596,7 +736,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             this.lastHurtByPlayer = null;
         }
         if (hurt && this.hurtOnlyByPlates) {
-            this.hurtOnlyByPlates = source.getDirectEntity() instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRPlateEntity;
+            this.hurtOnlyByPlates = source.getDirectEntity() instanceof LOTRPlateEntity;
         }
         return hurt;
     }
@@ -621,7 +761,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     /** The boss bar, for those the boss is seen by. */
     @Override
-    public void startSeenByPlayer(net.minecraft.server.level.ServerPlayer player) {
+    public void startSeenByPlayer(ServerPlayer player) {
         super.startSeenByPlayer(player);
         if (this.bossInfo != null) {
             this.bossInfo.startSeenByPlayer(player);
@@ -629,7 +769,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     }
 
     @Override
-    public void stopSeenByPlayer(net.minecraft.server.level.ServerPlayer player) {
+    public void stopSeenByPlayer(ServerPlayer player) {
         super.stopSeenByPlayer(player);
         if (this.bossInfo != null) {
             this.bossInfo.stopSeenByPlayer(player);
@@ -721,16 +861,18 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     /**
      * speakTo: its own bank, now and then a holiday one, and once in ten
-     * thousand the Easter egg. The April Fools' bank is left out.
+     * thousand the Easter egg.
      */
     public boolean speakTo(Player player) {
         String bank = getSpeechBank(player);
         if (this.random.nextInt(8) == 0) {
             if (LOTRMod.isChristmas()) {
                 bank = "special/christmas";
-            } else if (isNewYearsDay()) {
+            } else if (LOTRMod.isNewYearsDay()) {
                 bank = "special/newYear";
-            } else if (isHalloween()) {
+            } else if (LOTRMod.isAprilFools()) {
+                bank = "special/aprilFool";
+            } else if (LOTRMod.isHalloween()) {
                 bank = "special/halloween";
             }
         }
@@ -744,20 +886,45 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         return false;
     }
 
-    public static boolean isNewYearsDay() {
-        java.time.LocalDate today = java.time.LocalDate.now();
-        return today.getMonth() == java.time.Month.JANUARY && today.getDayOfMonth() == 1;
+    /**
+     * LOTREventHandler.onEntityInteract's NPC branches ran before any NPC's own
+     * interact: a trader, hirer or mercenary who will deal with the player,
+     * or the player's own hired unit, offers its choice of screen. Here they
+     * come before every subclass's mobInteract.
+     */
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+        if (LOTRTradeNetworking.tryOpenInteract(this, player)) {
+            return InteractionResult.SUCCESS;
+        }
+        // An operator in creative with a clock is told whose hired unit this is.
+        if (this.hiredNPCInfo.isActive && player.getAbilities().instabuild
+                && player.getItemInHand(hand).is(Items.CLOCK)) {
+            UUID hiringUUID = this.hiredNPCInfo.getHiringPlayerUUID();
+            if (player instanceof ServerPlayer serverPlayer && hiringUUID != null
+                    && serverPlayer.level().getServer().getPlayerList().isOp(serverPlayer.nameAndId())) {
+                String name = serverPlayer.level().getServer().services().nameToIdCache().get(hiringUUID)
+                        .map(NameAndId::name).orElse(hiringUUID.toString());
+                player.sendSystemMessage(Component.literal("Hired unit belongs to " + name)
+                        .withStyle(ChatFormatting.GREEN));
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return super.interact(player, hand, location);
     }
 
-    /** LOTRMod.isHalloween: the last day of October. */
-    public static boolean isHalloween() {
-        java.time.LocalDate today = java.time.LocalDate.now();
-        return today.getMonth() == java.time.Month.OCTOBER && today.getDayOfMonth() == 31;
+    @Override
+    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+        return talkInteract(player, hand);
+    }
+
+    /** The trade screen's Talk button: interactFirst, without the item in hand. */
+    public InteractionResult talkInteract(Player player) {
+        return talkInteract(player, InteractionHand.MAIN_HAND);
     }
 
     /** interact: marriage first, then a word -- if it is not fighting. */
-    @Override
-    protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+    private InteractionResult talkInteract(Player player, InteractionHand hand) {
         if (this.familyInfo.interact(player, player.getItemInHand(hand))) {
             return InteractionResult.SUCCESS;
         }
@@ -771,6 +938,9 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     @Override
     public void aiStep() {
+        // handleNPCMovement's updateArmSwingProgress: 26.2 advances the swing
+        // only for monsters and players, so an NPC's arm never moved.
+        updateSwingTime();
         super.aiStep();
         if (this.bossInfo != null) {
             this.bossInfo.onUpdate();
@@ -794,22 +964,53 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             if (this.travellingTraderInfo != null) {
                 this.travellingTraderInfo.tick();
             }
-            if (isTrader()) {
+            if (tradesOrHires()) {
                 recordInitialHome();
             }
             updateHealingLogic();
+            checkGUIOpenAndNavigation(level);
             if (this.npcTalkTick < getNPCTalkInterval()) {
                 ++this.npcTalkTick;
             }
             returnHome();
         }
         if (this.isChilly && getDeltaMovement().lengthSqr() >= 0.01 && level().isClientSide()) {
-            // The "chill" particle is the port's snowflake until the LOTR chill particle exists.
             double x = getX() + Mth.randomBetween(this.random, -0.3f, 0.3f) * getBbWidth();
             double y = getBoundingBox().minY + Mth.randomBetween(this.random, 0.2f, 0.7f) * getBbHeight();
             double z = getZ() + Mth.randomBetween(this.random, -0.3f, 0.3f) * getBbWidth();
-            level().addParticle(net.minecraft.core.particles.ParticleTypes.SNOWFLAKE, x, y, z,
+            level().addParticle(LOTRParticles.CHILL, x, y, z,
                     -getDeltaMovement().x * 0.5, 0.0, -getDeltaMovement().z * 0.5);
+        }
+    }
+
+    /**
+     * checkGUIOpenAndNavigation: a trader stands still -- and its mount with
+     * it -- while a player has its trade, coin exchange, smith's anvil or hire
+     * screen open; and a hired unit while its player has its screen open.
+     *
+     * <p>NOT ported yet: the same for an open mini-quest offer (with quests).
+     */
+    private void checkGUIOpenAndNavigation(ServerLevel level) {
+        if (!isAlive() || getTarget() != null) {
+            return;
+        }
+        boolean guiOpen = false;
+        if (isTrader()) {
+            for (Player player : level.players()) {
+                if (LOTRTradeNetworking.isGuiOpen(this, player)) {
+                    guiOpen = true;
+                    break;
+                }
+            }
+        }
+        if (this.hiredNPCInfo.isActive && this.hiredNPCInfo.isGuiOpen) {
+            guiOpen = true;
+        }
+        if (guiOpen) {
+            getNavigation().stop();
+            if (getVehicle() instanceof LOTRNPCMount && getVehicle() instanceof Mob mount) {
+                mount.getNavigation().stop();
+            }
         }
     }
 
@@ -830,13 +1031,9 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     }
 
     /**
-     * handleNPCMovement: an NPC that has strayed from its home wanders back
-     * towards it, or forgets it if it is more than 128 blocks past its range.
-     */
-    /**
-     * updateNPCState's initial home, kept for LOTRConfig.preventTraderKidnap
-     * -- a trader carried further than that from it is put back. The option
-     * is not ported yet and defaults to 0, off.
+     * updateNPCState's trader home: where a structure-bound trader first had
+     * its home, and -- with "Prevent trader transport range" above 0 -- the
+     * trader put back there, off any mount, once carried further than that.
      */
     private void recordInitialHome() {
         if (!this.setInitialHome) {
@@ -845,6 +1042,14 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
                 this.initHomeRange = getHomeRadius();
             }
             this.setInitialHome = true;
+        }
+        int preventKidnap = LOTRConfig.preventTraderKidnap;
+        if (preventKidnap > 0 && this.initHomeRange > 0
+                && distanceToSqr(Vec3.atCenterOf(this.initHome)) > (double) preventKidnap * preventKidnap) {
+            if (getVehicle() != null) {
+                stopRiding();
+            }
+            snapTo(this.initHome.getX() + 0.5, this.initHome.getY(), this.initHome.getZ() + 0.5, getYRot(), getXRot());
         }
     }
 
@@ -1005,8 +1210,8 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     public void syncHiredInfo() {
         if (level() instanceof ServerLevel level && this.tickCount > 0) {
             LOTRHiredInfoPayload payload = LOTRHiredInfoPayload.of(this);
-            for (net.minecraft.server.level.ServerPlayer player : net.fabricmc.fabric.api.networking.v1.PlayerLookup.tracking(this)) {
-                net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.send(player, payload);
+            for (ServerPlayer player : PlayerLookup.tracking(this)) {
+                ServerPlayNetworking.send(player, payload);
             }
         }
     }
@@ -1048,14 +1253,19 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         if (this.spawnRidingHorse && (!(this instanceof LOTRBannerBearer) || this.canBannerBearerSpawnRiding)) {
             spawnOnMount(level);
         }
-        // LOTRItemSpawnEgg.onItemUse: kept for good, and onArtificalSpawn.
+        // One trader in ten thousand asks a hundred times the price, and is called Noah.
         if (this.traderNPCInfo != null && this.random.nextInt(10000) == 0) {
             this.traderNPCInfo.inflateBuyPrices();
+            this.familyInfo.setName("Noah");
         }
-        if (reason == EntitySpawnReason.SPAWN_ITEM_USE) {
+        // LOTRItemSpawnEgg.onItemUse and LOTRDispenseSpawnEgg: kept for good;
+        // and, from an egg used by hand, onArtificalSpawn.
+        if (reason == EntitySpawnReason.SPAWN_ITEM_USE || reason == EntitySpawnReason.DISPENSER) {
             this.isNPCPersistent = true;
             this.shouldTraderRespawn = true;
-            onArtificalSpawn();
+            if (reason == EntitySpawnReason.SPAWN_ITEM_USE) {
+                onArtificalSpawn();
+            }
         }
         return data;
     }
@@ -1066,6 +1276,26 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     @Override
     public boolean removeWhenFarAway(double distSqr) {
         return !this.isNPCPersistent && !this.shouldTraderRespawn && !isHired();
+    }
+
+    /**
+     * func_110163_bv (enablePersistence): nothing -- a name tag or a dispensed
+     * piece of armour does not keep an NPC for good; isNPCPersistent does.
+     */
+    @Override
+    public void setPersistenceRequired() {
+    }
+
+    /** allowLeashing: no NPC is led on a lead, unless its kind says otherwise. */
+    @Override
+    public boolean canBeLeashed() {
+        return false;
+    }
+
+    /** getExperiencePoints: 4 to 6, unless its kind says otherwise. */
+    @Override
+    protected int getBaseExperienceReward(ServerLevel level) {
+        return 4 + this.random.nextInt(3);
     }
 
     /**
@@ -1091,7 +1321,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             this.bossInfo.onDeath(source);
         }
         super.die(source);
-        if (level() instanceof ServerLevel level && isTrader() && this.shouldTraderRespawn) {
+        if (level() instanceof ServerLevel level && tradesOrHires() && this.shouldTraderRespawn) {
             LOTRTraderRespawnEntity respawn = new LOTRTraderRespawnEntity(LOTREntities.TRADER_RESPAWN, level);
             respawn.snapTo(getX(), getBoundingBox().minY + getBbHeight() / 2.0f, getZ(), 0.0f, 0.0f);
             respawn.copyTraderDataFrom(this);
@@ -1123,7 +1353,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         }
     }
 
-    public void dropNPCAmmo(ServerLevel level, net.minecraft.world.item.Item item, int looting) {
+    public void dropNPCAmmo(ServerLevel level, Item item, int looting) {
         int ammo = this.random.nextInt(3) + this.random.nextInt(looting + 1);
         for (int l = 0; l < ammo; ++l) {
             spawnAtLocation(level, new ItemStack(item));
@@ -1140,6 +1370,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     @Override
     protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean killedByPlayer) {
         int looting = lootingLevel(level, source);
+        this.hiredReplacedInv.dropAllReplacedItems();
         dropNPCEquipment(level, killedByPlayer, looting);
         if (killedByPlayer && canDropRares()) {
             if (this.random.nextInt(Math.max(8 - looting * 2, 1)) == 0) {
@@ -1233,7 +1464,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     public void spawnHearts() {
         if (level() instanceof ServerLevel level) {
-            level.sendParticles(net.minecraft.core.particles.ParticleTypes.HEART, getX(), getY() + 0.5 + getBbHeight() * 0.5,
+            level.sendParticles(ParticleTypes.HEART, getX(), getY() + 0.5 + getBbHeight() * 0.5,
                     getZ(), 8, getBbWidth(), getBbHeight() * 0.5, getBbWidth(), 0.02);
         }
     }
@@ -1244,8 +1475,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         if (held.isEmpty() || !(level() instanceof ServerLevel level)) {
             return;
         }
-        var particle = new net.minecraft.core.particles.ItemParticleOption(net.minecraft.core.particles.ParticleTypes.ITEM,
-                net.minecraft.world.item.ItemStackTemplate.fromNonEmptyStack(held));
+        var particle = new ItemParticleOption(ParticleTypes.ITEM, ItemStackTemplate.fromNonEmptyStack(held));
         for (int i = 0; i < 5; ++i) {
             Vec3 speed = new Vec3((this.random.nextFloat() - 0.5) * 0.1, Math.random() * 0.1 + 0.1, 0.0)
                     .xRot(-getXRot() * Mth.DEG_TO_RAD).yRot(-getYRot() * Mth.DEG_TO_RAD);
@@ -1258,7 +1488,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     public void spawnSmokes() {
         if (level() instanceof ServerLevel level) {
-            level.sendParticles(net.minecraft.core.particles.ParticleTypes.SMOKE, getX(), getY() + 0.5 + getBbHeight() * 0.5,
+            level.sendParticles(ParticleTypes.SMOKE, getX(), getY() + 0.5 + getBbHeight() * 0.5,
                     getZ(), 8, getBbWidth(), getBbHeight() * 0.5, getBbWidth(), 0.02);
         }
     }
@@ -1296,13 +1526,14 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             this.travellingTraderInfo.save(output);
         }
         this.hiredNPCInfo.save(output);
+        this.hiredReplacedInv.save(output);
         output.putBoolean("SetInitHome", this.setInitialHome);
         output.putInt("InitHomeX", this.initHome.getX());
         output.putInt("InitHomeY", this.initHome.getY());
         output.putInt("InitHomeZ", this.initHome.getZ());
         output.putInt("InitHomeR", this.initHomeRange);
         if (!this.killBonusFactions.isEmpty()) {
-            ValueOutput.TypedOutputList<String> list = output.list("BonusFactions", com.mojang.serialization.Codec.STRING);
+            ValueOutput.TypedOutputList<String> list = output.list("BonusFactions", Codec.STRING);
             this.killBonusFactions.forEach(f -> list.add(f.codeName()));
         }
     }
@@ -1329,7 +1560,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         this.isPassive = input.getBooleanOr("NPCPassive", false);
         this.isTraderEscort = input.getBooleanOr("TraderEscort", false);
         this.shouldTraderRespawn = input.getBooleanOr("TraderShouldRespawn",
-                isTrader() && !(this instanceof LOTRTravellingTrader) && this.isNPCPersistent);
+                tradesOrHires() && !(this instanceof LOTRTravellingTrader) && this.isNPCPersistent);
         if (this.traderNPCInfo != null) {
             this.traderNPCInfo.load(input);
         }
@@ -1337,12 +1568,13 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             this.travellingTraderInfo.load(input);
         }
         this.hiredNPCInfo.load(input);
+        this.hiredReplacedInv.load(input);
         this.setInitialHome = input.getBooleanOr("SetInitHome", false);
         this.initHome = new BlockPos(input.getIntOr("InitHomeX", 0), input.getIntOr("InitHomeY", 0),
                 input.getIntOr("InitHomeZ", 0));
         this.initHomeRange = input.getIntOr("InitHomeR", 0);
         this.killBonusFactions.clear();
-        for (String name : input.listOrEmpty("BonusFactions", com.mojang.serialization.Codec.STRING)) {
+        for (String name : input.listOrEmpty("BonusFactions", Codec.STRING)) {
             LOTRFaction f = LOTRFaction.forName(name);
             if (f != null) {
                 this.killBonusFactions.add(f);

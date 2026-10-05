@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg;
 
+import net.minecraft.world.entity.HasCustomInventoryScreen;
+import net.minecraft.world.Container;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRFollowHiringPlayerGoal;
@@ -64,11 +66,12 @@ import org.jspecify.annotations.Nullable;
  * <p>Its saddle and barding are its SADDLE and BODY equipment (the original's
  * two-slot AnimalChest, "WargSaddleItem" and "WargArmorItem").
  *
- * <p>NOT ported yet: the saddle-and-armour screen that is the only way to
- * put them on (openGUI, D16 -- until then a tame warg is never saddled by a
- * player); the rideWarg achievement (D7).
+ * They go on through its screen (openGUI): sneak-right-click a tame one, use
+ * a saddle on an unsaddled one, or press the inventory key while riding it.
+ *
+ * <p>NOT ported yet: the rideWarg achievement (D7).
  */
-public abstract class LOTRWargEntity extends LOTRNPCRideableEntity {
+public abstract class LOTRWargEntity extends LOTRNPCRideableEntity implements HasCustomInventoryScreen {
 
     private static final EntityDataAccessor<Byte> DATA_TYPE =
             SynchedEntityData.defineId(LOTRWargEntity.class, EntityDataSerializers.BYTE);
@@ -160,6 +163,80 @@ public abstract class LOTRWargEntity extends LOTRNPCRideableEntity {
     public void setBelongsToNPC(boolean flag) {
     }
 
+    /**
+     * wargInventory: the saddle and barding, as slots 0 and 1 over its SADDLE
+     * and BODY equipment.
+     */
+    @Override
+    public Container getMountInventory() {
+        return this.wargInventory;
+    }
+
+    private final Container wargInventory = new Container() {
+        private EquipmentSlot slot(int i) {
+            return i == 0 ? EquipmentSlot.SADDLE : EquipmentSlot.BODY;
+        }
+
+        @Override
+        public int getContainerSize() {
+            return 2;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return getItem(0).isEmpty() && getItem(1).isEmpty();
+        }
+
+        @Override
+        public ItemStack getItem(int i) {
+            return getItemBySlot(slot(i));
+        }
+
+        @Override
+        public ItemStack removeItem(int i, int count) {
+            ItemStack stack = getItem(i);
+            if (stack.isEmpty()) {
+                return ItemStack.EMPTY;
+            }
+            ItemStack taken = stack.split(count);
+            setItemSlot(slot(i), stack);
+            return taken;
+        }
+
+        @Override
+        public ItemStack removeItemNoUpdate(int i) {
+            ItemStack stack = getItem(i);
+            setItemSlot(slot(i), ItemStack.EMPTY);
+            return stack;
+        }
+
+        @Override
+        public void setItem(int i, ItemStack stack) {
+            setItemSlot(slot(i), stack);
+        }
+
+        @Override
+        public void setChanged() {
+        }
+
+        @Override
+        public boolean stillValid(Player player) {
+            return LOTRWargEntity.this.isAlive();
+        }
+
+        @Override
+        public void clearContent() {
+            setItem(0, ItemStack.EMPTY);
+            setItem(1, ItemStack.EMPTY);
+        }
+    };
+
+    /** The inventory key while riding it: LOTRPacketMountOpenInv. */
+    @Override
+    public void openCustomInventoryScreen(Player player) {
+        openGUI(player);
+    }
+
     public ItemStack getWargArmor() {
         return getItemBySlot(EquipmentSlot.BODY);
     }
@@ -215,7 +292,7 @@ public abstract class LOTRWargEntity extends LOTRNPCRideableEntity {
         ItemStack stack = player.getItemInHand(hand);
         if (isNPCTamed() && player.isShiftKeyDown()) {
             if (hasRequiredAlignment) {
-                // openGUI: the saddle-and-armour screen (D16).
+                openGUI(player);
                 return InteractionResult.SUCCESS;
             }
             notifyNotEnoughAlignment = true;
@@ -234,7 +311,7 @@ public abstract class LOTRWargEntity extends LOTRNPCRideableEntity {
         if (!notifyNotEnoughAlignment && isNPCTamed() && !isMountSaddled() && canWargBeRidden() && !isVehicle()
                 && stack.is(Items.SADDLE)) {
             if (hasRequiredAlignment) {
-                // openGUI (D16).
+                openGUI(player);
                 return InteractionResult.SUCCESS;
             }
             notifyNotEnoughAlignment = true;
@@ -375,5 +452,11 @@ public abstract class LOTRWargEntity extends LOTRNPCRideableEntity {
             }
         }
         return data;
+    }
+
+    /** canReEquipHired: its player cannot dress it. */
+    @Override
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        return false;
     }
 }

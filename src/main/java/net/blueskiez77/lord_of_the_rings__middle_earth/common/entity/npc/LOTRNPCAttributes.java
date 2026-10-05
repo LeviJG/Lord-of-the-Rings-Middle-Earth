@@ -20,6 +20,10 @@ public final class LOTRNPCAttributes {
     public static final Holder<Attribute> NPC_ATTACK_DAMAGE_EXTRA = register("npc_attack_damage_extra", 0.0);
     public static final Holder<Attribute> NPC_ATTACK_DAMAGE_DRUNK = register("npc_attack_damage_drunk", 4.0);
     public static final Holder<Attribute> NPC_RANGED_ACCURACY = register("npc_ranged_accuracy", 1.0);
+    /**
+     * lotr.horseAttackSpeed. Registered and set per NPC as in the original, but
+     * nothing reads it: a mounted NPC charges at its mount's own speed (user).
+     */
     public static final Holder<Attribute> HORSE_ATTACK_SPEED = register("horse_attack_speed", 1.7);
     public static final Holder<Attribute> THROWN_ROCK_DAMAGE = register("thrown_rock_damage", 5.0, 100.0);
 

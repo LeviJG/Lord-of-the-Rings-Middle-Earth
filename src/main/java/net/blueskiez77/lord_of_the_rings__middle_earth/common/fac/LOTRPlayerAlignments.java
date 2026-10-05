@@ -1,6 +1,16 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.fac;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRAlignmentHudPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRBrokenPledgePayload;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
@@ -9,15 +19,15 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRBrokenPledgePayload;
-
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * The alignment and pledge half of LOTRPlayerData. Alignments, the pledge and
@@ -59,12 +69,27 @@ public final class LOTRPlayerAlignments {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> sendBrokenPledge(handler.player));
     }
 
+    /**
+     * updateRegionAndViewingFaction: a player viewing a faction of another
+     * dimension is turned to the last viewed of this one's first region. Every
+     * player counts as in Middle-earth until Utumno is ported (D10).
+     */
+    private static void updateRegionAndViewingFaction(ServerPlayer player) {
+        LOTRDimension.DimensionRegion currentRegion = LOTRViewingFaction.getViewingFaction(player).factionRegion;
+        LOTRDimension currentDim = LOTRDimension.MIDDLE_EARTH;
+        if (currentRegion == null || currentRegion.getDimension() != currentDim) {
+            currentRegion = currentDim.dimensionRegions.get(0);
+            LOTRViewingFaction.setViewingFaction(player, LOTRViewingFaction.getRegionLastViewedFaction(player, currentRegion));
+        }
+    }
+
     private static LOTRPledgeCooldowns cooldowns(Player player) {
         return player.getAttachedOrCreate(PLEDGE_COOLDOWNS);
     }
 
-    /** onUpdate's share: handlePledgeCooldowns, then runAlignmentDraining. */
+    /** onUpdate's share: updateRegionAndViewingFaction, handlePledgeCooldowns, then runAlignmentDraining. */
     private static void tick(ServerPlayer player, int tick) {
+        updateRegionAndViewingFaction(player);
         LOTRPledgeCooldowns cd = cooldowns(player);
         if (cd.killCooldown > 0) {
             --cd.killCooldown;
@@ -72,20 +97,20 @@ public final class LOTRPlayerAlignments {
         if (cd.breakCooldown > 0) {
             setPledgeBreakCooldown(player, cd.breakCooldown - 1);
         }
-        if (tick % 1000 == 0) {
+        if (LOTRConfig.alignmentDrain && tick % 1000 == 0) {
             runAlignmentDraining(player);
         }
     }
 
     /**
      * runAlignmentDraining: holding positive alignment with two mortal enemies
-     * costs both five points (never below zero) every thousand ticks. The
-     * original's config switch for it defaulted on; the port has no config.
-     * Its HUD notice (LOTRPacketAlignDrain) belongs to the alignment bar.
+     * costs both five points (never below zero) every thousand ticks, unless
+     * "Enable alignment drain" is off. The first time, the player is told why;
+     * each time, the drain icon shows by the alignment bar (LOTRPacketAlignDrain).
      */
     private static void runAlignmentDraining(ServerPlayer player) {
-        java.util.List<LOTRFaction> drainFactions = new java.util.ArrayList<>();
-        java.util.List<LOTRFaction> allFacs = LOTRFaction.getPlayableAlignmentFactions();
+        List<LOTRFaction> drainFactions = new ArrayList<>();
+        List<LOTRFaction> allFacs = LOTRFaction.getPlayableAlignmentFactions();
         for (LOTRFaction fac1 : allFacs) {
             for (LOTRFaction fac2 : allFacs) {
                 if (!fac1.isMortalEnemy(fac2)
@@ -100,9 +125,13 @@ public final class LOTRPlayerAlignments {
                 }
             }
         }
-        for (LOTRFaction fac : drainFactions) {
-            float align = getAlignment(player, fac);
-            setAlignment(player, fac, align - Math.min(5.0f, align));
+        if (!drainFactions.isEmpty()) {
+            for (LOTRFaction fac : drainFactions) {
+                float align = getAlignment(player, fac);
+                setAlignment(player, fac, align - Math.min(5.0f, align));
+            }
+            LOTRGuiMessageTypes.sendMessageIfNotReceived(player, LOTRGuiMessageTypes.ALIGN_DRAIN);
+            ServerPlayNetworking.send(player, new LOTRAlignmentHudPayloads.AlignDrain(drainFactions.size()));
         }
     }
 
@@ -132,11 +161,42 @@ public final class LOTRPlayerAlignments {
         setAlignment(player, faction, getAlignment(player, faction) + delta);
     }
 
-    public static LOTRAlignmentBonusMap addAlignment(Player player,
-                                                     LOTRAlignmentValues.AlignmentBonus source,
-                                                     LOTRFaction faction) {
+    /** addAlignment at the entity: the popup rises from 0.7 of its height. */
+    public static LOTRAlignmentBonusMap addAlignment(Player player, LOTRAlignmentValues.AlignmentBonus source,
+                                                     LOTRFaction faction, Entity entity) {
+        return addAlignment(player, source, faction, null, entity);
+    }
+
+    public static LOTRAlignmentBonusMap addAlignment(Player player, LOTRAlignmentValues.AlignmentBonus source,
+                                                     LOTRFaction faction,
+                                                     @Nullable Collection<LOTRFaction> forcedBonusFactions,
+                                                     Entity entity) {
+        return addAlignment(player, source, faction, forcedBonusFactions, entity.getX(),
+                entity.getBoundingBox().minY + entity.getBbHeight() * 0.7, entity.getZ());
+    }
+
+    public static LOTRAlignmentBonusMap addAlignment(Player player, LOTRAlignmentValues.AlignmentBonus source,
+                                                     LOTRFaction faction, double posX, double posY, double posZ) {
+        return addAlignment(player, source, faction, null, posX, posY, posZ);
+    }
+
+    /**
+     * addAlignment: the bonus or penalty to the factions that care, and then
+     * (LOTRPlayerData.sendAlignmentBonusPacket) a popup of it to the player
+     * at the given spot. A kill's forced bonus factions (an invasion's, for
+     * those who fought it off) take their bonus in full wherever the kill was.
+     *
+     * <p>NOT ported yet: the conquest a kill earns for the pledged faction
+     * (LOTRConquestGrid.onConquestKill, D14).
+     */
+    public static LOTRAlignmentBonusMap addAlignment(Player player, LOTRAlignmentValues.AlignmentBonus source,
+                                                     LOTRFaction faction,
+                                                     @Nullable Collection<LOTRFaction> forcedBonusFactions,
+                                                     double posX, double posY, double posZ) {
         float bonus = source.bonus;
         LOTRAlignmentBonusMap factionBonusMap = new LOTRAlignmentBonusMap();
+        float prevMainAlignment = getAlignment(player, faction);
+        float conquestBonus = 0.0f;
 
         if (source.isKill) {
             for (LOTRFaction bonusFaction : faction.getBonusesForKilling()) {
@@ -145,7 +205,8 @@ public final class LOTRPlayerAlignments {
                     continue;
                 }
                 if (!source.killByHiredUnit) {
-                    float mplier = bonusFaction.getControlZoneAlignmentMultiplier(player);
+                    float mplier = forcedBonusFactions != null && forcedBonusFactions.contains(bonusFaction) ? 1.0f
+                            : bonusFaction.getControlZoneAlignmentMultiplier(player);
                     if (mplier > 0.0f) {
                         float alignment = getAlignment(player, bonusFaction);
                         float factionBonus = Math.abs(bonus) * mplier;
@@ -182,6 +243,11 @@ public final class LOTRPlayerAlignments {
             setAlignment(player, faction, alignment + factionBonus);
             factionBonusMap.put(faction, factionBonus);
         }
+        if ((!factionBonusMap.isEmpty() || conquestBonus != 0.0f) && player instanceof ServerPlayer serverPlayer) {
+            ServerPlayNetworking.send(serverPlayer, new LOTRAlignmentHudPayloads.AlignmentBonus(faction, prevMainAlignment,
+                    factionBonusMap, conquestBonus, posX, posY, posZ, source.name, source.needsTranslation, source.isKill,
+                    source.killByHiredUnit));
+        }
         return factionBonusMap;
     }
 
@@ -215,8 +281,8 @@ public final class LOTRPlayerAlignments {
         return getAlignment(player, faction) >= faction.getPledgeAlignment();
     }
 
-    public static java.util.List<LOTRFaction> getFactionsPreventingPledgeTo(Player player, LOTRFaction faction) {
-        java.util.List<LOTRFaction> enemies = new java.util.ArrayList<>();
+    public static List<LOTRFaction> getFactionsPreventingPledgeTo(Player player, LOTRFaction faction) {
+        List<LOTRFaction> enemies = new ArrayList<>();
         for (LOTRFaction other : LOTRFaction.values()) {
             if (!other.isPlayableAlignmentFaction()
                     || !doesFactionPreventPledge(faction, other)
@@ -292,7 +358,16 @@ public final class LOTRPlayerAlignments {
         LOTRFactionRank rankBelow2 = wasPledge.getRankBelow(wasPledge.getRankBelow(rank));
         float alignPenalty = Math.max(rankBelow2.alignment, pledgeLvl / 2.0f) - prevAlign;
         if (alignPenalty < 0.0f) {
-            addAlignment(player, LOTRAlignmentValues.createPledgePenalty(alignPenalty), wasPledge);
+            // The popup two blocks along the player's sight, or on the block it meets.
+            double lookRange = 2.0;
+            net.minecraft.world.phys.Vec3 posEye = player.getEyePosition();
+            net.minecraft.world.phys.Vec3 posSight = posEye.add(player.getLookAngle().scale(lookRange));
+            net.minecraft.world.phys.BlockHitResult hit = player.level().clip(new net.minecraft.world.level.ClipContext(posEye,
+                    posSight, net.minecraft.world.level.ClipContext.Block.COLLIDER, net.minecraft.world.level.ClipContext.Fluid.NONE,
+                    player));
+            net.minecraft.world.phys.Vec3 at = hit.getType() == net.minecraft.world.phys.HitResult.Type.BLOCK
+                    ? net.minecraft.world.phys.Vec3.atCenterOf(hit.getBlockPos()) : posSight;
+            addAlignment(player, LOTRAlignmentValues.createPledgePenalty(alignPenalty), wasPledge, at.x, at.y, at.z);
         }
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                 LOTRSounds.EVENT_UNPLEDGE, SoundSource.PLAYERS, 1.0f, 1.0f);

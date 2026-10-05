@@ -8,9 +8,6 @@ import net.minecraft.world.item.ItemStack;
 /**
  * LOTRTradeable: an NPC that buys and sells from its two pools. Bartenders
  * are {@link LOTRBartender}s too.
- *
- * <p>NOT ported yet: the trade screen and container (LOTRGuiTrade,
- * LOTRContainerTrade) that carry out a trade, with D16.
  */
 public interface LOTRTradeable {
 

@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -11,6 +12,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.ItemStack;
@@ -37,9 +39,8 @@ import net.minecraft.world.phys.Vec3;
  * within three blocks up or down. The trail STOPS at the first step that finds
  * nowhere to burn, so it runs along a floor and halts at a cliff.
  *
- * <p>NOT ported: the banner-protection test, which spared blocks inside a
- * faction's claim. LOTRBannerProtection is not in the port -- Khamûl's fire is
- * missing the same check -- so the whip burns anywhere.
+ * <p>A spot in land a banner protects against the wielder (a player by the
+ * banner's rules, an NPC by its faction) is passed over for the next one up.
  */
 public class LOTRBalrogWhipItem extends LOTRModifiableItem {
 
@@ -159,7 +160,7 @@ public class LOTRBalrogWhipItem extends LOTRModifiableItem {
             }
         }
 
-        layTrail(level, from.add(0.0, user.getEyeHeight(), 0.0), to);
+        layTrail(level, user, from.add(0.0, user.getEyeHeight(), 0.0), to);
     }
 
     /**
@@ -170,24 +171,34 @@ public class LOTRBalrogWhipItem extends LOTRModifiableItem {
      * nothing ENDS the trail -- which is what keeps the lash on the floor
      * instead of writing a line through the air over a drop.
      */
-    private static void layTrail(ServerLevel level, Vec3 eye, Vec3 end) {
+    private static void layTrail(ServerLevel level, LivingEntity user, Vec3 eye, Vec3 end) {
         Vec3 span = end.subtract(eye);
         for (int step = TRAIL_START; step < (int) RANGE; step++) {
             Vec3 at = eye.add(span.scale(step / RANGE));
-            if (!burnAt(level, BlockPos.containing(at))) {
+            if (!burnAt(level, user, BlockPos.containing(at))) {
                 return;
             }
         }
     }
 
-    private static boolean burnAt(ServerLevel level, BlockPos pos) {
+    private static boolean burnAt(ServerLevel level, LivingEntity user, BlockPos pos) {
         for (int y = pos.getY() - TRAIL_REACH; y <= pos.getY() + TRAIL_REACH; y++) {
             BlockPos here = new BlockPos(pos.getX(), y, pos.getZ());
             BlockPos below = here.below();
             BlockState floor = level.getBlockState(below);
             boolean holds = floor.isFaceSturdy(level, below, net.minecraft.core.Direction.UP)
                     || floor.is(net.minecraft.tags.BlockTags.LEAVES);
-            if (holds && level.getBlockState(here).canBeReplaced()) {
+            if (!holds || !level.getBlockState(here).canBeReplaced()) {
+                continue;
+            }
+            boolean protection = false;
+            if (user instanceof Player player) {
+                protection = LOTRBannerProtection.isProtected(level, here,
+                        LOTRBannerProtection.forPlayer(player, LOTRBannerProtection.Permission.FULL), false);
+            } else if (user instanceof Mob mob) {
+                protection = LOTRBannerProtection.isProtected(level, here, LOTRBannerProtection.forNPC(mob), false);
+            }
+            if (!protection) {
                 level.setBlockAndUpdate(here, Blocks.FIRE.defaultBlockState());
                 return true;
             }

@@ -229,11 +229,6 @@ public class LOTRDwarfEntity extends LOTRNPCEntity {
         return result;
     }
 
-    @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
-    }
-
     /**
      * dropFewItems: dwarf bones, sometimes something from a larder or the
      * people's halls, and, slain by a player, now and then iron, the people's

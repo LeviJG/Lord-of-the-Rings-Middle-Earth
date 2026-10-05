@@ -1,10 +1,16 @@
 {
   "variants": {
-    "top=true": {
+    "lower=false,top=true": {
       "model": "lotr:block/reeds_top"
     },
-    "top=false": {
+    "lower=true,top=true": {
+      "model": "lotr:block/reeds_top"
+    },
+    "lower=false,top=false": {
       "model": "lotr:block/reeds_mid"
+    },
+    "lower=true,top=false": {
+      "model": "lotr:block/reeds_lower"
     }
   }
 }

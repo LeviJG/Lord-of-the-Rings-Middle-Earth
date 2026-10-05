@@ -74,7 +74,10 @@ public class LOTRTrollRenderer extends MobRenderer<LOTRTrollEntity, LOTRTrollRen
         }
     }
 
-    private static final ItemStack HELD_ROCK = new ItemStack(Items.STONE);
+    // Made on first use, not with the renderer: an ItemStack needs the item
+    // components bound, and renderers are built in the first resource reload,
+    // before they are.
+    private @org.jspecify.annotations.Nullable ItemStack heldRock;
 
     private static final Identifier[] OUTFITS = {texture("outfit_0"), texture("outfit_1"), texture("outfit_2")};
     private static final Identifier WEAPONS = texture("weapons");
@@ -195,7 +198,7 @@ public class LOTRTrollRenderer extends MobRenderer<LOTRTrollEntity, LOTRTrollRen
         }
         state.speech = LOTRNPCSpeechRendering.extract(troll, getFont());
         if (this.kind.throwsRocks() && state.throwing) {
-            this.items.updateForNonLiving(state.heldRock, HELD_ROCK, ItemDisplayContext.NONE, troll);
+            this.items.updateForNonLiving(state.heldRock, heldRock(), ItemDisplayContext.NONE, troll);
         }
     }
 
@@ -234,5 +237,12 @@ public class LOTRTrollRenderer extends MobRenderer<LOTRTrollEntity, LOTRTrollRen
         if (state.speech != null && state.distanceToCameraSq <= LOTRNPCSpeechRendering.NAME_TAG_RANGE * LOTRNPCSpeechRendering.NAME_TAG_RANGE) {
             LOTRNPCSpeechRendering.submit(getFont(), state.boundingBoxHeight, state.speech, poseStack, collector, camera);
         }
+    }
+
+    private ItemStack heldRock() {
+        if (this.heldRock == null) {
+            this.heldRock = new ItemStack(Items.STONE);
+        }
+        return this.heldRock;
     }
 }

@@ -62,7 +62,7 @@
       "lotr:item/mug_fill"
     ]
   },
-  "item.structureSpawner": {
+  "item.structure_spawner": {
     "category": "neutral",
     "sounds": [
       "lotr:item/structure_spawner"
@@ -292,7 +292,7 @@
       "lotr:troll/olog_hai_hammer"
     ]
   },
-  "troll.rockSmash": {
+  "troll.rock_smash": {
     "category": "neutral",
     "sounds": [
       "lotr:troll/rock_smash"
@@ -448,7 +448,7 @@
       "lotr:elf/male/say2"
     ]
   },
-  "elf.woodElf_teleport": {
+  "elf.wood_elf_teleport": {
     "category": "neutral",
     "sounds": [
       "lotr:elf/wood_elf_teleport"
@@ -511,7 +511,7 @@
       "lotr:wight/hurt4"
     ]
   },
-  "wraith.marshWraith_shoot": {
+  "wraith.marsh_wraith_shoot": {
     "category": "hostile",
     "sounds": [
       "lotr:wraith/marsh_wraith_shoot"
@@ -529,13 +529,13 @@
       "lotr:ent/step"
     ]
   },
-  "ent.mallorn.leafAttack": {
+  "ent.mallorn.leaf_attack": {
     "category": "neutral",
     "sounds": [
       "lotr:ent/mallorn/leaf_attack"
     ]
   },
-  "ent.mallorn.summonEnt": {
+  "ent.mallorn.summon_ent": {
     "category": "neutral",
     "sounds": [
       "lotr:ent/mallorn/summon_ent"
@@ -561,20 +561,20 @@
       "lotr:gollum/say2"
     ]
   },
-  "halfTroll.death": {
+  "half_troll.death": {
     "category": "neutral",
     "sounds": [
       "lotr:half_troll/death"
     ]
   },
-  "halfTroll.hurt": {
+  "half_troll.hurt": {
     "category": "neutral",
     "sounds": [
       "lotr:half_troll/hurt1",
       "lotr:half_troll/hurt2"
     ]
   },
-  "halfTroll.say": {
+  "half_troll.say": {
     "category": "neutral",
     "sounds": [
       "lotr:half_troll/say1",

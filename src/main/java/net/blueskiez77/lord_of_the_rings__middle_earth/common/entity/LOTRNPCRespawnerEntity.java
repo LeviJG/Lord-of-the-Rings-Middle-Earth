@@ -3,18 +3,28 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRRespawnerPayloads;
+
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -26,9 +36,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.Vec3;
 
 import org.jspecify.annotations.Nullable;
 
@@ -44,9 +57,9 @@ import org.jspecify.annotations.Nullable;
  * range of it. Only a creative player sees it: a spinning respawner icon, two
  * blocks across.
  *
- * <p>NOT ported yet: the screen a creative player opens on it to set it and
- * break it (LOTRPacketNPCRespawner, LOTRPacketEditNPCRespawner), with the
- * screens. Until then a creative player breaks it by striking it.
+ * <p>A creative player right-clicks it for its screen (LOTRPacketNPCRespawner),
+ * which sends its settings back as it closes, and may destroy it
+ * (LOTRPacketEditNPCRespawner).
  */
 public class LOTRNPCRespawnerEntity extends Entity {
 
@@ -84,7 +97,7 @@ public class LOTRNPCRespawnerEntity extends Entity {
     }
 
     @Override
-    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
     }
 
     /** isSpawnBlocked: whether a respawner within 64 blocks keeps this faction's kind from spawning here. */
@@ -146,14 +159,34 @@ public class LOTRNPCRespawnerEntity extends Entity {
         return new ItemStack(LOTRMiscItems.NPC_RESPAWNER);
     }
 
-    /** onBreak, which the original's screen called; struck by a creative player until the screen is ported. */
+    /** Nothing harms it: only its screen's Destroy button breaks it. */
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource source, float damage) {
-        if (source.getEntity() instanceof Player player && player.getAbilities().instabuild) {
-            onBreak();
-            return true;
-        }
         return false;
+    }
+
+    /** interactFirst: a creative player is sent its settings, and its screen opens. */
+    @Override
+    public InteractionResult interact(Player player, InteractionHand hand, Vec3 location) {
+        if (player.getAbilities().instabuild) {
+            if (player instanceof ServerPlayer serverPlayer) {
+                ServerPlayNetworking.send(serverPlayer, new LOTRRespawnerPayloads.Open(getId(), writeSpawnerData()));
+            }
+            return InteractionResult.SUCCESS;
+        }
+        return InteractionResult.PASS;
+    }
+
+    /** writeSpawnerDataToNBT. */
+    public CompoundTag writeSpawnerData() {
+        TagValueOutput output = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
+        addAdditionalSaveData(output);
+        return output.buildResult();
+    }
+
+    /** readSpawnerDataFromNBT. */
+    public void readSpawnerData(CompoundTag data) {
+        readAdditionalSaveData(TagValueInput.create(ProblemReporter.DISCARDING, level().registryAccess(), data));
     }
 
     public void onBreak() {
@@ -203,12 +236,16 @@ public class LOTRNPCRespawnerEntity extends Entity {
         int maxX = i + this.checkHorizontalRange;
         int maxY = j + this.checkVerticalMax;
         int maxZ = k + this.checkHorizontalRange;
-        if (!level.hasChunksAt(minX, minZ, maxX, maxZ)
+        if (!LOTRLegacyWorld.hasChunksAt(level, minX, minZ, maxX, maxZ)
                 || level.getNearestPlayer(i + 0.5, j + 0.5, k + 0.5, this.noPlayerRange, false) != null) {
             return;
         }
+        // A kind counts its own subclasses too (Class.isAssignableFrom): a
+        // Gondorian man's respawner counts the soldiers among them.
+        Class<?> class1 = classOf(level, this.spawnClass1);
+        Class<?> class2 = classOf(level, this.spawnClass2);
         List<Mob> present = level.getEntitiesOfClass(Mob.class, new AABB(minX, minY, minZ, maxX + 1, maxY + 1, maxZ + 1),
-                e -> e.isAlive() && (e.getType() == this.spawnClass1 || e.getType() == this.spawnClass2));
+                e -> e.isAlive() && (class1 != null && class1.isInstance(e) || class2 != null && class2.isInstance(e)));
         int entities = present.size();
         if (entities >= this.spawnCap) {
             return;
@@ -255,6 +292,11 @@ public class LOTRNPCRespawnerEntity extends Entity {
                 break;
             }
         }
+    }
+
+    private static @Nullable Class<?> classOf(Level level, @Nullable EntityType<?> type) {
+        Entity sample = type == null ? null : type.create(level, EntitySpawnReason.LOAD);
+        return sample == null ? null : sample.getClass();
     }
 
     public void setBlockEnemySpawnRange(int i) {

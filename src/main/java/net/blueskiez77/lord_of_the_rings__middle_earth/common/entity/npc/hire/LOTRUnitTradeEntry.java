@@ -1,5 +1,9 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire;
 
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.level.storage.TagValueOutput;
 import java.util.function.Supplier;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
@@ -67,7 +71,7 @@ public class LOTRUnitTradeEntry {
      * createHiredMount: equipped as on spawning -- a mount that is itself an
      * NPC hired alongside -- and barded if the chance allows.
      */
-    private @Nullable Mob createHiredMount(ServerLevel level) {
+    protected @Nullable Mob createHiredMount(ServerLevel level) {
         if (this.mountType == null) {
             return null;
         }
@@ -86,6 +90,37 @@ public class LOTRUnitTradeEntry {
 
     public EntityType<? extends LOTRNPCEntity> getEntityType() {
         return this.entityType.get();
+    }
+
+    public boolean hasMount() {
+        return this.mountType != null;
+    }
+
+    /** getUnitTradeName: the kind's name, or the mounted unit's own. */
+    public Component getUnitTradeName() {
+        return this.mountType == null ? getEntityType().getDescription()
+                : Component.translatable("lotr.unit." + this.name);
+    }
+
+    public Component getFormattedExtraInfo() {
+        return Component.translatable("lotr.unitinfo." + this.extraInfo);
+    }
+
+    /**
+     * The hire screen's figure of the unit: the original made one on the
+     * client, but equipping a unit needs the server now, so the server makes
+     * it and the screen is sent it as saved. Null for a mercenary, who is
+     * already there to be shown.
+     */
+    public @Nullable CompoundTag createDisplayData(ServerLevel level, boolean mount) {
+        Mob display = mount ? createHiredMount(level) : getOrCreateHiredNPC(level);
+        if (display == null || level.getEntity(display.getId()) == display) {
+            return null;
+        }
+        TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING, level.registryAccess());
+        output.putString("id", EntityType.getKey(display.getType()).toString());
+        display.saveWithoutId(output);
+        return output.buildResult();
     }
 
     public int getCost(Player player, LOTRHireableBase trader) {
@@ -154,7 +189,7 @@ public class LOTRUnitTradeEntry {
     }
 
     /** getOrCreateHiredNPC: a new unit, equipped as it would spawn but never mounted. */
-    private @Nullable LOTRNPCEntity getOrCreateHiredNPC(ServerLevel level) {
+    protected @Nullable LOTRNPCEntity getOrCreateHiredNPC(ServerLevel level) {
         LOTRNPCEntity npc = getEntityType().create(level, EntitySpawnReason.MOB_SUMMONED);
         if (npc != null) {
             npc.initCreatureForHire(level);
@@ -178,11 +213,15 @@ public class LOTRUnitTradeEntry {
         LOTRNPCEntity hiredNPC = getOrCreateHiredNPC(level);
         if (hiredNPC != null) {
             Mob mount = createHiredMount(level);
-            hiredNPC.hiredNPCInfo.hireUnit(player, true, trader.getFaction(), this, squadron, mount);
-            level.addFreshEntity(hiredNPC);
-            if (mount != null) {
-                level.addFreshEntity(mount);
-                hiredNPC.startRiding(mount, true, false);
+            // A mercenary hires himself: he is already in the world, where he stands.
+            boolean unitExists = level.getEntity(hiredNPC.getId()) == hiredNPC;
+            hiredNPC.hiredNPCInfo.hireUnit(player, !unitExists, trader.getFaction(), this, squadron, mount);
+            if (!unitExists) {
+                level.addFreshEntity(hiredNPC);
+                if (mount != null) {
+                    level.addFreshEntity(mount);
+                    hiredNPC.startRiding(mount, true, false);
+                }
             }
         }
     }

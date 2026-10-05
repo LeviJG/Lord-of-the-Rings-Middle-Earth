@@ -116,6 +116,111 @@ public final class LOTRNames {
         return sign;
     }
 
+    public static String[] getBreeInnName(RandomSource rand) {
+        return new String[]{getRandomName("breeInn_prefix", rand), getRandomName("breeInn_suffix", rand)};
+    }
+
+    /** getBreeRuffianSign: a ruffians' sign, its two middle lines split at '#'. */
+    public static String[] getBreeRuffianSign(RandomSource rand) {
+        String[] sign = {"", "", "", ""};
+        String[] split = getRandomName("bree_ruffian_sign", rand).split("#");
+        sign[1] = split[0];
+        sign[2] = split.length < 2 ? "" : split[1];
+        return sign;
+    }
+
+    /** getDaleBakeryName: the baker's name and a bakery title, for its sign. */
+    public static String[] getDaleBakeryName(RandomSource rand, String name) {
+        return new String[]{name + "'s", getRandomName("dale_bakery", rand)};
+    }
+
+    /** LOTRDate.THIRD_AGE_CURRENT and SECOND_AGE_LENGTH as the original's class loaded them: 1401 S.R. is 3001 T.A. */
+    private static final int THIRD_AGE_CURRENT = 3001;
+    private static final int SECOND_AGE_LENGTH = 3441;
+
+    /**
+     * getRandomVillageDate: a founding date some way back from now, "T.A." or,
+     * before the Third Age, "S.A." -- with the age's length written after the
+     * year rather than added to it, as the original's string concatenation did.
+     */
+    public static String getRandomVillageDate(RandomSource rand, int min, int max, int std) {
+        double d = Math.abs(rand.nextGaussian());
+        int ago = min + (int) Math.round(d * std);
+        int date = THIRD_AGE_CURRENT - Math.min(ago, max);
+        if (date >= 1) {
+            return "T.A. " + date;
+        }
+        return "S.A. " + date + SECOND_AGE_LENGTH;
+    }
+
+    public static String[] getRohanMeadHallName(RandomSource rand) {
+        return new String[]{getRandomName("rohanMeadHall_prefix", rand), getRandomName("rohanMeadHall_suffix", rand)};
+    }
+
+    /** getRohanVillageName: a village sign -- a welcome, the name, and when it was founded. */
+    public static String[] getRohanVillageName(RandomSource rand) {
+        String prefix = getRandomName("rohanVillage_prefix", rand);
+        String suffix = getRandomName("rohanVillage_suffix", rand);
+        if (prefix.endsWith(suffix.substring(0, 1))) {
+            suffix = suffix.substring(1);
+        }
+        String date = getRandomVillageDate(rand, 50, 500, 100);
+        return new String[]{"Welcome to", prefix + suffix, "", "est. " + date};
+    }
+
+    public static String[] getDunlendingTavernName(RandomSource rand) {
+        return new String[]{getRandomName("dunlendingTavern_prefix", rand), getRandomName("dunlendingTavern_suffix", rand)};
+    }
+
+    public static String[] getGondorTavernName(RandomSource rand) {
+        return new String[]{getRandomName("gondorTavern_prefix", rand), getRandomName("gondorTavern_suffix", rand)};
+    }
+
+    /** getGondorVillageName: a village sign -- a welcome, the name, and when it was founded. */
+    public static String[] getGondorVillageName(RandomSource rand) {
+        String prefix = getRandomName("gondorVillage_prefix", rand);
+        String suffix = getRandomName("gondorVillage_suffix", rand);
+        if (prefix.endsWith(suffix.substring(0, 1))) {
+            suffix = suffix.substring(1);
+        }
+        String date = getRandomVillageDate(rand, 50, 5000, 1500);
+        return new String[]{"Welcome to", prefix + suffix, "", "est. " + date};
+    }
+
+    public static String[] getHaradTavernName(RandomSource rand) {
+        return new String[]{getRandomName("haradTavern_prefix", rand), getRandomName("haradTavern_suffix", rand)};
+    }
+
+    /** getHaradVillageName: a village sign -- a welcome, the name, and when it was founded. */
+    public static String[] getHaradVillageName(RandomSource rand) {
+        String prefix = getRandomName("haradVillage_prefix", rand);
+        String suffix = getRandomName("haradVillage_suffix", rand);
+        if (prefix.endsWith(suffix.substring(0, 1))) {
+            suffix = suffix.substring(1);
+        }
+        String date = getRandomVillageDate(rand, 50, 4000, 1000);
+        return new String[]{"Welcome to", prefix + suffix, "", "est. " + date};
+    }
+
+    public static String[] getRhunTavernName(RandomSource rand) {
+        return new String[]{getRandomName("rhunTavern_prefix", rand), getRandomName("rhunTavern_suffix", rand)};
+    }
+
+    /** getRhunVillageName: a village sign -- a welcome, the name, and when it was founded. */
+    public static String[] getRhunVillageName(RandomSource rand) {
+        String prefix = getRandomName("rhunVillage_prefix", rand);
+        String suffix = getRandomName("rhunVillage_suffix", rand);
+        if (prefix.endsWith(suffix.substring(0, 1))) {
+            suffix = suffix.substring(1);
+        }
+        String date = getRandomVillageDate(rand, 50, 2000, 300);
+        return new String[]{"Welcome to", prefix + suffix, "", "est. " + date};
+    }
+
+    public static String getDalishName(RandomSource rand, boolean male) {
+        return getRandomName(male ? "dale_male" : "dale_female", rand);
+    }
+
     public static String getBreeName(RandomSource rand, boolean male) {
         return getRandomName(male ? "bree_male" : "bree_female", rand) + " " + getRandomName("bree_surname", rand);
     }

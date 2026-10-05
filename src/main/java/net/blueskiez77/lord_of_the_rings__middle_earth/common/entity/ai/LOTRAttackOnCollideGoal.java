@@ -3,7 +3,6 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai;
 import java.util.EnumSet;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 
 import net.minecraft.server.level.ServerLevel;
@@ -97,12 +96,14 @@ public class LOTRAttackOnCollideGoal extends Goal {
     }
 
     /**
-     * The pace: its own, or -- an NPC on a mount of its own kind --
-     * LOTREntityAIHorseMoveToRiderTarget's, the rider's horse attack speed.
+     * The pace: its own, or -- an NPC on a mount of its own kind -- the mount's
+     * own speed (user: a vanilla horse's pace). The original drove the mount at
+     * the rider's horse attack speed, 1.7 times that or more
+     * (LOTREntityAIHorseMoveToRiderTarget).
      */
     private double speed() {
         if (this.owner instanceof LOTRNPCEntity npc && npc.ridingMount) {
-            return npc.getAttributeValue(LOTRNPCAttributes.HORSE_ATTACK_SPEED);
+            return 1.0;
         }
         return this.moveSpeed;
     }

@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
@@ -13,9 +14,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPC
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolMaterials;
 
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -39,7 +38,6 @@ import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
@@ -103,16 +101,6 @@ public class LOTRHalfTrollEntity extends LOTRNPCEntity {
 
     protected Goal createHalfTrollAttackAI() {
         return new LOTRAttackOnCollideGoal(this, 1.4, false);
-    }
-
-    /** canReEquipHired: a hired half-troll's armour slots take only half-troll armour. */
-    @Override
-    public boolean canReEquipHired(EquipmentSlot slot, ItemStack stack) {
-        if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
-            Equippable equippable = stack.get(DataComponents.EQUIPPABLE);
-            return equippable != null && equippable.assetId().filter(LOTRToolMaterials.HALF_TROLL_ASSET::equals).isPresent();
-        }
-        return super.canReEquipHired(slot, stack);
     }
 
     // --- The mohawk and horns -------------------------------------------------
@@ -203,11 +191,6 @@ public class LOTRHalfTrollEntity extends LOTRNPCEntity {
     }
 
     @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
-    }
-
-    @Override
     protected void dropNPCItems(ServerLevel level, boolean killedByPlayer, int looting) {
         super.dropNPCItems(level, killedByPlayer, looting);
         int flesh = this.random.nextInt(3) + this.random.nextInt(looting + 1);
@@ -248,5 +231,15 @@ public class LOTRHalfTrollEntity extends LOTRNPCEntity {
         setHasHorns(input.getBooleanOr("Horns", false));
         setHasFullHorns(input.getBooleanOr("HornsFull", false));
         input.getString("HalfTrollName").ifPresent(this.familyInfo::setName);
+    }
+
+    /** canReEquipHired: only half-troll armour fits it. */
+    @Override
+    public boolean canReEquipHired(int slot, ItemStack stack) {
+        if (slot >= 0 && slot <= 3) {
+            return stack.is(LOTRCombatItems.HALF_TROLL_HELMET) || stack.is(LOTRCombatItems.HALF_TROLL_CHESTPLATE)
+                    || stack.is(LOTRCombatItems.HALF_TROLL_LEGGINGS) || stack.is(LOTRCombatItems.HALF_TROLL_BOOTS);
+        }
+        return super.canReEquipHired(slot, stack);
     }
 }

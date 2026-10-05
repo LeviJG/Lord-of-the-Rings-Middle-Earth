@@ -137,11 +137,6 @@ public class LOTRTauredainEntity extends LOTRManEntity {
     }
 
     @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
-    }
-
-    @Override
     protected void dropNPCItems(ServerLevel level, boolean killedByPlayer, int looting) {
         super.dropNPCItems(level, killedByPlayer, looting);
         int bones = this.random.nextInt(2) + this.random.nextInt(looting + 1);

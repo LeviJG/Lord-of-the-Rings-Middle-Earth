@@ -174,7 +174,7 @@ public abstract class LOTRElfEntity extends LOTRNPCEntity {
 
     /** A jazz elf goes by "Jazz-elf". */
     @Override
-    protected Component getEntityClassName() {
+    public Component getEntityClassName() {
         return isJazz() ? Component.literal("Jazz-elf") : super.getEntityClassName();
     }
 
@@ -349,12 +349,6 @@ public abstract class LOTRElfEntity extends LOTRNPCEntity {
         if (killedByPlayer && this.random.nextInt(Math.max(40 - looting * 8, 1)) == 0) {
             spawnAtLocation(level, LOTRFoodItems.LEMBAS);
         }
-    }
-
-    /** LOTREntityNPC.getExperiencePoints: 4 to 6. */
-    @Override
-    protected int getBaseExperienceReward(ServerLevel level) {
-        return 4 + this.random.nextInt(3);
     }
 
     @Override

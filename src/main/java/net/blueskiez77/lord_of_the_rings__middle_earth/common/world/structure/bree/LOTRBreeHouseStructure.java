@@ -1,0 +1,188 @@
+package net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.bree;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRBreeManEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyItems;
+
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+
+public class LOTRBreeHouseStructure extends LOTRBreeStructure {
+    public LOTRBreeHouseStructure(boolean flag) {
+        super(flag);
+    }
+
+    @Override
+    public boolean generateWithSetRotation(WorldGenLevel world, RandomSource random, int i, int j, int k, int rotation) {
+        int i1;
+        int k1;
+        int j2;
+        int j1;
+        int i12;
+        int randPath;
+        int j12;
+        int i13;
+        int k12;
+        setOriginAndRotation(world, i, j, k, rotation, 9);
+        setupRandomBlocks(random);
+        if (restrictions) {
+            for (i13 = -7; i13 <= 8; ++i13) {
+                for (k12 = -8; k12 <= 5; ++k12) {
+                    j12 = getTopBlock(world, i13, k12) - 1;
+                    if (isSurface(world, i13, j12, k12)) {
+                        continue;
+                    }
+                    return false;
+                }
+            }
+        }
+        for (i13 = -3; i13 <= 8; ++i13) {
+            for (k12 = -5; k12 <= 3; ++k12) {
+                for (j12 = 1; j12 <= 8; ++j12) {
+                    setAir(world, i13, j12, k12);
+                }
+            }
+        }
+        for (i13 = -2; i13 <= 2; ++i13) {
+            for (k12 = -8; k12 <= -6; ++k12) {
+                for (j12 = 1; j12 <= 8; ++j12) {
+                    setAir(world, i13, j12, k12);
+                }
+            }
+        }
+        for (i13 = 2; i13 <= 7; ++i13) {
+            for (k12 = 3; k12 <= 5; ++k12) {
+                for (j12 = 1; j12 <= 8; ++j12) {
+                    setAir(world, i13, j12, k12);
+                }
+            }
+        }
+        for (i13 = -7; i13 <= -3; ++i13) {
+            for (k12 = -4; k12 <= 2; ++k12) {
+                for (j12 = 1; j12 <= 8; ++j12) {
+                    setAir(world, i13, j12, k12);
+                }
+            }
+        }
+        loadStrScan("bree_house");
+        associateBlockMetaAlias("BRICK", brickBlock, brickMeta);
+        associateBlockMetaAlias("FLOOR", floorBlock, floorMeta);
+        associateBlockMetaAlias("STONE_WALL", stoneWallBlock, stoneWallMeta);
+        associateBlockMetaAlias("PLANK", plankBlock, plankMeta);
+        associateBlockMetaAlias("PLANK_SLAB", plankSlabBlock, plankSlabMeta);
+        associateBlockMetaAlias("PLANK_SLAB_INV", plankSlabBlock, plankSlabMeta | 8);
+        associateBlockAlias("PLANK_STAIR", plankStairBlock);
+        associateBlockMetaAlias("FENCE", fenceBlock, fenceMeta);
+        associateBlockAlias("FENCE_GATE", fenceGateBlock);
+        associateBlockAlias("DOOR", doorBlock);
+        associateBlockAlias("TRAPDOOR", trapdoorBlock);
+        associateBlockMetaAlias("BEAM", beamBlock, beamMeta);
+        associateBlockMetaAlias("BEAM|4", beamBlock, beamMeta | 4);
+        associateBlockMetaAlias("BEAM|8", beamBlock, beamMeta | 8);
+        associateBlockMetaAlias("ROOF", roofBlock, roofMeta);
+        associateBlockMetaAlias("ROOF_SLAB", roofSlabBlock, roofSlabMeta);
+        associateBlockMetaAlias("ROOF_SLAB_INV", roofSlabBlock, roofSlabMeta | 8);
+        associateBlockAlias("ROOF_STAIR", roofStairBlock);
+        associateBlockMetaAlias("TABLE", tableBlock, 0);
+        associateBlockMetaAlias("CARPET", carpetBlock, carpetMeta);
+        addBlockMetaAliasOption("PATH", 5, LOTRLegacyBlocks.vanilla("grass"), 0);
+        addBlockMetaAliasOption("PATH", 5, LOTRLegacyBlocks.vanilla("dirt"), 1);
+        addBlockMetaAliasOption("PATH", 5, LOTRLegacyBlocks.mod("dirtPath"), 0);
+        addBlockMetaAliasOption("PATH", 5, LOTRLegacyBlocks.vanilla("cobblestone"), 0);
+        associateBlockMetaAlias("LEAF", LOTRLegacyBlocks.vanilla("leaves"), 4);
+        generateStrScan(world, random, 0, 0, 0);
+        for (i1 = 3; i1 <= 6; ++i1) {
+            for (int step = 0; step < 12 && !isOpaque(world, i1, j1 = -1 - step, k1 = 6 + step); ++step) {
+                randPath = random.nextInt(4);
+                switch (randPath) {
+                    case 0:
+                        setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
+                        break;
+                    case 1:
+                        setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("dirt"), 1);
+                        break;
+                    case 2:
+                        setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.mod("dirtPath"), 0);
+                        break;
+                    case 3:
+                        setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("cobblestone"), 0);
+                        break;
+                    default:
+                        break;
+                }
+                setGrassToDirt(world, i1, j1 - 1, k1);
+                j2 = j1 - 1;
+                while (!isOpaque(world, i1, j2, k1) && getY(j2) >= 0) {
+                    setBlockAndMetadata(world, i1, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
+                    setGrassToDirt(world, i1, j2 - 1, k1);
+                    --j2;
+                }
+            }
+        }
+        for (int step = 0; step < 12 && !isOpaque(world, i12 = -5, j1 = -step, k1 = -5 - step); ++step) {
+            randPath = random.nextInt(4);
+            switch (randPath) {
+                case 0:
+                    setBlockAndMetadata(world, i12, j1, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
+                    break;
+                case 1:
+                    setBlockAndMetadata(world, i12, j1, k1, LOTRLegacyBlocks.vanilla("dirt"), 1);
+                    break;
+                case 2:
+                    setBlockAndMetadata(world, i12, j1, k1, LOTRLegacyBlocks.mod("dirtPath"), 0);
+                    break;
+                case 3:
+                    setBlockAndMetadata(world, i12, j1, k1, LOTRLegacyBlocks.vanilla("cobblestone"), 0);
+                    break;
+                default:
+                    break;
+            }
+            setGrassToDirt(world, i12, j1 - 1, k1);
+            j2 = j1 - 1;
+            while (!isOpaque(world, i12, j2, k1) && getY(j2) >= 0) {
+                setBlockAndMetadata(world, i12, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
+                setGrassToDirt(world, i12, j2 - 1, k1);
+                --j2;
+            }
+        }
+        for (i1 = -6; i1 <= -3; ++i1) {
+            for (int k13 = -3; k13 <= 1; ++k13) {
+                j1 = 1;
+                if (!LOTRLegacyBlocks.vanilla("grass").matches(getBlockState(world, i1, 0, k13)) || random.nextInt(4) != 0) {
+                    continue;
+                }
+                plantFlower(world, random, i1, j1, k13);
+            }
+        }
+        placeRandomFlowerPot(world, random, 6, 1, 3);
+        placeRandomFlowerPot(world, random, 3, 1, 3);
+        placeRandomFlowerPot(world, random, -1, 5, -1);
+        placeRandomFlowerPot(world, random, 2, 5, 1);
+        plantFlower(world, random, 0, 2, 3);
+        plantFlower(world, random, 8, 6, -1);
+        placeChest(world, random, -1, 1, 1, 4, LOTRChestContents.BREE_HOUSE);
+        placeChest(world, random, 1, 5, 1, 2, LOTRChestContents.BREE_HOUSE);
+        placeMug(world, random, 3, 2, -2, 3, LOTRFoods.BREE_DRINK);
+        placePlateWithCertainty(world, random, 3, 2, -3, LOTRLegacyBlocks.mod("plateBlock"), LOTRFoods.BREE);
+        setBlockAndMetadata(world, 0, 5, 0, bedBlock, 3);
+        setBlockAndMetadata(world, -1, 5, 0, bedBlock, 11);
+        if (random.nextBoolean()) {
+            spawnItemFrame(world, 2, 3, 0, 3, LOTRLegacyItems.vanillaStack("clock", 1, 0));
+        }
+        String[] breeNames = LOTRNames.getBreeCoupleAndHomeNames(random);
+        LOTRBreeManEntity man = create(LOTREntities.BREE_MAN, world);
+        man.familyInfo.setMale(true);
+        man.familyInfo.setName(breeNames[0]);
+        spawnNPCAndSetHome(man, world, 0, 1, 0, 16);
+        LOTRBreeManEntity woman = create(LOTREntities.BREE_MAN, world);
+        woman.familyInfo.setMale(false);
+        woman.familyInfo.setName(breeNames[1]);
+        spawnNPCAndSetHome(woman, world, 0, 1, 0, 16);
+        placeSign(world, 2, 2, -8, LOTRLegacyBlocks.vanilla("standing_sign"), 9, new String[]{"", breeNames[2], breeNames[3], ""});
+        return true;
+    }
+}

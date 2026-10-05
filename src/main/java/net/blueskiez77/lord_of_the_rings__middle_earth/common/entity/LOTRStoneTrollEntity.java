@@ -17,7 +17,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -39,11 +38,12 @@ import net.minecraft.world.phys.Vec3;
  * cobblestone -- or in bigger bites by a pickaxe, which leaves the statue whole.
  * That difference is the whole point of the thing, so it is reproduced exactly.
  *
- * <p>NOT ported: LOTRBannerProtectable, and the achievement the original gave
- * for prising a statue loose with a pickaxe. Neither system exists in the port
- * yet; the pickaxe still yields the statue, which is the part that matters.
+ * <p>Banner protection keeps it from players a banner turns away.
+ *
+ * <p>NOT ported: the achievement the original gave for prising a statue loose
+ * with a pickaxe (D7).
  */
-public class LOTRStoneTrollEntity extends Entity {
+public class LOTRStoneTrollEntity extends Entity implements LOTRBannerProtectable {
 
     /** Which of the three outfits the troll wears; 0..2, as the item damage was. */
     private static final EntityDataAccessor<Byte> DATA_OUTFIT =

@@ -7,6 +7,7 @@ import java.util.Set;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBarrelBlockEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
@@ -391,6 +392,59 @@ public final class LOTRTradeEntries {
             t(Items.IRON_INGOT, 3), anyOf(t(Items.COAL, 2, 1), Items.CHARCOAL), t(Items.GOLD_INGOT, 15),
             t(Items.COPPER_INGOT, 3), t("tin_ingot", 3), t("bronze_ingot", 3), t(Items.STRING, 3, 1), t("diamond", 25),
             t("sapphire", 12), t("pearl", 25), t(Items.LEATHER, 2));
+
+    public static final LOTRTradeEntries DALE_BLACKSMITH_BUY = buy(
+            t("dale_crafting_table", 100), t("dale_sword", 15), t("dale_battleaxe", 18), t("dale_dagger", 9),
+            t("dale_spear", 16), t("dale_pitchfork", 16), t("dale_helmet", 18), t("dale_chestplate", 28),
+            t("dale_leggings", 24), t("dale_boots", 16), t("blacksmith_hammer", 18), t(Items.IRON_BARS, 8, 20),
+            t("bronze_bars", 8, 20), t(Items.SADDLE, 15), t("crossbow_bolt", 4, 3), t("iron_crossbow", 15),
+            t("dale_horse_armor", 25))
+            .setVessels(LOTRFoods.DALE_DRINK);
+
+    public static final LOTRTradeEntries DALE_BLACKSMITH_SELL = sell(
+            t(Items.IRON_INGOT, 3), anyOf(t(Items.COAL, 2, 1), Items.CHARCOAL), t(Items.GOLD_INGOT, 15),
+            t(Items.COPPER_INGOT, 3), t("tin_ingot", 3), t("bronze_ingot", 3), t(Items.STRING, 3, 1), t(Items.LEATHER, 2));
+
+    public static final LOTRTradeEntries DALE_BAKER_BUY = buy(
+            t(Items.BREAD, 5), t("corn_bread", 5), t("cram", 12), t("olive_bread", 6), t("dalish_pastry", 12),
+            t(Items.CAKE, 12), t("lemon_cake", 20), t("apple_crumble", 12), t("berry_pie", 12), t("cherry_pie", 12),
+            t("marchpane", 8), t("chocolate_marchpane", 12), t("marchpane_block", 20), t(Items.COOKIE, 4),
+            t("fine_plate", 4), t("stoneware_plate", 2))
+            .setVessels(LOTRFoods.DALE_DRINK);
+
+    public static final LOTRTradeEntries DALE_BAKER_SELL = sell(
+            t(Items.WHEAT, 2, 1), t(Items.SUGAR, 2, 1), t(Items.EGG, 2, 1), t(Items.BUCKET, 3), t(Items.WATER_BUCKET, 4),
+            t(Items.MILK_BUCKET, 4), t("maple_syrup", 1), t(Items.APPLE, 1), t("green_apple", 1), t("cherries", 2),
+            t("lemon", 2), t("olives", 2), t("almond", 3), t("raisins", 1), t("salt", 10), t(Items.COCOA_BEANS, 2),
+            t("clay_plate", 1));
+
+    public static final LOTRTradeEntries DALE_MERCHANT_BUY = buy(
+            t("dale_sword", 15), t("dale_spear", 17), t("dale_battleaxe", 17), t("dale_pitchfork", 17),
+            t("dale_dagger", 12), t("dale_helmet", 25), t("dale_chestplate", 35), t("dale_leggings", 30),
+            t("dale_boots", 25), t("dwarven_sword", 20), t("dwarven_battleaxe", 24), t("dwarven_warhammer", 24),
+            brew("vodka", 9), brew("dwarven_ale", 14), t("dale_horse_armor", 25), t("dale_bow", 20), t(Items.ARROW, 4, 3),
+            t("cram", 12), t("dalish_pastry", 12), t("red_dalish_cracker", 10), t("red_dalish_cracker", 10),
+            t("red_dalish_cracker", 10), t("red_dalish_cracker", 10), t("red_dalish_cracker", 10), t("diamond", 40),
+            t("emerald", 25), t("sapphire", 20), t("ruby", 20), t("opal", 15))
+            .setVessels(LOTRFoods.DALE_DRINK);
+
+    public static final LOTRTradeEntries DALE_MERCHANT_SELL = sell(
+            t(Items.IRON_INGOT, 3), anyOf(t(Items.COAL, 2, 1), Items.CHARCOAL), t(Items.GOLD_INGOT, 15),
+            t(Items.COPPER_INGOT, 3), t("tin_ingot", 3), t("bronze_ingot", 3), t("amber", 10), t("amethyst", 8),
+            t("topaz", 8), t("pearl", 25), t(Items.BREAD, 2), t("mug", 2), t(Items.POTATO, 2, 1));
+
+    public static final LOTRTradeEntries DUNEDAIN_BLACKSMITH_BUY = buy(
+            t("ranger_crafting_table", 100), t(Items.IRON_SWORD, 12), t("iron_dagger", 8), t("iron_spear", 15),
+            t("iron_battleaxe", 15), t("bronze_sword", 10), t("bronze_dagger", 7), t("bronze_spear", 13),
+            t("bronze_battleaxe", 13), t("ranger_hood", 18), t("ranger_tunic", 25), t("ranger_leggings", 20),
+            t("ranger_boots", 16), t("blacksmith_hammer", 16), t(Items.IRON_BARS, 8, 20), t("bronze_bars", 8, 20),
+            t("crossbow_bolt", 4, 3), t("iron_crossbow", 15), t("bronze_crossbow", 12))
+            .setVessels(LOTRFoods.RANGER_DRINK);
+
+    public static final LOTRTradeEntries DUNEDAIN_BLACKSMITH_SELL = sell(
+            t(Items.IRON_INGOT, 3), anyOf(t(Items.COAL, 2, 1), Items.CHARCOAL), t(Items.GOLD_INGOT, 15),
+            t(Items.COPPER_INGOT, 3), t("tin_ingot", 3), t("bronze_ingot", 3), t(Items.STRING, 3, 1), t("diamond", 25),
+            t("emerald", 15), t("opal", 10), t(Items.LEATHER, 2));
 
     /** Without the branding iron (16), not ported yet. */
     public static final LOTRTradeEntries GONDOR_FARMER_BUY = buy(
@@ -1682,6 +1736,11 @@ public final class LOTRTradeEntries {
         return this;
     }
 
+    /** tradeEntries, each as a trade: everything the pool could offer. */
+    public List<LOTRTradeEntry> createAllTrades() {
+        return this.tradeEntries.stream().map(Entry::create).toList();
+    }
+
     /** getItemSellResult: the first of the trader's sell trades that takes this stack. */
     public static @Nullable LOTRTradeSellResult getItemSellResult(ItemStack stack, LOTRNPCEntity trader) {
         LOTRTradeEntry[] sellTrades = trader.traderNPCInfo == null ? null : trader.traderNPCInfo.getSellTrades();
@@ -1721,8 +1780,7 @@ public final class LOTRTradeEntries {
                 tradeItem.set(LOTRDataComponents.VESSEL, vessel);
                 tradeCost += vessel.extraPrice();
             }
-            // LOTRConfig.enchantingLOTR, on by default.
-            if (this.tradeType == TradeType.BUY) {
+            if (LOTRConfig.enchantingLOTR && this.tradeType == TradeType.BUY) {
                 LOTRModifiers.applyRandom(tradeItem, random, random.nextInt(3) == 0);
                 tradeCost *= LOTRModifiers.tradeValueFactor(tradeItem);
             }

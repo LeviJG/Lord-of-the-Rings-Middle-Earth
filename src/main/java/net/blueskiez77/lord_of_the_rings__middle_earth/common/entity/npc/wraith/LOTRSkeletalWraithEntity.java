@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -83,7 +84,7 @@ public abstract class LOTRSkeletalWraithEntity extends LOTRNPCEntity {
     @Override
     public void aiStep() {
         if (level() instanceof ServerLevel level && level.isBrightOutside()) {
-            float f = getLightLevelDependentMagicValue();
+            float f = LOTRLegacyWorld.brightness(this);
             BlockPos pos = BlockPos.containing(getX(), getY(), getZ());
             if (f > 0.5f && this.random.nextFloat() * 30.0f < (f - 0.4f) * 2.0f && level.canSeeSky(pos)) {
                 ItemStack helmet = getItemBySlot(EquipmentSlot.HEAD);

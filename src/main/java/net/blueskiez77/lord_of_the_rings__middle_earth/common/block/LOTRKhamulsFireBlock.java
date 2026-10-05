@@ -1,13 +1,15 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
-import net.minecraft.world.level.block.SoundType;
 import com.mojang.serialization.MapCodec;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -40,8 +42,8 @@ import net.minecraft.world.level.material.PushReaction;
  * to eat. The feel should match; the exact probabilities do not, because
  * vanilla's own numbers are not reachable.
  *
- * <p>NOT ported: isBannered, which let a faction banner smother it. The banner
- * protection system is not in the port.
+ * <p>isBannered: in land any banner protects, it will not take hold, and a
+ * patch already there goes out.
  */
 public class LOTRKhamulsFireBlock extends BaseFireBlock {
     public static final MapCodec<LOTRKhamulsFireBlock> CODEC =
@@ -126,6 +128,10 @@ public class LOTRKhamulsFireBlock extends BaseFireBlock {
         if (level.getGameRules().get(GameRules.FIRE_SPREAD_RADIUS_AROUND_PLAYER) <= 0) {
             return;
         }
+        if (isBannered(level, pos)) {
+            level.removeBlock(pos, false);
+            return;
+        }
         if (!canSurvive(state, level, pos)) {
             level.removeBlock(pos, false);
             return;
@@ -164,7 +170,7 @@ public class LOTRKhamulsFireBlock extends BaseFireBlock {
         int childAge = Math.min(MAX_AGE, age + GENERATION_STEP);
         for (Direction direction : Direction.values()) {
             BlockPos neighbour = pos.relative(direction);
-            if (!burnsThrough(level.getBlockState(neighbour))) {
+            if (!burnsThrough(level.getBlockState(neighbour)) || isBannered(level, neighbour)) {
                 continue;
             }
             int chance = direction.getAxis().isVertical() ? 250 : 300;
@@ -183,9 +189,19 @@ public class LOTRKhamulsFireBlock extends BaseFireBlock {
      */
     private static final int FLAMMABILITY = 30;
 
+    /** isBannered: whether this spot lies in any protecting banner's land. */
+    public static boolean isBannered(Level level, BlockPos pos) {
+        return LOTRBannerProtection.isProtected(level, pos, LOTRBannerProtection.anyBanner(), false);
+    }
+
+    /** canNeighborBurn, with canCatchFireNotBannered's banner test where the level allows one. */
     private static boolean canBurnAround(LevelReader level, BlockPos pos) {
         for (Direction direction : Direction.values()) {
-            if (burnsThrough(level.getBlockState(pos.relative(direction)))) {
+            BlockPos neighbour = pos.relative(direction);
+            if (level instanceof Level fullLevel && isBannered(fullLevel, neighbour)) {
+                continue;
+            }
+            if (burnsThrough(level.getBlockState(neighbour))) {
                 return true;
             }
         }

@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.render;
 
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import java.util.Random;
 
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -50,12 +51,18 @@ public class LOTRPlateRenderer implements BlockEntityRenderer<LOTRPlateBlockEnti
         }
         items.updateForTopItem(state.food, food, ItemDisplayContext.NONE, plate.getLevel(), null, 0);
         BlockPos pos = plate.getBlockPos();
-        state.rotations = new float[state.count];
+        state.rotations = rotations(pos.getX(), pos.getY(), pos.getZ(), state.count);
+    }
+
+    /** Each layer's turn, seeded from the plate's position and its place in the pile. */
+    public static float[] rotations(int x, int y, int z, int count) {
+        float[] rotations = new float[count];
         Random random = new Random();
-        for (int l = 0; l < state.count; ++l) {
-            random.setSeed(pos.getX() * 3129871L ^ pos.getZ() * 116129781L ^ pos.getY() + l * 5930563L);
-            state.rotations[l] = random.nextFloat() * 360.0f;
+        for (int l = 0; l < count; ++l) {
+            random.setSeed(x * 3129871L ^ z * 116129781L ^ y + l * 5930563L);
+            rotations[l] = random.nextFloat() * 360.0f;
         }
+        return rotations;
     }
 
     @Override
@@ -64,13 +71,23 @@ public class LOTRPlateRenderer implements BlockEntityRenderer<LOTRPlateBlockEnti
         if (state.food.isEmpty() || state.count <= 0) {
             return;
         }
+        submitFood(poseStack, collector, state.food, state.count, state.rotations, null, state.lightCoords);
+    }
+
+    /**
+     * The pile, from the plate's corner: each layer at least a thirty-second
+     * above the last, higher still where a worn plate's layer lags behind a
+     * jump ({@code fallOffsets}, LOTRPlateFallingInfo.getFoodOffsetY).
+     */
+    public static void submitFood(PoseStack poseStack, SubmitNodeCollector collector, ItemStackRenderState food, int count,
+                                  float[] rotations, float @org.jspecify.annotations.Nullable [] fallOffsets, int light) {
         float lowerOffset = 0.125f;
-        for (int l = 0; l < state.count && l < state.rotations.length; ++l) {
+        for (int l = 0; l < count && l < rotations.length; ++l) {
             poseStack.pushPose();
-            float offset = lowerOffset;
+            float offset = Math.max(fallOffsets == null ? 0.0f : fallOffsets[l], lowerOffset);
             poseStack.translate(0.5f, offset, 0.5f);
             lowerOffset = offset + 0.03125f;
-            poseStack.mulPose(Axis.YP.rotationDegrees(state.rotations[l]));
+            poseStack.mulPose(Axis.YP.rotationDegrees(rotations[l]));
             poseStack.mulPose(Axis.XP.rotationDegrees(90.0f));
             poseStack.translate(-0.25f, -0.25f, 0.0f);
             poseStack.scale(0.5625f, 0.5625f, 0.5625f);
@@ -80,7 +97,7 @@ public class LOTRPlateRenderer implements BlockEntityRenderer<LOTRPlateBlockEnti
             // so it is put back by half a block in x and y, and z is moved so
             // its sixteenth of depth sits behind z = 0 as the sprite did.
             poseStack.translate(0.5f, 0.5f, -0.03125f);
-            state.food.submit(poseStack, collector, state.lightCoords, OverlayTexture.NO_OVERLAY, 0);
+            food.submit(poseStack, collector, light, OverlayTexture.NO_OVERLAY, 0);
             poseStack.popPose();
         }
     }

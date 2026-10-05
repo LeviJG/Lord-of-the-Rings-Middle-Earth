@@ -2,7 +2,6 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai;
 
 import java.util.EnumSet;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 
 import net.minecraft.util.Mth;
@@ -63,13 +62,17 @@ public class LOTRRangedAttackGoal extends Goal {
         return null;
     }
 
-    /** Mounted, the mount carries it at the rider's horse attack speed (LOTREntityAIHorseMoveToRiderTarget). */
     private boolean mounted() {
         return this.owner instanceof LOTRNPCEntity npc && npc.ridingMount;
     }
 
+    /**
+     * Mounted, the mount carries it at the mount's own speed (user: a vanilla
+     * horse's pace). The original drove it at the rider's horse attack speed,
+     * 1.7 times that or more (LOTREntityAIHorseMoveToRiderTarget).
+     */
     private double horseSpeed() {
-        return this.owner.getAttributeValue(LOTRNPCAttributes.HORSE_ATTACK_SPEED);
+        return 1.0;
     }
 
     @Override

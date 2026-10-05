@@ -219,10 +219,14 @@ public class LOTRTraderRespawnEntity extends Entity {
             return false;
         }
         trader.snapTo(getX(), getY(), getZ(), this.random.nextFloat() * 360.0f, 0.0f);
-        // getCanSpawnHere with liftSpawnRestrictions: only room to stand.
-        if (!trader.checkSpawnObstruction(level)) {
+        trader.spawnRidingHorse = false;
+        // getCanSpawnHere with liftSpawnRestrictions: room to stand, and no
+        // banner or respawner keeping its faction out.
+        trader.liftSpawnRestrictions = true;
+        if (!trader.checkSpawnRules(level, EntitySpawnReason.TRIGGERED) || !trader.checkSpawnObstruction(level)) {
             return false;
         }
+        trader.liftSpawnRestrictions = false;
         trader.finalizeSpawn(level, level.getCurrentDifficultyAt(trader.blockPosition()), EntitySpawnReason.TRIGGERED, null);
         if (this.traderHasHome) {
             trader.setHomeTo(this.traderHome, Math.round(this.traderHomeRadius));

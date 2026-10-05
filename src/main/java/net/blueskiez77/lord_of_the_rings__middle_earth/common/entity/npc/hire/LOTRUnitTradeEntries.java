@@ -38,6 +38,24 @@ public final class LOTRUnitTradeEntries {
     public static final LOTRUnitTradeEntries ROHAN_FARMER = new LOTRUnitTradeEntries(0.0f,
             new LOTRUnitTradeEntry(() -> LOTREntities.ROHAN_FARMHAND, 40, 50.0f).setTask(LOTRHiredTask.FARMER));
 
+    public static final LOTRUnitTradeEntries DALE_CAPTAIN = new LOTRUnitTradeEntries(100.0f,
+            new LOTRUnitTradeEntry(() -> LOTREntities.DALE_LEVYMAN, 20, 0.0f),
+            new LOTRUnitTradeEntry(() -> LOTREntities.DALE_SOLDIER, 30, 50.0f),
+            new LOTRUnitTradeEntry(() -> LOTREntities.DALE_ARCHER, 50, 100.0f),
+            new LOTRUnitTradeEntry(() -> LOTREntities.DALE_SOLDIER, () -> LOTREntities.HORSE, "DaleSoldier_Horse", 50, 150.0f)
+                    .setMountArmor(() -> LOTRCombatItems.DALE_HORSE_ARMOR, 1.0f),
+            new LOTRUnitTradeEntry(() -> LOTREntities.DALE_BANNER_BEARER, 50, 200.0f).setBannerBearer(),
+            new LOTRUnitTradeEntry(() -> LOTREntities.ESGAROTH_BANNER_BEARER, 50, 200.0f).setBannerBearer());
+
+    public static final LOTRUnitTradeEntries RANGER_NORTH_CAPTAIN = new LOTRUnitTradeEntries(300.0f,
+            new LOTRUnitTradeEntry(() -> LOTREntities.RANGER_NORTH, 50, 0.0f),
+            new LOTRUnitTradeEntry(() -> LOTREntities.RANGER_NORTH, () -> LOTREntities.HORSE, "RangerNorth_Horse", 70, 100.0f),
+            new LOTRUnitTradeEntry(() -> LOTREntities.RANGER_NORTH_BANNER_BEARER, 70, 150.0f).setBannerBearer());
+
+    public static final LOTRUnitTradeEntries RANGER_ITHILIEN_CAPTAIN = new LOTRUnitTradeEntries(300.0f,
+            new LOTRUnitTradeEntry(() -> LOTREntities.RANGER_ITHILIEN, 50, 0.0f),
+            new LOTRUnitTradeEntry(() -> LOTREntities.RANGER_ITHILIEN_BANNER_BEARER, 70, 150.0f).setBannerBearer());
+
     public static final LOTRUnitTradeEntries GONDORIAN_CAPTAIN = new LOTRUnitTradeEntries(200.0f,
             new LOTRUnitTradeEntry(() -> LOTREntities.GONDOR_LEVYMAN, 20, 0.0f),
             new LOTRUnitTradeEntry(() -> LOTREntities.GONDOR_SOLDIER, 30, 50.0f),
@@ -204,6 +222,9 @@ public final class LOTRUnitTradeEntries {
 
     public static final LOTRUnitTradeEntries CORSAIR_CAPTAIN = new LOTRUnitTradeEntries(150.0f,
             new LOTRUnitTradeEntry(() -> LOTREntities.CORSAIR, 20, 0.0f).setExtraInfo("Corsair"));
+
+    public static final LOTRUnitTradeEntries MORDOR_ORC_SLAVER = new LOTRUnitTradeEntries(200.0f,
+            new LOTRUnitTradeEntry(() -> LOTREntities.NURN_SLAVE, 40, 0.0f).setTask(LOTRHiredTask.FARMER));
 
     public static final LOTRUnitTradeEntries CORSAIR_SLAVER = new LOTRUnitTradeEntries(0.0f,
             new LOTRUnitTradeEntry(() -> LOTREntities.HARAD_SLAVE, 40, 0.0f).setTask(LOTRHiredTask.FARMER));

@@ -6,6 +6,7 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -27,9 +28,8 @@ import org.jspecify.annotations.Nullable;
  * LOTRRenderElvenBlade: an elven blade held in the hand glows when an orc is
  * within {@code distance} blocks of its holder (24, or 40 for Sting) -- drawn
  * with its glowing texture, without shading (the original turned lighting
- * off), and with the enchantment glint laid on four times over (the
- * "Animated Elven blade glow" option, on by default; the port has no such
- * option, so it is always on). Anywhere else -- in a GUI, on the ground, in a
+ * off), and -- with "Animated Elven blade glow" on -- the enchantment glint
+ * laid on four times over. Anywhere else -- in a GUI, on the ground, in a
  * frame -- it is drawn as usual.
  *
  * <p>Used in an items/*.json as {@code "type": "lotr:elven_blade"} with
@@ -52,17 +52,22 @@ public record LOTRElvenBladeItemModel(ItemModel model, ItemModel glowing, double
             return;
         }
         output.appendModelIdentityElement(this);
+        boolean glint = LOTRConfig.elvenBladeGlow;
         int first = output.activeLayerCount;
-        for (int pass = 0; pass < GLINT_PASSES; ++pass) {
+        for (int pass = 0; pass < (glint ? GLINT_PASSES : 1); ++pass) {
             this.glowing.update(output, item, resolver, displayContext, level, owner, seed);
         }
         for (int i = first; i < output.activeLayerCount; ++i) {
             ItemStackRenderState.LayerRenderState layer = output.layers[i];
-            layer.setFoilType(ItemStackRenderState.FoilType.STANDARD);
+            if (glint) {
+                layer.setFoilType(ItemStackRenderState.FoilType.STANDARD);
+            }
             List<BakedQuad> quads = layer.prepareQuadList();
             quads.replaceAll(LOTRElvenBladeItemModel::unshaded);
         }
-        output.setAnimated();
+        if (glint) {
+            output.setAnimated();
+        }
     }
 
     private boolean glows(ItemDisplayContext displayContext, @Nullable ClientLevel level, @Nullable ItemOwner owner) {

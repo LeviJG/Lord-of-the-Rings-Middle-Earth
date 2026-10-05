@@ -6,18 +6,22 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
+
+import io.netty.buffer.ByteBuf;
 
 /**
  * LOTRPlayerData's two NPC options (LOTROptions FRIENDLY_FIRE and
  * HIRED_DEATH_MESSAGES), under the original's keys: whether the player may
  * attack allied NPCs (off by default), and whether they are told when a unit
- * of theirs dies (on by default). Kept through death.
- *
- * <p>NOT ported yet: the Options screen that toggles them (D16).
+ * of theirs dies (on by default). Kept through death, and sent to the player
+ * for their Options screen.
  */
 public final class LOTRPlayerNPCOptions {
 
@@ -26,11 +30,15 @@ public final class LOTRPlayerNPCOptions {
                 Codec.BOOL.optionalFieldOf("FriendlyFire", false).forGetter(Options::friendlyFire),
                 Codec.BOOL.optionalFieldOf("HiredDeathMessages", true).forGetter(Options::hiredDeathMessages)
         ).apply(i, Options::new));
+
+        public static final StreamCodec<ByteBuf, Options> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.BOOL, Options::friendlyFire, ByteBufCodecs.BOOL, Options::hiredDeathMessages, Options::new);
     }
 
     public static final AttachmentType<Options> OPTIONS = AttachmentRegistry.create(
             Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "npc_options"),
-            builder -> builder.initializer(() -> new Options(false, true)).persistent(Options.CODEC).copyOnDeath());
+            builder -> builder.initializer(() -> new Options(false, true)).persistent(Options.CODEC).copyOnDeath()
+                    .syncWith(Options.STREAM_CODEC, AttachmentSyncPredicate.targetOnly()));
 
     private LOTRPlayerNPCOptions() {
     }

@@ -1,5 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
+import net.minecraft.server.level.ServerPlayer;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredPayloads;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -40,8 +43,7 @@ import org.jspecify.annotations.Nullable;
  * unbreakable, getItemEnchantability returns zero, and lotrWeaponDamage is set
  * to 1.0 -- less than a fist. You carry it in place of a weapon, not as one.
  *
- * <p>NOT ported yet: naming the sword's squadron (LOTRGuiSquadronItem, D16);
- * until then it speaks to units of no squadron.
+ * <p>Its squadron is named at a table of command (LOTRGuiSquadronItem).
  */
 public class LOTRCommandSwordItem extends Item {
 
@@ -102,10 +104,8 @@ public class LOTRCommandSwordItem extends Item {
      * command: every hired unit within UNIT_RANGE that obeys the sword and
      * shares its squadron is set on the best of the creatures it may attack
      * within SPREAD_RANGE of the spot -- by its own target sorting -- or, with
-     * none, stands down.
-     *
-     * <p>NOT ported yet: the marker shown where the order fell
-     * (LOTRPacketLocationFX SWORD_COMMAND), with the fx (D16).
+     * none, stands down. If any unit was set on a target, the sword is shown
+     * falling onto the spot (LOTRPacketLocationFX SWORD_COMMAND).
      */
     private static void command(Level level, Player player, ItemStack stack, @Nullable Vec3 hit) {
         player.setLastHurtByMob(null);
@@ -113,6 +113,7 @@ public class LOTRCommandSwordItem extends Item {
                 new AABB(hit, hit).inflate(SPREAD_RANGE),
                 e -> e.isAlive() && LOTRAttackRules.canPlayerAttackEntity(player, e, false));
         String squadron = getSquadron(stack);
+        boolean anyAttackCommanded = false;
         for (LOTRNPCEntity npc : level.getEntitiesOfClass(LOTRNPCEntity.class, player.getBoundingBox().inflate(UNIT_RANGE))) {
             if (!npc.hiredNPCInfo.isActive || npc.hiredNPCInfo.getHiringPlayer() != player
                     || !npc.hiredNPCInfo.getObeyCommandSword() || !npc.hiredNPCInfo.isSquadronCompatible(squadron)) {
@@ -128,9 +129,13 @@ public class LOTRCommandSwordItem extends Item {
                 validTargets.sort(Comparator.comparingDouble(t -> LOTRNearestAttackableTargetGoal.targetSortMetric(npc, t)));
                 npc.hiredNPCInfo.commandSwordAttack(validTargets.get(0));
                 npc.hiredNPCInfo.wasAttackCommanded = true;
+                anyAttackCommanded = true;
             } else {
                 npc.hiredNPCInfo.commandSwordCancel();
             }
+        }
+        if (anyAttackCommanded && hit != null && player instanceof ServerPlayer serverPlayer) {
+            ServerPlayNetworking.send(serverPlayer, new LOTRHiredPayloads.SwordCommandFX(hit.x, hit.y, hit.z));
         }
     }
 

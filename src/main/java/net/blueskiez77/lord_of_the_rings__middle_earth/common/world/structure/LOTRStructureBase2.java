@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBannerType;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBarrelBlock;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRForgeBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRGateBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRHobbitOvenBlock;
@@ -15,6 +18,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRKebabSta
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRWeaponRackBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRAnimalJarBlockEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBannerBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBarrelBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRDwarvenDoorBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRKebabStandBlockEntity;
@@ -53,6 +57,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
 import net.minecraft.world.level.block.AnvilBlock;
+import net.minecraft.world.level.block.BannerBlock;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -73,6 +78,7 @@ import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.TripWireHookBlock;
+import net.minecraft.world.level.block.WallBannerBlock;
 import net.minecraft.world.level.block.WallSignBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.WallTorchBlock;
@@ -107,7 +113,7 @@ import org.jspecify.annotations.Nullable;
  * <p>NOT ported yet: the timelapse (a debug option); the biome's own top and
  * filler blocks and LOTR biomes' flowers and grasses (D10), so until then a
  * structure's flowers and grass are vanilla's, as the original gave outside
- * its biomes; banners (with the banner entities, D14); the spawner chests;
+ * its biomes; the spawner chests;
  * the mod's flower pot for its own plants (the port's pot is vanilla's).
  */
 public abstract class LOTRStructureBase2 {
@@ -517,7 +523,7 @@ public abstract class LOTRStructureBase2 {
                     continue;
                 }
                 if (step.findLowest) {
-                    while (getY(j1) > world.getMinY() && !getBlockState(world, i1, j1 - 1, k1).blocksMotion()) {
+                    while (getY(j1) > world.getMinY() && !LOTRLegacyWorld.blocksMotion(getBlockState(world, i1, j1 - 1, k1))) {
                         --j1;
                     }
                 }
@@ -714,6 +720,11 @@ public abstract class LOTRStructureBase2 {
         }
     }
 
+    /** {@code sign.signText[line] = text}: one line of a sign's front. */
+    public static void setSignLine(SignBlockEntity sign, int line, String text) {
+        sign.setText(sign.getFrontText().setMessage(line, Component.literal(text)), true);
+    }
+
     public void placeSkull(WorldGenLevel world, RandomSource random, int i, int j, int k) {
         placeSkull(world, i, j, k, random.nextInt(16));
     }
@@ -727,6 +738,28 @@ public abstract class LOTRStructureBase2 {
         world.setBlock(pos, Blocks.SKELETON_SKULL.defaultBlockState().setValue(SkullBlock.ROTATION, dir % 16),
                 this.notifyChanges ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS);
         this.placed.add(pos);
+    }
+
+    /** placeSpawnerChest: a chest with a creature waiting in it (LOTRSpawnerChests), filled if given contents. */
+    public void placeSpawnerChest(WorldGenLevel world, RandomSource random, int i, int j, int k, LegacyBlock block, int meta,
+                                  EntityType<?> type, LOTRChestContents.@Nullable Pool contents) {
+        placeSpawnerChest(world, random, i, j, k, block, meta, type, contents, -1);
+    }
+
+    public void placeSpawnerChest(WorldGenLevel world, RandomSource random, int i, int j, int k, LegacyBlock block, int meta,
+                                  EntityType<?> type, LOTRChestContents.@Nullable Pool contents, int amount) {
+        setBlockAndMetadata(world, i, j, k, block, meta);
+        BlockEntity be = getTileEntity(world, i, j, k);
+        if (be != null) {
+            LOTRSpawnerChests.setMob(be, type);
+        }
+        if (contents != null) {
+            fillChest(world, random, i, j, k, contents, amount);
+        }
+    }
+
+    public void placeSpawnerChest(WorldGenLevel world, int i, int j, int k, LegacyBlock block, int meta, EntityType<?> type) {
+        placeSpawnerChest(world, world.getRandom(), i, j, k, block, meta, type, null);
     }
 
     /** placeMobSpawner: a spawner of this creature (the mod's spawner was a vanilla duplicate). */
@@ -752,7 +785,7 @@ public abstract class LOTRStructureBase2 {
         placeFlowerPot(world, i, j, k, getRandomFlower(world, random));
     }
 
-    private static @Nullable Block pottedFor(Block plant) {
+    public static @Nullable Block pottedFor(Block plant) {
         for (Block block : BuiltInRegistries.BLOCK) {
             if (block instanceof FlowerPotBlock pot && pot.getPotted() == plant && plant != Blocks.AIR) {
                 return block;
@@ -806,8 +839,8 @@ public abstract class LOTRStructureBase2 {
 
     /**
      * placeBanner: a standing banner of this people, turned with the
-     * structure, perhaps protecting it. The banner entities come with D14
-     * (user), so for now nothing is placed.
+     * structure, perhaps protecting it -- as the structure's own, which no one
+     * may take down or edit, over its own range if it has one.
      */
     public void placeBanner(WorldGenLevel world, int i, int j, int k, String bannerType, int direction) {
         placeBanner(world, i, j, k, bannerType, direction, false, 0);
@@ -815,13 +848,78 @@ public abstract class LOTRStructureBase2 {
 
     public void placeBanner(WorldGenLevel world, int i, int j, int k, String bannerType, int direction,
                             boolean protection, int r) {
+        BlockPos pos = worldPos(i, j, k);
+        if (pos == null) {
+            return;
+        }
+        for (int l = 0; l < this.rotationMode; ++l) {
+            direction = ROTATE_RIGHT[direction];
+        }
         if (r > 64) {
             throw new IllegalArgumentException("WARNING: Banner protection range " + r + " is too large!");
         }
+        placeBannerBlock(world, pos, bannerType, direction, protection, r);
     }
 
-    /** placeWallBanner: a banner hung on a wall -- with the banner entities (D14); nothing yet. */
+    /** placeWallBanner: a banner hung on the face of this block, facing the given way, turned with the structure. */
     public void placeWallBanner(WorldGenLevel world, int i, int j, int k, String bannerType, int direction) {
+        BlockPos pos = worldPos(i, j, k);
+        if (pos == null) {
+            return;
+        }
+        for (int l = 0; l < this.rotationMode; ++l) {
+            direction = ROTATE_RIGHT[direction];
+        }
+        placeWallBannerBlock(world, pos, bannerType, direction);
+    }
+
+    /**
+     * A standing banner here, its rotation the original entity's yaw of
+     * {@code direction * 90}: a quarter turn is four of vanilla's sixteenths.
+     */
+    static void placeBannerBlock(WorldGenLevel world, BlockPos pos, String bannerType, int direction,
+                                 boolean protection, int r) {
+        LOTRBannerType type = LOTRBannerType.forLegacyName(bannerType);
+        if (type == null) {
+            LOTRMod.LOGGER.warn("LOTR: no banner {} for a structure", bannerType);
+            return;
+        }
+        Block banner = LOTRBlocks.standingBanner(type);
+        world.setBlock(pos, banner.defaultBlockState().setValue(BannerBlock.ROTATION, (direction & 3) * 4), 2);
+        if (world.getBlockEntity(pos) instanceof LOTRBannerBlockEntity be) {
+            if (protection) {
+                be.setStructureProtection(true);
+                be.setSelfProtection(false);
+            }
+            if (r > 0) {
+                be.setCustomRange(r);
+            }
+        }
+    }
+
+    /**
+     * A wall banner on the face of the wall block given, facing that way. The
+     * original's hanging banner was two blocks tall, from the wall block's
+     * level up; a wall banner block hangs from the top of its block to below
+     * it, so it goes one block up.
+     */
+    static void placeWallBannerBlock(WorldGenLevel world, BlockPos wallPos, String bannerType, int direction) {
+        LOTRBannerType type = LOTRBannerType.forLegacyName(bannerType);
+        if (type == null) {
+            LOTRMod.LOGGER.warn("LOTR: no banner {} for a structure", bannerType);
+            return;
+        }
+        Direction facing = Direction.from2DDataValue(direction & 3);
+        Block wall = LOTRBlocks.BANNER_WALL_FORM.get(LOTRBlocks.standingBanner(type));
+        world.setBlock(wallPos.relative(facing).above(), wall.defaultBlockState().setValue(WallBannerBlock.FACING, facing), 2);
+    }
+
+    /**
+     * {@code getBiome(world, i, k) instanceof LOTRBiomeGen<biome>}, in the
+     * structure's own coordinates: the biomes come with D10, so none matches yet.
+     */
+    public boolean isBiome(WorldGenLevel world, int i, int k, String biome) {
+        return false;
     }
 
     /** {@code block.getMaterial() == Material.plants}: flowers, grass, ferns, saplings, crops, bushes. */
@@ -835,6 +933,14 @@ public abstract class LOTRStructureBase2 {
      * nothing grows.
      */
     public void placeBiomeTree(WorldGenLevel world, RandomSource random, String biome, int i, int j, int k) {
+    }
+
+    /**
+     * {@code LOTRTreeType.<type>.create(..).generate(world, random, x, y, z)}:
+     * whether the tree grew. The mod's trees come with D10; until then none do.
+     */
+    public static boolean placeTree(WorldGenLevel world, RandomSource random, String treeType, int x, int y, int z) {
+        return false;
     }
 
     public void placeNPCRespawner(LOTRNPCRespawnerEntity entity, WorldGenLevel world, int i, int j, int k) {
@@ -869,7 +975,10 @@ public abstract class LOTRStructureBase2 {
         for (int l = 0; l < this.rotationMode; ++l) {
             direction = (direction + 1) & 3;
         }
-        ItemFrame frame = new ItemFrame(world.getLevel(), pos, Direction.from2DDataValue(direction));
+        // 1.7.10's hanging entities took the block they hang ON; 26.2's take the
+        // space they occupy, in front of that block's face.
+        Direction facing = Direction.from2DDataValue(direction);
+        ItemFrame frame = new ItemFrame(world.getLevel(), pos.relative(facing), facing);
         frame.setItem(itemstack, false);
         world.addFreshEntity(frame);
     }
@@ -896,6 +1005,30 @@ public abstract class LOTRStructureBase2 {
         }
         world.addFreshEntityWithPassengers(entity);
         entity.setHomeTo(pos, homeDistance);
+    }
+
+    /** 1.7.10's Direction tables: 0 south, 1 west, 2 north, 3 east; facings 0-5 down, up, north, south, west, east. */
+    public static final int[] ROTATE_RIGHT = {1, 2, 3, 0};
+    public static final int[] DIRECTION_TO_FACING = {3, 4, 2, 5};
+    public static final int[] FACING_TO_DIRECTION = {-1, -1, 2, 0, 1, 3};
+
+    /** Direction.getMovementDirection: the way (0-3) an offset mostly points. */
+    public static int getMovementDirection(double x, double z) {
+        if (Math.abs(x) > Math.abs(z)) {
+            return x > 0.0 ? 1 : 3;
+        }
+        return z > 0.0 ? 2 : 0;
+    }
+
+    /** 1.7.10's equipment slot index: 0 held, 1 boots, 2 leggings, 3 chestplate, 4 helmet. */
+    public static net.minecraft.world.entity.EquipmentSlot slotOf(int index) {
+        return switch (index) {
+            case 1 -> net.minecraft.world.entity.EquipmentSlot.FEET;
+            case 2 -> net.minecraft.world.entity.EquipmentSlot.LEGS;
+            case 3 -> net.minecraft.world.entity.EquipmentSlot.CHEST;
+            case 4 -> net.minecraft.world.entity.EquipmentSlot.HEAD;
+            default -> net.minecraft.world.entity.EquipmentSlot.MAINHAND;
+        };
     }
 
     /** An entity of this kind for the structure's level, to be placed by one of the above. */

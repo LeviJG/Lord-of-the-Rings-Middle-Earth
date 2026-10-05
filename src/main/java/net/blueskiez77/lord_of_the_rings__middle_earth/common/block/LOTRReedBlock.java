@@ -58,6 +58,11 @@ public class LOTRReedBlock extends VegetationBlock implements BonemealableBlock,
 
     /** No reed above: this segment is the tip, and takes the _upper sprite. */
     public static final BooleanProperty TOP = BooleanProperty.create("top");
+    /**
+     * Not the tip, no reed below, and on solid ground: the bottom of the stem,
+     * which takes the _lower sprite (LOTRRenderBlocks.renderReeds' iconLower).
+     */
+    public static final BooleanProperty LOWER = BooleanProperty.create("lower");
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final IntegerProperty AGE = BlockStateProperties.AGE_15;
 
@@ -70,6 +75,7 @@ public class LOTRReedBlock extends VegetationBlock implements BonemealableBlock,
         this.canGrow = canGrow;
         registerDefaultState(stateDefinition.any()
                 .setValue(TOP, true)
+                .setValue(LOWER, false)
                 .setValue(WATERLOGGED, false)
                 .setValue(AGE, 0));
     }
@@ -81,7 +87,7 @@ public class LOTRReedBlock extends VegetationBlock implements BonemealableBlock,
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        builder.add(TOP, WATERLOGGED, AGE);
+        builder.add(TOP, LOWER, WATERLOGGED, AGE);
     }
 
     @Override
@@ -154,9 +160,11 @@ public class LOTRReedBlock extends VegetationBlock implements BonemealableBlock,
         return updated.is(this) ? describe(updated, level, pos) : updated;
     }
 
-    /** Fills in TOP from what is actually above the block. */
+    /** Fills in TOP and LOWER from what is actually above and below the block. */
     private BlockState describe(BlockState state, LevelReader level, BlockPos pos) {
-        return state.setValue(TOP, !level.getBlockState(pos.above()).is(this));
+        BlockState below = level.getBlockState(pos.below());
+        return state.setValue(TOP, !level.getBlockState(pos.above()).is(this))
+                .setValue(LOWER, !below.is(this) && below.isSolidRender());
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -19,6 +20,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.storage.ValueInput;
@@ -65,7 +68,12 @@ public class LOTRBossInfo {
         return this.bossEvent;
     }
 
-    /** clearSurroundingBlocks: everything short of bedrock-hard within half again its size. */
+    /**
+     * clearSurroundingBlocks: everything short of bedrock-hard within half
+     * again its size, removed without a sound; each of a block's drops falls
+     * with a chance of a hundredth of its blast resistance
+     * (dropBlockAsItemWithChance), so stone now and then, dirt hardly ever.
+     */
     private void clearSurroundingBlocks(ServerLevel level) {
         if (!level.getGameRules().get(GameRules.MOB_GRIEFING)) {
             return;
@@ -86,10 +94,17 @@ public class LOTRBossInfo {
                     }
                     BlockPos pos = new BlockPos(i1, j1, k1);
                     BlockState state = level.getBlockState(pos);
-                    if (state.isAir() || state.liquid() || state.getBlock().getExplosionResistance() >= 2000.0f) {
+                    float resistance = state.getBlock().getExplosionResistance();
+                    if (state.isAir() || LOTRLegacyWorld.isLiquid(state) || resistance >= 2000.0f) {
                         continue;
                     }
-                    level.destroyBlock(pos, true, this.theNPC);
+                    for (ItemStack drop : Block.getDrops(state, level, pos, level.getBlockEntity(pos), this.theNPC,
+                            ItemStack.EMPTY)) {
+                        if (level.getRandom().nextFloat() <= resistance / 100.0f) {
+                            Block.popResource(level, pos, drop);
+                        }
+                    }
+                    level.removeBlock(pos, false);
                 }
             }
         }

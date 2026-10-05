@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -70,9 +71,13 @@ public class LOTRInventoryNPCItems {
     public ItemStack getBomb() { return get(BOMB); }
     public void setBomb(ItemStack stack) { set(BOMB, stack); }
 
-    /** A spear in hand with a backup to fall back on (updateCombat's carryingSpearWithBackup). */
+    /**
+     * A spear in hand with a backup to fall back on (updateCombat's
+     * carryingSpearWithBackup). Every spear, the mod's and vanilla's, is a
+     * kinetic weapon; only vanilla's are in #minecraft:spears.
+     */
     public boolean hasSpearBackup(ItemStack held) {
-        return !held.isEmpty() && held.is(net.minecraft.tags.ItemTags.SPEARS) && !this.items.getItem(SPEAR_BACKUP).isEmpty();
+        return held.has(DataComponents.KINETIC_WEAPON) && !this.items.getItem(SPEAR_BACKUP).isEmpty();
     }
 
     public boolean getIsEating() {

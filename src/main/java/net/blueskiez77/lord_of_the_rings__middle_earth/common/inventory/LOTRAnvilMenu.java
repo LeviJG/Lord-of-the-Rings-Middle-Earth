@@ -5,11 +5,19 @@ import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierCombining;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRDwarfEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntry;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChiselItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCoins;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemTags;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmithsScrollItem;
 
@@ -27,6 +35,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.ContainerLevelAccess;
+import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.ResultContainer;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
@@ -45,21 +54,29 @@ import org.jspecify.annotations.Nullable;
  * of a kind, put a modifier on from a smith's scroll or one of the four
  * special items, reforge, engrave ownership, and rename -- with a colour from a
  * gem, or flint to wash one off. Costs are counted in repair material, not
- * experience. The smith NPCs' trader anvil, which charged coins and could
- * combine two smith's scrolls, waits on the NPCs.
+ * experience.
  *
- * <p>Vanilla enchantments are combined too, on the original's
- * enchantingVanilla path, in 26.2's terms: each enchantment's own anvil cost
- * and compatibility rules.
+ * <p>A smith NPC's anvil (the trader half) has no material slot: the work is
+ * paid for in coins, priced by what the smith would pay for the item's repair
+ * material, and two smith's scrolls of a kind combine into the next grade up.
+ *
+ * <p>NOT ported yet: the scrap trader's half prices and mischief (garbled
+ * names and random modifiers, and its remark as the screen closes), with
+ * that NPC; and the
+ * reforge and scroll-combining achievements.
+ *
+ * <p>With the vanilla enchanting system on, vanilla enchantments are combined
+ * too, in 26.2's terms: each enchantment's own anvil cost and compatibility
+ * rules. With it off, as the original shipped, an enchanted book makes
+ * nothing.
  */
 public class LOTRAnvilMenu extends AbstractContainerMenu {
 
     public static final int INPUT = 0;
     public static final int COMBINER = 1;
     public static final int MATERIAL = 2;
+    /** The result slot on the block anvil; the smith's, with no material slot, is 2 -- see {@link #resultIndex()}. */
     public static final int RESULT = 3;
-    private static final int INV_START = 4;
-    private static final int INV_END = INV_START + 36;
 
     /** maxReforgeTime: how long the slot flashes after a reforge, in ticks. */
     public static final int REFORGE_FLASH = 40;
@@ -72,6 +89,10 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
 
     private final ContainerLevelAccess access;
     private final Player player;
+    /** isTrader: the smith whose anvil this is. */
+    private final @Nullable LOTRNPCEntity theNPC;
+    private final boolean isTrader;
+    private final int resultIndex;
     private final SimpleContainer input = new SimpleContainer(3) {
         @Override
         public void setChanged() {
@@ -91,16 +112,48 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
     }
 
     public LOTRAnvilMenu(int containerId, Inventory inventory, ContainerLevelAccess access) {
-        super(LOTRMenus.ANVIL, containerId);
+        this(LOTRMenus.ANVIL, containerId, inventory, access, null);
+    }
+
+    /** The client's smith anvil: the smith as the opening data names it. */
+    public LOTRAnvilMenu(int containerId, Inventory inventory, Integer entityId) {
+        this(containerId, inventory,
+                inventory.player.level().getEntity(entityId) instanceof LOTRNPCEntity npc ? npc : null);
+    }
+
+    public LOTRAnvilMenu(int containerId, Inventory inventory, @Nullable LOTRNPCEntity npc) {
+        this(LOTRMenus.SMITH, containerId, inventory, ContainerLevelAccess.NULL, npc);
+    }
+
+    private LOTRAnvilMenu(MenuType<?> type, int containerId, Inventory inventory, ContainerLevelAccess access,
+            @Nullable LOTRNPCEntity npc) {
+        super(type, containerId);
         this.access = access;
         this.player = inventory.player;
+        this.theNPC = npc;
+        this.isTrader = type == LOTRMenus.SMITH;
         this.data = new SimpleContainerData(4);
         addSlot(new Slot(input, INPUT, 27, 58));
         addSlot(new Slot(input, COMBINER, 76, 47));
-        addSlot(new Slot(input, MATERIAL, 76, 70));
+        if (!this.isTrader) {
+            addSlot(new Slot(input, MATERIAL, 76, 70));
+        }
+        this.resultIndex = this.slots.size();
         addSlot(new ResultSlot(output, 0, 134, 58));
         addStandardInventorySlots(inventory, 8, 116);
         addDataSlots(data);
+    }
+
+    public boolean isTrader() {
+        return this.isTrader;
+    }
+
+    public int resultIndex() {
+        return this.resultIndex;
+    }
+
+    public static boolean isSmithingWith(Player player, LOTRNPCEntity npc) {
+        return player.containerMenu instanceof LOTRAnvilMenu menu && menu.theNPC == npc;
     }
 
     public int materialCost() {
@@ -130,14 +183,25 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
 
     // ---------------------------------------------------------------- repair
 
-    /** hasMaterialOrCoinAmount, the block anvil's: the right material, enough of it. */
-    public boolean hasMaterialAmount(int cost) {
+    /** hasMaterialOrCoinAmount: the coins for a smith; the right material, enough of it, for the block. */
+    public boolean hasMaterialOrCoinAmount(int cost) {
+        if (this.isTrader) {
+            return LOTRCoins.getInventoryValue(this.player) >= cost;
+        }
         ItemStack material = input.getItem(MATERIAL);
         return !material.isEmpty() && isRepairMaterial(input.getItem(INPUT), material)
                 && material.getCount() >= cost;
     }
 
-    private void takeMaterialAmount(int cost) {
+    private void takeMaterialOrCoinAmount(int cost) {
+        if (this.isTrader) {
+            if (!this.player.level().isClientSide() && this.theNPC != null) {
+                LOTRCoins.takeCoins(cost, this.player);
+                broadcastChanges();
+                this.theNPC.playTradeSound();
+            }
+            return;
+        }
         ItemStack material = input.getItem(MATERIAL);
         if (!material.isEmpty()) {
             material.shrink(cost);
@@ -198,6 +262,40 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
             return null;
         }
         return repairable.items().unwrapKey().orElse(null);
+    }
+
+    /**
+     * getTraderMaterialPrice: what one of the item's repair material costs at
+     * this smith -- from its current sell trades, else from all it could sell;
+     * a dwarf will price mithril at 200 though it never buys it.
+     */
+    private float getTraderMaterialPrice(ItemStack inputItem) {
+        float materialPrice = 0.0f;
+        if (this.theNPC == null || this.theNPC.traderNPCInfo == null) {
+            return materialPrice;
+        }
+        for (LOTRTradeEntry trade : this.theNPC.traderNPCInfo.getSellTrades()) {
+            ItemStack tradeItem = trade.createTradeItem();
+            if (isRepairMaterial(inputItem, tradeItem)) {
+                materialPrice = (float) trade.getCost() / tradeItem.getCount();
+                break;
+            }
+        }
+        if (materialPrice <= 0.0f) {
+            for (LOTRTradeEntry trade : ((LOTRTradeable) this.theNPC).getSellPool().createAllTrades()) {
+                ItemStack tradeItem = trade.createTradeItem();
+                if (isRepairMaterial(inputItem, tradeItem)) {
+                    materialPrice = (float) trade.getCost() / tradeItem.getCount();
+                    break;
+                }
+            }
+        }
+        if (materialPrice <= 0.0f && (isRepairMaterial(inputItem, new ItemStack(LOTRItems.MITHRIL))
+                || isRepairMaterial(inputItem, new ItemStack(LOTRMaterialItems.MITHRIL_MAIL)))
+                && this.theNPC instanceof LOTRDwarfEntity) {
+            materialPrice = 200.0f;
+        }
+        return materialPrice;
     }
 
     /** costsToRename: gear -- weapons, tools, protective armour, launchers, throwing axes. */
@@ -293,7 +391,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
 
         ItemStack inputCopy = inputItem.copy();
         ItemStack combiner = input.getItem(COMBINER);
-        ItemStack material = input.getItem(MATERIAL);
+        ItemStack material = this.isTrader ? ItemStack.EMPTY : input.getItem(MATERIAL);
         int baseAnvilCost = LOTRModifiers.getAnvilCost(inputItem)
                 + (combiner.isEmpty() ? 0 : LOTRModifiers.getAnvilCost(combiner));
         int repairCost = 0;
@@ -337,10 +435,22 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
             ++renameCost;
         }
 
+        LOTRModifierCombining.CombineRecipe scrollCombine;
+        if (this.isTrader && (scrollCombine = LOTRModifierCombining.getCombinationResult(inputItem, combiner)) != null) {
+            output.setItem(0, scrollCombine.createOutputItem());
+            setCosts(scrollCombine.cost(), 0, 0);
+            return;
+        }
+
         boolean combining = false;
         if (!combiner.isEmpty()) {
             boolean withBook = combiner.is(Items.ENCHANTED_BOOK)
                     && !combiner.getOrDefault(DataComponents.STORED_ENCHANTMENTS, ItemEnchantments.EMPTY).isEmpty();
+            if (withBook && !LOTRConfig.enchantingVanilla) {
+                output.setItem(0, ItemStack.EMPTY);
+                setCosts(0, 0, 0);
+                return;
+            }
             LOTRModifier combinerModifier = specialModifier(combiner);
             if (!withBook && combinerModifier == null) {
                 if (inputCopy.isDamageableItem() && inputCopy.getItem() == combiner.getItem()) {
@@ -362,7 +472,9 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
                 }
             }
 
-            combineCost += combineEnchantments(inputItem, inputCopy, combiner);
+            if (LOTRConfig.enchantingVanilla) {
+                combineCost += combineEnchantments(inputItem, inputCopy, combiner);
+            }
 
             List<LOTRModifier> outputMods = new ArrayList<>(LOTRModifiers.get(inputCopy));
             List<LOTRModifier> combinerMods = new ArrayList<>(LOTRModifiers.get(combiner));
@@ -418,8 +530,15 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         }
 
         if (inputCopy.isDamageableItem()) {
-            boolean canRepair = !material.isEmpty() && isRepairMaterial(inputItem, material);
-            int available = material.isEmpty() ? 0 : material.getCount() - combineCost - renameCost;
+            boolean canRepair;
+            int available;
+            if (this.isTrader) {
+                canRepair = getTraderMaterialPrice(inputItem) > 0.0f;
+                available = Integer.MAX_VALUE;
+            } else {
+                canRepair = !material.isEmpty() && isRepairMaterial(inputItem, material);
+                available = material.isEmpty() ? 0 : material.getCount() - combineCost - renameCost;
+            }
             int oneItemRepair = Math.min(inputCopy.getDamageValue(), inputCopy.getMaxDamage() / 4);
             if (canRepair && available > 0 && oneItemRepair > 0) {
                 available -= baseAnvilCost;
@@ -474,6 +593,21 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
             materialCost *= 3;
             reforgeCost *= 3;
             engraveCost *= 3;
+        }
+
+        // A smith charges coins: the material it would have taken, at its price.
+        if (this.isTrader) {
+            boolean isCommonRenameOnly = nameChange && materialCost == 0;
+            float materialPrice = getTraderMaterialPrice(inputItem);
+            if (materialPrice > 0.0f) {
+                materialCost = Math.max(Math.round(materialCost * materialPrice), 1);
+                reforgeCost = Math.max(Math.round(reforgeCost * materialPrice), 1);
+                engraveCost = Math.max(Math.round(engraveCost * materialPrice), 1);
+            } else if (!isCommonRenameOnly) {
+                output.setItem(0, ItemStack.EMPTY);
+                setCosts(0, 0, 0);
+                return;
+            }
         }
 
         if (combining || repairing || nameChange || alteringColour) {
@@ -579,7 +713,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         ItemStack inputItem = input.getItem(INPUT);
         int cost = reforgeCost();
         if (lastReforgeTime >= 0L && now - lastReforgeTime < 2000L || inputItem.isEmpty() || cost <= 0
-                || !hasMaterialAmount(cost)) {
+                || !hasMaterialOrCoinAmount(cost)) {
             return false;
         }
         if (inputItem.isDamageableItem()) {
@@ -588,7 +722,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         LOTRModifiers.applyRandom(inputItem, player.getRandom(), true, true);
         LOTRModifiers.setAnvilCost(inputItem, 0);
         input.setItem(INPUT, inputItem);
-        takeMaterialAmount(cost);
+        takeMaterialOrCoinAmount(cost);
         playAnvilSound();
         lastReforgeTime = now;
         data.set(3, reforges() + 1);
@@ -599,12 +733,12 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
     private boolean engraveOwnership() {
         ItemStack inputItem = input.getItem(INPUT);
         int cost = engraveOwnerCost();
-        if (inputItem.isEmpty() || cost <= 0 || !hasMaterialAmount(cost) || !canEngraveNewOwner(inputItem, player)) {
+        if (inputItem.isEmpty() || cost <= 0 || !hasMaterialOrCoinAmount(cost) || !canEngraveNewOwner(inputItem, player)) {
             return false;
         }
         LOTRItemOwnership.setCurrentOwner(inputItem, player.getName().getString());
         input.setItem(INPUT, inputItem);
-        takeMaterialAmount(cost);
+        takeMaterialOrCoinAmount(cost);
         playAnvilSound();
         return true;
     }
@@ -614,8 +748,14 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         return owner == null || !owner.equals(player.getName().getString());
     }
 
-    /** 1021 in 1.7.10, "random.anvil_use": the anvil-used level event, 1030 now. */
+    /** 1021 in 1.7.10, "random.anvil_use": the anvil-used level event, 1030 now -- at the smith for a smith. */
     private void playAnvilSound() {
+        if (this.isTrader) {
+            if (this.theNPC != null && !this.player.level().isClientSide()) {
+                this.player.level().levelEvent(1030, this.theNPC.blockPosition(), 0);
+            }
+            return;
+        }
         access.execute((level, pos) -> level.levelEvent(1030, pos, 0));
     }
 
@@ -637,7 +777,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
             if (!hasItem()) {
                 return false;
             }
-            return materialCost() <= 0 || hasMaterialAmount(materialCost());
+            return materialCost() <= 0 || hasMaterialOrCoinAmount(materialCost());
         }
 
         @Override
@@ -650,7 +790,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
                 input.setItem(COMBINER, combiner.isEmpty() ? ItemStack.EMPTY : combiner);
             }
             if (materials > 0) {
-                takeMaterialAmount(materials);
+                takeMaterialOrCoinAmount(materials);
             }
             data.set(0, 0);
             playAnvilSound();
@@ -660,12 +800,23 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
 
     @Override
     public boolean stillValid(Player player) {
+        if (this.isTrader) {
+            LOTRNPCEntity npc = this.theNPC;
+            return npc != null && player.distanceTo(npc) <= 12.0 && npc.isAlive() && npc.getTarget() == null
+                    && ((LOTRTradeable) npc).canTradeWith(player);
+        }
         return stillValid(access, player, LOTRUtilityBlocks.ANVIL);
     }
 
     @Override
     public void removed(Player player) {
         super.removed(player);
+        if (this.isTrader) {
+            if (!player.level().isClientSide()) {
+                clearContainer(player, input);
+            }
+            return;
+        }
         access.execute((level, pos) -> clearContainer(player, input));
     }
 
@@ -676,16 +827,18 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         if (slot.hasItem()) {
             ItemStack stack = slot.getItem();
             moved = stack.copy();
-            if (index == RESULT) {
-                if (!moveItemStackTo(stack, INV_START, INV_END, true)) {
+            int invStart = this.resultIndex + 1;
+            int invEnd = invStart + 36;
+            if (index == this.resultIndex) {
+                if (!moveItemStackTo(stack, invStart, invEnd, true)) {
                     return ItemStack.EMPTY;
                 }
                 slot.onQuickCraft(stack, moved);
-            } else if (index >= INV_START) {
-                if (!moveItemStackTo(stack, INPUT, RESULT, false)) {
+            } else if (index >= invStart) {
+                if (!moveItemStackTo(stack, INPUT, this.resultIndex, false)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!moveItemStackTo(stack, INV_START, INV_END, false)) {
+            } else if (!moveItemStackTo(stack, invStart, invEnd, false)) {
                 return ItemStack.EMPTY;
             }
             if (stack.isEmpty()) {

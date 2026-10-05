@@ -1,11 +1,22 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionData;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRTradeMenu;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRTradePayloads;
+
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
@@ -14,10 +25,6 @@ import net.minecraft.world.level.storage.ValueOutput;
  * enough value has gone through them and unlock as it decays; after 5000
  * coins' worth of trade the trader draws fresh trades, all locked for five
  * minutes. Now and then it calls out to players nearby.
- *
- * <p>NOT ported yet, with the trade screen (D16): sending the trades to a
- * player with the screen open (LOTRPacketTraderInfo), and the faction trade
- * counter (LOTRFactionData.addTrade).
  */
 public class LOTRTraderNPCInfo {
 
@@ -78,9 +85,11 @@ public class LOTRTraderNPCInfo {
     /** onTrade: the trader's reaction, then the value put through the trade. */
     public void onTrade(Player player, LOTRTradeEntry trade, LOTRTradeEntries.TradeType type, int value) {
         ((LOTRTradeable) this.theEntity).onPlayerTrade(player, type, trade.createTradeItem());
+        LOTRFactionData.addTrade(player, this.theEntity.getFaction());
         trade.doTransaction(value);
         this.timeSinceTrade = 0;
         this.valueSinceRefresh += value;
+        sendClientPacket(player);
     }
 
     /** onUpdate, server side. */
@@ -90,19 +99,28 @@ public class LOTRTraderNPCInfo {
         }
         ++this.timeSinceTrade;
         int ticksExisted = this.theEntity.tickCount;
+        boolean sendUpdate = false;
         for (LOTRTradeEntry trade : this.buyTrades) {
-            if (trade != null) {
-                trade.updateAvailability(ticksExisted);
+            if (trade != null && trade.updateAvailability(ticksExisted)) {
+                sendUpdate = true;
             }
         }
         for (LOTRTradeEntry trade : this.sellTrades) {
-            if (trade != null) {
-                trade.updateAvailability(ticksExisted);
+            if (trade != null && trade.updateAvailability(ticksExisted)) {
+                sendUpdate = true;
             }
         }
         if (this.shouldRefresh && this.valueSinceRefresh >= this.refreshAtValue) {
             refreshTrades();
             setAllTradesDelayed();
+            sendUpdate = true;
+        }
+        if (sendUpdate) {
+            for (Player player : this.theEntity.level().players()) {
+                if (LOTRTradeMenu.isTradingWith(player, this.theEntity)) {
+                    sendClientPacket(player);
+                }
+            }
         }
         if (this.theEntity.isAlive() && this.theEntity.getTarget() == null && this.timeUntilAdvertisement == 0
                 && this.timeSinceTrade > 600) {
@@ -129,6 +147,27 @@ public class LOTRTraderNPCInfo {
         setBuyTrades(trader.getBuyPool().getRandomTrades(this.theEntity.getRandom()));
         setSellTrades(trader.getSellPool().getRandomTrades(this.theEntity.getRandom()));
         this.valueSinceRefresh = 0;
+        for (Player player : this.theEntity.level().players()) {
+            if (LOTRTradeMenu.isTradingWith(player, this.theEntity)) {
+                ((LOTRTradeMenu) player.containerMenu).updateAllTradeSlots();
+            }
+        }
+    }
+
+    /** sendClientPacket: the trades as saved, to a player trading. */
+    public void sendClientPacket(Player player) {
+        if (player instanceof ServerPlayer serverPlayer) {
+            TagValueOutput output = TagValueOutput.createWithContext(ProblemReporter.DISCARDING,
+                    this.theEntity.registryAccess());
+            save(output);
+            ServerPlayNetworking.send(serverPlayer,
+                    new LOTRTradePayloads.TraderInfo(this.theEntity.getId(), output.buildResult()));
+        }
+    }
+
+    /** receiveClientPacket. */
+    public void receiveClientPacket(CompoundTag data) {
+        load(TagValueInput.create(ProblemReporter.DISCARDING, this.theEntity.registryAccess(), data));
     }
 
     private void setAllTradesDelayed() {

@@ -1,36 +1,38 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuNetworking;
 import net.fabricmc.api.ModInitializer;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRCreativeTabs;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerEvents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockBehaviours;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRMillstoneRecipes;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRPackets;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRRecipeTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRAlignmentCommand;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfigRules;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfigSync;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRPackets;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRMillstoneRecipes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRRecipeTypes;
 
-import net.minecraft.world.level.block.DispenserBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.minecraft.world.level.block.DispenserBlock;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGreyWandererTracker;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyBlocks;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureScan;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureSpawning;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructures;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCauldronWashing;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDispenserBehaviours;
@@ -41,6 +43,14 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAlcoholTo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRArmourSets;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVanillaVessels;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRSpawnerChests;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureScan;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureSpawning;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructures;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LOTRMod implements ModInitializer {
     public static final String MOD_ID = "lord_of_the_rings - middle_earth";
@@ -53,6 +63,15 @@ public class LOTRMod implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("The Lord of the Rings mod (Fabric 26.2 port) initializing...");
 
+        LOTRConfig.setupAndLoad();
+        LOTRConfigSync.init();
+        LOTRConfigRules.init();
+        LOTRBannerProtection.init();
+        LOTRBannerEvents.init();
+        LOTRBannerNetworking.init();
+        LOTRTradeNetworking.init();
+        LOTRHiredNetworking.init();
+        LOTRMenuNetworking.init();
         LOTRFaction.initAllProperties();
 
         LOTRPlayerAlignments.init();
@@ -62,6 +81,7 @@ public class LOTRMod implements ModInitializer {
         LOTRStructureScan.loadAllScans();
         LOTRStructures.init();
         LOTRStructureSpawning.init();
+        LOTRSpawnerChests.init();
         LOTRGreyWandererTracker.init();
         LOTRAlcoholTolerance.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRPlayerNPCOptions.init();
@@ -133,5 +153,17 @@ public class LOTRMod implements ModInitializer {
     public static boolean isAprilFools() {
         java.time.LocalDate today = java.time.LocalDate.now();
         return today.getMonth() == java.time.Month.APRIL && today.getDayOfMonth() == 1;
+    }
+
+    /** isHalloween: the last day of October, when NPCs wear pumpkins. */
+    public static boolean isHalloween() {
+        java.time.LocalDate today = java.time.LocalDate.now();
+        return today.getMonth() == java.time.Month.OCTOBER && today.getDayOfMonth() == 31;
+    }
+
+    /** isNewYearsDay: the first of January. */
+    public static boolean isNewYearsDay() {
+        java.time.LocalDate today = java.time.LocalDate.now();
+        return today.getMonth() == java.time.Month.JANUARY && today.getDayOfMonth() == 1;
     }
 }

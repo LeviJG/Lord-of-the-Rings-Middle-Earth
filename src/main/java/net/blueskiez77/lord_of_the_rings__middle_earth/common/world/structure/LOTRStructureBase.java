@@ -37,8 +37,7 @@ import org.jspecify.annotations.Nullable;
  * it. As with the newer base, blocks are set without neighbour updates and
  * given their shapes when the whole structure is placed.
  *
- * <p>NOT ported yet: banners (with the banner entities, D14); the mod's flower
- * pot; the spawner chests; the biome checks natural generation makes (D10).
+ * <p>NOT ported yet: the mod's flower pot; the spawner chests; the biome checks natural generation makes (D10).
  */
 public abstract class LOTRStructureBase {
 
@@ -46,6 +45,8 @@ public abstract class LOTRStructureBase {
     public @Nullable Player usingPlayer;
     public boolean notifyChanges;
     private final List<BlockPos> placed = new ArrayList<>();
+    /** The block each position was last given, so setBlockMetadata can change only its metadata. */
+    private final java.util.Map<BlockPos, LegacyBlock> placedBlocks = new java.util.HashMap<>();
 
     protected LOTRStructureBase(boolean flag) {
         this.notifyChanges = flag;
@@ -73,8 +74,85 @@ public abstract class LOTRStructureBase {
         return false;
     }
 
+    /** placeSpawnerChest: a chest with a creature waiting in it (LOTRSpawnerChests). */
+    public void placeSpawnerChest(WorldGenLevel world, int i, int j, int k, LegacyBlock block, int meta, net.minecraft.world.entity.EntityType<?> type) {
+        setBlockAndNotifyAdequately(world, i, j, k, block, meta);
+        net.minecraft.world.level.block.entity.BlockEntity be = world.getBlockEntity(new BlockPos(i, j, k));
+        if (be != null) {
+            LOTRSpawnerChests.setMob(be, type);
+        }
+    }
+
+    /** {@code LOTRTreeType.<type>.create(..).generate(..)}: with D10; nothing yet. */
+    public static void placeTree(WorldGenLevel world, RandomSource random, String treeType, int x, int y, int z) {
+    }
+
+    /**
+     * WorldGenAbstractTree.isReplaceable: what a tree may grow through -- air,
+     * leaves, logs, saplings, vines, grass and plants.
+     */
+    public boolean isReplaceable(WorldGenLevel world, int i, int j, int k) {
+        BlockState state = world.getBlockState(new BlockPos(i, j, k));
+        return state.isAir() || state.is(net.minecraft.tags.BlockTags.LEAVES) || state.is(net.minecraft.tags.BlockTags.LOGS)
+                || state.getBlock() instanceof net.minecraft.world.level.block.SaplingBlock || state.is(Blocks.VINE) || state.is(Blocks.GRASS_BLOCK)
+                || state.is(Blocks.DIRT) || LOTRStructureBase2.isPlant(state);
+    }
+
+    /** LOTRMod.isOpaque: whether the block here is an opaque cube, in world coordinates. */
+    public static boolean isOpaqueAt(WorldGenLevel world, int i, int j, int k) {
+        return world.getBlockState(new BlockPos(i, j, k)).isSolidRender();
+    }
+
     public void setBlockAndNotifyAdequately(WorldGenLevel world, int i, int j, int k, LegacyBlock block, int meta) {
         setBlockState(world, i, j, k, block.state(meta));
+        this.placedBlocks.put(new BlockPos(i, j, k), block);
+    }
+
+    /** setBlockMetadata: the block set here, with other metadata (a chest or furnace turned). */
+    public void setBlockMetadata(WorldGenLevel world, int i, int j, int k, int meta) {
+        LegacyBlock block = this.placedBlocks.get(new BlockPos(i, j, k));
+        if (block != null) {
+            setBlockAndNotifyAdequately(world, i, j, k, block, meta);
+        }
+    }
+
+    public void placeFlowerPot(WorldGenLevel world, int i, int j, int k, @Nullable ItemStack itemstack) {
+        BlockState pot = Blocks.FLOWER_POT.defaultBlockState();
+        if (itemstack != null && !itemstack.isEmpty()) {
+            Block potted = LOTRStructureBase2.pottedFor(Block.byItem(itemstack.getItem()));
+            if (potted != null) {
+                pot = potted.defaultBlockState();
+            }
+        }
+        setBlockState(world, i, j, k, pot);
+    }
+
+    /** placeArmorStand: vanilla's armour stand (the mod's was a vanilla duplicate), in the armour given. */
+    public void placeArmorStand(WorldGenLevel world, int i, int j, int k, int direction, ItemStack @Nullable [] armor) {
+        net.minecraft.world.entity.decoration.ArmorStand stand = new net.minecraft.world.entity.decoration.ArmorStand(
+                world.getLevel(), i + 0.5, j, k + 0.5);
+        stand.setYRot(Direction.from2DDataValue(direction).toYRot());
+        if (armor != null) {
+            net.minecraft.world.entity.EquipmentSlot[] slots = {net.minecraft.world.entity.EquipmentSlot.HEAD,
+                    net.minecraft.world.entity.EquipmentSlot.CHEST, net.minecraft.world.entity.EquipmentSlot.LEGS,
+                    net.minecraft.world.entity.EquipmentSlot.FEET};
+            for (int l = 0; l < armor.length && l < slots.length; ++l) {
+                if (armor[l] != null) {
+                    stand.setItemSlot(slots[l], armor[l].copy());
+                }
+            }
+        }
+        world.addFreshEntity(stand);
+    }
+
+    /** WorldGenAbstractTree.func_150515_a: a block, metadata 0. */
+    public void func_150515_a(WorldGenLevel world, int i, int j, int k, LegacyBlock block) {
+        setBlockAndNotifyAdequately(world, i, j, k, block, 0);
+    }
+
+    /** WorldGenAbstractTree.func_150516_a: a block and its metadata. */
+    public void func_150516_a(WorldGenLevel world, int i, int j, int k, LegacyBlock block, int meta) {
+        setBlockAndNotifyAdequately(world, i, j, k, block, meta);
     }
 
     public void setBlockState(WorldGenLevel world, int i, int j, int k, BlockState state) {
@@ -182,15 +260,21 @@ public abstract class LOTRStructureBase {
     }
 
     public void spawnItemFrame(WorldGenLevel world, int i, int j, int k, int direction, ItemStack itemstack) {
-        ItemFrame frame = new ItemFrame(world.getLevel(), new BlockPos(i, j, k), Direction.from2DDataValue(direction));
+        // 1.7.10's hanging entities took the block they hang ON; 26.2's take the
+        // space they occupy, in front of that block's face.
+        Direction facing = Direction.from2DDataValue(direction);
+        ItemFrame frame = new ItemFrame(world.getLevel(), new BlockPos(i, j, k).relative(facing), facing);
         frame.setItem(itemstack, false);
         world.addFreshEntity(frame);
     }
 
-    /** placeBanner and placeWallBanner: with the banner entities (D14); nothing yet. */
+    /** placeBanner: a standing banner here, facing the given way, protecting nothing. */
     public void placeBanner(WorldGenLevel world, int i, int j, int k, int direction, String bannerType) {
+        LOTRStructureBase2.placeBannerBlock(world, new BlockPos(i, j, k), bannerType, direction, false, 0);
     }
 
+    /** placeWallBanner: a banner hung on the face of this block, facing the given way. */
     public void placeWallBanner(WorldGenLevel world, int i, int j, int k, int direction, String bannerType) {
+        LOTRStructureBase2.placeWallBannerBlock(world, new BlockPos(i, j, k), bannerType, direction);
     }
 }

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant;
 
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRAlignmentHudPayloads;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
@@ -91,8 +93,12 @@ public final class LOTRModifierSpecials {
             burst(level, entity, ParticleTypes.FLAME, 20, 0.1f, 0.15f, 0.15);
         }
         if (has(source, LOTRModifier.CHILL)) {
-            // doChillAttack: Slowness II for five seconds. The FROST screen
-            // overlay it also sent a player is not ported.
+            // doChillAttack: a player's screen frosts over (LOTRDamage.doFrostDamage),
+            // and Slowness II for five seconds.
+            if (entity instanceof ServerPlayer player) {
+                ServerPlayNetworking.send(player, new LOTRAlignmentHudPayloads.EnvironmentOverlay(
+                        LOTRAlignmentHudPayloads.EnvironmentOverlay.FROST));
+            }
             entity.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 5 * 20, 1));
             burst(level, entity, LOTRParticles.CHILL, 40, 0.1f, 0.2f, 0.0);
         }

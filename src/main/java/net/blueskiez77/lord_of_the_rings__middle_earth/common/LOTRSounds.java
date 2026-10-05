@@ -41,8 +41,8 @@ public final class LOTRSounds {
     public static final SoundEvent ITEM_MUG_FILL = register("item.mug_fill");
     /** A draw on a smoking pipe, "lotr:item.puff". */
     public static final SoundEvent ITEM_PUFF = register("item.puff");
-    /** A structure spawner building: "lotr:item.structureSpawner". */
-    public static final SoundEvent ITEM_STRUCTURE_SPAWNER = register("item.structureSpawner");
+    /** A structure spawner building: "lotr:item.structure_spawner". */
+    public static final SoundEvent ITEM_STRUCTURE_SPAWNER = register("item.structure_spawner");
     /** A blowgun dart leaving the pipe, "lotr:item.dart". */
     public static final SoundEvent ITEM_DART = register("item.dart");
     /** Pledging to a faction, "lotr:event.pledge". */
@@ -57,8 +57,8 @@ public final class LOTRSounds {
     /** A male elf's war cry and idle speech, "lotr:elf.male.attack" and ".say". */
     public static final SoundEvent ELF_MALE_ATTACK = register("elf.male.attack");
     public static final SoundEvent ELF_MALE_SAY = register("elf.male.say");
-    /** A Wood-elf scout vanishing to somewhere else, "lotr:elf.woodElf_teleport". */
-    public static final SoundEvent ELF_WOOD_ELF_TELEPORT = register("elf.woodElf_teleport");
+    /** A Wood-elf scout vanishing to somewhere else, "lotr:elf.wood_elf_teleport". */
+    public static final SoundEvent ELF_WOOD_ELF_TELEPORT = register("elf.wood_elf_teleport");
     /** A dwarf's war cry, pain, and cheer over a kill: "lotr:dwarf.attack", ".hurt" and ".kill". */
     public static final SoundEvent DWARF_ATTACK = register("dwarf.attack");
     public static final SoundEvent DWARF_HURT = register("dwarf.hurt");
@@ -70,20 +70,20 @@ public final class LOTRSounds {
     public static final SoundEvent WIGHT_HURT = register("wight.hurt");
 
     /** A marsh wraith's cast, and a wraith rising: "lotr:wraith.marshWraith_shoot" and ".spawn". */
-    public static final SoundEvent WRAITH_MARSH_WRAITH_SHOOT = register("wraith.marshWraith_shoot");
+    public static final SoundEvent WRAITH_MARSH_WRAITH_SHOOT = register("wraith.marsh_wraith_shoot");
     public static final SoundEvent WRAITH_SPAWN = register("wraith.spawn");
 
     /** An Ent's heavy tread: "lotr:ent.step". */
     public static final SoundEvent ENT_STEP = register("ent.step");
 
     /** The Mallorn Ent's leaf bomb and its call to the trees: "lotr:ent.mallorn.leafAttack" and ".summonEnt". */
-    public static final SoundEvent ENT_MALLORN_LEAF_ATTACK = register("ent.mallorn.leafAttack");
-    public static final SoundEvent ENT_MALLORN_SUMMON_ENT = register("ent.mallorn.summonEnt");
+    public static final SoundEvent ENT_MALLORN_LEAF_ATTACK = register("ent.mallorn.leaf_attack");
+    public static final SoundEvent ENT_MALLORN_SUMMON_ENT = register("ent.mallorn.summon_ent");
 
     /** A half-troll's death, pain and idle grunt: "lotr:halfTroll.death", ".hurt" and ".say". */
-    public static final SoundEvent HALF_TROLL_DEATH = register("halfTroll.death");
-    public static final SoundEvent HALF_TROLL_HURT = register("halfTroll.hurt");
-    public static final SoundEvent HALF_TROLL_SAY = register("halfTroll.say");
+    public static final SoundEvent HALF_TROLL_DEATH = register("half_troll.death");
+    public static final SoundEvent HALF_TROLL_HURT = register("half_troll.hurt");
+    public static final SoundEvent HALF_TROLL_SAY = register("half_troll.say");
 
     /** Gollum's death, pain and gollum: "lotr:gollum.death", ".hurt" and ".say". */
     public static final SoundEvent GOLLUM_DEATH = register("gollum.death");
@@ -160,7 +160,7 @@ public final class LOTRSounds {
     public static final SoundEvent TROLL_SNIFF = register("troll.sniff");
     public static final SoundEvent TROLL_SNEEZE = register("troll.sneeze");
     public static final SoundEvent TROLL_TRANSFORM = register("troll.transform");
-    public static final SoundEvent TROLL_ROCK_SMASH = register("troll.rockSmash");
+    public static final SoundEvent TROLL_ROCK_SMASH = register("troll.rock_smash");
 
     /** A midge swarm's hum, and a swan's hiss. */
     public static final SoundEvent MIDGES_SWARM = register("midges.swarm");

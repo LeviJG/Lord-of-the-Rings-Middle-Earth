@@ -147,7 +147,7 @@ public final class LOTRSpeech {
         }
 
         private String internalFormatSpeech(String s) {
-            if (s.length() > 1 && RAND.nextInt(2000) == 0) {
+            if (s.length() > 1 && (LOTRMod.isAprilFools() || RAND.nextInt(2000) == 0)) {
                 s = "Tbh, " + s.substring(0, 1).toLowerCase(Locale.ROOT) + s.substring(1, s.length() - 1) + ", tbh.";
             }
             return s;

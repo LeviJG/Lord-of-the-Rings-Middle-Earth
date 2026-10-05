@@ -154,7 +154,7 @@ public class LOTRFarmGoal extends Goal {
     // --- The seeds and their crop --------------------------------------------
 
     /** The plant a seed item puts down: a crop, a stem, or grapes -- Forge's Crop plant type. */
-    private static @Nullable Block getPlant(Item seed) {
+    public static @Nullable Block getPlant(Item seed) {
         if (seed instanceof LOTRGrapeSeedsItem grapes) {
             return grapes.getBlock();
         }

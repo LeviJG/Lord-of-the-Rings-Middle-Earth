@@ -4,6 +4,9 @@
   "package": "net.blueskiez77.lord_of_the_rings__middle_earth.mixin.client",
   "compatibilityLevel": "JAVA_25",
   "client": [
+    "LOTRDebugRendererMixin",
+    "LOTREntityRenderStateMixin",
+    "LOTREntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

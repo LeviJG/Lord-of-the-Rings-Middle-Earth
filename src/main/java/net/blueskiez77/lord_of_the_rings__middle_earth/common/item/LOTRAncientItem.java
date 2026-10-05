@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 
@@ -39,7 +40,7 @@ public class LOTRAncientItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (level instanceof ServerLevel) {
             ItemStack result = LOTRChestContents.pick(this.pool, level.getRandom(), false);
-            if (!result.isEmpty() && LOTRModifiers.canApply(LOTRModifier.BANE_WRAITH, result, false)
+            if (LOTRConfig.enchantingLOTR && !result.isEmpty() && LOTRModifiers.canApply(LOTRModifier.BANE_WRAITH, result, false)
                     && level.getRandom().nextInt(4) == 0) {
                 List<LOTRModifier> modifiers = new ArrayList<>(LOTRModifiers.get(result));
                 if (!modifiers.contains(LOTRModifier.BANE_WRAITH)) {

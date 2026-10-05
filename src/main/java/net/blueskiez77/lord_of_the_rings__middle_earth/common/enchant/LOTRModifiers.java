@@ -8,6 +8,8 @@ import java.util.Set;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockTags;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRThrowingAxeItem;
@@ -119,6 +121,9 @@ public final class LOTRModifiers {
         // handlePlayerInventoryChanges: anything new in a player's inventory,
         // or on the cursor, is rolled.
         ServerTickEvents.END_LEVEL_TICK.register(level -> {
+            if (!LOTRConfig.enchantingLOTR) {
+                return;
+            }
             for (ServerPlayer player : level.players()) {
                 RandomSource random = player.getRandom();
                 Inventory inventory = player.getInventory();
@@ -130,7 +135,7 @@ public final class LOTRModifiers {
         });
         // tryApplyRandomEnchantsForEquipment: a mob's gear, once.
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
-            if (entity instanceof Mob mob && !mob.entityTags().contains(ENTITY_ROLLED)) {
+            if (LOTRConfig.enchantingLOTR && entity instanceof Mob mob && !mob.entityTags().contains(ENTITY_ROLLED)) {
                 for (EquipmentSlot slot : EquipmentSlot.values()) {
                     tryApplyRandom(mob.getItemBySlot(slot), mob.getRandom());
                 }
@@ -557,11 +562,16 @@ public final class LOTRModifiers {
      * onKillEntity: every kill of a bane's foe with a weapon that could take it
      * counts. When the count reaches its target -- 100 to 250, drawn at the
      * first kill -- the weapon has earned the bane, and the whole server hears
-     * of it. The Utumno and hired-unit exclusions wait on those.
+     * of it. A hired unit counts only with "Hired units killed count towards
+     * x-bane modifiers" on; the Utumno exclusion waits on Utumno (D15).
      */
     private static void onKill(net.minecraft.server.level.ServerPlayer player, LivingEntity target) {
         ItemStack weapon = player.getMainHandItem();
         if (weapon.isEmpty()) {
+            return;
+        }
+        // doesEntityKillCountTowardsBane: a hired unit's death counts only if the config allows.
+        if (!LOTRConfig.hiredUnitKillsCountForBane && target instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive) {
             return;
         }
         for (LOTRModifier bane : LOTRModifier.values()) {

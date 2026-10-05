@@ -56,6 +56,10 @@ public final class LOTRLegacyItems {
                     continue;
                 }
                 String[] cols = line.split("\t", -1);
+                if (!cols[1].equals("*") && !cols[1].matches("\\d+")) {
+                    LOTRMod.LOGGER.warn("Skipping legacy table row with non-numeric meta: {}", line);
+                    continue;
+                }
                 int meta = cols[1].equals("*") ? -1 : Integer.parseInt(cols[1]);
                 MOD_ITEMS.computeIfAbsent(cols[0], k -> new HashMap<>()).put(meta, Identifier.parse(cols[2]));
             }

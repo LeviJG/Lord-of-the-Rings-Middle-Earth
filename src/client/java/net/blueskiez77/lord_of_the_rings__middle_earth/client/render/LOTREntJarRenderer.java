@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.data.AtlasIds;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.sprite.SpriteGetter;
 import net.minecraft.client.resources.model.sprite.SpriteId;
@@ -83,16 +82,16 @@ public class LOTREntJarRenderer
                 + SURFACE_RANGE * jar.getDrinkAmount() / LOTREntJarBlockEntity.MAX_CAPACITY;
 
         if (jar.holdsWater()) {
-            state.atlas = AtlasIds.BLOCKS;
-            state.sprite = sprites.get(new SpriteId(AtlasIds.BLOCKS, WATER_STILL));
+            state.atlas = LOTRAtlases.BLOCKS;
+            state.sprite = sprites.get(new SpriteId(LOTRAtlases.BLOCKS, WATER_STILL));
             state.tint = ARGB.opaque(BiomeColors.getAverageWaterColor(tinted, jar.getBlockPos()));
             state.uvFrom = 0.0f;
             state.uvTo = WATER_UV_SPAN;
         } else {
             // The single texel at (7, 7) of the draught's own icon, untinted.
             int draught = Math.clamp(jar.getDrinkMeta(), 0, DRAUGHT_COLORS.length - 1);
-            state.atlas = AtlasIds.ITEMS;
-            state.sprite = sprites.get(new SpriteId(AtlasIds.ITEMS,
+            state.atlas = LOTRAtlases.ITEMS;
+            state.sprite = sprites.get(new SpriteId(LOTRAtlases.ITEMS,
                     Identifier.fromNamespaceAndPath("lotr", "item/ent_draught_" + DRAUGHT_COLORS[draught])));
             state.tint = 0xFFFFFFFF;
             state.uvFrom = 7.0f;

@@ -1,10 +1,15 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionData;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredPayloads;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.level.ServerPlayer;
 import java.util.List;
 import java.util.UUID;
 
 import it.unimi.dsi.fastutil.ints.IntList;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCMount;
@@ -49,10 +54,10 @@ import org.jspecify.annotations.Nullable;
  * task, squadron and level are sent to watching players
  * ({@link LOTRNPCEntity#syncHiredInfo}).
  *
- * <p>NOT ported yet: the hired unit screens and their packets
- * (LOTRGuiHiredWarrior/Farmer/Dismiss, LOTRPacketHiredGui/UnitCommand/
- * UnitDismiss/UnitInteract/NPCSquadron, isGuiOpen -- D16), the faction hire
- * counter (LOTRFactionData.addHire, with D9's faction data).
+ * <p>The rest of its state goes only to the hiring player, for its screens
+ * ({@link #sendClientPacket}, LOTRPacketHiredGui).
+ *
+ * <p>Each hire is counted with the hiring faction (LOTRFactionData).
  */
 public class LOTRHiredNPCInfo {
 
@@ -60,8 +65,6 @@ public class LOTRHiredNPCInfo {
     public static final int GUARD_RANGE_MIN = 1;
     public static final int GUARD_RANGE_DEFAULT = 8;
     public static final int GUARD_RANGE_MAX = 64;
-    /** LOTRConfig.enableUnitLevelling, on by default; the option is not ported yet. */
-    private static final boolean ENABLE_UNIT_LEVELLING = true;
 
     private final LOTRNPCEntity theEntity;
     private @Nullable UUID hiringPlayerUUID;
@@ -79,6 +82,9 @@ public class LOTRHiredNPCInfo {
     private int guardRange = GUARD_RANGE_DEFAULT;
     private @Nullable LOTRInventoryNPC hiredInventory;
     public boolean inCombat;
+    private boolean prevInCombat;
+    /** A screen of the unit's is open on its player's side: it keeps still. */
+    public boolean isGuiOpen;
     public boolean targetFromCommandSword;
     public boolean wasAttackCommanded;
 
@@ -104,6 +110,7 @@ public class LOTRHiredNPCInfo {
             markDirty();
             onLevelUp();
         }
+        sendClientPacket(false);
         if (passToRiderOrMount) {
             addExperienceIfApplicable(this.theEntity.getFirstPassenger(), xpAdd);
             addExperienceIfApplicable(this.theEntity.getVehicle(), xpAdd);
@@ -158,6 +165,7 @@ public class LOTRHiredNPCInfo {
         }
         this.isActive = false;
         this.canMove = true;
+        sendClientPacket(false);
         setHiringPlayer(null);
     }
 
@@ -241,10 +249,12 @@ public class LOTRHiredNPCInfo {
     public void halt() {
         this.canMove = false;
         this.theEntity.setTarget(null);
+        sendClientPacket(false);
     }
 
     public void ready() {
         this.canMove = true;
+        sendClientPacket(false);
     }
 
     /** hasHiringRequirements: a unit of a real faction, with terms to keep. */
@@ -267,6 +277,9 @@ public class LOTRHiredNPCInfo {
         setHiringPlayer(player);
         setTask(trade.task);
         setSquadron(squadron);
+        if (hiringFaction != null && hiringFaction.isPlayableAlignmentFaction()) {
+            LOTRFactionData.addHire(player, hiringFaction);
+        }
         if (mount != null) {
             // The mount at the unit's feet: hired too if it is an NPC, else the unit's own.
             mount.snapTo(this.theEntity.getX(), this.theEntity.getBoundingBox().minY, this.theEntity.getZ(),
@@ -332,6 +345,7 @@ public class LOTRHiredNPCInfo {
             return;
         }
         ++this.mobKills;
+        sendClientPacket(false);
         if (this.hiredTask != LOTRHiredTask.WARRIOR) {
             return;
         }
@@ -351,7 +365,7 @@ public class LOTRHiredNPCInfo {
         if (wasEnemy && this.theEntity.getRandom().nextInt(3) == 0) {
             speakToHiringPlayer(256.0);
         }
-        if (addXP > 0 && ENABLE_UNIT_LEVELLING) {
+        if (addXP > 0 && LOTRConfig.enableUnitLevelling) {
             addExperience(addXP);
         }
     }
@@ -398,10 +412,52 @@ public class LOTRHiredNPCInfo {
             }
         }
         this.inCombat = this.theEntity.getTarget() != null;
+        if (this.inCombat != this.prevInCombat) {
+            sendClientPacket(false);
+        }
+        this.prevInCombat = this.inCombat;
         if (this.hiredTask == LOTRHiredTask.WARRIOR && !this.inCombat && shouldFollowPlayer()
                 && this.theEntity.getRandom().nextInt(4000) == 0) {
             speakToHiringPlayer(16.0 * 16.0);
         }
+    }
+
+    /** getStatusString: in combat, halted, guarding or ready; a farmer farming or following. */
+    public Component getStatusString() {
+        String status = "";
+        if (this.hiredTask == LOTRHiredTask.WARRIOR) {
+            status = this.inCombat ? "combat" : isHalted() ? "halted" : this.guardMode ? "guard" : "ready";
+        } else if (this.hiredTask == LOTRHiredTask.FARMER) {
+            status = this.guardMode ? "farming" : "following";
+        }
+        return Component.translatable("lotr.hiredNPC.status", Component.translatable("lotr.hiredNPC.status." + status));
+    }
+
+    /** sendClientPacket: the unit's state to its player, opening its screen if asked. */
+    public void sendClientPacket(boolean shouldOpenGui) {
+        if (this.theEntity.level().isClientSide() || !(getHiringPlayer() instanceof ServerPlayer player)) {
+            return;
+        }
+        ServerPlayNetworking.send(player, new LOTRHiredPayloads.HiredGui(this.theEntity.getId(), shouldOpenGui,
+                this.isActive, this.canMove, this.teleportAutomatically, this.mobKills, this.xp,
+                this.alignmentRequiredToCommand, this.pledgeType.typeID, this.inCombat, this.guardMode, this.guardRange));
+        if (shouldOpenGui) {
+            this.isGuiOpen = true;
+        }
+    }
+
+    /** receiveClientPacket. */
+    public void receiveClientPacket(LOTRHiredPayloads.HiredGui packet) {
+        this.isActive = packet.isActive();
+        this.canMove = packet.canMove();
+        this.teleportAutomatically = packet.teleportAutomatically();
+        this.mobKills = packet.mobKills();
+        this.xp = packet.xp();
+        this.alignmentRequiredToCommand = packet.alignmentRequired();
+        this.pledgeType = LOTRUnitPledgeType.forID(packet.pledgeType());
+        this.inCombat = packet.inCombat();
+        this.guardMode = packet.guardMode();
+        this.guardRange = packet.guardRange();
     }
 
     /** spawnLevelUpFireworks: orange and the faction's colour; a bigger burst every fifth level. */

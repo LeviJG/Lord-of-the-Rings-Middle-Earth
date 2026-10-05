@@ -29,6 +29,8 @@ import net.minecraft.world.level.Level;
 // Mirrors vanilla ShapedRecipe exactly, plus a table field. getType() returns a per-table RecipeType so the faction menu's getRecipeFor lookup finds only that table's recipes -- no post-filtering, which matters because getRecipeFor returns the FIRST match and would otherwise silently drop recipes.
 public class LOTRFactionCraftingRecipe extends NormalCraftingRecipe {
 
+    private static final Recipe.CommonInfo NO_NOTIFICATION = new Recipe.CommonInfo(false);
+
     public static final MapCodec<LOTRFactionCraftingRecipe> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
                     Recipe.CommonInfo.MAP_CODEC.forGetter(o -> o.commonInfo),
                     CraftingRecipe.CraftingBookInfo.MAP_CODEC.forGetter(o -> o.bookInfo),
@@ -55,7 +57,8 @@ public class LOTRFactionCraftingRecipe extends NormalCraftingRecipe {
 
     public LOTRFactionCraftingRecipe(Recipe.CommonInfo commonInfo, CraftingRecipe.CraftingBookInfo bookInfo,
                                      LOTRCraftingTable table, ShapedRecipePattern pattern, ItemStackTemplate result) {
-        super(commonInfo, bookInfo);
+        // A faction table's recipe unlocks without the recipe-book toast (B6a).
+        super(NO_NOTIFICATION, bookInfo);
         this.table = table;
         this.pattern = pattern;
         this.result = result;

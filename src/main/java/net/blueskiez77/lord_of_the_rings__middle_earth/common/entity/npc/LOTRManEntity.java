@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +58,7 @@ public abstract class LOTRManEntity extends LOTRNPCEntity {
         if (repairable == null) {
             return false;
         }
-        Set<TagKey<Item>> tags = new java.util.HashSet<>();
+        Set<TagKey<Item>> tags = new HashSet<>();
         MAN_FLESH_MATERIALS.forEach(m -> tags.add(m.repairItems()));
         return repairable.items().unwrapKey().map(tags::contains).orElse(false);
     }
