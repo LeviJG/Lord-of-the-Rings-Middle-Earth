@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMainMenuScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRAnvilScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBarrelScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBeaconScreen;
@@ -175,6 +176,7 @@ import net.minecraft.client.renderer.entity.TntRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -188,6 +190,9 @@ public class LOTRModClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         LOTRMod.LOGGER.info("LOTR client initializing...");
+
+        // The main menu's buttons are laid out after other mods' (Mod Menu's) changes to the title screen.
+        LOTRMainMenuScreen.init(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "after_other_mods"));
 
         LOTRConnectedBorderPlugin.init();
         LOTRFallenLeavesPlugin.init();

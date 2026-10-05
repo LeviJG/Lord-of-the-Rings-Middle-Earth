@@ -9,7 +9,8 @@
     "LOTREntityRendererMixin",
     "LOTRGuiSetScreenMixin",
     "LOTRLightmapRenderStateExtractorMixin",
-    "LOTRMouseHandlerMixin"
+    "LOTRMouseHandlerMixin",
+    "LOTRTitleScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
