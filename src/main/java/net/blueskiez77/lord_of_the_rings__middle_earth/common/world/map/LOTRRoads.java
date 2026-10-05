@@ -13,15 +13,18 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 
 import net.minecraft.network.chat.Component;
 
+import org.jspecify.annotations.Nullable;
+
 /**
  * LOTRRoads: Middle-earth's roads, drawn through the waypoints and the points
  * between them as Bezier splines, a point a block, in world coordinates. The
  * display-only ones are drawn on the map but not laid in the world.
  *
- * <p>The original built them, and its lookup of road points by area, at
- * start-up, at a cost it noted itself (some 200MB); here the roads are built
- * the first time they are asked for, and the lookup the first time a place
- * is asked whether a road runs there (world generation, D10).
+ * <p>The original built them, every point of them, and its lookup of road
+ * points by area, at start-up, at a cost it noted itself (some 200MB). Here
+ * a road keeps its curve and works out a point when asked; all of a road's
+ * points, and the lookup, are built the first time a place is asked whether
+ * a road runs there (world generation, D10).
  */
 public final class LOTRRoads {
 
@@ -29,13 +32,54 @@ public final class LOTRRoads {
     private static List<LOTRRoads> displayOnlyRoads;
     private static RoadPointDatabase roadPointDatabase;
 
-    public RoadPoint[] roadPoints;
     public final List<RoadPoint> endpoints = new ArrayList<>();
     public final String roadName;
+    /** The segment's curve -- from p1 to p2 by the control points -- and how many points (a block apart) it has. */
+    private final RoadPoint p1;
+    private final RoadPoint cp1;
+    private final RoadPoint cp2;
+    private final RoadPoint p2;
+    private final boolean straight;
+    private final int pointCount;
+    private RoadPoint @Nullable [] roadPoints;
 
-    private LOTRRoads(String name, RoadPoint... ends) {
+    private LOTRRoads(String name, RoadPoint p1, RoadPoint cp1, RoadPoint cp2, RoadPoint p2, boolean straight) {
         this.roadName = name;
-        Collections.addAll(this.endpoints, ends);
+        Collections.addAll(this.endpoints, p1, p2);
+        this.p1 = p1;
+        this.cp1 = cp1;
+        this.cp2 = cp2;
+        this.p2 = p2;
+        this.straight = straight;
+        double dx = p2.x() - p1.x();
+        double dz = p2.z() - p1.z();
+        this.pointCount = (int) Math.round(Math.sqrt(dx * dx + dz * dz)) * BezierCurves.ROAD_LENGTH_FACTOR;
+    }
+
+    public int pointCount() {
+        return this.pointCount;
+    }
+
+    /** The road's l-th point, worked out when asked for: the map draws only every few hundredth. */
+    public RoadPoint pointAt(int l) {
+        double t = (double) l / this.pointCount;
+        if (this.straight) {
+            return new RoadPoint(this.p1.x() + (this.p2.x() - this.p1.x()) * t,
+                    this.p1.z() + (this.p2.z() - this.p1.z()) * t, false);
+        }
+        return BezierCurves.bezier(this.p1, this.cp1, this.cp2, this.p2, t);
+    }
+
+    /** Every point, a block apart, built the first time something needs them all (the road lookup). */
+    public synchronized RoadPoint[] roadPoints() {
+        if (this.roadPoints == null) {
+            RoadPoint[] points = new RoadPoint[this.pointCount];
+            for (int l = 0; l < this.pointCount; ++l) {
+                points[l] = pointAt(l);
+            }
+            this.roadPoints = points;
+        }
+        return this.roadPoints;
     }
 
     private static synchronized void createRoads() {
@@ -113,7 +157,7 @@ public final class LOTRRoads {
         registerRoad("JungleLakeRoad", LOTRWaypoint.JUNGLE_LAKES, LOTRWaypoint.JUNGLE_CITY_EAST, LOTRWaypoint.HARADUIN_BRIDGE, LOTRWaypoint.OLD_JUNGLE_RUIN);
         int points = 0;
         for (LOTRRoads road : allRoads) {
-            points += road.roadPoints.length;
+            points += road.pointCount;
         }
         LOTRMod.LOGGER.info("LOTRRoads: Created {} roads, {} points, in {}s", allRoads.size(), points,
                 (System.nanoTime() - time) / 1.0E9);
@@ -156,7 +200,7 @@ public final class LOTRRoads {
         if (roadPointDatabase == null) {
             RoadPointDatabase database = new RoadPointDatabase();
             for (LOTRRoads road : getAllRoadsInWorld()) {
-                for (RoadPoint point : road.roadPoints) {
+                for (RoadPoint point : road.roadPoints()) {
                     database.add(point);
                 }
             }
@@ -194,9 +238,9 @@ public final class LOTRRoads {
     }
 
     private static final class BezierCurves {
-        private static final int ROAD_LENGTH_FACTOR = 1;
+        static final int ROAD_LENGTH_FACTOR = 1;
 
-        private static RoadPoint bezier(RoadPoint a, RoadPoint b, RoadPoint c, RoadPoint d, double t) {
+        static RoadPoint bezier(RoadPoint a, RoadPoint b, RoadPoint c, RoadPoint d, double t) {
             RoadPoint ab = lerp(a, b, t);
             RoadPoint bc = lerp(b, c, t);
             RoadPoint cd = lerp(c, d, t);
@@ -243,18 +287,7 @@ public final class LOTRRoads {
 
         static LOTRRoads[] getSplines(String name, RoadPoint[] waypoints) {
             if (waypoints.length == 2) {
-                RoadPoint p1 = waypoints[0];
-                RoadPoint p2 = waypoints[1];
-                LOTRRoads road = new LOTRRoads(name, p1, p2);
-                double dx = p2.x - p1.x;
-                double dz = p2.z - p1.z;
-                int points = (int) Math.round(Math.sqrt(dx * dx + dz * dz)) * ROAD_LENGTH_FACTOR;
-                road.roadPoints = new RoadPoint[points];
-                for (int l = 0; l < points; ++l) {
-                    double t = (double) l / points;
-                    road.roadPoints[l] = new RoadPoint(p1.x + dx * t, p1.z + dz * t, false);
-                }
-                return new LOTRRoads[]{road};
+                return new LOTRRoads[]{new LOTRRoads(name, waypoints[0], waypoints[0], waypoints[1], waypoints[1], true)};
             }
             int length = waypoints.length;
             double[] x = new double[length];
@@ -267,18 +300,8 @@ public final class LOTRRoads {
             double[][] controlZ = getControlPoints(z);
             LOTRRoads[] roads = new LOTRRoads[length - 1];
             for (int i = 0; i < roads.length; ++i) {
-                RoadPoint p1 = waypoints[i];
-                RoadPoint p2 = waypoints[i + 1];
-                RoadPoint cp1 = new RoadPoint(controlX[0][i], controlZ[0][i], false);
-                RoadPoint cp2 = new RoadPoint(controlX[1][i], controlZ[1][i], false);
-                LOTRRoads road = roads[i] = new LOTRRoads(name, p1, p2);
-                double dx = p2.x - p1.x;
-                double dz = p2.z - p1.z;
-                int points = (int) Math.round(Math.sqrt(dx * dx + dz * dz)) * ROAD_LENGTH_FACTOR;
-                road.roadPoints = new RoadPoint[points];
-                for (int l = 0; l < points; ++l) {
-                    road.roadPoints[l] = bezier(p1, cp1, cp2, p2, (double) l / points);
-                }
+                roads[i] = new LOTRRoads(name, waypoints[i], new RoadPoint(controlX[0][i], controlZ[0][i], false),
+                        new RoadPoint(controlX[1][i], controlZ[1][i], false), waypoints[i + 1], false);
             }
             return roads;
         }

@@ -161,9 +161,14 @@ public class LOTRMainMenuScreen extends TitleScreen {
         return this.fadeIn ? (Util.getMillis() - this.firstRenderTime) / 1000.0f : 1.0f;
     }
 
-    /** In place of the panorama: the map, its vignettes, and the first menu's black fading away. */
+    /**
+     * In place of the panorama: the map, its vignettes, and the first menu's black fading away.
+     * The float a screen is handed is the ticks since the last frame, not the way through this
+     * tick that drawScreen's was, so the map is placed by the game's own partial tick.
+     */
     @Override
-    protected void extractPanorama(GuiGraphicsExtractor graphics, float partialTick) {
+    protected void extractPanorama(GuiGraphicsExtractor graphics, float frameTicks) {
+        float partialTick = this.minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
         float fade = fade();
         this.zoomExp = -0.1f + Mth.cos((tickCounter + partialTick) * 0.003f) * 0.8f;
         if (this.fadeIn) {
@@ -233,16 +238,16 @@ public class LOTRMainMenuScreen extends TitleScreen {
                 256, 256, 256, 256, ARGB.white(0.2f));
 
         // renderRoads(false): a dot of black every so many points along each road.
-        int interval = Math.max(Math.round(400.0f / this.zoomStable), 1);
-        for (Iterator<LOTRRoads> roads = LOTRRoads.getAllRoadsForDisplay(); roads.hasNext(); ) {
-            LOTRRoads.RoadPoint[] points = roads.next().roadPoints;
-            for (int i = 0; i < points.length; i += interval) {
-                float[] pos = transform(points[i].x(), points[i].z(), posX, posY, zoom);
-                int x = Math.round(pos[0]);
-                int y = Math.round(pos[1]);
-                if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-                    graphics.fill(x, y, x + 1, y + 1, 0xFF000000);
-                }
+        float[] dots = roadDots(Math.max(Math.round(400.0f / this.zoomStable), 1));
+        for (int d = 0; d < dots.length; d += 2) {
+            float x = screenX(dots[d], posX, zoom);
+            float y = screenY(dots[d + 1], posY, zoom);
+            if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
+                // At the point itself, not the nearest pixel: the original's quad ran x..x+1, y..y+1.
+                graphics.pose().pushMatrix();
+                graphics.pose().translate(x, y);
+                graphics.fill(0, 0, 1, 1, 0xFF000000);
+                graphics.pose().popMatrix();
             }
         }
 
@@ -251,19 +256,58 @@ public class LOTRMainMenuScreen extends TitleScreen {
             if (waypoint.isHidden()) {
                 continue;
             }
-            float[] pos = transform(waypoint.xCoord, waypoint.zCoord, posX, posY, zoom);
-            int x = Math.round(pos[0]);
-            int y = Math.round(pos[1]);
+            float x = screenX(mapX(waypoint.xCoord), posX, zoom);
+            float y = screenY(mapZ(waypoint.zCoord), posY, zoom);
             if (x >= -200 && x <= this.width + 200 && y >= -200 && y <= this.height + 200) {
-                graphics.blit(RenderPipelines.GUI_TEXTURED, MAP_ICONS, x - 2, y - 2, 0.0f, 200.0f, 4, 4, 256, 256);
+                // drawTexturedModalRectFloat: at the waypoint itself, not the nearest pixel.
+                graphics.pose().pushMatrix();
+                graphics.pose().translate(x - 2.0f, y - 2.0f);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, MAP_ICONS, 0, 0, 0.0f, 200.0f, 4, 4, 256, 256);
+                graphics.pose().popMatrix();
             }
         }
     }
 
-    /** transformCoords: a world position to the screen, by the map's centre and zoom. */
-    private float[] transform(double worldX, double worldZ, double posX, double posY, float zoom) {
-        double x = worldX / LOTRMapCoords.SCALE + LOTRMapCoords.ORIGIN_X;
-        double z = worldZ / LOTRMapCoords.SCALE + LOTRMapCoords.ORIGIN_Z;
-        return new float[]{(float) ((x - posX) * zoom + this.width / 2.0), (float) ((z - posY) * zoom + this.height / 2.0)};
+    private static float @org.jspecify.annotations.Nullable [] roadDots;
+    private static int roadDotsInterval;
+
+    /** The road points drawn, every interval-th of each road, on the map image, worked out once (they do not move, only the view does). */
+    private static float[] roadDots(int interval) {
+        if (roadDots == null || roadDotsInterval != interval) {
+            List<Float> dots = new ArrayList<>();
+            for (Iterator<LOTRRoads> roads = LOTRRoads.getAllRoadsForDisplay(); roads.hasNext(); ) {
+                LOTRRoads road = roads.next();
+                for (int i = 0; i < road.pointCount(); i += interval) {
+                    LOTRRoads.RoadPoint point = road.pointAt(i);
+                    dots.add((float) mapX(point.x()));
+                    dots.add((float) mapZ(point.z()));
+                }
+            }
+            float[] array = new float[dots.size()];
+            for (int i = 0; i < array.length; ++i) {
+                array[i] = dots.get(i);
+            }
+            roadDots = array;
+            roadDotsInterval = interval;
+        }
+        return roadDots;
+    }
+
+    /** transformCoords, first half: a world position to the map image. */
+    private static double mapX(double worldX) {
+        return worldX / LOTRMapCoords.SCALE + LOTRMapCoords.ORIGIN_X;
+    }
+
+    private static double mapZ(double worldZ) {
+        return worldZ / LOTRMapCoords.SCALE + LOTRMapCoords.ORIGIN_Z;
+    }
+
+    /** transformCoords, second half: a place on the map image to the screen, by the view's centre and zoom. */
+    private float screenX(double mapX, double posX, float zoom) {
+        return (float) ((mapX - posX) * zoom + this.width / 2.0);
+    }
+
+    private float screenY(double mapZ, double posY, float zoom) {
+        return (float) ((mapZ - posY) * zoom + this.height / 2.0);
     }
 }
