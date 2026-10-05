@@ -48,7 +48,7 @@ public class LOTRDorwinionBreweryStructure extends LOTRDorwinionHouseStructure {
             for (k1 = 0; k1 <= 19; ++k1) {
                 setBlockAndMetadata(world, i12, 0, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                 j1 = -1;
-                while (!isOpaque(world, i12, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i12, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j1, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i12, j1 - 1, k1);
                     --j1;

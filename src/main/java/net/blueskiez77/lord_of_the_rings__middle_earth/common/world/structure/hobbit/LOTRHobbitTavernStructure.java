@@ -86,7 +86,7 @@ public class LOTRHobbitTavernStructure extends LOTRHobbitStructure {
                     }
                 }
                 if (grassHeight >= 0) {
-                    for (j13 = grassHeight; (j13 >= -1 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= 0; --j13) {
+                    for (j13 = grassHeight; (j13 >= -1 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                         if (j13 == grassHeight) {
                             setBlockAndMetadata(world, i14, j13, k12, LOTRLegacyBlocks.vanilla("grass"), 0);
                         } else {
@@ -113,7 +113,7 @@ public class LOTRHobbitTavernStructure extends LOTRHobbitStructure {
                 if (!beam && !wood) {
                     continue;
                 }
-                for (j16 = 5; (j16 >= 0 || !isOpaque(world, i14, j16, k12)) && getY(j16) >= 0; --j16) {
+                for (j16 = 5; (j16 >= 0 || !isOpaque(world, i14, j16, k12)) && getY(j16) >= world.getMinY(); --j16) {
                     if (beam) {
                         setBlockAndMetadata(world, i14, j16, k12, beamBlock, beamMeta);
                     } else {
@@ -361,7 +361,7 @@ public class LOTRHobbitTavernStructure extends LOTRHobbitStructure {
                 placeFlowerPot(world, i1221, 2, k1, getRandomFlower(world, random));
             }
             for (int k19 : new int[]{1, 6, 11}) {
-                for (int j17 = 5; (j17 >= 0 || !isOpaque(world, i1221, j17, k19)) && getY(j17) >= 0; --j17) {
+                for (int j17 = 5; (j17 >= 0 || !isOpaque(world, i1221, j17, k19)) && getY(j17) >= world.getMinY(); --j17) {
                     setBlockAndMetadata(world, i1221, j17, k19, beamBlock, beamMeta);
                     setGrassToDirt(world, i1221, j17, k19);
                 }

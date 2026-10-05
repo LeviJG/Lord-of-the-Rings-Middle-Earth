@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBerryBushBlock;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRAnimalJarUpdater;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRScarecrows;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRValuableItems;
@@ -29,7 +30,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -74,7 +74,7 @@ import org.jspecify.annotations.Nullable;
  * (D12). The animal jar's updateInAnimalJar is with the jar's other hooks
  * (see the Deferred-port tracker).
  */
-public class LOTRBirdEntity extends Mob {
+public class LOTRBirdEntity extends Mob implements LOTRAnimalJarUpdater {
 
     /** dataWatcher 16 and 17. */
     private static final EntityDataAccessor<Byte> DATA_TYPE =
@@ -150,6 +150,12 @@ public class LOTRBirdEntity extends Mob {
 
     public void setBirdStill(boolean still) {
         this.entityData.set(DATA_STILL, still);
+    }
+
+    /** updateInAnimalJar: a caged bird never perches. */
+    @Override
+    public void updateInAnimalJar() {
+        setBirdStill(false);
     }
 
     public ItemStack getStolenItem() {

@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.BedPart;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBerryBushBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRPottedPlants;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
@@ -417,6 +418,8 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         // dropSelf is right: LOTRAnimalJarBlock.getDrops stamps the caged bird
         // onto whatever the table produces.
         LOTRBlocks.ALL_ANIMAL_JARS.forEach(this::dropSelf);
+        // A potted plant breaks into its pot and its plant, as vanilla's do.
+        LOTRPottedPlants.POTTED.values().forEach(this::dropPottedContents);
         dropSelf(LOTRDecorationBlocks.WEAPON_RACK);
 
         // Mined by hand an orc bomb comes back whole; caught in a blast it does

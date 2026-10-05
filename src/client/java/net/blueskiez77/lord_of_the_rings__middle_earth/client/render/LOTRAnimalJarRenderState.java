@@ -5,11 +5,9 @@ import net.minecraft.client.renderer.entity.state.EntityRenderState;
 
 import org.jspecify.annotations.Nullable;
 
-/** What the cage renderer needs: the occupant, already extracted, or nothing. */
+/** What the jar renderer needs: the occupant, already extracted, or nothing. */
 public class LOTRAnimalJarRenderState extends BlockEntityRenderState {
     public @Nullable EntityRenderState occupant;
-    /** How far up the cage the occupant sits. */
+    /** Where the occupant stands in the jar, bobbing included, as a height within the block. */
     public float height;
-    /** Turns slowly on the spot, like the original's caged bird did. */
-    public float spin;
 }

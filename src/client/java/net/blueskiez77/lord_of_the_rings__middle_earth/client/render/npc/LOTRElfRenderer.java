@@ -39,7 +39,7 @@ import org.jspecify.annotations.Nullable;
  * twentieth of its opacity. The original drew its armour and held items that
  * faintly too; here they are left out while it is unseen.
  *
- * <p>NOT ported yet: the smith's cape (with NPC capes), and the saxophone
+ * <p>NOT ported yet: the saxophone
  * drawn in a jazz elf's hands (D16).
  */
 public class LOTRElfRenderer
@@ -68,6 +68,8 @@ public class LOTRElfRenderer
     }
 
     private final @Nullable Identifier cloak;
+    /** LOTRRenderElvenSmith / LOTRRenderDorwinionElfVintner: the cape ({@code elf/<name>.png}) of a smith or the vintner. */
+    private @Nullable Identifier cape;
 
     public LOTRElfRenderer(EntityRendererProvider.Context context) {
         this(context, null);
@@ -77,6 +79,21 @@ public class LOTRElfRenderer
     public static EntityRendererProvider<LOTRElfEntity> cloaked(String cloak) {
         return context -> new LOTRElfRenderer(context,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "textures/entity/elf/" + cloak + ".png"));
+    }
+
+    /** LOTRRenderElvenSmith(cloak, cape): a smith (or the vintner), cloaked and caped. */
+    public static EntityRendererProvider<LOTRElfEntity> cloaked(String cloak, String cape) {
+        return context -> {
+            LOTRElfRenderer renderer = new LOTRElfRenderer(context,
+                    Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "textures/entity/elf/" + cloak + ".png"));
+            renderer.cape = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "textures/entity/elf/" + cape + ".png");
+            return renderer;
+        };
+    }
+
+    @Override
+    protected @Nullable Identifier getCapeToRender(LOTRElfEntity elf) {
+        return this.cape != null ? this.cape : elf.npcCape;
     }
 
     private LOTRElfRenderer(EntityRendererProvider.Context context, @Nullable Identifier cloak) {

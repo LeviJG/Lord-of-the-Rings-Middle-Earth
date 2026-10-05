@@ -11,46 +11,50 @@ import java.util.function.UnaryOperator;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREntityTags;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAnimalJarItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRBannerItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRKebabStandItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPlateItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTreasurePileItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMiscBlocks.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks.*;
 
-import net.minecraft.core.Registry;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.ColorRGBA;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.PlaceOnWaterBlockItem;
 import net.minecraft.world.item.StandingAndWallBlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.component.ItemLore;
-import net.minecraft.network.chat.Component;
-import net.minecraft.core.component.DataComponents;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTreasurePileItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRBarrelItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPlateItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityTypes;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.WebBlock;
 import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.ColoredFallingBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DirtPathBlock;
-import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.FenceBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
@@ -60,29 +64,19 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.UntintedParticleLeavesBlock;
 import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.WallTorchBlock;
+import net.minecraft.world.level.block.WebBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRKebabStandItem;
-
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks.*;
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks.*;
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks.*;
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks.*;
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMiscBlocks.*;
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks.*;
 
 public final class LOTRBlocks {
     // Mining tier, i.e. which needs_*_tool tag the block joins. NONE means pickaxe-mineable with no needs_* tag at all -- a wooden pickaxe suffices. That is what vanilla stone, stone bricks and bone blocks use, and it also matches the original: only sixteen blocks in 1.7.10 ever called setHarvestLevel, and everything else defaulted to level 0. Rock and brick families therefore take NONE, not STONE.
@@ -810,6 +804,11 @@ public final class LOTRBlocks {
 
     static Block registerSoilColumn(String name, float hardness, float resistance,
                                             SoundType sound, boolean randomTicks) {
+        return registerSoilColumn(name, hardness, resistance, sound, randomTicks, Block::new);
+    }
+
+    static Block registerSoilColumn(String name, float hardness, float resistance, SoundType sound,
+                                    boolean randomTicks, Function<BlockBehaviour.Properties, Block> factory) {
         BlockBehaviour.Properties props = BlockBehaviour.Properties.of()
                 .mapColor(MapColor.GRASS)
                 .strength(hardness, resistance)
@@ -817,7 +816,7 @@ public final class LOTRBlocks {
         if (randomTicks) {
             props = props.randomTicks();
         }
-        Block block = register(name, Block::new, props, true);
+        Block block = register(name, factory, props, true);
         ALL_SOIL_COLUMNS.add(block);
         SHOVEL_MINEABLE.add(block);
         return block;
@@ -1560,6 +1559,7 @@ public final class LOTRBlocks {
         LOTRDecorationBlocks.init();
         LOTRCombatBlocks.init();
         LOTRMiscBlocks.init();
+        LOTRPottedPlants.init();
         pairLeavesWithSaplings();
         NOT_SMALL_FLOWERS.addAll(GRASS_TINTED);
         NOT_SMALL_FLOWERS.addAll(List.of(ARID_GRASS, MORDOR_GRASS, MORDOR_THORN,

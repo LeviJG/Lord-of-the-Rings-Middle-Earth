@@ -942,6 +942,10 @@ final class LOTRMovedRecipes {
         r.in(RecipeCategory.COMBAT).shaped(null, "tool/bronze_pickaxe", "lotr:bronze_pickaxe", 1, LOTRTranscribedRecipes.rows("XXX", " Y ", " Y "), 'X', "lotr:bronze_ingot", 'Y', "#lotr:sticks");
         r.in(RecipeCategory.COMBAT).shaped(null, "tool/bronze_shovel", "lotr:bronze_shovel", 1, LOTRTranscribedRecipes.rows("X", "Y", "Y"), 'X', "lotr:bronze_ingot", 'Y', "#lotr:sticks");
         r.in(RecipeCategory.COMBAT).shaped(null, "tool/chisel", "lotr:chisel", 1, LOTRTranscribedRecipes.rows("XY"), 'X', "minecraft:iron_ingot", 'Y', "#lotr:sticks");
+        // brandingIron: iron and leather (or gemsbok hide); and crafted with iron, a named iron loses its name.
+        r.in(RecipeCategory.COMBAT).shaped(null, "tool/branding_iron", "lotr:branding_iron", 1, LOTRTranscribedRecipes.rows("  X", " Y ", "X  "), 'X', "minecraft:iron_ingot", 'Y', "minecraft:leather");
+        r.in(RecipeCategory.COMBAT).shaped(null, "tool/branding_iron_from_gemsbok_hide", "lotr:branding_iron", 1, LOTRTranscribedRecipes.rows("  X", " Y ", "X  "), 'X', "minecraft:iron_ingot", 'Y', "lotr:gemsbok_hide");
+        r.in(RecipeCategory.COMBAT).shapeless(null, "tool/branding_iron_unnamed", "lotr:branding_iron", 1, "lotr:branding_iron", "minecraft:iron_ingot");
         r.in(RecipeCategory.COMBAT).shaped(null, "tool/mithril_axe", "lotr:mithril_axe", 1, LOTRTranscribedRecipes.rows("XX", "XY", " Y"), 'X', "lotr:mithril", 'Y', "#lotr:sticks");
         r.in(RecipeCategory.COMBAT).shaped(null, "tool/mithril_hoe", "lotr:mithril_hoe", 1, LOTRTranscribedRecipes.rows("XX", " Y", " Y"), 'X', "lotr:mithril", 'Y', "#lotr:sticks");
         r.in(RecipeCategory.COMBAT).shaped(null, "tool/mithril_mattock", "lotr:mithril_mattock", 1, LOTRTranscribedRecipes.rows("XXX", "XY ", " Y "), 'X', "lotr:mithril", 'Y', "#lotr:sticks");

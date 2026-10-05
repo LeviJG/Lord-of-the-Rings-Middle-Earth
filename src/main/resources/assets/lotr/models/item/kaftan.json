@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "lotr:item/kaftan"
+    "layer0": "lotr:item/kaftan",
+    "layer1": "lotr:item/kaftan_overlay"
   }
 }

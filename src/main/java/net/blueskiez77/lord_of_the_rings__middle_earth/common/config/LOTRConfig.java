@@ -93,7 +93,6 @@ public final class LOTRConfig {
     public static boolean elvenBladeGlow = true;
     public static boolean immersiveSpeech = true;
     public static boolean immersiveSpeechChatLog = false;
-    public static boolean meleeAttackMeter = true;
     public static boolean mapLabels = true;
     public static boolean mapLabelsConquest = true;
     public static boolean enableQuestTracker = true;
@@ -146,6 +145,11 @@ public final class LOTRConfig {
     public static int clientside_thisServer_customWaypointMinY;
 
     private LOTRConfig() {
+    }
+
+    /** The file behind the options, for the config screen; null before setupAndLoad. */
+    public static @Nullable LOTRConfigFile file() {
+        return file;
     }
 
     /** setupAndLoad: at startup, before anything reads an option. */
@@ -217,7 +221,6 @@ enableAttackCooldown = file.getBoolean(CATEGORY_GAMEPLAY, "Enable Attack Cooldow
         elvenBladeGlow = file.getBoolean(CATEGORY_GUI, "Animated Elven blade glow", true, null);
         immersiveSpeech = file.getBoolean(CATEGORY_GUI, "Immersive Speech", true, "If set to true, NPC speech will appear on-screen with the NPC. If set to false, it will be sent to the chat box");
         immersiveSpeechChatLog = file.getBoolean(CATEGORY_GUI, "Immersive Speech Chat Logs", false, "Toggle whether speech still shows in the chat box when Immersive Speech is enabled");
-        meleeAttackMeter = file.getBoolean(CATEGORY_GUI, "Melee attack meter", true, null);
         mapLabels = file.getBoolean(CATEGORY_GUI, "Map Labels", true, null);
         mapLabelsConquest = file.getBoolean(CATEGORY_GUI, "Map Labels - Conquest", true, null);
         enableQuestTracker = file.getBoolean(CATEGORY_GUI, "Enable quest tracker", true, null);

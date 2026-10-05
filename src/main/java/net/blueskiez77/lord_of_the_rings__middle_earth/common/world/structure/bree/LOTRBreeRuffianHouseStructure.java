@@ -149,7 +149,7 @@ public class LOTRBreeRuffianHouseStructure extends LOTRBreeStructure {
                 }
                 setGrassToDirt(world, i1, j1 - 1, k1);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i1, j2, k1) && getY(j2) >= 0) {
+                while (!isOpaque(world, i1, j2, k1) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i1, j2 - 1, k1);
                     --j2;
@@ -180,7 +180,7 @@ public class LOTRBreeRuffianHouseStructure extends LOTRBreeStructure {
             }
             setGrassToDirt(world, i12, j1 - 1, k1);
             j2 = j1 - 1;
-            while (!isOpaque(world, i12, j2, k1) && getY(j2) >= 0) {
+            while (!isOpaque(world, i12, j2, k1) && getY(j2) >= world.getMinY()) {
                 setBlockAndMetadata(world, i12, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                 setGrassToDirt(world, i12, j2 - 1, k1);
                 --j2;

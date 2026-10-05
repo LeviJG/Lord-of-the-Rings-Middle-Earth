@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -36,6 +37,7 @@ public class LOTRDorwinionCaptainEntity extends LOTRDorwinionGuardEntity impleme
 
     public LOTRDorwinionCaptainEntity(EntityType<? extends LOTRDorwinionCaptainEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.DORWINION_CAPTAIN;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

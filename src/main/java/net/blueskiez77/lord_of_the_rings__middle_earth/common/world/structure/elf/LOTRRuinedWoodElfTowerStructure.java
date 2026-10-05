@@ -83,7 +83,7 @@ public class LOTRRuinedWoodElfTowerStructure extends LOTRStructureBase {
                 if (distSq >= wallThresholdMax) {
                     continue;
                 }
-                for (int j14 = start = j - sectionHeight; (j14 == start || !isOpaqueAt(world, i1, j14, k12)) && j14 >= 0; --j14) {
+                for (int j14 = start = j - sectionHeight; (j14 == start || !isOpaqueAt(world, i1, j14, k12)) && j14 >= world.getMinY(); --j14) {
                     if (j14 != start || distSq >= wallThresholdMin) {
                         placeRandomStoneBrick(world, random, i1, j14, k12);
                     } else {

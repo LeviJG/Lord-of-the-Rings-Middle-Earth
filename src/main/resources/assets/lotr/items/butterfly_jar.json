@@ -1,6 +1,18 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "lotr:block/butterfly_jar"
+    "type": "minecraft:composite",
+    "models": [
+      {
+        "type": "minecraft:special",
+        "base": "lotr:block/butterfly_jar",
+        "model": {
+          "type": "lotr:animal_jar"
+        }
+      },
+      {
+        "type": "minecraft:model",
+        "model": "lotr:block/butterfly_jar"
+      }
+    ]
   }
 }

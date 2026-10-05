@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
@@ -32,6 +33,7 @@ public class LOTRRangerIthilienEntity extends LOTRRangerEntity {
 
     public LOTRRangerIthilienEntity(EntityType<? extends LOTRRangerIthilienEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.RANGER_ITHILIEN;
     }
 
     @Override

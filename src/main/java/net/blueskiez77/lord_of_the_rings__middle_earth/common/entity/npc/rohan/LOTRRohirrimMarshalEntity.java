@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -34,6 +35,7 @@ public class LOTRRohirrimMarshalEntity extends LOTRRohirrimWarriorEntity impleme
 
     public LOTRRohirrimMarshalEntity(EntityType<? extends LOTRRohirrimMarshalEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.ROHAN;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

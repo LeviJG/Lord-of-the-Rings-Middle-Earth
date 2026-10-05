@@ -33,7 +33,7 @@ public class LOTRGondorTownGardenStructure extends LOTRGondorStructure {
             for (k1 = 0; k1 <= 3; ++k1) {
                 int j1;
                 int i2 = Math.abs(i1);
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k1, rockSlabDoubleBlock, rockSlabDoubleMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

@@ -252,9 +252,9 @@ chiselIthildin	*	lotr:moon_chisel
 clayMug	*	lotr:clay_mug
 clayPlate	*	lotr:clay_plate
 clubMoredain	*	lotr:morwaith_club
-silverCoin	1	lotr:silver_coin
-silverCoin	10	lotr:silver_coin_stack
-silverCoin	100	lotr:silver_coin_pile
+silverCoin	0	lotr:silver_coin
+silverCoin	1	lotr:silver_coin_stack
+silverCoin	2	lotr:silver_coin_pile
 commandHorn	1	lotr:command_horn
 commandHorn	2	lotr:command_horn
 commandHorn	3	lotr:command_horn
@@ -894,3 +894,4 @@ yam	*	lotr:yam
 yamRoast	*	lotr:roast_yam
 zebraCooked	*	lotr:cooked_zebra
 zebraRaw	*	lotr:raw_zebra
+brandingIron	*	lotr:branding_iron

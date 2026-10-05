@@ -15,8 +15,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.serialization.Dynamic;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDoubleTorchBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRGateBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRTreasurePileBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRWeaponRackBlock;
 
 import net.minecraft.SharedConstants;
@@ -36,6 +38,7 @@ import net.minecraft.world.level.block.ButtonBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
 import net.minecraft.world.level.block.LadderBlock;
@@ -46,8 +49,10 @@ import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TorchBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
+import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 
@@ -71,7 +76,14 @@ import org.jspecify.annotations.Nullable;
  * whichever of those properties the port block has are copied across. The
  * mod's own gate, mugs and weapon racks read their metadata themselves: the
  * gate its direction below 8 and open above; a mug the way it faces; a rack
- * the way it faces, and whether it hangs on a wall (4).
+ * the way it faces, and whether it hangs on a wall (4). Two-block plants are
+ * the top half at 8 and over, the double torch at 1; a treasure pile's
+ * metadata is its height less one.
+ *
+ * <p>A door's or a double plant's top half carried only part of its state --
+ * the plant's kind and the door's facing were the bottom half's -- so the
+ * structure joins the halves as it places them
+ * ({@link LOTRStructureBase2#setBlockState}).
  */
 public final class LOTRLegacyBlocks {
 
@@ -186,8 +198,20 @@ public final class LOTRLegacyBlocks {
         return vanilla(name.startsWith("minecraft:") ? name.substring("minecraft:".length()) : name);
     }
 
-    /** {@code Blocks.<name>}: 1.7.10's field names are its registry names. */
+    /**
+     * {@code Blocks.<name>}: 1.7.10's field names are its registry names.
+     *
+     * <p>The skull is the one block the fixers cannot flatten alone (its kind
+     * was its block entity's): it is a skeleton's, the block entity's default,
+     * on the floor at 1 and on a wall facing 2-5 otherwise.
+     */
     public static LegacyBlock vanilla(String name) {
+        if (name.equals("skull")) {
+            return BLOCKS.computeIfAbsent("minecraft:skull", k -> meta -> (meta & 7) >= 2 && (meta & 7) <= 5
+                    ? Blocks.SKELETON_WALL_SKULL.defaultBlockState()
+                            .setValue(WallSkullBlock.FACING, Direction.from3DDataValue(meta & 7))
+                    : Blocks.SKELETON_SKULL.defaultBlockState());
+        }
         return BLOCKS.computeIfAbsent("minecraft:" + name, k -> {
             int base = BlockStateData.ID_BY_OLD_NAME.getInt("minecraft:" + name);
             if (base < 0) {
@@ -206,7 +230,12 @@ public final class LOTRLegacyBlocks {
             Dynamic<Tag> tag = flattened.convert(NbtOps.INSTANCE);
             Dynamic<Tag> fixed = DataFixers.getDataFixer().update(References.BLOCK_STATE, tag, FLATTENING_VERSION,
                     SharedConstants.getCurrentVersion().dataVersion().version());
-            return BlockState.CODEC.parse(fixed).result().orElseGet(Blocks.AIR::defaultBlockState);
+            BlockState state = BlockState.CODEC.parse(fixed).result().orElseGet(Blocks.AIR::defaultBlockState);
+            // Leaves' 4 was "never decays"; the block-state fixers drop it (LeavesFix works on whole chunks).
+            if (state.hasProperty(LeavesBlock.PERSISTENT)) {
+                state = state.setValue(LeavesBlock.PERSISTENT, (meta & 4) != 0);
+            }
+            return state;
         });
     }
 
@@ -263,6 +292,15 @@ public final class LOTRLegacyBlocks {
         }
         if (block instanceof LOTRMugBlock) {
             return state.setValue(LOTRMugBlock.FACING, Direction.from2DDataValue(meta & 3));
+        }
+        if (block instanceof LOTRTreasurePileBlock) {
+            return state.setValue(LOTRTreasurePileBlock.LAYERS, (meta & 7) + 1);
+        }
+        if (block instanceof LOTRDoubleTorchBlock) {
+            return state.setValue(DoublePlantBlock.HALF, meta == 1 ? DoubleBlockHalf.UPPER : DoubleBlockHalf.LOWER);
+        }
+        if (block instanceof DoublePlantBlock) {
+            return state.setValue(DoublePlantBlock.HALF, (meta & 8) != 0 ? DoubleBlockHalf.UPPER : DoubleBlockHalf.LOWER);
         }
         if (block instanceof LOTRWeaponRackBlock) {
             return state.setValue(LOTRWeaponRackBlock.FACING, Direction.from2DDataValue(meta & 3))

@@ -49,7 +49,7 @@ public class LOTRHighElvenTurretStructure extends LOTRStructureBase {
         }
         for (i1 = i - 4; i1 <= i + 4; ++i1) {
             for (k1 = k - 4; k1 <= k + 4; ++k1) {
-                for (j12 = j; (j12 == j || !isOpaqueAt(world, i1, j12, k1)) && j12 >= 0; --j12) {
+                for (j12 = j; (j12 == j || !isOpaqueAt(world, i1, j12, k1)) && j12 >= world.getMinY(); --j12) {
                     setBlockAndNotifyAdequately(world, i1, j12, k1, LOTRLegacyBlocks.mod("brick3"), 2);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                 }

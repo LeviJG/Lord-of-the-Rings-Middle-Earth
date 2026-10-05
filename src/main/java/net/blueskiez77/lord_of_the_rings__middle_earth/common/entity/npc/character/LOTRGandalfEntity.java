@@ -7,6 +7,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGreyWandererTr
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRGandalfSmokeGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSpeech;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItems;
@@ -68,6 +69,7 @@ public class LOTRGandalfEntity extends LOTRNPCEntity {
 
     public LOTRGandalfEntity(EntityType<? extends LOTRGandalfEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.GANDALF;
         setPathfindingMalus(PathType.WATER, -1.0f);
         if (getNavigation() instanceof GroundPathNavigation navigation) {
             navigation.setCanOpenDoors(true);

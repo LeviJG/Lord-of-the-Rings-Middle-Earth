@@ -72,7 +72,7 @@ public class LOTRDolGuldurTowerStructure extends LOTRStructureBase2 {
                 if (distSq >= wallThresholdMax) {
                     continue;
                 }
-                for (j13 = 0; (j13 == 0 || !isOpaque(world, i13, j13, k13)) && getY(j13) >= 0; --j13) {
+                for (j13 = 0; (j13 == 0 || !isOpaque(world, i13, j13, k13)) && getY(j13) >= world.getMinY(); --j13) {
                     if (distSq >= wallThresholdMin) {
                         placeRandomBrick(world, random, i13, j13, k13);
                     } else {
@@ -326,7 +326,7 @@ public class LOTRDolGuldurTowerStructure extends LOTRStructureBase2 {
 
     public void placeBrickSupports(WorldGenLevel world, RandomSource random, int i, int k) {
         int j = 0;
-        while (!isOpaque(world, i, j, k) && getY(j) >= 0) {
+        while (!isOpaque(world, i, j, k) && getY(j) >= world.getMinY()) {
             placeRandomBrick(world, random, i, j, k);
             setGrassToDirt(world, i, j - 1, k);
             --j;

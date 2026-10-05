@@ -42,7 +42,7 @@ public class LOTRCorsairTentStructure extends LOTRCorsairStructure {
         for (int i1 = -2; i1 <= 2; ++i1) {
             for (int k1 = -3; k1 <= 3; ++k1) {
                 int j1;
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     int randomGround = random.nextInt(3);
                     switch (randomGround) {
                         case 0:

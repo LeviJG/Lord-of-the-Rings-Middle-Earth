@@ -1,7 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import java.awt.Color;
+
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRHaradTurbanItem;
 
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
@@ -15,16 +18,14 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import java.awt.Color;
-
 import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntitySouthronTrader: a bazaar trader of the coast, trading with anyone
- * Near Harad does not dislike, in a turban of a random rich colour.
+ * Near Harad does not dislike, in a turban of a random rich colour, one time
+ * in three set with a gold ornament.
  *
- * <p>Not here: the turban's gold ornament one time in three (tracked with the
- * turban ornament). NOT ported yet: the tradeBazaarTrader achievement (D7).
+ * <p>NOT ported yet: the tradeBazaarTrader achievement (D7).
  */
 public abstract class LOTRSouthronTraderEntity extends LOTRNearHaradrimEntity implements LOTRTradeable {
 
@@ -34,11 +35,11 @@ public abstract class LOTRSouthronTraderEntity extends LOTRNearHaradrimEntity im
 
     /** createTraderTurban: any hue, saturation 0.6-0.8, brightness 0.5-0.75. */
     public static ItemStack createTraderTurban(RandomSource random) {
-        random.nextInt(3); // setHasOrnament's roll
+        boolean ornament = random.nextInt(3) == 0;
         float h = random.nextFloat() * 360.0f;
         float s = Mth.randomBetween(random, 0.6f, 0.8f);
         float b = Mth.randomBetween(random, 0.5f, 0.75f);
-        return turban(Color.HSBtoRGB(h, s, b) & 0xFFFFFF);
+        return LOTRHaradTurbanItem.setHasOrnament(turban(Color.HSBtoRGB(h, s, b) & 0xFFFFFF), ornament);
     }
 
     /** canTradeWith: not disliked, and friendly. */

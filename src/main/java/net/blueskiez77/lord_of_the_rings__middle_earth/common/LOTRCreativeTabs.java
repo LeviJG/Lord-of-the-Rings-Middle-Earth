@@ -640,7 +640,6 @@ public final class LOTRCreativeTabs {
             .build();
 
     // tabTools: the items that named it, in registerItem order, as tabCombat is.
-    // NOT here yet: the branding iron, which brands NPCs -- the port has none.
     // tabMisc: the odds and ends -- rings, coins, keys, curios -- plus the
     // stone buttons and pressure plates, which were tabMisc blocks rather than
     // tabBlock ones. Item order is LOTRMod's registration order.
@@ -778,6 +777,7 @@ public final class LOTRCreativeTabs {
                 output.accept(LOTRToolItems.RIVENDELL_PICKAXE);
                 output.accept(LOTRToolItems.RIVENDELL_AXE);
                 output.accept(LOTRToolItems.RIVENDELL_HOE);
+                output.accept(LOTRToolItems.BRANDING_IRON);
             })
             .build();
 

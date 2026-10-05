@@ -61,14 +61,14 @@ public class LOTRRangerHouseStructure extends LOTRRangerStructure {
                         setAir(world, i15, j12, k13);
                     }
                     if (i15 >= 5 && k2 <= 1) {
-                        for (j12 = 5; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= 0; --j12) {
+                        for (j12 = 5; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= world.getMinY(); --j12) {
                             setBlockAndMetadata(world, i15, j12, k13, brickBlock, brickMeta);
                             setGrassToDirt(world, i15, j12 - 1, k13);
                         }
                         continue;
                     }
                     if (i15 == 6 && k2 == 2) {
-                        for (j12 = 4; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= 0; --j12) {
+                        for (j12 = 4; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= world.getMinY(); --j12) {
                             setBlockAndMetadata(world, i15, j12, k13, woodBeamBlock, woodBeamMeta);
                             setGrassToDirt(world, i15, j12 - 1, k13);
                         }
@@ -89,7 +89,7 @@ public class LOTRRangerHouseStructure extends LOTRRangerStructure {
                         wall = true;
                     }
                     if (beam) {
-                        for (j13 = 4; (j13 >= 0 || !isOpaque(world, i15, j13, k13)) && getY(j13) >= 0; --j13) {
+                        for (j13 = 4; (j13 >= 0 || !isOpaque(world, i15, j13, k13)) && getY(j13) >= world.getMinY(); --j13) {
                             setBlockAndMetadata(world, i15, j13, k13, woodBeamBlock, woodBeamMeta);
                             setGrassToDirt(world, i15, j13 - 1, k13);
                         }
@@ -99,13 +99,13 @@ public class LOTRRangerHouseStructure extends LOTRRangerStructure {
                         for (j13 = 1; j13 <= 4; ++j13) {
                             setBlockAndMetadata(world, i15, j13, k13, wallBlock, wallMeta);
                         }
-                        for (j13 = 0; (j13 >= 0 || !isOpaque(world, i15, j13, k13)) && getY(j13) >= 0; --j13) {
+                        for (j13 = 0; (j13 >= 0 || !isOpaque(world, i15, j13, k13)) && getY(j13) >= world.getMinY(); --j13) {
                             setBlockAndMetadata(world, i15, j13, k13, plankBlock, plankMeta);
                             setGrassToDirt(world, i15, j13 - 1, k13);
                         }
                         continue;
                     }
-                    for (j13 = 0; (j13 >= 0 || !isOpaque(world, i15, j13, k13)) && getY(j13) >= 0; --j13) {
+                    for (j13 = 0; (j13 >= 0 || !isOpaque(world, i15, j13, k13)) && getY(j13) >= world.getMinY(); --j13) {
                         setBlockAndMetadata(world, i15, j13, k13, plankBlock, plankMeta);
                         setGrassToDirt(world, i15, j13 - 1, k13);
                     }
@@ -253,7 +253,7 @@ public class LOTRRangerHouseStructure extends LOTRRangerStructure {
                     for (j1 = 1; j1 <= 3; ++j1) {
                         setAir(world, i122, j1, k12);
                     }
-                    for (j1 = 0; (j1 >= 0 || !isOpaque(world, i122, j1, k12)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 0; (j1 >= 0 || !isOpaque(world, i122, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                         if (j1 == 0) {
                             setBlockAndMetadata(world, i122, 0, k12, LOTRLegacyBlocks.vanilla("grass"), 0);
                         } else {

@@ -18,7 +18,10 @@
     "LOTROldMinecartBehaviorMixin",
     "LOTRPistonBaseBlockMixin",
     "LOTRPlayerMixin",
-    "LOTRProjectileWeaponItemMixin"
+    "LOTRProjectileWeaponItemMixin",
+    "LOTRSpreadingSnowyBlockMixin",
+    "LOTRFenceBlockMixin",
+    "LOTRWallBlockMixin"
   ],
   "injectors": {
     "defaultRequire": 1

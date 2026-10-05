@@ -42,7 +42,7 @@ public abstract class LOTRTentBaseStructure extends LOTRStructureBase2 {
         }
         for (i1 = -2; i1 <= 2; ++i1) {
             for (k1 = -3; k1 <= 3; ++k1) {
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     int randomGround;
                     if (isBiome(world, i1, k1, "mordor")) {
                         randomGround = random.nextInt(3);

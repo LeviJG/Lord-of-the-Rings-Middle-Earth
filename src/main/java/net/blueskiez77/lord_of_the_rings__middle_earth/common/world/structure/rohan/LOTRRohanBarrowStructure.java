@@ -88,7 +88,7 @@ public class LOTRRohanBarrowStructure extends LOTRStructureBase {
         }
         for (i12 = i - radius; i12 <= i + radius; ++i12) {
             for (k1 = k - radius; k1 <= k + radius; ++k1) {
-                for (j1 = j - 1; !isOpaqueAt(world, i12, j1, k1) && j1 >= 0; --j1) {
+                for (j1 = j - 1; !isOpaqueAt(world, i12, j1, k1) && j1 >= world.getMinY(); --j1) {
                     i2 = i12 - i;
                     int k2 = k1 - k;
                     if (i2 * i2 + k2 * k2 > radius * radius) {

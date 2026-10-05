@@ -36,7 +36,7 @@ public class LOTRDaleVillageTowerStructure extends LOTRDaleStructure {
                 int i2 = Math.abs(i12);
                 int k2 = Math.abs(k1);
                 if (i2 <= 2 && k2 <= 2) {
-                    for (j1 = 0; (j1 == 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 0; (j1 == 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i12, j1, k1, floorBlock, floorMeta);
                         setGrassToDirt(world, i12, j1 - 1, k1);
                     }
@@ -46,7 +46,7 @@ public class LOTRDaleVillageTowerStructure extends LOTRDaleStructure {
                 }
                 if (i2 == 2 && k2 == 3 || k2 == 2 && i2 == 3) {
                     j1 = 1;
-                    while (!isOpaque(world, i12, j1, k1) && getY(j1) >= 0) {
+                    while (!isOpaque(world, i12, j1, k1) && getY(j1) >= world.getMinY()) {
                         setBlockAndMetadata(world, i12, j1, k1, brickWallBlock, brickWallMeta);
                         --j1;
                     }

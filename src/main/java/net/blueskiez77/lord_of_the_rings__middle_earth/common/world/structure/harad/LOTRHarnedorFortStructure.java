@@ -56,7 +56,7 @@ public class LOTRHarnedorFortStructure extends LOTRHarnedorStructure {
                 for (j1 = 0; j1 <= airHeight; ++j1) {
                     setAir(world, i1, j1, k1);
                 }
-                for (j1 = 0; (j1 >= -1 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= -1 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     if (bedRegion != 0 && j1 == 0) {
                         continue;
                     }

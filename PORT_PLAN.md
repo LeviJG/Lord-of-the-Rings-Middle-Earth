@@ -976,6 +976,133 @@ say what the user should check in game.
   - [ ] **B16h Characters** (Gandalf, Gollum, Saruman, the boss NPCs...).
   - [ ] **B16i Renderers and models** of all of the above.
 
+- [ ] **B17 Structures and villages** (user: "go through all the buildings
+  and double check that they are built with the correct blocks, correct
+  loot tables, correct entity spawns, etc. and that they are not missing
+  blocks"). Every structure the spawner can place, against its 1.7.10
+  generator: 343 classes pair with an original, plus 14 village layouts and
+  75 `.strscan` scans.
+  *Code audit done; what is left is the user's pass in game, spawning each
+  structure with its spawner.*
+
+  **Tools.**
+  - `tools/structure_diff.py`: pairs each port class with its original
+    (`LOTR<X>Structure` ↔ `LOTRWorldGen<X>` / `LOTRWorldGen<X>Structure`,
+    `LOTRVillageGen<X>`), rewrites the legacy-block, item, banner, slot and
+    entity references back to the original's spelling, and diffs the
+    statements. Bare: each pair's diff size. With a name: the full diff.
+    `--essential`: only the hunks whose numbers, blocks, items, pools,
+    strings or creatures differ, in order -- the ones that can be a
+    transcription error. `--unpaired`: classes with no original found.
+  - `tools/structure_blocks.py`: every (block, metadata) the structures and
+    scans name, against `lotr/legacy_blocks.tsv` and 1.12's old block
+    names. It flags fields with no row (air), metadata no row covers (wrong
+    variant) and unknown vanilla names. `--any-meta` lists `*` fields given
+    several metadata values, so their orientation can be checked.
+
+  **Checklist, per structure** (as applied):
+  1. **Transcription:** `structure_diff.py --essential` clean, or every
+     remaining hunk an API change.
+  2. **Blocks and metadata:** `structure_blocks.py` clean; variants checked
+     against the original classes' name arrays.
+  3. **Missing blocks:** nothing resolves to air; nothing is broken before
+     its support is placed; nothing burns out, falls or decays afterwards.
+  4. **Chests:** pools entry for entry against the original's table.
+  5. **Entities, banners, signs, plates, mugs, barrels:** the same calls
+     with the same arguments (transcription), through helpers checked
+     against the original's.
+
+  **Sub-units:**
+  - [x] **B17a Foundation.** *Result:*
+    - **Results.**
+      - Both tools written.
+      - Every block a structure or scan names resolves: 514 blocks, no
+        unknown field, no uncovered metadata.
+      - The table's variant order was checked against the original
+        classes' name arrays (402 rows; the 9 that differ in wording are
+        the original's own renames, e.g. black Gondor brick → Númenórean).
+      - All 75 scans are byte-identical to the original's.
+      - The 77 ported chest pools match the original entry for entry.
+    - **Fixed in `LOTRLegacyBlocks`** (the original's blocks as states):
+      - **Doors:** 1.7.10 kept a door's facing and open state in the
+        bottom half and its hinge in the top, so a lone top half (meta 8)
+        read as facing east, and the shape pass turned the whole door
+        east. The halves are now joined as they are placed (`joinHalves`).
+      - **Double plants:** the top half takes the bottom's kind. The mod's
+        double flowers and the orc torch (top = meta 1) had no top half at
+        all, so both halves broke; every orc torch in every structure
+        vanished.
+      - **Skulls:** `minecraft:skull` flattens to a placeholder (its kind
+        was its block entity's), so every structure skull placed air. It is
+        now a skeleton's skull, on the floor at 1 and on a wall facing 2-5.
+      - **Treasure piles:** metadata is their height less one; every pile
+        was one layer high.
+      - **Leaves:** 4 ("never decays") was dropped by the block-state
+        fixers, so hedges and other structure leaves decayed.
+    - **World floor** (found in the user's superflat test world, where the
+      windmill and tavern lost their whole ground floor):
+      - Every "fill down to the ground" loop stopped at y 0, 1.7.10's
+        world floor (`getY(..) >= 0`, 323 places). It now stops at
+        `world.getMinY()`, so structures below y 0 are complete.
+      - The older-base structures' world-height bounds (`j >= 0`,
+        `< 256`) became the world's own.
+      - Village paths still look no lower than y 62, as the original's did
+        (so a superflat village has none, in both).
+    - **Fixed in `LOTRStructureBase2` and `LOTRStructureBase`:**
+      - **Default facing:** a chest, furnace, oven or forge set at metadata
+        0 faces away from a solid neighbour, south by default, as its
+        `onBlockAdded` chose; it had been fixed north. In the older base
+        this applies at any metadata, as the original never set it again
+        there.
+      - **Armour stands** faced backwards. `LOTRRenderArmorStand` drew
+        metadata 0 facing north, i.e. yaw 180 + 90 × metadata.
+      - **Placement flags:** with `notifyChanges` off, blocks are set with
+        `UPDATE_KNOWN_SHAPE`, as 1.7.10's flag 2 told no neighbour. The
+        same goes for grass-to-dirt, banners and village paths.
+      - **Shape pass:** it now only joins and turns blocks. It no longer
+        breaks one that modern rules say cannot stand, since 1.7.10 never
+        looked again.
+      - **Stairs** are set back straight (user: as the original had them).
+      - **Scans** place through `setBlockAndMetadata`, as the original's
+        did. Their second pass takes 1.7.10's see-through materials:
+        carpets, snow, replaceable plants and liquids no longer go down
+        before what they stand on.
+    - **Fixed in `LOTRChestContents`:**
+      - A roll larger than a stack is that many single items, each in its
+        own slot (`ChestGenHooks.generateStacks`); it had been cut to one
+        stack.
+      - The ruined house's drinks come in any vessel.
+    - **Fixed in the tables:** `legacy_items.tsv` gave the silver coin
+      metadata 1/10/100 (its values) where the original's is 0/1/2, and
+      lacked the branding iron.
+    - **Permanent fire:** the hearth, the sulfur block, and the fire and
+      burning Utumno bricks join the `infiniburn` tags (`isFireSource`).
+      The Utumno bricks also kept fire beside them alive on every face,
+      which is not reproduced.
+    - **Matched:**
+      - every `place*` helper, `spawnNPCAndSetHome`, item frames, banners
+        and rugs;
+      - the respawner's spawn loop;
+      - `fillInventory` (pouches and lore books aside, deliberately).
+  - [x] **B17b-m, every people** (Shire, Bree, Rangers and ruins, elves,
+    dwarves and Dale, Rohan, Gondor and its fiefs, Mordor and the orcs,
+    Dunland, Near Harad, Rhûn, Far Harad, and every village layout).
+    *Result:*
+    - `structure_diff.py --essential` leaves only API changes in all 343
+      pairs: tree and biome hooks that wait on D10, entity creation,
+      `isOpaque`, block tests, and the village layout's restructured path
+      and slab code (equivalent).
+    - Chest pools, NPC kinds and counts, respawner settings, banners,
+      signs, plates, mugs, barrels and armour all go through the same
+      calls with the same arguments.
+    - Shire: the farm's animals use the Shire's creature weights. Hobbit
+      couples' rings in the helmet slot stay hidden, as `RenderBiped` drew
+      only blocks there.
+  - [x] **B17n Scans and oddments:** the 75 scans are identical, the Ticket
+    Booth and the older-base structures pair and are clean. The Gondor
+    smithy's four absolute-coordinate metadata calls are still left out,
+    as D11 decided.
+
 ## Track C — Code clean-up (behaviour-neutral only)
 
 Run these after the relevant B unit so a refactor never hides a bug fix.
@@ -2034,7 +2161,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
         `LOTRLevelData.gollumSpawned` ("GollumSpawned"), `gollum.*` sounds,
         `LOTRGollumModel`, `LOTRGollumRenderer` (0.85, fish in his mouth,
         name 0.5 higher unless speaking), `chat.lotr.tameGollum`, egg, lang.
-- [ ] **GUI Screens and HUD** (user: after structures, before world gen; the
+- [x] **GUI Screens and HUD** (user: after structures, before world gen; the
   GUI items on the D16 tracker below are worked through here). One sub-unit
   per group, each with its menus, packets and the systems the screen drives:
   - [x] **G1 Trading**: `LOTRGuiTrade`/`LOTRContainerTrade` (buy and sell,
@@ -2150,10 +2277,15 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     `LOTRAlignmentBarRenderer`. Also shared now: `LOTRRedBookButton`,
     `LOTRScrollPane`. Textures `factions.png`, `factions_full.png`; 31 lang
     keys. `LOTRScreenFactions` removed.
-    Not ported, by question to the user: `LOTRGuiAlignmentChoices` (a
-    one-time choice for players with alignment from before the original's
-    Update 35 -- no port save can have such a player) and the in-game config
-    screen (Forge's mod-list config button; on Fabric that needs Mod Menu).
+    Not ported: `LOTRGuiAlignmentChoices` (a one-time choice for players
+    with alignment from before the original's Update 35; no port save can
+    have such a player).
+    Later (user: all the unblocked UI):
+    - The in-game config screen, `LOTRConfigScreen`: each category, its
+      options as toggles and numbers with their notes; Done saves and
+      reloads. It opens from Mod Menu's config button (compile-only, 20.0.3).
+    - `/alignmentsee` for an offline player: their saved alignments, read
+      from the attachment in their player file.
   - [x] **G4a Alignment HUD** (G4 split): the alignment bar and
     `LOTRAlignmentTicker`, the drain notice, the floating alignment popups.
     Result: `LOTRAlignmentHud` (a Fabric HUD element) draws the viewing
@@ -2194,7 +2326,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     modifier now frosts a struck player's screen. Faction recipes no longer
     raise the recipe-book toast (their `CommonInfo` is set to no
     notification). The melee attack meter is dropped from the mod (user,
-    G4c); its config option "Melee attack meter" remains, unused.
+    G4c), and so is its config option "Melee attack meter".
   - [x] **G5 The rest that has its system**: the NPC respawner screen, the
     mob spawner screen, Gollum's inventory, the bookshelf, the custom main
     menu, and anything left on the D16 tracker that does not wait on a later
@@ -2267,8 +2399,8 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       ItemStackTheFlatteningFix and the fixers). `LOTRStructureBase2` turns
       only the kinds of block the original turned (`rotateMeta`), sets
       blocks without neighbour updates as the original did, then gives
-      every block it set its shape from its neighbours so fences, walls,
-      panes and stairs join. `LOTRStructureBase` is the older, unrotated
+      every block it set its shape from its neighbours so fences, walls
+      and panes join (stairs stay straight, B17a). `LOTRStructureBase` is the older, unrotated
       base. `LOTRStructureScan` reads the 75 scans from
       `data/lotr/strscan/`. `LOTRNPCRespawnerEntity` and the
       `npc_respawner` item (creative); `LOTRStructures`;
@@ -2341,15 +2473,16 @@ only to the unit's *Result*.
   recipes, the feathered-hat overlay (`leatherHat_feather`), and the Dale
   cracker's leather hat with a white feather → `LOTRDyedHeadModel`,
   `LOTRDaleCrackerItem` [B6d, B9] -- done in D1c
-- [ ] Harad turban gold ornament (needs an ornament state; the Merchant of
-  Harad wears one half the time and the bazaar traders one time in three) and kaftan/robe
-  overlays (`bodyKaftan_overlay`, `legsKaftan_overlay`,
-  `helmetHaradRobes_ornament`) [A3, B9]
-- [ ] Coin value system (the three coin items as one currency) [LOTRItems]
-- [ ] Lore books (`LOTRLore`): also the 1-in-20 lore roll in chest pools
+- [x] ~~Harad turban gold ornament and kaftan overlays [A3, B9]~~ — after B16a: the ornament (gold nugget at the Near Harad, Umbar and Gulf tables; on the brow and the icon; worn by the merchants, bazaar traders and Harad bandits), and the kaftan's undyed overlay, worn and on the icon
+- [x] ~~Coin value system (the three coin items as one currency) [LOTRItems]~~ — `LOTRCoins`, with trading (G1)
+- [x] ~~Lore books (`LOTRLore`): also the 1-in-20 lore roll in chest pools
   (`MIRKWOOD_LOOT` carries Woodland Realm and Dol Guldur lore) →
-  `LOTRChestContents.pick` [B13b]
-- [ ] Fallen leaves (and their charcoal/recipes) [B6b]
+  `LOTRChestContents.pick` [B13b]~~ — `common/LOTRLore` reads the 114 books
+  from `assets/lotr/lore`. Each pool's `setLore` is `Pool.withLore` (48
+  pools), rolled in `fill`/`pick` as the original's, with NPC drops at three
+  quarters the chance (no rarer than 1 in 8). The mini-quest lore reward
+  waits on D14.
+- [x] ~~Fallen leaves' recipes and fire [B6b]~~ — the recipes came with D1b; their fire info (30/60, as leaves) after B16a
 
 ### D4 — decorative entities and banners
 - [x] Banner protection (`LOTRBannerProtection`), then its checks in:
@@ -2387,8 +2520,8 @@ only to the unit's *Result*.
     `enableFellowshipCreation`, `fellowshipMaxSize`, `enableConquest`.
   - D15: `enablePortals`, `disableEnderChestsUtumno`, Utumno kills not
     counting towards banes.
-  - GUIs/D16: the in-game config screen (`LOTRGuiConfig`, and `load()` on
-    its change event); the ENCHANTING message; `alwaysShowAlignment`,
+  - GUIs/D16: the ENCHANTING message (the config screen, `LOTRGuiConfig`,
+    is done: `LOTRConfigScreen`); `alwaysShowAlignment`,
     `alignmentXOffset`/`YOffset`, `displayAlignmentAboveHead`, the map
     options (`enableSepiaMap`, `osrsMap`, `mapLabels`, `mapLabelsConquest`),
     `enableOnscreenCompass`, `compassExtraInfo`, `hiredUnitHealthBars`,
@@ -2402,20 +2535,50 @@ only to the unit's *Result*.
     the mod's own mutton smelting recipe is removed too.
   - To decide with the user: `removeGoldenAppleRecipes`/
     `removeDiamondArmorRecipes` (they alter vanilla recipes).
-- [ ] `LOTREntityRegistry`: other mods' NPCs given LOTR factions and
-  targeting from `config/LOTR_EntityRegistry.txt` [D6]
-- [ ] Feminine rank option: `setFemRankOverride`, `useFeminineRanks` (also
-  via titles) → `LOTRPlayerAlignments` [B12a/b]
-- [ ] Viewing faction per dimension region (`getViewingFaction`,
-  `prevRegionFactions`) [B12c]
-- [ ] The rest of `LOTRClassTransformer`/`LOTRReplacedMethods`' vanilla
-  patches, never audited as a unit: the anvil's collision box, natural block
-  rendering, cauldron render type, horse-jump key, dirt and pumpkin metadata,
-  the enchantment hooks (partly in `LOTREnchantmentHelperMixin`), mob spawn
-  packets, fences/walls connecting to mod blocks, pressure plates, grass and
-  still-liquid tick optimisations, minecart rails (partly in the minecart
-  mixins), client movement packets, pistons, strength potions, the spawner
-  optimisation, stone side textures, trapdoor placement [D6]
+- [x] ~~`LOTREntityRegistry`: other mods' NPCs given LOTR factions and
+  targeting from `config/LOTR_EntityRegistry.txt` [D6]~~
+  - `common/entity/LOTREntityRegistry`: the file is written with its
+    explanation if missing. Creatures are named by entity id
+    (`modid:name`) where the original took 1.7.10's `modid.Name`. The
+    original's own example (a LOTR orc) was one its rules refuse, so the
+    port's example is a vanilla pillager.
+  - `factionOf` reads it; registered target-seekers get the LOTR target
+    goals on load; kills pay the configured bonus.
+  - The Mordor thorn now spares Mordor's own, a hook that was waiting on
+    the NPCs.
+- [x] ~~Feminine rank option (`setFemRankOverride`, `useFeminineRanks`) [B12a/b]~~ — G3a (`LOTRRankOptions`); from a feminine title waits on titles (D7)
+- [x] ~~Viewing faction per dimension region [B12c]~~ — G3a (`LOTRViewingFaction`)
+- [x] ~~The rest of `LOTRClassTransformer`/`LOTRReplacedMethods`' vanilla
+  patches, never audited as a unit [D6]~~ — all 27 patched classes audited.
+  - **Already ported** (mixins): fire spread, hunger, lightning grief,
+    feast mode, pistons and banners, the enchantment hooks, fire protection,
+    minecart rails, the banner spawn check.
+  - **Modern vanilla does it now:** the anvil's collision box, the
+    cauldron's biome-tinted water, coarse dirt, the pumpkin face, trapdoors
+    without support, pressure plates on fences, ridden-mount movement
+    packets, the horse-jump key, the lightning render distance, the
+    grass/lava tick optimisations, armour points (the modifiers' attributes)
+    and melee-only looting (the weapon's own).
+  - **Not applicable:** FML's mob spawn packet.
+  - **Ported now:**
+    - Fences and walls join each other (`LOTRFenceBlockMixin`,
+      `LOTRWallBlockMixin`).
+    - Mud grass ticks: it dies to mud and spreads grass onto dirt and mud
+      grass onto mud, and the grass block spreads onto mud too
+      (`LOTRMudGrassBlock`, `LOTRSpreadingSnowyBlockMixin`). It takes bone
+      meal as grass does.
+    - Snowy stone sides with "Snowy stone" (`LOTRSnowyStoneModel`, the
+      original's `stone_snow` sprite).
+    - The natural-block table's random rotation, for its full blocks.
+  - **Not ported:** the natural-block rotation of the sandstone stairs,
+    walls and slabs and the dirt/sand/gravel slabs. They turned only top
+    and bottom, which an oriented blockstate cannot.
+  - **Potions** (user: what the original copied from old vanilla follows
+    modern vanilla):
+    - Weakness was 1.7.10 vanilla's own, so it is modern vanilla's.
+    - Strength was the mod's change (130% to 50% of attack damage a level,
+      multiplied), so it is kept (`LOTREffects.init`).
+  - The animal spawner (`LOTRSpawnerAnimals`) is D12.
 
 ### D7 — achievements and titles
 - [ ] Trading achievements: `earnManyCoins` (selling 1000 coins' worth at
@@ -2476,13 +2639,17 @@ only to the unit's *Result*.
   `hasRankTitle` are flags only (`LOTRAchievementRank`, `LOTRTitle`) [B12a]
 
 ### D8 — animals and mounts
-- [ ] Swan chestplate wings driven by the mount's stride when riding
-  (`LOTRSwanChestplateModel`) [B9]
-- [ ] Rohirric marshal helmet plume sway (needs limb-swing state through
-  `ArmorRenderer`) → `LOTRRohirricMarshalHelmetModel` [B9]
-- [ ] Animal jar: occupant bobbing/turning/sounds, the Lórien butterfly's
-  light 7, and AnimalJarUpdater (a caged bird never perches) -- unblocked now
-  the creatures exist; catching them works through the tags since D8f [B5d]
+- [x] ~~Swan chestplate wings driven by the mount's stride when riding [B9]~~ — after B16a
+- [x] ~~Rohirric marshal helmet plume sway [B9]~~ — after B16a (the walk state was in the armour renderer's render state all along)
+- [x] ~~Animal jar: occupant bobbing/turning/sounds, the Lórien butterfly's
+  light 7, and AnimalJarUpdater (a caged bird never perches) [B5d]~~
+  - The jar's block entity keeps the live occupant and ticks it: age, the
+    jar hook (`LOTRAnimalJarUpdater`, which the bird implements), ambient
+    sounds, and a new heading 1 in 200 ticks, eased in on the client.
+  - The occupant is drawn at the jar's height less half its own, bobbing,
+    unscaled; a butterfly faces the viewer.
+  - The jar has a `lit` state: 7 with a Lórien butterfly inside.
+  - The jar items draw their creature too (`LOTRAnimalJarSpecialRenderer`).
 - [ ] The fire pot's hitBirdFirePot achievement (a bird hit in flight) → D7;
   the bird cage tag is done [B13c, D8f]
 - [ ] Creatures' kinds by biome (butterfly: Mirkwood, Lórien, jungle; bird:
@@ -2534,14 +2701,15 @@ only to the unit's *Result*.
   multiplier) [B12a]
 - [x] ~~Mountain troll chieftain: the troll totem summons a CHICKEN stand-in
   (`LOTRTrollTotemBlock`) [B5e]~~ — summons the chieftain (D9q)
-- [ ] Orders and summons: command sword, command horn (`command`), war horn
-  (`summon`), NPC respawner item [B7d, LOTRItems]
+- [x] ~~Orders and summons: command sword, command horn, NPC respawner item
+  [B7d, LOTRItems]~~ — all three ported (B7d, G2b, G5)
+- [ ] The warhorn (`LOTRItemConquestHorn`, "Warhorn"), which calls an
+  invasion, with invasions (D12) [B7d]
 - [ ] Gandalf: his natural arrival 4 to 16 blocks from a player every two
   minutes while no Grey Wanderer is abroad
   (`LOTRGreyWandererTracker.performSpawning`, from LOTREventSpawner in the
   Middle-earth dimension) [D12], his welcome mini-quest and the renewal of
-  his time when he offers it [D14], his cape (`LOTRCapes.GANDALF`,
-  `GANDALF_SANTA`) with the NPC capes, and his hunting of Balrogs with
+  his time when he offers it [D14], and his hunting of Balrogs with
   Utumno [D15] [D9r-a]
 - [ ] Gollum: natural spawning within 128 of the High Pass waypoint
   (`LOTRGollumSpawner`, with the Middle-earth dimension and waypoints)
@@ -2555,29 +2723,40 @@ only to the unit's *Result*.
   [D11a]
 - [x] Structures' banners (`placeBanner`, `placeWallBanner`) place nothing
   until the banner entities (D14) [D11a] -- D4c
-- [ ] Structures' flower pots hold only plants vanilla can pot; the mod's own
-  plants need their potted forms (the original's pot was its own block) [D11a]
-- [ ] NPCs D9 missed, found at D11 (compared against the original's
-  registerCreature list): ~~Dale's nine and the Esgaroth banner bearer~~
-  (D9t); the scrap trader, and with it its smith's-anvil mischief (garbled
-  names, random modifiers, its remark on closing) and half prices
-  (`LOTRContainerAnvil`) [D9, G1]
-- [ ] Dale's warhorn (`LOTRInvasions.DALE`, D12), the captain's cape, the Dale
+- [x] ~~Structures' flower pots hold only plants vanilla can pot; the mod's own
+  plants need their potted forms (the original's pot was its own block) [D11a]~~
+  - `LOTRPottedPlants`: a vanilla-style potted form of every plant the
+    original's pot took (each `LOTRBlockFlower`, so the flowers, herbs,
+    clovers and all the saplings; 73), so vanilla's pot takes them and
+    structures plant them.
+  - Each is a potted cross. The clovers' own model is raised into the pot
+    and grass-tinted, and the Shire heather is a smaller cross, as
+    `LOTRRenderBlocks` drew it.
+- [x] ~~NPCs D9 missed, found at D11: Dale's nine and the Esgaroth banner
+  bearer (D9t); the scrap trader with his anvil's half prices and mischief
+  [D9, G1]~~ — the scrap trader after B16a
+- [ ] The scrap trader's Utumno side (fading away, no trading, unhurt; the
+  `utumno` speech bank), with D15; `tradeScrapTrader` (D7); and while he
+  misbehaves, the LOTR biomes' sky going black (`LOTRBiome.getSkyColorByTemp`,
+  D10) [after B16a]
+- [x] ~~His rare client-side misbehaving (`scrapTraderMisbehaveTick`)~~ --
+  `LOTRScrapTraderMisbehaviour`, the lightmap put out
+  (`LOTRLightmapRenderStateExtractorMixin`), his towering ring of copies in
+  `LOTRScrapTraderRenderer`, which also hides him from the screenshot key
+  as the original did
+- [ ] Dale's warhorn (`LOTRInvasions.DALE`, D12), the Dale
   and Esgaroth shields (D7), mini-quests (D14), Dale's pull and spawn check
   (D10), the merchant's travelling-trader spawning (D12) [D9t]
 - [ ] Structures' trees (`LOTRTreeType...generate`, `placeTree`) grow
   nothing until the tree features (D10) [D11c]
 - [ ] The Rangers of the North's warhorn (`LOTRInvasions.RANGER_NORTH`) and
   the Ithilien captain's (`GONDOR_ITHILIEN`), with D12; their and the
-  Dúnedain's mini-quests (D14); the rangers' capes; the Dúnedain's natural
+  Dúnedain's mini-quests (D14); the Dúnedain's natural
   spawn check and Ithilien's pull on its rangers (D10) [D9s]
-- [ ] NPC faction checks: Sauron's mace exemption, Gandalf's fireball
-  (`!HIGH_ELF.isGoodRelation(npcFaction)`), rope/Lothlórien
-  [B7, B10, B13b]
-- [ ] Termite mound spawning termites [B4] (the quagmire and spiders: done, D9i-c)
-- [ ] Hobbits flee trolls (12 blocks) -- orcs, wargs, spiders and ruffian
-  brutes are done -- and huorns (`LOTREntityAIAvoidHuorn`): each `AvoidEntityGoal`
-  arrives with its creature (`LOTRHobbitEntity`) [D9a]
+- [x] ~~NPC faction checks: Sauron's mace, Gandalf's fireball, the elven rope
+  [B7, B10, B13b]~~ — after B16a
+- [x] ~~Termite mound spawning termites [B4]~~ — after B16a (the quagmire and spiders: D9i-c)
+- [x] ~~Hobbits flee trolls and woken huorns (12 blocks) [D9a]~~ — done after B16a
 - [x] ~~Drinking near a friendly bartender makes an NPC drunk: `LOTRBartender`
   on every innkeeper and bartender [D9a]~~ — all eleven have it (B16a)
 - [ ] The shirriff's warhorn (`LOTRInvasions.HOBBIT`), with invasions (D12)
@@ -2585,16 +2764,14 @@ only to the unit's *Result*.
 - [ ] The Bree captain's warhorn (`LOTRInvasions.BREE`), with invasions
   (D12) [D9d]
 - [ ] The Rohirrim marshal's warhorn (`LOTRInvasions.ROHAN`: warriors 10,
-  bowmen 5) and cape (`LOTRCapes.ROHAN`), with D12 and NPC capes [D9e]
-- [ ] The Gondorian captain's warhorn (`LOTRInvasions.GONDOR`) and cape
-  (`LOTRCapes.GONDOR`), the Tower Guard's cape (`LOTRCapes.TOWER_GUARD`),
-  with D12 and NPC capes [D9f]
+  bowmen 5), with D12 [D9e]
+- [ ] The Gondorian captain's warhorn (`LOTRInvasions.GONDOR`), with D12 [D9f]
 - [ ] Vintner Guards defending Dorwinion's vineyards
   (`LOTREntityDorwinionGuard.defendGrapevines`: warnings, attacks, guards
   called in and the `VINEYARD_STEAL_PENALTY` for picking grapes there), with
   the vineyard biome variant (D10) [D9g]
-- [ ] Dorwinion's warhorns (`LOTRInvasions.DORWINION`, `DORWINION_ELF`) and
-  the capes of the captains and vintner, with D12 and NPC capes [D9g]
+- [ ] Dorwinion's warhorns (`LOTRInvasions.DORWINION`, `DORWINION_ELF`),
+  with D12 [D9g]
 - [ ] The travelling traders' spawner (`LOTRTravellingTraderSpawner`, which
   calls `startTraderVisiting`), with D12; until then a travelling trader
   never leaves [D9g]
@@ -2602,17 +2779,13 @@ only to the unit's *Result*.
   Lothlórien (`LOTRBlockWood.removedByPlayer`, "defendTrees"), with the
   biomes (D10) [D9g]
 - [ ] The elf lords' warhorns (`LOTRInvasions.GALADHRIM`, `HIGH_ELF_LINDON`,
-  `HIGH_ELF_RIVENDELL`, `WOOD_ELF`) and the capes of the lords, traders and smiths
-  (`LOTRCapes.GALADHRIM`, `HIGH_ELF`, `RIVENDELL`, `WOOD_ELF`, `GALADHRIM_TRADER`,
-  `RIVENDELL_TRADER`, the smiths' `*Smith_cape`), with D12 and NPC capes [D9g]
+  `HIGH_ELF_RIVENDELL`, `WOOD_ELF`), with D12 [D9g]
 - [ ] The fief captains' warhorns (`GONDOR_DOL_AMROTH`, `_LOSSARNACH`,
-  `_PELARGIR`, `_PINNATH_GELIN`, `_BLACKROOT`, `_LEBENNIN`, `_LAMEDON`) and
-  capes (`LOTRCapes.GONDOR`, `LOSSARNACH`, `PELARGIR`, `BLACKROOT`,
-  `PINNATH_GELIN`, `LAMEDON`), with D12 and NPC capes [D9f]
-- [ ] The branding iron in the Gondor and Harad farmers' buy pools (16 coins), with the
-  branding iron item [D9f]
-- [ ] The Mordor orc slaver's branding iron (his idle item) and the
-  hireNurnSlave achievement; the Nurn slaves' pull towards the Nurn biome
+  `_PELARGIR`, `_PINNATH_GELIN`, `_BLACKROOT`, `_LEBENNIN`, `_LAMEDON`),
+  with D12 [D9f]
+- [x] ~~The branding iron in the Gondor and Harad farmers' buy pools [D9f]~~ — after B16a
+- [ ] The hireNurnSlave achievement (the slaver's branding iron: after
+  B16a); the Nurn slaves' pull towards the Nurn biome
   while unfree (getBlockPathWeight +20), with the biomes (D10) [D9i, D11c]
 - [ ] The Mordor orc commander's and Black Uruk captain's warhorns
   (`LOTRInvasions.MORDOR`, `MORDOR_BLACK_URUK`), with D12 [D9i]
@@ -2634,8 +2807,7 @@ only to the unit's *Result*.
 - [ ] Dol Guldur and spider achievements: `killDolGuldurOrc`,
   `tradeDolGuldurTrader`, `tradeDolGuldurCaptain`, `tradeOrcSpiderKeeper`,
   `killMirkwoodSpider`, `killMordorSpider` [D9i]
-- [ ] The spider climbing meter on the HUD (`shouldRenderClimbingMeter`), with
-  the HUD [D9i]
+- [x] ~~The spider climbing meter on the HUD [D9i]~~ — after B16a
 - [ ] The Rhudaur hillman chieftain's warhorn (`LOTRInvasions.ANGMAR_HILLMEN`),
   with D12; `killAngmarHillman`, `tradeAngmarHillmanChieftain`; the Angmar
   shield (`ALIGNMENT_ANGMAR`) on warriors; mini-quests; spawning above y 62
@@ -2646,25 +2818,21 @@ only to the unit's *Result*.
   respawner item); the Uruk-hai shield (`ALIGNMENT_URUK_HAI`) [D9j]
 - [ ] Dunland: the warlord's warhorn (`LOTRInvasions.DUNLAND`, D12);
   `killDunlending`, `tradeDunlendingWarlord`, `tradeDunlendingBartender`; the
-  Dunland shield (`ALIGNMENT_DUNLAND`) and the berserker's cape
-  (`LOTRCapes.DUNLENDING_BERSERKER`) [D9j]
+  Dunland shield (`ALIGNMENT_DUNLAND`) [D9j]
 - [ ] Near Harad coast: the warlord's warhorn (`LOTRInvasions.NEAR_HARAD_COAST`,
-  D12) and cape (`LOTRCapes.NEAR_HARAD`), the champion's cape
-  (`SOUTHRON_CHAMPION`); `killNearHaradrim`, `tradeNearHaradWarlord`,
+  D12); `killNearHaradrim`, `tradeNearHaradWarlord`,
   `tradeNearHaradBlacksmith`, `tradeNearHaradMerchant`, `tradeHaradBartender`,
   `tradeHaradFarmer`, `tradeBazaarTrader`; the Near Harad shield
   (`ALIGNMENT_NEAR_HARAD`); mini-quests; spawning (D10) [D9k]
 - [ ] Umbar and the Corsairs: the captains' warhorns (`NEAR_HARAD_UMBAR`,
-  `NEAR_HARAD_CORSAIR`, D12) and the Umbar captain's cape; the Umbar and
+  `NEAR_HARAD_CORSAIR`, D12); the Umbar and
   Corsair shields; `tradeUmbarCaptain`, `tradeUmbarBlacksmith`,
-  `tradeCorsairCaptain`, `hireHaradSlave`; the branding iron in the Corsair
-  slaver's hand and the Corsair chest (weight 25), with the branding iron
-  [D9k]
-- [ ] Harnedor: the warlord's warhorn (`NEAR_HARAD_HARNEDOR`, D12) and cape;
+  `tradeCorsairCaptain`, `hireHaradSlave` [D9k] (the branding iron in the
+  slaver's hand and the Corsair chest: after B16a)
+- [ ] Harnedor: the warlord's warhorn (`NEAR_HARAD_HARNEDOR`, D12);
   the Harnedor shield; `tradeHarnedorWarlord`, `tradeHarnedorBlacksmith`,
   `hireHarnedorFarmer` [D9k]
-- [ ] The Gulf: the warlord's warhorn (`NEAR_HARAD_GULF`, D12) and cape
-  (`LOTRCapes.GULF_HARAD`); the Gulf shield (`ALIGNMENT_GULF`);
+- [ ] The Gulf: the warlord's warhorn (`NEAR_HARAD_GULF`, D12); the Gulf shield (`ALIGNMENT_GULF`);
   `tradeGulfWarlord`, `tradeGulfBlacksmith`, `tradeHaradBartender`,
   `tradeHaradFarmer`, `tradeBazaarTrader`; mini-quests; the Gulf house's lore
   books and pouches [D9k]
@@ -2672,16 +2840,14 @@ only to the unit's *Result*.
   (`ALIGNMENT_RHUN`); `killEasterling`, `tradeRhunCaptain`,
   `tradeRhunBlacksmith`, `tradeRhunBartender`, `tradeRhunMarketTrader`,
   `hireRhunFarmer`; the pull of the Rhûn lands and the y > 62 top-block spawn
-  rule (D10); mini-quests; the Easterling house's lore books and pouches; the
-  branding iron in the farmer's pool, with the branding iron [D9l]
+  rule (D10); mini-quests; the Easterling house's lore books and pouches [D9l]
 - [ ] The Moredain: the chieftain's warhorn (`LOTRInvasions.MOREDAIN`, D12);
   the Moredain shield (`ALIGNMENT_MOREDAIN`) on warriors and mercenaries;
   `killMoredain`, `tradeMoredainChieftain`, `tradeMoredainVillager`,
   `hireMoredainMercenary`; the pull of Far Harad and the y > 62 grass/sand
   spawn rule (D10); mini-quests; the hut's lore books and pouches; bosses
   among the non-civilians of `isCivilianNPC`, with the bosses [D9m]
-- [ ] The Tauredain: the chieftain's warhorn (`LOTRInvasions.TAUREDAIN`, D12)
-  and cape (`LOTRCapes.TAURETHRIM`); the Taurethrim shield
+- [ ] The Tauredain: the chieftain's warhorn (`LOTRInvasions.TAUREDAIN`, D12); the Taurethrim shield
   (`ALIGNMENT_TAUREDAIN`); `killTauredain`, `tradeTauredainChieftain`,
   `tradeTauredainShaman`, `tradeTauredainSmith`, `tradeTauredainFarmer`,
   `hireTauredainFarmer`; the pull of Far Harad and the y > 62 top-block
@@ -2703,7 +2869,7 @@ only to the unit's *Result*.
   the biomes (D10); the darkening of the screen of a wight's quarry and the
   barrows' ambience (`LOTRTickHandlerClient`, `wight.ambience`, with the
   HUD); `killBarrowWight`, `killMarshWraith` (D7) [D9p]
-- [ ] The nomads: the chieftain's warhorn (`NEAR_HARAD_NOMAD`, D12) and cape;
+- [ ] The nomads: the chieftain's warhorn (`NEAR_HARAD_NOMAD`, D12);
   `tradeNomadWarlord`, `tradeNomadArmourer`, `tradeNomadMerchant`,
   `tradeBazaarTrader`; ImmuneToHeat (D10); mini-quests; the nomad tent's lore
   books and pouches [D9k]
@@ -2714,23 +2880,23 @@ only to the unit's *Result*.
   y 62 on the biome's top block) and the dwarven mountains' pull on their
   wandering (`getBlockPathWeight`), with the biomes (D10) [D9h]
 - [x] ~~The LOTR anvil's free mithril repair at a dwarf trader [D9h]~~ — G1
-- [ ] The dwarven lore books in `DWARVEN_TOWER`, `BLUE_MOUNTAINS_STRONGHOLD`
-  and `DWARVEN_MINE_CORRIDOR`, with lore books [D9h]
+- [x] ~~The dwarven lore books in `DWARVEN_TOWER`, `BLUE_MOUNTAINS_STRONGHOLD`
+  and `DWARVEN_MINE_CORRIDOR`, with lore books [D9h]~~ — with lore books
 - [x] ~~Ruffians keeping clear of the Rangers of the North (12 blocks), with
   the Rangers [D9d]~~ — D9s
 - [ ] Ruffian spy's bounty help (paid off with coins, gold, silver, a gem or
   a ring) and the ruffian mini-quests, with D14; the thief cancelling the
   victim's fast travel, with D13 [D9d]
-- [ ] `LOTREntityBandit` (and `LOTREntityBanditHarad`,
-  `LOTREntityAINearestAttackableTargetBandit`), reusing `LOTRBandit` [D9d]
-- [ ] The branding iron in the Bree farmer's buy pool (16 coins), with the
-  branding iron item [D9d]
+- [x] ~~`LOTREntityBandit`, `LOTREntityBanditHarad` and their target goal [D9d]~~ — after B16a
+- [x] ~~The branding iron in the Bree farmer's buy pool [D9d]~~ — after B16a
 - [ ] Pickpocketing Bree-men and Bree-hobbits (`IPickpocketable`,
   `BREE_PICKPOCKET`), with the pickpocket mini-quest (D14) [D9d]
-- [ ] The branding iron in the Hobbit farmer's buy pool (16 coins), with the
-  branding iron item [D9b]
-- [ ] Hired units hunting bandits (`LOTREntityBandit`) [D9b] (mercenaries:
-  G2a)
+- [x] ~~The branding iron in the Hobbit farmer's buy pool [D9b]~~ — after B16a
+- [x] ~~Hired units hunting bandits [D9b]~~ — after B16a
+- [ ] Bandits in the world (`LOTREventSpawner`: each biome's bandit kind),
+  the Bree and Dorwinion mini-quests to kill them (D14), the
+  killThievingBandit achievement (D7), and the Harad bandit's turban
+  ornament (with the ornament) [after B16a]
 - [x] ~~Faction trade and hire counters (`LOTRFactionData.addTrade`/`addHire`)
   [D9b]~~ — G1/G2
 - [ ] Refusing pickpocketed coins and trade items (`IPickpocketable`), with
@@ -2738,12 +2904,17 @@ only to the unit's *Result*.
 - [ ] Bounders hunt Bree ruffians (`LOTREntityAIHobbitTargetRuffian`) --
   only inside the Shire biome, so it waits for the biomes (D10); the
   ruffians themselves are ported [D9a]
-- [ ] `LOTRRandomSkinsCombinatorial` (layered NPC skins), NPC capes and
-  shields (`renderNPCCape`, `renderNPCShield`), `LOTRArmorModels` special
-  armour models on NPCs, and the elf's bowing pose in `LOTRBipedModel`, each
-  with the first NPC that uses it [D9a]
-- [ ] Other mods' NPCs given a faction by config (`LOTREntityRegistry`),
-  which `getNPCFaction` and the attack rules also read [D9a]
+- [x] ~~`LOTRRandomSkinsCombinatorial`, NPC capes, `LOTRArmorModels` on NPCs,
+  the elf's bowing pose [D9a]~~ — after B16a: capes on the 30 NPCs that wear
+  them (and the elven smiths and vintner); the special armour models reach
+  NPCs through Fabric's ArmorRenderer like players'; the bowing pose was
+  already in `LOTRBipedModel`; the combinatorial skins were never used by the
+  original (`getCombinatorialSkins` has no caller)
+- [ ] NPC shields (`renderNPCShield`, `npcShield`), with the alignment
+  shields (D7) [D9a]
+- [x] ~~Other mods' NPCs given a faction by config (`LOTREntityRegistry`),
+  which `getNPCFaction` and the attack rules also read [D9a]~~ — with the D6
+  entry above
 - [ ] NPCs' part in invasions (`invasionID`, saved as `InvasionID`: kills
   of and by invasion NPCs credited to the invasion, players set watching
   it), conquest spawning's exemptions, and the biome spawn count multiplier
@@ -2796,10 +2967,19 @@ only to the unit's *Result*.
   ent jar herb brewing needs the Fangorn biome; wild yam [B3, B5d]
 
 ### D11 — structures
-- [ ] The remaining `LOTRChestContents` pools (structure chests) →
-  `LOTRChestContents` [B13b]
+- [ ] The `LOTRChestContents` pools only biome decoration uses:
+  `TROLL_HOARD_ETTENMOORS` (`LOTRWorldGenTrollHoard`) and
+  `GONDOR_RUINS_BONES` / `GONDOR_RUINS_TREASURE` (`LOTRWorldGenGondorRuins`),
+  with those generators (D10). Every pool a spawnable structure uses is
+  ported and matches the original entry for entry (B17a).
+- [ ] The mod's logs with bark all round (metadata 12-15 of `wood`..`wood9`,
+  `LOTRBlockWoodBase`): the port has no such blocks, so they place as
+  upright logs. Only the extreme mallorn tree (D10) uses one.
 
 ### D13/D14 — map, quests, conquest
+- [ ] Mini-quest lore rewards: 1 in 10 completed quests of a group with lore
+  categories give a rewardable book (`LOTRLore.getMultiRandomLore(..., true)`,
+  `LOTRMiniQuestFactory.setLore`); the books themselves are ported [B13b]
 - [ ] Bree mini-quests (`LOTRMiniQuestFactory.BREE`, its bounty help speech)
   [D9d]
 - [ ] Dorwinion mini-quests (`DORWINION`, `DORWINION_ELF`) [D9g]
@@ -2825,9 +3005,21 @@ only to the unit's *Result*.
 - [ ] The hire screen's alignment reward slot: a captain's warhorn for 2000
   coins at +1500 (`LOTRSlotAlignmentReward`, `getWarhorn`), with its frame,
   lock and "Requires +1500 alignment" tooltip -- with invasions (D12) [G2a]
-- [ ] The custom main menu (`LOTRGuiMainMenu`, config "Custom main menu"):
+- [x] ~~The custom main menu (`LOTRGuiMainMenu`, config "Custom main menu"):
   the Middle-earth map drifting along a route of waypoints behind red-book
-  buttons and the title -- with the map renderer and waypoints (D13) [G5]
+  buttons and the title [G5]~~ (user: all the unblocked UI, the main menu
+  included)
+  - `LOTRMainMenuScreen` stands in for vanilla's title screen
+    (`LOTRGuiSetScreenMixin`). The map follows the original's 39-waypoint
+    route, zooming slowly in and out, with roads and waypoint dots, under
+    two vignettes. The first menu fades in from black, zooming in. The
+    buttons move down as red-book buttons, the mod's title stands under
+    the logo, and there is no splash text.
+  - For it, the waypoints and roads are ported as data
+    (`common/world/map/LOTRWaypoint`, `LOTRRoads`), with their lang. The
+    roads are built when first asked for, and the road lookup when world
+    generation first asks for it, not at start-up as the original's were.
+  - The map screen itself is still D13.
 - [ ] The LOTR menu's other screens, whose icons are greyed out until then:
   achievements and titles (D7), the map (D13; greyed only on a classic
   world in the original), fellowships (D14), shields (D7); the menu's title
@@ -2839,14 +3031,13 @@ only to the unit's *Result*.
 - [ ] The Utumno warning message's trigger, the Utumno portal (D10) [G3a]
 - [ ] The factions screen's map of the faction and its button to the
   faction's control zone on the full map (LOTRGuiMap, D13); the mini-quest
-  events of opening it and cycling factions (D14); /alignmentsee for an
-  offline player; the menu's and factions screen's dimension (always
+  events of opening it and cycling factions (D14); the menu's and factions
+  screen's dimension (always
   Middle-earth until Utumno, D10) [G3b]
-- [ ] An operator in creative right-clicking a branded creature with a clock
-  is told who branded it ("Entity was branded by ..."), with the branding
-  iron; the hired-unit half is done (G5) [G2b]
-- [ ] The alignment bar moving down for a LOTR boss's bar or a watched
-  invasion's (D12/D14); the popup's conquest line, with conquest (D14) [G4a]
+- [x] ~~An operator in creative told who branded a creature (clock) [G2b]~~ — with the branding iron, after B16a
+- [ ] The alignment bar moving down for a watched invasion's bar (D12/D14);
+  the popup's conquest line, with conquest (D14) [G4a]. (Below the boss bars
+  is done: 20 down for the first, 19 more for each stacked under it.)
 - [ ] With fellowships (D14): a fellow's alignment shown overhead even when
   they hide it, and fellow players' health bars (`fellowPlayerHealthBars`)
   [G4b]
@@ -2885,10 +3076,7 @@ Append here: `- [unit] file:line — description (confirmed|suspected)`.
 - [A3] Elven blade glow textures (`sting_glowing`, `glamdring_glowing`,
   `ringil_glowing`, `sword*/dagger*Elven*_glowing` …) are not in the port, which
   suggests the old "glows near orcs" behaviour isn't ported. (resolved in D9i-b: `LOTRElvenBladeItemModel`)
-- [A3] Dye/ornament overlay layers not ported: `bodyKaftan_overlay`,
-  `legsKaftan_overlay` (armour), `helmetHaradRobes_ornament`,
-  `leatherHat_feather`, `armor/kaftan_*_overlay`. Suggests dyeable kaftan/robe
-  ornaments and hat feathers render without their overlay. (suspected; B9)
+- [x] ~~[A3] Dye/ornament overlay layers not ported~~ — the hat feather (D1c), the kaftan overlays and the turban ornament (after B16a)
 - [A3] Old vessel icons `drink_mug`, `drink_goblet*`, `drink_horn*`,
   `drink_skin`, `drink_skull`, `drink_bottle`, `drink_glass`, `drink_clay` are not
   in the port — check how the port draws drink vessels. (suspected; B10)

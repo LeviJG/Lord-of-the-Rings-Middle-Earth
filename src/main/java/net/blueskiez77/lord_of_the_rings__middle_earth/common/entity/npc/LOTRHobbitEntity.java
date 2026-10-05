@@ -10,8 +10,10 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNPCF
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNPCMarryGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNPCMateGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRRuffianBruteEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRHuornBaseEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRTrollEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRWargEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
@@ -19,6 +21,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialI
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntitySelector;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.Mob;
@@ -44,8 +47,7 @@ import org.jspecify.annotations.Nullable;
  * families, and eat, drink and smoke a good deal. They neither seek fights
  * nor fight back; the Shire's bounders, shirriffs, farmers and orcharders do.
  *
- * <p>NOT ported yet: fleeing trolls and
- * huorns (each arrives with its creature), the Shire's pull on their wandering
+ * <p>NOT ported yet: the Shire's pull on their wandering
  * and their natural spawning (with the biomes), mini-quests, and the
  * achievements for killing, marrying and talking to a drunk hobbit.
  */
@@ -76,8 +78,13 @@ public class LOTRHobbitEntity extends LOTRManEntity {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTROrcEntity.class, 12.0f, 1.5, 1.8));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRWargEntity.class, 12.0f, 1.5, 1.8));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRTrollEntity.class, 12.0f, 1.5, 1.8));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRSpiderEntity.class, 12.0f, 1.5, 1.8));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRRuffianBruteEntity.class, 8.0f, 1.0, 1.5));
+        // LOTREntityAIAvoidHuorn: only a huorn that has woken.
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRHuornBaseEntity.class,
+                huorn -> ((LOTRHuornBaseEntity) huorn).isHuornActive(), 12.0f, 1.5, 1.8,
+                EntitySelector.NO_CREATIVE_OR_SPECTATOR));
         if (panics()) {
             this.goalSelector.addGoal(2, new PanicGoal(this, 1.6));
         }

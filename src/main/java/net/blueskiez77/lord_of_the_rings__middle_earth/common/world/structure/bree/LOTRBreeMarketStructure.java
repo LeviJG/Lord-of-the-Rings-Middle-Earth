@@ -86,7 +86,7 @@ public class LOTRBreeMarketStructure extends LOTRBreeStructure {
                 placeRandomFloor(world, random, i12, j1, k12);
                 setGrassToDirt(world, i12, j1 - 1, k12);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i12, j2, k12) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k12) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k12, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i12, j2 - 1, k12);
                     --j2;
@@ -99,7 +99,7 @@ public class LOTRBreeMarketStructure extends LOTRBreeStructure {
                 placeRandomFloor(world, random, i12, j1, k12);
                 setGrassToDirt(world, i12, j1 - 1, k12);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i12, j2, k12) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k12) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k12, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i12, j2 - 1, k12);
                     --j2;
@@ -113,7 +113,7 @@ public class LOTRBreeMarketStructure extends LOTRBreeStructure {
                     placeRandomFloor(world, random, i13, j1, k1);
                     setGrassToDirt(world, i13, j1 - 1, k1);
                     j2 = j1 - 1;
-                    while (!isOpaque(world, i13, j2, k1) && getY(j2) >= 0) {
+                    while (!isOpaque(world, i13, j2, k1) && getY(j2) >= world.getMinY()) {
                         setBlockAndMetadata(world, i13, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                         setGrassToDirt(world, i13, j2 - 1, k1);
                         --j2;
@@ -123,7 +123,7 @@ public class LOTRBreeMarketStructure extends LOTRBreeStructure {
                     placeRandomFloor(world, random, i13, j1, k1);
                     setGrassToDirt(world, i13, j1 - 1, k1);
                     j2 = j1 - 1;
-                    while (!isOpaque(world, i13, j2, k1) && getY(j2) >= 0) {
+                    while (!isOpaque(world, i13, j2, k1) && getY(j2) >= world.getMinY()) {
                         setBlockAndMetadata(world, i13, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                         setGrassToDirt(world, i13, j2 - 1, k1);
                         --j2;

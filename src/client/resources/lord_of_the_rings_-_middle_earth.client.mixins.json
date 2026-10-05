@@ -6,7 +6,10 @@
   "client": [
     "LOTRDebugRendererMixin",
     "LOTREntityRenderStateMixin",
-    "LOTREntityRendererMixin"
+    "LOTREntityRendererMixin",
+    "LOTRGuiSetScreenMixin",
+    "LOTRLightmapRenderStateExtractorMixin",
+    "LOTRMouseHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

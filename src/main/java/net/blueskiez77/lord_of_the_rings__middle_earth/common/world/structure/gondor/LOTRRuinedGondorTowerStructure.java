@@ -65,12 +65,12 @@ public class LOTRRuinedGondorTowerStructure extends LOTRStructureBase {
         for (i1 = i - 3; i1 <= i + 3; ++i1) {
             for (k12 = k - 3; k12 <= k + 3; ++k12) {
                 if (Math.abs(i1 - i) == 3 || Math.abs(k12 - k) == 3) {
-                    for (j12 = j + 8; (j12 >= j || !isOpaqueAt(world, i1, j12, k12)) && j12 >= 0; --j12) {
+                    for (j12 = j + 8; (j12 >= j || !isOpaqueAt(world, i1, j12, k12)) && j12 >= world.getMinY(); --j12) {
                         placeRandomBrick(world, random, i1, j12, k12);
                         setGrassToDirt(world, i1, j12 - 1, k12);
                     }
                 } else {
-                    for (j12 = j; !isOpaqueAt(world, i1, j12, k12) && j12 >= 0; --j12) {
+                    for (j12 = j; !isOpaqueAt(world, i1, j12, k12) && j12 >= world.getMinY(); --j12) {
                         placeRandomBrick(world, random, i1, j12, k12);
                         setGrassToDirt(world, i1, j12 - 1, k12);
                     }

@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -12,6 +13,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
@@ -23,9 +25,8 @@ import net.minecraft.world.level.gamerules.GameRules;
  * is struck at once -- six damage times a factor that falls off with distance,
  * and a shove to match -- while a ring of smoke goes out from your feet.
  *
- * <p>The original spared Mordor's own: NPCs friendly to Mordor, and players
- * with positive Mordor alignment (or any player at all with PvP off). The port
- * has no NPCs, so only the player half of that test survives.
+ * <p>It spares Mordor's own: NPCs friendly to Mordor, and players with
+ * positive Mordor alignment (or any player at all with PvP off).
  */
 public class LOTRSauronMaceItem extends LOTRModifiableItem {
     /** getMaxItemUseDuration */
@@ -75,7 +76,8 @@ public class LOTRSauronMaceItem extends LOTRModifiableItem {
                 : server.damageSources().mobAttack(user);
         for (LivingEntity entity : server.getEntitiesOfClass(LivingEntity.class,
                 user.getBoundingBox().inflate(RANGE_XZ, RANGE_Y, RANGE_XZ))) {
-            if (entity == user) {
+            if (entity == user || entity instanceof Mob
+                    && LOTRFaction.MORDOR.isGoodRelation(LOTRNearestAttackableTargetGoal.factionOf(entity))) {
                 continue;
             }
             if (entity instanceof Player target

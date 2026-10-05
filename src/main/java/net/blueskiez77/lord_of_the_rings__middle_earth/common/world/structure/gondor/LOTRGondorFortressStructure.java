@@ -69,7 +69,7 @@ public class LOTRGondorFortressStructure extends LOTRGondorStructure {
                     } else if (k2 == 11) {
                         pillar = i2 == 2 || i2 == 5;
                     }
-                    for (j14 = 5; (j14 >= 0 || !isOpaque(world, i14, j14, k12)) && getY(j14) >= 0; --j14) {
+                    for (j14 = 5; (j14 >= 0 || !isOpaque(world, i14, j14, k12)) && getY(j14) >= world.getMinY(); --j14) {
                         if (pillar && j14 >= 1) {
                             setBlockAndMetadata(world, i14, j14, k12, pillarBlock, pillarMeta);
                         } else {
@@ -91,7 +91,7 @@ public class LOTRGondorFortressStructure extends LOTRGondorStructure {
                     setBlockAndMetadata(world, i14, 8, k12, LOTRLegacyBlocks.vanilla("torch"), 5);
                     continue;
                 }
-                for (j12 = 0; (j12 == 0 || !isOpaque(world, i14, j12, k12)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 == 0 || !isOpaque(world, i14, j12, k12)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i14, j12, k12, brickBlock, brickMeta);
                     setGrassToDirt(world, i14, j12 - 1, k12);
                 }
@@ -121,7 +121,7 @@ public class LOTRGondorFortressStructure extends LOTRGondorStructure {
                             } else if (k3 == 4) {
                                 pillar = i3 == 2;
                             }
-                            for (j17 = 5; (j17 >= 0 || !isOpaque(world, i22, j17, k22)) && getY(j17) >= 0; --j17) {
+                            for (j17 = 5; (j17 >= 0 || !isOpaque(world, i22, j17, k22)) && getY(j17) >= world.getMinY(); --j17) {
                                 if (pillar && j17 >= 1) {
                                     setBlockAndMetadata(world, i22, j17, k22, pillarBlock, pillarMeta);
                                 } else {
@@ -149,7 +149,7 @@ public class LOTRGondorFortressStructure extends LOTRGondorStructure {
                             setBlockAndMetadata(world, i22, 8, k22, brick2SlabBlock, brick2SlabMeta);
                             continue;
                         }
-                        for (j16 = 0; (j16 == 0 || !isOpaque(world, i22, j16, k22)) && getY(j16) >= 0; --j16) {
+                        for (j16 = 0; (j16 == 0 || !isOpaque(world, i22, j16, k22)) && getY(j16) >= world.getMinY(); --j16) {
                             setBlockAndMetadata(world, i22, j16, k22, brickBlock, brickMeta);
                             setGrassToDirt(world, i22, j16 - 1, k22);
                         }
@@ -327,7 +327,7 @@ public class LOTRGondorFortressStructure extends LOTRGondorStructure {
         }
         for (i1 = -1; i1 <= 1; ++i1) {
             k12 = -12;
-            for (int j19 = 0; (j19 <= 0 || !isOpaque(world, i1, j19, k12)) && getY(j19) >= 0; --j19) {
+            for (int j19 = 0; (j19 <= 0 || !isOpaque(world, i1, j19, k12)) && getY(j19) >= world.getMinY(); --j19) {
                 setBlockAndMetadata(world, i1, j19, k12, brickBlock, brickMeta);
                 setGrassToDirt(world, i1, j19 - 1, k12);
             }

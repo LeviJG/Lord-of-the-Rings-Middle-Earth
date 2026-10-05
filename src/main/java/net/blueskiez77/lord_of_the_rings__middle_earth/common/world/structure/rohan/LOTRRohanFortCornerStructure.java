@@ -16,7 +16,7 @@ public class LOTRRohanFortCornerStructure extends LOTRRohanStructure {
         for (int i1 = -width; i1 <= width; ++i1) {
             for (int k1 = -width; k1 <= width; ++k1) {
                 int j1;
-                for (j1 = 1; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 1; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k1, rockSlabDoubleBlock, rockSlabDoubleMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

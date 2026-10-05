@@ -68,7 +68,7 @@ public class LOTRAngmarShrineStructure extends LOTRStructureBase {
         }
         for (int i12 = i - 3; i12 <= i + 3; ++i12) {
             for (int k12 = k - 3; k12 <= k + 3; ++k12) {
-                for (int j1 = j; !isOpaqueAt(world, i12, j1, k12) && j1 >= 0; --j1) {
+                for (int j1 = j; !isOpaqueAt(world, i12, j1, k12) && j1 >= world.getMinY(); --j1) {
                     placeRandomBrick(world, random, i12, j1, k12);
                     setGrassToDirt(world, i12, j1 - 1, k12);
                 }

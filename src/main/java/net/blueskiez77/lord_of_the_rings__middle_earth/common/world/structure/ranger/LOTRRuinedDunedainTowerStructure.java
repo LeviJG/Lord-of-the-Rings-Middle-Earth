@@ -62,7 +62,7 @@ public class LOTRRuinedDunedainTowerStructure extends LOTRStructureBase {
                     continue;
                 }
                 if (distSq >= wallThresholdMin) {
-                    for (j1 = j - 1; j1 >= 0; --j1) {
+                    for (j1 = j - 1; j1 >= world.getMinY(); --j1) {
                         BlockState block = world.getBlockState(new BlockPos(i1, j1, k12));
                         placeRandomBrick(world, random, i1, j1, k12);
                         if (LOTRLegacyBlocks.vanilla("grass").matches(block) || LOTRLegacyBlocks.vanilla("dirt").matches(block) || LOTRLegacyBlocks.vanilla("stone").matches(block) || !restrictions && block.isSolidRender()) {

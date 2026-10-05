@@ -11,8 +11,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.ExtraCodecs;
+import net.minecraft.util.Unit;
 
 /**
  * Item data that 1.7.10 kept in the item damage value.
@@ -101,6 +103,18 @@ public final class LOTRDataComponents {
             register("cracker_contents", b -> b
                     .persistent(net.minecraft.world.item.component.ItemContainerContents.CODEC)
                     .networkSynchronized(net.minecraft.world.item.component.ItemContainerContents.STREAM_CODEC));
+
+    /** LOTRItemBrandingIron's "BrandName": the name it burns into a creature. */
+    public static final DataComponentType<String> BRAND_NAME = register("brand_name",
+            b -> b.persistent(Codec.STRING).networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
+    /** LOTRItemBrandingIron's "HotIron": present while the iron is hot from a fire, furnace or forge. */
+    public static final DataComponentType<Unit> HOT_IRON = register("hot_iron",
+            b -> b.persistent(Unit.CODEC).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)));
+
+    /** LOTRItemHaradTurban's "TurbanOrnament": present on a turban set with a gold ornament. */
+    public static final DataComponentType<Unit> TURBAN_ORNAMENT = register("turban_ornament",
+            b -> b.persistent(Unit.CODEC).networkSynchronized(StreamCodec.unit(Unit.INSTANCE)));
 
     private LOTRDataComponents() {
     }

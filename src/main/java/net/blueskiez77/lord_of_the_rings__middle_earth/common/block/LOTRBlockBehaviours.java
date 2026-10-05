@@ -2,13 +2,13 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+
 import net.fabricmc.fabric.api.registry.CompostableRegistry;
 import net.fabricmc.fabric.api.registry.FlammableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FlattenableBlockRegistry;
 import net.fabricmc.fabric.api.registry.FuelValueEvents;
 import net.fabricmc.fabric.api.registry.TillableBlockRegistry;
-
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.HoeItem;
@@ -39,6 +39,7 @@ public final class LOTRBlockBehaviours {
         // setFireInfo(block, encouragement, flammability)
         LOTRBlocks.ALL_LOGS.forEach(b -> fire.add(b, 5, 5));
         LOTRBlocks.ALL_LEAVES.forEach(b -> fire.add(b, 30, 60));
+        LOTRBlocks.ALL_FALLEN_LEAVES.forEach(b -> fire.add(b, 30, 60));
         LOTRBlocks.ALL_BUSHES.forEach(b -> fire.add(b, 30, 60));
         LOTRBlocks.ALL_PLANKS.forEach(b -> fire.add(b, 5, 20));
         LOTRBlocks.ALL_BEAMS.forEach(b -> fire.add(b, 5, 20));

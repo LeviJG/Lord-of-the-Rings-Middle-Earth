@@ -60,7 +60,7 @@ public class LOTRSouthronFarmStructure extends LOTRSouthronStructure {
                     continue;
                 }
                 j1 = -1;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j1, k1, stoneBlock, stoneMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     --j1;

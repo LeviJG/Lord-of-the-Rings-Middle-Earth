@@ -38,7 +38,7 @@ public class LOTRGondorTurretStructure extends LOTRStructureBase2 {
             for (k1 = -2; k1 <= 2; ++k1) {
                 setBlockAndMetadata(world, i1, 0, k1, LOTRLegacyBlocks.mod("slabDouble"), 2);
                 j12 = -1;
-                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= 0) {
+                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j12, k1, LOTRLegacyBlocks.mod("slabDouble"), 2);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                     --j12;

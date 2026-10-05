@@ -1,12 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.command;
 
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.FloatArgumentType;
@@ -18,19 +16,27 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentData;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionRelations;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
 
+import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.RegistryOps;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.NameAndId;
 
 /**
  * The faction admin commands, all operator-only (permission level 2):
@@ -77,24 +83,49 @@ public final class LOTRAlignmentCommand {
 
     /**
      * LOTRCommandAlignmentSee: the named player's alignments, shown to the
-     * sender in the factions screen.
-     *
-     * <p>NOT ported yet: an offline player's (the original read their saved
-     * data by name).
+     * sender in the factions screen -- an online player's, or an offline
+     * one's as their saved data has them.
      */
     private static void registerAlignmentSee(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("alignmentsee")
                 .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
-                .then(Commands.argument("player", EntityArgument.player()).executes(ctx -> {
-                    ServerPlayer target = EntityArgument.getPlayer(ctx, "player");
-                    ServerPlayer sender = ctx.getSource().getPlayerOrException();
-                    Map<LOTRFaction, Float> alignments = new HashMap<>();
-                    for (LOTRFaction f : LOTRFaction.getPlayableAlignmentFactions()) {
-                        alignments.put(f, LOTRPlayerAlignments.getAlignment(target, f));
-                    }
-                    ServerPlayNetworking.send(sender, new LOTRMenuPayloads.AlignmentSee(target.getName().getString(), alignments));
-                    return 1;
-                })));
+                .then(Commands.argument("player", StringArgumentType.word())
+                        .suggests((ctx, builder) -> SharedSuggestionProvider.suggest(
+                                ctx.getSource().getServer().getPlayerNames(), builder))
+                        .executes(ctx -> {
+                            String username = StringArgumentType.getString(ctx, "player");
+                            ServerPlayer sender = ctx.getSource().getPlayerOrException();
+                            MinecraftServer server = ctx.getSource().getServer();
+                            ServerPlayer target = server.getPlayerList().getPlayerByName(username);
+                            LOTRAlignmentData data;
+                            if (target != null) {
+                                data = LOTRPlayerAlignments.get(target);
+                            } else {
+                                NameAndId profile = server.services().nameToIdCache().get(username)
+                                        .orElseThrow(() -> NO_PLAYER.create(username));
+                                data = savedAlignments(server, profile);
+                            }
+                            Map<LOTRFaction, Float> alignments = new HashMap<>();
+                            for (LOTRFaction f : LOTRFaction.getPlayableAlignmentFactions()) {
+                                alignments.put(f, f.hasFixedAlignment ? f.fixedAlignment : data.getAlignment(f));
+                            }
+                            ServerPlayNetworking.send(sender, new LOTRMenuPayloads.AlignmentSee(username, alignments));
+                            return 1;
+                        })));
+    }
+
+    private static final DynamicCommandExceptionType NO_PLAYER = new DynamicCommandExceptionType(
+            name -> Component.translatable("commands.lotr.alignmentsee.noPlayer", name));
+
+    /** An offline player's alignments, from the attachment saved in their player file. */
+    private static LOTRAlignmentData savedAlignments(MinecraftServer server, NameAndId profile) {
+        return server.playerDataStorage.load(profile)
+                .flatMap(tag -> tag.getCompound(AttachmentTarget.NBT_ATTACHMENT_KEY))
+                .flatMap(attachments -> java.util.Optional.ofNullable(
+                        attachments.get(LOTRPlayerAlignments.ALIGNMENT_DATA.identifier().toString())))
+                .flatMap(tag -> LOTRAlignmentData.CODEC.parse(
+                        RegistryOps.create(NbtOps.INSTANCE, server.registryAccess()), tag).result())
+                .orElse(LOTRAlignmentData.EMPTY);
     }
 
     private static void registerAlignment(CommandDispatcher<CommandSourceStack> dispatcher) {

@@ -75,7 +75,7 @@ public class LOTRRohanBarnStructure extends LOTRRohanStructure {
             for (int k13 = 0; k13 <= 15; ++k13) {
                 int i23 = Math.abs(i13);
                 int k22 = Math.floorMod(k13, 3);
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i13, j1, k13)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i13, j1, k13)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i13, j1, k13, brickBlock, brickMeta);
                     setGrassToDirt(world, i13, j1 - 1, k13);
                 }

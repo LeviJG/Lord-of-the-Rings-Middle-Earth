@@ -118,7 +118,7 @@ public class LOTRWoodElfPlatformStructure extends LOTRStructureBase {
         setBlockAndNotifyAdequately(world, i - 3, j + 3, k - 2, LOTRLegacyBlocks.mod("woodElvenTorch"), 5);
         setBlockAndNotifyAdequately(world, i - 3, j + 2, k + 2, LOTRLegacyBlocks.mod("fence2"), 13);
         setBlockAndNotifyAdequately(world, i - 3, j + 3, k + 2, LOTRLegacyBlocks.mod("woodElvenTorch"), 5);
-        for (int j12 = j; j12 >= 0 && isOpaqueAt(world, i + 1, j12, k) && (j12 >= j || !isOpaqueAt(world, i, j12, k)); --j12) {
+        for (int j12 = j; j12 >= world.getMinY() && isOpaqueAt(world, i + 1, j12, k) && (j12 >= j || !isOpaqueAt(world, i, j12, k)); --j12) {
             setBlockAndNotifyAdequately(world, i, j12, k, LOTRLegacyBlocks.vanilla("ladder"), 4);
         }
         return true;
@@ -174,7 +174,7 @@ public class LOTRWoodElfPlatformStructure extends LOTRStructureBase {
         setBlockAndNotifyAdequately(world, i - 2, j + 3, k + 3, LOTRLegacyBlocks.mod("woodElvenTorch"), 5);
         setBlockAndNotifyAdequately(world, i + 2, j + 2, k + 3, LOTRLegacyBlocks.mod("fence2"), 13);
         setBlockAndNotifyAdequately(world, i + 2, j + 3, k + 3, LOTRLegacyBlocks.mod("woodElvenTorch"), 5);
-        for (int j12 = j; j12 >= 0 && isOpaqueAt(world, i, j12, k - 1) && (j12 >= j || !isOpaqueAt(world, i, j12, k)); --j12) {
+        for (int j12 = j; j12 >= world.getMinY() && isOpaqueAt(world, i, j12, k - 1) && (j12 >= j || !isOpaqueAt(world, i, j12, k)); --j12) {
             setBlockAndNotifyAdequately(world, i, j12, k, LOTRLegacyBlocks.vanilla("ladder"), 3);
         }
         return true;
@@ -230,7 +230,7 @@ public class LOTRWoodElfPlatformStructure extends LOTRStructureBase {
         setBlockAndNotifyAdequately(world, i - 2, j + 3, k - 3, LOTRLegacyBlocks.mod("woodElvenTorch"), 5);
         setBlockAndNotifyAdequately(world, i + 2, j + 2, k - 3, LOTRLegacyBlocks.mod("fence2"), 13);
         setBlockAndNotifyAdequately(world, i + 2, j + 3, k - 3, LOTRLegacyBlocks.mod("woodElvenTorch"), 5);
-        for (int j12 = j; j12 >= 0 && isOpaqueAt(world, i, j12, k + 1) && (j12 >= j || !isOpaqueAt(world, i, j12, k)); --j12) {
+        for (int j12 = j; j12 >= world.getMinY() && isOpaqueAt(world, i, j12, k + 1) && (j12 >= j || !isOpaqueAt(world, i, j12, k)); --j12) {
             setBlockAndNotifyAdequately(world, i, j12, k, LOTRLegacyBlocks.vanilla("ladder"), 2);
         }
         return true;
@@ -286,7 +286,7 @@ public class LOTRWoodElfPlatformStructure extends LOTRStructureBase {
         setBlockAndNotifyAdequately(world, i + 3, j + 3, k - 2, LOTRLegacyBlocks.mod("woodElvenTorch"), 5);
         setBlockAndNotifyAdequately(world, i + 3, j + 2, k + 2, LOTRLegacyBlocks.mod("fence2"), 13);
         setBlockAndNotifyAdequately(world, i + 3, j + 3, k + 2, LOTRLegacyBlocks.mod("woodElvenTorch"), 5);
-        for (int j12 = j; j12 >= 0 && isOpaqueAt(world, i - 1, j12, k) && (j12 >= j || !isOpaqueAt(world, i, j12, k)); --j12) {
+        for (int j12 = j; j12 >= world.getMinY() && isOpaqueAt(world, i - 1, j12, k) && (j12 >= j || !isOpaqueAt(world, i, j12, k)); --j12) {
             setBlockAndNotifyAdequately(world, i, j12, k, LOTRLegacyBlocks.vanilla("ladder"), 5);
         }
         return true;

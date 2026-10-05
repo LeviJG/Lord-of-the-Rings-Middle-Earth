@@ -68,7 +68,7 @@ public class LOTRBreeStableStructure extends LOTRBreeStructure {
                 setBlockAndMetadata(world, i13, j1, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                 setGrassToDirt(world, i13, j1 - 1, k1);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i13, j2, k1) && getY(j2) >= 0) {
+                while (!isOpaque(world, i13, j2, k1) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i13, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i13, j2 - 1, k1);
                     --j2;
@@ -82,7 +82,7 @@ public class LOTRBreeStableStructure extends LOTRBreeStructure {
             setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("stone_stairs"), 0);
             setGrassToDirt(world, i1, j1 - 1, k1);
             j2 = j1 - 1;
-            while (!isOpaque(world, i1, j2, k1) && getY(j2) >= 0) {
+            while (!isOpaque(world, i1, j2, k1) && getY(j2) >= world.getMinY()) {
                 setBlockAndMetadata(world, i1, j2, k1, LOTRLegacyBlocks.vanilla("cobblestone"), 0);
                 setGrassToDirt(world, i1, j2 - 1, k1);
                 --j2;

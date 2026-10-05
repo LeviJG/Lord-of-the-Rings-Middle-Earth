@@ -6,6 +6,9 @@
         "dyeable": {
           "color_when_undyed": 16777215
         }
+      },
+      {
+        "texture": "lotr:kaftan_overlay"
       }
     ],
     "humanoid_leggings": [
@@ -14,6 +17,9 @@
         "dyeable": {
           "color_when_undyed": 16777215
         }
+      },
+      {
+        "texture": "lotr:kaftan_overlay"
       }
     ]
   }

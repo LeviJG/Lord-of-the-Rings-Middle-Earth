@@ -4,6 +4,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LO
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -23,11 +24,9 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityMordorOrcSlaver (the Mordor Slaver): a man-sized orc, no weak one,
  * bare-headed in Mordor armour, who sells Nurn slaves -- hired to farm -- to
  * those at +200 or better. He seeks no one out -- he only answers attacks, and
- * carries no warhorn. Until the branding iron exists he idles with his weapon,
- * where the original gave him the iron.
+ * carries no warhorn. At rest he holds a branding iron.
  *
- * <p>NOT ported yet: the branding iron in his idle hand, with the branding
- * iron item, and the hireNurnSlave achievement (D7).
+ * <p>NOT ported yet: the hireNurnSlave achievement (D7).
  */
 public class LOTRMordorOrcSlaverEntity extends LOTRMordorOrcEntity implements LOTRUnitTradeable {
 
@@ -80,6 +79,7 @@ public class LOTRMordorOrcSlaverEntity extends LOTRMordorOrcEntity implements LO
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
+        this.npcItemsInv.setIdleItem(new ItemStack(LOTRToolItems.BRANDING_IRON));
         setItemSlot(EquipmentSlot.FEET, new ItemStack(LOTRCombatItems.MORDOR_BOOTS));
         setItemSlot(EquipmentSlot.LEGS, new ItemStack(LOTRCombatItems.MORDOR_LEGGINGS));
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.MORDOR_CHESTPLATE));

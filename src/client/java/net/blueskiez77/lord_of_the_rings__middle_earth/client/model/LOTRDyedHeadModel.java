@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.client.model;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
@@ -9,6 +10,8 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * The three dyed head pieces, which the original tinted as a whole with
@@ -23,9 +26,12 @@ public class LOTRDyedHeadModel {
     private static final float SHAWL_ANGLE = 0.22689280275926285f;
 
     private final ModelPart head;
+    /** The turban's gold ornament on the brow; absent on the hats. */
+    private final @Nullable ModelPart ornament;
 
     public LOTRDyedHeadModel(ModelPart root) {
         this.head = root.getChild("head");
+        this.ornament = root.hasChild("ornament") ? root.getChild("ornament") : null;
     }
 
     /** LOTRModelLeatherHat(): a 12x12 brim and an 8x8 crown, no inflation. */
@@ -50,9 +56,8 @@ public class LOTRDyedHeadModel {
     }
 
     /**
-     * LOTRModelHaradTurban(): the wrap and the shawl down the back. The gold
-     * ornament on the brow is left out -- the port's turban has no ornament
-     * state yet (see B6d).
+     * LOTRModelHaradTurban(): the wrap and the shawl down the back, and the
+     * gold ornament on the brow, drawn undyed on a turban that has one.
      */
     public static LayerDefinition createTurban() {
         MeshDefinition mesh = new MeshDefinition();
@@ -63,10 +68,20 @@ public class LOTRDyedHeadModel {
                 CubeListBuilder.create()
                         .texOffs(0, 15).addBox(-4.5f, -5.0f, 1.5f, 9, 6, 4, new CubeDeformation(0.25f)),
                 PartPose.offsetAndRotation(0.0f, 0.0f, 0.0f, SHAWL_ANGLE, 0.0f, 0.0f));
+        mesh.getRoot().addOrReplaceChild("ornament",
+                CubeListBuilder.create().texOffs(0, 0).addBox(-1.0f, -9.0f, -6.0f, 2, 2, 1),
+                PartPose.ZERO);
         return LayerDefinition.create(mesh, TEXTURE_WIDTH, TEXTURE_HEIGHT);
     }
 
     public void render(PoseStack poseStack, VertexConsumer consumer, int light, int overlay, int color) {
         this.head.render(poseStack, consumer, light, overlay, color);
+    }
+
+    /** The turban's ornament, in its own colours. */
+    public void renderOrnament(PoseStack poseStack, VertexConsumer consumer, int light, int overlay) {
+        if (this.ornament != null) {
+            this.ornament.render(poseStack, consumer, light, overlay);
+        }
     }
 }

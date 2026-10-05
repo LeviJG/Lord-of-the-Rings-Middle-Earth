@@ -35,7 +35,7 @@ public class LOTREasterlingLampStructure extends LOTREasterlingStructure {
                 for (j1 = 1; j1 <= 6; ++j1) {
                     setAir(world, i1, j1, k1);
                 }
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     if (i2 == 1 && k2 == 1) {
                         setBlockAndMetadata(world, i1, j1, k1, pillarBlock, pillarMeta);
                     } else {

@@ -38,7 +38,7 @@ public class LOTRSouthronTownTreeStructure extends LOTRSouthronStructure {
                 for (j12 = 1; j12 <= 12; ++j12) {
                     setAir(world, i1, j12, k1);
                 }
-                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i1, j12, k1, stoneBlock, stoneMeta);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                 }

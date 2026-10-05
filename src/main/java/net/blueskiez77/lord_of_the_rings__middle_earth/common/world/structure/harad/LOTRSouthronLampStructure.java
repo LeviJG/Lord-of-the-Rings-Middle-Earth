@@ -20,7 +20,7 @@ public class LOTRSouthronLampStructure extends LOTRSouthronStructure {
             return false;
         }
         int j12 = 0;
-        while (!isOpaque(world, 0, j12, 0) && getY(j12) >= 0) {
+        while (!isOpaque(world, 0, j12, 0) && getY(j12) >= world.getMinY()) {
             setBlockAndMetadata(world, 0, j12, 0, stoneBlock, stoneMeta);
             setGrassToDirt(world, 0, j12 - 1, 0);
             --j12;

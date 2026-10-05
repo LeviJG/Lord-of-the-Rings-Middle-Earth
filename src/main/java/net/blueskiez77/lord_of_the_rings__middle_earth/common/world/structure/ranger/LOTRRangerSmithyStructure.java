@@ -59,7 +59,7 @@ public class LOTRRangerSmithyStructure extends LOTRRangerStructure {
                     setAir(world, i12, j14, k1);
                 }
                 if (i12 <= 1 || i12 == 2 && k2 == 4) {
-                    for (j14 = 0; (j14 >= 0 || !isOpaque(world, i12, j14, k1)) && getY(j14) >= 0; --j14) {
+                    for (j14 = 0; (j14 >= 0 || !isOpaque(world, i12, j14, k1)) && getY(j14) >= world.getMinY(); --j14) {
                         setBlockAndMetadata(world, i12, j14, k1, cobbleBlock, cobbleMeta);
                         setGrassToDirt(world, i12, j14 - 1, k1);
                     }
@@ -74,7 +74,7 @@ public class LOTRRangerSmithyStructure extends LOTRRangerStructure {
                         beam = true;
                     }
                     if (beam) {
-                        for (j13 = 4; (j13 >= 0 || !isOpaque(world, i12, j13, k1)) && getY(j13) >= 0; --j13) {
+                        for (j13 = 4; (j13 >= 0 || !isOpaque(world, i12, j13, k1)) && getY(j13) >= world.getMinY(); --j13) {
                             setBlockAndMetadata(world, i12, j13, k1, woodBeamBlock, woodBeamMeta);
                             setGrassToDirt(world, i12, j13 - 1, k1);
                         }
@@ -83,13 +83,13 @@ public class LOTRRangerSmithyStructure extends LOTRRangerStructure {
                     for (j13 = 1; j13 <= 3; ++j13) {
                         setBlockAndMetadata(world, i12, j13, k1, wallBlock, wallMeta);
                     }
-                    for (j13 = 0; (j13 >= 0 || !isOpaque(world, i12, j13, k1)) && getY(j13) >= 0; --j13) {
+                    for (j13 = 0; (j13 >= 0 || !isOpaque(world, i12, j13, k1)) && getY(j13) >= world.getMinY(); --j13) {
                         setBlockAndMetadata(world, i12, j13, k1, plankBlock, plankMeta);
                         setGrassToDirt(world, i12, j13 - 1, k1);
                     }
                     continue;
                 }
-                for (j14 = 0; (j14 >= 0 || !isOpaque(world, i12, j14, k1)) && getY(j14) >= 0; --j14) {
+                for (j14 = 0; (j14 >= 0 || !isOpaque(world, i12, j14, k1)) && getY(j14) >= world.getMinY(); --j14) {
                     setBlockAndMetadata(world, i12, j14, k1, plankBlock, plankMeta);
                     setGrassToDirt(world, i12, j14 - 1, k1);
                 }
@@ -153,7 +153,7 @@ public class LOTRRangerSmithyStructure extends LOTRRangerStructure {
         }
         for (i12 = 7; i12 <= 9; ++i12) {
             for (k1 = -1; k1 <= 1; ++k1) {
-                for (int j15 = 5; (j15 >= 0 || !isOpaque(world, i12, j15, k1)) && getY(j15) >= 0; --j15) {
+                for (int j15 = 5; (j15 >= 0 || !isOpaque(world, i12, j15, k1)) && getY(j15) >= world.getMinY(); --j15) {
                     setBlockAndMetadata(world, i12, j15, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j15 - 1, k1);
                 }

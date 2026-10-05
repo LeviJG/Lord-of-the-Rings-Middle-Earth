@@ -10,6 +10,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LO
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -83,8 +84,8 @@ public abstract class LOTRVillageGen {
                     instance.setupWorldPositionSeed(i1, k1);
                     LOTRRoadType.RoadBlock roadblock = path.road.getBlock(instance.instanceRand, true, path.isSlab);
                     LOTRRoadType.RoadBlock roadblockSolid = path.road.getBlock(instance.instanceRand, false, false);
-                    world.setBlock(new BlockPos(i1, path.j, k1), roadblock.state(), 2);
-                    world.setBlock(new BlockPos(i1, path.j - 1, k1), roadblockSolid.state(), 2);
+                    world.setBlock(new BlockPos(i1, path.j, k1), roadblock.state(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
+                    world.setBlock(new BlockPos(i1, path.j - 1, k1), roadblockSolid.state(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
                     BlockPos abovePos = new BlockPos(i1, path.j + 1, k1);
                     if (!world.getBlockState(abovePos).canSurvive(world, abovePos)) {
                         world.setBlock(abovePos, Blocks.AIR.defaultBlockState(), 3);

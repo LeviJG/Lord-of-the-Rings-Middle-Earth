@@ -1,10 +1,11 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
-import net.minecraft.world.level.block.SoundType;
 import com.mojang.serialization.MapCodec;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -23,6 +24,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LadderBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
@@ -229,8 +231,6 @@ public class LOTRRopeBlock extends LadderBlock {
      * LOTRBlockHithlainRope: a climber hostile to Lothlorien takes a half heart
      * of magic damage every tick -- a player by their Lothlorien alignment
      * being negative, anything else by its NPC faction being a bad relation.
-     * The port has no NPCs yet, and every other mob was UNALIGNED to
-     * getNPCFaction, so only the player test can bite for now.
      */
     @Override
     protected void entityInside(BlockState state, Level level, BlockPos pos, Entity entity,
@@ -241,7 +241,7 @@ public class LOTRRopeBlock extends LadderBlock {
         }
         boolean harm = entity instanceof Player player
                 ? LOTRPlayerAlignments.getAlignment(player, LOTRFaction.LOTHLORIEN) < 0.0f
-                : LOTRFaction.UNALIGNED.isBadRelation(LOTRFaction.LOTHLORIEN);
+                : LOTRNearestAttackableTargetGoal.factionOf(entity).isBadRelation(LOTRFaction.LOTHLORIEN);
         if (harm) {
             entity.hurtServer(server, server.damageSources().magic(), 1.0f);
         }

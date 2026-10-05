@@ -76,7 +76,7 @@ public class LOTROrcSlaverTowerStructure extends LOTRStructureBase {
         }
         for (i1 = i - 3; i1 <= i + 3; i1 += 6) {
             for (k1 = k - 3; k1 <= k + 3; k1 += 6) {
-                for (j1 = j + 5; (j1 >= j || !isOpaqueAt(world, i1, j1, k1)) && j1 >= 0; --j1) {
+                for (j1 = j + 5; (j1 >= j || !isOpaqueAt(world, i1, j1, k1)) && j1 >= world.getMinY(); --j1) {
                     setBlockAndNotifyAdequately(world, i1, j1, k1, LOTRLegacyBlocks.mod("wood"), 3);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }
@@ -92,7 +92,7 @@ public class LOTROrcSlaverTowerStructure extends LOTRStructureBase {
             setBlockAndNotifyAdequately(world, i - 3, j12, k + 2, LOTRLegacyBlocks.mod("fence"), 3);
             setBlockAndNotifyAdequately(world, i + 3, j12, k + 2, LOTRLegacyBlocks.mod("fence"), 3);
         }
-        for (j12 = j + 11; (j12 >= j || !isOpaqueAt(world, i, j12, k)) && j12 >= 0; --j12) {
+        for (j12 = j + 11; (j12 >= j || !isOpaqueAt(world, i, j12, k)) && j12 >= world.getMinY(); --j12) {
             setBlockAndNotifyAdequately(world, i, j12, k, LOTRLegacyBlocks.mod("wood"), 3);
             setGrassToDirt(world, i, j12 - 1, k);
             if (j12 > j + 6) {

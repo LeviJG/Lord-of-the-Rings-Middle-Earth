@@ -1,23 +1,24 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDamageTypes;
-
 import com.mojang.serialization.MapCodec;
 
-import net.minecraft.core.BlockPos;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDamageTypes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.InsideBlockEffectApplier;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.VegetationBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -175,11 +176,12 @@ public class LOTRPlantBlock extends VegetationBlock {
                     entity.hurtServer(server, LOTRDamageTypes.plantHurt(level), Sting.NETTLE.damage);
                 }
             }
-            // LOTRBlockMordorThorn spared only entities whose getNPCFaction is
-            // MORDOR, which means Mordor NPCs. The port has none yet, and
-            // everything else (players included) was UNALIGNED, so it pricks
-            // everything -- exactly as the original did for these entities.
-            case THORN -> entity.hurtServer(server, LOTRDamageTypes.plantHurt(level), Sting.THORN.damage);
+            // LOTRBlockMordorThorn: it spares Mordor's own (getNPCFaction).
+            case THORN -> {
+                if (LOTRNearestAttackableTargetGoal.factionOf(entity) != LOTRFaction.MORDOR) {
+                    entity.hurtServer(server, LOTRDamageTypes.plantHurt(level), Sting.THORN.damage);
+                }
+            }
             default -> {
             }
         }

@@ -54,14 +54,14 @@ public class LOTRRohanSmithyStructure extends LOTRRohanStructure {
                 }
                 corner = (i1 == -10 || i1 == 5) && (k13 == -3 || k13 == 4);
                 if (corner) {
-                    for (j1 = 1; (j1 >= 1 || !isOpaque(world, i1, j1, k13)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 1; (j1 >= 1 || !isOpaque(world, i1, j1, k13)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i1, j1, k13, rockSlabDoubleBlock, rockSlabDoubleMeta);
                         setGrassToDirt(world, i1, j1 - 1, k13);
                     }
                     setBlockAndMetadata(world, i1, 2, k13, rockSlabBlock, rockSlabMeta);
                     continue;
                 }
-                for (j1 = 1; (j1 >= 1 || !isOpaque(world, i1, j1, k13)) && getY(j1) >= 0; --j1) {
+                for (j1 = 1; (j1 >= 1 || !isOpaque(world, i1, j1, k13)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k13, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j1 - 1, k13);
                 }

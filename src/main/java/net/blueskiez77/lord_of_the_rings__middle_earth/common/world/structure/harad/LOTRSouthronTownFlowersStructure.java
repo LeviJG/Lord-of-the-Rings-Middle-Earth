@@ -39,7 +39,7 @@ public class LOTRSouthronTownFlowersStructure extends LOTRSouthronStructure {
                 for (j1 = 1; j1 <= 4; ++j1) {
                     setAir(world, i1, j1, k1);
                 }
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k1, stoneBlock, stoneMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

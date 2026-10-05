@@ -57,7 +57,7 @@ public class LOTRGondorWatchtowerStructure extends LOTRGondorStructure {
                     continue;
                 }
                 j12 = 0;
-                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= 0) {
+                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j12, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                     --j12;

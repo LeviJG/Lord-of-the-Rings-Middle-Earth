@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -33,6 +34,7 @@ public class LOTRBlackrootCaptainEntity extends LOTRBlackrootArcherEntity implem
 
     public LOTRBlackrootCaptainEntity(EntityType<? extends LOTRBlackrootCaptainEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.BLACKROOT;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

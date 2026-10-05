@@ -35,7 +35,7 @@ public class LOTRRohanGatehouseStructure extends LOTRRohanStructure {
                 int i2 = Math.abs(i1);
                 int k2 = Math.abs(k1);
                 if (i2 >= 3 || k2 <= 1) {
-                    for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i1, j1, k1, rockSlabDoubleBlock, rockSlabDoubleMeta);
                         setGrassToDirt(world, i1, j1 - 1, k1);
                     }
@@ -182,7 +182,7 @@ public class LOTRRohanGatehouseStructure extends LOTRRohanStructure {
                 }
                 setGrassToDirt(world, i12, j1 - 1, k15);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i12, j2, k15) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k15) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k15, plankBlock, plankMeta);
                     setGrassToDirt(world, i12, j2 - 1, k15);
                     --j2;
@@ -196,7 +196,7 @@ public class LOTRRohanGatehouseStructure extends LOTRRohanStructure {
                 }
                 setGrassToDirt(world, i12, j1 - 1, k15);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i12, j2, k15) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k15) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k15, plankBlock, plankMeta);
                     setGrassToDirt(world, i12, j2 - 1, k15);
                     --j2;

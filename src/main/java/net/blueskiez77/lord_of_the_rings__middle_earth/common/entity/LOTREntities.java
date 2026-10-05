@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.*;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBanditEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBanditHaradEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBartenderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitEntity;
@@ -9,6 +11,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHob
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitFarmhandEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitOrcharderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitShirriffEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRScrapTraderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarBannerBearerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanAxeThrowerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar.LOTRAngmarHillmanBannerBearerEntity;
@@ -1131,9 +1134,17 @@ public final class LOTREntities {
     public static final EntityType<LOTRBlueDwarfMerchantEntity> BLUE_DWARF_MERCHANT = register("blue_dwarf_merchant",
             creature(LOTRBlueDwarfMerchantEntity::new, 0.5f, 1.5f));
 
+    /** LOTREntityBandit: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRBanditEntity> BANDIT = register("bandit",
+            creature(LOTRBanditEntity::new, 0.6f, 1.8f));
+
     /** LOTREntityIronHillsMerchant: as a dwarf, setSize(0.5, 1.5). */
     public static final EntityType<LOTRIronHillsMerchantEntity> IRON_HILLS_MERCHANT = register("iron_hills_merchant",
             creature(LOTRIronHillsMerchantEntity::new, 0.5f, 1.5f));
+
+    /** LOTREntityScrapTrader: setSize(0.6, 1.8). */
+    public static final EntityType<LOTRScrapTraderEntity> SCRAP_TRADER = register("scrap_trader",
+            creature(LOTRScrapTraderEntity::new, 0.6f, 1.8f));
 
     /** LOTREntityDwarfSmith: as a dwarf, setSize(0.5, 1.5). */
     public static final EntityType<LOTRDwarfSmithEntity> DWARF_SMITH = register("dwarf_smith",
@@ -1306,6 +1317,10 @@ public final class LOTREntities {
     /** LOTREntityIsengardSnagaArcher: setSize(0.5, 1.55). */
     public static final EntityType<LOTRIsengardSnagaArcherEntity> ISENGARD_SNAGA_ARCHER = register("isengard_snaga_archer",
             creature(LOTRIsengardSnagaArcherEntity::new, 0.5f, 1.55f));
+
+    /** LOTREntityBanditHarad: as the bandit. */
+    public static final EntityType<LOTRBanditHaradEntity> BANDIT_HARAD = register("bandit_harad",
+            creature(LOTRBanditHaradEntity::new, 0.6f, 1.8f));
 
     /** LOTREntityUrukHai: setSize(0.6, 1.8). */
     public static final EntityType<LOTRUrukHaiEntity> URUK_HAI = register("uruk_hai",
@@ -2443,7 +2458,10 @@ public final class LOTREntities {
         FabricDefaultAttributeRegistry.register(BLUE_DWARF_BANNER_BEARER, LOTRDwarfEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(BLUE_DWARF_COMMANDER, LOTRBlueDwarfCommanderEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(BLUE_DWARF_MINER, LOTRDwarfEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(BANDIT, LOTRBanditEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(BANDIT_HARAD, LOTRBanditEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(BLUE_DWARF_MERCHANT, LOTRDwarfEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(SCRAP_TRADER, LOTRScrapTraderEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(IRON_HILLS_MERCHANT, LOTRDwarfEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(DWARF_SMITH, LOTRDwarfEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(BLUE_DWARF_SMITH, LOTRDwarfEntity.createAttributes());

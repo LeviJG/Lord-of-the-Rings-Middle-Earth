@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanManEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
@@ -93,6 +94,13 @@ public final class LOTRNPCKillEvents {
                 bonus.isKill = true;
                 bonus.killByHiredUnit = creditHiredUnit;
                 LOTRPlayerAlignments.addAlignment(player, bonus, entityFaction, npc.killBonusFactions, entity);
+            }
+        } else if (!wasSelfDefenceAgainstAlliedUnit && LOTREntityRegistry.get(entity) instanceof LOTREntityRegistry.RegistryInfo info) {
+            LOTRAlignmentValues.AlignmentBonus bonus = info.alignmentBonus(entity);
+            if (bonus.bonus != 0.0f && (!creditHiredUnit || byNearbyUnit)) {
+                bonus.isKill = true;
+                bonus.killByHiredUnit = creditHiredUnit;
+                LOTRPlayerAlignments.addAlignment(player, bonus, entityFaction, List.of(), entity);
             }
         }
         if (creditHiredUnit) {

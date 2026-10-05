@@ -54,7 +54,7 @@ public class LOTRSouthronTavernStructure extends LOTRSouthronStructure {
         for (int i12 = -5; i12 <= 5; ++i12) {
             for (int k12 = -15; k12 <= 15; ++k12) {
                 int j1 = 0;
-                while (!isOpaque(world, i12, j1, k12) && getY(j1) >= 0) {
+                while (!isOpaque(world, i12, j1, k12) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j1, k12, stoneBlock, stoneMeta);
                     setGrassToDirt(world, i12, j1 - 1, k12);
                     --j1;
@@ -166,7 +166,7 @@ public class LOTRSouthronTavernStructure extends LOTRSouthronStructure {
                     setBlockAndMetadata(world, i13, j1, k13, stoneStairBlock, 3);
                     setGrassToDirt(world, i13, j1 - 1, k13);
                     j2 = j1 - 1;
-                    while (!isOpaque(world, i13, j2, k13) && getY(j2) >= 0) {
+                    while (!isOpaque(world, i13, j2, k13) && getY(j2) >= world.getMinY()) {
                         setBlockAndMetadata(world, i13, j2, k13, stoneBlock, stoneMeta);
                         setGrassToDirt(world, i13, j2 - 1, k13);
                         --j2;
@@ -182,7 +182,7 @@ public class LOTRSouthronTavernStructure extends LOTRSouthronStructure {
                 setBlockAndMetadata(world, i13, j1, k13, stoneStairBlock, 2);
                 setGrassToDirt(world, i13, j1 - 1, k13);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i13, j2, k13) && getY(j2) >= 0) {
+                while (!isOpaque(world, i13, j2, k13) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i13, j2, k13, stoneBlock, stoneMeta);
                     setGrassToDirt(world, i13, j2 - 1, k13);
                     --j2;

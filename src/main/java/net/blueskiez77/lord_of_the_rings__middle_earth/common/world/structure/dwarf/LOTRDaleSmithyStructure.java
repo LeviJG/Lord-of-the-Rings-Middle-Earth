@@ -52,7 +52,7 @@ public class LOTRDaleSmithyStructure extends LOTRDaleStructure {
         for (i1 = -3; i1 <= 3; ++i1) {
             for (k1 = 0; k1 <= 10; ++k1) {
                 j12 = 0;
-                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= 0) {
+                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j12, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                     --j12;
@@ -67,7 +67,7 @@ public class LOTRDaleSmithyStructure extends LOTRDaleStructure {
                 int j14;
                 int i2 = Math.abs(i1);
                 if (i2 == 4 && Math.floorMod(k1, 4) == 3 || i1 == 0 && k1 == 11) {
-                    for (j14 = 3; (j14 >= 1 || !isOpaque(world, i1, j14, k1)) && getY(j14) >= 0; --j14) {
+                    for (j14 = 3; (j14 >= 1 || !isOpaque(world, i1, j14, k1)) && getY(j14) >= world.getMinY(); --j14) {
                         setBlockAndMetadata(world, i1, j14, k1, brickBlock, brickMeta);
                         setGrassToDirt(world, i1, j14 - 1, k1);
                     }
@@ -91,13 +91,13 @@ public class LOTRDaleSmithyStructure extends LOTRDaleStructure {
                     setBlockAndMetadata(world, 3, 3, -1, brickStairBlock, 5);
                 }
                 if (i2 == 1 && k1 == -1) {
-                    for (j14 = 3; (j14 >= 1 || !isOpaque(world, i1, j14, k1)) && getY(j14) >= 0; --j14) {
+                    for (j14 = 3; (j14 >= 1 || !isOpaque(world, i1, j14, k1)) && getY(j14) >= world.getMinY(); --j14) {
                         setBlockAndMetadata(world, i1, j14, k1, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i1, j14 - 1, k1);
                     }
                 }
                 if (i2 == 0 && k1 == -1) {
-                    for (j14 = 0; (j14 == 0 || !isOpaque(world, i1, j14, k1)) && getY(j14) >= 0; --j14) {
+                    for (j14 = 0; (j14 == 0 || !isOpaque(world, i1, j14, k1)) && getY(j14) >= world.getMinY(); --j14) {
                         setBlockAndMetadata(world, i1, j14, k1, floorBlock, floorMeta);
                         setGrassToDirt(world, i1, j14 - 1, k1);
                     }

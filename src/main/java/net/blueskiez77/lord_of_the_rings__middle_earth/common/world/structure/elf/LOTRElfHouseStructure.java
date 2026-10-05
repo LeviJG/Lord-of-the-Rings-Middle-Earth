@@ -89,7 +89,7 @@ public class LOTRElfHouseStructure extends LOTRStructureBase2 {
             for (int i14 = -2; i14 <= 2; ++i14) {
                 for (k12 = -2; k12 <= 2; ++k12) {
                     j12 = 0;
-                    while (!isOpaque(world, i14, j12, k12) && getY(j12) >= 0) {
+                    while (!isOpaque(world, i14, j12, k12) && getY(j12) >= world.getMinY()) {
                         setBlockAndMetadata(world, i14, j12, k12, LOTRLegacyBlocks.mod("wood"), 1);
                         --j12;
                     }
@@ -309,7 +309,7 @@ public class LOTRElfHouseStructure extends LOTRStructureBase2 {
             }
         }
         LegacyBlock ladder = random.nextBoolean() ? LOTRLegacyBlocks.mod("hithlainLadder") : LOTRLegacyBlocks.mod("mallornLadder");
-        for (j1 = 3; j1 >= -3 || !isOpaque(world, 0, j1, -3) && getY(j1) >= 0; --j1) {
+        for (j1 = 3; j1 >= -3 || !isOpaque(world, 0, j1, -3) && getY(j1) >= world.getMinY(); --j1) {
             setBlockAndMetadata(world, 0, j1, -3, ladder, 2);
         }
         setBlockAndMetadata(world, -2, 1, 0, LOTRLegacyBlocks.mod("elvenTable"), 0);

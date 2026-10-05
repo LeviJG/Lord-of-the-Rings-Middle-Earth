@@ -75,7 +75,7 @@ public class LOTRGondorWatchfortStructure extends LOTRGondorStructure {
         for (i16 = -6; i16 <= 6; ++i16) {
             for (k12 = -6; k12 <= 6; ++k12) {
                 j14 = 0;
-                while (!isOpaque(world, i16, j14, k12) && getY(j14) >= 0) {
+                while (!isOpaque(world, i16, j14, k12) && getY(j14) >= world.getMinY()) {
                     placeRandomBrick(world, random, i16, j14, k12);
                     setGrassToDirt(world, i16, j14 - 1, k12);
                     --j14;
@@ -261,7 +261,7 @@ public class LOTRGondorWatchfortStructure extends LOTRGondorStructure {
         for (i12 = -2; i12 <= 2; ++i12) {
             for (k12 = -8; k12 <= -7; ++k12) {
                 j14 = 0;
-                while (!isOpaque(world, i12, j14, k12) && getY(j14) >= 0) {
+                while (!isOpaque(world, i12, j14, k12) && getY(j14) >= world.getMinY()) {
                     placeRandomBrick(world, random, i12, j14, k12);
                     setGrassToDirt(world, i12, j14 - 1, k12);
                     --j14;
@@ -381,7 +381,7 @@ public class LOTRGondorWatchfortStructure extends LOTRGondorStructure {
             placeRandomStairs(world, random, i1, 10, 18, 7);
             placeRandomStairs(world, random, i1, 10, 28, 6);
             j12 = 10;
-            while (!isOpaque(world, i1, j12, 17) && getY(j12) >= 0) {
+            while (!isOpaque(world, i1, j12, 17) && getY(j12) >= world.getMinY()) {
                 placeRandomBrick(world, random, i1, j12, 17);
                 setGrassToDirt(world, i1, j12 - 1, 17);
                 --j12;

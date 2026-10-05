@@ -69,7 +69,7 @@ public class LOTRMeadHallStructure extends LOTRRohanStructure {
                 boolean corner = Math.abs(i13) == 8 && (k1 == 0 || k1 == 28);
                 stairSide = Math.abs(i13) == 3 && k1 == 0;
                 if (corner || stairSide) {
-                    for (j14 = 1; (j14 >= 1 || !isOpaque(world, i13, j14, k1)) && getY(j14) >= 0; --j14) {
+                    for (j14 = 1; (j14 >= 1 || !isOpaque(world, i13, j14, k1)) && getY(j14) >= world.getMinY(); --j14) {
                         setBlockAndMetadata(world, i13, j14, k1, rockSlabDoubleBlock, rockSlabDoubleMeta);
                         setGrassToDirt(world, i13, j14 - 1, k1);
                     }
@@ -79,7 +79,7 @@ public class LOTRMeadHallStructure extends LOTRRohanStructure {
                     setBlockAndMetadata(world, i13, 2, k1, rockSlabBlock, rockSlabMeta);
                     continue;
                 }
-                for (j14 = 1; (j14 >= 1 || !isOpaque(world, i13, j14, k1)) && getY(j14) >= 0; --j14) {
+                for (j14 = 1; (j14 >= 1 || !isOpaque(world, i13, j14, k1)) && getY(j14) >= world.getMinY(); --j14) {
                     setBlockAndMetadata(world, i13, j14, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i13, j14 - 1, k1);
                 }

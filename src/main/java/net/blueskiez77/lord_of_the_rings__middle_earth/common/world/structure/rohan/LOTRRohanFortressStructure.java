@@ -54,7 +54,7 @@ public class LOTRRohanFortressStructure extends LOTRRohanStructure {
                 for (j14 = 1; j14 <= 10; ++j14) {
                     setAir(world, i12, j14, k12);
                 }
-                for (j14 = 0; (j14 >= 0 || !isOpaque(world, i12, j14, k12)) && getY(j14) >= 0; --j14) {
+                for (j14 = 0; (j14 >= 0 || !isOpaque(world, i12, j14, k12)) && getY(j14) >= world.getMinY(); --j14) {
                     if (i2 == 12 && (k2 == 12 || k2 == 9 || k2 == 2) || k2 == 12 && (i2 == 9 || i2 == 2)) {
                         setBlockAndMetadata(world, i12, j14, k12, woodBeam2Block, woodBeam2Meta);
                     } else if (i2 > 9 || k2 > 9) {
@@ -303,7 +303,7 @@ public class LOTRRohanFortressStructure extends LOTRRohanStructure {
         setBlockAndMetadata(world, 2, 3, -9, LOTRLegacyBlocks.vanilla("torch"), 3);
         for (k13 = -13; k13 <= 9; ++k13) {
             for (i15 = -1; i15 <= 1; ++i15) {
-                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i15, j12, k13, brickBlock, brickMeta);
                     setGrassToDirt(world, i15, j12 - 1, k13);
                 }

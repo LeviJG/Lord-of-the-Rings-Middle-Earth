@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -36,6 +37,7 @@ public class LOTRNearHaradrimWarlordEntity extends LOTRNearHaradrimWarriorEntity
 
     public LOTRNearHaradrimWarlordEntity(EntityType<? extends LOTRNearHaradrimWarlordEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.NEAR_HARAD;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

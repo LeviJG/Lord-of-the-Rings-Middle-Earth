@@ -45,7 +45,7 @@ public class LOTRRohanVillagePastureStructure extends LOTRRohanStructure {
             for (k1 = -4; k1 <= 4; ++k1) {
                 int i2 = Math.abs(i1);
                 int k2 = Math.abs(k1);
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     if (j1 == 0) {
                         int randomFloor = random.nextInt(3);
                         switch (randomFloor) {

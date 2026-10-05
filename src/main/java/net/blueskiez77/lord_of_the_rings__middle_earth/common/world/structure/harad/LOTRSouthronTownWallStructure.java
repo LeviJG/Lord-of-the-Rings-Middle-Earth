@@ -34,7 +34,7 @@ public abstract class LOTRSouthronTownWallStructure extends LOTRSouthronStructur
             findSurface(world, i1, k1);
             for (int k32 = k1; k32 <= k1 + 1; ++k32) {
                 int j12;
-                for (j12 = 1; (j12 >= 1 || !isOpaque(world, i1, j12, k32)) && getY(j12) >= 0; --j12) {
+                for (j12 = 1; (j12 >= 1 || !isOpaque(world, i1, j12, k32)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i1, j12, k32, stoneBlock, stoneMeta);
                     setGrassToDirt(world, i1, j12 - 1, k32);
                 }
@@ -50,7 +50,7 @@ public abstract class LOTRSouthronTownWallStructure extends LOTRSouthronStructur
             switch (pillarOffset) {
                 case 0:
                     k3 = k1 - 1;
-                    for (j1 = 4; (j1 >= 1 || !isOpaque(world, i1, j1, k3)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 4; (j1 >= 1 || !isOpaque(world, i1, j1, k3)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i1, j1, k3, pillarBlock, pillarMeta);
                         setGrassToDirt(world, i1, j1 - 1, k3);
                     }
@@ -79,7 +79,7 @@ public abstract class LOTRSouthronTownWallStructure extends LOTRSouthronStructur
                 continue;
             }
             k3 = k1 + 2;
-            for (j1 = 4; (j1 >= 1 || !isOpaque(world, i1, j1, k3)) && getY(j1) >= 0; --j1) {
+            for (j1 = 4; (j1 >= 1 || !isOpaque(world, i1, j1, k3)) && getY(j1) >= world.getMinY(); --j1) {
                 setBlockAndMetadata(world, i1, j1, k3, woodBeamBlock, woodBeamMeta);
                 setGrassToDirt(world, i1, j1 - 1, k3);
             }

@@ -58,7 +58,7 @@ public class LOTRRuinedHighElvenTurretStructure extends LOTRStructureBase {
                         }
                         for (i1 = i - 4; i1 <= i + 4; ++i1) {
                             for (k12 = k - 4; k12 <= k + 4; ++k12) {
-                                for (j13 = j; (j13 == j || !isOpaqueAt(world, i1, j13, k12)) && j13 >= 0; --j13) {
+                                for (j13 = j; (j13 == j || !isOpaqueAt(world, i1, j13, k12)) && j13 >= world.getMinY(); --j13) {
                                     placeRandomBrick(world, random, i1, j13, k12);
                                     setGrassToDirt(world, i1, j13 - 1, k12);
                                 }

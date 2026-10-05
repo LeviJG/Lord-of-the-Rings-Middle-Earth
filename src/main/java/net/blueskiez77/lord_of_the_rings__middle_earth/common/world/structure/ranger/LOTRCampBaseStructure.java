@@ -37,7 +37,7 @@ public abstract class LOTRCampBaseStructure extends LOTRStructureBase2 {
         for (int i1 = i - 1; i1 <= i + 1; ++i1) {
             for (int k1 = k - 1; k1 <= k + 1; ++k1) {
                 int j1 = j - 1;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j1, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     --j1;
@@ -170,7 +170,7 @@ public abstract class LOTRCampBaseStructure extends LOTRStructureBase2 {
                 for (i2 = i14 - 2; i2 <= i14 + 2; ++i2) {
                     for (k2 = k1 - 2; k2 <= k1 + 2; ++k2) {
                         j2 = highestFarmHeight - 2;
-                        while (!isOpaque(world, i2, j2, k2) && getY(j2) >= 0) {
+                        while (!isOpaque(world, i2, j2, k2) && getY(j2) >= world.getMinY()) {
                             setBiomeFiller(world, i2, j2, k2);
                             setGrassToDirt(world, i2, j2 - 1, k2);
                             --j2;

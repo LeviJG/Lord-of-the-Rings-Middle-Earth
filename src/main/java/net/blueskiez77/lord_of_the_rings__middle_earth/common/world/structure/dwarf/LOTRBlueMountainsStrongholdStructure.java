@@ -82,7 +82,7 @@ public class LOTRBlueMountainsStrongholdStructure extends LOTRStructureBase {
         for (k1 = k - 6; k1 <= k + 6; ++k1) {
             for (i12 = i - 6; i12 <= i + 6; ++i12) {
                 boolean flag = Math.abs(k1 - k) == 6 && Math.abs(i12 - i) == 6;
-                for (int j1 = j + 7; (j1 >= j || !isOpaqueAt(world, i12, j1, k1)) && j1 >= 0; --j1) {
+                for (int j1 = j + 7; (j1 >= j || !isOpaqueAt(world, i12, j1, k1)) && j1 >= world.getMinY(); --j1) {
                     if (flag) {
                         setBlockAndNotifyAdequately(world, i12, j1, k1, LOTRLegacyBlocks.mod("pillar"), 3);
                     } else {
@@ -193,7 +193,7 @@ public class LOTRBlueMountainsStrongholdStructure extends LOTRStructureBase {
         for (k13 = k - 6; k13 <= k + 6; ++k13) {
             setBlockAndNotifyAdequately(world, i - 7, j + 1, k13, LOTRLegacyBlocks.mod("slabSingle3"), 0);
             setGrassToDirt(world, i - 7, j, k13);
-            for (j12 = j; !isOpaqueAt(world, i - 7, j12, k13) && j12 >= 0; --j12) {
+            for (j12 = j; !isOpaqueAt(world, i - 7, j12, k13) && j12 >= world.getMinY(); --j12) {
                 setBlockAndNotifyAdequately(world, i - 7, j12, k13, LOTRLegacyBlocks.mod("pillar"), 3);
                 setGrassToDirt(world, i - 7, j12 - 1, k13);
             }
@@ -359,7 +359,7 @@ public class LOTRBlueMountainsStrongholdStructure extends LOTRStructureBase {
         for (i12 = i - 6; i12 <= i + 6; ++i12) {
             setBlockAndNotifyAdequately(world, i12, j + 1, k + 7, LOTRLegacyBlocks.mod("slabSingle3"), 0);
             setGrassToDirt(world, i12, j, k + 7);
-            for (j12 = j; !isOpaqueAt(world, i12, j12, k + 7) && j12 >= 0; --j12) {
+            for (j12 = j; !isOpaqueAt(world, i12, j12, k + 7) && j12 >= world.getMinY(); --j12) {
                 setBlockAndNotifyAdequately(world, i12, j12, k + 7, LOTRLegacyBlocks.mod("pillar"), 3);
                 setGrassToDirt(world, i12, j12 - 1, k + 7);
             }
@@ -525,7 +525,7 @@ public class LOTRBlueMountainsStrongholdStructure extends LOTRStructureBase {
         for (i12 = i - 6; i12 <= i + 6; ++i12) {
             setBlockAndNotifyAdequately(world, i12, j + 1, k - 7, LOTRLegacyBlocks.mod("slabSingle3"), 0);
             setGrassToDirt(world, i12, j, k - 7);
-            for (j12 = j; !isOpaqueAt(world, i12, j12, k - 7) && j12 >= 0; --j12) {
+            for (j12 = j; !isOpaqueAt(world, i12, j12, k - 7) && j12 >= world.getMinY(); --j12) {
                 setBlockAndNotifyAdequately(world, i12, j12, k - 7, LOTRLegacyBlocks.mod("pillar"), 3);
                 setGrassToDirt(world, i12, j12 - 1, k - 7);
             }
@@ -691,7 +691,7 @@ public class LOTRBlueMountainsStrongholdStructure extends LOTRStructureBase {
         for (k13 = k - 6; k13 <= k + 6; ++k13) {
             setBlockAndNotifyAdequately(world, i + 7, j + 1, k13, LOTRLegacyBlocks.mod("slabSingle3"), 0);
             setGrassToDirt(world, i + 7, j, k13);
-            for (j12 = j; !isOpaqueAt(world, i + 7, j12, k13) && j12 >= 0; --j12) {
+            for (j12 = j; !isOpaqueAt(world, i + 7, j12, k13) && j12 >= world.getMinY(); --j12) {
                 setBlockAndNotifyAdequately(world, i + 7, j12, k13, LOTRLegacyBlocks.mod("pillar"), 3);
                 setGrassToDirt(world, i + 7, j12 - 1, k13);
             }
@@ -848,7 +848,7 @@ public class LOTRBlueMountainsStrongholdStructure extends LOTRStructureBase {
 
     public void placeBalconySection(WorldGenLevel world, int i, int j, int k, boolean isEdge, boolean isPillar) {
         if (isEdge) {
-            for (int j1 = j + 4; (j1 >= j || !isOpaqueAt(world, i, j1, k)) && j1 >= 0; --j1) {
+            for (int j1 = j + 4; (j1 >= j || !isOpaqueAt(world, i, j1, k)) && j1 >= world.getMinY(); --j1) {
                 if (isPillar) {
                     setBlockAndNotifyAdequately(world, i, j1, k, LOTRLegacyBlocks.mod("pillar"), 3);
                 } else {
@@ -863,7 +863,7 @@ public class LOTRBlueMountainsStrongholdStructure extends LOTRStructureBase {
             setBlockAndNotifyAdequately(world, i, j + 6, k, LOTRLegacyBlocks.mod("wall"), 14);
         } else {
             int j1;
-            for (j1 = j - 1; !isOpaqueAt(world, i, j1, k) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i, j1, k) && j1 >= world.getMinY(); --j1) {
                 setBlockAndNotifyAdequately(world, i, j1, k, LOTRLegacyBlocks.mod("brick"), 14);
                 setGrassToDirt(world, i, j1 - 1, k);
             }

@@ -3,10 +3,10 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBarrelBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRMugBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRPlateBlockEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
@@ -26,7 +26,9 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SkullBlock;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 
 import org.jspecify.annotations.Nullable;
 
@@ -54,14 +56,23 @@ public abstract class LOTRStructureBase {
 
     public abstract boolean generate(WorldGenLevel world, RandomSource random, int i, int j, int k);
 
-    /** generate, then the shape pass over what it set. */
+    /** setBlock's flags: 3 with notifyChanges, else 2, which in 1.7.10 told no neighbour (LOTRStructureBase2.placeFlags). */
+    public int placeFlags() {
+        return this.notifyChanges ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE;
+    }
+
+    /** generate, then the shape pass over what it set (stairs kept straight, as 1.7.10's were). */
     public boolean generateAndFinish(WorldGenLevel world, RandomSource random, int i, int j, int k) {
         this.placed.clear();
         boolean generated = generate(world, random, i, j, k);
         for (BlockPos pos : this.placed) {
             BlockState state = world.getBlockState(pos);
-            BlockState updated = Block.updateFromNeighbourShapes(state, world, pos);
-            if (updated != state) {
+            BlockState updated = state.getBlock() instanceof StairBlock
+                    ? state.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT)
+                    : Block.updateFromNeighbourShapes(state, world, pos);
+            // 1.7.10 never checked a block again once it was set, so the pass
+            // only joins and turns blocks; it does not break what cannot stay.
+            if (updated != state && !(updated.isAir() && !state.isAir())) {
                 world.setBlock(pos, updated, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
             }
         }
@@ -103,16 +114,26 @@ public abstract class LOTRStructureBase {
         return world.getBlockState(new BlockPos(i, j, k)).isSolidRender();
     }
 
+    /**
+     * setBlockAndNotifyAdequately. A chest, furnace, oven or forge then faces
+     * the way its onBlockAdded chose, whatever metadata it was given (this
+     * base never set it again); a structure that wanted otherwise turned it
+     * afterwards with setBlockMetadata.
+     */
     public void setBlockAndNotifyAdequately(WorldGenLevel world, int i, int j, int k, LegacyBlock block, int meta) {
-        setBlockState(world, i, j, k, block.state(meta));
+        BlockState state = block.state(meta);
+        if (LOTRStructureBase2.takesDefaultDirection(state.getBlock())) {
+            state = LOTRStructureBase2.withDefaultDirection(world, new BlockPos(i, j, k), state);
+        }
+        setBlockState(world, i, j, k, state);
         this.placedBlocks.put(new BlockPos(i, j, k), block);
     }
 
-    /** setBlockMetadata: the block set here, with other metadata (a chest or furnace turned). */
+    /** setBlockMetadataWithNotify: the block set here, with other metadata (a chest or furnace turned). */
     public void setBlockMetadata(WorldGenLevel world, int i, int j, int k, int meta) {
         LegacyBlock block = this.placedBlocks.get(new BlockPos(i, j, k));
         if (block != null) {
-            setBlockAndNotifyAdequately(world, i, j, k, block, meta);
+            setBlockState(world, i, j, k, block.state(meta));
         }
     }
 
@@ -131,7 +152,8 @@ public abstract class LOTRStructureBase {
     public void placeArmorStand(WorldGenLevel world, int i, int j, int k, int direction, ItemStack @Nullable [] armor) {
         net.minecraft.world.entity.decoration.ArmorStand stand = new net.minecraft.world.entity.decoration.ArmorStand(
                 world.getLevel(), i + 0.5, j, k + 0.5);
-        stand.setYRot(Direction.from2DDataValue(direction).toYRot());
+        // LOTRRenderArmorStand drew metadata 0 facing north, back at whoever set it down: yaw 180 + 90 * direction.
+        stand.setYRot(Direction.from2DDataValue(direction).getOpposite().toYRot());
         if (armor != null) {
             net.minecraft.world.entity.EquipmentSlot[] slots = {net.minecraft.world.entity.EquipmentSlot.HEAD,
                     net.minecraft.world.entity.EquipmentSlot.CHEST, net.minecraft.world.entity.EquipmentSlot.LEGS,
@@ -157,7 +179,8 @@ public abstract class LOTRStructureBase {
 
     public void setBlockState(WorldGenLevel world, int i, int j, int k, BlockState state) {
         BlockPos pos = new BlockPos(i, j, k);
-        world.setBlock(pos, state, this.notifyChanges ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS);
+        int flags = placeFlags();
+        world.setBlock(pos, LOTRStructureBase2.joinHalves(world, pos, state, flags, null), flags);
         this.placed.add(pos);
     }
 
@@ -169,7 +192,7 @@ public abstract class LOTRStructureBase {
         BlockPos pos = new BlockPos(i, j, k);
         BlockState state = world.getBlockState(pos);
         if (state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.MYCELIUM) || state.is(Blocks.PODZOL)) {
-            world.setBlock(pos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(pos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
         }
     }
 

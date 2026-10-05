@@ -1,6 +1,18 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "lotr:block/iron_bird_cage"
+    "type": "minecraft:composite",
+    "models": [
+      {
+        "type": "minecraft:special",
+        "base": "lotr:block/iron_bird_cage",
+        "model": {
+          "type": "lotr:animal_jar"
+        }
+      },
+      {
+        "type": "minecraft:model",
+        "model": "lotr:block/iron_bird_cage"
+      }
+    ]
   }
 }

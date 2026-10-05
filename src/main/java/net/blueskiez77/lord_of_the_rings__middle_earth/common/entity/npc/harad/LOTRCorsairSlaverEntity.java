@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -19,12 +20,10 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityCorsairSlaver: a corsair who sells slaves -- Harad slaves, hired
  * to farm -- to anyone Near Harad does not dislike, bare-headed and armed as
- * any corsair. He seeks no one out -- he only answers attacks. Until the
- * branding iron exists he idles with his weapon, where the original gave him
- * the iron.
+ * any corsair. He seeks no one out -- he only answers attacks. At rest he
+ * holds a branding iron.
  *
- * <p>NOT ported yet: the branding iron in his idle hand, with the branding
- * iron item, and the hireHaradSlave achievement (D7).
+ * <p>NOT ported yet: the hireHaradSlave achievement (D7).
  */
 public class LOTRCorsairSlaverEntity extends LOTRCorsairEntity implements LOTRUnitTradeable {
 
@@ -61,6 +60,7 @@ public class LOTRCorsairSlaverEntity extends LOTRCorsairEntity implements LOTRUn
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
+        this.npcItemsInv.setIdleItem(new ItemStack(LOTRToolItems.BRANDING_IRON));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
     }

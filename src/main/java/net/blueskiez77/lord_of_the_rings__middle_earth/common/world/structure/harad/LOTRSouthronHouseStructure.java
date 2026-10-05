@@ -48,7 +48,7 @@ public class LOTRSouthronHouseStructure extends LOTRSouthronStructure {
                 int k2 = Math.abs(k1);
                 if (i2 <= 2 && k2 <= 4) {
                     j1 = 0;
-                    while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                    while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                         setBlockAndMetadata(world, i1, j1, k1, stoneBlock, stoneMeta);
                         setGrassToDirt(world, i1, j1 - 1, k1);
                         --j1;
@@ -61,7 +61,7 @@ public class LOTRSouthronHouseStructure extends LOTRSouthronStructure {
                     continue;
                 }
                 j1 = 0;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j1, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     --j1;
@@ -99,7 +99,7 @@ public class LOTRSouthronHouseStructure extends LOTRSouthronStructure {
                     if (k1 != 7 && (i1 != -4 || k1 != 6)) {
                         continue;
                     }
-                    for (j12 = 0; (j12 >= 0 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 0; (j12 >= 0 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i1, j12, k1, brickBlock, brickMeta);
                         setGrassToDirt(world, i1, j12 - 1, k1);
                     }

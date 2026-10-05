@@ -23,7 +23,7 @@ public class LOTREasterlingVillageSignStructure extends LOTRRohanStructure {
         if (restrictions && !isSurface(world, i1 = 0, getTopBlock(world, i1, k1 = 0) - 1, k1)) {
             return false;
         }
-        for (int j12 = 0; (j12 >= 0 || !isOpaque(world, 0, j12, 0)) && getY(j12) >= 0; --j12) {
+        for (int j12 = 0; (j12 >= 0 || !isOpaque(world, 0, j12, 0)) && getY(j12) >= world.getMinY(); --j12) {
             setBlockAndMetadata(world, 0, j12, 0, woodBeamBlock, woodBeamMeta);
             setGrassToDirt(world, 0, j12 - 1, 0);
         }

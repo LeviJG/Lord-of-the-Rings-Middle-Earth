@@ -136,7 +136,7 @@ public class LOTRGulfTavernStructure extends LOTRGulfStructure {
                 setBlockAndMetadata(world, i12, j1, k1, LOTRLegacyBlocks.mod("stairsRedSandstone"), 2);
                 setGrassToDirt(world, i12, j1 - 1, k1);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i12, j2, k1) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k1) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k1, LOTRLegacyBlocks.mod("redSandstone"), 0);
                     setGrassToDirt(world, i12, j2 - 1, k1);
                     --j2;
@@ -148,7 +148,7 @@ public class LOTRGulfTavernStructure extends LOTRGulfStructure {
                 setBlockAndMetadata(world, i12, j1, k1, LOTRLegacyBlocks.mod("stairsRedSandstone"), 3);
                 setGrassToDirt(world, i12, j1 - 1, k1);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i12, j2, k1) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k1) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k1, LOTRLegacyBlocks.mod("redSandstone"), 0);
                     setGrassToDirt(world, i12, j2 - 1, k1);
                     --j2;

@@ -60,6 +60,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.NameAndId;
@@ -174,6 +175,8 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     /** Spawns on a mount of its own ({@link #createMountToRide}). */
     public boolean spawnRidingHorse;
     public boolean canBannerBearerSpawnRiding;
+    /** The cape on its back (LOTRCapes), drawn by its renderer; none for most. */
+    public @Nullable Identifier npcCape;
     public boolean hurtOnlyByPlates = true;
     public boolean isTraderEscort;
     public boolean shouldTraderRespawn;

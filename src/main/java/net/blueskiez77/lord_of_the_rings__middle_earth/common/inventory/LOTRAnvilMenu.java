@@ -10,6 +10,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifi
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierCombining;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRScrapTraderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRDwarfEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntry;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
@@ -25,8 +26,11 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.network.chat.TextColor;
 import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.StringUtil;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -34,6 +38,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
+import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.ResultContainer;
@@ -47,6 +52,7 @@ import net.minecraft.world.item.ShearsItem;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.ItemEnchantments;
+
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -60,10 +66,13 @@ import org.jspecify.annotations.Nullable;
  * paid for in coins, priced by what the smith would pay for the item's repair
  * material, and two smith's scrolls of a kind combine into the next grade up.
  *
- * <p>NOT ported yet: the scrap trader's half prices and mischief (garbled
- * names and random modifiers, and its remark as the screen closes), with
- * that NPC; and the
- * reforge and scroll-combining achievements.
+ * <p>The oddment collector (the scrap trader) works for half a smith's
+ * price, but cannot leave a job alone: whatever he reforges, engraves or
+ * hands back may come out with its name garbled (four times in five) or a
+ * new random modifier (one time in five), and he has a word to say about it
+ * as the screen closes.
+ *
+ * <p>NOT ported yet: the reforge and scroll-combining achievements.
  *
  * <p>With the vanilla enchanting system on, vanilla enchantments are combined
  * too, in 26.2's terms: each enchantment's own anvil cost and compatibility
@@ -106,6 +115,8 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
 
     private @Nullable String repairedItemName;
     private long lastReforgeTime = -1L;
+    /** Whether the oddment collector has had his fun with something here. */
+    private boolean doneMischief;
 
     public LOTRAnvilMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);
@@ -603,6 +614,11 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
                 materialCost = Math.max(Math.round(materialCost * materialPrice), 1);
                 reforgeCost = Math.max(Math.round(reforgeCost * materialPrice), 1);
                 engraveCost = Math.max(Math.round(engraveCost * materialPrice), 1);
+                if (this.theNPC instanceof LOTRScrapTraderEntity) {
+                    materialCost = Math.max(Mth.ceil(materialCost * 0.5f), 1);
+                    reforgeCost = Math.max(Mth.ceil(reforgeCost * 0.5f), 1);
+                    engraveCost = Math.max(Mth.ceil(engraveCost * 0.5f), 1);
+                }
             } else if (!isCommonRenameOnly) {
                 output.setItem(0, ItemStack.EMPTY);
                 setCosts(0, 0, 0);
@@ -721,6 +737,9 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         }
         LOTRModifiers.applyRandom(inputItem, player.getRandom(), true, true);
         LOTRModifiers.setAnvilCost(inputItem, 0);
+        if (isScrapTrader() && applyMischief(inputItem)) {
+            this.doneMischief = true;
+        }
         input.setItem(INPUT, inputItem);
         takeMaterialOrCoinAmount(cost);
         playAnvilSound();
@@ -737,10 +756,69 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
             return false;
         }
         LOTRItemOwnership.setCurrentOwner(inputItem, player.getName().getString());
+        if (isScrapTrader() && applyMischief(inputItem)) {
+            this.doneMischief = true;
+        }
         input.setItem(INPUT, inputItem);
         takeMaterialOrCoinAmount(cost);
         playAnvilSound();
         return true;
+    }
+
+    private boolean isScrapTrader() {
+        return this.isTrader && this.theNPC instanceof LOTRScrapTraderEntity
+                && !this.player.level().isClientSide();
+    }
+
+    /**
+     * applyMischief: four times in five the name is garbled
+     * (OddmentCollectorNameMischief; garbled back into the item's own name, the
+     * custom name goes), and one time in five a random modifier is added.
+     */
+    private boolean applyMischief(ItemStack stack) {
+        boolean changed = false;
+        RandomSource rand = this.player.level().getRandom();
+        if (rand.nextFloat() < 0.8f) {
+            Component custom = stack.get(DataComponents.CUSTOM_NAME);
+            String name = LOTRNameMischief.garbleName(stack.getHoverName().getString(), rand);
+            if (name.equals(stack.getItem().getName(stack).getString())
+                    && (custom == null || custom.getStyle().isEmpty())) {
+                stack.remove(DataComponents.CUSTOM_NAME);
+            } else {
+                stack.set(DataComponents.CUSTOM_NAME,
+                        Component.literal(name).withStyle(custom == null ? Style.EMPTY : custom.getStyle()));
+            }
+            changed = true;
+        }
+        if (rand.nextFloat() < 0.2f) {
+            LOTRModifiers.applyRandom(stack, rand, false, true);
+            changed = true;
+        }
+        return changed;
+    }
+
+    /**
+     * slotClick: taking the result from the oddment collector, the player gets
+     * it with his mischief done; the clean result stays if it is not taken.
+     */
+    @Override
+    public void clicked(int slotIndex, int buttonNum, ContainerInput containerInput, Player player) {
+        ItemStack result = output.getItem(0).copy();
+        boolean changed = false;
+        if (slotIndex == this.resultIndex && !result.isEmpty() && isScrapTrader()) {
+            ItemStack mischief = result.copy();
+            changed = applyMischief(mischief);
+            if (changed) {
+                output.setItem(0, mischief);
+            }
+        }
+        super.clicked(slotIndex, buttonNum, containerInput, player);
+        if (changed) {
+            this.doneMischief = true;
+            if (!output.getItem(0).isEmpty()) {
+                output.setItem(0, result);
+            }
+        }
     }
 
     public static boolean canEngraveNewOwner(ItemStack stack, Player player) {
@@ -814,6 +892,9 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         if (this.isTrader) {
             if (!player.level().isClientSide()) {
                 clearContainer(player, input);
+                if (this.doneMischief && this.theNPC instanceof LOTRScrapTraderEntity scrapTrader) {
+                    scrapTrader.sendSpeechBank(player, scrapTrader.getSmithSpeechBank());
+                }
             }
             return;
         }

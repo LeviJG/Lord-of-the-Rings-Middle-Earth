@@ -47,7 +47,7 @@ public class LOTRMirkOakStructure extends LOTRStructureBase {
     public boolean generate(WorldGenLevel world, RandomSource random, int i, int j, int k) {
         int height = Mth.randomBetweenInclusive(random, minHeight, maxHeight);
         boolean flag = true;
-        if (!restrictions || j >= 1 && j + height + 5 <= 256) {
+        if (!restrictions || j >= world.getMinY() + 1 && j + height + 5 <= world.getMaxY() + 1) {
             int i1;
             int j1;
             int k1;
@@ -63,7 +63,7 @@ public class LOTRMirkOakStructure extends LOTRStructureBase {
                     }
                     for (i1 = i - range; i1 <= i + range && flag; ++i1) {
                         for (int k12 = k - range; k12 <= k + range && flag; ++k12) {
-                            if (j1 >= 0 && j1 < 256 && isReplaceable(world, i1, j1, k12)) {
+                            if (j1 >= world.getMinY() && j1 <= world.getMaxY() && isReplaceable(world, i1, j1, k12)) {
                                 continue;
                             }
                             flag = false;

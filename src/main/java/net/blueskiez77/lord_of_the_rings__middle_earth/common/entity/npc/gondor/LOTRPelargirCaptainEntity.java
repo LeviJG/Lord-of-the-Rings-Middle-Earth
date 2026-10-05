@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -35,6 +36,7 @@ public class LOTRPelargirCaptainEntity extends LOTRPelargirMarineEntity implemen
 
     public LOTRPelargirCaptainEntity(EntityType<? extends LOTRPelargirCaptainEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.PELARGIR;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

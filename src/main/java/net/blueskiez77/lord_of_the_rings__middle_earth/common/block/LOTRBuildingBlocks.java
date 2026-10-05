@@ -1,85 +1,18 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.UnaryOperator;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREntityTags;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAnimalJarItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
-import net.minecraft.core.Registry;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.Direction;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.util.ColorRGBA;
-import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.PlaceOnWaterBlockItem;
-import net.minecraft.world.item.StandingAndWallBlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.component.ItemLore;
-import net.minecraft.network.chat.Component;
-import net.minecraft.core.component.DataComponents;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTreasurePileItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRBarrelItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPlateItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.world.entity.EntityTypes;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.WebBlock;
-import net.minecraft.world.level.block.ButtonBlock;
-import net.minecraft.world.level.block.CarpetBlock;
-import net.minecraft.world.level.block.ColoredFallingBlock;
-import net.minecraft.world.level.block.CropBlock;
-import net.minecraft.world.level.block.DirtPathBlock;
-import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.DoorBlock;
-import net.minecraft.world.level.block.FenceBlock;
-import net.minecraft.world.level.block.FenceGateBlock;
-import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.LadderBlock;
-import net.minecraft.world.level.block.PressurePlateBlock;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.SlabBlock;
-import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.StairBlock;
-import net.minecraft.world.level.block.TorchBlock;
-import net.minecraft.world.level.block.TransparentBlock;
-import net.minecraft.world.level.block.TrapDoorBlock;
-import net.minecraft.world.level.block.UntintedParticleLeavesBlock;
-import net.minecraft.world.level.block.VineBlock;
-import net.minecraft.world.level.block.WallBlock;
-import net.minecraft.world.level.block.WallTorchBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.properties.BlockSetType;
-import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
-import net.minecraft.world.level.material.MapColor;
-import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.shapes.VoxelShape;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRKebabStandItem;
-
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks.*;
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMiscBlocks.*;
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks.*;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 
 /**
  * The LOTR blocks of tabBlock ("Middle-earth Blocks"): stone, bricks, ores and storage blocks, wood, and their stairs, slabs, walls and pillars.
@@ -339,10 +272,12 @@ public final class LOTRBuildingBlocks {
     // faces 0/1, sideIcon otherwise). Material.ground, no harvest level set.
     public static final Block TERMITE_MOUND = registerSoilColumn("termite_mound", 0.5f, 1.8f, SoundType.STONE, false);
 
-    public static final Block INFESTED_TERMITE_MOUND = registerSoilColumn("infested_termite_mound", 0.5f, 1.8f, SoundType.STONE, false);
+    public static final Block INFESTED_TERMITE_MOUND = registerSoilColumn("infested_termite_mound", 0.5f, 1.8f,
+            SoundType.STONE, false, LOTRInfestedTermiteMoundBlock::new);
 
     // colorMultiplier returned 0xFFFFFF, so it is deliberately NOT biome-tinted.
-    public static final Block MUD_GRASS = registerSoilColumn("mud_grass", 0.6f, 0.6f, SoundType.GRASS, true);
+    public static final Block MUD_GRASS = registerSoilColumn("mud_grass", 0.6f, 0.6f, SoundType.GRASS, true,
+            LOTRMudGrassBlock::new);
 
     public static final Block QUENDITE_GRASS = registerSoilColumn("quendite_grass", 3.0f, 3.0f, SoundType.GRASS, false);
 

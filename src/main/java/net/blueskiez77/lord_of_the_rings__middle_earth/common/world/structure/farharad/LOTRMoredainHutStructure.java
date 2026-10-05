@@ -75,7 +75,7 @@ public abstract class LOTRMoredainHutStructure extends LOTRStructureBase2 {
     public abstract int getOffset();
 
     public void layFoundation(WorldGenLevel world, int i, int k) {
-        for (int j = 0; (j == 0 || !isOpaque(world, i, j, k)) && getY(j) >= 0; --j) {
+        for (int j = 0; (j == 0 || !isOpaque(world, i, j, k)) && getY(j) >= world.getMinY(); --j) {
             setBlockAndMetadata(world, i, j, k, clayBlock, clayMeta);
             setGrassToDirt(world, i, j - 1, k);
         }

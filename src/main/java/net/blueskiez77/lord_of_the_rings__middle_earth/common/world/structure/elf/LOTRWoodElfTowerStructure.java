@@ -108,7 +108,7 @@ public class LOTRWoodElfTowerStructure extends LOTRStructureBase {
                 if (distSq >= wallThresholdMax) {
                     continue;
                 }
-                for (int j13 = start = j - sectionHeight; (j13 == start || !isOpaqueAt(world, i14, j13, k15)) && j13 >= 0; --j13) {
+                for (int j13 = start = j - sectionHeight; (j13 == start || !isOpaqueAt(world, i14, j13, k15)) && j13 >= world.getMinY(); --j13) {
                     if (j13 != start || distSq >= wallThresholdMin) {
                         setBlockAndNotifyAdequately(world, i14, j13, k15, LOTRLegacyBlocks.mod("brick3"), 5);
                     } else {

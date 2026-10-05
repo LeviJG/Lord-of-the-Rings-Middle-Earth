@@ -163,7 +163,7 @@ public class LOTRTauredainHouseStiltsStructure extends LOTRTauredainHouseStructu
     }
 
     public void placeStilt(WorldGenLevel world, int i, int k, boolean ladder) {
-        for (int j = 3; (j == 3 || !isOpaque(world, i, j, k)) && getY(j) >= 0; --j) {
+        for (int j = 3; (j == 3 || !isOpaque(world, i, j, k)) && getY(j) >= world.getMinY(); --j) {
             setBlockAndMetadata(world, i, j, k, woodBlock, woodMeta);
             setGrassToDirt(world, i, j - 1, k);
             if (!ladder) {

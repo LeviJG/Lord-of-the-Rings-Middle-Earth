@@ -61,7 +61,7 @@ public class LOTRRuinedHouseStructure extends LOTRStructureBase2 {
                     setAir(world, i1, j1, k1);
                 }
                 j1 = 0;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     placeRandomGroundBlock(world, random, i1, j1, k1);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     --j1;

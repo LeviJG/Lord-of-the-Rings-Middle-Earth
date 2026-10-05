@@ -49,7 +49,7 @@ public class LOTRHobbitHouseStructure extends LOTRHobbitStructure {
         for (i12 = -4; i12 <= 3; ++i12) {
             for (k1 = -10; k1 <= -6; ++k1) {
                 int j14;
-                for (j14 = 0; (j14 >= 0 || !isOpaque(world, i12, j14, k1)) && getY(j14) >= 0; --j14) {
+                for (j14 = 0; (j14 >= 0 || !isOpaque(world, i12, j14, k1)) && getY(j14) >= world.getMinY(); --j14) {
                     if (j14 == 0) {
                         setBlockAndMetadata(world, i12, 0, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                     } else {
@@ -93,14 +93,14 @@ public class LOTRHobbitHouseStructure extends LOTRHobbitStructure {
                     setAir(world, i12, j15, k1);
                 }
                 if (beam) {
-                    for (j15 = 2; (j15 >= 0 || !isOpaque(world, i12, j15, k1)) && getY(j15) >= 0; --j15) {
+                    for (j15 = 2; (j15 >= 0 || !isOpaque(world, i12, j15, k1)) && getY(j15) >= world.getMinY(); --j15) {
                         setBlockAndMetadata(world, i12, j15, k1, beamBlock, beamMeta);
                         setGrassToDirt(world, i12, j15 - 1, k1);
                     }
                     continue;
                 }
                 if (wall) {
-                    for (j15 = 0; (j15 >= 0 || !isOpaque(world, i12, j15, k1)) && getY(j15) >= 0; --j15) {
+                    for (j15 = 0; (j15 >= 0 || !isOpaque(world, i12, j15, k1)) && getY(j15) >= world.getMinY(); --j15) {
                         setBlockAndMetadata(world, i12, j15, k1, plankBlock, plankMeta);
                         setGrassToDirt(world, i12, j15 - 1, k1);
                     }
@@ -112,7 +112,7 @@ public class LOTRHobbitHouseStructure extends LOTRHobbitStructure {
                 if (!indoors) {
                     continue;
                 }
-                for (j15 = 0; (j15 >= 0 || !isOpaque(world, i12, j15, k1)) && getY(j15) >= 0; --j15) {
+                for (j15 = 0; (j15 >= 0 || !isOpaque(world, i12, j15, k1)) && getY(j15) >= world.getMinY(); --j15) {
                     setBlockAndMetadata(world, i12, j15, k1, floorBlock, floorMeta);
                     setGrassToDirt(world, i12, j15 - 1, k1);
                 }

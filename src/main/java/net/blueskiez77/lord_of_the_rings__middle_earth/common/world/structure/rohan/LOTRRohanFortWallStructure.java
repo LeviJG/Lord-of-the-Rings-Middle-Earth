@@ -26,7 +26,7 @@ public class LOTRRohanFortWallStructure extends LOTRRohanStructure {
             int k1 = 0;
             findSurface(world, i1, k1);
             setupRandomBlocks(random);
-            for (j1 = 1; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+            for (j1 = 1; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                 setBlockAndMetadata(world, i1, j1, k1, rockSlabDoubleBlock, rockSlabDoubleMeta);
                 setGrassToDirt(world, i1, j1 - 1, k1);
             }

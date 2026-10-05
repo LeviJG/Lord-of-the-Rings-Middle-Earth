@@ -64,16 +64,16 @@ public class LOTRRuinedRohanWatchtowerStructure extends LOTRStructureBase {
         int j1;
         int k1;
         int i1;
-        for (j1 = j + 3 - random.nextInt(8); !isOpaqueAt(world, i - 3, j1, k - 3) && j1 >= 0; --j1) {
+        for (j1 = j + 3 - random.nextInt(8); !isOpaqueAt(world, i - 3, j1, k - 3) && j1 >= world.getMinY(); --j1) {
             setBlockAndNotifyAdequately(world, i - 3, j1, k - 3, plankBlock, plankMeta);
         }
-        for (j1 = j + 3 - random.nextInt(8); !isOpaqueAt(world, i - 3, j1, k + 3) && j1 >= 0; --j1) {
+        for (j1 = j + 3 - random.nextInt(8); !isOpaqueAt(world, i - 3, j1, k + 3) && j1 >= world.getMinY(); --j1) {
             setBlockAndNotifyAdequately(world, i - 3, j1, k + 3, plankBlock, plankMeta);
         }
-        for (j1 = j + 3 - random.nextInt(8); !isOpaqueAt(world, i + 3, j1, k - 3) && j1 >= 0; --j1) {
+        for (j1 = j + 3 - random.nextInt(8); !isOpaqueAt(world, i + 3, j1, k - 3) && j1 >= world.getMinY(); --j1) {
             setBlockAndNotifyAdequately(world, i + 3, j1, k - 3, plankBlock, plankMeta);
         }
-        for (j1 = j + 3 - random.nextInt(8); !isOpaqueAt(world, i + 3, j1, k + 3) && j1 >= 0; --j1) {
+        for (j1 = j + 3 - random.nextInt(8); !isOpaqueAt(world, i + 3, j1, k + 3) && j1 >= world.getMinY(); --j1) {
             setBlockAndNotifyAdequately(world, i + 3, j1, k + 3, plankBlock, plankMeta);
         }
         for (i1 = i - 2; i1 <= i + 2; ++i1) {
@@ -111,21 +111,21 @@ public class LOTRRuinedRohanWatchtowerStructure extends LOTRStructureBase {
     }
 
     public boolean generateFacingEast(WorldGenLevel world, RandomSource random, int i, int j, int k) {
-        for (int j1 = j - 1 - random.nextInt(4); !isOpaqueAt(world, i + 3, j1, k) && j1 >= 0; --j1) {
+        for (int j1 = j - 1 - random.nextInt(4); !isOpaqueAt(world, i + 3, j1, k) && j1 >= world.getMinY(); --j1) {
             setBlockAndNotifyAdequately(world, i + 3, j1, k, plankBlock, plankMeta);
         }
         for (int i1 = i - 2; i1 <= i + 2; ++i1) {
             int j1;
             int j2;
             int i2 = Math.abs(i - i1);
-            for (j1 = j - 1; !isOpaqueAt(world, i1, j1, k - 3) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i1, j1, k - 3) && j1 >= world.getMinY(); --j1) {
                 j2 = j - j1;
                 if ((i2 != 2 || j2 % 4 != 1) && (i2 != 1 || j2 % 2 != 0) && (i2 != 0 || j2 % 4 != 3 || random.nextInt(3) != 0)) {
                     continue;
                 }
                 setBlockAndNotifyAdequately(world, i1, j1, k - 3, woodBlock, woodMeta);
             }
-            for (j1 = j - 1; !isOpaqueAt(world, i1, j1, k + 3) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i1, j1, k + 3) && j1 >= world.getMinY(); --j1) {
                 j2 = j - j1;
                 if ((i2 != 2 || j2 % 4 != 1) && (i2 != 1 || j2 % 2 != 0) && (i2 != 0 || j2 % 4 != 3 || random.nextInt(3) != 0)) {
                     continue;
@@ -137,21 +137,21 @@ public class LOTRRuinedRohanWatchtowerStructure extends LOTRStructureBase {
     }
 
     public boolean generateFacingNorth(WorldGenLevel world, RandomSource random, int i, int j, int k) {
-        for (int j1 = j - 1 - random.nextInt(4); !isOpaqueAt(world, i, j1, k - 3) && j1 >= 0; --j1) {
+        for (int j1 = j - 1 - random.nextInt(4); !isOpaqueAt(world, i, j1, k - 3) && j1 >= world.getMinY(); --j1) {
             setBlockAndNotifyAdequately(world, i, j1, k - 3, plankBlock, plankMeta);
         }
         for (int k1 = k - 2; k1 <= k + 2; ++k1) {
             int j1;
             int j2;
             int k2 = Math.abs(k - k1);
-            for (j1 = j - 1; !isOpaqueAt(world, i - 3, j1, k1) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i - 3, j1, k1) && j1 >= world.getMinY(); --j1) {
                 j2 = j - j1;
                 if ((k2 != 2 || j2 % 4 != 1) && (k2 != 1 || j2 % 2 != 0) && (k2 != 0 || j2 % 4 != 3 || random.nextInt(3) != 0)) {
                     continue;
                 }
                 setBlockAndNotifyAdequately(world, i - 3, j1, k1, woodBlock, woodMeta);
             }
-            for (j1 = j - 1; !isOpaqueAt(world, i + 3, j1, k1) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i + 3, j1, k1) && j1 >= world.getMinY(); --j1) {
                 j2 = j - j1;
                 if ((k2 != 2 || j2 % 4 != 1) && (k2 != 1 || j2 % 2 != 0) && (k2 != 0 || j2 % 4 != 3 || random.nextInt(3) != 0)) {
                     continue;
@@ -163,21 +163,21 @@ public class LOTRRuinedRohanWatchtowerStructure extends LOTRStructureBase {
     }
 
     public boolean generateFacingSouth(WorldGenLevel world, RandomSource random, int i, int j, int k) {
-        for (int j1 = j - 1 - random.nextInt(4); !isOpaqueAt(world, i, j1, k + 3) && j1 >= 0; --j1) {
+        for (int j1 = j - 1 - random.nextInt(4); !isOpaqueAt(world, i, j1, k + 3) && j1 >= world.getMinY(); --j1) {
             setBlockAndNotifyAdequately(world, i, j1, k + 3, plankBlock, plankMeta);
         }
         for (int k1 = k - 2; k1 <= k + 2; ++k1) {
             int j1;
             int j2;
             int k2 = Math.abs(k - k1);
-            for (j1 = j - 1; !isOpaqueAt(world, i - 3, j1, k1) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i - 3, j1, k1) && j1 >= world.getMinY(); --j1) {
                 j2 = j - j1;
                 if ((k2 != 2 || j2 % 4 != 1) && (k2 != 1 || j2 % 2 != 0) && (k2 != 0 || j2 % 4 != 3 || random.nextInt(3) != 0)) {
                     continue;
                 }
                 setBlockAndNotifyAdequately(world, i - 3, j1, k1, woodBlock, woodMeta);
             }
-            for (j1 = j - 1; !isOpaqueAt(world, i + 3, j1, k1) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i + 3, j1, k1) && j1 >= world.getMinY(); --j1) {
                 j2 = j - j1;
                 if ((k2 != 2 || j2 % 4 != 1) && (k2 != 1 || j2 % 2 != 0) && (k2 != 0 || j2 % 4 != 3 || random.nextInt(3) != 0)) {
                     continue;
@@ -189,21 +189,21 @@ public class LOTRRuinedRohanWatchtowerStructure extends LOTRStructureBase {
     }
 
     public boolean generateFacingWest(WorldGenLevel world, RandomSource random, int i, int j, int k) {
-        for (int j1 = j - 1 - random.nextInt(4); !isOpaqueAt(world, i - 3, j1, k) && j1 >= 0; --j1) {
+        for (int j1 = j - 1 - random.nextInt(4); !isOpaqueAt(world, i - 3, j1, k) && j1 >= world.getMinY(); --j1) {
             setBlockAndNotifyAdequately(world, i - 3, j1, k, plankBlock, plankMeta);
         }
         for (int i1 = i - 2; i1 <= i + 2; ++i1) {
             int j1;
             int j2;
             int i2 = Math.abs(i - i1);
-            for (j1 = j - 1; !isOpaqueAt(world, i1, j1, k - 3) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i1, j1, k - 3) && j1 >= world.getMinY(); --j1) {
                 j2 = j - j1;
                 if ((i2 != 2 || j2 % 4 != 1) && (i2 != 1 || j2 % 2 != 0) && (i2 != 0 || j2 % 4 != 3 || random.nextInt(3) != 0)) {
                     continue;
                 }
                 setBlockAndNotifyAdequately(world, i1, j1, k - 3, woodBlock, woodMeta);
             }
-            for (j1 = j - 1; !isOpaqueAt(world, i1, j1, k + 3) && j1 >= 0; --j1) {
+            for (j1 = j - 1; !isOpaqueAt(world, i1, j1, k + 3) && j1 >= world.getMinY(); --j1) {
                 j2 = j - j1;
                 if ((i2 != 2 || j2 % 4 != 1) && (i2 != 1 || j2 % 2 != 0) && (i2 != 0 || j2 % 4 != 3 || random.nextInt(3) != 0)) {
                     continue;

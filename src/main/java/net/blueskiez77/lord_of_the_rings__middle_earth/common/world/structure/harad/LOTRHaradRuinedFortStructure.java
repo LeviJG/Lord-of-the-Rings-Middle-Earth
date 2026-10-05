@@ -40,7 +40,7 @@ public class LOTRHaradRuinedFortStructure extends LOTRStructureBase2 {
         for (i1 = -7; i1 <= 12; ++i1) {
             for (k1 = -3; k1 <= 4; ++k1) {
                 j1 = -2;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     if (random.nextInt(4) == 0) {
                         setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.mod("brick3"), 11);
                     } else {

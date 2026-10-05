@@ -90,7 +90,7 @@ public class LOTRBreeGatehouseStructure extends LOTRBreeStructure {
             }
             setGrassToDirt(world, i1, j12 - 1, k1);
             int j2 = j12 - 1;
-            while (!isOpaque(world, i1, j2, k1) && getY(j2) >= 0) {
+            while (!isOpaque(world, i1, j2, k1) && getY(j2) >= world.getMinY()) {
                 setBlockAndMetadata(world, i1, j2, k1, LOTRLegacyBlocks.vanilla("cobblestone"), 0);
                 setGrassToDirt(world, i1, j2 - 1, k1);
                 --j2;

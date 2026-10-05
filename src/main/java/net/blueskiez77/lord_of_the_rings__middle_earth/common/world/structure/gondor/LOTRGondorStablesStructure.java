@@ -52,7 +52,7 @@ public class LOTRGondorStablesStructure extends LOTRGondorStructure {
         }
         for (i12 = -4; i12 <= 4; ++i12) {
             for (k1 = -5; k1 <= 5; ++k1) {
-                for (j12 = 0; (j12 == 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 == 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i12, j12, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j12 - 1, k1);
                 }

@@ -36,6 +36,11 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+    maven {
+        // Mod Menu, which opens the config screen (as Forge's mod list did); compile-only, not required.
+        name = "Terraformers"
+        url = "https://maven.terraformersmc.com/releases/"
+    }
 }
 
 dependencies {
@@ -45,6 +50,8 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    compileOnly "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {

@@ -34,7 +34,7 @@ public class LOTRDolGuldurAltarStructure extends LOTRStructureBase2 {
         for (i1 = -5; i1 <= 5; ++i1) {
             for (k12 = -5; k12 <= 5; ++k12) {
                 j1 = 0;
-                while (!isOpaque(world, i1, j1, k12) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k12) && getY(j1) >= world.getMinY()) {
                     placeRandomBrick(world, random, i1, j1, k12);
                     setGrassToDirt(world, i1, j1 - 1, k12);
                     --j1;

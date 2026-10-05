@@ -54,14 +54,14 @@ public class LOTRGondorStoneHouseStructure extends LOTRGondorStructure {
                     }
                     setBlockAndMetadata(world, -5, 0, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                     j1 = -1;
-                    while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                    while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                         setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                         setGrassToDirt(world, i1, j1 - 1, k1);
                         --j1;
                     }
                     continue;
                 }
-                for (j1 = 0; (j1 == 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 == 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

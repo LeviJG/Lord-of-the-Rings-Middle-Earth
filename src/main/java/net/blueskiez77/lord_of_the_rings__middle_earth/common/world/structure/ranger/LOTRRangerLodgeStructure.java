@@ -54,7 +54,7 @@ public class LOTRRangerLodgeStructure extends LOTRRangerStructure {
                 if (i2 > 4 && k2 > 3) {
                     continue;
                 }
-                for (j1 = 0; (j1 >= -3 || !isOpaque(world, i1, j1, k12)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= -3 || !isOpaque(world, i1, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k12, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j1 - 1, k12);
                 }
@@ -175,7 +175,7 @@ public class LOTRRangerLodgeStructure extends LOTRRangerStructure {
         setBlockAndMetadata(world, 4, 1, -2, plankBlock, plankMeta);
         for (int i1 = 4; i1 <= 6; ++i1) {
             for (k12 = -1; k12 <= 1; ++k12) {
-                for (int j16 = 5; (j16 >= 0 || !isOpaque(world, i1, j16, k12)) && getY(j16) >= 0; --j16) {
+                for (int j16 = 5; (j16 >= 0 || !isOpaque(world, i1, j16, k12)) && getY(j16) >= world.getMinY(); --j16) {
                     setBlockAndMetadata(world, i1, j16, k12, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j16 - 1, k12);
                 }

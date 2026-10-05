@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTravellingTrader;
@@ -27,6 +28,7 @@ public class LOTRRivendellTraderEntity extends LOTRRivendellElfEntity implements
 
     public LOTRRivendellTraderEntity(EntityType<? extends LOTRRivendellTraderEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.RIVENDELL_TRADER;
     }
 
     @Override

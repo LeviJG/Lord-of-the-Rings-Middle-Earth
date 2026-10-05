@@ -102,7 +102,7 @@ public class LOTRDaleHouseStructure extends LOTRDaleStructure {
                     fillBlock221 = floorBlock;
                     fillMeta = floorMeta;
                 }
-                for (j12 = 0; (j12 == 0 || !isOpaque(world, i17, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 == 0 || !isOpaque(world, i17, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i17, j12, k1, fillBlock221, fillMeta);
                     setGrassToDirt(world, i17, j12 - 1, k1);
                 }
@@ -111,7 +111,7 @@ public class LOTRDaleHouseStructure extends LOTRDaleStructure {
         for (int[] pos : new int[][]{{-3, -1}, {-7, -1}, {-8, 0}, {-8, 4}, {-7, 5}}) {
             i1 = pos[0];
             int k15 = pos[1];
-            for (int j14 = 7; (j14 >= 4 || !isOpaque(world, i1, j14, k15)) && getY(j14) >= 0; --j14) {
+            for (int j14 = 7; (j14 >= 4 || !isOpaque(world, i1, j14, k15)) && getY(j14) >= world.getMinY(); --j14) {
                 setBlockAndMetadata(world, i1, j14, k15, fenceBlock, fenceMeta);
             }
         }

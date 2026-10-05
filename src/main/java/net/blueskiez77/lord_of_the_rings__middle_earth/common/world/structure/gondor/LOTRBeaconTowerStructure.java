@@ -55,7 +55,7 @@ public class LOTRBeaconTowerStructure extends LOTRGondorStructure {
             for (k1 = -2; k1 <= 2; ++k1) {
                 i2 = Math.abs(i12);
                 k2 = Math.abs(k1);
-                for (j12 = 8; j12 >= doorBase || !isOpaque(world, i12, j12, k1) && getY(j12) >= 0; --j12) {
+                for (j12 = 8; j12 >= doorBase || !isOpaque(world, i12, j12, k1) && getY(j12) >= world.getMinY(); --j12) {
                     if (i2 == 2 && k2 == 2) {
                         setBlockAndMetadata(world, i12, j12, k1, pillarBlock, pillarMeta);
                     } else {
@@ -82,7 +82,7 @@ public class LOTRBeaconTowerStructure extends LOTRGondorStructure {
                 if ((i2 != 3 || k2 != 1) && (k2 != 3 || i2 != 1)) {
                     continue;
                 }
-                for (j12 = 4; j12 >= 1 || !isOpaque(world, i12, j12, k1) && getY(j12) >= 0; --j12) {
+                for (j12 = 4; j12 >= 1 || !isOpaque(world, i12, j12, k1) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i12, j12, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j12 - 1, k1);
                 }
@@ -108,7 +108,7 @@ public class LOTRBeaconTowerStructure extends LOTRGondorStructure {
         setBlockAndMetadata(world, 0, 10, 0, LOTRLegacyBlocks.mod("beacon"), 0);
         setBlockAndMetadata(world, -2, 9, 0, fenceGateBlock, 3);
         int j13 = 8;
-        while (!isOpaque(world, -3, j13, 0) && getY(j13) >= 0) {
+        while (!isOpaque(world, -3, j13, 0) && getY(j13) >= world.getMinY()) {
             setBlockAndMetadata(world, -3, j13, 0, LOTRLegacyBlocks.vanilla("ladder"), 5);
             --j13;
         }

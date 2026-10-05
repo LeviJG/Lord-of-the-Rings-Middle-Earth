@@ -27,7 +27,7 @@ public class LOTRElfLordHouseStructure extends LOTRStructureBase {
         int j1 = j - 1;
         int k1 = k - 2;
         int l = 0;
-        while (j1 >= 0 && (!(block = world.getBlockState(new BlockPos(i1, j1, k1))).isSolidRender() || block.is(BlockTags.LOGS))) {
+        while (j1 >= world.getMinY() && (!(block = world.getBlockState(new BlockPos(i1, j1, k1))).isSolidRender() || block.is(BlockTags.LOGS))) {
             int i2;
             int k2;
             int k22;
@@ -278,7 +278,7 @@ public class LOTRElfLordHouseStructure extends LOTRStructureBase {
                     if (Math.abs(i12 - i) <= 2 && Math.abs(k14 - k) <= 2) {
                         continue;
                     }
-                    for (int j13 = j; j13 >= 0; --j13) {
+                    for (int j13 = j; j13 >= world.getMinY(); --j13) {
                         if (!LOTRLegacyBlocks.vanilla("grass").matches(world.getBlockState(new BlockPos(i12, j13, k14)))) {
                             continue;
                         }
@@ -303,7 +303,7 @@ public class LOTRElfLordHouseStructure extends LOTRStructureBase {
         } else if (usingPlayer != null) {
             for (int i14 = i - 2; i14 <= i + 2; ++i14) {
                 for (k13 = k - 2; k13 <= k + 2; ++k13) {
-                    for (j1 = j; !isOpaqueAt(world, i14, j1, k13) && j1 >= 0; --j1) {
+                    for (j1 = j; !isOpaqueAt(world, i14, j1, k13) && j1 >= world.getMinY(); --j1) {
                         setBlockAndNotifyAdequately(world, i14, j1, k13, LOTRLegacyBlocks.mod("wood"), 1);
                     }
                 }

@@ -58,7 +58,7 @@ public class LOTRGondorGatehouseStructure extends LOTRGondorStructure {
             for (k1 = -3; k1 <= 3; ++k1) {
                 i22 = Math.abs(i13);
                 k2 = Math.abs(k1);
-                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i13, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i13, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i13, j12, k1, cobbleBlock, cobbleMeta);
                     setGrassToDirt(world, i13, j12 - 1, k1);
                 }
@@ -192,13 +192,13 @@ public class LOTRGondorGatehouseStructure extends LOTRGondorStructure {
             i2 = Math.abs(i12);
             if (i2 >= 4) {
                 for (k12 = -1; k12 <= 1; ++k12) {
-                    for (j13 = 4; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= 0; --j13) {
+                    for (j13 = 4; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                         setBlockAndMetadata(world, i12, j13, k12, brickBlock, brickMeta);
                         setGrassToDirt(world, i12, j13 - 1, k12);
                     }
                 }
                 k12 = -2;
-                for (j13 = 7; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= 0; --j13) {
+                for (j13 = 7; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                     setBlockAndMetadata(world, i12, j13, k12, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j13 - 1, k12);
                 }
@@ -207,7 +207,7 @@ public class LOTRGondorGatehouseStructure extends LOTRGondorStructure {
             }
             if (i2 == 5) {
                 k12 = -3;
-                for (j13 = 7; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= 0; --j13) {
+                for (j13 = 7; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                     setBlockAndMetadata(world, i12, j13, k12, pillarBlock, pillarMeta);
                     setGrassToDirt(world, i12, j13 - 1, k12);
                 }
@@ -236,7 +236,7 @@ public class LOTRGondorGatehouseStructure extends LOTRGondorStructure {
                 continue;
             }
             for (k12 = 0; k12 <= 1; ++k12) {
-                for (j13 = 4; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= 0; --j13) {
+                for (j13 = 4; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                     setBlockAndMetadata(world, i12, j13, k12, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j13 - 1, k12);
                 }
@@ -250,7 +250,7 @@ public class LOTRGondorGatehouseStructure extends LOTRGondorStructure {
                 setBlockAndMetadata(world, i142, j12, k13, brickStairBlock, 1);
                 setGrassToDirt(world, i142, j12 - 1, k13);
                 j2 = j12 - 1;
-                while (!isOpaque(world, i142, j2, k13) && getY(j2) >= 0) {
+                while (!isOpaque(world, i142, j2, k13) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i142, j2, k13, brickBlock, brickMeta);
                     setGrassToDirt(world, i142, j2 - 1, k13);
                     --j2;
@@ -260,7 +260,7 @@ public class LOTRGondorGatehouseStructure extends LOTRGondorStructure {
                 setBlockAndMetadata(world, i142, j12, k13, brickStairBlock, 0);
                 setGrassToDirt(world, i142, j12 - 1, k13);
                 j2 = j12 - 1;
-                while (!isOpaque(world, i142, j2, k13) && getY(j2) >= 0) {
+                while (!isOpaque(world, i142, j2, k13) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i142, j2, k13, brickBlock, brickMeta);
                     setGrassToDirt(world, i142, j2 - 1, k13);
                     --j2;

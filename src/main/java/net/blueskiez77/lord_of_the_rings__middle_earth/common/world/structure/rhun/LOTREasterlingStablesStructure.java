@@ -55,27 +55,27 @@ public class LOTREasterlingStablesStructure extends LOTREasterlingStructure {
                     setAir(world, i12, j1, k1);
                 }
                 if (i2 == 0 && (k1 == 0 || k1 == 12)) {
-                    for (j1 = 5; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 5; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i12, j1, k1, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i12, j1 - 1, k1);
                     }
                     continue;
                 }
                 if (i2 == 4 && k2 == 0) {
-                    for (j1 = 4; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 4; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i12, j1, k1, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i12, j1 - 1, k1);
                     }
                     continue;
                 }
                 if (i2 == 8 && k2 == 0) {
-                    for (j1 = 3; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 3; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i12, j1, k1, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i12, j1 - 1, k1);
                     }
                     continue;
                 }
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i12, j1, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j1 - 1, k1);
                 }

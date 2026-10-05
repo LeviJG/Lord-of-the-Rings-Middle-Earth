@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -34,6 +35,7 @@ public class LOTRDaleCaptainEntity extends LOTRDaleSoldierEntity implements LOTR
 
     public LOTRDaleCaptainEntity(EntityType<? extends LOTRDaleCaptainEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.DALE;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

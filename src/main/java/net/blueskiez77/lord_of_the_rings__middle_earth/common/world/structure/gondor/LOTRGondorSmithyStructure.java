@@ -48,13 +48,13 @@ public class LOTRGondorSmithyStructure extends LOTRGondorStructure {
                 boolean pillar;
                 pillar = Math.abs(i12) == 4 && (k1 == 1 || k1 == 11);
                 if (pillar) {
-                    for (j1 = 4; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 4; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i12, j1, k1, pillar2Block, pillar2Meta);
                         setGrassToDirt(world, i12, j1 - 1, k1);
                     }
                     continue;
                 }
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i12, j1, k1, rockSlabDoubleBlock, rockSlabDoubleMeta);
                     setGrassToDirt(world, i12, j1 - 1, k1);
                 }

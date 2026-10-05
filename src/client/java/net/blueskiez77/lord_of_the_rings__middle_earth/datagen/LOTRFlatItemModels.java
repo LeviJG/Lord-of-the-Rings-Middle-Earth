@@ -2,9 +2,9 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 
 import java.util.List;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
@@ -13,8 +13,12 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItem
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelTemplates;
+import net.minecraft.client.renderer.item.EmptyModel;
+import net.minecraft.client.renderer.item.properties.select.DisplayContext;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemDisplayContext;
 
 /**
  * The items drawn as a single flat sprite of their own texture, the way
@@ -135,8 +139,7 @@ final class LOTRFlatItemModels {
             LOTRDecorationBlocks.UMBAR_BANNER.asItem(),
             // LOTRFoodBlocks
             LOTRFoodBlocks.APPLE_CRUMBLE.asItem(), LOTRFoodBlocks.BANANA_CAKE.asItem(), LOTRFoodBlocks.BERRY_PIE.asItem(),
-            LOTRFoodBlocks.CHERRY_PIE.asItem(), LOTRFoodBlocks.DALISH_PASTRY.asItem(), LOTRFoodBlocks.FINE_PLATE.asItem(),
-            LOTRFoodBlocks.LEMON_CAKE.asItem(), LOTRFoodBlocks.STONEWARE_PLATE.asItem(), LOTRFoodBlocks.WOODEN_PLATE.asItem(),
+            LOTRFoodBlocks.CHERRY_PIE.asItem(), LOTRFoodBlocks.DALISH_PASTRY.asItem(), LOTRFoodBlocks.LEMON_CAKE.asItem(),
             // LOTRFoodItems
             LOTRFoodItems.LETTUCE,
             LOTRFoodItems.ALE_HORN, LOTRFoodItems.ALMOND, LOTRFoodItems.BANANA,
@@ -280,5 +283,13 @@ final class LOTRFlatItemModels {
             generators.generateFlatItem(rug, ModelTemplates.FLAT_ITEM);
         }
         HANDHELD.forEach(item -> generators.generateFlatItem(item, ModelTemplates.FLAT_HANDHELD_ITEM));
+        // The plates: flat icons, but nothing in the head slot, where LOTRPlateHeadRenderer
+        // draws the plate itself (vanilla would draw the icon on the head as well).
+        for (Item plate : List.of(LOTRFoodBlocks.FINE_PLATE.asItem(), LOTRFoodBlocks.WOODEN_PLATE.asItem(),
+                LOTRFoodBlocks.STONEWARE_PLATE.asItem())) {
+            generators.itemModelOutput.accept(plate, ItemModelUtils.select(new DisplayContext(),
+                    ItemModelUtils.plainModel(generators.createFlatItemModel(plate, ModelTemplates.FLAT_ITEM)),
+                    ItemModelUtils.when(ItemDisplayContext.HEAD, new EmptyModel.Unbaked())));
+        }
     }
 }

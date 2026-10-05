@@ -176,7 +176,7 @@ public class LOTRHobbitFarmStructure extends LOTRStructureBase2 {
                 setBlockAndMetadata(world, i15, 0, k13, LOTRLegacyBlocks.vanilla("grass"), 0);
                 setGrassToDirt(world, i15, -1, k13);
                 j1 = -1;
-                while (!isOpaque(world, i15, j1, k13) && getY(j1) >= 0) {
+                while (!isOpaque(world, i15, j1, k13) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i15, j1, k13, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i15, j1 - 1, k13);
                     --j1;

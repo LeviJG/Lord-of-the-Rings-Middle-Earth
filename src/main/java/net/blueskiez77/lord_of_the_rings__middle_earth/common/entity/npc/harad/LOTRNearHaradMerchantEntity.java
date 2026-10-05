@@ -5,6 +5,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPC
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTravellingTrader;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRHaradTurbanItem;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -22,10 +23,10 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityNearHaradMerchant: a travelling merchant of the South, with an
  * escort of Southrons, who trades with anyone Near Harad does not dislike,
- * robeless but for a turban of one of five colours.
+ * robeless but for a turban of one of five colours, half the time set with a
+ * gold ornament.
  *
- * <p>Not here: the pouch he held (pouches are not ported), and the turban's
- * gold ornament he wore half the time (tracked with the turban ornament).
+ * <p>Not here: the pouch he held (pouches are not ported).
  * NOT ported yet: the tradeNearHaradMerchant achievement (D7).
  */
 public class LOTRNearHaradMerchantEntity extends LOTRNearHaradrimEntity implements LOTRTravellingTrader {
@@ -84,7 +85,7 @@ public class LOTRNearHaradMerchantEntity extends LOTRNearHaradrimEntity implemen
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         int robeColour = ROBE_COLOURS[this.random.nextInt(ROBE_COLOURS.length)];
         ItemStack turban = turban(robeColour);
-        this.random.nextBoolean(); // setHasOrnament's roll
+        LOTRHaradTurbanItem.setHasOrnament(turban, this.random.nextBoolean());
         setItemSlot(EquipmentSlot.FEET, ItemStack.EMPTY);
         setItemSlot(EquipmentSlot.LEGS, ItemStack.EMPTY);
         setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);

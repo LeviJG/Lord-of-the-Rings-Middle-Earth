@@ -58,14 +58,14 @@ public class LOTREasterlingLargeTownHouseStructure extends LOTREasterlingStructu
                 i2 = Math.abs(i1);
                 k2 = Math.abs(k1);
                 if (k2 == 8 && i2 % 4 == 2 || i2 == 6 && k2 % 4 == 0) {
-                    for (j1 = 4; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 4; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i1, j1, k1, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i1, j1 - 1, k1);
                     }
                     continue;
                 }
                 if (i2 == 6 || k2 == 8) {
-                    for (j1 = 3; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 3; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i1, j1, k1, brickBlock, brickMeta);
                         setGrassToDirt(world, i1, j1 - 1, k1);
                     }
@@ -76,7 +76,7 @@ public class LOTREasterlingLargeTownHouseStructure extends LOTREasterlingStructu
                     setBlockAndMetadata(world, i1, 4, k1, woodBeamBlock, woodBeamMeta | 8);
                     continue;
                 }
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     if (Math.floorMod(i1, 2) == 1 && Math.floorMod(k1, 2) == 1) {
                         setBlockAndMetadata(world, i1, j1, k1, pillarRedBlock, pillarRedMeta);
                     } else {
@@ -414,7 +414,7 @@ public class LOTREasterlingLargeTownHouseStructure extends LOTREasterlingStructu
                 }
             }
             k1 = 9;
-            for (j12 = 4; (j12 >= 0 || !isOpaque(world, i14, j12, k1)) && getY(j12) >= 0; --j12) {
+            for (j12 = 4; (j12 >= 0 || !isOpaque(world, i14, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                 setBlockAndMetadata(world, i14, j12, k1, brickBlock, brickMeta);
                 setGrassToDirt(world, i14, j12 - 1, k1);
             }

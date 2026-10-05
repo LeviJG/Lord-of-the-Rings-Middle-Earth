@@ -81,7 +81,7 @@ public class LOTRTauredainWatchtowerStructure extends LOTRTauredainHouseStructur
     }
 
     public void placeWoodBase(WorldGenLevel world, int i, int k, boolean ladder) {
-        for (int j = 7; (j == 7 || !isOpaque(world, i, j, k)) && getY(j) >= 0; --j) {
+        for (int j = 7; (j == 7 || !isOpaque(world, i, j, k)) && getY(j) >= world.getMinY(); --j) {
             if (ladder) {
                 setBlockAndMetadata(world, i, j, k, woodBlock, woodMeta);
                 if (!isOpaque(world, i, j - 1, k)) {

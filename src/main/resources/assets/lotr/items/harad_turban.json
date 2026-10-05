@@ -1,12 +1,31 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "lotr:item/harad_turban",
-    "tints": [
-      {
-        "type": "minecraft:dye",
-        "default": -1
-      }
-    ]
+    "type": "minecraft:condition",
+    "property": "minecraft:has_component",
+    "component": "lotr:turban_ornament",
+    "on_true": {
+      "type": "minecraft:model",
+      "model": "lotr:item/harad_turban_ornament",
+      "tints": [
+        {
+          "type": "minecraft:dye",
+          "default": -1
+        },
+        {
+          "type": "minecraft:constant",
+          "value": -1
+        }
+      ]
+    },
+    "on_false": {
+      "type": "minecraft:model",
+      "model": "lotr:item/harad_turban",
+      "tints": [
+        {
+          "type": "minecraft:dye",
+          "default": -1
+        }
+      ]
+    }
   }
 }

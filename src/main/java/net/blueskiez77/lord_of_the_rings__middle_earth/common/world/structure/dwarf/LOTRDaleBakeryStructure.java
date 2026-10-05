@@ -60,7 +60,7 @@ public class LOTRDaleBakeryStructure extends LOTRDaleStructure {
         for (i12 = -5; i12 <= 5; ++i12) {
             for (k12 = 0; k12 <= 13; ++k12) {
                 j1 = 0;
-                while (!isOpaque(world, i12, j1, k12) && getY(j1) >= 0) {
+                while (!isOpaque(world, i12, j1, k12) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j1, k12, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j1 - 1, k12);
                     --j1;
@@ -82,7 +82,7 @@ public class LOTRDaleBakeryStructure extends LOTRDaleStructure {
                 if ((Math.abs(i12) != 6 || k12 != -1 && k12 != 14) && (Math.abs(i12) != 1 || k12 != -1)) {
                     continue;
                 }
-                for (j1 = 4; (j1 >= 1 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= 0; --j1) {
+                for (j1 = 4; (j1 >= 1 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i12, j1, k12, woodBeamBlock, woodBeamMeta);
                     setGrassToDirt(world, i12, j1 - 1, k12);
                 }
@@ -91,7 +91,7 @@ public class LOTRDaleBakeryStructure extends LOTRDaleStructure {
         for (i12 = -1; i12 <= 1; ++i12) {
             if (Math.abs(i12) == 1) {
                 k12 = -2;
-                for (j1 = 2; (j1 >= 1 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= 0; --j1) {
+                for (j1 = 2; (j1 >= 1 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i12, j1, k12, fenceBlock, fenceMeta);
                 }
                 continue;
@@ -100,7 +100,7 @@ public class LOTRDaleBakeryStructure extends LOTRDaleStructure {
                 continue;
             }
             k12 = -1;
-            for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= 0; --j1) {
+            for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                 setBlockAndMetadata(world, i12, j1, k12, floorBlock, floorMeta);
                 setGrassToDirt(world, i12, j1 - 1, k12);
             }

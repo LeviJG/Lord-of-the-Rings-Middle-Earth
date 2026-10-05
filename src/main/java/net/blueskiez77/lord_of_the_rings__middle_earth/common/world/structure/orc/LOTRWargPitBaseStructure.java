@@ -208,7 +208,7 @@ public abstract class LOTRWargPitBaseStructure extends LOTRStructureBase2 {
                 setBlockAndMetadata(world, i1, j1, k1, brickStairBlock, 2);
                 setGrassToDirt(world, i1, j1 - 1, k1);
                 j2 = j1 - 1;
-                while (!isSideSolid(world, i1, j2, k1, Direction.UP) && getY(j2) >= 0) {
+                while (!isSideSolid(world, i1, j2, k1, Direction.UP) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j2, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j2 - 1, k1);
                     --j2;
@@ -220,7 +220,7 @@ public abstract class LOTRWargPitBaseStructure extends LOTRStructureBase2 {
                 setBlockAndMetadata(world, i1, j1, k1, brickStairBlock, 2);
                 setGrassToDirt(world, i1, j1 - 1, k1);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i1, j2, k1) && getY(j2) >= 0) {
+                while (!isOpaque(world, i1, j2, k1) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j2, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j2 - 1, k1);
                     --j2;

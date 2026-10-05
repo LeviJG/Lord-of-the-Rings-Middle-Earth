@@ -42,7 +42,7 @@ public class LOTRGondorWellStructure extends LOTRGondorStructure {
             for (int k1 = -3; k1 <= 3; ++k1) {
                 int i2 = Math.abs(i1);
                 int k2 = Math.abs(k1);
-                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i1, j12, k1, rockBlock, rockMeta);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                 }

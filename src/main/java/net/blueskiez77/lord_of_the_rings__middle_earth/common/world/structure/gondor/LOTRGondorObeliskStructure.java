@@ -31,7 +31,7 @@ public class LOTRGondorObeliskStructure extends LOTRGondorStructure {
         }
         for (i1 = -3; i1 <= 3; ++i1) {
             for (k12 = -3; k12 <= 3; ++k12) {
-                for (j1 = 3; (j1 >= 0 || !isOpaque(world, i1, j1, k12)) && getY(j1) >= 0; --j1) {
+                for (j1 = 3; (j1 >= 0 || !isOpaque(world, i1, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                     placeRandomBrick(world, random, i1, j1, k12);
                     setGrassToDirt(world, i1, j1 - 1, k12);
                 }

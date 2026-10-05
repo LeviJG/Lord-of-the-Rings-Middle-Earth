@@ -74,14 +74,14 @@ public class LOTRGondorTavernStructure extends LOTRGondorStructure {
                     beam = Math.floorMod(i15, 4) == 2 ? 1 : 0;
                 }
                 if (beam != 0) {
-                    for (j12 = 4; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 4; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i15, j12, k13, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i15, j12 - 1, k13);
                     }
                     continue;
                 }
                 if (i15 == -7 || i15 == 11 || k13 == 0 || k13 == 14) {
-                    for (j12 = 0; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 0; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i15, j12, k13, rockBlock, rockMeta);
                         setGrassToDirt(world, i15, j12 - 1, k13);
                     }
@@ -90,7 +90,7 @@ public class LOTRGondorTavernStructure extends LOTRGondorStructure {
                     }
                     continue;
                 }
-                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i15, j12, k13)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i15, j12, k13, plankBlock, plankMeta);
                     setGrassToDirt(world, i15, j12 - 1, k13);
                 }
@@ -134,17 +134,17 @@ public class LOTRGondorTavernStructure extends LOTRGondorStructure {
             if (doorHeight >= 0) {
                 continue;
             }
-            for (j14 = 0; (j14 == 0 || !isOpaque(world, i14, j14, k15)) && getY(j14) >= 0; --j14) {
+            for (j14 = 0; (j14 == 0 || !isOpaque(world, i14, j14, k15)) && getY(j14) >= world.getMinY(); --j14) {
                 setBlockAndMetadata(world, i14, j14, k15, plankBlock, plankMeta);
                 setGrassToDirt(world, i14, j14 - 1, k15);
             }
             ++i14;
             j14 = 0;
-            while (!isOpaque(world, i14, j14, k15) && getY(j14) >= 0) {
+            while (!isOpaque(world, i14, j14, k15) && getY(j14) >= world.getMinY()) {
                 setBlockAndMetadata(world, i14, j14, k15, plankStairBlock, 0);
                 setGrassToDirt(world, i14, j14 - 1, k15);
                 int j2 = j14 - 1;
-                while (!isOpaque(world, i14, j2, k15) && getY(j2) >= 0) {
+                while (!isOpaque(world, i14, j2, k15) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i14, j2, k15, plankBlock, plankMeta);
                     setGrassToDirt(world, i14, j2 - 1, k15);
                     --j2;

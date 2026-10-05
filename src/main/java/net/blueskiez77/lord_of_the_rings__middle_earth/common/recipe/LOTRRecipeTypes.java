@@ -62,6 +62,9 @@ public final class LOTRRecipeTypes {
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "faction_crafting_dye"),
                 LOTRFactionDyeRecipe.SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "faction_crafting_turban_ornament"),
+                LOTRTurbanOrnamentRecipe.SERIALIZER);
+        Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "smoking_pipe_dye"),
                 LOTRSmokingPipeDyeRecipe.SERIALIZER);
         Registry.register(BuiltInRegistries.RECIPE_SERIALIZER,

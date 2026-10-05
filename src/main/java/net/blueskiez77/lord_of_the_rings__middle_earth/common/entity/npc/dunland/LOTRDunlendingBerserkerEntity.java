@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -30,6 +31,7 @@ public class LOTRDunlendingBerserkerEntity extends LOTRDunlendingWarriorEntity {
 
     public LOTRDunlendingBerserkerEntity(EntityType<? extends LOTRDunlendingBerserkerEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.DUNLENDING_BERSERKER;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

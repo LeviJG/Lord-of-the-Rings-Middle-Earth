@@ -25,7 +25,7 @@ public class LOTRTicketBoothStructure extends LOTREasterlingStructureTownStructu
     public void generateSupports(WorldGenLevel world, int i, int j, int k, LegacyBlock stairBlock, int stairMeta, LegacyBlock woodBlock, int woodMeta) {
         setBlockAndMetadata(world, i, j, k, stairBlock, stairMeta);
         int j1 = -1;
-        while (!isOpaque(world, i, j + j1, k) && getY(j + j1) >= 0) {
+        while (!isOpaque(world, i, j + j1, k) && getY(j + j1) >= world.getMinY()) {
             LegacyBlock block = LOTRLegacyBlocks.vanilla("fence");
             int meta = 0;
             BlockState below = world.getBlockState(new BlockPos(i, j + j1, k));
@@ -60,7 +60,7 @@ public class LOTRTicketBoothStructure extends LOTREasterlingStructureTownStructu
                 }
                 setBlockAndMetadata(world, i12, 0, k1, LOTRLegacyBlocks.vanilla("cobblestone"), 0);
                 j13 = -1;
-                while (!isOpaque(world, i12, j13, k1) && getY(j13) >= 0) {
+                while (!isOpaque(world, i12, j13, k1) && getY(j13) >= world.getMinY()) {
                     setBiomeFiller(world, i12, j13, k1);
                     setGrassToDirt(world, i12, j13 - 1, k1);
                     --j13;

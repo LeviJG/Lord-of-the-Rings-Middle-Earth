@@ -71,34 +71,34 @@ public class LOTRAngmarTowerStructure extends LOTRStructureBase {
             }
         }
         for (k1 = k - 2; k1 <= k + 2; ++k1) {
-            for (j12 = j; !isOpaqueAt(world, i - 6, j12, k1) && j12 >= 0; --j12) {
+            for (j12 = j; !isOpaqueAt(world, i - 6, j12, k1) && j12 >= world.getMinY(); --j12) {
                 setBlockAndNotifyAdequately(world, i - 6, j12, k1, LOTRLegacyBlocks.mod("brick2"), 0);
                 setGrassToDirt(world, i - 6, j12 - 1, k1);
             }
-            for (j12 = j; !isOpaqueAt(world, i + 6, j12, k1) && j12 >= 0; --j12) {
+            for (j12 = j; !isOpaqueAt(world, i + 6, j12, k1) && j12 >= world.getMinY(); --j12) {
                 setBlockAndNotifyAdequately(world, i + 6, j12, k1, LOTRLegacyBlocks.mod("brick2"), 0);
                 setGrassToDirt(world, i + 6, j12 - 1, k1);
             }
         }
         for (k1 = k - 4; k1 <= k + 4; ++k1) {
-            for (j12 = j; !isOpaqueAt(world, i - 5, j12, k1) && j12 >= 0; --j12) {
+            for (j12 = j; !isOpaqueAt(world, i - 5, j12, k1) && j12 >= world.getMinY(); --j12) {
                 setBlockAndNotifyAdequately(world, i - 5, j12, k1, LOTRLegacyBlocks.mod("brick2"), 0);
                 setGrassToDirt(world, i - 5, j12 - 1, k1);
             }
-            for (j12 = j; !isOpaqueAt(world, i + 5, j12, k1) && j12 >= 0; --j12) {
+            for (j12 = j; !isOpaqueAt(world, i + 5, j12, k1) && j12 >= world.getMinY(); --j12) {
                 setBlockAndNotifyAdequately(world, i + 5, j12, k1, LOTRLegacyBlocks.mod("brick2"), 0);
                 setGrassToDirt(world, i + 5, j12 - 1, k1);
             }
         }
         for (k1 = k - 5; k1 <= k + 5; ++k1) {
             for (i1 = i - 4; i1 <= i - 3; ++i1) {
-                for (j1 = j; !isOpaqueAt(world, i1, j1, k1) && j1 >= 0; --j1) {
+                for (j1 = j; !isOpaqueAt(world, i1, j1, k1) && j1 >= world.getMinY(); --j1) {
                     setBlockAndNotifyAdequately(world, i1, j1, k1, LOTRLegacyBlocks.mod("brick2"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }
             }
             for (i1 = i + 3; i1 <= i + 4; ++i1) {
-                for (j1 = j; !isOpaqueAt(world, i1, j1, k1) && j1 >= 0; --j1) {
+                for (j1 = j; !isOpaqueAt(world, i1, j1, k1) && j1 >= world.getMinY(); --j1) {
                     setBlockAndNotifyAdequately(world, i1, j1, k1, LOTRLegacyBlocks.mod("brick2"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }
@@ -106,7 +106,7 @@ public class LOTRAngmarTowerStructure extends LOTRStructureBase {
         }
         for (k1 = k - 6; k1 <= k + 6; ++k1) {
             for (i1 = i - 2; i1 <= i + 2; ++i1) {
-                for (j1 = j; !isOpaqueAt(world, i1, j1, k1) && j1 >= 0; --j1) {
+                for (j1 = j; !isOpaqueAt(world, i1, j1, k1) && j1 >= world.getMinY(); --j1) {
                     setBlockAndNotifyAdequately(world, i1, j1, k1, LOTRLegacyBlocks.mod("brick2"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

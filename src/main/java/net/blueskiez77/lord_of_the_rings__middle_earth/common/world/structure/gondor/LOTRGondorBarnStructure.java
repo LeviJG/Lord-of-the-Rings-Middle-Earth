@@ -70,7 +70,7 @@ public class LOTRGondorBarnStructure extends LOTRGondorStructure {
             for (k1 = -2; k1 <= 15; ++k1) {
                 setBlockAndMetadata(world, i14, 0, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                 j1 = -1;
-                while (!isOpaque(world, i14, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i14, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i14, j1, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i14, j1 - 1, k1);
                     --j1;

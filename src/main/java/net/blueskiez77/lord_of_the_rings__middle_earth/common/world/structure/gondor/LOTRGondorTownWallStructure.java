@@ -57,7 +57,7 @@ public class LOTRGondorTownWallStructure extends LOTRGondorStructure {
             int j1;
             int k1 = 0;
             findSurface(world, i1, k1);
-            for (j1 = 1; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+            for (j1 = 1; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                 setBlockAndMetadata(world, i1, j1, k1, rockSlabDoubleBlock, rockSlabDoubleMeta);
                 setGrassToDirt(world, i1, j1 - 1, k1);
             }
@@ -88,7 +88,7 @@ public class LOTRGondorTownWallStructure extends LOTRGondorStructure {
                 continue;
             }
             for (k1 = 1; k1 <= 1; ++k1) {
-                for (int j12 = 4; (j12 >= 0 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (int j12 = 4; (j12 >= 0 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i1, j12, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                 }

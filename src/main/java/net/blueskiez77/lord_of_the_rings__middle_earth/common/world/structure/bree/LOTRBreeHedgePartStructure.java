@@ -23,7 +23,7 @@ public class LOTRBreeHedgePartStructure extends LOTRBreeStructure {
             return false;
         }
         int j12 = 0;
-        while (!isOpaque(world, 0, j12, 0) && getY(j12) >= 0) {
+        while (!isOpaque(world, 0, j12, 0) && getY(j12) >= world.getMinY()) {
             setBlockAndMetadata(world, 0, j12, 0, LOTRLegacyBlocks.mod("dirtPath"), 0);
             setGrassToDirt(world, 0, j12 - 1, 0);
             --j12;

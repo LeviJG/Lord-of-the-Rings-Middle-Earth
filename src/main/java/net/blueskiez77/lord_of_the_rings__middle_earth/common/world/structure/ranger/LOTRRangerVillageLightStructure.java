@@ -20,7 +20,7 @@ public class LOTRRangerVillageLightStructure extends LOTRRangerStructure {
         if (restrictions && !isSurface(world, i1 = 0, getTopBlock(world, i1, k1 = 0) - 1, k1)) {
             return false;
         }
-        for (j1 = 0; (j1 >= 0 || !isOpaque(world, 0, j1, 0)) && getY(j1) >= 0; --j1) {
+        for (j1 = 0; (j1 >= 0 || !isOpaque(world, 0, j1, 0)) && getY(j1) >= world.getMinY(); --j1) {
             setBlockAndMetadata(world, 0, j1, 0, logBlock, logMeta);
             setGrassToDirt(world, 0, j1 - 1, 0);
         }

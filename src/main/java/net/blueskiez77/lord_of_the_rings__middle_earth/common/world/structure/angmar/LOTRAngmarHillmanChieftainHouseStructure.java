@@ -79,7 +79,7 @@ public class LOTRAngmarHillmanChieftainHouseStructure extends LOTRStructureBase2
                 for (j12 = 1; j12 <= 10; ++j12) {
                     setAir(world, i12, j12, k1);
                 }
-                for (j12 = 0; (j12 == 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 == 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     if (getBlockState(world, i12, j12 + 1, k1).isSolidRender()) {
                         setBlockAndMetadata(world, i12, j12, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     } else {

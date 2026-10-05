@@ -1,9 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.datagen;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnItems;
 import java.util.ArrayList;
-import net.minecraft.client.renderer.block.dispatch.Variant;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,37 +10,44 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRCon
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRGateBorders;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBerryBushBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRPottedPlants;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFallenLeavesBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRPillarBlock;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 
 import net.fabricmc.fabric.api.client.datagen.v1.provider.FabricModelProvider;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRPillarBlock;
-import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
-import net.minecraft.client.data.models.blockstates.PropertyDispatch;
 import net.minecraft.client.color.item.GrassColorSource;
 import net.minecraft.client.data.models.BlockModelGenerators;
-import net.minecraft.client.data.models.MultiVariant;
 import net.minecraft.client.data.models.ItemModelGenerators;
+import net.minecraft.client.data.models.MultiVariant;
+import net.minecraft.client.data.models.blockstates.MultiVariantGenerator;
+import net.minecraft.client.data.models.blockstates.PropertyDispatch;
+import net.minecraft.client.data.models.model.ItemModelUtils;
 import net.minecraft.client.data.models.model.ModelLocationUtils;
 import net.minecraft.client.data.models.model.ModelTemplate;
 import net.minecraft.client.data.models.model.ModelTemplates;
 import net.minecraft.client.data.models.model.TextureMapping;
 import net.minecraft.client.data.models.model.TextureSlot;
 import net.minecraft.client.data.models.model.TexturedModel;
+import net.minecraft.client.renderer.block.dispatch.Variant;
 import net.minecraft.client.resources.model.sprite.Material;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.FoliageColor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFallenLeavesBlock;
-import net.minecraft.client.data.models.model.ItemModelUtils;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.level.FoliageColor;
 
 // Blockstates, block models, item models. Everything is driven off the family lists in LOTRBlocks, so a block only ever needs registering in one place. Which generators emit the ITEM model too (learned the hard way): createTrivialCube            -> NO  (needs registerSimpleItemModel) createNonTemplateModelBlock  -> NO  (needs registerSimpleFlatItemModel) createCrossBlockWithDefaultItem -> YES (the "WithDefaultItem" suffix) createTrapdoor               -> YES createDoor                   -> YES (points at assets/<ns>/textures/item/<n>.png) Adding a redundant item-model call throws "IllegalStateException: Duplicate model definition".
 public class LOTRModelProvider extends FabricModelProvider {
@@ -173,8 +177,27 @@ public class LOTRModelProvider extends FabricModelProvider {
         super(output);
     }
 
+    /**
+     * LOTRReplacedMethods.BlockRendering's natural-block table: the original
+     * drew these ground blocks with their textures turned at random, block by
+     * block, so the ground does not tile -- as vanilla's grass, dirt and sand
+     * are now drawn through four rotated variants. Its slabs, stairs and walls
+     * turned only their top and bottom faces, which an oriented model cannot
+     * do; they stay as they are.
+     */
+    private static final java.util.Set<Block> NATURAL_BLOCKS = java.util.Set.of(LOTRBuildingBlocks.MUD,
+            LOTRBuildingBlocks.BARREN_JUNGLE_MUD, LOTRBuildingBlocks.MUD_GRASS, LOTRBuildingBlocks.MORDOR_DIRT,
+            LOTRDecorationBlocks.MORDOR_MOSS, LOTRBuildingBlocks.MORDOR_GRAVEL, LOTRBuildingBlocks.WHITE_SAND,
+            LOTRBuildingBlocks.WHITE_SANDSTONE, LOTRBuildingBlocks.DIRT_PATH_MUD, LOTRBuildingBlocks.MORDOR_ROCK);
+
     @Override
     public void generateBlockStateModels(BlockModelGenerators generators) {
+        java.util.function.Consumer<net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator> output =
+                generators.blockStateOutput;
+        generators.blockStateOutput = definition -> output.accept(NATURAL_BLOCKS.contains(definition.block())
+                ? MultiVariantGenerator.dispatch(definition.block(), BlockModelGenerators.createRotatedVariants(
+                        BlockModelGenerators.plainModel(ModelLocationUtils.getModelLocation(definition.block()))))
+                : definition);
         // Forges: furnace-shaped. _front when idle, _active when lit, with
         // _side and _top around it.
         // Vanilla's own furnace generator: handles FACING rotation, the LIT
@@ -541,6 +564,25 @@ public class LOTRModelProvider extends FabricModelProvider {
         // Bird cages and the butterfly jar are hand-written under src/main/resources: renderBirdCage
         // builds them out of thin walls with every face drawn, plus the post
         // and finial on the lid, none of which a cube template can express.
+        // Their items are a composite of that model and lotr:animal_jar, which
+        // draws the creature inside (LOTRAnimalJarSpecialRenderer).
+
+        // The mod's plants in a pot: vanilla's potted cross with the plant's own
+        // sprite. The clovers (their petal model raised into the pot, as
+        // LOTRRenderBlocks.renderClover drew them a quarter block up) and the
+        // Shire heather (a smaller cross, 0.6 to the others' 0.75) are
+        // hand-written under src/main/resources.
+        LOTRPottedPlants.POTTED.forEach((plant, potted) -> {
+            Identifier model;
+            if (plant == LOTRDecorationBlocks.CLOVER || plant == LOTRDecorationBlocks.FOUR_LEAF_CLOVER
+                    || plant == LOTRDecorationBlocks.SHIRE_HEATHER) {
+                model = ModelLocationUtils.getModelLocation(potted);
+            } else {
+                model = ModelTemplates.FLOWER_POT_CROSS.create(potted, TextureMapping.plant(plant), generators.modelOutput);
+            }
+            generators.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(potted,
+                    BlockModelGenerators.plainVariant(model)));
+        });
 
         LOTRBlocks.ALL_BUSHES.forEach(b -> {
             Identifier ripe = ModelTemplates.CUBE_ALL.create(b,
@@ -717,6 +759,16 @@ public class LOTRModelProvider extends FabricModelProvider {
         LOTRFlatItemModels.generate(generators);
         LOTRBlocks.ALL_FALLEN_LEAVES.forEach(block -> fallenLeavesItem(generators, block));
         spawnEggs(generators);
+        brandingIron(generators);
+    }
+
+    /** LOTRItemBrandingIron's two icons: brandingIron, and brandingIron_hot while it is hot. */
+    private static void brandingIron(ItemModelGenerators generators) {
+        Item item = LOTRToolItems.BRANDING_IRON;
+        Identifier cool = generators.createFlatItemModel(item, ModelTemplates.FLAT_HANDHELD_ITEM);
+        Identifier hot = generators.createFlatItemModel(item, "_hot", ModelTemplates.FLAT_HANDHELD_ITEM);
+        generators.generateBooleanDispatch(item, ItemModelUtils.hasComponent(LOTRDataComponents.HOT_IRON),
+                ItemModelUtils.plainModel(hot), ItemModelUtils.plainModel(cool));
     }
 
     /**

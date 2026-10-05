@@ -55,7 +55,7 @@ public class LOTRRohanStablesStructure extends LOTRRohanStructure {
                 i2 = Math.abs(i13);
                 k2 = Math.floorMod(k1, 4);
                 if (k1 <= 12) {
-                    for (j1 = 0; (j1 >= 0 || !isOpaque(world, i13, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 0; (j1 >= 0 || !isOpaque(world, i13, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i13, j1, k1, brickBlock, brickMeta);
                         setGrassToDirt(world, i13, j1 - 1, k1);
                     }
@@ -65,7 +65,7 @@ public class LOTRRohanStablesStructure extends LOTRRohanStructure {
                 } else {
                     setBlockAndMetadata(world, i13, 0, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                     j1 = -1;
-                    while (!isOpaque(world, i13, j1, k1) && getY(j1) >= 0) {
+                    while (!isOpaque(world, i13, j1, k1) && getY(j1) >= world.getMinY()) {
                         int randomGround = random.nextInt(4);
                         switch (randomGround) {
                             case 0:

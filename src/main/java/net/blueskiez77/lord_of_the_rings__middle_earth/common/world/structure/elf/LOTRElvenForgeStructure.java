@@ -294,7 +294,7 @@ public abstract class LOTRElvenForgeStructure extends LOTRStructureBase2 {
 
     public void layFoundation(WorldGenLevel world, int i, int k, RandomSource random) {
         int j = 0;
-        while (!isOpaque(world, i, j, k) && getY(j) >= 0) {
+        while (!isOpaque(world, i, j, k) && getY(j) >= world.getMinY()) {
             placeBrick(world, i, j, k, random);
             setGrassToDirt(world, i, j - 1, k);
             --j;

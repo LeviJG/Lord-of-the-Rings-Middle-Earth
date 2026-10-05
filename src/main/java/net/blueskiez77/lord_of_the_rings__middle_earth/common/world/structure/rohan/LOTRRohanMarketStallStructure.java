@@ -51,7 +51,7 @@ public abstract class LOTRRohanMarketStallStructure extends LOTRRohanStructure {
                 int j1;
                 int i2 = Math.abs(i1);
                 int k2 = Math.abs(k1);
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.mod("dirtPath"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

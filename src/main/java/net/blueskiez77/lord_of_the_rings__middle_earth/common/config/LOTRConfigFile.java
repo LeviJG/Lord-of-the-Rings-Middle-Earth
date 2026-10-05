@@ -172,6 +172,25 @@ public final class LOTRConfigFile {
         this.changed = true;
     }
 
+    /** An option as the file has it, for the config screen: its type letter ('B' or 'I'), value and comment. */
+    public record OptionView(String category, String name, char type, String value, @Nullable String comment) {
+    }
+
+    /** The categories, in the file's order. */
+    public java.util.List<String> categoryNames() {
+        return java.util.List.copyOf(this.categories.keySet());
+    }
+
+    /** A category's options, in the file's order. */
+    public java.util.List<OptionView> options(String category) {
+        java.util.List<OptionView> options = new java.util.ArrayList<>();
+        for (Map.Entry<String, Property> e : category(category).entrySet()) {
+            Property prop = e.getValue();
+            options.add(new OptionView(category, e.getKey(), prop.type, prop.value, prop.comment));
+        }
+        return options;
+    }
+
     public boolean hasChanged() {
         return this.changed;
     }

@@ -1,51 +1,54 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.render;
 
+import com.mojang.blaze3d.vertex.PoseStack;
+
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRArnorHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBlackNumenoreanHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBlackUrukHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRDyedHeadModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSwanChestplateModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBodyArmorModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRDorwinionElvenHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRDyedHeadModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTREasterlingHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGulfenChestplateModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRHarnennorChestplateModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRHarnennorHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSouthronChampionHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRUmbaricHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGaladhrimHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGemsbokHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGoldenTaurethrimHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGondolinHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGundabadUrukHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRRohirricMarshalHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRTaurethrimChieftainHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGondorHelmetModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRLindonHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGondorWingedHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGulfenChestplateModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRGundabadUrukHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRHarnennorChestplateModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRHarnennorHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRLindonHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRMorgulHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRMorwaithChieftainHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRRohirricMarshalHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSouthronChampionHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSwanChestplateModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSwanHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRTaurethrimChieftainHelmetModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRUmbaricHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRUrukHelmetModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRHaradTurbanItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRLeatherHatItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.entity.state.HumanoidRenderState;
+import net.minecraft.client.renderer.item.ItemStackRenderState;
 import net.minecraft.client.renderer.rendertype.RenderTypes;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.Identifier;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRLeatherHatItem;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.item.ItemStackRenderState;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 
@@ -147,9 +150,13 @@ public final class LOTRArmorRenderers {
 
         LOTRRohirricMarshalHelmetModel marshal = new LOTRRohirricMarshalHelmetModel(
                 LOTRRohirricMarshalHelmetModel.createLayer().bakeRoot());
-        register(LOTRCombatItems.ROHIRRIC_MARSHAL_HELMET, "rohirric_marshal_helmet",
-                (poseStack, consumer, light) ->
-                        marshal.render(poseStack, consumer, light, OverlayTexture.NO_OVERLAY));
+        Identifier marshalPath = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE,
+                "textures/entity/equipment/humanoid/rohirric_marshal_helmet.png");
+        ArmorRenderer.register((poseStack, collector, stack, state, slot, light, contextModel) -> {
+            marshal.setupPlume(state.walkAnimationPos, state.walkAnimationSpeed);
+            renderHead(poseStack, collector, light, contextModel,
+                    (local, consumer, l) -> marshal.render(local, consumer, l, OverlayTexture.NO_OVERLAY), marshalPath);
+        }, LOTRCombatItems.ROHIRRIC_MARSHAL_HELMET);
 
         LOTRGoldenTaurethrimHelmetModel golden = new LOTRGoldenTaurethrimHelmetModel(
                 LOTRGoldenTaurethrimHelmetModel.createLayer().bakeRoot());
@@ -230,8 +237,7 @@ public final class LOTRArmorRenderers {
         registerLeatherHat(new LOTRDyedHeadModel(LOTRDyedHeadModel.createLeatherHat().bakeRoot()));
         registerDyed(LOTRMiscItems.PARTY_HAT, "party_hat",
                 new LOTRDyedHeadModel(LOTRDyedHeadModel.createPartyHat().bakeRoot()), 0xFFFFFF);
-        registerDyed(LOTRMiscItems.HARAD_TURBAN, "harad_turban",
-                new LOTRDyedHeadModel(LOTRDyedHeadModel.createTurban().bakeRoot()), 0xFFFFFF);
+        registerTurban(new LOTRDyedHeadModel(LOTRDyedHeadModel.createTurban().bakeRoot()));
 
         // bodyDolAmroth: LOTRModelSwanChestplate, on its "wingedBody" sheet.
         LOTRSwanChestplateModel swanBody = new LOTRSwanChestplateModel(
@@ -239,7 +245,18 @@ public final class LOTRArmorRenderers {
         Identifier swanTexture = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE,
                 "textures/entity/equipment/humanoid/dol_amroth_winged_body.png");
         ArmorRenderer.register((poseStack, collector, stack, state, slot, light, contextModel) -> {
-            swanBody.setupWings(state.ageInTicks, state.walkAnimationPos, state.walkAnimationSpeed);
+            // A rider's wings beat to its mount's stride, half again as hard and twice as fast.
+            float walkPos = state.walkAnimationPos;
+            float walkSpeed = state.walkAnimationSpeed;
+            Minecraft minecraft = Minecraft.getInstance();
+            Entity wearer = minecraft.level == null ? null
+                    : minecraft.level.getEntity(((LOTROverheadHolder) state).lotr$getEntityId());
+            if (wearer != null && wearer.getVehicle() instanceof LivingEntity mount) {
+                float partialTick = minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false);
+                walkSpeed = mount.walkAnimation.speed(partialTick) * 1.5f;
+                walkPos = mount.walkAnimation.position(partialTick) * 2.0f;
+            }
+            swanBody.setupWings(state.ageInTicks, walkPos, walkSpeed);
             renderPart(poseStack, collector, light, contextModel.body, swanBody.body(), swanTexture);
             renderPart(poseStack, collector, light, contextModel.rightArm, swanBody.rightArm(), swanTexture);
             renderPart(poseStack, collector, light, contextModel.leftArm, swanBody.leftArm(), swanTexture);
@@ -283,6 +300,24 @@ public final class LOTRArmorRenderers {
                     part.render(local, consumer, light, OverlayTexture.NO_OVERLAY);
                 });
         poseStack.popPose();
+    }
+
+    /** The turban: dyed as the robes, and its gold ornament (if set) undyed over it. */
+    private static void registerTurban(LOTRDyedHeadModel model) {
+        Identifier path = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE,
+                "textures/entity/equipment/humanoid/harad_turban.png");
+        ArmorRenderer.register((poseStack, collector, stack, state, slot, light, contextModel) -> {
+            net.minecraft.world.item.component.DyedItemColor dyed =
+                    stack.get(net.minecraft.core.component.DataComponents.DYED_COLOR);
+            int color = 0xFF000000 | (dyed != null ? dyed.rgb() : 0xFFFFFF);
+            boolean ornament = LOTRHaradTurbanItem.hasOrnament(stack);
+            renderHead(poseStack, collector, light, contextModel, (local, consumer, l) -> {
+                model.render(local, consumer, l, OverlayTexture.NO_OVERLAY, color);
+                if (ornament) {
+                    model.renderOrnament(local, consumer, l, OverlayTexture.NO_OVERLAY);
+                }
+            }, path);
+        }, LOTRMiscItems.HARAD_TURBAN);
     }
 
     /** A dyed head piece: the stack's dye, or the item's own undyed colour. */

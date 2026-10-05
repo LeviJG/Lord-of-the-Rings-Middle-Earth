@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -29,9 +30,8 @@ import org.jspecify.annotations.Nullable;
  * struck and as much again on anything within six blocks, falling off by half
  * a heart a block.
  *
- * <p>isEntityVulnerable spared friends of the High Elves: the port keeps the
- * player half of that (anyone whose High-elven alignment is negative), and
- * since it has no NPCs, everything else living is fair game.
+ * <p>isEntityVulnerable: it spares friends of the High Elves -- a player by
+ * their High-elven alignment, anything else by its NPC faction.
  */
 public class LOTRGandalfFireballEntity extends ThrowableProjectile {
     private static final int MAX_AGE = 200;
@@ -92,7 +92,7 @@ public class LOTRGandalfFireballEntity extends ThrowableProjectile {
         if (entity instanceof Player player) {
             return LOTRPlayerAlignments.getAlignment(player, LOTRFaction.HIGH_ELF) < 0.0f;
         }
-        return true;
+        return !LOTRFaction.HIGH_ELF.isGoodRelation(LOTRNearestAttackableTargetGoal.factionOf(entity));
     }
 
     private void explode(ServerLevel server, @Nullable Entity struck) {

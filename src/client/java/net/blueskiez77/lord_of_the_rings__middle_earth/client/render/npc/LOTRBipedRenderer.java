@@ -12,11 +12,14 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.HumanoidMobRenderer;
 import net.minecraft.client.renderer.state.level.CameraRenderState;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUseAnimation;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTRRenderBiped: an NPC drawn at 15/16 of its size, as a player is, with its
@@ -26,10 +29,13 @@ import net.minecraft.world.item.ItemUseAnimation;
  * <p>Only a block or a mob head is drawn on its head, as renderEquippedItems
  * did; anything else there (a marriage ring) is left to the renderer.
  *
- * <p>NOT ported yet: capes and shields (with the NPCs that carry them), the
- * hired unit's icon and health bar (with hiring), the mini-quest book and
- * offer icons (with mini-quests), and the special armour models
- * (LOTRArmorModels) on NPCs.
+ * <p>Its cape, if it wears one, hangs from its shoulders (renderNPCCape). The
+ * hired unit's icon and health bar are drawn over its head with the other
+ * overhead marks (LOTROverheadRendering).
+ *
+ * <p>NOT ported yet: shields (with the alignment shields, D7), the
+ * mini-quest book and offer icons (with mini-quests, D14), and the special
+ * armour models (LOTRArmorModels) on NPCs.
  */
 public abstract class LOTRBipedRenderer<T extends LOTRNPCEntity, S extends LOTRNPCRenderState, M extends LOTRBipedModel<S>>
         extends HumanoidMobRenderer<T, S, M> {
@@ -38,6 +44,12 @@ public abstract class LOTRBipedRenderer<T extends LOTRNPCEntity, S extends LOTRN
 
     protected LOTRBipedRenderer(EntityRendererProvider.Context context, M model, M babyModel, float shadow) {
         super(context, model, babyModel, shadow);
+        addLayer(new LOTRNPCCapeLayer<>(this));
+    }
+
+    /** getCapeToRender: the NPC's own cape; a renderer may give its kind one. */
+    protected @Nullable Identifier getCapeToRender(T npc) {
+        return npc.npcCape;
     }
 
     @Override
@@ -76,6 +88,7 @@ public abstract class LOTRBipedRenderer<T extends LOTRNPCEntity, S extends LOTRN
         if (!(npc.getItemBySlot(EquipmentSlot.HEAD).getItem() instanceof BlockItem)) {
             state.headItem.clear();
         }
+        state.cape = getCapeToRender(npc);
         state.speech = LOTRNPCSpeechRendering.extract(npc, getFont());
     }
 

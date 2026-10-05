@@ -27,7 +27,7 @@ public class LOTRRangerWatchtowerStructure extends LOTRStructureBase2 {
 
     public void generateSupportPillar(WorldGenLevel world, int i, int j, int k) {
         int j1 = j;
-        while (!isOpaque(world, i, j1, k) && getY(j1) >= 0) {
+        while (!isOpaque(world, i, j1, k) && getY(j1) >= world.getMinY()) {
             setBlockAndMetadata(world, i, j1, k, woodBlock, woodMeta);
             setGrassToDirt(world, i, j1 - 1, i);
             --j1;

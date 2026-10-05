@@ -45,7 +45,7 @@ public class LOTREasterlingGardenStructure extends LOTREasterlingStructure {
             for (int k1 = -10; k1 <= 10; ++k1) {
                 int i2 = Math.abs(i1);
                 int k2 = Math.abs(k1);
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     if (j1 == 0) {
                         setBlockAndMetadata(world, i1, 0, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                     } else {

@@ -1,55 +1,46 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateFallingInfo;
-import net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSwordCommandMarkerRenderer;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRGollumScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCRespawnerScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRRespawnerPayloads;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRCompassRenderer;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTREnvironmentOverlayHud;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRAlignmentHud;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRAlignmentBonusRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRAnvilScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBarrelScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBeaconScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBrandingIronScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCarvedSignEditScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCoinExchangeScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCraftingScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRDaleCrackerScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRFactionsScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRAlignmentTicker;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMessageScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCMountInventoryScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRSquadronItemScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRForgeScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRGollumScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredFarmerInventoryScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredFarmerScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredInteractScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredWarriorInventoryScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredWarriorScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredTask;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredPayloads;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnitTradeInteractScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnitTradeScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCoinExchangeScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRTradeInteractScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRTradeScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRTradeMenu;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRTradePayloads;
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRAnvilScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBarrelScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBeaconScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCarvedSignEditScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCraftingScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRDaleCrackerScreen;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRForgeScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHobbitOvenScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHornSelectScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMessageScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMillstoneScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCMountInventoryScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCRespawnerScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRSquadronItemScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRTradeInteractScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRTradeScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnitTradeInteractScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnitTradeScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRUnsmelteryScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRAlignmentHud;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRAlignmentTicker;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRCompassRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTREnvironmentOverlayHud;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRSpiderClimbHud;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.particle.LOTRParticleProviders;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRAlignmentBonusRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRAnimalJarRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRAnimalJarSpecialRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRArmorRenderers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRAurochsRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRBannerRenderer;
@@ -82,6 +73,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMountRe
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMugRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRNPCRespawnerRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateEntityRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateFallingInfo;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateHeadRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPoisonedArrowRenderer;
@@ -89,9 +81,11 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRRandomS
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRRugRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRScorpionRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSmokeRingRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSnowyStoneModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSpiderRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRStoneTrollRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSwanRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSwordCommandMarkerRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRTermiteRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrowingAxeRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrownRockRenderer;
@@ -103,6 +97,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRWargRen
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRWeaponRackRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.ctm.LOTRConnectedBorderPlugin;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRAngmarHillmanRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRBanditRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRBarrowWightRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRBreeManRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRDaleManRenderer;
@@ -118,42 +113,55 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRGol
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRGondorManRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRHalfTrollRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRHaradSlaveRenderer;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRNurnSlaveRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRHobbitRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRHuornRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRMallornEntRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRMarshWraithRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRMoredainRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRNearHaradrimRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRNurnSlaveRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTROrcRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRRohirrimRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRSarumanRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRScrapTraderRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRSkeletalWraithRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRSpeechClient;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRTauredainRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc.LOTRTrollRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBeaconBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRPottedPlants;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBeaconBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredTask;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRTradeMenu;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRBrandingIronItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCommandHornItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPoisonedDrinks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTooltipItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTROpenSignEditorPayload;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRRespawnerPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRTradePayloads;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockColorRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.color.block.BlockTintSources;
@@ -239,6 +247,10 @@ public class LOTRModClient implements ClientModInitializer {
         // wheat and thistle overlays stay their own colour.
         BlockColorRegistry.register(List.of(BlockTintSources.grass()),
                 LOTRBlocks.GRASS_TINTED.toArray(new Block[0]));
+        // A potted clover is tinted as the clover is (LOTRRenderBlocks.renderFlowerPot took its colour).
+        BlockColorRegistry.register(List.of(BlockTintSources.grass()),
+                LOTRPottedPlants.POTTED.get(LOTRDecorationBlocks.CLOVER),
+                LOTRPottedPlants.POTTED.get(LOTRDecorationBlocks.FOUR_LEAF_CLOVER));
 
         // Block entity renderers, for the two things that cannot be baked into
         // a static model. The ithildin engraving's brightness depends on the
@@ -354,6 +366,7 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.DEER, LOTRDeerRenderer::new);
         EntityRenderers.register(LOTREntities.TRADER_RESPAWN, LOTRTraderRespawnRenderer::new);
         EntityRenderers.register(LOTREntities.NPC_RESPAWNER, LOTRNPCRespawnerRenderer::new);
+        LOTRBrandingIronItem.openScreen = () -> Minecraft.getInstance().setScreenAndShow(new LOTRBrandingIronScreen());
         LOTRNPCRespawnerEntity.clientCreative = () -> Minecraft.getInstance().player != null
                 && Minecraft.getInstance().player.isCreative();
         EntityRenderers.register(LOTREntities.HOBBIT, LOTRHobbitRenderer::new);
@@ -414,25 +427,25 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.GALADHRIM_TRADER, LOTRElfRenderer.cloaked("galadhrim_trader_cloak"));
         EntityRenderers.register(LOTREntities.GALADHRIM_LORD, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.GALADHRIM_BANNER_BEARER, LOTRElfRenderer::new);
-        EntityRenderers.register(LOTREntities.GALADHRIM_SMITH, LOTRElfRenderer.cloaked("galadhrim_smith_cloak"));
+        EntityRenderers.register(LOTREntities.GALADHRIM_SMITH, LOTRElfRenderer.cloaked("galadhrim_smith_cloak", "galadhrim_smith_cape"));
         EntityRenderers.register(LOTREntities.GALADHRIM_WARDEN, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.HIGH_ELF, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.HIGH_ELF_WARRIOR, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.HIGH_ELF_LORD, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.HIGH_ELF_BANNER_BEARER, LOTRElfRenderer::new);
-        EntityRenderers.register(LOTREntities.HIGH_ELF_SMITH, LOTRElfRenderer.cloaked("high_elf_smith_cloak"));
+        EntityRenderers.register(LOTREntities.HIGH_ELF_SMITH, LOTRElfRenderer.cloaked("high_elf_smith_cloak", "high_elf_smith_cape"));
         EntityRenderers.register(LOTREntities.RIVENDELL_ELF, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.RIVENDELL_WARRIOR, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.RIVENDELL_LORD, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.RIVENDELL_BANNER_BEARER, LOTRElfRenderer::new);
-        EntityRenderers.register(LOTREntities.RIVENDELL_SMITH, LOTRElfRenderer.cloaked("rivendell_smith_cloak"));
+        EntityRenderers.register(LOTREntities.RIVENDELL_SMITH, LOTRElfRenderer.cloaked("rivendell_smith_cloak", "rivendell_smith_cape"));
         EntityRenderers.register(LOTREntities.RIVENDELL_TRADER, LOTRElfRenderer.cloaked("rivendell_trader_cloak"));
         EntityRenderers.register(LOTREntities.WOOD_ELF, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.WOOD_ELF_SCOUT, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.WOOD_ELF_WARRIOR, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.WOOD_ELF_CAPTAIN, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.WOOD_ELF_BANNER_BEARER, LOTRElfRenderer::new);
-        EntityRenderers.register(LOTREntities.WOOD_ELF_SMITH, LOTRElfRenderer.cloaked("wood_elf_smith_cloak"));
+        EntityRenderers.register(LOTREntities.WOOD_ELF_SMITH, LOTRElfRenderer.cloaked("wood_elf_smith_cloak", "wood_elf_smith_cape"));
         EntityRenderers.register(LOTREntities.DORWINION_MAN, LOTRDorwinionManRenderer::new);
         EntityRenderers.register(LOTREntities.DORWINION_GUARD, LOTRDorwinionManRenderer::new);
         EntityRenderers.register(LOTREntities.DORWINION_CAPTAIN, LOTRDorwinionManRenderer::new);
@@ -441,7 +454,7 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.DORWINION_ELF_WARRIOR, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.DORWINION_ELF_BANNER_BEARER, LOTRElfRenderer::new);
         EntityRenderers.register(LOTREntities.DORWINION_ELF_CAPTAIN, LOTRElfRenderer::new);
-        EntityRenderers.register(LOTREntities.DORWINION_ELF_VINTNER, LOTRElfRenderer.cloaked("dorwinion_vintner_cloak"));
+        EntityRenderers.register(LOTREntities.DORWINION_ELF_VINTNER, LOTRElfRenderer.cloaked("dorwinion_vintner_cloak", "dorwinion_vintner_cape"));
         EntityRenderers.register(LOTREntities.DORWINION_VINEHAND, LOTRDorwinionManRenderer::new);
         EntityRenderers.register(LOTREntities.DORWINION_VINEKEEPER, LOTRDorwinionManRenderer::new);
         EntityRenderers.register(LOTREntities.DORWINION_MERCHANT_ELF, LOTRElfRenderer::new);
@@ -462,6 +475,9 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.BLUE_DWARF_MINER, LOTRDwarfRenderer::new);
         EntityRenderers.register(LOTREntities.BLUE_DWARF_MERCHANT, LOTRDwarfRenderer.of(LOTRDwarfRenderer.Kind.COMMANDER));
         EntityRenderers.register(LOTREntities.IRON_HILLS_MERCHANT, LOTRDwarfRenderer.of(LOTRDwarfRenderer.Kind.COMMANDER));
+        EntityRenderers.register(LOTREntities.SCRAP_TRADER, LOTRScrapTraderRenderer::new);
+        EntityRenderers.register(LOTREntities.BANDIT, LOTRBanditRenderer.of("bandit"));
+        EntityRenderers.register(LOTREntities.BANDIT_HARAD, LOTRBanditRenderer.of("harad"));
         EntityRenderers.register(LOTREntities.DWARF_SMITH, LOTRDwarfRenderer.of(LOTRDwarfRenderer.Kind.SMITH));
         EntityRenderers.register(LOTREntities.BLUE_DWARF_SMITH, LOTRDwarfRenderer.of(LOTRDwarfRenderer.Kind.SMITH));
         EntityRenderers.register(LOTREntities.WICKED_DWARF, LOTRDwarfRenderer.of(LOTRDwarfRenderer.Kind.WICKED));
@@ -779,6 +795,9 @@ public class LOTRModClient implements ClientModInitializer {
         LOTRPlateHeadRenderer.init();
         // LOTRTickHandlerClient: nausea drags the view about.
         LOTRDrunkCamera.init();
+        LOTRAnimalJarSpecialRenderer.init();
+        LOTRSnowyStoneModel.init();
+        LOTRScrapTraderMisbehaviour.init();
         LOTRClientFactionState.init();
 
         // Carved signs: the lettering in the world, and the screen a chisel opens.
@@ -827,6 +846,7 @@ public class LOTRModClient implements ClientModInitializer {
                     }
                 }));
         LOTREnvironmentOverlayHud.init();
+        LOTRSpiderClimbHud.init();
         PictureInPictureRendererRegistry.register(context -> new LOTRCompassRenderer());
         EntityRenderers.register(LOTREntities.ALIGNMENT_BONUS, LOTRAlignmentBonusRenderer::new);
         EntityRenderers.register(LOTREntities.SWORD_COMMAND_MARKER, LOTRSwordCommandMarkerRenderer::new);

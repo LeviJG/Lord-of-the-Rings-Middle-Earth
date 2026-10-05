@@ -5,6 +5,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPC
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTravellingTrader;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRHaradTurbanItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import net.minecraft.core.component.DataComponents;
@@ -26,10 +27,10 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityNomadMerchant: a travelling merchant of the desert, with a nomad
  * for escort, who trades with anyone Near Harad does not dislike, in a full
- * set of Harad robes of one of six colours.
+ * set of Harad robes of one of six colours, the turban half the time set
+ * with a gold ornament.
  *
- * <p>Not here: the pouch he held (pouches are not ported), and the turban's
- * gold ornament he wore half the time (tracked with the turban ornament).
+ * <p>Not here: the pouch he held (pouches are not ported).
  * NOT ported yet: the tradeNomadMerchant achievement (D7).
  */
 public class LOTRNomadMerchantEntity extends LOTRNomadEntity implements LOTRTravellingTrader {
@@ -93,11 +94,11 @@ public class LOTRNomadMerchantEntity extends LOTRNomadEntity implements LOTRTrav
                                                   EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         int robeColour = ROBE_COLOURS[this.random.nextInt(ROBE_COLOURS.length)];
-        this.random.nextBoolean(); // setHasOrnament's roll
+        boolean ornament = this.random.nextBoolean();
         setItemSlot(EquipmentSlot.FEET, robe(LOTRMiscItems.HARAD_ROBE_SHOES, robeColour));
         setItemSlot(EquipmentSlot.LEGS, robe(LOTRMiscItems.HARAD_ROBE_LEGGINGS, robeColour));
         setItemSlot(EquipmentSlot.CHEST, robe(LOTRMiscItems.HARAD_ROBE, robeColour));
-        setItemSlot(EquipmentSlot.HEAD, turban(robeColour));
+        setItemSlot(EquipmentSlot.HEAD, LOTRHaradTurbanItem.setHasOrnament(turban(robeColour), ornament));
         return data;
     }
 }

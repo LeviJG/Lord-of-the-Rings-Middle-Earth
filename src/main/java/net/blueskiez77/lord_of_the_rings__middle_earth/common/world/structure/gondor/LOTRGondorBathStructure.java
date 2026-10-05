@@ -51,7 +51,7 @@ public class LOTRGondorBathStructure extends LOTRGondorStructure {
             for (k1 = -9; k1 <= 9; ++k1) {
                 i2 = Math.abs(i13);
                 k2 = Math.abs(k1);
-                for (j1 = 0; (j1 >= -1 || !isOpaque(world, i13, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= -1 || !isOpaque(world, i13, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i13, j1, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i13, j1 - 1, k1);
                 }

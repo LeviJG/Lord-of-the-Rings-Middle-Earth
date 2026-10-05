@@ -5,6 +5,7 @@ import java.util.List;
 import com.mojang.serialization.MapCodec;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRAnimalJarBlockEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAnimalJarItem;
 
 import net.minecraft.core.BlockPos;
@@ -12,15 +13,23 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.BaseEntityBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.storage.loot.LootParams;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * A bird cage: LOTRBlockBirdCage, and the LOTRBlockAnimalJar it inherits from.
@@ -38,6 +47,8 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 public class LOTRAnimalJarBlock extends BaseEntityBlock {
     public static final MapCodec<LOTRAnimalJarBlock> CODEC =
             simpleCodec(props -> new LOTRAnimalJarBlock(Shapes.block(), props));
+    /** getLightValue: 7 while a Lórien butterfly is inside (set by the block entity). */
+    public static final BooleanProperty LIT = BlockStateProperties.LIT;
     private final VoxelShape shape;
 
     public LOTRAnimalJarBlock(Properties properties) {
@@ -45,8 +56,20 @@ public class LOTRAnimalJarBlock extends BaseEntityBlock {
     }
 
     public LOTRAnimalJarBlock(VoxelShape shape, Properties properties) {
-        super(properties);
+        super(properties.lightLevel(state -> state.getValue(LIT) ? 7 : 0));
         this.shape = shape;
+        registerDefaultState(defaultBlockState().setValue(LIT, false));
+    }
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        builder.add(LIT);
+    }
+
+    @Override
+    public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state,
+                                                                          BlockEntityType<T> type) {
+        return createTickerHelper(type, LOTRBlockEntities.ANIMAL_JAR, LOTRAnimalJarBlockEntity::tick);
     }
 
     @Override

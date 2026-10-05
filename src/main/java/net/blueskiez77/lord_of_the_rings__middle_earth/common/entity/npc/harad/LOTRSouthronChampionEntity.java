@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -32,6 +33,7 @@ public class LOTRSouthronChampionEntity extends LOTRNearHaradrimWarriorEntity {
 
     public LOTRSouthronChampionEntity(EntityType<? extends LOTRSouthronChampionEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.SOUTHRON_CHAMPION;
         this.spawnRidingHorse = true;
     }
 

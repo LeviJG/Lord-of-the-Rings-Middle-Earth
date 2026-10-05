@@ -58,7 +58,7 @@ public class LOTRHaradObeliskStructure extends LOTRStructureBase {
         }
         for (i1 = i - 7; i1 <= i + 7; ++i1) {
             for (k1 = k - 7; k1 <= k + 7; ++k1) {
-                for (j1 = j; (j1 == j || !isOpaqueAt(world, i1, j1, k1)) && j1 >= 0; --j1) {
+                for (j1 = j; (j1 == j || !isOpaqueAt(world, i1, j1, k1)) && j1 >= world.getMinY(); --j1) {
                     setBlockAndNotifyAdequately(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("sandstone"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

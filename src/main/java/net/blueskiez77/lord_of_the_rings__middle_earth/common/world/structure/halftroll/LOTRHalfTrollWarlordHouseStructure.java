@@ -45,7 +45,7 @@ public class LOTRHalfTrollWarlordHouseStructure extends LOTRStructureBase2 {
                         continue;
                     }
                     if (j1 == 0) {
-                        for (int j2 = 0; (j2 == 0 || !isOpaque(world, i12, j2, k12)) && getY(j2) >= 0; --j2) {
+                        for (int j2 = 0; (j2 == 0 || !isOpaque(world, i12, j2, k12)) && getY(j2) >= world.getMinY(); --j2) {
                             setBlockAndMetadata(world, i12, j2, k12, LOTRLegacyBlocks.vanilla("hardened_clay"), 0);
                             setGrassToDirt(world, i12, j2 - 1, k12);
                         }

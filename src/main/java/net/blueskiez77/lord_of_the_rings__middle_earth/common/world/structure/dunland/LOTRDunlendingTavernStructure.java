@@ -53,7 +53,7 @@ public class LOTRDunlendingTavernStructure extends LOTRDunlandStructure {
                     setAir(world, i1, j1, k1);
                 }
                 j1 = -1;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j1, k1, floorBlock, floorMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     --j1;

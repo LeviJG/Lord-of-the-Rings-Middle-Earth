@@ -35,9 +35,10 @@ import net.minecraft.world.entity.EntitySpawnReason;
  * <p>With it, the on-screen compass in the top right (LOTRModelCompass), with
  * the player's coordinates beneath if the config asks.
  *
- * <p>NOT ported yet: moving the bar down out of the way of a LOTR boss's bar
- * or a watched invasion's (D12/D14); the biome's name above the compass,
- * for a LOTR biome (D10).
+ * <p>The bar moves down out of the way of the boss bars.
+ *
+ * <p>NOT ported yet: moving it down for a watched invasion's bar (D12/D14);
+ * the biome's name above the compass, for a LOTR biome (D10).
  */
 public final class LOTRAlignmentHud {
 
@@ -139,6 +140,12 @@ public final class LOTRAlignmentHud {
         int width = graphics.guiWidth();
         alignmentXBase = width / 2 + LOTRConfig.alignmentXOffset;
         alignmentYBase = 4 + LOTRConfig.alignmentYOffset;
+        // isBossActive: below a boss's bar. 1.7.10 had only the one; modern
+        // vanilla stacks them nineteen apart, so the bar goes below them all.
+        int bossBars = mc.gui.hud.getBossOverlay().events.size();
+        if (bossBars > 0) {
+            alignmentYBase += 20 + 19 * (bossBars - 1);
+        }
         if (firstAlignmentRender) {
             LOTRAlignmentTicker.updateAll(mc.player, true);
             alignmentXPrev = alignmentXCurrent = alignmentXBase;

@@ -27,12 +27,12 @@ public class LOTRSouthronFortCornerStructure extends LOTRSouthronStructure {
             if (i1 <= 0) {
                 beam = i2 % 4 == 0;
                 if (beam) {
-                    for (j12 = 6; (j12 >= 1 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 6; (j12 >= 1 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i1, j12, k1, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i1, j12 - 1, k1);
                     }
                 } else {
-                    for (j12 = 5; (j12 >= 1 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 5; (j12 >= 1 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i1, j12, k1, plankBlock, plankMeta);
                         setGrassToDirt(world, i1, j12 - 1, k1);
                     }
@@ -45,7 +45,7 @@ public class LOTRSouthronFortCornerStructure extends LOTRSouthronStructure {
                 if (i1 <= -1) {
                     int k3 = k1 + 1;
                     setBlockAndMetadata(world, i1, 2, k3, brickStairBlock, 3);
-                    for (j1 = 1; (j1 >= 1 || !isOpaque(world, i1, j1, k3)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 1; (j1 >= 1 || !isOpaque(world, i1, j1, k3)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i1, j1, k3, brickBlock, brickMeta);
                         setGrassToDirt(world, i1, j1 - 1, k3);
                     }
@@ -53,7 +53,7 @@ public class LOTRSouthronFortCornerStructure extends LOTRSouthronStructure {
             }
             int k3 = k1 - 1;
             setBlockAndMetadata(world, i1, 2, k3, brickStairBlock, 2);
-            for (j12 = 1; (j12 >= 1 || !isOpaque(world, i1, j12, k3)) && getY(j12) >= 0; --j12) {
+            for (j12 = 1; (j12 >= 1 || !isOpaque(world, i1, j12, k3)) && getY(j12) >= world.getMinY(); --j12) {
                 setBlockAndMetadata(world, i1, j12, k3, brickBlock, brickMeta);
                 setGrassToDirt(world, i1, j12 - 1, k3);
             }
@@ -65,12 +65,12 @@ public class LOTRSouthronFortCornerStructure extends LOTRSouthronStructure {
             if (k1 >= 1) {
                 beam = k2 % 4 == 0;
                 if (beam) {
-                    for (j12 = 6; (j12 >= 1 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 6; (j12 >= 1 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i1, j12, k1, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i1, j12 - 1, k1);
                     }
                 } else {
-                    for (j12 = 5; (j12 >= 1 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 5; (j12 >= 1 || !isOpaque(world, i1, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i1, j12, k1, plankBlock, plankMeta);
                         setGrassToDirt(world, i1, j12 - 1, k1);
                     }
@@ -83,7 +83,7 @@ public class LOTRSouthronFortCornerStructure extends LOTRSouthronStructure {
                 if (k1 >= 2) {
                     int i3 = i1 - 1;
                     setBlockAndMetadata(world, i3, 2, k1, brickStairBlock, 1);
-                    for (j1 = 1; (j1 >= 1 || !isOpaque(world, i3, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 1; (j1 >= 1 || !isOpaque(world, i3, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i3, j1, k1, brickBlock, brickMeta);
                         setGrassToDirt(world, i3, j1 - 1, k1);
                     }
@@ -91,7 +91,7 @@ public class LOTRSouthronFortCornerStructure extends LOTRSouthronStructure {
             }
             int i3 = i1 + 1;
             setBlockAndMetadata(world, i3, 2, k1, brickStairBlock, 0);
-            for (j12 = 1; (j12 >= 1 || !isOpaque(world, i3, j12, k1)) && getY(j12) >= 0; --j12) {
+            for (j12 = 1; (j12 >= 1 || !isOpaque(world, i3, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                 setBlockAndMetadata(world, i3, j12, k1, brickBlock, brickMeta);
                 setGrassToDirt(world, i3, j12 - 1, k1);
             }

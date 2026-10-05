@@ -106,7 +106,7 @@ public class LOTRDorwinionHouseStructure extends LOTRStructureBase2 {
                 if (garden) {
                     setBlockAndMetadata(world, i12, 0, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                     j12 = -1;
-                    while (!isOpaque(world, i12, j12, k1) && getY(j12) >= 0) {
+                    while (!isOpaque(world, i12, j12, k1) && getY(j12) >= world.getMinY()) {
                         setBlockAndMetadata(world, i12, j12, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                         setGrassToDirt(world, i12, j12 - 1, k1);
                         --j12;
@@ -122,14 +122,14 @@ public class LOTRDorwinionHouseStructure extends LOTRStructureBase2 {
                     for (int j122 = 1; j122 <= 8; ++j122) {
                         setBlockAndMetadata(world, i12, j122, k1, woodBeamBlock, woodBeamMeta);
                     }
-                    for (j12 = 0; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 0; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i12, j12, k1, wallBlock, wallMeta);
                         setGrassToDirt(world, i12, j12 - 1, k1);
                     }
                     continue;
                 }
                 if (wall) {
-                    for (j12 = 0; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 0; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i12, j12, k1, wallBlock, wallMeta);
                         setGrassToDirt(world, i12, j12 - 1, k1);
                     }
@@ -148,7 +148,7 @@ public class LOTRDorwinionHouseStructure extends LOTRStructureBase2 {
                     setBlockAndMetadata(world, i12, 8, k1, woodBeamBlock, woodBeamMeta | 4);
                     continue;
                 }
-                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 0; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i12, j12, k1, floorBlock, floorMeta);
                     setGrassToDirt(world, i12, j12 - 1, k1);
                 }

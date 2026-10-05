@@ -110,7 +110,7 @@ public class LOTRWoodElfHouseStructure extends LOTRStructureBase2 {
                 for (j1 = 1; j1 <= 7; ++j1) {
                     setAir(world, i13, j1, k12);
                 }
-                for (j1 = 0; (j1 == 0 || !isOpaque(world, i13, j1, k12)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 == 0 || !isOpaque(world, i13, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                     if (getBlockState(world, i13, j1 + 1, k12).isSolidRender()) {
                         setBlockAndMetadata(world, i13, j1, k12, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     } else {

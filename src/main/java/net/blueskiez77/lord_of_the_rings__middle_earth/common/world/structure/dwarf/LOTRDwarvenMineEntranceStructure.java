@@ -85,7 +85,7 @@ public class LOTRDwarvenMineEntranceStructure extends LOTRStructureBase2 {
                 setBlockAndMetadata(world, i12, 5, k1, LOTRLegacyBlocks.mod("pillar"), 0);
             }
         }
-        for (j1 = -1; j1 > relDepth && getY(j1) >= 0; --j1) {
+        for (j1 = -1; j1 > relDepth && getY(j1) >= world.getMinY(); --j1) {
             for (i1 = -4; i1 <= 4; ++i1) {
                 for (int k12 = -4; k12 <= 4; ++k12) {
                     int i2 = Math.abs(i1);
@@ -149,7 +149,7 @@ public class LOTRDwarvenMineEntranceStructure extends LOTRStructureBase2 {
             }
         }
         if (!isRuined) {
-            for (j1 = 1; j1 > relDepth && getY(j1) >= 0; --j1) {
+            for (j1 = 1; j1 > relDepth && getY(j1) >= world.getMinY(); --j1) {
                 setBlockAndMetadata(world, 0, j1, 0, logBlock, logMeta);
                 setBlockAndMetadata(world, 0, j1, -1, LOTRLegacyBlocks.vanilla("ladder"), 2);
                 setBlockAndMetadata(world, 0, j1, 1, LOTRLegacyBlocks.vanilla("ladder"), 3);

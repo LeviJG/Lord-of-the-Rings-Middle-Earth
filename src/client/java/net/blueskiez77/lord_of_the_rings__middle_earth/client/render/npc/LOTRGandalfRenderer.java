@@ -6,6 +6,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBipedModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRHumanModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRWizardHatModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.character.LOTRGandalfEntity;
 
 import net.minecraft.client.model.HumanoidModel;
@@ -17,6 +18,8 @@ import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.EquipmentSlot;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTRRenderGandalf: the Grey Wanderer in his skin, his pointed hat when he
@@ -85,6 +88,12 @@ public class LOTRGandalfRenderer
     @Override
     protected boolean shouldShowName(LOTRGandalfEntity gandalf, double distanceSq) {
         return true;
+    }
+
+    /** getCapeToRender: Father Christmas's red cape at Christmas. */
+    @Override
+    protected @Nullable Identifier getCapeToRender(LOTRGandalfEntity gandalf) {
+        return LOTRMod.isChristmas() ? LOTRCapes.GANDALF_SANTA : gandalf.npcCape;
     }
 
     @Override

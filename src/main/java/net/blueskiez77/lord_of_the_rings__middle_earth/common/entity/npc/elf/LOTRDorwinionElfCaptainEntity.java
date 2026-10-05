@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -33,6 +34,7 @@ public class LOTRDorwinionElfCaptainEntity extends LOTRDorwinionElfWarriorEntity
 
     public LOTRDorwinionElfCaptainEntity(EntityType<? extends LOTRDorwinionElfCaptainEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.DORWINION_ELF_CAPTAIN;
     }
 
     @Override

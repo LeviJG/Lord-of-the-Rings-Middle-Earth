@@ -1,41 +1,19 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
-import java.util.function.Function;
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCropBlock;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRTrophyType;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ToolMaterial;
-import net.minecraft.world.item.component.InstrumentComponent;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.Weapon;
-import net.minecraft.world.item.equipment.ArmorMaterial;
-import net.minecraft.world.item.equipment.ArmorType;
-import net.minecraft.world.level.block.Block;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockTags;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity;
-
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems.*;
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItems.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems.*;
+
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.Item;
 
 /**
  * The LOTR items of tabMisc: coins, rings, ancient items, horns and other odds and ends.
@@ -129,7 +107,7 @@ public final class LOTRMiscItems {
                     .setEquipSound(net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_LEATHER)
                     .setAsset(LOTRToolMaterials.PARTY_HAT_ASSET)
                     .build()));
-    public static final Item HARAD_TURBAN = register("harad_turban", Item::new, new Item.Properties()
+    public static final Item HARAD_TURBAN = register("harad_turban", LOTRHaradTurbanItem::new, new Item.Properties()
             .stacksTo(1)
             .component(DataComponents.EQUIPPABLE, net.minecraft.world.item.equipment.Equippable
                     .builder(net.minecraft.world.entity.EquipmentSlot.HEAD)

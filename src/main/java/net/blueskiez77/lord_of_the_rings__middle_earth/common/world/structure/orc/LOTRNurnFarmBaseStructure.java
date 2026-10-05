@@ -68,7 +68,7 @@ public abstract class LOTRNurnFarmBaseStructure extends LOTRStructureBase {
                 for (j1 = j + 1; j1 <= j + 4; ++j1) {
                     setBlockAndNotifyAdequately(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("air"), 0);
                 }
-                for (j1 = j; (j1 == j || !isOpaqueAt(world, i1, j1, k1)) && j1 >= 0; --j1) {
+                for (j1 = j; (j1 == j || !isOpaqueAt(world, i1, j1, k1)) && j1 >= world.getMinY(); --j1) {
                     setBlockAndNotifyAdequately(world, i1, j1, k1, LOTRLegacyBlocks.mod("brick"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

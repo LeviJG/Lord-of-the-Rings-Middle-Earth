@@ -52,14 +52,14 @@ public class LOTREasterlingHouseStructure extends LOTREasterlingStructure {
                 i2 = Math.abs(i12);
                 int k2 = Math.abs(k12);
                 if ((i2 == 2 || i2 == 6) && k2 == 4 || (k2 == 0 || k2 == 4) && i2 == 6) {
-                    for (j1 = 5; (j1 >= 0 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 5; (j1 >= 0 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i12, j1, k12, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i12, j1 - 1, k12);
                     }
                     continue;
                 }
                 if (i2 == 6 || k2 == 4) {
-                    for (j1 = 1; (j1 >= 0 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 1; (j1 >= 0 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i12, j1, k12, brickBlock, brickMeta);
                         setGrassToDirt(world, i12, j1 - 1, k12);
                     }
@@ -78,7 +78,7 @@ public class LOTREasterlingHouseStructure extends LOTREasterlingStructure {
                     setBlockAndMetadata(world, i12, 5, k12, woodBeamBlock, woodBeamMeta | 8);
                     continue;
                 }
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k12)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i12, j1, k12, plankBlock, plankMeta);
                     setGrassToDirt(world, i12, j1 - 1, k12);
                 }

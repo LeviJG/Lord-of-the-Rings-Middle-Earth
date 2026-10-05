@@ -79,7 +79,7 @@ public class LOTRGulfPyramidStructure extends LOTRGulfStructure {
                 setBlockAndMetadata(world, i12, j1, k12, LOTRLegacyBlocks.vanilla("sandstone_stairs"), 1);
                 setGrassToDirt(world, i12, j1 - 1, k12);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i12, j2, k12) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k12) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k12, LOTRLegacyBlocks.vanilla("sandstone"), 0);
                     setGrassToDirt(world, i12, j2 - 1, k12);
                     --j2;
@@ -89,7 +89,7 @@ public class LOTRGulfPyramidStructure extends LOTRGulfStructure {
                 setBlockAndMetadata(world, i12, j1, k12, LOTRLegacyBlocks.vanilla("sandstone_stairs"), 0);
                 setGrassToDirt(world, i12, j1 - 1, k12);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i12, j2, k12) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k12) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k12, LOTRLegacyBlocks.vanilla("sandstone"), 0);
                     setGrassToDirt(world, i12, j2 - 1, k12);
                     --j2;
@@ -102,7 +102,7 @@ public class LOTRGulfPyramidStructure extends LOTRGulfStructure {
                 setBlockAndMetadata(world, i13, j1, k13, LOTRLegacyBlocks.vanilla("sandstone_stairs"), 2);
                 setGrassToDirt(world, i13, j1 - 1, k13);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i13, j2, k13) && getY(j2) >= 0) {
+                while (!isOpaque(world, i13, j2, k13) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i13, j2, k13, LOTRLegacyBlocks.vanilla("sandstone"), 0);
                     setGrassToDirt(world, i13, j2 - 1, k13);
                     --j2;
@@ -112,7 +112,7 @@ public class LOTRGulfPyramidStructure extends LOTRGulfStructure {
                 setBlockAndMetadata(world, i13, j1, k13, LOTRLegacyBlocks.vanilla("sandstone_stairs"), 3);
                 setGrassToDirt(world, i13, j1 - 1, k13);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i13, j2, k13) && getY(j2) >= 0) {
+                while (!isOpaque(world, i13, j2, k13) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i13, j2, k13, LOTRLegacyBlocks.vanilla("sandstone"), 0);
                     setGrassToDirt(world, i13, j2 - 1, k13);
                     --j2;

@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -50,6 +51,7 @@ public abstract class LOTRRangerEntity extends LOTRDunedainEntity {
 
     protected LOTRRangerEntity(EntityType<? extends LOTRRangerEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.RANGER;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

@@ -29,7 +29,7 @@ public class LOTRBreeGateStructure extends LOTRBreeStructure {
         }
         for (int i1 : new int[]{-4, 4}) {
             int k12 = 0;
-            for (int j12 = 4; (j12 >= 0 || !isOpaque(world, 0, j12, 0)) && getY(j12) >= 0; --j12) {
+            for (int j12 = 4; (j12 >= 0 || !isOpaque(world, 0, j12, 0)) && getY(j12) >= world.getMinY(); --j12) {
                 setBlockAndMetadata(world, i1, j12, k12, beamBlock, beamMeta);
                 setGrassToDirt(world, i1, j12 - 1, k12);
             }
@@ -39,7 +39,7 @@ public class LOTRBreeGateStructure extends LOTRBreeStructure {
         for (int i1 = -3; i1 <= 3; ++i1) {
             k1 = 0;
             j1 = 0;
-            while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+            while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                 placeRandomFloor(world, random, i1, j1, k1);
                 setGrassToDirt(world, i1, j1 - 1, k1);
                 --j1;

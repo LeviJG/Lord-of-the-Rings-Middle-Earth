@@ -401,7 +401,7 @@ public class LOTRDaleFortressStructure extends LOTRDaleStructure {
     }
 
     public void layFoundation(WorldGenLevel world, int i, int k) {
-        for (int j = 0; j == 0 || !isOpaque(world, i, j, k) && getY(j) >= 0; --j) {
+        for (int j = 0; j == 0 || !isOpaque(world, i, j, k) && getY(j) >= world.getMinY(); --j) {
             setBlockAndMetadata(world, i, j, k, floorBlock, floorMeta);
             setGrassToDirt(world, i, j - 1, k);
         }

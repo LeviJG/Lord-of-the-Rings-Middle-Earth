@@ -64,7 +64,7 @@ public class LOTRBDBarrowStructure extends LOTRStructureBase2 {
         for (i1 = -radius; i1 <= radius; ++i1) {
             for (int k13 = -radius; k13 <= radius; ++k13) {
                 int j14 = base - 1;
-                while (!isOpaque(world, i1, j14, k13) && getY(j14) >= 0) {
+                while (!isOpaque(world, i1, j14, k13) && getY(j14) >= world.getMinY()) {
                     if (i1 * i1 + k13 * k13 <= radius * radius) {
                         setBlockAndMetadata(world, i1, j14, k13, LOTRLegacyBlocks.vanilla("dirt"), 0);
                         setGrassToDirt(world, i1, j14 - 1, k13);

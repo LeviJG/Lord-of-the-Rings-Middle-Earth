@@ -84,7 +84,7 @@ public class LOTRHobbitHoleStructure extends LOTRHobbitStructure {
                     continue;
                 }
                 j13 = -1;
-                while (!isOpaque(world, i13, j13, k12) && getY(j13) >= 0) {
+                while (!isOpaque(world, i13, j13, k12) && getY(j13) >= world.getMinY()) {
                     grass = !isOpaque(world, i13, j13 + 1, k12);
                     setBlockAndMetadata(world, i13, j13, k12, grass ? LOTRLegacyBlocks.vanilla("grass") : LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i13, j13 - 1, k12);
@@ -110,7 +110,7 @@ public class LOTRHobbitHoleStructure extends LOTRHobbitStructure {
         }
         for (k15 = -17; k15 <= -13; ++k15) {
             for (i15 = -5; i15 <= 5; ++i15) {
-                for (j13 = 0; j13 == 0 || !isOpaque(world, i15, j13, k15) && getY(j13) >= 0; --j13) {
+                for (j13 = 0; j13 == 0 || !isOpaque(world, i15, j13, k15) && getY(j13) >= world.getMinY(); --j13) {
                     grass = j13 == 0;
                     setBlockAndMetadata(world, i15, j13, k15, grass ? LOTRLegacyBlocks.vanilla("grass") : LOTRLegacyBlocks.vanilla("dirt"), 0);
                 }

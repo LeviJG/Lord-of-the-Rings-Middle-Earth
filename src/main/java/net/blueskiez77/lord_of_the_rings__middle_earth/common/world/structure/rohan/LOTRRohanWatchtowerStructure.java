@@ -42,7 +42,7 @@ public class LOTRRohanWatchtowerStructure extends LOTRRohanStructure {
             int i13 = i12[j12];
             for (int k13 : new int[]{-3, 3}) {
                 int j13 = 3;
-                while (!isOpaque(world, i13, j13, k13) && getY(j13) >= 0) {
+                while (!isOpaque(world, i13, j13, k13) && getY(j13) >= world.getMinY()) {
                     setBlockAndMetadata(world, i13, j13, k13, plank2Block, plank2Meta);
                     setGrassToDirt(world, i13, j13 - 1, k13);
                     --j13;
@@ -116,7 +116,7 @@ public class LOTRRohanWatchtowerStructure extends LOTRRohanStructure {
             setBlockAndMetadata(world, 0, j1, 2, LOTRLegacyBlocks.vanilla("ladder"), 2);
         }
         j1 = -1;
-        while (!isOpaque(world, 0, j1, 3) && getY(j1) >= 0) {
+        while (!isOpaque(world, 0, j1, 3) && getY(j1) >= world.getMinY()) {
             setBlockAndMetadata(world, 0, j1, 3, plank2Block, plank2Meta);
             setGrassToDirt(world, 0, j1 - 1, 3);
             if (!isOpaque(world, 0, j1, 2)) {
@@ -130,7 +130,7 @@ public class LOTRRohanWatchtowerStructure extends LOTRRohanStructure {
             int k2 = Math.abs(k1);
             for (int i14 : new int[]{-3, 3}) {
                 int j14 = -1;
-                while (!isOpaque(world, i14, j14, k1) && getY(j14) >= 0) {
+                while (!isOpaque(world, i14, j14, k1) && getY(j14) >= world.getMinY()) {
                     if (k2 == 2 && Math.floorMod(j14, 4) == 1 || k2 == 1 && Math.floorMod(j14, 2) == 0 || k2 == 0 && Math.floorMod(j14, 4) == 3) {
                         setBlockAndMetadata(world, i14, j14, k1, logBlock, logMeta);
                         if (k2 == 0) {
@@ -167,7 +167,7 @@ public class LOTRRohanWatchtowerStructure extends LOTRRohanStructure {
     }
 
     public int getBelowTop(WorldGenLevel world, int i, int j, int k) {
-        while (!isOpaque(world, i, j, k) && getY(j) >= 0) {
+        while (!isOpaque(world, i, j, k) && getY(j) >= world.getMinY()) {
             --j;
         }
         return j + 1;

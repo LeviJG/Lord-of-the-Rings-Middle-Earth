@@ -120,7 +120,7 @@ public class LOTRDolAmrothStablesStructure extends LOTRStructureBase2 {
             int kz = segment * 4;
             for (i15 = -8; i15 <= 8; ++i15) {
                 for (k142 = kz; k142 <= kz + 3; ++k142) {
-                    for (j12 = 0; (j12 == 0 || !isOpaque(world, i15, j12, k142)) && getY(j12) >= 0; --j12) {
+                    for (j12 = 0; (j12 == 0 || !isOpaque(world, i15, j12, k142)) && getY(j12) >= world.getMinY(); --j12) {
                         setBlockAndMetadata(world, i15, j12, k142, brickBlock, brickMeta);
                         setGrassToDirt(world, i15, j12 - 1, k142);
                     }
@@ -366,7 +366,7 @@ public class LOTRDolAmrothStablesStructure extends LOTRStructureBase2 {
         }
         for (int i115 = -9; i115 <= 9; ++i115) {
             for (k122 = 12; k122 <= 18; ++k122) {
-                for (j13 = 0; (j13 == 0 || !isOpaque(world, i115, j13, k122)) && getY(j13) >= 0; --j13) {
+                for (j13 = 0; (j13 == 0 || !isOpaque(world, i115, j13, k122)) && getY(j13) >= world.getMinY(); --j13) {
                     setBlockAndMetadata(world, i115, j13, k122, brickBlock, brickMeta);
                     setGrassToDirt(world, i115, j13 - 1, k122);
                 }
@@ -706,7 +706,7 @@ public class LOTRDolAmrothStablesStructure extends LOTRStructureBase2 {
     }
 
     public void placeGrassFoundation(WorldGenLevel world, int i, int k) {
-        for (int j1 = 6; (j1 >= 0 || !isOpaque(world, i, j1, k)) && getY(j1) >= 0; --j1) {
+        for (int j1 = 6; (j1 >= 0 || !isOpaque(world, i, j1, k)) && getY(j1) >= world.getMinY(); --j1) {
             if (j1 > 0) {
                 setAir(world, i, j1, k);
                 continue;
@@ -723,7 +723,7 @@ public class LOTRDolAmrothStablesStructure extends LOTRStructureBase2 {
 
     public void placeWoodPillar(WorldGenLevel world, int i, int k) {
         int j = 0;
-        while ((!isOpaque(world, i, j, k) || getBlockState(world, i, j, k) == brickBlock.state(brickMeta)) && getY(j) >= 0) {
+        while ((!isOpaque(world, i, j, k) || getBlockState(world, i, j, k) == brickBlock.state(brickMeta)) && getY(j) >= world.getMinY()) {
             setBlockAndMetadata(world, i, j, k, woodBeamBlock, woodBeamMeta);
             setGrassToDirt(world, i, j - 1, k);
             --j;

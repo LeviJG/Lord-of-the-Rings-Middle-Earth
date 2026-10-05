@@ -1,41 +1,16 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
-import java.util.function.Function;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCropBlock;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRTrophyType;
-import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.Item;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.world.entity.EquipmentSlotGroup;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ToolMaterial;
-import net.minecraft.world.item.component.InstrumentComponent;
-import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.component.Weapon;
-import net.minecraft.world.item.equipment.ArmorMaterial;
-import net.minecraft.world.item.equipment.ArmorType;
-import net.minecraft.world.level.block.Block;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockTags;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity;
-
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems.*;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItems.*;
+
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 
 /**
  * The LOTR items of tabTools: tools, chisels, mattocks and the like.
@@ -192,6 +167,10 @@ public final class LOTRToolItems {
     public static final Item MOON_CHISEL = register("moon_chisel",
             props -> new LOTRChiselItem(() -> LOTRUtilityBlocks.CARVED_ITHILDIN_SIGN, props),
             new Item.Properties().durability(100));
+
+    // LOTRItemBrandingIron: a hundred uses, mended with iron, held like a tool.
+    public static final Item BRANDING_IRON = register("branding_iron", LOTRBrandingIronItem::new,
+            new Item.Properties().durability(100).repairable(Items.IRON_INGOT));
 
     private LOTRToolItems() {
     }

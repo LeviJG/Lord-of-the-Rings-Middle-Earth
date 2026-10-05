@@ -50,7 +50,7 @@ public class LOTRDwarvenTowerStructure extends LOTRStructureBase2 {
     public void generateCornerPillars(WorldGenLevel world, RandomSource random, int i, int j, int k) {
         for (int i1 = i - 1; i1 <= i; ++i1) {
             for (int k1 = k - 1; k1 <= k; ++k1) {
-                for (int j1 = j; (j1 == 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (int j1 = j; (j1 == 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     if (j1 == j - 2) {
                         setBlockAndMetadata(world, i1, j1, k1, glowBrickBlock, glowBrickMeta);
                         continue;
@@ -87,7 +87,7 @@ public class LOTRDwarvenTowerStructure extends LOTRStructureBase2 {
         }
         for (i1 = -5; i1 <= 5; ++i1) {
             for (k1 = -5; k1 <= 5; ++k1) {
-                for (j1 = 0; (j1 == 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 == 0 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     placeBrick(world, random, i1, j1, k1);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }
@@ -263,7 +263,7 @@ public class LOTRDwarvenTowerStructure extends LOTRStructureBase2 {
         }
         for (int i14 : new int[]{-2, 2}) {
             int j15 = 4;
-            while (!isOpaque(world, i14, j15, -6) && getY(j15) >= 0) {
+            while (!isOpaque(world, i14, j15, -6) && getY(j15) >= world.getMinY()) {
                 if (j15 == 3) {
                     setBlockAndMetadata(world, i14, 3, -6, glowBrickBlock, glowBrickMeta);
                 } else {

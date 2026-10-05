@@ -10,6 +10,7 @@ import net.minecraft.client.model.geom.builders.CubeListBuilder;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
 
 /**
  * LOTRModelRohanMarshalHelmet, transcribed box for box.
@@ -18,16 +19,10 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
  * flat panes hung off the crown and fanned, the middle one tipped further back
  * than the two beside it.
  *
- * <p>The fan is baked in. The original works the three angles out in
- * setRotationAngles from the pane's index -- {@code (mid - |i - mid|) / mid} for
- * the pitch and {@code (i - mid) / mid} for the yaw, with mid at 1 -- which is
- * the same three numbers every frame, so they are constants here.
- *
- * <p>NOT ported: the sway. The original adds
- * {@code sin(limbSwing * 0.4) * limbSwingAmount * 0.2} to each pane's pitch, so
- * the plume bounces as the wearer walks. Fabric's ArmorRenderer hands over no
- * limb-swing state, so the plume is still; it wants the walk cycle plumbed
- * through the seam before it can move.
+ * <p>The fan comes from the pane's index -- {@code (mid - |i - mid|) / mid}
+ * for the pitch and {@code (i - mid) / mid} for the yaw, with mid at 1 -- and
+ * the plume sways as the wearer walks: {@code sin(limbSwing * 0.4) *
+ * limbSwingAmount * 0.2} on each pane's pitch ({@link #setupPlume}).
  */
 public class LOTRRohirricMarshalHelmetModel {
 
@@ -41,9 +36,21 @@ public class LOTRRohirricMarshalHelmetModel {
     private static final float[] PLUME_YAW = {-0.17f, 0.0f, 0.17f};
 
     private final ModelPart head;
+    private final ModelPart[] plumes = new ModelPart[PLUME_PITCH.length];
 
     public LOTRRohirricMarshalHelmetModel(ModelPart root) {
         this.head = root.getChild("head");
+        for (int i = 0; i < this.plumes.length; i++) {
+            this.plumes[i] = this.head.getChild("plume_" + i);
+        }
+    }
+
+    /** setRotationAngles: the fan, plus the sway of the wearer's walk. */
+    public void setupPlume(float walkPos, float walkSpeed) {
+        float sway = Mth.sin(walkPos * 0.4f) * walkSpeed * 0.2f;
+        for (int i = 0; i < this.plumes.length; i++) {
+            this.plumes[i].xRot = PLUME_PITCH[i] + sway;
+        }
     }
 
     public static LayerDefinition createLayer() {

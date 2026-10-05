@@ -1,54 +1,56 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuNetworking;
-import net.fabricmc.api.ModInitializer;
-
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRCreativeTabs;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGreyWandererTracker;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLore;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerEvents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerNetworking;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredNetworking;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeNetworking;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockBehaviours;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCauldronWashing;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDispenserBehaviours;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRAlignmentCommand;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfigRules;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfigSync;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeNetworking;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAlcoholTolerance;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRArmourSets;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRBrandingIronItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVanillaVessels;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuNetworking;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRPackets;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRMillstoneRecipes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRRecipeTypes;
-
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
-import net.minecraft.world.level.block.DispenserBlock;
-
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGreyWandererTracker;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCauldronWashing;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDispenserBehaviours;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMechanisedRailBlock;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAlcoholTolerance;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRArmourSets;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVanillaVessels;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRSpawnerChests;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureScan;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureSpawning;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructures;
+
+import net.fabricmc.api.ModInitializer;
+
+import net.minecraft.world.level.block.DispenserBlock;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +74,9 @@ public class LOTRMod implements ModInitializer {
         LOTRTradeNetworking.init();
         LOTRHiredNetworking.init();
         LOTRMenuNetworking.init();
+        LOTRBrandingIronItem.init();
         LOTRFaction.initAllProperties();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry.init();
 
         LOTRPlayerAlignments.init();
         LOTRLevelData.init();
@@ -104,6 +108,7 @@ public class LOTRMod implements ModInitializer {
         LOTREntities.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSpeech.loadAllSpeechBanks();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames.loadAllNameBanks();
+        LOTRLore.loadAllLore();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCKillEvents.init();
 
         DispenserBlock.registerProjectileBehavior(LOTRCombatItems.CROSSBOW_BOLT);

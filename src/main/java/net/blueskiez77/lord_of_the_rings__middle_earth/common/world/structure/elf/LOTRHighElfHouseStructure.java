@@ -106,7 +106,7 @@ public class LOTRHighElfHouseStructure extends LOTRStructureBase2 {
             for (k13 = 0; k13 <= 13; ++k13) {
                 int j15;
                 i2 = Math.abs(i12);
-                for (j15 = 0; (j15 >= 0 || !isOpaque(world, i12, j15, k13)) && getY(j15) >= 0; --j15) {
+                for (j15 = 0; (j15 >= 0 || !isOpaque(world, i12, j15, k13)) && getY(j15) >= world.getMinY(); --j15) {
                     setBlockAndMetadata(world, i12, j15, k13, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j15 - 1, k13);
                 }

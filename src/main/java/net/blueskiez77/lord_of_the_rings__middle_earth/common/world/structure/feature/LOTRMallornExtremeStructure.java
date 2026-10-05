@@ -49,7 +49,7 @@ public class LOTRMallornExtremeStructure extends LOTRStructureBase {
         int height = Mth.randomBetweenInclusive(random, HEIGHT_MIN, HEIGHT_MAX);
         int trunkWidth = 2;
         boolean flag = true;
-        if (j >= 1 && j + height + 5 <= 256 || forceGeneration) {
+        if (j >= world.getMinY() + 1 && j + height + 5 <= world.getMaxY() + 1 || forceGeneration) {
             int i1;
             int k1;
             for (int j1 = j; j1 <= j + 1 + height; ++j1) {
@@ -62,7 +62,7 @@ public class LOTRMallornExtremeStructure extends LOTRStructureBase {
                 }
                 for (int i2 = i - range; i2 <= i + range && flag; ++i2) {
                     for (int k2 = k - range; k2 <= k + range && flag; ++k2) {
-                        if (j1 >= 0 && j1 < 256) {
+                        if (j1 >= world.getMinY() && j1 <= world.getMaxY()) {
                             BlockState block = world.getBlockState(new BlockPos(i2, j1, k2));
                             if (forceGeneration || isReplaceable(world, i2, j1, k2) || LOTRLegacyBlocks.mod("quenditeGrass").matches(block)) {
                                 continue;

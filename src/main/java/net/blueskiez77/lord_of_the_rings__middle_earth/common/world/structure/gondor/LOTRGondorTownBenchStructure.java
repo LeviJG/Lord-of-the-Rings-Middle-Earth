@@ -47,7 +47,7 @@ public class LOTRGondorTownBenchStructure extends LOTRGondorStructure {
     }
 
     public void layFoundation(WorldGenLevel world, int i, int j, int k) {
-        for (int j1 = j; (j1 >= j || !isOpaque(world, i, j1, k)) && getY(j1) >= 0; --j1) {
+        for (int j1 = j; (j1 >= j || !isOpaque(world, i, j1, k)) && getY(j1) >= world.getMinY(); --j1) {
             setBlockAndMetadata(world, i, j1, k, rockSlabDoubleBlock, rockSlabDoubleMeta);
             setGrassToDirt(world, i, j1 - 1, k);
         }

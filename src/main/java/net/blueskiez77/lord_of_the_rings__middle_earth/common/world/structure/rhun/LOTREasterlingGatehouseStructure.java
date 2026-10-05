@@ -55,7 +55,7 @@ public class LOTREasterlingGatehouseStructure extends LOTREasterlingStructureTow
                     setAir(world, i12, j13, k12);
                 }
                 if (i2 <= 3 && k2 <= 3 || i2 <= 6 && k2 <= 2 || i2 <= 7 && k2 <= 1) {
-                    for (j13 = 0; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= 0; --j13) {
+                    for (j13 = 0; (j13 >= 0 || !isOpaque(world, i12, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                         setBlockAndMetadata(world, i12, j13, k12, brickBlock, brickMeta);
                         setGrassToDirt(world, i12, j13 - 1, k12);
                     }
@@ -299,7 +299,7 @@ public class LOTREasterlingGatehouseStructure extends LOTREasterlingStructureTow
                 setBlockAndMetadata(world, i13, j110, k12, brickStairBlock, 1);
                 setGrassToDirt(world, i13, j110 - 1, k12);
                 j2 = j110 - 1;
-                while (!isOpaque(world, i13, j2, k12) && getY(j2) >= 0) {
+                while (!isOpaque(world, i13, j2, k12) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i13, j2, k12, brickBlock, brickMeta);
                     setGrassToDirt(world, i13, j2 - 1, k12);
                     --j2;
@@ -309,7 +309,7 @@ public class LOTREasterlingGatehouseStructure extends LOTREasterlingStructureTow
                 setBlockAndMetadata(world, i13, j1, k12, brickStairBlock, 0);
                 setGrassToDirt(world, i13, j1 - 1, k12);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i13, j2, k12) && getY(j2) >= 0) {
+                while (!isOpaque(world, i13, j2, k12) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i13, j2, k12, brickBlock, brickMeta);
                     setGrassToDirt(world, i13, j2 - 1, k12);
                     --j2;

@@ -29,12 +29,12 @@ public class LOTRGondorFortWallCornerStructure extends LOTRGondorStructure {
             findSurface(world, i1, k1);
             pillar = Math.abs(l) == 3;
             if (pillar) {
-                for (j1 = 4; (j1 >= 1 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 4; (j1 >= 1 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k1, pillar2Block, pillar2Meta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }
             } else {
-                for (j1 = 4; (j1 >= 1 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 4; (j1 >= 1 || !isOpaque(world, i1, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i1, j1, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }

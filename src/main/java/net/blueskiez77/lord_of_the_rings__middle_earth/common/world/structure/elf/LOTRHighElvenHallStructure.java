@@ -180,7 +180,7 @@ public class LOTRHighElvenHallStructure extends LOTRStructureBase {
         }
         for (i14 = i; i14 <= i + 15; ++i14) {
             for (k14 = k; k14 <= k + 15; ++k14) {
-                for (j12 = j; (j12 == j || !isOpaqueAt(world, i14, j12, k14)) && j12 >= 0; --j12) {
+                for (j12 = j; (j12 == j || !isOpaqueAt(world, i14, j12, k14)) && j12 >= world.getMinY(); --j12) {
                     setBlockAndNotifyAdequately(world, i14, j12, k14, LOTRLegacyBlocks.mod("brick3"), 2);
                     setGrassToDirt(world, i14, j12 - 1, k14);
                 }

@@ -28,7 +28,7 @@ public class LOTRHarnedorPalisadeStructure extends LOTRHarnedorStructure {
         if (isRuined()) {
             height = Math.max(1, height - 2);
         }
-        for (int j12 = height; (j12 >= 0 || !isOpaque(world, 0, j12, 0)) && getY(j12) >= 0; --j12) {
+        for (int j12 = height; (j12 >= 0 || !isOpaque(world, 0, j12, 0)) && getY(j12) >= world.getMinY(); --j12) {
             setBlockAndMetadata(world, 0, j12, 0, woodBlock, woodMeta);
             setGrassToDirt(world, 0, j12 - 1, 0);
         }

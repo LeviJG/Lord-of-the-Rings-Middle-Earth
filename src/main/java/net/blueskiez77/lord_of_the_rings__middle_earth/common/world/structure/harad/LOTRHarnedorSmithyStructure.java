@@ -50,7 +50,7 @@ public class LOTRHarnedorSmithyStructure extends LOTRHarnedorStructure {
                     continue;
                 }
                 j1 = -1;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j1, k1, plank2Block, plank2Meta);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     --j1;

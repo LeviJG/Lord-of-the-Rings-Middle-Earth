@@ -62,7 +62,7 @@ public class LOTRHarnedorPastureStructure extends LOTRHarnedorStructure {
         for (int i1 = -3; i1 <= 3; ++i1) {
             for (int k1 = -3; k1 <= 6; ++k1) {
                 int j12 = -1;
-                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= 0) {
+                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j12, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                     --j12;
@@ -90,7 +90,7 @@ public class LOTRHarnedorPastureStructure extends LOTRHarnedorStructure {
                     setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     j2 = j1 - 1;
-                    while (!isOpaque(world, i1, j2, k1) && getY(j2) >= 0) {
+                    while (!isOpaque(world, i1, j2, k1) && getY(j2) >= world.getMinY()) {
                         setBlockAndMetadata(world, i1, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                         setGrassToDirt(world, i1, j2 - 1, k1);
                         --j2;
@@ -107,7 +107,7 @@ public class LOTRHarnedorPastureStructure extends LOTRHarnedorStructure {
                 setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                 setGrassToDirt(world, i1, j1 - 1, k1);
                 j2 = j1 - 1;
-                while (!isOpaque(world, i1, j2, k1) && getY(j2) >= 0) {
+                while (!isOpaque(world, i1, j2, k1) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j2, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i1, j2 - 1, k1);
                     --j2;

@@ -54,13 +54,13 @@ public class LOTREasterlingTowerStructure extends LOTREasterlingStructureTownStr
                     setAir(world, i12, j1, k1);
                 }
                 if (i2 == 2 && k2 == 2) {
-                    for (j1 = 13; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                    for (j1 = 13; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                         setBlockAndMetadata(world, i12, j1, k1, woodBeamBlock, woodBeamMeta);
                         setGrassToDirt(world, i12, j1 - 1, k1);
                     }
                     continue;
                 }
-                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= 0; --j1) {
+                for (j1 = 0; (j1 >= 0 || !isOpaque(world, i12, j1, k1)) && getY(j1) >= world.getMinY(); --j1) {
                     setBlockAndMetadata(world, i12, j1, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j1 - 1, k1);
                 }
@@ -230,7 +230,7 @@ public class LOTREasterlingTowerStructure extends LOTREasterlingStructureTownStr
 
     public void placeSideLadder(WorldGenLevel world, int i, int j, int k, int meta) {
         int j1 = j;
-        while (!isOpaque(world, i, j1, k) && getY(j1) >= 0) {
+        while (!isOpaque(world, i, j1, k) && getY(j1) >= world.getMinY()) {
             setBlockAndMetadata(world, i, j1, k, LOTRLegacyBlocks.vanilla("ladder"), meta);
             --j1;
         }

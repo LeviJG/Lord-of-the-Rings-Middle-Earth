@@ -62,9 +62,7 @@ import org.jspecify.annotations.Nullable;
  * ridden one climbs walls for five seconds before it must touch the ground
  * again. Poison venom can be drawn off into a glass bottle.
  *
- * <p>NOT ported yet: the climbing meter on the HUD (with the HUD); spawning in
- * darkness (D12); the hired-unit icon and health bar over it (with the other
- * mounts').
+ * <p>NOT ported yet: its natural spawning (D10/D12).
  */
 public abstract class LOTRSpiderEntity extends LOTRNPCRideableEntity {
 
@@ -181,7 +179,7 @@ public abstract class LOTRSpiderEntity extends LOTRNPCRideableEntity {
         this.entityData.set(DATA_CLIMBING, flag ? (byte) (b | 1) : (byte) (b & ~1));
     }
 
-    /** getClimbFractionRemaining, for the climbing meter (with the HUD). */
+    /** getClimbFractionRemaining, for the climbing meter (LOTRSpiderClimbHud). */
     public float getClimbFractionRemaining() {
         return 1.0f - Math.min(getSpiderClimbTime() / 100.0f, 1.0f);
     }

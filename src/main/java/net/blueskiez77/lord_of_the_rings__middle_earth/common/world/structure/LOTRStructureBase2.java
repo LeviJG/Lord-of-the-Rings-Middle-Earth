@@ -25,7 +25,6 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRKe
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRMugBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRPlateBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRWeaponRackBlockEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRBrewingRecipes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
@@ -34,6 +33,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestCont
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRBrewingRecipes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyBlocks.LegacyBlock;
 
 import net.minecraft.core.BlockPos;
@@ -52,7 +52,6 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.decoration.ItemFrame;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.AbstractFurnaceBlock;
@@ -62,9 +61,11 @@ import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ButtonBlock;
+import net.minecraft.world.level.block.CarpetBlock;
 import net.minecraft.world.level.block.CarvedPumpkinBlock;
 import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.DoorBlock;
+import net.minecraft.world.level.block.DoublePlantBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
 import net.minecraft.world.level.block.LadderBlock;
@@ -73,6 +74,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.SkullBlock;
 import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.SnowLayerBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.StandingSignBlock;
 import net.minecraft.world.level.block.TorchBlock;
@@ -86,10 +88,12 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.block.state.properties.SlabType;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
-import net.minecraft.world.level.material.Fluids;
 
 import org.jspecify.annotations.Nullable;
 
@@ -105,10 +109,13 @@ import org.jspecify.annotations.Nullable;
  * beams, doors, trapdoors, gates, torches, ladders, signs, chests, furnaces
  * and the mod's ovens, forges, barrels, kebab stands, mugs and weapon racks,
  * beds, levers, buttons, tripwire hooks, anvils, pumpkins, skulls -- are
- * turned with it here too. Blocks are set without neighbour updates, as the
- * original's were (its fences and panes joined up when drawn); when the whole
- * structure is placed, each block it set has its shape brought into line with
- * its neighbours, so fences, walls, panes and stairs join as they should.
+ * turned with it here too. Blocks are set with the original's flags
+ * ({@link #placeFlags}): a spawned structure tells its neighbours, a
+ * generated one does not. When the whole structure is placed, each block it
+ * set has its shape brought into line with its neighbours, so fences, walls
+ * and panes join as the original's did when drawn; stairs stay straight, as
+ * the original's could not turn corners, and nothing is broken for want of
+ * support, since 1.7.10 never looked again.
  *
  * <p>NOT ported yet: the timelapse (a debug option); the biome's own top and
  * filler blocks and LOTR biomes' flowers and grasses (D10), so until then a
@@ -162,17 +169,31 @@ public abstract class LOTRStructureBase2 {
 
     /**
      * The shape pass: each block set takes the shape its neighbours now give
-     * it, as vanilla's structure templates do after placing theirs.
+     * it, as vanilla's structure templates do after placing theirs -- all but
+     * stairs, which 1.7.10 never bent into corners: they are set back straight.
      */
     private void finishPlacement(WorldGenLevel world) {
         for (BlockPos pos : this.placed) {
             BlockState state = world.getBlockState(pos);
-            BlockState updated = Block.updateFromNeighbourShapes(state, world, pos);
-            if (updated != state) {
+            BlockState updated = state.getBlock() instanceof StairBlock
+                    ? state.setValue(StairBlock.SHAPE, StairsShape.STRAIGHT)
+                    : Block.updateFromNeighbourShapes(state, world, pos);
+            // 1.7.10 never checked a block again once it was set, so the pass
+            // only joins and turns blocks; it does not break what cannot stay.
+            if (updated != state && !(updated.isAir() && !state.isAir())) {
                 world.setBlock(pos, updated, Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
             }
         }
         this.placed.clear();
+    }
+
+    /**
+     * setBlock's flags: with notifyChanges, 3 -- the neighbours told, as the
+     * original's spawned structures did; without, 2, which in 1.7.10 told no
+     * one, so nothing nearby reshapes or breaks while the structure goes up.
+     */
+    public int placeFlags() {
+        return this.notifyChanges ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE;
     }
 
     public void generateSubstructure(LOTRStructureBase2 str, WorldGenLevel world, RandomSource random, int i, int j, int k, int r) {
@@ -381,6 +402,43 @@ public abstract class LOTRStructureBase2 {
 
     public void setBlockAndMetadata(WorldGenLevel world, int i, int j, int k, LegacyBlock block, int meta) {
         setBlockState(world, i, j, k, block.state(meta));
+        // A chest, furnace, oven or forge at 0 was left to face the way it chose for itself.
+        BlockPos pos = meta == 0 ? worldPos(i, j, k) : null;
+        if (pos != null && takesDefaultDirection(world.getBlockState(pos).getBlock())) {
+            world.setBlock(pos, withDefaultDirection(world, pos, world.getBlockState(pos)),
+                    placeFlags());
+        }
+    }
+
+    /** The blocks whose onBlockAdded set their own facing in 1.7.10 (setDefaultDirection). */
+    public static boolean takesDefaultDirection(Block block) {
+        return block instanceof ChestBlock || block instanceof AbstractFurnaceBlock || block instanceof LOTRHobbitOvenBlock;
+    }
+
+    /**
+     * setDefaultDirection: facing away from a solid block on one side with
+     * none opposite -- north, then south, west, east checked in turn, the last
+     * that applies winning -- and south if none does.
+     */
+    public static BlockState withDefaultDirection(WorldGenLevel world, BlockPos pos, BlockState state) {
+        if (!state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+            return state;
+        }
+        boolean north = world.getBlockState(pos.north()).isSolidRender();
+        boolean south = world.getBlockState(pos.south()).isSolidRender();
+        boolean west = world.getBlockState(pos.west()).isSolidRender();
+        boolean east = world.getBlockState(pos.east()).isSolidRender();
+        Direction facing = Direction.SOUTH;
+        if (south && !north) {
+            facing = Direction.NORTH;
+        }
+        if (west && !east) {
+            facing = Direction.EAST;
+        }
+        if (east && !west) {
+            facing = Direction.WEST;
+        }
+        return state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
     }
 
     /** setBlockAndMetadata, with the state already worked out at rotation 0. */
@@ -389,9 +447,47 @@ public abstract class LOTRStructureBase2 {
         if (pos == null) {
             return;
         }
-        state = rotateState(state);
-        world.setBlock(pos, state, this.notifyChanges ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS);
+        int flags = placeFlags();
+        state = joinHalves(world, pos, rotateState(state), flags, this.sbb);
+        world.setBlock(pos, state, flags);
         this.placed.add(pos);
+    }
+
+    /**
+     * 1.7.10 split a two-block block's state between its halves: a door's
+     * facing and whether it stood open were the bottom half's, its hinge the
+     * top's; a double plant's kind was the bottom half's. Each half alone
+     * reads as the rest defaulted, so as the second half goes in the two are
+     * joined -- else the door turns to the top half's default facing, and a
+     * plant's halves disagree and both break.
+     */
+    public static BlockState joinHalves(WorldGenLevel world, BlockPos pos, BlockState state, int flags,
+                                        @Nullable BoundingBox sbb) {
+        if (state.getBlock() instanceof DoorBlock) {
+            boolean upper = state.getValue(DoorBlock.HALF) == DoubleBlockHalf.UPPER;
+            BlockPos otherPos = upper ? pos.below() : pos.above();
+            BlockState other = world.getBlockState(otherPos);
+            if (!other.is(state.getBlock()) || other.getValue(DoorBlock.HALF) == state.getValue(DoorBlock.HALF)
+                    || sbb != null && !sbb.isInside(otherPos)) {
+                return state;
+            }
+            BlockState lower = upper ? other : state;
+            BlockState top = upper ? state : other;
+            lower = lower.setValue(DoorBlock.HINGE, top.getValue(DoorBlock.HINGE))
+                    .setValue(DoorBlock.POWERED, top.getValue(DoorBlock.POWERED));
+            top = top.setValue(DoorBlock.FACING, lower.getValue(DoorBlock.FACING))
+                    .setValue(DoorBlock.OPEN, lower.getValue(DoorBlock.OPEN));
+            world.setBlock(otherPos, upper ? lower : top, flags);
+            return upper ? top : lower;
+        }
+        if (state.getBlock() instanceof DoublePlantBlock && state.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.UPPER) {
+            BlockState below = world.getBlockState(pos.below());
+            if (below.getBlock() instanceof DoublePlantBlock && !below.is(state.getBlock())
+                    && below.getValue(DoublePlantBlock.HALF) == DoubleBlockHalf.LOWER) {
+                return below.setValue(DoublePlantBlock.HALF, DoubleBlockHalf.UPPER);
+            }
+        }
+        return state;
     }
 
     public void setAir(WorldGenLevel world, int i, int j, int k) {
@@ -432,7 +528,7 @@ public abstract class LOTRStructureBase2 {
         }
         BlockState state = world.getBlockState(pos);
         if (state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.MYCELIUM) || state.is(Blocks.PODZOL)) {
-            world.setBlock(pos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_CLIENTS);
+            world.setBlock(pos, Blocks.DIRT.defaultBlockState(), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
         }
     }
 
@@ -518,8 +614,7 @@ public abstract class LOTRStructureBase2 {
                 }
                 int meta = step.getMeta(aliasMeta);
                 BlockState state = block.state(meta);
-                boolean opaqueOrAir = state.isAir() || state.canOcclude();
-                if (opaqueOrAir != (pass == 0)) {
+                if (isOpaqueMaterialOrAir(state) != (pass == 0)) {
                     continue;
                 }
                 if (step.findLowest) {
@@ -531,7 +626,7 @@ public abstract class LOTRStructureBase2 {
                     placeSkull(world, random, i1, j1, k1);
                     continue;
                 }
-                setBlockState(world, i1, j1, k1, state);
+                setBlockAndMetadata(world, i1, j1, k1, block, meta);
                 if ((step.findLowest || j1 <= 1) && state.isSolidRender()) {
                     setGrassToDirt(world, i1, j1 - 1, k1);
                 }
@@ -540,7 +635,7 @@ public abstract class LOTRStructureBase2 {
                 }
                 int j2 = j1 - 1;
                 while (!isOpaque(world, i1, j2, k1) && getY(j2) >= world.getMinY()) {
-                    setBlockState(world, i1, j2, k1, state);
+                    setBlockAndMetadata(world, i1, j2, k1, block, meta);
                     if (state.isSolidRender()) {
                         setGrassToDirt(world, i1, j2 - 1, k1);
                     }
@@ -550,6 +645,20 @@ public abstract class LOTRStructureBase2 {
         }
         this.currentStrScan = null;
         this.scanAliases.clear();
+    }
+
+    /**
+     * {@code block.getMaterial().isOpaque() || block == Blocks.air}: the scan's
+     * first pass. 1.7.10's see-through materials -- glass, ice, leaves, plants,
+     * torches and other fittings, carpets, snow, liquids -- went in the second,
+     * after what they stand on.
+     */
+    private static boolean isOpaqueMaterialOrAir(BlockState state) {
+        if (state.isAir()) {
+            return true;
+        }
+        return state.canOcclude() && !state.canBeReplaced() && state.getFluidState().isEmpty()
+                && !(state.getBlock() instanceof CarpetBlock) && !(state.getBlock() instanceof SnowLayerBlock);
     }
 
     // ------------------------------------------------------------ helpers
@@ -695,7 +804,8 @@ public abstract class LOTRStructureBase2 {
             direction = (direction + 1) & 3;
         }
         ArmorStand stand = new ArmorStand(world.getLevel(), pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-        stand.setYRot(Direction.from2DDataValue(direction).toYRot());
+        // LOTRRenderArmorStand drew metadata 0 facing north, back at whoever set it down: yaw 180 + 90 * direction.
+        stand.setYRot(Direction.from2DDataValue(direction).getOpposite().toYRot());
         if (armor != null) {
             net.minecraft.world.entity.EquipmentSlot[] slots = {net.minecraft.world.entity.EquipmentSlot.HEAD,
                     net.minecraft.world.entity.EquipmentSlot.CHEST, net.minecraft.world.entity.EquipmentSlot.LEGS,
@@ -736,7 +846,7 @@ public abstract class LOTRStructureBase2 {
         }
         dir += this.rotationMode * 4;
         world.setBlock(pos, Blocks.SKELETON_SKULL.defaultBlockState().setValue(SkullBlock.ROTATION, dir % 16),
-                this.notifyChanges ? Block.UPDATE_ALL : Block.UPDATE_CLIENTS);
+                placeFlags());
         this.placed.add(pos);
     }
 
@@ -885,7 +995,7 @@ public abstract class LOTRStructureBase2 {
             return;
         }
         Block banner = LOTRBlocks.standingBanner(type);
-        world.setBlock(pos, banner.defaultBlockState().setValue(BannerBlock.ROTATION, (direction & 3) * 4), 2);
+        world.setBlock(pos, banner.defaultBlockState().setValue(BannerBlock.ROTATION, (direction & 3) * 4), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
         if (world.getBlockEntity(pos) instanceof LOTRBannerBlockEntity be) {
             if (protection) {
                 be.setStructureProtection(true);
@@ -911,7 +1021,7 @@ public abstract class LOTRStructureBase2 {
         }
         Direction facing = Direction.from2DDataValue(direction & 3);
         Block wall = LOTRBlocks.BANNER_WALL_FORM.get(LOTRBlocks.standingBanner(type));
-        world.setBlock(wallPos.relative(facing).above(), wall.defaultBlockState().setValue(WallBannerBlock.FACING, facing), 2);
+        world.setBlock(wallPos.relative(facing).above(), wall.defaultBlockState().setValue(WallBannerBlock.FACING, facing), Block.UPDATE_CLIENTS | Block.UPDATE_KNOWN_SHAPE);
     }
 
     /**

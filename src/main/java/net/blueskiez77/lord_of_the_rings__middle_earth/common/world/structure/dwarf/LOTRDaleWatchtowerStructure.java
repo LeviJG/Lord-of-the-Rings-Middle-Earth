@@ -50,7 +50,7 @@ public class LOTRDaleWatchtowerStructure extends LOTRDaleStructure {
             for (k1 = -2; k1 <= 2; ++k1) {
                 i2 = Math.abs(i12);
                 k2 = Math.abs(k1);
-                for (j12 = 8; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 8; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     if (i2 == 2 && k2 == 2) {
                         setBlockAndMetadata(world, i12, j12, k1, pillarBlock, pillarMeta);
                     } else {
@@ -78,7 +78,7 @@ public class LOTRDaleWatchtowerStructure extends LOTRDaleStructure {
                 if ((i2 != 1 || k2 != 3) && (i2 != 3 || k2 != 1)) {
                     continue;
                 }
-                for (j12 = 3; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= 0; --j12) {
+                for (j12 = 3; (j12 >= 0 || !isOpaque(world, i12, j12, k1)) && getY(j12) >= world.getMinY(); --j12) {
                     setBlockAndMetadata(world, i12, j12, k1, brickBlock, brickMeta);
                     setGrassToDirt(world, i12, j12 - 1, k1);
                 }

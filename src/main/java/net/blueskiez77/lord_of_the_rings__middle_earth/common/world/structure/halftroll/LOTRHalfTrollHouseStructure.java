@@ -43,7 +43,7 @@ public class LOTRHalfTrollHouseStructure extends LOTRStructureBase2 {
                         continue;
                     }
                     if (j1 == 0) {
-                        for (int j2 = 0; (j2 == 0 || !isOpaque(world, i1, j2, k1)) && getY(j2) >= 0; --j2) {
+                        for (int j2 = 0; (j2 == 0 || !isOpaque(world, i1, j2, k1)) && getY(j2) >= world.getMinY(); --j2) {
                             setBlockAndMetadata(world, i1, j2, k1, LOTRLegacyBlocks.vanilla("hardened_clay"), 0);
                             setGrassToDirt(world, i1, j2 - 1, k1);
                         }

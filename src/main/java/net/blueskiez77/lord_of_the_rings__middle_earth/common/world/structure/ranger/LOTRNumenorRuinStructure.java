@@ -23,7 +23,7 @@ public class LOTRNumenorRuinStructure extends LOTRStructureBase2 {
                 int j1;
                 if (Math.abs(i1) == width || Math.abs(k1) == width) {
                     j1 = 0;
-                    while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                    while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                         placeRandomBrick(world, random, i1, j1, k1);
                         setGrassToDirt(world, i1, j1 - 1, k1);
                         --j1;
@@ -32,7 +32,7 @@ public class LOTRNumenorRuinStructure extends LOTRStructureBase2 {
                 }
                 setBlockAndMetadata(world, i1, 0, k1, LOTRLegacyBlocks.vanilla("grass"), 0);
                 j1 = -1;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     --j1;

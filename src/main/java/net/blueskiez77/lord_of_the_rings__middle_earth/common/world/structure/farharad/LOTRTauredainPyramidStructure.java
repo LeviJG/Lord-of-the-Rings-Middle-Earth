@@ -164,7 +164,7 @@ public class LOTRTauredainPyramidStructure extends LOTRStructureBase2 {
         for (i1 = -RADIUS; i1 <= RADIUS; ++i1) {
             for (k12 = -RADIUS; k12 <= RADIUS; ++k12) {
                 j1 = 0;
-                while ((getY(j1) >= originY || !isOpaque(world, i1, j1, k12)) && getY(j1) >= 0) {
+                while ((getY(j1) >= originY || !isOpaque(world, i1, j1, k12)) && getY(j1) >= world.getMinY()) {
                     placeRandomBrick(world, random, i1, j1, k12);
                     setGrassToDirt(world, i1, j1 - 1, k12);
                     --j1;

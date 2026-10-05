@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
 import net.minecraft.world.DifficultyInstance;
@@ -11,7 +12,6 @@ import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -29,6 +29,7 @@ public class LOTRGondorTowerGuardEntity extends LOTRGondorSoldierEntity {
 
     public LOTRGondorTowerGuardEntity(EntityType<? extends LOTRGondorTowerGuardEntity> type, Level level) {
         super(type, level);
+        this.npcCape = LOTRCapes.TOWER_GUARD;
         this.spawnRidingHorse = false;
     }
 

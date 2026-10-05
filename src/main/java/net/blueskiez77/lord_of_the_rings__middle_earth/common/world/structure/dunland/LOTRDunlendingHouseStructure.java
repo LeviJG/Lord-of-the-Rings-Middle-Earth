@@ -45,7 +45,7 @@ public class LOTRDunlendingHouseStructure extends LOTRDunlandStructure {
             for (int k1 = -6; k1 <= 5; ++k1) {
                 if (k1 >= -5) {
                     j1 = -1;
-                    while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                    while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                         setBlockAndMetadata(world, i1, j1, k1, floorBlock, floorMeta);
                         setGrassToDirt(world, i1, j1 - 1, k1);
                         --j1;

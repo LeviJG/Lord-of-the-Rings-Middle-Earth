@@ -121,7 +121,7 @@ public class LOTRDwarfHouseStructure extends LOTRStructureBase2 {
                 k2 = Math.abs(k1);
                 int dist = (int) Math.round(Math.sqrt(i2 * i2 + k2 * k2));
                 int top = 13 - dist;
-                for (int j15 = top = Math.min(top, 7); (j15 >= -5 || !isOpaque(world, i1, j15, k1)) && getY(j15) >= 0; --j15) {
+                for (int j15 = top = Math.min(top, 7); (j15 >= -5 || !isOpaque(world, i1, j15, k1)) && getY(j15) >= world.getMinY(); --j15) {
                     if (isOpaque(world, i1, j15, k1)) {
                         continue;
                     }
@@ -174,7 +174,7 @@ public class LOTRDwarfHouseStructure extends LOTRStructureBase2 {
                     diff += i3 - limit;
                 }
                 int j16 = top = -(i3 + diff) / 2;
-                while (!isOpaque(world, i1, j16, k1) && getY(j16) >= 0) {
+                while (!isOpaque(world, i1, j16, k1) && getY(j16) >= world.getMinY()) {
                     LegacyBlock block;
                     int meta;
                     if (j16 >= top - 4) {

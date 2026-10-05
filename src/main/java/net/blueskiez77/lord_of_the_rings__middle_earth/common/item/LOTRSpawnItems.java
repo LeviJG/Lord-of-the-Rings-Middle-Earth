@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.register;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
-
-import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.register;
 
 /**
  * The "Middle-earth Spawning" tab's items (tabSpawn): the spawn eggs, in the
@@ -147,6 +146,7 @@ public final class LOTRSpawnItems {
     public static final LOTRSpawnEggItem SOUTHRON_FLORIST_SPAWN_EGG = egg("southron_florist", LOTREntities.SOUTHRON_FLORIST, 10779229, 2960685);
     public static final LOTRSpawnEggItem SOUTHRON_BUTCHER_SPAWN_EGG = egg("southron_butcher", LOTREntities.SOUTHRON_BUTCHER, 10779229, 2960685);
     public static final LOTRSpawnEggItem BLUE_DWARF_MERCHANT_SPAWN_EGG = egg("blue_dwarf_merchant", LOTREntities.BLUE_DWARF_MERCHANT, 16353133, 15357472);
+    public static final LOTRSpawnEggItem BANDIT_SPAWN_EGG = egg("bandit", LOTREntities.BANDIT, 16225652, 5323553);
     public static final LOTRSpawnEggItem RANGER_NORTH_BANNER_BEARER_SPAWN_EGG = egg("ranger_north_banner_bearer", LOTREntities.RANGER_NORTH_BANNER_BEARER, 4473912, 2302748);
     public static final LOTRSpawnEggItem ELK_SPAWN_EGG = egg("elk", LOTREntities.ELK, 15459801, 11905424);
     public static final LOTRSpawnEggItem GONDOR_TOWER_GUARD_SPAWN_EGG = egg("gondor_tower_guard", LOTREntities.GONDOR_TOWER_GUARD, 5327948, 15063770);
@@ -192,6 +192,7 @@ public final class LOTRSpawnItems {
     public static final LOTRSpawnEggItem ANGMAR_HILLMAN_AXE_THROWER_SPAWN_EGG = egg("angmar_hillman_axe_thrower", LOTREntities.ANGMAR_HILLMAN_AXE_THROWER, 11828586, 2891544);
     public static final LOTRSpawnEggItem DUNLENDING_AXE_THROWER_SPAWN_EGG = egg("dunlending_axe_thrower", LOTREntities.DUNLENDING_AXE_THROWER, 5192753, 9337975);
     public static final LOTRSpawnEggItem IRON_HILLS_MERCHANT_SPAWN_EGG = egg("iron_hills_merchant", LOTREntities.IRON_HILLS_MERCHANT, 16353133, 15357472);
+    public static final LOTRSpawnEggItem SCRAP_TRADER_SPAWN_EGG = egg("scrap_trader", LOTREntities.SCRAP_TRADER, 16225652, 5323553);
     public static final LOTRSpawnEggItem TAUREDAIN_SPAWN_EGG = egg("tauredain", LOTREntities.TAUREDAIN, 4468770, 12948008);
     public static final LOTRSpawnEggItem TAUREDAIN_WARRIOR_SPAWN_EGG = egg("tauredain_warrior", LOTREntities.TAUREDAIN_WARRIOR, 5652267, 9165389);
     public static final LOTRSpawnEggItem TAUREDAIN_BANNER_BEARER_SPAWN_EGG = egg("tauredain_banner_bearer", LOTREntities.TAUREDAIN_BANNER_BEARER, 5652267, 9165389);
@@ -209,6 +210,7 @@ public final class LOTRSpawnItems {
     public static final LOTRSpawnEggItem GUNDABAD_URUK_ARCHER_SPAWN_EGG = egg("gundabad_uruk_archer", LOTREntities.GUNDABAD_URUK_ARCHER, 2563350, 6382678);
     public static final LOTRSpawnEggItem ISENGARD_SNAGA_SPAWN_EGG = egg("isengard_snaga", LOTREntities.ISENGARD_SNAGA, 4339500, 8352349);
     public static final LOTRSpawnEggItem ISENGARD_SNAGA_ARCHER_SPAWN_EGG = egg("isengard_snaga_archer", LOTREntities.ISENGARD_SNAGA_ARCHER, 4339500, 8352349);
+    public static final LOTRSpawnEggItem BANDIT_HARAD_SPAWN_EGG = egg("bandit_harad", LOTREntities.BANDIT_HARAD, 10779229, 2960685);
     public static final LOTRSpawnEggItem DEER_SPAWN_EGG = egg("deer", LOTREntities.DEER, 5978669, 11968394);
     public static final LOTRSpawnEggItem DALE_MAN_SPAWN_EGG = egg("dale_man", LOTREntities.DALE_MAN, 16755851, 5252113);
     public static final LOTRSpawnEggItem DALE_LEVYMAN_SPAWN_EGG = egg("dale_levyman", LOTREntities.DALE_LEVYMAN, 7034184, 5252113);

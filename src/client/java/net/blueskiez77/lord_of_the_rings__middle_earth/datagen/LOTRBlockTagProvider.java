@@ -282,11 +282,17 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         // LOTRBlockEntJar is Material.clay, which the shovel was effective on.
         shovel.add(LOTRBlocks.keyOf(LOTRUtilityBlocks.ENT_JAR));
 
-        // LOTRBlockWaste.isFireSource: fire on its top face never goes out, in
-        // any dimension -- netherrack's infiniburn.
+        // isFireSource: fire on these never goes out, in any dimension --
+        // netherrack's infiniburn. The waste, the hearth, the sulfur block
+        // (LOTRBlockOreStorage meta 13) and the fire and burning Utumno bricks
+        // (LOTRBlockUtumnoBrick metas 0 and 1).
         for (TagKey<Block> infiniburn : List.of(BlockTags.INFINIBURN_OVERWORLD,
                 BlockTags.INFINIBURN_NETHER, BlockTags.INFINIBURN_END)) {
-            builder(infiniburn).add(LOTRBlocks.keyOf(LOTRBuildingBlocks.WASTE_BLOCK));
+            builder(infiniburn).add(LOTRBlocks.keyOf(LOTRBuildingBlocks.WASTE_BLOCK))
+                    .add(LOTRBlocks.keyOf(LOTRBuildingBlocks.HEARTH))
+                    .add(LOTRBlocks.keyOf(LOTRBuildingBlocks.SULFUR_BLOCK))
+                    .add(LOTRBlocks.keyOf(LOTRBuildingBlocks.FIRE_UTUMNO_BRICK))
+                    .add(LOTRBlocks.keyOf(LOTRBuildingBlocks.BURNING_UTUMNO_BRICK));
         }
         LOTRBlocks.ALL_GATES.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
         LOTRBlocks.ALL_FENCE_GATES.forEach(b -> axe.add(LOTRBlocks.keyOf(b)));

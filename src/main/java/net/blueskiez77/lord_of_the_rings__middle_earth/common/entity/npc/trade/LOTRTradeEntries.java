@@ -57,11 +57,10 @@ public final class LOTRTradeEntries {
             t("leek", 2, 1), t(Items.COD, 2), t("salt", 10), t("four_leaf_clover", 40), t(Items.BUCKET, 3),
             t(Items.WATER_BUCKET, 4), anyOf(t(Items.COAL, 2, 1), Items.CHARCOAL));
 
-    /** Without the branding iron (16), not ported yet. */
     public static final LOTRTradeEntries HOBBIT_FARMER_BUY = buy(
             t(Items.WHEAT, 2), t(Items.WHEAT_SEEDS, 1), t(Items.CARROT, 3), t(Items.POTATO, 2), t("lettuce", 3),
             t("leek", 3), t("turnip", 3), t("pipeweed_leaf", 4), t("pipeweed_seeds", 3), t("corn", 2),
-            t("corn_stalk", 1), t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8),
+            t("corn_stalk", 1), t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8), t("branding_iron", 16),
             t(Items.HAY_BLOCK, 12))
             .setVessels(LOTRFoods.HOBBIT_DRINK);
 
@@ -218,12 +217,11 @@ public final class LOTRTradeEntries {
             t(Items.BUCKET, 3), t(Items.WATER_BUCKET, 4), t(Items.IRON_HOE, 8), t(Items.STONE_HOE, 1),
             t("bronze_hoe", 6), t(Items.BONE_MEAL, 6, 1));
 
-    /** Without the branding iron (16), not ported yet. */
     public static final LOTRTradeEntries BREE_FARMER_BUY = buy(
             t(Items.WHEAT, 2), t(Items.WHEAT_SEEDS, 1), t(Items.CARROT, 3), t(Items.POTATO, 2), t("lettuce", 3),
             t("leek", 3), t("turnip", 3), t("pipeweed_leaf", 8), t("pipeweed_seeds", 6), t("corn", 2),
             t("corn_stalk", 1), t(Items.APPLE, 3), t("green_apple", 3), t("pear", 3), t("cherries", 2), t("plum", 3),
-            t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8), t(Items.HAY_BLOCK, 12))
+            t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8), t("branding_iron", 16), t(Items.HAY_BLOCK, 12))
             .setVessels(LOTRFoods.BREE_DRINK);
 
     public static final LOTRTradeEntries BREE_FARMER_SELL = sell(
@@ -446,11 +444,10 @@ public final class LOTRTradeEntries {
             t(Items.COPPER_INGOT, 3), t("tin_ingot", 3), t("bronze_ingot", 3), t(Items.STRING, 3, 1), t("diamond", 25),
             t("emerald", 15), t("opal", 10), t(Items.LEATHER, 2));
 
-    /** Without the branding iron (16), not ported yet. */
     public static final LOTRTradeEntries GONDOR_FARMER_BUY = buy(
             t(Items.WHEAT, 2), t(Items.WHEAT_SEEDS, 1), t(Items.CARROT, 3), t(Items.POTATO, 2), t("lettuce", 3),
             t("leek", 3), t("turnip", 3), t("pipeweed_plant", 10), t("corn", 2, 1), t("corn_stalk", 1),
-            t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8), t(Items.HAY_BLOCK, 12))
+            t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8), t("branding_iron", 16), t(Items.HAY_BLOCK, 12))
             .setVessels(LOTRFoods.GONDOR_DRINK);
 
     public static final LOTRTradeEntries GONDOR_FARMER_SELL = sell(
@@ -1049,11 +1046,10 @@ public final class LOTRTradeEntries {
             t("lime", 2), t("salt", 10), t(Items.BUCKET, 3), t(Items.WATER_BUCKET, 4),
             anyOf(t(Items.COAL, 2, 1), Items.CHARCOAL));
 
-    /** The branding iron (16) comes with the branding iron item. */
     public static final LOTRTradeEntries HARAD_FARMER_BUY = buy(
             t(Items.WHEAT, 2), t(Items.WHEAT_SEEDS, 1), t(Items.CARROT, 3), t(Items.POTATO, 2), t("lettuce", 3),
             t("turnip", 3), t("corn", 2), t("corn_stalk", 1), t("orange", 3), t("lemon", 3), t("lime", 3),
-            t("almond", 2), t("plum", 3), t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8),
+            t("almond", 2), t("plum", 3), t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8), t("branding_iron", 16),
             t(Items.HAY_BLOCK, 12))
             .setVessels(LOTRFoods.SOUTHRON_DRINK);
 
@@ -1513,11 +1509,10 @@ public final class LOTRTradeEntries {
             t("bronze_spear", 5), t("rhunic_spear", 5), t(Items.ARROW, 4, 2), t(Items.STICK, 8, 1),
             t(Items.STRING, 3, 1), t("bottle_of_poison", 10));
 
-    /** Without the branding iron (16), not ported yet. */
     public static final LOTRTradeEntries RHUN_FARMER_BUY = buy(
             t(Items.WHEAT, 2), t(Items.WHEAT_SEEDS, 1), t(Items.CARROT, 3), t(Items.POTATO, 2), t("lettuce", 3),
             t("leek", 3), t("turnip", 3), t("corn", 2), t("corn_stalk", 1), t("red_grapes", 4), t("green_grapes", 4),
-            t("pomegranate", 3), t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8),
+            t("pomegranate", 3), t(Items.WOOL.white(), 2), t(Items.MILK_BUCKET, 8), t(Items.LEAD, 8), t("branding_iron", 16),
             t(Items.HAY_BLOCK, 12))
             .setVessels(LOTRFoods.RHUN_DRINK);
 
@@ -1638,6 +1633,20 @@ public final class LOTRTradeEntries {
             t("iron_dagger", 3), t("bronze_dagger", 3), t("haradric_dagger", 3), t("iron_spear", 5),
             t("bronze_spear", 5), t("haradric_spear", 5), t(Items.ARROW, 4, 2), t(Items.STICK, 8, 1),
             t(Items.STRING, 3, 1), t("bottle_of_poison", 10));
+
+    /** The scrap trader buys only heather and suspicious meat, and takes all sorts. */
+    public static final LOTRTradeEntries SCRAP_TRADER_BUY = buy(
+            t("shire_heather", 8), t("suspicious_meat", 7));
+
+    public static final LOTRTradeEntries SCRAP_TRADER_SELL = sell(
+            t(Items.IRON_INGOT, 3), t(Items.COPPER_INGOT, 3), t("tin_ingot", 3), t("bronze_ingot", 3),
+            t("orc_steel_ingot", 3), t("uruk_steel_ingot", 5), t("black_uruk_steel_ingot", 5),
+            t("dwarven_steel_ingot", 5), t("blue_dwarven_steel_ingot", 5), t("elven_steel_ingot", 5), t("diamond", 25),
+            t("emerald", 15), t("sapphire", 12), t("ruby", 12), t("opal", 10), t("amber", 10), t("amethyst", 8),
+            t("topaz", 8), t("pearl", 25), t("coral", 6), anyOf(t(Items.COAL, 2, 1), Items.CHARCOAL),
+            t("obsidian_shard", 2), t(Items.LEATHER, 2), t(Items.STRING, 3, 1), t(Items.STICK, 8, 1), t(Items.FLINT, 1),
+            t(Items.ROTTEN_FLESH, 2), t("fur", 2), t(Items.WHEAT_SEEDS, 2, 1), t(Items.FEATHER, 2), t("horn", 3),
+            t("conker", 2, 1), t("party_hat", 100));
 
     public final TradeType tradeType;
     private final List<Entry> tradeEntries;

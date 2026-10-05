@@ -74,7 +74,7 @@ public class LOTRHarnedorMarketStructure extends LOTRHarnedorStructure {
                     setAir(world, i14, j1, k14);
                 }
                 j1 = -1;
-                while (!isOpaque(world, i14, j1, k14) && getY(j1) >= 0) {
+                while (!isOpaque(world, i14, j1, k14) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i14, j1, k14, plank2Block, plank2Meta);
                     setGrassToDirt(world, i14, j1 - 1, k14);
                     --j1;
@@ -129,7 +129,7 @@ public class LOTRHarnedorMarketStructure extends LOTRHarnedorStructure {
                 setBlockAndMetadata(world, i1, j12, k12, plank2StairBlock, 2);
                 setGrassToDirt(world, i1, j12 - 1, k12);
                 j2 = j12 - 1;
-                while (!isOpaque(world, i1, j2, k12) && getY(j2) >= 0) {
+                while (!isOpaque(world, i1, j2, k12) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j2, k12, plank2Block, plank2Meta);
                     setGrassToDirt(world, i1, j2 - 1, k12);
                     --j2;
@@ -142,7 +142,7 @@ public class LOTRHarnedorMarketStructure extends LOTRHarnedorStructure {
                 setBlockAndMetadata(world, i1, j13, k12, plank2StairBlock, 3);
                 setGrassToDirt(world, i1, j13 - 1, k12);
                 j2 = j13 - 1;
-                while (!isOpaque(world, i1, j2, k12) && getY(j2) >= 0) {
+                while (!isOpaque(world, i1, j2, k12) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j2, k12, plank2Block, plank2Meta);
                     setGrassToDirt(world, i1, j2 - 1, k12);
                     --j2;
@@ -155,7 +155,7 @@ public class LOTRHarnedorMarketStructure extends LOTRHarnedorStructure {
                 setBlockAndMetadata(world, i12, j14, k1, plank2StairBlock, 1);
                 setGrassToDirt(world, i12, j14 - 1, k1);
                 j2 = j14 - 1;
-                while (!isOpaque(world, i12, j2, k1) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k1) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k1, plank2Block, plank2Meta);
                     setGrassToDirt(world, i12, j2 - 1, k1);
                     --j2;
@@ -168,7 +168,7 @@ public class LOTRHarnedorMarketStructure extends LOTRHarnedorStructure {
                 setBlockAndMetadata(world, i12, j15, k1, plank2StairBlock, 0);
                 setGrassToDirt(world, i12, j15 - 1, k1);
                 j2 = j15 - 1;
-                while (!isOpaque(world, i12, j2, k1) && getY(j2) >= 0) {
+                while (!isOpaque(world, i12, j2, k1) && getY(j2) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j2, k1, plank2Block, plank2Meta);
                     setGrassToDirt(world, i12, j2 - 1, k1);
                     --j2;

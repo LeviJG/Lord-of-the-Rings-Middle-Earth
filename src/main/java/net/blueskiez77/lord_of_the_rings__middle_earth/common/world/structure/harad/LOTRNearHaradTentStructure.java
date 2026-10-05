@@ -37,7 +37,7 @@ public class LOTRNearHaradTentStructure extends LOTRHarnedorStructure {
             for (k1 = -3; k1 <= 3; ++k1) {
                 int j13;
                 j12 = 0;
-                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= 0) {
+                while (!isOpaque(world, i1, j12, k1) && getY(j12) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j12, k1, LOTRLegacyBlocks.vanilla("sandstone"), 0);
                     setGrassToDirt(world, i1, j12 - 1, k1);
                     --j12;

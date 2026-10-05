@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Predicate;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBanditEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -52,8 +54,13 @@ public class LOTRNearestAttackableTargetGoal extends TargetGoal {
         return new LOTRNearestAttackableTargetGoal(mob, Mob.class, 0, true, target -> isFactionTarget(mob, target));
     }
 
+    /** LOTRMod.getNPCFaction: an NPC's own, a creature's from LOTREntityRegistry, or none. */
     public static LOTRFaction factionOf(@Nullable Entity entity) {
-        return entity instanceof LOTRNPCEntity npc ? npc.getFaction() : LOTRFaction.UNALIGNED;
+        if (entity instanceof LOTRNPCEntity npc) {
+            return npc.getFaction();
+        }
+        LOTREntityRegistry.RegistryInfo info = LOTREntityRegistry.get(entity);
+        return info != null ? info.alignmentFaction() : LOTRFaction.UNALIGNED;
     }
 
     /** LOTRNPCTargetSelector.isEntityApplicable. */
@@ -99,6 +106,10 @@ public class LOTRNearestAttackableTargetGoal extends TargetGoal {
         }
         if (target instanceof Player player) {
             return isPlayerSuitableTarget(player);
+        }
+        // Bandits are left to the hired units, which hunt them.
+        if (target instanceof LOTRBanditEntity) {
+            return this.mob instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive;
         }
         return true;
     }

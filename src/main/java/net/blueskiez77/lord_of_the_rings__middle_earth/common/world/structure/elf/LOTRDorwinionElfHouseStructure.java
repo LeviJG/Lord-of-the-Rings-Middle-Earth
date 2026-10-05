@@ -65,7 +65,7 @@ public class LOTRDorwinionElfHouseStructure extends LOTRDorwinionHouseStructure 
                 }
                 setBlockAndMetadata(world, i12, 0, k12, LOTRLegacyBlocks.vanilla("grass"), 0);
                 j12 = -1;
-                while (!isOpaque(world, i12, j12, k12) && getY(j12) >= 0) {
+                while (!isOpaque(world, i12, j12, k12) && getY(j12) >= world.getMinY()) {
                     setBlockAndMetadata(world, i12, j12, k12, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i12, j12 - 1, k12);
                     --j12;

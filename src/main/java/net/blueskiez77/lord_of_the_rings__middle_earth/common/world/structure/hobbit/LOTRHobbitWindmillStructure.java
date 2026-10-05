@@ -78,7 +78,7 @@ public class LOTRHobbitWindmillStructure extends LOTRStructureBase2 {
                 } else {
                     fillBlock = LOTRLegacyBlocks.vanilla("air");
                 }
-                for (j13 = 4; (j13 >= 0 || !isOpaque(world, i1, j13, k1)) && getY(j13) >= 0; --j13) {
+                for (j13 = 4; (j13 >= 0 || !isOpaque(world, i1, j13, k1)) && getY(j13) >= world.getMinY(); --j13) {
                     if (fillBlock == LOTRLegacyBlocks.vanilla("air")) {
                         if (j13 == 4 || j13 <= 0) {
                             setBlockAndMetadata(world, i1, j13, k1, plankBlock, plankMeta);

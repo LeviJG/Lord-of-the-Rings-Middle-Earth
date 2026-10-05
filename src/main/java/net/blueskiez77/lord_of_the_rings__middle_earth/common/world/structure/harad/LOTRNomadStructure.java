@@ -48,7 +48,7 @@ public abstract class LOTRNomadStructure extends LOTRStructureBase2 {
     public void laySandBase(WorldGenLevel world, int i, int j, int k) {
         setBlockAndMetadata(world, i, j, k, LOTRLegacyBlocks.vanilla("sand"), 0);
         int j1 = j - 1;
-        while (getY(j1) >= 0 && !isOpaque(world, i, j1, k)) {
+        while (getY(j1) >= world.getMinY() && !isOpaque(world, i, j1, k)) {
             if (isOpaque(world, i, j1 - 1, k)) {
                 setBlockAndMetadata(world, i, j1, k, LOTRLegacyBlocks.vanilla("sandstone"), 0);
             } else {

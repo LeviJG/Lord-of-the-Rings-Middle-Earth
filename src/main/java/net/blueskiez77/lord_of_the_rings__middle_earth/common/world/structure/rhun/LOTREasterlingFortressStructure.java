@@ -70,7 +70,7 @@ public class LOTREasterlingFortressStructure extends LOTREasterlingStructureTown
                     setAir(world, i14, j13, k12);
                 }
                 if (i22 <= 9 && k2 <= 9) {
-                    for (j13 = 0; (j13 >= 0 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= 0; --j13) {
+                    for (j13 = 0; (j13 >= 0 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                         setBlockAndMetadata(world, i14, j13, k12, LOTRLegacyBlocks.vanilla("dirt"), 0);
                         setGrassToDirt(world, i14, j13 - 1, k12);
                     }
@@ -93,14 +93,14 @@ public class LOTREasterlingFortressStructure extends LOTREasterlingStructureTown
                     }
                 }
                 if ((i22 == 12 || i22 == 9) && (k2 == 12 || k2 == 9)) {
-                    for (j13 = 8; (j13 >= 0 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= 0; --j13) {
+                    for (j13 = 8; (j13 >= 0 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                         setBlockAndMetadata(world, i14, j13, k12, pillarBlock, pillarMeta);
                         setGrassToDirt(world, i14, j13 - 1, k12);
                     }
                     continue;
                 }
                 if (i22 == 3 && (k2 == 9 || k2 == 12) || k2 == 3 && (i22 == 9 || i22 == 12)) {
-                    for (j13 = 7; (j13 >= 0 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= 0; --j13) {
+                    for (j13 = 7; (j13 >= 0 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                         setBlockAndMetadata(world, i14, j13, k12, pillarBlock, pillarMeta);
                         setGrassToDirt(world, i14, j13 - 1, k12);
                     }
@@ -112,7 +112,7 @@ public class LOTREasterlingFortressStructure extends LOTREasterlingStructureTown
                     continue;
                 }
                 if (i22 >= 10 || k2 >= 10) {
-                    for (j13 = 4; (j13 >= 0 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= 0; --j13) {
+                    for (j13 = 4; (j13 >= 0 || !isOpaque(world, i14, j13, k12)) && getY(j13) >= world.getMinY(); --j13) {
                         setBlockAndMetadata(world, i14, j13, k12, brickBlock, brickMeta);
                         setGrassToDirt(world, i14, j13 - 1, k12);
                     }
@@ -141,7 +141,7 @@ public class LOTREasterlingFortressStructure extends LOTREasterlingStructureTown
         }
         for (i14 = -2; i14 <= 2; ++i14) {
             k12 = -13;
-            for (j12 = 0; (j12 >= 0 || !isOpaque(world, i14, j12, k12)) && getY(j12) >= 0; --j12) {
+            for (j12 = 0; (j12 >= 0 || !isOpaque(world, i14, j12, k12)) && getY(j12) >= world.getMinY(); --j12) {
                 setBlockAndMetadata(world, i14, j12, k12, pillarBlock, pillarMeta);
                 setGrassToDirt(world, i14, j12 - 1, k12);
             }

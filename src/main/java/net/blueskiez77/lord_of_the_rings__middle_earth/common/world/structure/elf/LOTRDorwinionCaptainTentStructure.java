@@ -77,7 +77,7 @@ public class LOTRDorwinionCaptainTentStructure extends LOTRDorwinionTentStructur
                     continue;
                 }
                 j1 = -h - 1;
-                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= 0) {
+                while (!isOpaque(world, i1, j1, k1) && getY(j1) >= world.getMinY()) {
                     setBlockAndMetadata(world, i1, j1, k1, LOTRLegacyBlocks.vanilla("dirt"), 0);
                     setGrassToDirt(world, i1, j1 - 1, k1);
                     --j1;
