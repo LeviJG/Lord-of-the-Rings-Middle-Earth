@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -25,6 +26,7 @@ public class LOTRPinnathGelinSoldierEntity extends LOTRGondorSoldierEntity {
 
     public LOTRPinnathGelinSoldierEntity(EntityType<? extends LOTRPinnathGelinSoldierEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_PINNATH_GELIN;
         this.npcCape = LOTRCapes.PINNATH_GELIN;
         this.spawnRidingHorse = this.random.nextInt(8) == 0;
     }

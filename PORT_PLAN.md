@@ -1448,7 +1448,33 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     had always taken the enabled path).
   - Every other option waits on its system, listed on the tracker.
 - [ ] **D7 Titles, capes, shields, achievements** (achievements → advancements
-  or custom tracker; decide with user).
+  or custom tracker; decide with user). Titles and shields are done; there
+  are no player capes in the original (`LOTRCapes` is the NPCs', done in
+  D9). Achievements are left for now (user).
+  - [x] **D7a Titles** (`common/title`): `LOTRTitle` (the original's starter and
+    alignment titles, and the rank titles each
+    `makeTitle` rank now creates, feminine forms too); `LOTRPlayerTitles`
+    (`lotr:player_title`, the original's `PlayerTitle`/`PlayerTitleColor`,
+    sent to its player; a title no longer earned is taken with
+    `chat.lotr.loseTitle`); "[Title] " before the speaker's name in chat
+    (`LOTRServerGamePacketListenerMixin`, with "Enable Titles");
+    `LOTRTitlesScreen` (LOTRGuiTitles) from the LOTR menu; a feminine rank
+    title makes ranks feminine (`useFeminineRanks`). The colours are the
+    sixteen chat colours (26.2's `TextColor`), saved by their code number.
+  - [x] **D7b Shields** (`common/shield`): `LOTRShields` (the alignment and achievable ones, with their
+    textures); `LOTRPlayerShields` (`lotr:shield`, seen by every player);
+    `LOTRShieldsScreen` (LOTRGuiShields, its figure a picture-in-picture,
+    `LOTRShieldPreviewRenderer`); `LOTRShieldLayer` wears it on the back or
+    the left arm (players and NPCs, `npcShield` on the 38 NPCs that bore
+    one). As decided with the user, since 26.2's swords cannot block: a
+    vanilla shield carried by a player who has chosen a LOTR shield is
+    drawn as that shield (`lotr:shield_design`, `LOTRShieldDesignRenderer`,
+    the vanilla shield's item model overridden) and blocks as vanilla's,
+    and then none is worn on the back or arm.
+  - Not ported (user): the exclusive titles and shields (and
+    `ExclusiveGroup`, the player-details web lookup that granted them).
+  - Waiting on the achievements: the achievement titles, and the
+    achievement shields' terms (no one may wear them until then).
 - [x] **D8 Animals & mounts** (`entity/animal`): horses, wargs, elk, boars,
   rhinos, camels, etc. — makes mount armour functional. Split into batches
   (wargs are NPCs and belong to D9):
@@ -2452,8 +2478,103 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     dwarven mines and Tauredain pyramids (`mapgen`), and conquest.
   - Banners among the structures are placed since D4c.
 - [ ] **D12 NPC spawning, invasions, spawn damping** (extend `LOTRInvasions`).
-- [ ] **D13 Map & waypoints / fast travel** (map GUI, `world/map`).
-- [ ] **D14 Quests, fellowships, mini-quests, Grey Wanderer.**
+- [ ] **D13 Map & waypoints / fast travel** (map GUI, `world/map`). Waits
+  on D10: the map places the player, waypoints and travel by Middle-earth's
+  own coordinates, which mean nothing until its dimension exists. (The
+  waypoints and roads as data, and the map drawing, came with the main
+  menu.)
+- [ ] **D14 Quests, fellowships, mini-quests, Grey Wanderer.** Mostly
+  unblocked (the NPCs who give quests exist); conquest, and the quests and
+  fellowship features that use the map, wait on D10/D13. Split:
+  - [x] **D14a Fellowships** (`common/fellowship`, user: "do what is
+    unblocked in D14"):
+    - `LOTRFellowship` (saved by the original's keys) and `LOTRFellowships`,
+      one saved-data file for the world (`lotr:fellowships`) holding every
+      fellowship, each player's invitations and their /fmsg binding. These
+      were LOTRPlayerData fields, but a fellowship's members and invitees
+      are usually offline, which per-player attachments cannot reach; each
+      player's fellowships follow from the fellowships' member lists.
+    - Every rule of LOTRPlayerData's fellowship methods: create (the
+      config switch; one led fellowship, `getMaxLeadingFellowships`'s
+      +1 per 20 achievements waits on D7), invite / accept (the size limit,
+      DISBANDED / TOO_LARGE / NONEXISTENT answers) / reject, leave,
+      disband, remove, transfer, op/deop, rename, icon from the hand, the
+      PVP / hired-FF / map-show toggles, each with its notification (chat
+      and a corner toast, `LOTRFellowshipToast`).
+    - Packets (`LOTRFellowshipPayloads`): a fellowship is sent whole to its
+      online members when it changes, in place of the original's partial
+      updates; members' names, and titles (an absent player's from their
+      player file); the client's copy is `LOTRClientFellowships`.
+    - `LOTRFellowshipsScreen` (LOTRGuiFellowships) from the LOTR menu;
+      `/fellowship` (admins) and `/fmsg` (`LOTRFellowshipCommands`), names
+      in quotes; fellows' PVP and hired-unit friendly fire
+      (`LOTRAttackRules`; the original's siege mode, only ever set by other
+      mods' messages, is never on); banners' fellowship whitelist lines;
+      beacons given to a fellowship (its id, "BeaconFellowship") telling its
+      members when lit or quenched -- the port's earlier
+      `BeaconFellowshipName` text is no longer read; a fellow's alignment
+      shown even when hidden and fellows' health bars; a title change shown
+      to fellows.
+    - Waiting on D13: members shown on the map (ShowMap is kept and
+      toggled) and custom waypoints shared to a fellowship.
+  - [x] **D14b Mini-quests** (`common/quest`, user: "Go ahead with D14b"):
+    - `LOTRMiniQuest` and its kinds -- collect, kill entity / faction,
+      pickpocket (`IPickpocketable`, the Bree-men and Bree-hobbits with
+      `BREE_PICKPOCKET`), bounty (`LOTRFactionBounties`, `lotr:faction_bounties`)
+      and the Grey Wanderer's welcome -- saved by the original's keys
+      (items by codec, a kill kind by its entity id); `MiniQuestSelector`.
+      The retrieve quest is left out: the original never registered it.
+    - `LOTRMiniQuestFactory`: all 38 groups and their 1,037 quests,
+      generated from the original's (items through the legacy tables,
+      1.7.10's vanilla items by hand), their lore, reward and hiring
+      overrides and speech groups. Divergence (surfaced): the original
+      meant a quest's kind to be picked by weight (collect 10, pickpocket
+      6, kill 8, bounty 4) but its loop never stopped, so the last kind in
+      its map always won; the port picks by weight. Kept as the original
+      had it: the nomads' "camel carpets" ask for white carpet (the colour
+      was passed as the stack size). Not ported (user): the corsairs'
+      chests of loot (pouches) and pouch rewards (their items are given
+      loose).
+    - Each player's quests (`LOTRMiniQuests`, saved data
+      `lotr:miniquests`, as quests fail and bounties land while their
+      players are away): in hand, done, the count done, bounties done,
+      the quest followed, the factions newly bountying them (told on their
+      next tick); packets for each change, a full sync on joining.
+    - NPCs (`LOTRNPCQuestInfo`, saved as "MQOffer", "MQOfferTime",
+      "MQSpecificOffers", "ActiveQuestPlayers"): an offer one tick in 20000
+      (the Gondor renegade at +50 and the Rohan shieldmaiden at +150, one
+      in 4000), held a day; interaction (a quest elsewhere that wants this
+      NPC, its quest in hand, its offer, or "too many"); the quest failing
+      at its death; the NPC kept from despawning and standing still while
+      read; the offer marker sent to watchers; orcs not skirmishing while
+      someone is on their quest; every quest-giving NPC's `createMiniQuest`
+      (the Dúnedain's 1-in-8 Arnor relic, the Gondor soldier's 1-in-8
+      renegade hunt; the wicked dwarf none); the ruffians' Isengard colour;
+      Gandalf's welcome offered to a player who has never had it.
+    - Stolen goods refused by coins, the coin exchange and traders, with
+      their tooltip; the pickpocket, pickpocket-fail and angry particles;
+      kills counted for quests, and a slain player's bounty quests; the
+      faction screen's quest counts (`LOTRFactionData.completeMiniQuest`).
+    - Client: `LOTRClientMiniQuests`; the offer screen
+      (`LOTRMiniQuestOfferScreen`, the NPC's talking head through
+      `LOTRNPCHeadRenderer`); the red book (`LOTRRedBookItem`,
+      `LOTRRedBookScreen`, `LOTRTextBody`); the tracker
+      (`LOTRMiniQuestTrackerHud`); the red book and offer marks over NPCs
+      (`LOTRNPCQuestRendering`); the menu key opening the factions while
+      the welcome asks for them; the four alignment-cycling keys (arrow
+      keys), and the events of opening the factions and cycling.
+    - Divergences (surfaced): `LOTRTextBody` counts every part's lines (the
+      original counted only the last part's, so the diary never scrolled);
+      a player newly in sight of an NPC is always told whether it offers
+      them a quest.
+    - Also fixed on the way: the falling leaves were cut from
+      `misc/particles.png`; the original drew them from `particles2.png`.
+    - Waiting: the welcome quest's fifth stage (opening the map, D13) --
+      the quest goes no further until then; bounty help, where a target was
+      last seen (biome D10, waypoint D13), and the ruffian spy's paid-for
+      help with it; the biome a quest was given in (D10); the daily advance
+      of the Shire calendar (D10, with the world's time); mini-quests
+      paused during a siege (invasions, D12); the quest achievements (D7).
 - [ ] **D15 Portals**: elven/morgul/utumno portals, Utumno dimension.
 - [ ] **D16 Remaining GUIs, commands, particles/fx, sounds, drunken speech.**
 
@@ -2494,9 +2615,8 @@ only to the unit's *Result*.
   (`LOTRRecipesBanners`) [B4, B5e, B6d, B7d, B13a] -- D4c
 - [x] Floating barrel entity: `LOTRItemBarrel.onItemRightClick` puts a
   rideable barrel on water → `LOTRBarrelItem` [B5b] -- D4a
-- [ ] Banner protection waiting on other units [D4c]: fellowships on a
-  banner's whitelist and `getPlacersFellowshipByName` (D14); the
-  `bannerProtect` achievement (D7); NPCs' `getCanSpawnHere` refusing
+- [ ] Banner protection waiting on other units [D4c] (fellowships on a
+  banner's whitelist: D14a): the `bannerProtect` achievement (D7); NPCs' `getCanSpawnHere` refusing
   protected land, the invasion spawner's and conquest horn's checks (D12);
   custom waypoints in protected land (`LOTRPacketCreateCWP`, D13).
 
@@ -2509,15 +2629,18 @@ only to the unit's *Result*.
     `MER*` values, `generateMapFeatures`, `generateFixedSettlements`, XP
     orbs removed in Middle-earth with vanilla enchanting off, the environment
     options (`enableLOTRSky`, `enableMistyMountainsMist`, `enableAmbience`,
-    `enableSunFlare`, `cloudRange`, `newWeather`, `aurora`), and
-    `snowyStone`/`naturalBlocks` (coremod texture patches).
+    `enableSunFlare`, `cloudRange`, `newWeather`, `aurora`).
+  - (`naturalBlocks` is done: `LOTRNaturalBlockModel`, each listed face
+    turned as the chunk is drawn, as the option says; `snowyStone` too:
+    `LOTRSnowyStoneModel`. Both redraw the chunks when changed in the
+    config screen.)
   - D11: `strTimelapse`/`strTimelapseInterval` and `/strTimelapse`.
   - D12: `enableBandits`, `enableInvasions`, `invasionProgressReverts`,
     `fixMobSpawning`, `mobSpawnInterval`.
   - D13: `enableFastTravel`, `forceMapLocations`, `customWaypointMinY`,
     `cwpLog`.
-  - D14: `allowMiniquests`, `allowBountyQuests`,
-    `enableFellowshipCreation`, `fellowshipMaxSize`, `enableConquest`.
+  - D14: `allowMiniquests`, `allowBountyQuests`, `enableConquest`
+    (`enableFellowshipCreation`, `fellowshipMaxSize`: D14a).
   - D15: `enablePortals`, `disableEnderChestsUtumno`, Utumno kills not
     counting towards banes.
   - GUIs/D16: the ENCHANTING message (the config screen, `LOTRGuiConfig`,
@@ -2525,16 +2648,18 @@ only to the unit's *Result*.
     `alignmentXOffset`/`YOffset`, `displayAlignmentAboveHead`, the map
     options (`enableSepiaMap`, `osrsMap`, `mapLabels`, `mapLabelsConquest`),
     `enableOnscreenCompass`, `compassExtraInfo`, `hiredUnitHealthBars`,
-    `hiredUnitIcons`, `meleeAttackMeter`, `enableQuestTracker`,
-    `trackingQuestRight`, `customMainMenu`, `fellowPlayerHealthBars`,
+    `hiredUnitIcons`, `enableQuestTracker`,
+    `trackingQuestRight`, `fellowPlayerHealthBars`,
     `displayCoinCounts`, `balrogWings`, the music options,
     `drunkMessages` (players' own drunken chat), `preventMessageExploit`
     (the `/msg` fix), `playerDataClearingInterval`, `enableAttackCooldown`,
     `fixRenderDistance`, `checkUpdates`, `updateLangFiles`.
   - Not ported (user): `dropMutton` -- 26.2's sheep drop vanilla mutton, and
     the mod's own mutton smelting recipe is removed too.
-  - To decide with the user: `removeGoldenAppleRecipes`/
-    `removeDiamondArmorRecipes` (they alter vanilla recipes).
+  - (`removeGoldenAppleRecipes`/`removeDiamondArmorRecipes` are done,
+    user: "The recipes should be ported": the vanilla recipes overridden by
+    copies that load only while the option is off, `lotr:config`
+    condition, `LOTRConfigRecipeCondition`.)
 - [x] ~~`LOTREntityRegistry`: other mods' NPCs given LOTR factions and
   targeting from `config/LOTR_EntityRegistry.txt` [D6]~~
   - `common/entity/LOTREntityRegistry`: the file is written with its
@@ -2693,7 +2818,7 @@ only to the unit's *Result*.
   `EnemyKill`, `Trades`, `Hired`, `MiniQuests`, `Conquest`, `ConquestHorn`)
   and `LOTRFactionBounties` (per faction, per player, kill records;
   `recordNewKill` on NPC death) [B12d] -- the stats exist (G3); bounties
-  and the mini-quest and conquest counts wait on D14
+  and the mini-quest counts came with D14b; conquest waits on D14
 - [ ] Alignment from kills: every NPC's kill value
   (`LOTRAlignmentValues.Bonuses`), checked per NPC in B16d–h [B12a/b]
   (forced bonus factions and `onPledgeKill`: B16a)
@@ -2708,9 +2833,9 @@ only to the unit's *Result*.
 - [ ] Gandalf: his natural arrival 4 to 16 blocks from a player every two
   minutes while no Grey Wanderer is abroad
   (`LOTRGreyWandererTracker.performSpawning`, from LOTREventSpawner in the
-  Middle-earth dimension) [D12], his welcome mini-quest and the renewal of
-  his time when he offers it [D14], and his hunting of Balrogs with
-  Utumno [D15] [D9r-a]
+  Middle-earth dimension) [D12], and his hunting of Balrogs with
+  Utumno [D15] [D9r-a] (his welcome mini-quest and the renewal of his time
+  when he offers it: D14b)
 - [ ] Gollum: natural spawning within 128 of the High Pass waypoint
   (`LOTRGollumSpawner`, with the Middle-earth dimension and waypoints)
   [D12, D13]; `tameGollum` achievement [D7] [D9r-b] (his pack's screen
@@ -2745,13 +2870,13 @@ only to the unit's *Result*.
   `LOTRScrapTraderRenderer`, which also hides him from the screenshot key
   as the original did
 - [ ] Dale's warhorn (`LOTRInvasions.DALE`, D12), the Dale
-  and Esgaroth shields (D7), mini-quests (D14), Dale's pull and spawn check
+  and Esgaroth shields (D7), Dale's pull and spawn check
   (D10), the merchant's travelling-trader spawning (D12) [D9t]
 - [ ] Structures' trees (`LOTRTreeType...generate`, `placeTree`) grow
   nothing until the tree features (D10) [D11c]
 - [ ] The Rangers of the North's warhorn (`LOTRInvasions.RANGER_NORTH`) and
-  the Ithilien captain's (`GONDOR_ITHILIEN`), with D12; their and the
-  Dúnedain's mini-quests (D14); the Dúnedain's natural
+  the Ithilien captain's (`GONDOR_ITHILIEN`), with D12 (their and the
+  Dúnedain's mini-quests: D14b); the Dúnedain's natural
   spawn check and Ithilien's pull on its rangers (D10) [D9s]
 - [x] ~~NPC faction checks: Sauron's mace, Gandalf's fireball, the elven rope
   [B7, B10, B13b]~~ — after B16a
@@ -2885,22 +3010,22 @@ only to the unit's *Result*.
 - [x] ~~Ruffians keeping clear of the Rangers of the North (12 blocks), with
   the Rangers [D9d]~~ — D9s
 - [ ] Ruffian spy's bounty help (paid off with coins, gold, silver, a gem or
-  a ring) and the ruffian mini-quests, with D14; the thief cancelling the
-  victim's fast travel, with D13 [D9d]
+  a ring), with the bounty help (D10/D13); the thief cancelling the
+  victim's fast travel, with D13 [D9d] (the ruffian mini-quests: D14b)
 - [x] ~~`LOTREntityBandit`, `LOTREntityBanditHarad` and their target goal [D9d]~~ — after B16a
 - [x] ~~The branding iron in the Bree farmer's buy pool [D9d]~~ — after B16a
-- [ ] Pickpocketing Bree-men and Bree-hobbits (`IPickpocketable`,
-  `BREE_PICKPOCKET`), with the pickpocket mini-quest (D14) [D9d]
+- [x] ~~Pickpocketing Bree-men and Bree-hobbits (`IPickpocketable`,
+  `BREE_PICKPOCKET`), with the pickpocket mini-quest (D14) [D9d]~~ — D14b
 - [x] ~~The branding iron in the Hobbit farmer's buy pool [D9b]~~ — after B16a
 - [x] ~~Hired units hunting bandits [D9b]~~ — after B16a
 - [ ] Bandits in the world (`LOTREventSpawner`: each biome's bandit kind),
-  the Bree and Dorwinion mini-quests to kill them (D14), the
+  the
   killThievingBandit achievement (D7), and the Harad bandit's turban
   ornament (with the ornament) [after B16a]
 - [x] ~~Faction trade and hire counters (`LOTRFactionData.addTrade`/`addHire`)
   [D9b]~~ — G1/G2
-- [ ] Refusing pickpocketed coins and trade items (`IPickpocketable`), with
-  the pickpocket mini-quest (D14) [D9b]
+- [x] ~~Refusing pickpocketed coins and trade items (`IPickpocketable`), with
+  the pickpocket mini-quest (D14) [D9b]~~ — D14b
 - [ ] Bounders hunt Bree ruffians (`LOTREntityAIHobbitTargetRuffian`) --
   only inside the Shire biome, so it waits for the biomes (D10); the
   ruffians themselves are ported [D9a]
@@ -2910,8 +3035,8 @@ only to the unit's *Result*.
   NPCs through Fabric's ArmorRenderer like players'; the bowing pose was
   already in `LOTRBipedModel`; the combinatorial skins were never used by the
   original (`getCombinatorialSkins` has no caller)
-- [ ] NPC shields (`renderNPCShield`, `npcShield`), with the alignment
-  shields (D7) [D9a]
+- [x] ~~NPC shields (`renderNPCShield`, `npcShield`), with the alignment
+  shields (D7) [D9a]~~ — D7b
 - [x] ~~Other mods' NPCs given a faction by config (`LOTREntityRegistry`),
   which `getNPCFaction` and the attack rules also read [D9a]~~ — with the D6
   entry above
@@ -2977,29 +3102,38 @@ only to the unit's *Result*.
   upright logs. Only the extreme mallorn tree (D10) uses one.
 
 ### D13/D14 — map, quests, conquest
-- [ ] Mini-quest lore rewards: 1 in 10 completed quests of a group with lore
+- [x] ~~Mini-quest lore rewards: 1 in 10 completed quests of a group with lore
   categories give a rewardable book (`LOTRLore.getMultiRandomLore(..., true)`,
-  `LOTRMiniQuestFactory.setLore`); the books themselves are ported [B13b]
-- [ ] Bree mini-quests (`LOTRMiniQuestFactory.BREE`, its bounty help speech)
-  [D9d]
-- [ ] Dorwinion mini-quests (`DORWINION`, `DORWINION_ELF`) [D9g]
-- [ ] Galadhrim, Lindon, Rivendell and Wood-elf mini-quests (`GALADHRIM`,
-  `HIGH_ELF`, `RIVENDELL`, `WOOD_ELF`) [D9g]
+  `LOTRMiniQuestFactory.setLore`); the books themselves are ported [B13b]~~ — D14b
+- [x] ~~Bree mini-quests (`LOTRMiniQuestFactory.BREE`) [D9d]~~ — D14b (its
+  bounty help speech waits with the bounty help, D10/D13)
+- [x] ~~Dorwinion mini-quests (`DORWINION`, `DORWINION_ELF`) [D9g]~~ — D14b
+- [x] ~~Galadhrim, Lindon, Rivendell and Wood-elf mini-quests (`GALADHRIM`,
+  `HIGH_ELF`, `RIVENDELL`, `WOOD_ELF`) [D9g]~~ — D14b
 - [ ] The jazz elf's music notes (the "music" particle) and its jazz
   (`LOTRAmbience`, `music.jazzelf`), and the saxophone drawn in its hands
   (`LOTRItemRing.saxIcon`) [D9g]
-- [ ] Gondor mini-quests (`GONDOR`, the soldier's 1-in-8
+- [x] ~~Gondor mini-quests (`GONDOR`, the soldier's 1-in-8
   `GONDOR_KILL_RENEGADE`, the renegade's `GONDOR_RENEGADE` at +50, 1 in 4000)
-  [D9f]
-- [ ] Rohan mini-quests (`ROHAN`, and `ROHAN_SHIELDMAIDEN` offered at +150,
-  1 in 4000) [D9e]
-- [ ] NPC mini-quests: `createMiniQuest` (the Hobbit factory), the bounty
-  help speech bank, and the quest book and offer icons over NPCs
-  (`LOTRNPCRendering.renderQuestBook`/`renderQuestOffer`) [D9a]
+  [D9f]~~ — D14b
+- [x] ~~Rohan mini-quests (`ROHAN`, and `ROHAN_SHIELDMAIDEN` offered at +150,
+  1 in 4000) [D9e]~~ — D14b
+- [x] ~~NPC mini-quests: `createMiniQuest` (the Hobbit factory) and the quest
+  book and offer icons over NPCs
+  (`LOTRNPCRendering.renderQuestBook`/`renderQuestOffer`) [D9a]~~ — D14b
+- [ ] Bounty help: an NPC telling a player hunting a bounty where its target
+  was last seen (`getBountyHelpSpeechDir`, `BountyHelp`, the biome or
+  waypoint last known), with the biomes and waypoints (D10, D13) [D14b]
+- [ ] The welcome quest's fifth stage, opening the map (`VIEW_MAP`), and the
+  menu key opening the map for it (D13) [D14b]
+- [ ] A mini-quest's biome given (`biomeGiven`, in the red book's diary), and
+  the Shire calendar's daily advance (`LOTRDate.update`), with D10 [D14b]
+- [ ] Mini-quests paused during a siege (`isSiegeActive`), with invasions
+  (D12) [D14b]
 - [ ] Table of command map, squadron and conquest screens [B4, B5e]
-- [ ] Mini-quests and bounty quests: `createMiniquestBonus` and
-  `notifyMiniQuestsNeeded` callers; conquest (`LOTRConquestGrid`,
-  `onConquestKill`) [B12]
+- [ ] Conquest (`LOTRConquestGrid`, `onConquestKill`) [B12] (the mini-quest
+  and bounty callers of `createMiniquestBonus`: D14b; `notifyMiniQuestsNeeded`
+  had no caller in the original)
 
 ### D16 — GUIs, HUD, fx (user: HUD in a later release, after entities and structures)
 - [ ] The hire screen's alignment reward slot: a captain's warhorn for 2000
@@ -3015,45 +3149,53 @@ only to the unit's *Result*.
     two vignettes. The first menu fades in from black, zooming in. The
     buttons move down as red-book buttons, the mod's title stands under
     the logo, and there is no splash text.
+  - Beyond the original (user): the road dots and waypoint icons are drawn
+    smoothed to the screen's pixels, as one GUI element
+    (`LOTRMapQuadsRenderState`); the Realms notification icons follow the
+    Realms button; with Mod Menu installed its Mods button is always the
+    right half of the Realms button, whatever Mod Menu's style
+    (`LOTRModMenuCompat`).
   - For it, the waypoints and roads are ported as data
     (`common/world/map/LOTRWaypoint`, `LOTRRoads`), with their lang. The
     roads are built when first asked for, and the road lookup when world
     generation first asks for it, not at start-up as the original's were.
   - The map screen itself is still D13.
 - [ ] The LOTR menu's other screens, whose icons are greyed out until then:
-  achievements and titles (D7), the map (D13; greyed only on a classic
-  world in the original), fellowships (D14), shields (D7); the menu's title
+  achievements (D7), the map (D13; greyed only on a classic
+  world in the original), fellowships (D14) (titles and shields: D7a/b); the menu's title
   names the dimension the player is in (D10); openMenu's welcome
-  mini-quest forcing the map or factions (D14) [G3a]
+  mini-quest forcing the map (D13; the factions: D14b) [G3a]
 - [ ] Options: Show Map Location (the map, D13) and Conquest Kills
-  (conquest, D14); feminine ranks from a feminine title (D7); the other
-  keys (alignment cycling, map, dismount) [G3a]
+  (conquest, D14); the other
+  keys (map, dismount; alignment cycling: D14b) [G3a]
 - [ ] The Utumno warning message's trigger, the Utumno portal (D10) [G3a]
 - [ ] The factions screen's map of the faction and its button to the
-  faction's control zone on the full map (LOTRGuiMap, D13); the mini-quest
-  events of opening it and cycling factions (D14); the menu's and factions
+  faction's control zone on the full map (LOTRGuiMap, D13); the menu's and factions
   screen's dimension (always
   Middle-earth until Utumno, D10) [G3b]
 - [x] ~~An operator in creative told who branded a creature (clock) [G2b]~~ — with the branding iron, after B16a
 - [ ] The alignment bar moving down for a watched invasion's bar (D12/D14);
   the popup's conquest line, with conquest (D14) [G4a]. (Below the boss bars
   is done: 20 down for the first, 19 more for each stacked under it.)
-- [ ] With fellowships (D14): a fellow's alignment shown overhead even when
+- [x] ~~With fellowships (D14): a fellow's alignment shown overhead even when
   they hide it, and fellow players' health bars (`fellowPlayerHealthBars`)
-  [G4b]
-- [ ] The Fangorn tree penalty: `LOTRAlignmentValues.FANGORN_TREE_PENALTY`
-  exists but nothing applies it (the original's LOTREventHandler took a
-  point of Fangorn alignment for breaking a tree in Fangorn's land) --
-  found during G4a, awaiting the user's word [G4a]
+  [G4b]~~ — D14a
+- [x] ~~The Fangorn tree penalty [G4a]~~ — with the rest of
+  onBlockBreak's trees (`LOTRTreeDefence`): wood broken near Ents and Huorns
+  sets them on the breaker and an Ent says so; in Fangorn it costs a point
+  of Fangorn alignment. Fangorn is the biome `lotr:fangorn`, so the penalty
+  applies once the biomes exist (D10).
 - [ ] The frost overlay's other sources, frost damage (`LOTRDamage.frost`)
   and Utumno's ice wargs and spiders, and the burn overlay's, the desert
   heat; the biome's name above the compass (D10) [G4c]
-- [ ] Leaf particles (user: "leave the leaves for now") [B4]; also the
-  Galadhrim trader's burst of gold leaves on death and departure, and the
-  Wood-elf scout's green leaves as it vanishes [D9g], the gold leaves an
-  Ent lets fall as it heals a corrupt mallorn [D9o], and the Mallorn Ent's
-  gold leaves (falling from its crown, swirling as it rises, bursting as it
-  dies, and ringing its leaf bomb) [D9q]
+- [x] ~~Leaf particles [B4], and the entities' leaves [D9g, D9o, D9q]~~ —
+  `lotr:leaf_gold`/`_red`/`_mirk`/`_green` (`LOTRLeafParticle`, its frames
+  cut from misc/particles.png by the particle atlas), falling from mallorn,
+  Mirk oak, red Mirk oak and green oak leaves (`LOTRLeavesBlock`), the
+  Wood-elven torches and chandeliers (in place of cherry petals), the
+  Galadhrim trader dying (its departure burst never showed in the
+  original, so none), the Wood-elf scout vanishing, an Ent healing a
+  sapling, and the Mallorn Ent and its leaf bomb.
 
 ## Suggested order
 

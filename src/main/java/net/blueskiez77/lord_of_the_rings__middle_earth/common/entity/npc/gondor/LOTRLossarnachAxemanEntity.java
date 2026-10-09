@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRThrowingAxeEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
@@ -37,6 +38,7 @@ public class LOTRLossarnachAxemanEntity extends LOTRGondorSoldierEntity {
 
     public LOTRLossarnachAxemanEntity(EntityType<? extends LOTRLossarnachAxemanEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_LOSSARNACH;
         this.spawnRidingHorse = false;
     }
 

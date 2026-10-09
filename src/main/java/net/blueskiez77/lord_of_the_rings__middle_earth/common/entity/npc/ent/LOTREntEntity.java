@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent;
 
 import java.util.Random;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCorruptMallornBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
@@ -51,8 +53,7 @@ import org.jspecify.annotations.Nullable;
  * its eyes blink shut now and then, and it may have extra branches on its
  * head. Slain by a player it may leave an Ent-draught.
  *
- * <p>NOT ported yet: the gold leaves falling as it heals (the leaf particles,
- * left for now), and the killEnt and talkEnt achievements (D7).
+ * <p>NOT ported yet: the killEnt and talkEnt achievements (D7).
  */
 public class LOTREntEntity extends LOTRTreeEntity {
 
@@ -160,6 +161,17 @@ public class LOTREntEntity extends LOTRTreeEntity {
                 --this.eyesClosed;
             } else if (this.random.nextInt(400) == 0) {
                 this.eyesClosed = 30;
+            }
+            if (isHealingSapling()) {
+                // Gold leaves falling from its outstretched branches.
+                for (int l = 0; l < 2; ++l) {
+                    float angle = (this.yHeadRot + 90.0f + Mth.randomBetween(this.random, -40.0f, 40.0f)) * Mth.DEG_TO_RAD;
+                    double d = getX() + Mth.cos(angle) * 1.5;
+                    double d1 = getBoundingBox().minY + getBbHeight() * Mth.randomBetween(this.random, 0.3f, 0.6f);
+                    double d2 = getZ() + Mth.sin(angle) * 1.5;
+                    level().addParticle(LOTRLeafParticleOptions.of(LOTRParticles.LEAF_GOLD, 30, 0), d, d1, d2,
+                            Mth.cos(angle) * 0.06, -0.03, Mth.sin(angle) * 0.06);
+                }
             }
         }
     }

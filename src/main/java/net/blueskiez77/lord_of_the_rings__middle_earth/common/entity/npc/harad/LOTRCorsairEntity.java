@@ -6,6 +6,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -32,9 +35,6 @@ import org.jspecify.annotations.Nullable;
  * (bare-headed half the time), eats and drinks as the Corsairs do, loots
  * coins from what he kills, and leaves arrows and, one time in three,
  * something from a Corsair chest.
- *
- * <p>NOT ported yet: the Corsair shield (LOTRShields.ALIGNMENT_CORSAIR, D7),
- * and mini-quests (D14).
  */
 public class LOTRCorsairEntity extends LOTRUmbarianEntity {
 
@@ -47,6 +47,7 @@ public class LOTRCorsairEntity extends LOTRUmbarianEntity {
 
     public LOTRCorsairEntity(EntityType<? extends LOTRCorsairEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_CORSAIR;
         this.spawnRidingHorse = false;
     }
 
@@ -162,5 +163,10 @@ public class LOTRCorsairEntity extends LOTRUmbarianEntity {
         setItemSlot(EquipmentSlot.HEAD, this.random.nextInt(2) == 0 ? ItemStack.EMPTY
                 : new ItemStack(LOTRCombatItems.CORSAIR_HELMET));
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.CORSAIR.createQuest(this);
     }
 }

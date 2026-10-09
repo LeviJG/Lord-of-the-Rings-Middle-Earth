@@ -30,17 +30,9 @@ import org.jspecify.annotations.Nullable;
 // beacon within eighty-eight blocks, which lights their neighbours in turn --
 // the chain from Amon Din to Rohan. Quenching propagates the same way.
 //
-// Ported from LOTRTileEntityBeacon, with two deliberate omissions:
-//
-//  * NO FELLOWSHIP. The original could be assigned to a fellowship and would
-//    chat "The beacon of X is lit!" to its members. The port has no fellowship
-//    system at all, so sendFellowshipMessage and the beaconFellowshipID field
-//    are dropped rather than stubbed. The lang keys container.lotr.beacon.lit /
-//    .unlit stay unused until fellowships land.
-//  * NO GUI. LOTRGuiBeacon was purely the fellowship assignment and the beacon
-//    name -- both fellowship features -- so GUI 50 has nothing left to show.
-//    beaconName is still saved and loaded so that naming can be added later
-//    without a data migration.
+// Ported from LOTRTileEntityBeacon. A beacon may be given to a fellowship
+// (and a name) in its dialog; that fellowship's members in the world are told
+// when it is fully lit and when it is quenched.
 //
 // The lit state lives on the BLOCK (LOTRBeaconBlock.LIT) rather than only
 // in the block entity, because light emission is computed from the blockstate
@@ -70,12 +62,8 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
     private int unlitCounter;
     private long stateChangeTime = -1L;
     private String beaconName;
-    /**
-     * The fellowship NAME as typed. The original stored a resolved UUID
-     * (beaconFellowshipID); with no fellowship system to resolve against, the
-     * raw text is kept so nothing the player types is lost.
-     */
-    private String fellowshipName;
+    /** beaconFellowshipID: the fellowship it is lit for. */
+    private java.util.@Nullable UUID beaconFellowshipID;
 
     /** editingPlayers: who has the naming dialog open. Not saved, as in the original. */
     private final java.util.Set<java.util.UUID> editingPlayers = new java.util.HashSet<>();
@@ -103,8 +91,8 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
         return beaconName;
     }
 
-    public String getFellowshipName() {
-        return fellowshipName;
+    public java.util.@Nullable UUID getFellowshipID() {
+        return beaconFellowshipID;
     }
 
     public void addEditingPlayer(net.minecraft.world.entity.player.Player player) {
@@ -120,9 +108,30 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
         this.editingPlayers.remove(player.getUUID());
     }
 
-    public void setFellowshipName(String name) {
-        this.fellowshipName = name;
+    public void setFellowship(net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.@Nullable LOTRFellowship fs) {
+        this.beaconFellowshipID = fs == null ? null : fs.getFellowshipID();
         syncToClients();
+    }
+
+    /** sendFellowshipMessage: "The beacon of X is lit!" (or quenched), to its fellowship's members in this world. */
+    private void sendFellowshipMessage(Level level, boolean lit) {
+        if (this.beaconFellowshipID == null) {
+            return;
+        }
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowship fs =
+                net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowships.getActiveFellowship(this.beaconFellowshipID);
+        if (fs == null) {
+            return;
+        }
+        String name = beaconName == null || beaconName.isBlank() ? fs.getName() : beaconName;
+        Component message = Component.translatable(lit ? "container.lotr.beacon.lit" : "container.lotr.beacon.unlit", name)
+                .withStyle(net.minecraft.ChatFormatting.YELLOW);
+        for (java.util.UUID member : fs.getAllPlayerUUIDs()) {
+            net.minecraft.world.entity.player.Player player = level.getPlayerByUUID(member);
+            if (player != null) {
+                player.sendSystemMessage(message);
+            }
+        }
     }
 
     public void setBeaconName(String name) {
@@ -161,6 +170,7 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
         if (isLit() == lit) {
             return;
         }
+        boolean wasLit = isLit();
         if (lit) {
             unlitCounter = 0;
         } else {
@@ -178,6 +188,9 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
         // and without it litCounter and stateChangeTime could be lost on
         // chunk unload.
         setChanged();
+        if (wasLit && !lit) {
+            sendFellowshipMessage(level, false);
+        }
     }
 
     // ------------------------------------------------------------ client tick
@@ -228,6 +241,7 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
                 // Full blaze: this is the flag the light level reads.
                 level.setBlock(pos, state.setValue(LOTRBeaconBlock.FULLY_LIT, true), 3);
                 beacon.setChanged();
+                beacon.sendFellowshipMessage(level, true);
             }
         }
         if (!lit && beacon.unlitCounter < WARMUP) {
@@ -295,7 +309,13 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
         unlitCounter = input.getShortOr("UnlitCounter", (short) 0);
         stateChangeTime = input.getLongOr("StateChangeTime", -1L);
         beaconName = input.getStringOr("BeaconName", null);
-        fellowshipName = input.getStringOr("BeaconFellowshipName", null);
+        beaconFellowshipID = input.getString("BeaconFellowship").flatMap(s -> {
+            try {
+                return java.util.Optional.of(java.util.UUID.fromString(s));
+            } catch (IllegalArgumentException e) {
+                return java.util.Optional.empty();
+            }
+        }).orElse(null);
     }
 
     @Override
@@ -307,8 +327,8 @@ public class LOTRBeaconBlockEntity extends BlockEntity {
         if (beaconName != null) {
             output.putString("BeaconName", beaconName);
         }
-        if (fellowshipName != null) {
-            output.putString("BeaconFellowshipName", fellowshipName);
+        if (beaconFellowshipID != null) {
+            output.putString("BeaconFellowship", beaconFellowshipID.toString());
         }
     }
 

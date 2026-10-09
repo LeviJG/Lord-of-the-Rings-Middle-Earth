@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimBaseEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRMercenary;
@@ -29,8 +30,8 @@ import org.jspecify.annotations.Nullable;
  * 1 in 5, else 1 in 3, else the coast's), and a turban of one of six colours
  * nine times in ten. He never rides out.
  *
- * <p>NOT ported yet: the Moredain shield (LOTRShields.ALIGNMENT_MOREDAIN, D7),
- * the hireMoredainMercenary achievement (D7), and the mercenary's screens (D16).
+ * <p>NOT ported yet: the hireMoredainMercenary achievement (D7), and the
+ * mercenary's screens (D16).
  */
 public class LOTRMoredainMercenaryEntity extends LOTRMoredainEntity implements LOTRMercenary {
 
@@ -45,6 +46,7 @@ public class LOTRMoredainMercenaryEntity extends LOTRMoredainEntity implements L
 
     public LOTRMoredainMercenaryEntity(EntityType<? extends LOTRMoredainMercenaryEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_MOREDAIN;
         this.spawnRidingHorse = false;
     }
 

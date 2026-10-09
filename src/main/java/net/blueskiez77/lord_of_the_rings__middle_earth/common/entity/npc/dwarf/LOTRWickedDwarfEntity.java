@@ -6,6 +6,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -102,5 +103,10 @@ public class LOTRWickedDwarfEntity extends LOTRDwarfEntity implements LOTRSmith 
         }
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return null;
     }
 }

@@ -271,6 +271,19 @@ public final class LOTRChestContents {
             new Entry(() -> new ItemStack(Items.ARROW), 2, 8, 100)),
             true, LOTRFoods.BREE_DRINK.getDrinkVessels()).withLore(20, LOTRLore.LoreCategory.BREE);
 
+    /** BREE_PICKPOCKET: what a pickpocketed Bree-lander gives up. */
+    public static final Pool BREE_PICKPOCKET = new Pool(3, 6, List.of(
+            new Entry(() -> new ItemStack(Items.GOLD_INGOT), 1, 1, 5),
+            new Entry(() -> new ItemStack(Items.GOLD_NUGGET), 1, 1, 50),
+            new Entry(() -> new ItemStack(LOTRMaterialItems.SILVER_INGOT), 1, 1, 5),
+            new Entry(() -> new ItemStack(LOTRMaterialItems.SILVER_NUGGET), 1, 1, 50),
+            new Entry(() -> new ItemStack(LOTRMiscItems.SILVER_COIN), 1, 1, 200),
+            new Entry(() -> new ItemStack(LOTRMiscItems.GOLD_RING), 1, 1, 25),
+            new Entry(() -> new ItemStack(LOTRMiscItems.SILVER_RING), 1, 1, 25),
+            new Entry(() -> new ItemStack(LOTRItems.PIPEWEED), 1, 1, 200),
+            new Entry(() -> new ItemStack(LOTRMiscItems.SMOKING_PIPE), 1, 1, 25),
+            new Entry(() -> new ItemStack(LOTRMiscItems.LEATHER_HAT), 1, 1, 50)), false);
+
     /**
      * ROHAN_HOUSE, its drinks served in Rohan's vessels. It also carries
      * Rohan lore at 1 in 30.

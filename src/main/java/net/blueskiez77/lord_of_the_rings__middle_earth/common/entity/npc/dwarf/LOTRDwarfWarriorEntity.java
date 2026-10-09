@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 
@@ -26,6 +27,7 @@ public class LOTRDwarfWarriorEntity extends LOTRDwarfEntity {
 
     public LOTRDwarfWarriorEntity(EntityType<? extends LOTRDwarfWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_DWARF;
     }
 
     @Override

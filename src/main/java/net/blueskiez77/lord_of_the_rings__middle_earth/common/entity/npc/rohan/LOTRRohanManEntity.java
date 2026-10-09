@@ -14,6 +14,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -48,9 +50,8 @@ import org.jspecify.annotations.Nullable;
  * drink as Rohan does, and can be hired where their people allow it. Their
  * mounts come barded in Rohirric horse armour.
  *
- * <p>NOT ported yet: mini-quests (D14), the pull of Rohan on their wandering
- * and their natural spawning (with the biomes), and the killRohirrim
- * achievement (D7).
+ * <p>NOT ported yet: the pull of Rohan on their wandering and their natural
+ * spawning (with the biomes), and the killRohirrim achievement (D7).
  */
 public class LOTRRohanManEntity extends LOTRManEntity {
 
@@ -174,5 +175,10 @@ public class LOTRRohanManEntity extends LOTRManEntity {
         if (this.random.nextInt(6) == 0) {
             dropChestContents(level, LOTRChestContents.ROHAN_HOUSE, 1, 2 + looting);
         }
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.ROHAN.createQuest(this);
     }
 }

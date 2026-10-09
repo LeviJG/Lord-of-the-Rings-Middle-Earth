@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable;
 
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -10,10 +11,8 @@ import net.minecraft.world.item.ItemStack;
 /**
  * LOTRItemCoin's sums: the silver coin is worth 1, the stack 10 and the pile
  * 100. A player's worth counts the main inventory and the stack on the
- * cursor; paying takes the biggest coins first and gives change.
- *
- * <p>NOT ported yet: refusing pickpocketed coins (IPickpocketable), with the
- * pickpocket mini-quest.
+ * cursor; paying takes the biggest coins first and gives change. Stolen
+ * coins are worth nothing to pay with (allowStolen false).
  */
 public final class LOTRCoins {
 
@@ -45,6 +44,13 @@ public final class LOTRCoins {
     }
 
     public static int getSingleItemValue(ItemStack stack) {
+        return getSingleItemValue(stack, false);
+    }
+
+    public static int getSingleItemValue(ItemStack stack, boolean allowStolen) {
+        if (!allowStolen && IPickpocketable.Helper.isPickpocketed(stack)) {
+            return 0;
+        }
         for (int i = 0; i < VALUES.length; ++i) {
             if (stack.is(coin(i))) {
                 return VALUES[i];
@@ -54,7 +60,11 @@ public final class LOTRCoins {
     }
 
     public static int getStackValue(ItemStack stack) {
-        return stack.isEmpty() ? 0 : getSingleItemValue(stack) * stack.getCount();
+        return getStackValue(stack, false);
+    }
+
+    public static int getStackValue(ItemStack stack, boolean allowStolen) {
+        return stack.isEmpty() ? 0 : getSingleItemValue(stack, allowStolen) * stack.getCount();
     }
 
     public static int getInventoryValue(Player player) {

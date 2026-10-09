@@ -7,6 +7,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -29,7 +31,7 @@ import org.jspecify.annotations.Nullable;
  * spear as well, falling back on the other. Now and then it leaves something
  * from an Angmar tent.
  *
- * <p>NOT ported yet: mini-quests (D14), the killAngmarOrc achievement (D7).
+ * <p>NOT ported yet: the killAngmarOrc achievement (D7).
  */
 public class LOTRAngmarOrcEntity extends LOTROrcEntity {
 
@@ -102,5 +104,10 @@ public class LOTRAngmarOrcEntity extends LOTROrcEntity {
             setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.ANGMAR_HELMET));
         }
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.ANGMAR.createQuest(this);
     }
 }

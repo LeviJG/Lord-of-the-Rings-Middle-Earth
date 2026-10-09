@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
@@ -30,9 +31,6 @@ import org.jspecify.annotations.Nullable;
  * everything within two blocks that its thrower may attack for its damage
  * over the distance (at most the whole of it). The thrower is never hurt, and
  * jumps as the burst is reckoned.
- *
- * <p>NOT ported yet: the gold leaves in its ring (the leaf particles, left for
- * now).
  */
 public class LOTRMallornLeafBombEntity extends ThrowableProjectile {
 
@@ -128,7 +126,7 @@ public class LOTRMallornLeafBombEntity extends ThrowableProjectile {
     public void tick() {
         super.tick();
         if (level().isClientSide()) {
-            // A ring of twenty leaves, spun about the line of flight.
+            // A ring of twenty gold leaves, each with a fragment of mallorn leaves, spun about the line of flight.
             Vec3 axis = getDeltaMovement().reverse();
             BlockParticleOption leaves = new BlockParticleOption(LOTRParticles.MALLORN_ENT_HEAL,
                     LOTRDecorationBlocks.MALLORN_LEAVES.defaultBlockState());
@@ -141,6 +139,8 @@ public class LOTRMallornLeafBombEntity extends ThrowableProjectile {
                 Vec3 perp = rotate.subtract(parallel);
                 Vec3 cross = rotate.cross(axis);
                 Vec3 result = parallel.add(cross.scale(Mth.sin(-angle))).add(perp.scale(Mth.cos(-angle)));
+                level().addParticle(LOTRLeafParticleOptions.of(LOTRParticles.LEAF_GOLD, 30, 0), getX(), getY(), getZ(),
+                        result.x / 10.0, result.y / 10.0, result.z / 10.0);
                 level().addParticle(leaves, getX(), getY(), getZ(), result.x / 20.0, result.y / 20.0, result.z / 20.0);
             }
         } else {

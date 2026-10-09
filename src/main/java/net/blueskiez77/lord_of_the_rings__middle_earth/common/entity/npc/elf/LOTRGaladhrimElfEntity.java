@@ -8,6 +8,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataCompo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -29,9 +31,8 @@ import org.jspecify.annotations.Nullable;
  * leave a drink of miruvor, and one time in six something from an elven
  * house.
  *
- * <p>NOT ported yet: mini-quests (D14), the pull of Lothlórien on its
- * wandering and its natural spawning (with the biomes), and the killElf
- * achievement (D7).
+ * <p>NOT ported yet: the pull of Lothlórien on its wandering and its natural
+ * spawning (with the biomes), and the killElf achievement (D7).
  */
 public class LOTRGaladhrimElfEntity extends LOTRElfEntity {
 
@@ -93,5 +94,10 @@ public class LOTRGaladhrimElfEntity extends LOTRElfEntity {
         this.npcItemsInv.setRangedWeapon(new ItemStack(LOTRCombatItems.MALLORN_BOW));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.GALADHRIM.createQuest(this);
     }
 }

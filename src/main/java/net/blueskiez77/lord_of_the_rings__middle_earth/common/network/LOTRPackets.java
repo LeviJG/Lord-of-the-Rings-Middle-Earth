@@ -165,7 +165,11 @@ public final class LOTRPackets {
                     // StringUtils.isBlank in the original; String.isBlank is
                     // the same test without pulling in commons-lang3.
                     beacon.setBeaconName(blankToNull(payload.beaconName()));
-                    beacon.setFellowshipName(blankToNull(payload.fellowshipName()));
+                    // Only a fellowship the editor is in.
+                    net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowship fs = payload.fellowshipID()
+                            .map(net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowships::getActiveFellowship)
+                            .orElse(null);
+                    beacon.setFellowship(fs != null && fs.containsPlayer(player.getUUID()) ? fs : null);
                 }
             });
         });

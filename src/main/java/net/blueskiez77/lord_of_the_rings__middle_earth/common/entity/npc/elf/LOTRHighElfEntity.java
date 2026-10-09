@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -21,8 +23,8 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityHighElf: an elf of Lindon, with its people's dagger and bow; its mounts
  * wear Lindon's barding.
  *
- * <p>NOT ported yet: mini-quests (HIGH_ELF, D14), the pull of Lindon on its
- * wandering (with the biomes), and the killHighElf achievement (D7).
+ * <p>NOT ported yet: the pull of Lindon on its wandering (with the biomes), and
+ * the killHighElf achievement (D7).
  */
 public class LOTRHighElfEntity extends LOTRHighElfBaseEntity {
 
@@ -64,5 +66,10 @@ public class LOTRHighElfEntity extends LOTRHighElfBaseEntity {
         this.npcItemsInv.setRangedWeapon(new ItemStack(LOTRCombatItems.LINDON_BOW));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.HIGH_ELF.createQuest(this);
     }
 }

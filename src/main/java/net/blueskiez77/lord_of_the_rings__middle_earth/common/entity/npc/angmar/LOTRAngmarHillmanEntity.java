@@ -13,6 +13,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -47,9 +49,9 @@ import org.jspecify.annotations.Nullable;
  * a spear as well), eats and drinks as Rhudaur does, and leaves bones and now
  * and then something from a hillman's house.
  *
- * <p>NOT ported yet: mini-quests (D14), the pull of Angmar on their
- * wandering and their spawning above y 62 on the biome's own top block (with
- * the biomes), and the killAngmarHillman achievement (D7).
+ * <p>NOT ported yet: the pull of Angmar on their wandering and their spawning
+ * above y 62 on the biome's own top block (with the biomes), and the
+ * killAngmarHillman achievement (D7).
  */
 public class LOTRAngmarHillmanEntity extends LOTRManEntity {
 
@@ -162,5 +164,10 @@ public class LOTRAngmarHillmanEntity extends LOTRManEntity {
         }
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.ANGMAR_HILLMAN.createQuest(this);
     }
 }

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -322,7 +324,7 @@ public final class LOTRDecorationBlocks {
     public static final Block DATE_PALM_LEAVES = registerLeaves("date_palm_leaves");
     public static final Block DRAGON_LEAVES = registerLeaves("dragon_leaves");
     public static final Block FIR_LEAVES = registerLeaves("fir_leaves");
-    public static final Block GREEN_OAK_LEAVES = registerLeaves("green_oak_leaves");
+    public static final Block GREEN_OAK_LEAVES = registerLeaves("green_oak_leaves", LOTRParticles.LEAF_GREEN, 150);
     public static final Block HOLLY_LEAVES = registerLeaves("holly_leaves");
     public static final Block KANUKA_LEAVES = registerLeaves("kanuka_leaves");
     public static final Block LAIRELOSSE_LEAVES = registerLeaves("lairelosse_leaves");
@@ -331,11 +333,11 @@ public final class LOTRDecorationBlocks {
     public static final Block LEMON_LEAVES = registerLeaves("lemon_leaves");
     public static final Block LIME_LEAVES = registerLeaves("lime_leaves");
     public static final Block MAHOGANY_LEAVES = registerLeaves("mahogany_leaves");
-    public static final Block MALLORN_LEAVES = registerLeaves("mallorn_leaves");
+    public static final Block MALLORN_LEAVES = registerLeaves("mallorn_leaves", LOTRParticles.LEAF_GOLD, 75);
     public static final Block MANGO_LEAVES = registerLeaves("mango_leaves");
     public static final Block MAPLE_LEAVES = registerLeaves("maple_leaves");
-    public static final Block MIRK_OAK_LEAVES = registerLeaves("mirk_oak_leaves");
-    public static final Block MIRK_OAK_RED_LEAVES = registerLeaves("mirk_oak_red_leaves");
+    public static final Block MIRK_OAK_LEAVES = registerLeaves("mirk_oak_leaves", LOTRParticles.LEAF_MIRK, 250);
+    public static final Block MIRK_OAK_RED_LEAVES = registerLeaves("mirk_oak_red_leaves", LOTRParticles.LEAF_RED, 40);
     public static final Block OLIVE_LEAVES = registerLeaves("olive_leaves");
     public static final Block ORANGE_LEAVES = registerLeaves("orange_leaves");
     public static final Block PALM_LEAVES = registerLeaves("palm_leaves");

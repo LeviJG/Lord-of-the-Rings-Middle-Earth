@@ -38,8 +38,6 @@ import org.jspecify.annotations.Nullable;
  * a player reeling with nausea. Hurt one and those nearby join in -- more
  * of them the more it is hurt. Slain, they leave silver coins and sometimes
  * a skull cup.
- *
- * <p>NOT ported yet: mini-quests and their colour (D14).
  */
 public abstract class LOTRBreeRuffianEntity extends LOTRBreeManEntity {
 
@@ -182,5 +180,15 @@ public abstract class LOTRBreeRuffianEntity extends LOTRBreeManEntity {
                     LOTRHobbitBounderEntity.hat(this.random.nextBoolean() ? 0 : 6834742, 16777215));
         }
         return data;
+    }
+
+    @Override
+    public boolean canPickpocket() {
+        return false;
+    }
+
+    @Override
+    public int getMiniquestColor() {
+        return LOTRFaction.ISENGARD.getFactionColor();
     }
 }

@@ -1,6 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -17,8 +19,7 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityRuffianBrute: a big ruffian (30 health) who goes about with his
  * weapon out. Bree-folk and hobbits give him a wide berth.
  *
- * <p>NOT ported yet: his mini-quest (D14) and the killRuffianBrute
- * achievement (D7).
+ * <p>NOT ported yet: the killRuffianBrute achievement (D7).
  */
 public class LOTRRuffianBruteEntity extends LOTRBreeRuffianEntity {
 
@@ -43,5 +44,10 @@ public class LOTRRuffianBruteEntity extends LOTRBreeRuffianEntity {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.RUFFIAN_BRUTE.createQuest(this);
     }
 }

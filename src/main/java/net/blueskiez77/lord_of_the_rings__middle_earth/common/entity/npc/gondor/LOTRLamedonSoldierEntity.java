@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
@@ -30,6 +31,7 @@ public class LOTRLamedonSoldierEntity extends LOTRGondorSoldierEntity {
 
     public LOTRLamedonSoldierEntity(EntityType<? extends LOTRLamedonSoldierEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_LAMEDON;
         this.npcCape = LOTRCapes.LAMEDON;
         this.spawnRidingHorse = this.random.nextInt(6) == 0;
     }

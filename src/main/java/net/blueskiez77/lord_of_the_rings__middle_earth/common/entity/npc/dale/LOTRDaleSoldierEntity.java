@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -29,6 +30,7 @@ public class LOTRDaleSoldierEntity extends LOTRDaleLevymanEntity {
 
     public LOTRDaleSoldierEntity(EntityType<? extends LOTRDaleSoldierEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_DALE;
         this.spawnRidingHorse = this.random.nextInt(8) == 0;
     }
 

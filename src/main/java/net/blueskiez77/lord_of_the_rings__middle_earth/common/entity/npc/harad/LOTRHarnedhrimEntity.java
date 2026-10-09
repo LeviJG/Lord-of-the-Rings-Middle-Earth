@@ -5,6 +5,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -24,8 +26,6 @@ import org.jspecify.annotations.Nullable;
  * with a Haradric dagger, a Harnennor name, Harnedor food and drink, and now
  * and then something from a Harnennor house. Unlike the other Near Harad
  * folk, every Harnedhrim seeks out Near Harad's enemies.
- *
- * <p>NOT ported yet: mini-quests (D14).
  */
 public class LOTRHarnedhrimEntity extends LOTRNearHaradrimBaseEntity {
 
@@ -82,5 +82,10 @@ public class LOTRHarnedhrimEntity extends LOTRNearHaradrimBaseEntity {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.HARADRIC_DAGGER));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.HARNENNOR.createQuest(this);
     }
 }

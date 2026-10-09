@@ -6,6 +6,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -27,9 +29,8 @@ import org.jspecify.annotations.Nullable;
  * Dorwinion does, bears a Sindarin name, and slain by a player may leave a
  * Dorwinion wine, and one time in six something from a Dorwinion house.
  *
- * <p>NOT ported yet: mini-quests (DORWINION_ELF, D14), its natural spawn
- * check and the pull of Dorwinion on its wandering (with the biomes), and the
- * killDorwinionElf achievement (D7).
+ * <p>NOT ported yet: its natural spawn check and the pull of Dorwinion on its
+ * wandering (with the biomes), and the killDorwinionElf achievement (D7).
  */
 public class LOTRDorwinionElfEntity extends LOTRElfEntity {
 
@@ -107,5 +108,10 @@ public class LOTRDorwinionElfEntity extends LOTRElfEntity {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.DORWINION_ELVEN_DAGGER));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.DORWINION_ELF.createQuest(this);
     }
 }

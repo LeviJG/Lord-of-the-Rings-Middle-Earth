@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.quest.LOTRClientMiniQuests;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestWelcome;
 
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.AbstractButton;
@@ -24,8 +26,8 @@ import org.lwjgl.glfw.GLFW;
  * fellowships, titles, shields, options -- each with a key of its own. The
  * menu key reopens whichever of them was last opened from here.
  *
- * <p>NOT ported yet, so their icons are greyed out: the achievements and
- * titles (D7), map (D13), fellowships (D14) and shields (D7) screens; and
+ * <p>NOT ported yet, so their icons are greyed out: the achievements (D7)
+ * and map (D13) screens; and
  * openMenu's welcome mini-quest forcing the map or factions (D14).
  */
 public class LOTRMenuScreen extends Screen {
@@ -39,7 +41,14 @@ public class LOTRMenuScreen extends Screen {
         super(Component.translatable("lotr.gui.menu", LOTRDimension.MIDDLE_EARTH.getDimensionName()));
     }
 
+    /**
+     * openMenu: the factions screen while the Grey Wanderer's welcome asks for it (the map, which it
+     * asks for first, with the map, D13); else the last menu screen.
+     */
     public static Screen openMenu() {
+        if (LOTRMiniQuestWelcome.forceMenuMapFactions(LOTRClientMiniQuests.getActiveMiniQuests())[1]) {
+            return new LOTRFactionsScreen();
+        }
         return lastMenuScreen != null ? lastMenuScreen.get() : new LOTRMenuScreen();
     }
 
@@ -59,9 +68,9 @@ public class LOTRMenuScreen extends Screen {
         buttons.add(new MenuButton(3, null, "lotr.gui.map", GLFW.GLFW_KEY_M, false));
         buttons.add(new MenuButton(4, LOTRFactionsScreen::new, "lotr.gui.factions", GLFW.GLFW_KEY_F, true));
         buttons.add(new MenuButton(0, null, null, -1, true));
-        buttons.add(new MenuButton(6, null, "lotr.gui.fellowships", GLFW.GLFW_KEY_P, false));
-        buttons.add(new MenuButton(7, null, "lotr.gui.titles", GLFW.GLFW_KEY_T, false));
-        buttons.add(new MenuButton(5, null, "lotr.gui.shields", GLFW.GLFW_KEY_S, false));
+        buttons.add(new MenuButton(6, LOTRFellowshipsScreen::new, "lotr.gui.fellowships", GLFW.GLFW_KEY_P, true));
+        buttons.add(new MenuButton(7, LOTRTitlesScreen::new, "lotr.gui.titles", GLFW.GLFW_KEY_T, true));
+        buttons.add(new MenuButton(5, LOTRShieldsScreen::new, "lotr.gui.shields", GLFW.GLFW_KEY_S, true));
         buttons.add(new MenuButton(1, LOTROptionsScreen::new, "lotr.gui.options", GLFW.GLFW_KEY_O, true));
         int numButtons = buttons.size();
         int numTopRowButtons = (numButtons - 1) / 2 + 1;

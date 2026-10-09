@@ -31,6 +31,7 @@ public class LOTRNomadWarriorEntity extends LOTRNomadEntity {
 
     public LOTRNomadWarriorEntity(EntityType<? extends LOTRNomadWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = null;
         this.spawnRidingHorse = this.random.nextInt(8) == 0;
     }
 

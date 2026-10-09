@@ -15,6 +15,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -49,9 +51,9 @@ import org.jspecify.annotations.Nullable;
  * does, and can be hired. Slain, they leave bones and one time in six
  * something from a Dale house.
  *
- * <p>NOT ported yet: mini-quests (D14), the pull of Dale on their wandering
- * (+20 there) and their natural spawn check (above y 62 on the biome's top
- * block) -- with the biomes (D10) -- and the killDalish achievement (D7).
+ * <p>NOT ported yet: the pull of Dale on their wandering (+20 there) and their
+ * natural spawn check (above y 62 on the biome's top block) -- with the biomes
+ * (D10) -- and the killDalish achievement (D7).
  */
 public class LOTRDaleManEntity extends LOTRManEntity {
 
@@ -158,5 +160,10 @@ public class LOTRDaleManEntity extends LOTRManEntity {
         if (this.random.nextInt(6) == 0) {
             dropChestContents(level, LOTRChestContents.DALE_HOUSE, 1, 2 + looting);
         }
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.DALE.createQuest(this);
     }
 }

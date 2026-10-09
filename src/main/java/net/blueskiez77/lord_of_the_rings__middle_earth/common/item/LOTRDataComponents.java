@@ -25,6 +25,21 @@ import net.minecraft.util.Unit;
  */
 public final class LOTRDataComponents {
 
+    /**
+     * The LOTR shield whose face a vanilla shield is drawn with: put on the shield, as it is drawn,
+     * by the client, from the shield its bearer has chosen. Never saved or sent.
+     */
+    public static final DataComponentType<net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields> SHIELD_DESIGN =
+            register("shield_design", b -> b);
+
+    /**
+     * IPickpocketable.Helper's "LOTRPickpocket": who an item was stolen from and who wanted it stolen,
+     * which marks it as stolen goods.
+     */
+    public static final DataComponentType<net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable.Stolen> PICKPOCKET =
+            register("pickpocket", b -> b.persistent(net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable.Stolen.CODEC)
+                    .networkSynchronized(net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable.Stolen.STREAM_CODEC));
+
     /** Which cup a drink is in. See LOTRVessel. */
     public static final DataComponentType<LOTRVessel> VESSEL = register("vessel",
             b -> b.persistent(LOTRVessel.CODEC).networkSynchronized(LOTRVessel.STREAM_CODEC));

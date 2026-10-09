@@ -1,6 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.fac;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.title.LOTRTitle;
+
 import net.minecraft.network.chat.Component;
+
+import org.jspecify.annotations.Nullable;
 
 public class LOTRFactionRank implements Comparable<LOTRFactionRank> {
     public static final LOTRFactionRank RANK_NEUTRAL = new Dummy("lotr.faction.rank.neutral");
@@ -12,6 +16,9 @@ public class LOTRFactionRank implements Comparable<LOTRFactionRank> {
     public boolean isGendered;
     public boolean hasRankAchievement;
     public boolean hasRankTitle;
+    public @Nullable LOTRTitle rankTitle;
+    public @Nullable LOTRTitle rankTitleMasc;
+    public @Nullable LOTRTitle rankTitleFem;
 
     public LOTRFactionRank(LOTRFaction f, float al, String s, boolean gend) {
         fac = f;
@@ -109,6 +116,12 @@ public class LOTRFactionRank implements Comparable<LOTRFactionRank> {
 
     public LOTRFactionRank makeTitle() {
         hasRankTitle = true;
+        if (isGendered) {
+            rankTitleMasc = new LOTRTitle(this, false);
+            rankTitleFem = new LOTRTitle(this, true);
+            return this;
+        }
+        rankTitle = new LOTRTitle(this, false);
         return this;
     }
 

@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
@@ -32,6 +33,7 @@ public class LOTRSwanKnightEntity extends LOTRDolAmrothSoldierEntity {
 
     public LOTRSwanKnightEntity(EntityType<? extends LOTRSwanKnightEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_DOL_AMROTH;
         this.spawnRidingHorse = this.random.nextInt(4) == 0;
     }
 

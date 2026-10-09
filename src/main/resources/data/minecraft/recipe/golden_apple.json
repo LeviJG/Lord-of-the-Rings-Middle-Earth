@@ -1,0 +1,24 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "lotr:config",
+        "option": "removeGoldenAppleRecipes"
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "#": "minecraft:gold_ingot",
+    "X": "minecraft:apple"
+  },
+  "pattern": [
+    "###",
+    "#X#",
+    "###"
+  ],
+  "result": {
+    "id": "minecraft:golden_apple"
+  }
+}

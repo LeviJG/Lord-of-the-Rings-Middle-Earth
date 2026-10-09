@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowship;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowships;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerWhitelistEntry;
@@ -73,8 +75,10 @@ import org.jspecify.annotations.Nullable;
  * and the whitelist and their own standing only when they open the banner or
  * it changes ({@link LOTRBannerDataPayload}).
  *
- * <p>NOT ported yet: whitelisting fellowships (D14) -- such entries are kept
- * but match nobody; the bannerProtect achievement (D7).
+ * <p>A whitelisted fellowship counts only while it stands and the placer is
+ * in it; until then its line matches no one and is not shown.
+ *
+ * <p>NOT ported yet: the bannerProtect achievement (D7).
  */
 public class LOTRBannerBlockEntity extends BlockEntity {
 
@@ -228,15 +232,53 @@ public class LOTRBannerBlockEntity extends BlockEntity {
             }
             UUID playerID = player.getUUID();
             for (LOTRBannerWhitelistEntry entry : this.allowedPlayers) {
-                if (entry == null || entry.isFellowship()) {
+                if (entry == null) {
                     continue;
                 }
-                if (playerID.equals(entry.playerID) && entry.allowsPermission(perm)) {
+                boolean playerMatch;
+                if (entry.isFellowship()) {
+                    LOTRFellowship fs = whitelistedFellowship(entry);
+                    playerMatch = fs != null && fs.containsPlayer(playerID);
+                } else {
+                    playerMatch = playerID.equals(entry.playerID);
+                }
+                if (playerMatch && entry.allowsPermission(perm)) {
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    /**
+     * A whitelisted fellowship, while it stands and the banner's placer is still in it (isValidFellowship);
+     * otherwise none, and the line matches no one. Only the server knows fellowships' members.
+     */
+    private @Nullable LOTRFellowship whitelistedFellowship(LOTRBannerWhitelistEntry entry) {
+        if (entry.fellowshipID == null) {
+            return null;
+        }
+        LOTRFellowship fs = LOTRFellowships.getActiveFellowship(entry.fellowshipID);
+        return isValidFellowship(fs) ? fs : null;
+    }
+
+    /** isValidFellowship: one not disbanded, with the banner's placer in it. */
+    public boolean isValidFellowship(@Nullable LOTRFellowship fs) {
+        LOTRBannerWhitelistEntry owner = getPlacingPlayer();
+        return fs != null && !fs.isDisbanded() && owner != null && owner.playerID != null && fs.containsPlayer(owner.playerID);
+    }
+
+    /** getPlacersFellowshipByName: the placer's fellowship of that name. */
+    public @Nullable LOTRFellowship getPlacersFellowshipByName(String fsName) {
+        LOTRBannerWhitelistEntry owner = getPlacingPlayer();
+        return owner == null || owner.playerID == null ? null : LOTRFellowships.getFellowshipByName(owner.playerID, fsName);
+    }
+
+    /** whitelistFellowship: a fellowship of the placer's, by its id. */
+    public void whitelistFellowship(int index, LOTRFellowship fs, Iterable<LOTRBannerProtection.Permission> perms) {
+        if (isValidFellowship(fs)) {
+            whitelistPlayer(index, LOTRBannerWhitelistEntry.fellowship(fs.getFellowshipID(), fs.getName()), perms);
+        }
     }
 
     /** isPlayerPermittedInSurvival: whether the banner would let this player do anything, creative or not. */
@@ -419,8 +461,16 @@ public class LOTRBannerBlockEntity extends BlockEntity {
         List<LOTRBannerDataPayload.Slot> slots = new ArrayList<>();
         for (int index = 0; index < maxSendIndex; ++index) {
             LOTRBannerWhitelistEntry entry = this.allowedPlayers[index];
-            if (entry == null || entry.isFellowship()) {
-                // A fellowship is sent only while it is valid, which none is before D14.
+            if (entry == null) {
+                continue;
+            }
+            if (entry.isFellowship()) {
+                // A fellowship is sent only while it is valid.
+                LOTRFellowship fs = whitelistedFellowship(entry);
+                if (fs != null) {
+                    slots.add(new LOTRBannerDataPayload.Slot(index, LOTRBannerWhitelistEntry.addFellowshipCode(fs.getName()),
+                            entry.encodePermBitFlags()));
+                }
                 continue;
             }
             String username = index == 0 ? getPlacingPlayerName() : entryName(entry, player.level().getServer());

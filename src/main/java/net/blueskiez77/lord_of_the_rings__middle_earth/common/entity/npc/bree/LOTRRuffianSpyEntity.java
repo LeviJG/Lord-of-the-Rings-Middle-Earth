@@ -6,6 +6,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRBand
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBandit;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRInventoryNPC;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,8 +26,9 @@ import org.jspecify.annotations.Nullable;
  * fights only when set upon. Slain, he gives up what he took.
  *
  * <p>NOT ported yet: his bounty help (a player may pay him off with coins,
- * gold, silver, a gem or a ring) and mini-quest (D14), and the
- * killRuffianSpy achievement (D7).
+ * gold, silver, a gem or a ring, to hear where a bounty's target was last seen
+ * -- with the biomes and waypoints, D10/D13), and the killRuffianSpy
+ * achievement (D7).
  */
 public class LOTRRuffianSpyEntity extends LOTRBreeRuffianEntity implements LOTRBandit {
 
@@ -103,5 +106,10 @@ public class LOTRRuffianSpyEntity extends LOTRBreeRuffianEntity implements LOTRB
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         this.ruffianInventory.load(input);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.RUFFIAN_SPY.createQuest(this);
     }
 }

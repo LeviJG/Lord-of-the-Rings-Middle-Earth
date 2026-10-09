@@ -14,10 +14,8 @@ import net.minecraft.world.entity.player.Player;
 
 /**
  * LOTRPlayerData's FemRankOverride: gendered ranks always shown in their
- * feminine form. Sent to the player for their Options screen.
- *
- * <p>NOT ported yet: the other way to feminine ranks, a feminine title
- * (useFeminineRanks' playerTitle, with titles, D7).
+ * feminine form. Sent to the player for their Options screen. Bearing the
+ * feminine form of a rank's title does the same (useFeminineRanks).
  */
 public final class LOTRRankOptions {
 
@@ -39,7 +37,8 @@ public final class LOTRRankOptions {
 
     /** useFeminineRanks. */
     public static boolean useFeminineRanks(Player player) {
-        return getFemRankOverride(player);
+        return getFemRankOverride(player)
+                || net.blueskiez77.lord_of_the_rings__middle_earth.common.title.LOTRPlayerTitles.hasFeminineRankTitle(player);
     }
 
     public static void init() {

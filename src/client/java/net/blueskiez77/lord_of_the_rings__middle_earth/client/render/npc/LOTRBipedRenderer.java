@@ -45,6 +45,7 @@ public abstract class LOTRBipedRenderer<T extends LOTRNPCEntity, S extends LOTRN
     protected LOTRBipedRenderer(EntityRendererProvider.Context context, M model, M babyModel, float shadow) {
         super(context, model, babyModel, shadow);
         addLayer(new LOTRNPCCapeLayer<>(this));
+        addLayer(new net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRShieldLayer<>(this));
     }
 
     /** getCapeToRender: the NPC's own cape; a renderer may give its kind one. */
@@ -90,6 +91,7 @@ public abstract class LOTRBipedRenderer<T extends LOTRNPCEntity, S extends LOTRN
         }
         state.cape = getCapeToRender(npc);
         state.speech = LOTRNPCSpeechRendering.extract(npc, getFont());
+        state.questMarks = LOTRNPCQuestRendering.extract(npc, partialTick);
     }
 
     /** A bow, crossbow or sling: raised to aim in a fight (LOTRItemSpear aside). */
@@ -122,6 +124,9 @@ public abstract class LOTRBipedRenderer<T extends LOTRNPCEntity, S extends LOTRN
     @Override
     public void submit(S state, PoseStack poseStack, SubmitNodeCollector collector, CameraRenderState camera) {
         super.submit(state, poseStack, collector, camera);
+        if (state.questMarks != null) {
+            LOTRNPCQuestRendering.submit(state.questMarks, state.boundingBoxHeight, poseStack, collector, camera);
+        }
         if (state.speech != null && state.distanceToCameraSq <= LOTRNPCSpeechRendering.NAME_TAG_RANGE * LOTRNPCSpeechRendering.NAME_TAG_RANGE) {
             LOTRNPCSpeechRendering.submit(getFont(), state.boundingBoxHeight, state.speech, poseStack, collector, camera);
         }

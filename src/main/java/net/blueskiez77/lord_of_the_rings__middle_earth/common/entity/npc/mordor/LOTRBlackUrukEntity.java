@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
@@ -36,6 +37,7 @@ public class LOTRBlackUrukEntity extends LOTRMordorOrcEntity {
 
     public LOTRBlackUrukEntity(EntityType<? extends LOTRBlackUrukEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_BLACK_URUK;
         this.isWeakOrc = false;
     }
 

@@ -9,21 +9,15 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
 
 /**
- * LOTRPacketBeaconEdit, minus the fellowship.
- *
- * The original carried x/y/z, a fellowship UUID, the beacon name and a
- * releasePlayer flag. There is no fellowship system in the port yet, so the
- * fellowship is carried as the typed NAME rather than a resolved UUID -- the
- * text is kept verbatim so that when fellowships land it can be looked up and
- * turned into a real assignment without anyone having to retype it. The
- * editing-player list is dropped; it existed only to gate fellowship edits.
+ * LOTRPacketBeaconEdit: the beacon's fellowship (one of the sender's, by its
+ * id, or none) and its name, sent as the dialog closes (releasePlayer).
  *
  * NOTE the type id is built by hand rather than with
  * CustomPacketPayload.createType(String) -- that helper calls
  * Identifier.withDefaultNamespace, which would register this as
  * "minecraft:beacon_edit".
  */
-public record LOTRBeaconEditPayload(BlockPos pos, String fellowshipName, String beaconName)
+public record LOTRBeaconEditPayload(BlockPos pos, java.util.Optional<java.util.UUID> fellowshipID, String beaconName)
         implements CustomPacketPayload {
 
     public static final CustomPacketPayload.Type<LOTRBeaconEditPayload> TYPE =
@@ -34,12 +28,12 @@ public record LOTRBeaconEditPayload(BlockPos pos, String fellowshipName, String 
     public static final int MAX_NAME_LENGTH = 40;
 
     public LOTRBeaconEditPayload(RegistryFriendlyByteBuf buf) {
-        this(buf.readBlockPos(), buf.readUtf(MAX_NAME_LENGTH), buf.readUtf(MAX_NAME_LENGTH));
+        this(buf.readBlockPos(), buf.readOptional(b -> b.readUUID()), buf.readUtf(MAX_NAME_LENGTH));
     }
 
     public void write(RegistryFriendlyByteBuf buf) {
         buf.writeBlockPos(pos);
-        buf.writeUtf(fellowshipName, MAX_NAME_LENGTH);
+        buf.writeOptional(fellowshipID, (b, id) -> b.writeUUID(id));
         buf.writeUtf(beaconName, MAX_NAME_LENGTH);
     }
 

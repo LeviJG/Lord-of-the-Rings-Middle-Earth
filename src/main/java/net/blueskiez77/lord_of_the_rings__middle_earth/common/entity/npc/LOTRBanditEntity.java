@@ -49,8 +49,7 @@ import org.jspecify.annotations.Nullable;
  * his loot, bones, coins in plenty, and one time in five a skull cup.
  *
  * <p>NOT ported yet: his spawning in the wilds (LOTREventSpawner, with the
- * biomes' bandit kinds, D10/D12), the Bree and Dorwinion mini-quests to kill
- * him (D14), and the killThievingBandit achievement (D7).
+ * biomes' bandit kinds, D10/D12), and the killThievingBandit achievement (D7).
  */
 public class LOTRBanditEntity extends LOTRManEntity implements LOTRBandit {
 

@@ -4,6 +4,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -24,8 +26,6 @@ import org.jspecify.annotations.Nullable;
  * Umbaric dagger, a coast name (one time in three an Umbar one), Southron
  * food and drink, and now and then something from a Southron house. Its
  * horse, when it has one, is barded in coast Southron armour.
- *
- * <p>NOT ported yet: mini-quests (D14).
  */
 public class LOTRNearHaradrimEntity extends LOTRNearHaradrimBaseEntity {
 
@@ -77,5 +77,10 @@ public class LOTRNearHaradrimEntity extends LOTRNearHaradrimBaseEntity {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.UMBARIC_DAGGER));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.NEAR_HARAD.createQuest(this);
     }
 }

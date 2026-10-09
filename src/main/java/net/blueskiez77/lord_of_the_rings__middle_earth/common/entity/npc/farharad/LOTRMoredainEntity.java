@@ -13,6 +13,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNam
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -47,8 +49,8 @@ import org.jspecify.annotations.Nullable;
  * bones and, one time in five, something from a Moredain hut.
  *
  * <p>NOT ported yet: the pull of Far Harad on their wandering and their
- * spawning above y 62 on grass or sand (with the biomes), the killMoredain
- * achievement (D7), and mini-quests (D14).
+ * spawning above y 62 on grass or sand (with the biomes), and the killMoredain
+ * achievement (D7).
  */
 public class LOTRMoredainEntity extends LOTRManEntity {
 
@@ -164,5 +166,10 @@ public class LOTRMoredainEntity extends LOTRManEntity {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.MORWAITH_DAGGER));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.MOREDAIN.createQuest(this);
     }
 }

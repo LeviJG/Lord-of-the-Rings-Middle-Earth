@@ -1,5 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
+
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -42,13 +45,13 @@ public enum LOTRGlowStyle {
     MALLORN_GREEN(0x54E863),    // 5564515
 
     /**
-     * LOTRBlockWoodElvenTorch: "leafRed_&lt;n&gt;" drifting a hair in every
-     * direction. Cherry petals are the closest vanilla has to a falling leaf.
+     * LOTRBlockWoodElvenTorch: "leafRed_" + (20 + rand.nextInt(30)), drifting
+     * a hair in every direction.
      */
-    WOOD_ELVEN_TORCH(ParticleTypes.CHERRY_LEAVES, null, 0.01, false, 0.0),
+    WOOD_ELVEN_TORCH(LOTRLeafParticleOptions.of(LOTRParticles.LEAF_RED, 20, 30), null, 0.01, false, 0.0),
 
-    /** The chandelier's version of the same, with half the drift. */
-    WOOD_ELVEN_CHANDELIER(ParticleTypes.CHERRY_LEAVES, null, 0.005, false, 0.0),
+    /** The chandelier's: "leafRed_" + (10 + rand.nextInt(20)), with half the drift. */
+    WOOD_ELVEN_CHANDELIER(LOTRLeafParticleOptions.of(LOTRParticles.LEAF_RED, 10, 20), null, 0.005, false, 0.0),
 
     /** "morgulPortal": sideways a little, upward a lot. */
     MORGUL(ParticleTypes.PORTAL, null, 0.0, false, 0.0);

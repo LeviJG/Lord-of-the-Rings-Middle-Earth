@@ -19,6 +19,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestCont
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -59,10 +61,10 @@ import org.jspecify.annotations.Nullable;
  * a child. They cry out on attacking, cheer over a kill, and a woman's voice
  * is higher.
  *
- * <p>NOT ported yet: mini-quests (D14), the pull of the dwarven mountains on
- * their wandering and their natural spawning -- underground on lit rock below
- * y 60, or one time in 200 anywhere -- (with the biomes), and the killDwarf,
- * marryDwarf and talkDwarfWoman achievements (D7).
+ * <p>NOT ported yet: the pull of the dwarven mountains on their wandering and
+ * their natural spawning -- underground on lit rock below y 60, or one time in
+ * 200 anywhere -- (with the biomes), and the killDwarf, marryDwarf and
+ * talkDwarfWoman achievements (D7).
  */
 public class LOTRDwarfEntity extends LOTRNPCEntity {
 
@@ -279,5 +281,10 @@ public class LOTRDwarfEntity extends LOTRNPCEntity {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         input.getString("DwarfName").ifPresent(this.familyInfo::setName);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.DURIN.createQuest(this);
     }
 }

@@ -53,7 +53,28 @@ public final class LOTRParticles {
             BuiltInRegistries.PARTICLE_TYPE, Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "mallorn_ent_heal"),
             FabricParticleTypes.complex(BlockParticleOption::codec, BlockParticleOption::streamCodec));
 
+    /**
+     * LOTREntityLeafFX by its colour ("leafGold", "leafRed", "leafMirk", "leafGreen"): a falling leaf,
+     * turning through six frames of the mod's particle sheet, gone when it lands.
+     */
+    public static final ParticleType<LOTRLeafParticleOptions> LEAF_GOLD = registerLeaf("leaf_gold");
+    public static final ParticleType<LOTRLeafParticleOptions> LEAF_RED = registerLeaf("leaf_red");
+    public static final ParticleType<LOTRLeafParticleOptions> LEAF_MIRK = registerLeaf("leaf_mirk");
+    public static final ParticleType<LOTRLeafParticleOptions> LEAF_GREEN = registerLeaf("leaf_green");
+
+    /** LOTREntityPickpocketFX ("pickpocket"): a spinning coin that falls and bounces, off a picked pocket. */
+    public static final SimpleParticleType PICKPOCKET = register("pickpocket");
+    /** LOTREntityPickpocketFailFX ("pickpocketFail"): a scrap of lint, off a pocket missed. */
+    public static final SimpleParticleType PICKPOCKET_FAIL = register("pickpocket_fail");
+    /** LOTREntityAngryFX ("angry"): a full-bright thundercloud over one who noticed a thief. */
+    public static final SimpleParticleType ANGRY = register("angry");
+
     private LOTRParticles() {
+    }
+
+    private static ParticleType<LOTRLeafParticleOptions> registerLeaf(String name) {
+        return Registry.register(BuiltInRegistries.PARTICLE_TYPE, Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, name),
+                FabricParticleTypes.complex(LOTRLeafParticleOptions::codec, LOTRLeafParticleOptions::streamCodec));
     }
 
     private static SimpleParticleType register(String name) {

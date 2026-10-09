@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
@@ -29,13 +30,14 @@ import org.jspecify.annotations.Nullable;
  * blocks; one in five carries a spear as well, one in four rides an elk in
  * Wood-elven barding.
  *
- * <p>NOT ported yet: the Wood-elf shield (LOTRShields.ALIGNMENT_WOOD_ELF, D7),
- * and throwing the spear (spears keep vanilla's mechanics, user).
+ * <p>NOT ported yet: throwing the spear (spears keep vanilla's mechanics,
+ * user).
  */
 public class LOTRWoodElfWarriorEntity extends LOTRWoodElfEntity {
 
     public LOTRWoodElfWarriorEntity(EntityType<? extends LOTRWoodElfWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_WOOD_ELF;
         this.spawnRidingHorse = this.random.nextInt(4) == 0;
     }
 

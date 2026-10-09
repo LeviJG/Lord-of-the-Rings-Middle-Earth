@@ -1172,8 +1172,18 @@ public final class LOTRBlocks {
     // NOTE FOR LEVI: if the constructor arity differs, Ctrl-click
     // ParticleLeavesBlock and paste it; only this one line changes.
     static Block registerLeaves(String name) {
-        return track(ALL_LEAVES, register(name,
-                props -> new UntintedParticleLeavesBlock(0.01F, ParticleTypes.FALLING_SPORE_BLOSSOM, props),
+        return registerLeaves(name, props -> new UntintedParticleLeavesBlock(0.01F, ParticleTypes.FALLING_SPORE_BLOSSOM, props));
+    }
+
+    /** Leaves that also let the mod's own leaves fall, one tick in {@code oneIn} (LOTRLeavesBlock). */
+    static Block registerLeaves(String name, net.minecraft.core.particles.ParticleType<
+            net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions> fallingLeaf, int oneIn) {
+        return registerLeaves(name, props -> new LOTRLeavesBlock(0.01F, ParticleTypes.FALLING_SPORE_BLOSSOM,
+                net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions.of(fallingLeaf), oneIn, props));
+    }
+
+    private static Block registerLeaves(String name, java.util.function.Function<BlockBehaviour.Properties, Block> factory) {
+        return track(ALL_LEAVES, register(name, factory,
                 BlockBehaviour.Properties.of()
                         .mapColor(MapColor.PLANT)
                         .strength(0.2f)

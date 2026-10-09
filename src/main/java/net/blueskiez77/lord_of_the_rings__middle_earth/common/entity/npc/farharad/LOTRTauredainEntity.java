@@ -13,6 +13,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNam
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -48,8 +50,8 @@ import org.jspecify.annotations.Nullable;
  * and leave bones and, one time in five, something from a Taurethrim house.
  *
  * <p>NOT ported yet: the pull of Far Harad on their wandering and their
- * spawning above y 62 on the biome's top block (with the biomes), the
- * killTauredain achievement (D7), and mini-quests (D14).
+ * spawning above y 62 on the biome's top block (with the biomes), and the
+ * killTauredain achievement (D7).
  */
 public class LOTRTauredainEntity extends LOTRManEntity {
 
@@ -159,5 +161,10 @@ public class LOTRTauredainEntity extends LOTRManEntity {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.TAURETHRIM_DAGGER));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.TAUREDAIN.createQuest(this);
     }
 }

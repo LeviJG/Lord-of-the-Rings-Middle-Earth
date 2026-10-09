@@ -57,9 +57,7 @@ import org.jspecify.annotations.Nullable;
 // original's getLightValue consulted isFullyLit(), and a blockstate-driven
 // light level cannot ask a block entity, so the hundred-tick warmup flips this
 // second flag and that is what carries the light.
-//
-// NO MENU. LOTRGuiBeacon was fellowship assignment plus naming, and the port
-// has no fellowship system, so there is nothing for GUI 50 to show yet.
+
 public class LOTRBeaconBlock extends BaseEntityBlock {
 
     public static final MapCodec<LOTRBeaconBlock> CODEC = simpleCodec(LOTRBeaconBlock::new);

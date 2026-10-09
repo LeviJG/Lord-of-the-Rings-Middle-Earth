@@ -7,6 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable;
 
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -85,11 +86,13 @@ public class LOTRTradeEntry {
 
     /**
      * matches: a drink by its drink alone, whatever it is served in; anything
-     * else by its item and wear (OreDictionary.itemMatches, not strict).
-     *
-     * <p>NOT ported yet: refusing pickpocketed items (IPickpocketable).
+     * else by its item and wear (OreDictionary.itemMatches, not strict). Never
+     * stolen goods.
      */
     public boolean matches(ItemStack stack) {
+        if (IPickpocketable.Helper.isPickpocketed(stack)) {
+            return false;
+        }
         ItemStack trade = createTradeItem();
         if (trade.getItem() instanceof LOTRDrinkItem) {
             return LOTRVessel.equivalentDrink(trade).getItem() == LOTRVessel.equivalentDrink(stack).getItem();

@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCoins;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable;
 
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -19,9 +20,8 @@ import org.jspecify.annotations.Nullable;
  * change into -- ten of the next smaller kind each, or one of the next bigger
  * kind for every ten. A button (menu button 0 or 1, in place of
  * LOTRPacketCoinExchange) makes the exchange; then the chosen side can be
- * taken, and once it is all gone the exchange is offered again.
- *
- * <p>NOT ported yet: refusing pickpocketed coins (IPickpocketable).
+ * taken, and once it is all gone the exchange is offered again. Stolen coins
+ * are not taken.
  */
 public class LOTRCoinExchangeMenu extends AbstractContainerMenu {
 
@@ -56,7 +56,7 @@ public class LOTRCoinExchangeMenu extends AbstractContainerMenu {
     }
 
     public static boolean isValidCoin(ItemStack stack) {
-        return LOTRCoins.coinType(stack) >= 0;
+        return LOTRCoins.coinType(stack) >= 0 && !IPickpocketable.Helper.isPickpocketed(stack);
     }
 
     public static boolean isExchangingWith(Player player, LOTRNPCEntity npc) {

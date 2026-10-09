@@ -8,6 +8,7 @@
     "LOTREntityRenderStateMixin",
     "LOTREntityRendererMixin",
     "LOTRGuiSetScreenMixin",
+    "LOTRItemModelResolverMixin",
     "LOTRLightmapRenderStateExtractorMixin",
     "LOTRMouseHandlerMixin",
     "LOTRTitleScreenMixin"

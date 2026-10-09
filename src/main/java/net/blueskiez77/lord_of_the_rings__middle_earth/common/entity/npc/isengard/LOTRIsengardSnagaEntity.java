@@ -7,6 +7,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -32,7 +34,7 @@ import org.jspecify.annotations.Nullable;
  * bronze, fur, bone or (but for the helmet) Uruk make. Now and then it leaves
  * something from an Uruk tent.
  *
- * <p>NOT ported yet: mini-quests (D14), the killIsengardSnaga achievement (D7).
+ * <p>NOT ported yet: the killIsengardSnaga achievement (D7).
  */
 public class LOTRIsengardSnagaEntity extends LOTROrcEntity {
 
@@ -120,5 +122,10 @@ public class LOTRIsengardSnagaEntity extends LOTROrcEntity {
             setItemSlot(EquipmentSlot.HEAD, new ItemStack(HELMETS[this.random.nextInt(HELMETS.length)]));
         }
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.ISENGARD.createQuest(this);
     }
 }

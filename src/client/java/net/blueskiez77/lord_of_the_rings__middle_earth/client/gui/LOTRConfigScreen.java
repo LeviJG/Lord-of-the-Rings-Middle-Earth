@@ -115,8 +115,15 @@ public class LOTRConfigScreen extends Screen {
                     changed |= option.apply(file);
                 }
                 if (changed) {
+                    boolean naturalBlocks = LOTRConfig.naturalBlocks;
+                    boolean snowyStone = LOTRConfig.snowyStone;
                     file.save();
                     LOTRConfig.load();
+                    // The block models read these as the chunks are drawn: draw them again.
+                    if ((naturalBlocks != LOTRConfig.naturalBlocks || snowyStone != LOTRConfig.snowyStone)
+                            && this.minecraft.level != null) {
+                        this.minecraft.levelExtractor.allChanged();
+                    }
                 }
             }
             this.minecraft.gui.setScreen(this.parent);

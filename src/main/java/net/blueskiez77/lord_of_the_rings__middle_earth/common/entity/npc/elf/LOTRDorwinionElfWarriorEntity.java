@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
 import net.minecraft.world.DifficultyInstance;
@@ -29,6 +30,7 @@ public class LOTRDorwinionElfWarriorEntity extends LOTRDorwinionElfEntity {
 
     public LOTRDorwinionElfWarriorEntity(EntityType<? extends LOTRDorwinionElfWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_DORWINION_ELF;
     }
 
     public static AttributeSupplier.Builder createAttributes() {

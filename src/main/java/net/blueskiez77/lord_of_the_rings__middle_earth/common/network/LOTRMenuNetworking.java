@@ -1,11 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.network;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRViewingFaction;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionData;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRPlayerNPCOptions;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionData;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRRankOptions;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRViewingFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestEvent;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuests;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -62,7 +65,16 @@ public final class LOTRMenuNetworking {
         // LOTRPacketClientInfo.
         ServerPlayNetworking.registerGlobalReceiver(LOTRMenuPayloads.ClientInfo.TYPE, (payload, context) -> {
             ServerPlayer player = context.player();
-            LOTRViewingFaction.setViewingFaction(player, payload.viewingFaction());
+            LOTRFaction prevFac = LOTRViewingFaction.getViewingFaction(player);
+            LOTRFaction newFac = payload.viewingFaction();
+            LOTRViewingFaction.setViewingFaction(player, newFac);
+            LOTRMiniQuests.PlayerQuests quests = LOTRMiniQuests.forPlayer(player.getUUID());
+            if (prevFac != newFac && prevFac.factionRegion == newFac.factionRegion) {
+                quests.distributeMQEvent(LOTRMiniQuestEvent.CYCLE_ALIGNMENT);
+            }
+            if (prevFac.factionRegion != newFac.factionRegion) {
+                quests.distributeMQEvent(LOTRMiniQuestEvent.CYCLE_ALIGNMENT_REGION);
+            }
             payload.changedRegionMap().forEach((region, fac) -> LOTRViewingFaction.setRegionLastViewedFaction(player, region, fac));
         });
         PayloadTypeRegistry.serverboundPlay().register(LOTRMenuPayloads.SetOption.TYPE, LOTRMenuPayloads.SetOption.STREAM_CODEC);

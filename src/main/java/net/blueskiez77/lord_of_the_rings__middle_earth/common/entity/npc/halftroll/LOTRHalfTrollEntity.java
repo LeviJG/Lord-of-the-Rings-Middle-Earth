@@ -1,6 +1,5 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
@@ -13,7 +12,10 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPC
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -54,7 +56,7 @@ import org.jspecify.annotations.Nullable;
  * as half-trolls do, takes an orc's name, and leaves rotten flesh and troll
  * bones. Hired, it will wear only half-troll armour.
  *
- * <p>NOT ported yet: the killHalfTroll achievement (D7) and mini-quests (D14).
+ * <p>NOT ported yet: the killHalfTroll achievement (D7).
  */
 public class LOTRHalfTrollEntity extends LOTRNPCEntity {
 
@@ -241,5 +243,10 @@ public class LOTRHalfTrollEntity extends LOTRNPCEntity {
                     || stack.is(LOTRCombatItems.HALF_TROLL_LEGGINGS) || stack.is(LOTRCombatItems.HALF_TROLL_BOOTS);
         }
         return super.canReEquipHired(slot, stack);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.HALF_TROLL.createQuest(this);
     }
 }

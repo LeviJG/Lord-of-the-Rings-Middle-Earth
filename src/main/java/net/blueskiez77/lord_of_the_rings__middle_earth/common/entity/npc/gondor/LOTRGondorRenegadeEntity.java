@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -20,13 +22,16 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityGondorRenegade: a Gondorian soldier gone over to Umbar -- of the
  * Near Harad faction, on foot, bare-headed, armed as Umbar arms its men, in
  * Gondorian armour or one time in five Pelargir's.
- *
- * <p>NOT ported yet: his mini-quests (offered at +50, 1 in 4000, D14).
+ * His mini-quests are offered more often -- one chance in 4000 -- but only
+ * to those at +50 or more.
  */
 public class LOTRGondorRenegadeEntity extends LOTRGondorSoldierEntity {
 
     public LOTRGondorRenegadeEntity(EntityType<? extends LOTRGondorRenegadeEntity> type, Level level) {
         super(type, level);
+        this.questInfo.setOfferChance(4000);
+        this.questInfo.setMinAlignment(50.0f);
+        this.npcShield = null;
         this.spawnRidingHorse = false;
     }
 
@@ -69,5 +74,10 @@ public class LOTRGondorRenegadeEntity extends LOTRGondorSoldierEntity {
         }
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.GONDOR_RENEGADE.createQuest(this);
     }
 }

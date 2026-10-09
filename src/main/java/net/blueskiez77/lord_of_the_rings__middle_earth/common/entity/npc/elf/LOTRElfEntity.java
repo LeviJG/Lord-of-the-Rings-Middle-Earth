@@ -62,8 +62,8 @@ import org.jspecify.annotations.Nullable;
  * player details; here it is the vanilla player tag {@value #BOWING_ELVES_TAG}
  * (user decision), given with {@code /tag <player> add lotr.bowing_elves}.
  *
- * <p>NOT ported yet: the jazz solo's music notes and music, and the saxophone drawn in its hands
- * (D16); mini-quests (D14); and natural spawning (canElfSpawnHere, with the
+ * <p>NOT ported yet: the jazz solo's music notes and music, and the saxophone
+ * drawn in its hands (D16); and natural spawning (canElfSpawnHere, with the
  * biomes).
  */
 public abstract class LOTRElfEntity extends LOTRNPCEntity {

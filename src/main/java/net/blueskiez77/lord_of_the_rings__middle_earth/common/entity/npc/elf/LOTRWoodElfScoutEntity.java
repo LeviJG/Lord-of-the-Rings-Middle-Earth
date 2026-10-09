@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
@@ -29,11 +31,11 @@ import org.jspecify.annotations.Nullable;
  * with its bow in hand, shooting fast from 24 blocks. Pressed within four
  * blocks by whoever last hurt it, one tick in twenty it vanishes, to reappear
  * somewhere clear on solid ground between six and sixteen blocks off.
- *
- * <p>NOT ported yet: the green leaves it leaves as it vanishes (with the leaf
- * particles, deferred by the user).
+ * It goes in a scatter of green leaves.
  */
 public class LOTRWoodElfScoutEntity extends LOTRWoodElfEntity {
+
+    private static final byte EVENT_LEAVES = 15;
 
     public LOTRWoodElfScoutEntity(EntityType<? extends LOTRWoodElfScoutEntity> type, Level level) {
         super(type, level);
@@ -94,9 +96,28 @@ public class LOTRWoodElfScoutEntity extends LOTRWoodElfEntity {
             if (!level.noCollision(this, aabb) || level.containsAnyLiquid(aabb)) {
                 continue;
             }
+            // doTeleportEffects, where it stood.
             playSound(LOTRSounds.ELF_WOOD_ELF_TELEPORT, getSoundVolume(), 0.5f + this.random.nextFloat());
+            level.broadcastEntityEvent(this, EVENT_LEAVES);
             setPos(d, d1, d2);
             break;
+        }
+    }
+
+    /** handleHealthUpdate(15): sixteen green leaves where it vanished. */
+    @Override
+    public void handleEntityEvent(byte id) {
+        if (id == EVENT_LEAVES) {
+            for (int i = 0; i < 16; ++i) {
+                double d = getX() + (this.random.nextDouble() - 0.5) * getBbWidth();
+                double d1 = getY() + this.random.nextDouble() * getBbHeight();
+                double d2 = getZ() + (this.random.nextDouble() - 0.5) * getBbWidth();
+                level().addParticle(LOTRLeafParticleOptions.of(LOTRParticles.LEAF_GREEN, 20, 30), d, d1, d2,
+                        -0.05 + this.random.nextFloat() * 0.1f, -0.05 + this.random.nextFloat() * 0.1f,
+                        -0.05 + this.random.nextFloat() * 0.1f);
+            }
+        } else {
+            super.handleEntityEvent(id);
         }
     }
 

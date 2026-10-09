@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import java.util.UUID;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowship;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowships;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
@@ -33,9 +35,8 @@ import org.jspecify.annotations.Nullable;
  * player with any standing with its faction who is not its target. A
  * player stopped by Friendly Fire is told so once (FRIENDLY_FIRE).
  *
- * <p>NOT ported yet: fellowships' PVP and hired-unit friendly-fire
- * protections and siege mode (D14), and NPCs registered from other mods'
- * config (LOTREntityRegistry).
+ * A player may not hurt a fellow, or a fellow's hired unit, where their
+ * fellowship forbids it.
  */
 public final class LOTRAttackRules {
 
@@ -70,6 +71,15 @@ public final class LOTRAttackRules {
             return false;
         }
         boolean friendlyFire = false;
+        // A fellow of a fellowship that forbids PVP. (The original's siege mode, which lifted these
+        // protections, was switched on only by other mods' messages, so never here.)
+        if (target instanceof Player targetPlayer && target != attacker) {
+            for (LOTRFellowship fs : LOTRFellowships.getFellowships(attacker.getUUID())) {
+                if (fs.getPreventPVP() && fs.containsPlayer(targetPlayer.getUUID())) {
+                    return false;
+                }
+            }
+        }
         Entity targetNPC = null;
         if (factionOf(target) != LOTRFaction.UNALIGNED) {
             targetNPC = target;
@@ -78,9 +88,19 @@ public final class LOTRAttackRules {
         }
         if (targetNPC != null) {
             LOTRFaction targetNPCFaction = factionOf(targetNPC);
-            if (targetNPC instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive
-                    && npc.hiredNPCInfo.getHiringPlayer() == attacker) {
-                return false;
+            if (targetNPC instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive) {
+                if (npc.hiredNPCInfo.getHiringPlayer() == attacker) {
+                    return false;
+                }
+                // A fellow's hired unit, in a fellowship that forbids hurting them, unless it is fighting the attacker.
+                UUID hiringPlayerID = npc.hiredNPCInfo.getHiringPlayerUUID();
+                if (npc.getTarget() != attacker && hiringPlayerID != null) {
+                    for (LOTRFellowship fs : LOTRFellowships.getFellowships(attacker.getUUID())) {
+                        if (fs.getPreventHiredFriendlyFire() && fs.containsPlayer(hiringPlayerID)) {
+                            return false;
+                        }
+                    }
+                }
             }
             if (targetNPC instanceof Mob mob && mob.getTarget() != attacker
                     && LOTRPlayerAlignments.getAlignment(attacker, targetNPCFaction) > 0.0f) {

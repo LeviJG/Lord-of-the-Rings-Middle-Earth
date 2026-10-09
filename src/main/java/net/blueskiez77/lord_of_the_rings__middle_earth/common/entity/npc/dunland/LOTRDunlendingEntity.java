@@ -15,6 +15,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LO
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -52,9 +54,9 @@ import org.jspecify.annotations.Nullable;
  * 10000 comes riding an Uruk warg bombardier with an orc bomb for a hat and
  * another in hand.
  *
- * <p>NOT ported yet: mini-quests (D14), the pull of Dunland and Adorland on
- * their wandering and their spawning above y 62 on the biome's own top block
- * (with the biomes), and the killDunlending achievement (D7).
+ * <p>NOT ported yet: the pull of Dunland and Adorland on their wandering and
+ * their spawning above y 62 on the biome's own top block (with the biomes), and
+ * the killDunlending achievement (D7).
  */
 public class LOTRDunlendingEntity extends LOTRManEntity {
 
@@ -197,5 +199,10 @@ public class LOTRDunlendingEntity extends LOTRManEntity {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         input.getString("DunlendingName").ifPresent(this.familyInfo::setName);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.DUNLAND.createQuest(this);
     }
 }

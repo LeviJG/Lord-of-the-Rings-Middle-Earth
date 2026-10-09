@@ -75,8 +75,7 @@ import org.jspecify.annotations.Nullable;
  * <p>They hunt rabbits (vanilla's, standing in for LOTREntityRabbit as they
  * do for the wargs), one chance in 2000 a tick, bombardiers excepted.
  *
- * <p>NOT ported yet: mini-quests' hold on skirmishing (D14);
- * spawning in darkness and the dwarven biomes' top-block rule, and the biomes
+ * <p>NOT ported yet: spawning in darkness and the dwarven biomes' top-block rule, and the biomes
  * that let hostiles walk by day (D10/D12).
  */
 public abstract class LOTROrcEntity extends LOTRNPCEntity {
@@ -162,8 +161,9 @@ public abstract class LOTROrcEntity extends LOTRNPCEntity {
         return 1.4;
     }
 
+    /** canOrcSkirmish: not while any player is on one of its quests. */
     public boolean canOrcSkirmish() {
-        return true;
+        return !this.questInfo.anyActiveQuestPlayers();
     }
 
     public boolean isOrcSkirmishing() {

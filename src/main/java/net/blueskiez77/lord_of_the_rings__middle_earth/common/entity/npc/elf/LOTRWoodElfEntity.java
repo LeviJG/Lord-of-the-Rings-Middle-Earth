@@ -12,6 +12,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataCompo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -33,9 +35,9 @@ import org.jspecify.annotations.Nullable;
  * bears a Sindarin name, and slain by a player may leave red wine, and one
  * time in six something from a Wood-elven house.
  *
- * <p>NOT ported yet: mini-quests (WOOD_ELF, D14), its natural spawn check
- * (above y 62 on grass) and the pull of the Woodland Realm on its wandering
- * (with the biomes), and the killWoodElf achievement (D7).
+ * <p>NOT ported yet: its natural spawn check (above y 62 on grass) and the pull
+ * of the Woodland Realm on its wandering (with the biomes), and the killWoodElf
+ * achievement (D7).
  */
 public class LOTRWoodElfEntity extends LOTRElfEntity {
 
@@ -129,5 +131,10 @@ public class LOTRWoodElfEntity extends LOTRElfEntity {
         this.npcItemsInv.setMeleeWeapon(this.npcItemsInv.getRangedWeapon().copy());
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.WOOD_ELF.createQuest(this);
     }
 }

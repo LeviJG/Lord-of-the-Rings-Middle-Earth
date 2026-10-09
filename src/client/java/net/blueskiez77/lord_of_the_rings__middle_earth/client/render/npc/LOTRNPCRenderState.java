@@ -27,6 +27,8 @@ public class LOTRNPCRenderState extends HumanoidRenderState {
     public @Nullable Identifier cape;
     /** The NPC's speech, when it is saying something (LOTRSpeechClient). */
     public @Nullable SpeechLines speech;
+    /** Its red book or quest-offer mark (LOTRNPCQuestRendering). */
+    public LOTRNPCQuestRendering.@Nullable QuestMarks questMarks;
 
     public record SpeechLines(FormattedCharSequence name, List<FormattedCharSequence> lines, float age) {
     }

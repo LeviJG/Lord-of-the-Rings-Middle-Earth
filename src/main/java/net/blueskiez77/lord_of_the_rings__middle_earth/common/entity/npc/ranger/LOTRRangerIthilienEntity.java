@@ -5,6 +5,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -25,9 +27,9 @@ import org.jspecify.annotations.Nullable;
  * rangers' hood, tunic, leggings and boots, eating and drinking as Gondor
  * does. Slain, one time in six he leaves something from a Gondor house.
  *
- * <p>NOT ported yet: his cape (with the NPC capes), mini-quests (D14), the pull
- * of Ithilien on his wandering (+20 there, with the biomes, D10), and the
- * killRangerIthilien achievement (D7).
+ * <p>NOT ported yet: his cape (with the NPC capes), the pull of Ithilien on his
+ * wandering (+20 there, with the biomes, D10), and the killRangerIthilien
+ * achievement (D7).
  */
 public class LOTRRangerIthilienEntity extends LOTRRangerEntity {
 
@@ -83,5 +85,10 @@ public class LOTRRangerIthilienEntity extends LOTRRangerEntity {
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.ITHILIEN_RANGER_TUNIC));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.ITHILIEN_RANGER_HOOD));
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.GONDOR.createQuest(this);
     }
 }

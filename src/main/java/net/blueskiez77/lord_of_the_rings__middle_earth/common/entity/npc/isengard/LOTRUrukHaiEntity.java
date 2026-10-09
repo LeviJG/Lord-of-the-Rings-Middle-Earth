@@ -7,6 +7,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -32,14 +35,14 @@ import org.jspecify.annotations.Nullable;
  * a spear one time in six. It never skirmishes, speaks lower, and leaves Uruk
  * steel and things from an Uruk tent.
  *
- * <p>NOT ported yet: the Uruk-hai shield (LOTRShields.ALIGNMENT_URUK_HAI,
- * D7), mini-quests (D14), and the killUrukHai and raidUrukCamp achievements
- * (D7; the latter asked for a player killing one near an Uruk NPC respawner).
+ * <p>NOT ported yet: the killUrukHai and raidUrukCamp achievements (D7; the
+ * latter asked for a player killing one near an Uruk NPC respawner).
  */
 public class LOTRUrukHaiEntity extends LOTROrcEntity {
 
     public LOTRUrukHaiEntity(EntityType<? extends LOTRUrukHaiEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_URUK_HAI;
         this.isWeakOrc = false;
     }
 
@@ -122,5 +125,10 @@ public class LOTRUrukHaiEntity extends LOTROrcEntity {
             setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.URUK_HELMET));
         }
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.ISENGARD.createQuest(this);
     }
 }

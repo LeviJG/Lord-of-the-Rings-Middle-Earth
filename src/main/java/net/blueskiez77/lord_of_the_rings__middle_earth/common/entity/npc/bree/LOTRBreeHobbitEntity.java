@@ -6,10 +6,14 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPC
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
@@ -20,11 +24,10 @@ import org.jspecify.annotations.Nullable;
  * Bree-land does, marries only its own kind, and leaves a Bree-land house's
  * odds and ends when slain.
  *
- * <p>NOT ported yet: pickpocketing (IPickpocketable), mini-quests (D14), the
- * pull of Bree-land on its wandering (with the biomes), and the
- * killBreeHobbit achievement (D7).
+ * <p>NOT ported yet: the pull of Bree-land on its wandering (with the biomes),
+ * and the killBreeHobbit achievement (D7).
  */
-public class LOTRBreeHobbitEntity extends LOTRHobbitEntity {
+public class LOTRBreeHobbitEntity extends LOTRHobbitEntity implements IPickpocketable {
 
     public LOTRBreeHobbitEntity(EntityType<? extends LOTRBreeHobbitEntity> type, Level level) {
         super(type, level);
@@ -72,5 +75,20 @@ public class LOTRBreeHobbitEntity extends LOTRHobbitEntity {
         if (this.random.nextInt(6) == 0) {
             dropChestContents(level, LOTRChestContents.BREE_HOUSE, 1, 2 + looting);
         }
+    }
+
+    @Override
+    public boolean canPickpocket() {
+        return true;
+    }
+
+    @Override
+    public ItemStack createPickpocketItem() {
+        return LOTRChestContents.pick(LOTRChestContents.BREE_PICKPOCKET, this.random, true);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.BREE.createQuest(this);
     }
 }

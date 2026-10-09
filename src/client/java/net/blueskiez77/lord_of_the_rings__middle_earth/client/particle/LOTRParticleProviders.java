@@ -13,7 +13,9 @@ import net.minecraft.world.level.block.Blocks;
  * Client side of LOTRParticles. The sprite lists are in
  * assets/lotr/particles/, pointing at vanilla's own frames ("effect",
  * "generic", "flame", "lava"), which are the sheet cells the 1.7.10 particles
- * drew from.
+ * drew from -- or, for the leaves, the pickpocketing and the angry cloud, at the
+ * cells of the mod's own sheets (misc/particles.png and particles2.png), cut out
+ * by the particle atlas (atlases/particles.json).
  */
 public final class LOTRParticleProviders {
 
@@ -54,6 +56,17 @@ public final class LOTRParticleProviders {
         registry.register(LOTRParticles.MALLORN_ENT_JUMP_SMASH, (type, level, x, y, z, xd, yd, zd, random) ->
                 new TerrainParticle(level, x, y, z, xd, yd, zd, LOTRBuildingBlocks.MALLORN_LOG.defaultBlockState())
                         .scale(4.0f));
+        for (var leaf : java.util.List.of(LOTRParticles.LEAF_GOLD, LOTRParticles.LEAF_RED, LOTRParticles.LEAF_MIRK,
+                LOTRParticles.LEAF_GREEN)) {
+            registry.register(leaf, sprites -> (options, level, x, y, z, xd, yd, zd, random) ->
+                    new LOTRLeafParticle(level, x, y, z, xd, yd, zd, sprites, options));
+        }
+        registry.register(LOTRParticles.PICKPOCKET, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                LOTRPickpocketParticle.coin(level, x, y, z, xd, yd, zd, sprites));
+        registry.register(LOTRParticles.PICKPOCKET_FAIL, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                LOTRPickpocketParticle.fail(level, x, y, z, xd, yd, zd, sprites));
+        registry.register(LOTRParticles.ANGRY, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                new LOTRAngryParticle(level, x, y, z, xd, yd, zd, sprites));
         registry.register(LOTRParticles.MALLORN_ENT_HEAL, (type, level, x, y, z, xd, yd, zd, random) ->
                 new LOTRMallornEntHealParticle(level, x, y, z, xd, yd, zd, type.getState()));
     }

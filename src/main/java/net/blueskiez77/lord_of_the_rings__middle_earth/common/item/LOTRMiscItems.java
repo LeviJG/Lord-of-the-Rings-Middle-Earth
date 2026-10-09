@@ -62,7 +62,7 @@ public final class LOTRMiscItems {
             props -> new LOTRAncientItem(LOTRChestContents.ANCIENT_BOOTS, props), new Item.Properties());
     public static final Item DWARVEN_MARRIAGE_RING = register("dwarven_marriage_ring", Item::new, new Item.Properties());
     // LOTRItemRedBook: setMaxStackSize(1).
-    public static final Item RED_BOOK = register("red_book", Item::new, new Item.Properties().stacksTo(1));
+    public static final Item RED_BOOK = register("red_book", LOTRRedBookItem::new, new Item.Properties().stacksTo(1));
     // LOTRItemNPCRespawner: setMaxStackSize(1).
     public static final Item NPC_RESPAWNER = register("npc_respawner", LOTRNPCRespawnerItem::new,
             new Item.Properties().stacksTo(1));

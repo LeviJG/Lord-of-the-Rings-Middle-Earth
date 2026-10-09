@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -39,6 +40,7 @@ public class LOTRAngmarHillmanWarriorEntity extends LOTRAngmarHillmanEntity {
 
     public LOTRAngmarHillmanWarriorEntity(EntityType<? extends LOTRAngmarHillmanWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_ANGMAR;
     }
 
     @Override

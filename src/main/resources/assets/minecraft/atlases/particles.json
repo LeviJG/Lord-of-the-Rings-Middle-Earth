@@ -1,0 +1,490 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lotr:misc/particles2",
+      "divisor_x": 8,
+      "divisor_y": 8,
+      "regions": [
+        {
+          "sprite": "lotr:leaf/gold_0",
+          "x": 0,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_1",
+          "x": 1,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_2",
+          "x": 2,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_3",
+          "x": 3,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_4",
+          "x": 4,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_5",
+          "x": 5,
+          "y": 0,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_6",
+          "x": 0,
+          "y": 1,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_7",
+          "x": 1,
+          "y": 1,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_8",
+          "x": 2,
+          "y": 1,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_9",
+          "x": 3,
+          "y": 1,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_10",
+          "x": 4,
+          "y": 1,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/gold_11",
+          "x": 5,
+          "y": 1,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_0",
+          "x": 0,
+          "y": 2,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_1",
+          "x": 1,
+          "y": 2,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_2",
+          "x": 2,
+          "y": 2,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_3",
+          "x": 3,
+          "y": 2,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_4",
+          "x": 4,
+          "y": 2,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_5",
+          "x": 5,
+          "y": 2,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_6",
+          "x": 0,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_7",
+          "x": 1,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_8",
+          "x": 2,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_9",
+          "x": 3,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_10",
+          "x": 4,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/red_11",
+          "x": 5,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_0",
+          "x": 0,
+          "y": 4,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_1",
+          "x": 1,
+          "y": 4,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_2",
+          "x": 2,
+          "y": 4,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_3",
+          "x": 3,
+          "y": 4,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_4",
+          "x": 4,
+          "y": 4,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_5",
+          "x": 5,
+          "y": 4,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_6",
+          "x": 0,
+          "y": 5,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_7",
+          "x": 1,
+          "y": 5,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_8",
+          "x": 2,
+          "y": 5,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_9",
+          "x": 3,
+          "y": 5,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_10",
+          "x": 4,
+          "y": 5,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/mirk_11",
+          "x": 5,
+          "y": 5,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_0",
+          "x": 0,
+          "y": 6,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_1",
+          "x": 1,
+          "y": 6,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_2",
+          "x": 2,
+          "y": 6,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_3",
+          "x": 3,
+          "y": 6,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_4",
+          "x": 4,
+          "y": 6,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_5",
+          "x": 5,
+          "y": 6,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_6",
+          "x": 0,
+          "y": 7,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_7",
+          "x": 1,
+          "y": 7,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_8",
+          "x": 2,
+          "y": 7,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_9",
+          "x": 3,
+          "y": 7,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_10",
+          "x": 4,
+          "y": 7,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:leaf/green_11",
+          "x": 5,
+          "y": 7,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lotr:misc/particles",
+      "divisor_x": 16,
+      "divisor_y": 16,
+      "regions": [
+        {
+          "sprite": "lotr:pickpocket_0",
+          "x": 0,
+          "y": 10,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_1",
+          "x": 1,
+          "y": 10,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_2",
+          "x": 2,
+          "y": 10,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_3",
+          "x": 3,
+          "y": 10,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_4",
+          "x": 4,
+          "y": 10,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_5",
+          "x": 5,
+          "y": 10,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_6",
+          "x": 6,
+          "y": 10,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_7",
+          "x": 7,
+          "y": 10,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_fail_0",
+          "x": 0,
+          "y": 11,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_fail_1",
+          "x": 1,
+          "y": 11,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_fail_2",
+          "x": 2,
+          "y": 11,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_fail_3",
+          "x": 3,
+          "y": 11,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_fail_4",
+          "x": 4,
+          "y": 11,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:pickpocket_fail_5",
+          "x": 5,
+          "y": 11,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    },
+    {
+      "type": "minecraft:unstitch",
+      "resource": "lotr:misc/particles",
+      "divisor_x": 4,
+      "divisor_y": 4,
+      "regions": [
+        {
+          "sprite": "lotr:angry_0",
+          "x": 0,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:angry_1",
+          "x": 1,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:angry_2",
+          "x": 2,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:angry_3",
+          "x": 3,
+          "y": 3,
+          "width": 1,
+          "height": 1
+        }
+      ]
+    }
+  ]
+}

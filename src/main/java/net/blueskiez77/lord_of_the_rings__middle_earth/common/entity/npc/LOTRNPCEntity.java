@@ -46,6 +46,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRLeatherHa
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredInfoPayload;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -127,10 +128,10 @@ import org.jspecify.annotations.Nullable;
  *     when it dies; for a hired unit, its service ({@link #hiredNPCInfo}).</li>
  * </ul>
  *
- * <p>NOT ported yet: mini-quests (LOTREntityQuestInfo, D14); invasions and
- * conquest spawning (D12); the biomes' part in spawning -- where hostiles
- * walk by day, and the spawn count multiplier (D10); the kill and talk
- * achievements (D7); and Utumno's drops (D15). Pouches are left out (user).
+ * <p>NOT ported yet: invasions and conquest spawning (D12); the biomes' part in
+ * spawning -- where hostiles walk by day, and the spawn count multiplier (D10);
+ * the kill and talk achievements (D7); and Utumno's drops (D15). Pouches are
+ * left out (user).
  */
 public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttackMob {
 
@@ -153,7 +154,10 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     public final LOTRFamilyInfo familyInfo = new LOTRFamilyInfo(this);
     public final LOTRInventoryNPCItems npcItemsInv = new LOTRInventoryNPCItems(this);
+    /** npcShield: the shield it bears on its back, or on its arm with a weapon in hand (the client's to draw). */
+    public net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.@Nullable LOTRShields npcShield;
     public final LOTRHiredNPCInfo hiredNPCInfo = new LOTRHiredNPCInfo(this);
+    public final LOTRNPCQuestInfo questInfo = new LOTRNPCQuestInfo(this);
     /** What a hired unit had on before its player re-equipped it. */
     public final LOTRInventoryHiredReplacedItems hiredReplacedInv = new LOTRInventoryHiredReplacedItems(this);
 
@@ -769,6 +773,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         if (this.bossInfo != null) {
             this.bossInfo.startSeenByPlayer(player);
         }
+        this.questInfo.onStartSeenBy(player);
     }
 
     @Override
@@ -848,13 +853,28 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     }
 
     public void sendSpeechBank(Player player, String bank) {
+        sendSpeechBank(player, bank, (LOTRMiniQuest) null);
+    }
+
+    /** sendSpeechBank with a quest: its objective, as far as it has got, told in the speech. */
+    public void sendSpeechBank(Player player, String bank, @Nullable LOTRMiniQuest miniquest) {
         CharSequence location = null;
         if (this.npcLocationName != null) {
             location = this.hasSpecificLocationName ? this.npcLocationName
                     : Component.translatable(this.npcLocationName, getNPCName()).getString();
         }
-        LOTRSpeech.sendSpeech(player, this, LOTRSpeech.getRandomSpeechForPlayer(this, bank, player, location, null));
+        String objective = miniquest != null ? miniquest.getProgressedObjectiveInSpeech() : null;
+        LOTRSpeech.sendSpeech(player, this, LOTRSpeech.getRandomSpeechForPlayer(this, bank, player, location, objective));
         markNPCSpoken();
+    }
+
+    /** The mini-quest this NPC would set, if its kind sets any. */
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return null;
+    }
+
+    public int getMiniquestColor() {
+        return getFaction().getFactionColor();
     }
 
     public void sendSpeechBankLine(Player player, String bank, int line) {
@@ -926,12 +946,13 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         return talkInteract(player, InteractionHand.MAIN_HAND);
     }
 
-    /** interact: marriage first, then a word -- if it is not fighting. */
+    /** interact: marriage first, then its mini-quests, then a word -- if it is not fighting. */
     private InteractionResult talkInteract(Player player, InteractionHand hand) {
         if (this.familyInfo.interact(player, player.getItemInHand(hand))) {
             return InteractionResult.SUCCESS;
         }
-        if (!level().isClientSide() && canNPCTalk() && getTarget() == null && speakTo(player)) {
+        if (!level().isClientSide() && canNPCTalk()
+                && (this.questInfo.interact(player) || getTarget() == null && speakTo(player))) {
             return InteractionResult.SUCCESS;
         }
         return super.mobInteract(player, hand);
@@ -954,6 +975,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
                 updateNearbyBanners(level);
             }
             this.familyInfo.tick();
+            this.questInfo.tick();
             if (!this.addedBurningPanic) {
                 if (shouldBurningPanic()) {
                     this.goalSelector.addGoal(0, new LOTRBurningPanicGoal(this, 1.5));
@@ -989,9 +1011,8 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     /**
      * checkGUIOpenAndNavigation: a trader stands still -- and its mount with
      * it -- while a player has its trade, coin exchange, smith's anvil or hire
-     * screen open; and a hired unit while its player has its screen open.
-     *
-     * <p>NOT ported yet: the same for an open mini-quest offer (with quests).
+     * screen open; a hired unit while its player has its screen open; and any
+     * NPC while a player reads its mini-quest offer.
      */
     private void checkGUIOpenAndNavigation(ServerLevel level) {
         if (!isAlive() || getTarget() != null) {
@@ -1007,6 +1028,9 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             }
         }
         if (this.hiredNPCInfo.isActive && this.hiredNPCInfo.isGuiOpen) {
+            guiOpen = true;
+        }
+        if (this.questInfo.anyOpenOfferPlayers()) {
             guiOpen = true;
         }
         if (guiOpen) {
@@ -1278,7 +1302,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     /** canDespawn. */
     @Override
     public boolean removeWhenFarAway(double distSqr) {
-        return !this.isNPCPersistent && !this.shouldTraderRespawn && !isHired();
+        return !this.isNPCPersistent && !this.shouldTraderRespawn && !isHired() && !this.questInfo.anyActiveQuestPlayers();
     }
 
     /**
@@ -1330,6 +1354,9 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             respawn.copyTraderDataFrom(this);
             level.addFreshEntity(respawn);
             respawn.onSpawn();
+        }
+        if (level() instanceof ServerLevel) {
+            this.questInfo.onDeath();
         }
     }
 
@@ -1530,6 +1557,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         }
         this.hiredNPCInfo.save(output);
         this.hiredReplacedInv.save(output);
+        this.questInfo.save(output);
         output.putBoolean("SetInitHome", this.setInitialHome);
         output.putInt("InitHomeX", this.initHome.getX());
         output.putInt("InitHomeY", this.initHome.getY());
@@ -1572,6 +1600,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         }
         this.hiredNPCInfo.load(input);
         this.hiredReplacedInv.load(input);
+        this.questInfo.load(input);
         this.setInitialHome = input.getBooleanOr("SetInitHome", false);
         this.initHome = new BlockPos(input.getIntOr("InitHomeX", 0), input.getIntOr("InitHomeY", 0),
                 input.getIntOr("InitHomeZ", 0));

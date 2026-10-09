@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -28,12 +29,11 @@ import org.jspecify.annotations.Nullable;
  * over stolen grapes ("GrapeAlert", up to 3) cools by one every thirty
  * seconds.
  *
- * <p>NOT ported yet: the guards' defence of the vineyards
- * (defendGrapevines -- warnings, then attacks, and guards called in, for a
- * player picking grapes in a Dorwinion vineyard -- with the biome variants,
- * D10), the stealDorwinionGrapes achievement for killing an alerted guard
- * (D7), the Dorwinion shield (LOTRShields.ALIGNMENT_DORWINION, D7), and
- * throwing the spear (spears keep vanilla's mechanics, user).
+ * <p>NOT ported yet: the guards' defence of the vineyards (defendGrapevines --
+ * warnings, then attacks, and guards called in, for a player picking grapes in
+ * a Dorwinion vineyard -- with the biome variants, D10), the
+ * stealDorwinionGrapes achievement for killing an alerted guard (D7), and throwing
+ * the spear (spears keep vanilla's mechanics, user).
  */
 public class LOTRDorwinionGuardEntity extends LOTRDorwinionManEntity {
 
@@ -42,6 +42,7 @@ public class LOTRDorwinionGuardEntity extends LOTRDorwinionManEntity {
 
     public LOTRDorwinionGuardEntity(EntityType<? extends LOTRDorwinionGuardEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_DORWINION;
     }
 
     @Override

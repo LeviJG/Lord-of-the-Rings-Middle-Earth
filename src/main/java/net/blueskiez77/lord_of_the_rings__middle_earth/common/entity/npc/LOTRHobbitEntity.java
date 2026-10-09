@@ -19,6 +19,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySelector;
@@ -205,5 +207,10 @@ public class LOTRHobbitEntity extends LOTRManEntity {
         if (this.random.nextInt(4) == 0) {
             dropChestContents(level, LOTRChestContents.HOBBIT_HOLE_LARDER, 1, 2 + looting);
         }
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.HOBBIT.createQuest(this);
     }
 }

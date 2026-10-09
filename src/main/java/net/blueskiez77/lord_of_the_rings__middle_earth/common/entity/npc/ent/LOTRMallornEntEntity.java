@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent;
 
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
@@ -79,9 +80,7 @@ import org.jspecify.annotations.Nullable;
  * mace. It is worth 50 alignment and 100 experience, and has no speech bank
  * of its own: it speaks only as it is called up and as its shield rises.
  *
- * <p>NOT ported yet: the gold leaves falling from its crown, swirling about it
- * as it rises and bursting from it as it dies (the leaf particles, left for
- * now); the killMallornEnt achievement (D7).
+ * <p>NOT ported yet: the killMallornEnt achievement (D7).
  */
 public class LOTRMallornEntEntity extends LOTREntEntity implements LOTRBoss {
 
@@ -96,6 +95,7 @@ public class LOTRMallornEntEntity extends LOTREntEntity implements LOTRBoss {
 
     /** handleHealthUpdate 20: the landing's ring of splinters. */
     private static final byte EVENT_LANDING = 20;
+    private static final byte EVENT_DEATH_LEAVES = 21;
 
     public LeafHealInfo[] leafHealings;
     private @Nullable Goal meleeAttackAI;
@@ -275,6 +275,20 @@ public class LOTRMallornEntEntity extends LOTREntEntity implements LOTRBoss {
                             getY() + this.random.nextDouble() * getBbHeight() + getSpawningOffset(0.0f),
                             getZ() + this.random.nextGaussian() * getBbWidth() * 0.5, 0.0, 0.0, 0.0);
                 }
+                // Gold leaves swirling about it, two opposite each other, rising. The original's leafR,
+                // (int) (l / leaves), is always 0, so all eight pairs start from the same two places.
+                int leaves = 8;
+                for (int l = 0; l < leaves; ++l) {
+                    int leafR = (int) ((float) l / leaves);
+                    float argBase = (float) getEntSpawnTick() + leafR;
+                    double r = 3.5;
+                    double up = 0.5;
+                    for (float extra : new float[]{0.0f, Mth.PI}) {
+                        float arg = argBase + extra;
+                        level().addParticle(LOTRLeafParticleOptions.of(LOTRParticles.LEAF_GOLD, 40, 0),
+                                getX() + r * Mth.cos(arg), getY() + leafR * up, getZ() + r * Mth.sin(arg), 0.0, up, 0.0);
+                    }
+                }
             } else {
                 setEntSpawnTick(getEntSpawnTick() + 1);
                 if (getEntSpawnTick() == SPAWN_TIME) {
@@ -284,6 +298,17 @@ public class LOTRMallornEntEntity extends LOTREntEntity implements LOTRBoss {
         }
         if (!(level() instanceof ServerLevel level)) {
             tickLeafHealingsClient();
+            if (getEntSpawnTick() >= SPAWN_TIME) {
+                // Gold leaves falling from its crown.
+                for (int i = 0; i < 2; ++i) {
+                    double d = getX() + (this.random.nextDouble() - 0.5) * getBbWidth();
+                    double d1 = getY() + getBbHeight() + this.random.nextDouble() * getBbHeight() * 0.5;
+                    double d2 = getZ() + (this.random.nextDouble() - 0.5) * getBbWidth();
+                    level().addParticle(LOTRLeafParticleOptions.of(LOTRParticles.LEAF_GOLD, 30, 30), d, d1, d2,
+                            Mth.nextDouble(this.random, -0.2, 0.2), Mth.nextDouble(this.random, -0.2, 0.0),
+                            Mth.nextDouble(this.random, -0.2, 0.2));
+                }
+            }
             return;
         }
         if (this.random.nextFloat() < getBaseChanceModifier() * 0.05f) {
@@ -359,6 +384,12 @@ public class LOTRMallornEntEntity extends LOTREntEntity implements LOTRBoss {
                 double d1 = distance * Mth.cos(angle);
                 level().addParticle(LOTRParticles.MALLORN_ENT_JUMP_SMASH, getX() + d, getBoundingBox().minY + 0.1,
                         getZ() + d1, d * 0.2, 0.2, d1 * 0.2);
+            }
+        } else if (id == EVENT_DEATH_LEAVES) {
+            for (int i = 0; i < 200; ++i) {
+                level().addParticle(LOTRLeafParticleOptions.of(LOTRParticles.LEAF_GOLD, 40, 30),
+                        getX(), getY() + getBbHeight() * 0.5f, getZ(), Mth.nextDouble(this.random, -0.1, 0.1),
+                        Mth.nextDouble(this.random, -0.1, 0.1), Mth.nextDouble(this.random, -0.1, 0.1));
             }
         } else {
             super.handleEntityEvent(id);
@@ -457,10 +488,11 @@ public class LOTRMallornEntEntity extends LOTREntEntity implements LOTRBoss {
         }
     }
 
-    /** onDeath: every fire within 12 blocks goes out. */
+    /** onDeath: a burst of gold leaves, and every fire within 12 blocks goes out. */
     @Override
     public void die(DamageSource source) {
         if (level() instanceof ServerLevel level) {
+            level.broadcastEntityEvent(this, EVENT_DEATH_LEAVES);
             int fireRange = 12;
             for (BlockPos pos : BlockPos.betweenClosed(blockPosition().offset(-fireRange, -fireRange, -fireRange),
                     blockPosition().offset(fireRange, fireRange, fireRange))) {

@@ -41,14 +41,13 @@ import org.jspecify.annotations.Nullable;
  * LOTRRenderPlayer's alignment: over one's own hired unit, its held item (or,
  * sneaking, its level) and its company's name, and its health bar and its
  * mount's; over Gollum, his master's health bar for him; over another player,
- * their alignment with the faction one is viewing. All seen through walls,
+ * their alignment with the faction one is viewing (shown by a fellow even if
+ * they hide it), and a fellow's health bar. All seen through walls,
  * within 64 blocks, and not with the HUD hidden. The original drew these
  * from its biped, warg, spider, troll and Huorn renderers (Gollum's health
  * only), each at its own height; so here.
  *
- * <p>NOT ported yet, with fellowships (D14): a fellow's alignment shown even
- * when they hide it, and fellow players' health bars. Every world counts as
- * Middle-earth for the alignment until D10.
+ * <p>Every world counts as Middle-earth for the alignment until D10.
  */
 public final class LOTROverheadRendering {
 
@@ -56,11 +55,12 @@ public final class LOTROverheadRendering {
     private static final int FULL_BRIGHT = 0xF000F0;
     private static final int[] HIRED_COLOURS = {5888860, 12006707};
     private static final int[] HIRED_MOUNT_COLOURS = {6079225, 12006707};
+    private static final int[] FELLOW_COLOURS = {16375808, 12006707};
 
     /** What one entity shows overhead; any part may be absent. */
     public record Overhead(float height, float yOffset, @Nullable ItemStackRenderState icon, int displayLevel,
                            @Nullable String squadron, float health, float mountHealth, boolean healthBar,
-                           @Nullable String alignment) {
+                           @Nullable String alignment, boolean fellowHealth) {
     }
 
     private LOTROverheadRendering() {
@@ -132,19 +132,41 @@ public final class LOTROverheadRendering {
         float health = Math.max(0.0f, living.getHealth() / living.getMaxHealth());
         float mountHealth = entity.getVehicle() instanceof LivingEntity mount
                 ? Math.max(0.0f, mount.getHealth() / mount.getMaxHealth()) : -1.0f;
-        return new Overhead(entity.getBbHeight(), offset, icon, displayLevel, squadron, health, mountHealth, healthBar, null);
+        return new Overhead(entity.getBbHeight(), offset, icon, displayLevel, squadron, health, mountHealth, healthBar, null, false);
     }
 
-    /** LOTRRenderPlayer.postRender's alignment. */
+    /**
+     * LOTRRenderPlayer.postRender: another player's alignment (shouldRenderAlignment: unless they hide it
+     * from all but their fellows) and a fellow's health bar (shouldRenderFellowPlayerHealth).
+     */
     private static @Nullable Overhead extractPlayer(Player other, Player viewer) {
-        if (!LOTRConfig.displayAlignmentAboveHead || other == viewer || other.isShiftKeyDown() || other.isInvisibleTo(viewer)
-                || LOTRPlayerAlignments.getHideAlignment(other)) {
+        // shouldRenderPlayerHUD.
+        if (other == viewer || other.isShiftKeyDown() || other.isInvisibleTo(viewer)) {
             return null;
         }
-        float alignment = LOTRPlayerAlignments.getAlignment(other, LOTRViewingFaction.getViewingFaction(viewer));
+        boolean fellow = isFellow(other);
+        String alignment = null;
+        if (LOTRConfig.displayAlignmentAboveHead && (!LOTRPlayerAlignments.getHideAlignment(other) || fellow)) {
+            alignment = LOTRAlignmentValues.formatAlignForDisplay(
+                    LOTRPlayerAlignments.getAlignment(other, LOTRViewingFaction.getViewingFaction(viewer)));
+        }
+        boolean healthBar = LOTRConfig.fellowPlayerHealthBars && fellow;
+        if (alignment == null && !healthBar) {
+            return null;
+        }
         float yOffset = other.isSleeping() ? -1.5f : 0.0f;
-        return new Overhead(other.getBbHeight(), yOffset, null, -1, null, 0.0f, -1.0f, false,
-                LOTRAlignmentValues.formatAlignForDisplay(alignment));
+        float health = Math.max(0.0f, other.getHealth() / other.getMaxHealth());
+        return new Overhead(other.getBbHeight(), yOffset, null, -1, null, health, -1.0f, healthBar, alignment, true);
+    }
+
+    /** In one of the viewer's fellowships. */
+    private static boolean isFellow(Player other) {
+        for (var fs : net.blueskiez77.lord_of_the_rings__middle_earth.client.fellowship.LOTRClientFellowships.getFellowships()) {
+            if (fs.containsPlayer(other.getUUID())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** calcSpeechDisplacement: above what the NPC is saying. */
@@ -161,9 +183,7 @@ public final class LOTROverheadRendering {
         Font fr = Minecraft.getInstance().font;
         if (o.alignment() != null) {
             submitAlignment(o, fr, poseStack, collector, camera);
-            return;
-        }
-        if (o.icon() != null || o.squadron() != null || o.displayLevel() >= 0) {
+        } else if (o.icon() != null || o.squadron() != null || o.displayLevel() >= 0) {
             submitHiredIcon(o, fr, poseStack, collector, camera);
         }
         if (o.healthBar()) {
@@ -220,11 +240,12 @@ public final class LOTROverheadRendering {
     private static void submitHealthBar(Overhead o, PoseStack poseStack, SubmitNodeCollector collector,
                                         CameraRenderState camera) {
         poseStack.pushPose();
-        poseStack.translate(0.0f, o.yOffset() + o.height() + 0.7f, 0.0f);
+        // A player's at their height, sleeping or not; a unit's above its icon.
+        poseStack.translate(0.0f, (o.fellowHealth() ? 0.0f : o.yOffset()) + o.height() + 0.7f, 0.0f);
         poseStack.mulPose(camera.orientation);
         float f2 = 0.016666666f * 1.6f;
         poseStack.scale(f2, -f2, f2);
-        bar(poseStack, collector, 18.5f, o.health(), HIRED_COLOURS);
+        bar(poseStack, collector, 18.5f, o.health(), o.fellowHealth() ? FELLOW_COLOURS : HIRED_COLOURS);
         if (o.mountHealth() >= 0.0f) {
             bar(poseStack, collector, 23.5f, o.mountHealth(), HIRED_MOUNT_COLOURS);
         }

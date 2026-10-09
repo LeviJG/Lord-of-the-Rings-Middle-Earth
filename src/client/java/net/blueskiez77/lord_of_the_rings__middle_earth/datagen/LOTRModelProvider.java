@@ -177,27 +177,8 @@ public class LOTRModelProvider extends FabricModelProvider {
         super(output);
     }
 
-    /**
-     * LOTRReplacedMethods.BlockRendering's natural-block table: the original
-     * drew these ground blocks with their textures turned at random, block by
-     * block, so the ground does not tile -- as vanilla's grass, dirt and sand
-     * are now drawn through four rotated variants. Its slabs, stairs and walls
-     * turned only their top and bottom faces, which an oriented model cannot
-     * do; they stay as they are.
-     */
-    private static final java.util.Set<Block> NATURAL_BLOCKS = java.util.Set.of(LOTRBuildingBlocks.MUD,
-            LOTRBuildingBlocks.BARREN_JUNGLE_MUD, LOTRBuildingBlocks.MUD_GRASS, LOTRBuildingBlocks.MORDOR_DIRT,
-            LOTRDecorationBlocks.MORDOR_MOSS, LOTRBuildingBlocks.MORDOR_GRAVEL, LOTRBuildingBlocks.WHITE_SAND,
-            LOTRBuildingBlocks.WHITE_SANDSTONE, LOTRBuildingBlocks.DIRT_PATH_MUD, LOTRBuildingBlocks.MORDOR_ROCK);
-
     @Override
     public void generateBlockStateModels(BlockModelGenerators generators) {
-        java.util.function.Consumer<net.minecraft.client.data.models.blockstates.BlockModelDefinitionGenerator> output =
-                generators.blockStateOutput;
-        generators.blockStateOutput = definition -> output.accept(NATURAL_BLOCKS.contains(definition.block())
-                ? MultiVariantGenerator.dispatch(definition.block(), BlockModelGenerators.createRotatedVariants(
-                        BlockModelGenerators.plainModel(ModelLocationUtils.getModelLocation(definition.block()))))
-                : definition);
         // Forges: furnace-shaped. _front when idle, _active when lit, with
         // _side and _top around it.
         // Vanilla's own furnace generator: handles FACING rotation, the LIT

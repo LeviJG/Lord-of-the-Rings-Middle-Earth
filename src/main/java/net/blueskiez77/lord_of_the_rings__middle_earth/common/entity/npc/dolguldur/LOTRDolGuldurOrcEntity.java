@@ -10,6 +10,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -36,7 +38,7 @@ import org.jspecify.annotations.Nullable;
  * Mirkwood spider -- a banner bearer excepted. Now and then it leaves
  * something from a Dol Guldur tent.
  *
- * <p>NOT ported yet: mini-quests (D14), the killDolGuldurOrc achievement (D7).
+ * <p>NOT ported yet: the killDolGuldurOrc achievement (D7).
  */
 public class LOTRDolGuldurOrcEntity extends LOTROrcEntity {
 
@@ -124,5 +126,10 @@ public class LOTRDolGuldurOrcEntity extends LOTROrcEntity {
             }
         }
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.DOL_GULDUR.createQuest(this);
     }
 }

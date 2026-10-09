@@ -8,6 +8,7 @@ import java.util.Map;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRClientFactionState;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRAlignmentBarRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.quest.LOTRClientMiniQuests;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -20,6 +21,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRViewingFac
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRBrokenPledgePayload;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRPledgeSetPayload;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestEvent;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
@@ -159,6 +161,9 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
         this.prevFactionIndex = this.currentFactionIndex = currentFactionList.indexOf(this.currentFaction);
         setCurrentScrollFromFaction();
         updateButtons();
+        if (this.minecraft.gui.screen() == this) {
+            LOTRClientMiniQuests.sendEvent(LOTRMiniQuestEvent.VIEW_FACTIONS);
+        }
     }
 
     private void cycleRegion() {

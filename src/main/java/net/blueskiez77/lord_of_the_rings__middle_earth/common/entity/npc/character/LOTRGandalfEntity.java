@@ -11,6 +11,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCap
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSpeech;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRStoryItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestWelcome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuests;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -51,8 +53,11 @@ import org.jspecify.annotations.Nullable;
  * puff of smoke; when his time is up and he is not fighting, he says his
  * farewell the same way and is gone.
  *
- * <p>NOT ported yet: his natural arrival beside players and his welcome
- * mini-quest (LOTRGreyWandererTracker, D12/D14); his cape (LOTRCapes.GANDALF,
+ * <p>While abroad he offers his welcome mini-quest to any player who has not
+ * had it.
+ *
+ * <p>NOT ported yet: his natural arrival beside players (LOTRGreyWandererTracker,
+ * D12); his cape (LOTRCapes.GANDALF,
  * with the NPC capes); his hunting of Balrogs (with Utumno, D15).
  */
 public class LOTRGandalfEntity extends LOTRNPCEntity {
@@ -130,6 +135,34 @@ public class LOTRGandalfEntity extends LOTRNPCEntity {
     @Override
     public @Nullable String getSpeechBank(Player player) {
         return isFriendly(player) ? "char/gandalf/friendly" : "char/gandalf/hostile";
+    }
+
+    /** addMQOfferFor: his welcome, offered to one who has none of his quests and has never had it. */
+    public boolean addMQOfferFor(Player player) {
+        if (LOTRMiniQuests.forPlayer(player.getUUID()).getMiniQuestsForEntity(this, true).isEmpty()) {
+            LOTRMiniQuestWelcome quest = new LOTRMiniQuestWelcome(this);
+            if (quest.canPlayerAccept(player)) {
+                this.questInfo.setPlayerSpecificOffer(player, quest);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** speakTo: while abroad, his welcome to one who has not had it. */
+    @Override
+    public boolean speakTo(Player player) {
+        if (LOTRGreyWandererTracker.isWandererActive(getUUID())) {
+            if (this.questInfo.getOfferFor(player) != null) {
+                return super.speakTo(player);
+            }
+            if (addMQOfferFor(player)) {
+                LOTRGreyWandererTracker.setWandererActive(getUUID());
+                sendSpeechBank(player, "char/gandalf/welcome");
+                return true;
+            }
+        }
+        return super.speakTo(player);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -24,13 +25,14 @@ import org.jspecify.annotations.Nullable;
  * longspear, and a bow shooting quickly from 24 blocks; one in five carries a
  * spear as well, one in four rides a barded horse.
  *
- * <p>NOT ported yet: the Rivendell shield (LOTRShields.ALIGNMENT_RIVENDELL, D7), and
- * throwing the spear (spears keep vanilla's mechanics, user).
+ * <p>NOT ported yet: throwing the spear (spears keep vanilla's mechanics,
+ * user).
  */
 public class LOTRRivendellWarriorEntity extends LOTRRivendellElfEntity {
 
     public LOTRRivendellWarriorEntity(EntityType<? extends LOTRRivendellWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_RIVENDELL;
         this.spawnRidingHorse = this.random.nextInt(4) == 0;
     }
 

@@ -6,6 +6,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -27,7 +29,7 @@ import org.jspecify.annotations.Nullable;
  * tent. One in four wears a turban of one of five sandy colours. Nomads ride
  * camels, chested and carpeted.
  *
- * <p>NOT ported yet: ImmuneToHeat (D10) and mini-quests (D14).
+ * <p>NOT ported yet: ImmuneToHeat (D10).
  */
 public class LOTRNomadEntity extends LOTRNearHaradrimBaseEntity {
 
@@ -92,5 +94,10 @@ public class LOTRNomadEntity extends LOTRNearHaradrimBaseEntity {
             setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         }
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.NOMAD.createQuest(this);
     }
 }

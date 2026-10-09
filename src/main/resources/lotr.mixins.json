@@ -19,6 +19,7 @@
     "LOTRPistonBaseBlockMixin",
     "LOTRPlayerMixin",
     "LOTRProjectileWeaponItemMixin",
+    "LOTRServerGamePacketListenerMixin",
     "LOTRSpreadingSnowyBlockMixin",
     "LOTRFenceBlockMixin",
     "LOTRWallBlockMixin"

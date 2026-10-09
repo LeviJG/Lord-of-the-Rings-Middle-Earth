@@ -7,6 +7,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -31,7 +33,7 @@ import org.jspecify.annotations.Nullable;
  * pickaxe, axe or warscythe; one in six carries a spear as well, falling back
  * on the other. Now and then it leaves something from an orc tent.
  *
- * <p>NOT ported yet: mini-quests (D14), the killMordorOrc achievement (D7).
+ * <p>NOT ported yet: the killMordorOrc achievement (D7).
  */
 public class LOTRMordorOrcEntity extends LOTROrcEntity {
 
@@ -103,5 +105,10 @@ public class LOTRMordorOrcEntity extends LOTROrcEntity {
             setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.MORDOR_HELMET));
         }
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.MORDOR.createQuest(this);
     }
 }

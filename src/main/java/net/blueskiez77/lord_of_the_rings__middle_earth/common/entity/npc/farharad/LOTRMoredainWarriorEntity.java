@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -37,6 +38,7 @@ public class LOTRMoredainWarriorEntity extends LOTRMoredainEntity {
 
     public LOTRMoredainWarriorEntity(EntityType<? extends LOTRMoredainWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_MOREDAIN;
         this.spawnRidingHorse = this.random.nextInt(10) == 0;
     }
 

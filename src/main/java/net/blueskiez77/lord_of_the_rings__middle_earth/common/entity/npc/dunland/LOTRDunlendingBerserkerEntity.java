@@ -31,6 +31,7 @@ public class LOTRDunlendingBerserkerEntity extends LOTRDunlendingWarriorEntity {
 
     public LOTRDunlendingBerserkerEntity(EntityType<? extends LOTRDunlendingBerserkerEntity> type, Level level) {
         super(type, level);
+        this.npcShield = null;
         this.npcCape = LOTRCapes.DUNLENDING_BERSERKER;
     }
 

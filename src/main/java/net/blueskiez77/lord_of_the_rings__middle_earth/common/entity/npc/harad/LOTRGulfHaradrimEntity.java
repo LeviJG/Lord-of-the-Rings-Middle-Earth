@@ -4,6 +4,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoo
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -22,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * with a Haradric dagger, a Gulf name, the Gulf's food and drink, and now and
  * then something from a Gulf house. Like the Harnedhrim, every one seeks out
  * Near Harad's enemies.
- *
- * <p>NOT ported yet: mini-quests (D14).
  */
 public class LOTRGulfHaradrimEntity extends LOTRNearHaradrimBaseEntity {
 
@@ -71,5 +71,10 @@ public class LOTRGulfHaradrimEntity extends LOTRNearHaradrimBaseEntity {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.HARADRIC_DAGGER));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.GULF_HARAD.createQuest(this);
     }
 }

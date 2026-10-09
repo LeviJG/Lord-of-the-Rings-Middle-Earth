@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
@@ -27,13 +28,14 @@ import org.jspecify.annotations.Nullable;
  * lance; and one in four carries a spear as well, falling back on his other
  * weapon.
  *
- * <p>NOT ported yet: the Rohan shield (LOTRShields.ALIGNMENT_ROHAN, D7), and
- * throwing the spear (spears keep vanilla's mechanics, user).
+ * <p>NOT ported yet: throwing the spear (spears keep vanilla's mechanics,
+ * user).
  */
 public class LOTRRohirrimWarriorEntity extends LOTRRohanManEntity {
 
     public LOTRRohirrimWarriorEntity(EntityType<? extends LOTRRohirrimWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_ROHAN;
         this.spawnRidingHorse = this.random.nextInt(3) == 0;
     }
 

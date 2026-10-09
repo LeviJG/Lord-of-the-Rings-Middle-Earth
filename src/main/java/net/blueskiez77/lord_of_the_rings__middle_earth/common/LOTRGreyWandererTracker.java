@@ -23,8 +23,7 @@ import net.minecraft.core.UUIDUtil;
  * <p>NOT ported yet: performSpawning -- a wanderer arriving, every two
  * minutes while none is abroad, 4 to 16 blocks from a player with no Grey
  * Wanderer quest -- which ran from LOTREventSpawner in the Middle-earth
- * dimension (D12), and the welcome mini-quest (D14). {@link #spawnCooldown}
- * is kept and saved meanwhile.
+ * dimension (D12). {@link #spawnCooldown} is kept and saved meanwhile.
  */
 public final class LOTRGreyWandererTracker {
 

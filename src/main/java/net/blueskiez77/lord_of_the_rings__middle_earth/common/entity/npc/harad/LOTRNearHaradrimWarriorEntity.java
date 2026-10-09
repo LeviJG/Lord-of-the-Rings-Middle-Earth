@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
@@ -41,6 +42,7 @@ public class LOTRNearHaradrimWarriorEntity extends LOTRNearHaradrimEntity {
 
     public LOTRNearHaradrimWarriorEntity(EntityType<? extends LOTRNearHaradrimWarriorEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_NEAR_HARAD;
         this.spawnRidingHorse = false;
     }
 

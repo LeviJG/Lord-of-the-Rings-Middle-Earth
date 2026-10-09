@@ -14,6 +14,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -53,9 +55,9 @@ import org.jspecify.annotations.Nullable;
  * (getBlockPathWeight 20 everywhere). Slain, they leave bones and one time in
  * six something from a Ranger's house.
  *
- * <p>NOT ported yet: mini-quests (D14), their natural spawn check (above y 62
- * on the biome's top block, grass or sand -- with the biomes, D10), and the
- * killDunedain achievement (D7).
+ * <p>NOT ported yet: their natural spawn check (above y 62 on the biome's top
+ * block, grass or sand -- with the biomes, D10), and the killDunedain
+ * achievement (D7).
  */
 public class LOTRDunedainEntity extends LOTRManEntity {
 
@@ -192,5 +194,13 @@ public class LOTRDunedainEntity extends LOTRManEntity {
         if (this.random.nextInt(6) == 0) {
             dropChestContents(level, LOTRChestContents.RANGER_HOUSE, 1, 2 + looting);
         }
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        if (this.random.nextInt(8) == 0) {
+            return LOTRMiniQuestFactory.RANGER_NORTH_ARNOR_RELIC.createQuest(this);
+        }
+        return LOTRMiniQuestFactory.RANGER_NORTH.createQuest(this);
     }
 }

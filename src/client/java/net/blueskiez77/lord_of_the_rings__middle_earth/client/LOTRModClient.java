@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMainMenuScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRAnvilScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBarrelScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRBeaconScreen;
@@ -23,6 +22,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredWarri
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHiredWarriorScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHobbitOvenScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRHornSelectScreen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMainMenuScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMessageScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMillstoneScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCMountInventoryScreen;
@@ -73,6 +73,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMidgesR
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMountRenderers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMugRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRNPCRespawnerRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRNaturalBlockModel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateEntityRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateFallingInfo;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPlateHeadRenderer;
@@ -153,6 +154,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPa
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTROpenSignEditorPayload;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRRespawnerPayloads;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRTradePayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -243,6 +245,12 @@ public class LOTRModClient implements ClientModInitializer {
                         lines.add(Component.literal("  " + name).withStyle(ChatFormatting.ITALIC));
                     }
                 }
+            }
+            // Stolen goods (IPickpocketable): whose they were, and who wanted them.
+            if (IPickpocketable.Helper.isPickpocketed(stack)) {
+                lines.add(Component.empty());
+                lines.add(Component.translatable("item.lotr.generic.stolen", IPickpocketable.Helper.getOwner(stack)));
+                lines.add(Component.translatable("item.lotr.generic.stolenWanted", IPickpocketable.Helper.getWanter(stack)));
             }
         });
 
@@ -801,7 +809,29 @@ public class LOTRModClient implements ClientModInitializer {
         // LOTRTickHandlerClient: nausea drags the view about.
         LOTRDrunkCamera.init();
         LOTRAnimalJarSpecialRenderer.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRShieldDesignRenderer.init();
+        net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry.register(
+                context -> new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRShieldPreviewRenderer());
         LOTRSnowyStoneModel.init();
+        LOTRNaturalBlockModel.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.fellowship.LOTRClientFellowships.init();
+        // Mini-quests: the client's record of them, their offers and markers, the red book and the tracker.
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.quest.LOTRClientMiniQuests.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRMiniQuestTrackerHud.init();
+        net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry.register(
+                context -> new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCHeadRenderer());
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRRedBookItem.openScreen = () -> Minecraft.getInstance()
+                .setScreenAndShow(new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRRedBookScreen());
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRRedBookItem.activeQuests = () ->
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.quest.LOTRClientMiniQuests.getActiveMiniQuests().size();
+        // LOTRRenderPlayer.preRenderSpecials: a player's chosen shield.
+        net.fabricmc.fabric.api.client.rendering.v1.LivingEntityRenderLayerRegistrationCallback.EVENT.register(
+                (entityType, renderer, helper, context) -> {
+                    if (entityType == net.minecraft.world.entity.EntityTypes.PLAYER
+                            && renderer instanceof net.minecraft.client.renderer.entity.player.AvatarRenderer<?> avatar) {
+                        helper.register(new net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRShieldLayer<>(avatar));
+                    }
+                });
         LOTRScrapTraderMisbehaviour.init();
         LOTRClientFactionState.init();
 
@@ -958,7 +988,7 @@ public class LOTRModClient implements ClientModInitializer {
             if (level.getBlockEntity(pos) instanceof LOTRBeaconBlockEntity blockEntity) {
                 Minecraft.getInstance().setScreenAndShow(new LOTRBeaconScreen(
                         pos, blockEntity.getDisplayName(),
-                        blockEntity.getBeaconName(), blockEntity.getFellowshipName()));
+                        blockEntity.getBeaconName(), blockEntity.getFellowshipID()));
                 return InteractionResult.SUCCESS;
             }
             return InteractionResult.PASS;

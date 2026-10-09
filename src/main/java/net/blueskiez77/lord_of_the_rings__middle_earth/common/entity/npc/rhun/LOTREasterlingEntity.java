@@ -13,6 +13,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
@@ -50,8 +52,8 @@ import org.jspecify.annotations.Nullable;
  * own speech.
  *
  * <p>NOT ported yet: the pull of the Rhûn lands on their wandering and their
- * spawning above y 62 on the biome's top block (with the biomes), the
- * killEasterling achievement (D7), and mini-quests (D14).
+ * spawning above y 62 on the biome's top block (with the biomes), and the
+ * killEasterling achievement (D7).
  */
 public class LOTREasterlingEntity extends LOTRManEntity {
 
@@ -168,5 +170,10 @@ public class LOTREasterlingEntity extends LOTRManEntity {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(WEAPONS[this.random.nextInt(WEAPONS.length)]));
         this.npcItemsInv.setIdleItem(ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.RHUN.createQuest(this);
     }
 }

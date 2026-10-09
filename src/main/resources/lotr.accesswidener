@@ -58,10 +58,6 @@ accessible field net/minecraft/client/color/item/ItemTintSources ID_MAPPER Lnet/
 # LOTREntityNPC.addTargetTasks(EntityCreature, ...) did through the public targetTasks.
 accessible field net/minecraft/world/entity/Mob targetSelector Lnet/minecraft/world/entity/ai/goal/GoalSelector;
 
-# LOTRModelProvider gives the original's natural blocks random rotations (LOTRReplacedMethods.BlockRendering)
-# by wrapping the blockstate output, so every family's generator keeps its own call.
-mutable field net/minecraft/client/data/models/BlockModelGenerators blockStateOutput Ljava/util/function/Consumer;
-
 # LOTRMainMenuScreen draws no splash text, as LOTRGuiMainMenu drew none.
 accessible field net/minecraft/client/gui/screens/TitleScreen splash Lnet/minecraft/client/gui/components/SplashRenderer;
 

@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.banner;
 
 import java.util.Optional;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowship;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBannerBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRBannerDataPayload;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRBannerEditPayload;
@@ -21,7 +22,7 @@ import org.jspecify.annotations.Nullable;
  * The server's side of the banner screen: LOTRPacketEditBanner's handler (the
  * owner's changes, taken only from someone who may edit the banner) and
  * LOTRPacketBannerRequestInvalidName's (is this a player the server knows?).
- * A fellowship name is never valid until fellowships are ported (D14).
+ * A fellowship is named by its code and must be one of the banner placer's.
  */
 public final class LOTRBannerNetworking {
 
@@ -57,6 +58,11 @@ public final class LOTRBannerNetworking {
                         continue;
                     }
                     if (LOTRBannerWhitelistEntry.hasFellowshipCode(slot.name())) {
+                        LOTRFellowship fs = banner.getPlacersFellowshipByName(
+                                LOTRBannerWhitelistEntry.stripFellowshipCode(slot.name()));
+                        if (fs != null) {
+                            banner.whitelistFellowship(slot.index(), fs, LOTRBannerWhitelistEntry.decodePermBitFlags(slot.perms()));
+                        }
                         continue;
                     }
                     Optional<NameAndId> profile = player.level().getServer().services().nameToIdCache().get(slot.name());
@@ -73,8 +79,10 @@ public final class LOTRBannerNetworking {
                 return;
             }
             String username = payload.username();
-            boolean valid = !LOTRBannerWhitelistEntry.hasFellowshipCode(username)
-                    && player.level().getServer().services().nameToIdCache().get(username).isPresent();
+            LOTRBannerBlockEntity banner = bannerAt(player, payload.pos());
+            boolean valid = LOTRBannerWhitelistEntry.hasFellowshipCode(username)
+                    ? banner.getPlacersFellowshipByName(LOTRBannerWhitelistEntry.stripFellowshipCode(username)) != null
+                    : player.level().getServer().services().nameToIdCache().get(username).isPresent();
             ServerPlayNetworking.send(player, new LOTRBannerNamePayloads.Validate(payload.pos(), payload.slot(), username, valid));
         });
     }

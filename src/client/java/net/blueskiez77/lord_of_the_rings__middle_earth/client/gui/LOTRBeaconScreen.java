@@ -21,10 +21,8 @@ import net.minecraft.resources.Identifier;
 // Done button 80x20 at y+130. Labels sit one and two font-heights above their
 // fields, as in the original's drawScreen.
 //
-// The fellowship field is TEXT ONLY for now. In the original it was looked up
-// against the player's fellowships and sent as a UUID; with no fellowship
-// system in the port, whatever is typed is stored verbatim on the block entity
-// so it survives until there is something to resolve it against.
+// The fellowship is typed by name, shown by the name of the one it is given
+// to, and sent as the id of the player's fellowship of that name (or none).
 public class LOTRBeaconScreen extends Screen {
 
     private static final Identifier BEACON_GUI =
@@ -48,11 +46,12 @@ public class LOTRBeaconScreen extends Screen {
     private EditBox fellowshipNameField;
     private EditBox beaconNameField;
 
-    public LOTRBeaconScreen(BlockPos pos, Component title, String initialName, String initialFellowship) {
+    public LOTRBeaconScreen(BlockPos pos, Component title, String initialName, java.util.@org.jspecify.annotations.Nullable UUID fellowshipID) {
         super(title);
         this.beaconPos = pos;
         this.initialName = initialName == null ? "" : initialName;
-        this.initialFellowship = initialFellowship == null ? "" : initialFellowship;
+        var fellowship = net.blueskiez77.lord_of_the_rings__middle_earth.client.fellowship.LOTRClientFellowships.getByID(fellowshipID);
+        this.initialFellowship = fellowship == null ? "" : fellowship.name();
     }
 
     @Override
@@ -129,8 +128,11 @@ public class LOTRBeaconScreen extends Screen {
     // onGuiClosed -> sendBeaconEditPacket(true)
     @Override
     public void onClose() {
-        ClientPlayNetworking.send(new LOTRBeaconEditPayload(
-                beaconPos, fellowshipNameField.getValue(), beaconNameField.getValue()));
+        String fsName = fellowshipNameField.getValue();
+        var fellowship = fsName.isBlank() ? null
+                : net.blueskiez77.lord_of_the_rings__middle_earth.client.fellowship.LOTRClientFellowships.getByName(fsName);
+        ClientPlayNetworking.send(new LOTRBeaconEditPayload(beaconPos,
+                java.util.Optional.ofNullable(fellowship == null ? null : fellowship.fellowshipID()), beaconNameField.getValue()));
         super.onClose();
     }
 

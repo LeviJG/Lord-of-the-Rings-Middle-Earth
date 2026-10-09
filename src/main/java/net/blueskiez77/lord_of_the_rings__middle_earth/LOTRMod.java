@@ -76,6 +76,12 @@ public class LOTRMod implements ModInitializer {
         LOTRMenuNetworking.init();
         LOTRBrandingIronItem.init();
         LOTRFaction.initAllProperties();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.title.LOTRTitle.createTitles();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRTitleShieldNetworking.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowships.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionBounties.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuests.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRFellowshipCommands.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry.init();
 
         LOTRPlayerAlignments.init();
@@ -86,12 +92,14 @@ public class LOTRMod implements ModInitializer {
         LOTRStructures.init();
         LOTRStructureSpawning.init();
         LOTRSpawnerChests.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRTreeDefence.init();
         LOTRGreyWandererTracker.init();
         LOTRAlcoholTolerance.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRPlayerNPCOptions.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRAttackRules.init();
 
         LOTRRecipeTypes.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRConfigRecipeCondition.init();
         LOTRMenus.init();
         LOTRSounds.init();
         LOTRParticles.init();

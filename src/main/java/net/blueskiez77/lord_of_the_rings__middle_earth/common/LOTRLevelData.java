@@ -35,6 +35,20 @@ import org.jspecify.annotations.Nullable;
  */
 public final class LOTRLevelData extends SavedData {
 
+    /** LOTRPacketDate: the Shire Reckoning's day, for the red book. */
+    public record LOTRDatePayload(int shireDate) implements net.minecraft.network.protocol.common.custom.CustomPacketPayload {
+        public static final Type<LOTRDatePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "date"));
+        public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, LOTRDatePayload> STREAM_CODEC =
+                net.minecraft.network.codec.StreamCodec.composite(net.minecraft.network.codec.ByteBufCodecs.VAR_INT,
+                        LOTRDatePayload::shireDate, LOTRDatePayload::new);
+
+        @java.lang.Override
+        public Type<? extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
+
+
     /** enableAlignmentZones: on unless a save says otherwise. */
     public static boolean enableAlignmentZones = true;
     /** gollumSpawned: whether Gollum is abroad in the world, so that LOTRGollumSpawner makes only one. */
@@ -60,8 +74,12 @@ public final class LOTRLevelData extends SavedData {
                     .forGetter(d -> LOTRGreyWandererTracker.save()),
             Codec.INT.optionalFieldOf("GWSpawnTick", 2400).forGetter(d -> LOTRGreyWandererTracker.spawnCooldown),
             Codec.BOOL.optionalFieldOf("GollumSpawned", false).forGetter(d -> gollumSpawned),
-            Codec.INT.optionalFieldOf("StructuresBanned", 0).forGetter(d -> structuresBanned)
-    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned) -> {
+            Codec.INT.optionalFieldOf("StructuresBanned", 0).forGetter(d -> structuresBanned),
+            // LOTRDate.saveDates: {"Dates": {"ShireDate": day}}.
+            Codec.INT.fieldOf("ShireDate").codec().optionalFieldOf("Dates", 0)
+                    .forGetter(d -> LOTRDate.ShireReckoning.currentDay)
+    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned, shireDate) -> {
+        LOTRDate.ShireReckoning.currentDay = shireDate;
         gollumSpawned = gollum;
         structuresBanned = banned;
         LOTRGreyWandererTracker.load(wanderers, gwSpawnTick);
@@ -84,6 +102,7 @@ public final class LOTRLevelData extends SavedData {
         LOTRGreyWandererTracker.reset();
         gollumSpawned = false;
         structuresBanned = 0;
+        LOTRDate.ShireReckoning.currentDay = 0;
         return new LOTRLevelData();
     }
 
@@ -97,6 +116,8 @@ public final class LOTRLevelData extends SavedData {
     }
 
     public static void init() {
+        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(LOTRDatePayload.TYPE,
+                LOTRDatePayload.STREAM_CODEC);
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
             server = s;
             instance = s.getDataStorage().computeIfAbsent(TYPE);
@@ -108,6 +129,7 @@ public final class LOTRLevelData extends SavedData {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, s) -> {
             ServerPlayNetworking.send(handler.player, new LOTRAlignmentZonesPayload(enableAlignmentZones));
             ServerPlayNetworking.send(handler.player, relationsPayload());
+            ServerPlayNetworking.send(handler.player, new LOTRDatePayload(LOTRDate.ShireReckoning.currentDay));
         });
     }
 

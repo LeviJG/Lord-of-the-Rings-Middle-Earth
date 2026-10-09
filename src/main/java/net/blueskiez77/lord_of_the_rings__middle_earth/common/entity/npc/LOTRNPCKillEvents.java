@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
@@ -10,6 +11,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentV
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionData;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuests;
 
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 
@@ -39,8 +42,12 @@ import net.minecraft.world.entity.player.Player;
  * saying so -- save hired units: the player's own, and any other while the
  * player still stands well with the victim's faction.
  *
- * <p>NOT ported yet: bounties (LOTRFactionBounties, D14), mini-quest kills
- * (D14), the kill achievements (D7), and entities registered through
+ * <p>A kill in the faction's own land is remembered towards a bounty on the
+ * killer (LOTRFactionBounties). The player's own kills count towards their
+ * mini-quests, and a slain player's quests learn who slew them.
+ *
+ * <p>NOT ported yet: the kill achievements (D7); mini-quests' pause during a
+ * siege (with invasions, D12); and entities registered through
  * LOTREntityRegistry's own file, LOTR_EntityRegistry.txt (on the
  * deferred-port tracker).
  */
@@ -111,6 +118,12 @@ public final class LOTRNPCKillEvents {
             for (LOTRFaction enemy : entityFaction.getBonusesForKilling()) {
                 LOTRFactionData.addEnemyKill(player, enemy);
             }
+            // A kill in the faction's own land counts towards a bounty on the killer.
+            if (!player.isCreative() && entityFaction.inDefinedControlZone(player,
+                    Math.max(entityFaction.getControlZoneReducedRange(), 50))) {
+                net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionBounties.forFaction(entityFaction)
+                        .forPlayer(player).recordNewKill();
+            }
             LOTRFaction pledge = LOTRPlayerAlignments.get(player).pledgeFaction();
             if (pledge != null && (pledge == entityFaction || pledge.isAlly(entityFaction))
                     && player instanceof ServerPlayer serverPlayer) {
@@ -138,6 +151,13 @@ public final class LOTRNPCKillEvents {
                     npc.sendSpeechBank(player, speech);
                     ++sentSpeeches;
                 }
+            }
+        }
+        // The player's mini-quests count the kill; a slain player's own quests learn who slew them.
+        LOTRMiniQuests.onKill(player, entity);
+        if (entity instanceof Player slainPlayer) {
+            for (LOTRMiniQuest quest : new ArrayList<>(LOTRMiniQuests.forPlayer(slainPlayer.getUUID()).getMiniQuests())) {
+                quest.onKilledByPlayer(slainPlayer, player);
             }
         }
     }

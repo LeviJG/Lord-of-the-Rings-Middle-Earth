@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
 import net.minecraft.world.DifficultyInstance;
@@ -23,6 +24,7 @@ public class LOTRPelargirMarineEntity extends LOTRGondorSoldierEntity {
 
     public LOTRPelargirMarineEntity(EntityType<? extends LOTRPelargirMarineEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_PELARGIR;
         this.spawnRidingHorse = false;
     }
 

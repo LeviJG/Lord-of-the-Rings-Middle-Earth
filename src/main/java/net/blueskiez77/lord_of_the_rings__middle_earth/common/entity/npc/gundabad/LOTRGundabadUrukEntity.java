@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
@@ -27,13 +28,13 @@ import org.jspecify.annotations.Nullable;
  * or not) or pike, and a spear one time in six. It speaks lower and leaves
  * Uruk steel.
  *
- * <p>NOT ported yet: the Gundabad shield (LOTRShields.ALIGNMENT_GUNDABAD, D7),
- * the killGundabadUruk achievement (D7).
+ * <p>NOT ported yet: the killGundabadUruk achievement (D7).
  */
 public class LOTRGundabadUrukEntity extends LOTRGundabadOrcEntity {
 
     public LOTRGundabadUrukEntity(EntityType<? extends LOTRGundabadUrukEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_GUNDABAD;
         this.isWeakOrc = false;
     }
 

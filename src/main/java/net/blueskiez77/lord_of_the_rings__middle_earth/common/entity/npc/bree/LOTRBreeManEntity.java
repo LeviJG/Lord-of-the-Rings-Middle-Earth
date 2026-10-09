@@ -14,6 +14,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -50,12 +53,10 @@ import org.jspecify.annotations.Nullable;
  * <p>The goals are laid out as the original's: its guards, captain and the
  * ruffians change only the attack, hiring and avoidance steps.
  *
- * <p>NOT ported yet: pickpocketing
- * (IPickpocketable, and its BREE_PICKPOCKET pool), mini-quests (D14), the
- * pull of Bree-land on their wandering and their natural spawning (with the
- * biomes), and the killBreelander achievement (D7).
+ * <p>NOT ported yet: the pull of Bree-land on their wandering and their natural
+ * spawning (with the biomes), and the killBreelander achievement (D7).
  */
-public class LOTRBreeManEntity extends LOTRManEntity {
+public class LOTRBreeManEntity extends LOTRManEntity implements IPickpocketable {
 
     public static final String CARROT_EATER_NAME = "Peter Jackson";
 
@@ -174,5 +175,20 @@ public class LOTRBreeManEntity extends LOTRManEntity {
         if (this.random.nextInt(6) == 0) {
             dropChestContents(level, LOTRChestContents.BREE_HOUSE, 1, 2 + looting);
         }
+    }
+
+    @Override
+    public boolean canPickpocket() {
+        return true;
+    }
+
+    @Override
+    public ItemStack createPickpocketItem() {
+        return LOTRChestContents.pick(LOTRChestContents.BREE_PICKPOCKET, this.random, true);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.BREE.createQuest(this);
     }
 }

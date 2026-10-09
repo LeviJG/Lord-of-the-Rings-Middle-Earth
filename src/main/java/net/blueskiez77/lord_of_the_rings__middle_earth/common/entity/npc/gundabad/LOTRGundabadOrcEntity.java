@@ -7,6 +7,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
@@ -35,7 +37,7 @@ import org.jspecify.annotations.Nullable;
  * Gundabad Uruk gear. Now and then it leaves something from a Gundabad tent,
  * and one time in 4000 a block of dirt named "Such Wealth".
  *
- * <p>NOT ported yet: mini-quests (D14), the killGundabadOrc achievement (D7).
+ * <p>NOT ported yet: the killGundabadOrc achievement (D7).
  */
 public class LOTRGundabadOrcEntity extends LOTROrcEntity {
 
@@ -143,5 +145,10 @@ public class LOTRGundabadOrcEntity extends LOTROrcEntity {
             setItemSlot(EquipmentSlot.HEAD, new ItemStack(HELMETS[this.random.nextInt(HELMETS.length)]));
         }
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        return LOTRMiniQuestFactory.GUNDABAD.createQuest(this);
     }
 }

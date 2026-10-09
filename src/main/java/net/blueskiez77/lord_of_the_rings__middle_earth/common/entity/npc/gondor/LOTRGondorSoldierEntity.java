@@ -3,6 +3,9 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -24,14 +27,14 @@ import org.jspecify.annotations.Nullable;
  * a sword or pike; mounted, one in three couches a lance; and one in five
  * carries a spear as well, with his other weapon as backup.
  *
- * <p>NOT ported yet: the Gondor shield (LOTRShields.ALIGNMENT_GONDOR, D7), the
- * kill-the-renegade mini-quest (D14), and throwing the spear (spears keep
- * vanilla's mechanics, user).
+ * <p>NOT ported yet: throwing the spear (spears keep vanilla's mechanics,
+ * user).
  */
 public class LOTRGondorSoldierEntity extends LOTRGondorLevymanEntity {
 
     public LOTRGondorSoldierEntity(EntityType<? extends LOTRGondorSoldierEntity> type, Level level) {
         super(type, level);
+        this.npcShield = LOTRShields.ALIGNMENT_GONDOR;
         this.spawnRidingHorse = this.random.nextInt(6) == 0;
     }
 
@@ -76,5 +79,13 @@ public class LOTRGondorSoldierEntity extends LOTRGondorLevymanEntity {
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.GONDOR_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.GONDOR_HELMET));
         return data;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuest createMiniQuest() {
+        if (this.random.nextInt(8) == 0) {
+            return LOTRMiniQuestFactory.GONDOR_KILL_RENEGADE.createQuest(this);
+        }
+        return super.createMiniQuest();
     }
 }

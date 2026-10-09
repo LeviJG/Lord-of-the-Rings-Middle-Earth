@@ -17,9 +17,8 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>A player's name may be known without the id (on the client, and in the
  * owner's half-typed edits) or the id without the name (an old save); the
- * server fills in either from its profile cache when it needs to. Fellowships
- * come with D14: until then a fellowship entry is kept as saved but matches
- * nobody.
+ * server fills in either from its profile cache when it needs to. A
+ * fellowship's members are known only to the server.
  */
 public final class LOTRBannerWhitelistEntry {
 
