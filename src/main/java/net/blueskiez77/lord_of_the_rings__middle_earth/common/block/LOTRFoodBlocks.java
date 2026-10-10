@@ -11,6 +11,7 @@ import java.util.function.UnaryOperator;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREntityTags;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRAnimalJarItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMorgulShroomItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRCraftingTable;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ParticleTypes;
@@ -135,7 +136,7 @@ public final class LOTRFoodBlocks {
     public static final Block GOLDEN_ALE_HORN_BLOCK = registerMug("golden_ale_horn_block", LOTRVessel.HORN_GOLD, 5.0f, 12.0f, SoundType.STONE);
     // LOTRBlockMorgulShroom: a Mordor flower that ticks randomly, to spread by water.
     public static final Block MORGUL_SHROOM = track(ALL_FLOWERS, register("morgul_shroom", LOTRMorgulShroomBlock::new,
-            plantProperties().offsetType(BlockBehaviour.OffsetType.XZ).randomTicks(), true));
+            plantProperties().offsetType(BlockBehaviour.OffsetType.XZ).randomTicks(), LOTRMorgulShroomItem::new));
 
     private LOTRFoodBlocks() {
     }

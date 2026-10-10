@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBartender;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
@@ -25,8 +27,6 @@ import org.jspecify.annotations.Nullable;
  * ("%s's Inn"), with a mug in hand. NPCs who drink near a friendly
  * innkeeper may get drunk. Slain, it leaves an inn's odds and ends instead
  * of a house's.
- *
- * <p>NOT ported yet: the tradeBreeInnkeeper achievement.
  */
 public class LOTRBreeInnkeeperEntity extends LOTRBreeManEntity implements LOTRBartender {
 
@@ -89,5 +89,10 @@ public class LOTRBreeInnkeeperEntity extends LOTRBreeManEntity implements LOTRBa
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         this.npcItemsInv.setIdleItem(new ItemStack(LOTRFoodItems.MUG));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BREE_INNKEEPER);
     }
 }

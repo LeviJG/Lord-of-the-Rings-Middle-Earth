@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBannerBearer;
@@ -37,8 +38,6 @@ import org.jspecify.annotations.Nullable;
  * falling back on the other. Sent out mounted (by a respawner), it rides a
  * Mirkwood spider -- a banner bearer excepted. Now and then it leaves
  * something from a Dol Guldur tent.
- *
- * <p>NOT ported yet: the killDolGuldurOrc achievement (D7).
  */
 public class LOTRDolGuldurOrcEntity extends LOTROrcEntity {
 
@@ -131,5 +130,10 @@ public class LOTRDolGuldurOrcEntity extends LOTROrcEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.DOL_GULDUR.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_DOL_GULDUR_ORC;
     }
 }

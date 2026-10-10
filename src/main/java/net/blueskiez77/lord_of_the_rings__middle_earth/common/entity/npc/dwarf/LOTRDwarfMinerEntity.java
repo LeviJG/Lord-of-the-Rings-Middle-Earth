@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -22,9 +24,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityDwarfMiner: a dwarf with a pickaxe, who trades food and drink
  * for the mine's ore and gems with those at +100 or better.
- *
- * <p>NOT ported yet: that he spawns only underground (with the biomes), and
- * the tradeDwarfMiner achievement.
  */
 public class LOTRDwarfMinerEntity extends LOTRDwarfEntity implements LOTRTradeable {
 
@@ -88,5 +87,16 @@ public class LOTRDwarfMinerEntity extends LOTRDwarfEntity implements LOTRTradeab
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRToolItems.DWARVEN_PICKAXE));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DWARF_MINER);
+    }
+
+    /** Only underground. */
+    @Override
+    public boolean canDwarfSpawnAboveGround() {
+        return false;
     }
 }

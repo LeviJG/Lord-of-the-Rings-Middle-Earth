@@ -1,12 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad.LOTRNearHaradrimBaseEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRMercenary;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -30,8 +32,7 @@ import org.jspecify.annotations.Nullable;
  * 1 in 5, else 1 in 3, else the coast's), and a turban of one of six colours
  * nine times in ten. He never rides out.
  *
- * <p>NOT ported yet: the hireMoredainMercenary achievement (D7), and the
- * mercenary's screens (D16).
+ * <p>NOT ported yet: the mercenary's screens (D16).
  */
 public class LOTRMoredainMercenaryEntity extends LOTRMoredainEntity implements LOTRMercenary {
 
@@ -140,5 +141,10 @@ public class LOTRMoredainMercenaryEntity extends LOTRMoredainEntity implements L
         setItemSlot(EquipmentSlot.FEET, new ItemStack(boots));
         setItemSlot(EquipmentSlot.LEGS, new ItemStack(legs));
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(body));
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_MOREDAIN_MERCENARY);
     }
 }

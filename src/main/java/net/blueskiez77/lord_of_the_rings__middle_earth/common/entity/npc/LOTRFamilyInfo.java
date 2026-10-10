@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 import java.util.List;
 import java.util.UUID;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
 import net.minecraft.util.Mth;
@@ -30,6 +31,8 @@ public class LOTRFamilyInfo {
     private final LOTRNPCEntity entity;
     public @Nullable Class<?> marriageEntityClass;
     public @Nullable Item marriageRing;
+    /** Earned by the player who gave the ring, at the wedding. */
+    public @Nullable LOTRAchievement marriageAchievement;
     public float marriageAlignmentRequired;
     public int potentialMaxChildren;
     public int timeToMature;

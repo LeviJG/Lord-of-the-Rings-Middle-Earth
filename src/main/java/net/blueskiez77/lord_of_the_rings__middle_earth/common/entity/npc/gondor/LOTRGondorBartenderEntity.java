@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBartender;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -22,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * NPCs who drink near a friendly bartender may get drunk. Slain, it leaves
  * one to four and more with looting of Gondor's drinks in their vessels,
  * besides a Gondorian's drops.
- *
- * <p>NOT ported yet: the tradeGondorBartender achievement.
  */
 public class LOTRGondorBartenderEntity extends LOTRGondorManEntity implements LOTRBartender {
 
@@ -72,5 +72,10 @@ public class LOTRGondorBartenderEntity extends LOTRGondorManEntity implements LO
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         this.npcItemsInv.setIdleItem(new ItemStack(LOTRFoodItems.MUG));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_GONDOR_BARTENDER);
     }
 }

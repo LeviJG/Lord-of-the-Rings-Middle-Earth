@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRThrownRockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
@@ -34,8 +35,6 @@ import org.jspecify.annotations.Nullable;
  * by the sun it crumbles away rather than standing as a statue. It may leave
  * a part of a troll totem -- one in fifteen, better with looting -- unless it
  * came out of a totem's own rock.
- *
- * <p>NOT ported yet: the killMountainTroll achievement (D7).
  */
 public class LOTRMountainTrollEntity extends LOTRTrollEntity {
 
@@ -217,5 +216,10 @@ public class LOTRMountainTrollEntity extends LOTRTrollEntity {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         this.canDropTrollTotem = input.getBooleanOr("CanDropTrollTotem", this.canDropTrollTotem);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_MOUNTAIN_TROLL;
     }
 }

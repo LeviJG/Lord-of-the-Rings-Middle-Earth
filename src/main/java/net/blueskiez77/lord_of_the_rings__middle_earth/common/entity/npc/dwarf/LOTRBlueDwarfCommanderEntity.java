@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityBlueDwarfCommander: a warrior who leads the Blue Mountains dwarves,
@@ -29,9 +32,6 @@ import org.jspecify.annotations.Nullable;
  * He hires out dwarves, warriors and axe-throwers (either on boars) and
  * banner bearers to those at +200 or better, all but the plain dwarf only to
  * those pledged to a dwarven people.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.BLUE_MOUNTAINS, D12) and the
- * tradeBlueDwarfCommander achievement.
  */
 public class LOTRBlueDwarfCommanderEntity extends LOTRBlueDwarfWarriorEntity implements LOTRUnitTradeable {
 
@@ -58,6 +58,11 @@ public class LOTRBlueDwarfCommanderEntity extends LOTRBlueDwarfWarriorEntity imp
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.BLUE_DWARF_COMMANDER;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.BLUE_MOUNTAINS;
     }
 
     /** canTradeWith: +200 alignment and friendly. */
@@ -90,5 +95,10 @@ public class LOTRBlueDwarfCommanderEntity extends LOTRBlueDwarfWarriorEntity imp
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.BLUE_DWARVEN_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BLUE_DWARF_COMMANDER);
     }
 }

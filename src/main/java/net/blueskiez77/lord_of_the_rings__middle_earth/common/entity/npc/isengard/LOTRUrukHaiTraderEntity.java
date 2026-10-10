@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -21,8 +23,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityUrukHaiTrader: an Uruk in furs with a poisoned dagger, who trades
  * with those at +100 or better. He seeks no one out -- he only answers
  * attacks. Unlike the other traders he keeps the Uruk's own alignment bonus.
- *
- * <p>NOT ported yet: the tradeUrukTrader achievement (D7).
  */
 public class LOTRUrukHaiTraderEntity extends LOTRUrukHaiEntity implements LOTRSmith {
 
@@ -71,5 +71,10 @@ public class LOTRUrukHaiTraderEntity extends LOTRUrukHaiEntity implements LOTRSm
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.FUR_TUNIC));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.FUR_HAT));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_URUK_TRADER);
     }
 }

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -10,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
@@ -17,8 +20,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityIronHillsMerchant: a travelling trader of the Iron Hills, with an
  * escort of dwarves, who trades with anyone Durin's Folk does not dislike.
- *
- * <p>NOT ported yet: the tradeIronHillsMerchant achievement.
  */
 public class LOTRIronHillsMerchantEntity extends LOTRDwarfEntity implements LOTRTravellingTrader {
 
@@ -72,5 +73,10 @@ public class LOTRIronHillsMerchantEntity extends LOTRDwarfEntity implements LOTR
     @Override
     public @Nullable String getSpeechBank(Player player) {
         return isFriendly(player) ? "dwarf/merchant/friendly" : "dwarf/dwarf/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_IRON_HILLS_MERCHANT);
     }
 }

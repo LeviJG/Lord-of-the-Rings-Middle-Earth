@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRBanditFleeGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRBanditStealGoal;
@@ -27,8 +28,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>NOT ported yet: his bounty help (a player may pay him off with coins,
  * gold, silver, a gem or a ring, to hear where a bounty's target was last seen
- * -- with the biomes and waypoints, D10/D13), and the killRuffianSpy
- * achievement (D7).
+ * -- with the biomes and waypoints, D10/D13).
  */
 public class LOTRRuffianSpyEntity extends LOTRBreeRuffianEntity implements LOTRBandit {
 
@@ -111,5 +111,10 @@ public class LOTRRuffianSpyEntity extends LOTRBreeRuffianEntity implements LOTRB
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.RUFFIAN_SPY.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_RUFFIAN_SPY;
     }
 }

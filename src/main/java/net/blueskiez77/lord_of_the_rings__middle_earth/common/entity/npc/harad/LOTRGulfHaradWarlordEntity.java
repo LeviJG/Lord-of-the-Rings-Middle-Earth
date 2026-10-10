@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,16 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityGulfHaradWarlord (the Gulfing Warlord): a Gulf warrior who
  * leads, bare-headed with a Haradric pike. He seeks no one out -- he only
  * answers attacks. He hires out warriors and archers (either mounted) and
  * banner bearers to those at +150 or better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.GULF_HARAD) and warhorn
- * (LOTRInvasions.NEAR_HARAD_GULF), with NPC capes and D12, and the
- * tradeGulfWarlord achievement (D7).
  */
 public class LOTRGulfHaradWarlordEntity extends LOTRGulfHaradWarriorEntity implements LOTRUnitTradeable {
 
@@ -51,6 +50,11 @@ public class LOTRGulfHaradWarlordEntity extends LOTRGulfHaradWarriorEntity imple
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.GULF_WARLORD;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.NEAR_HARAD_GULF;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -80,5 +84,10 @@ public class LOTRGulfHaradWarlordEntity extends LOTRGulfHaradWarriorEntity imple
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_GULF_WARLORD);
     }
 }

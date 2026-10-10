@@ -61,6 +61,8 @@ public final class LOTRParticleProviders {
             registry.register(leaf, sprites -> (options, level, x, y, z, xd, yd, zd, random) ->
                     new LOTRLeafParticle(level, x, y, z, xd, yd, zd, sprites, options));
         }
+        registry.register(LOTRParticles.MUSIC, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                new LOTRMusicParticle(level, x, y, z, xd, yd, zd, sprites));
         registry.register(LOTRParticles.PICKPOCKET, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
                 LOTRPickpocketParticle.coin(level, x, y, z, xd, yd, zd, sprites));
         registry.register(LOTRParticles.PICKPOCKET_FAIL, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->

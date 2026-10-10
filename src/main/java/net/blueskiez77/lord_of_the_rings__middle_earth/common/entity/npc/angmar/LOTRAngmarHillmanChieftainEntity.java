@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityAngmarHillmanChieftain: a hillman warrior who leads the others,
@@ -25,9 +28,6 @@ import org.jspecify.annotations.Nullable;
  * he only answers attacks. He hires out hillmen, warriors and axe-throwers
  * (any of them on an Angmar warg, the armed ones' wargs barded three times in
  * ten) and banner bearers to those at +100 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.ANGMAR_HILLMEN, D12) and the
- * tradeAngmarHillmanChieftain achievement (D7).
  */
 public class LOTRAngmarHillmanChieftainEntity extends LOTRAngmarHillmanWarriorEntity implements LOTRUnitTradeable {
 
@@ -49,6 +49,11 @@ public class LOTRAngmarHillmanChieftainEntity extends LOTRAngmarHillmanWarriorEn
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.ANGMAR_HILLMAN_CHIEFTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.ANGMAR_HILLMEN;
     }
 
     /** canTradeWith: +100 alignment and friendly. */
@@ -81,5 +86,10 @@ public class LOTRAngmarHillmanChieftainEntity extends LOTRAngmarHillmanWarriorEn
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.ANGMAR_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_ANGMAR_HILLMAN_CHIEFTAIN);
     }
 }

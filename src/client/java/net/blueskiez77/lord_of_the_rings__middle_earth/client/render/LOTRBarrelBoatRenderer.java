@@ -1,6 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.render;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRBarrelBoatEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRBarrelEntity;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -21,7 +21,7 @@ import net.minecraft.world.item.ItemDisplayContext;
  * block up and turned to the barrel's heading, rocking when struck as the boat
  * did. No shadow (getShadowSize 0).
  */
-public class LOTRBarrelBoatRenderer extends EntityRenderer<LOTRBarrelBoatEntity, LOTRBarrelBoatRenderer.State> {
+public class LOTRBarrelBoatRenderer extends EntityRenderer<LOTRBarrelEntity, LOTRBarrelBoatRenderer.State> {
 
     public static class State extends EntityRenderState {
         public float yaw;
@@ -45,7 +45,7 @@ public class LOTRBarrelBoatRenderer extends EntityRenderer<LOTRBarrelBoatEntity,
     }
 
     @Override
-    public void extractRenderState(LOTRBarrelBoatEntity barrel, State state, float partialTick) {
+    public void extractRenderState(LOTRBarrelEntity barrel, State state, float partialTick) {
         super.extractRenderState(barrel, state, partialTick);
         state.yaw = barrel.getYRot(partialTick);
         state.hurtTime = barrel.getHurtTime() - partialTick;

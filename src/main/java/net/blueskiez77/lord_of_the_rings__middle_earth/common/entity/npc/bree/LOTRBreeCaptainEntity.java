@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityBreeCaptain (the Bree-land Sherriff): a guard who leads the
@@ -28,9 +31,6 @@ import org.jspecify.annotations.Nullable;
  * feather.
  *
  * He hires out guards and banner bearers to those at +100 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.BREE, D12) and the
- * tradeBreeCaptain achievement.
  */
 public class LOTRBreeCaptainEntity extends LOTRBreeGuardEntity implements LOTRUnitTradeable {
 
@@ -60,6 +60,11 @@ public class LOTRBreeCaptainEntity extends LOTRBreeGuardEntity implements LOTRUn
         return LOTRUnitTradeEntries.BREE_CAPTAIN;
     }
 
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.BREE;
+    }
+
     /** canTradeWith: +100 alignment and friendly. */
     @Override
     public boolean canTradeWith(Player player) {
@@ -86,5 +91,10 @@ public class LOTRBreeCaptainEntity extends LOTRBreeGuardEntity implements LOTRUn
         this.npcItemsInv.setIdleItem(new ItemStack(Items.WRITABLE_BOOK));
         setItemSlot(EquipmentSlot.HEAD, LOTRHobbitBounderEntity.hat(6834742, 40960));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BREE_CAPTAIN);
     }
 }

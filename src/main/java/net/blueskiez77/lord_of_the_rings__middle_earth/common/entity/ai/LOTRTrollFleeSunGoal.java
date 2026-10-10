@@ -13,6 +13,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
 
 /**
  * LOTREntityAITrollFleeSun: a troll caught under the open sky by day starts
@@ -42,6 +44,10 @@ public class LOTRTrollFleeSunGoal extends Goal {
         Level level = this.troll.level();
         BlockPos pos = BlockPos.containing(this.troll.getX(), this.troll.getBoundingBox().minY, this.troll.getZ());
         if (!level.isBrightOutside() || !level.canSeeSky(pos) || this.troll.trollImmuneToSun) {
+            return false;
+        }
+        LOTRBiome biome = LOTRBiomes.of(level.getBiome(pos));
+        if (biome != null && biome.canSpawnHostilesInDay()) {
             return false;
         }
         if (this.troll.getTrollBurnTime() == -1) {

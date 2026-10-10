@@ -294,7 +294,7 @@ public class LOTRNPCRespawnerEntity extends Entity {
         }
     }
 
-    private static @Nullable Class<?> classOf(Level level, @Nullable EntityType<?> type) {
+    public static @Nullable Class<?> classOf(Level level, @Nullable EntityType<?> type) {
         Entity sample = type == null ? null : type.create(level, EntitySpawnReason.LOAD);
         return sample == null ? null : sample.getClass();
     }

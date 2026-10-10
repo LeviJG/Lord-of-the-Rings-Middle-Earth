@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
@@ -18,13 +19,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRRivendellBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityRivendellElf: an elf of Rivendell, with its people's dagger and bow; its mounts
  * wear Rivendell's barding.
- *
- * <p>NOT ported yet: the pull of Rivendell on its wandering (with the biomes),
- * and the killRivendellElf achievement (D7).
  */
 public class LOTRRivendellElfEntity extends LOTRHighElfBaseEntity {
 
@@ -71,5 +72,16 @@ public class LOTRRivendellElfEntity extends LOTRHighElfBaseEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.RIVENDELL.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_RIVENDELL_ELF;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRRivendellBiome.class);
     }
 }

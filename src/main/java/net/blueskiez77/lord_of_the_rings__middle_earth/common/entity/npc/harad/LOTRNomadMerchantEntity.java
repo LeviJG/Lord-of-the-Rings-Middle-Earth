@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -30,8 +32,7 @@ import org.jspecify.annotations.Nullable;
  * set of Harad robes of one of six colours, the turban half the time set
  * with a gold ornament.
  *
- * <p>Not here: the pouch he held (pouches are not ported).
- * NOT ported yet: the tradeNomadMerchant achievement (D7).
+ * He holds a small pouch (the original's damage value 3, drawn as the small one).
  */
 public class LOTRNomadMerchantEntity extends LOTRNomadEntity implements LOTRTravellingTrader {
 
@@ -93,6 +94,7 @@ public class LOTRNomadMerchantEntity extends LOTRNomadEntity implements LOTRTrav
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
+        this.npcItemsInv.setIdleItem(new ItemStack(LOTRMiscItems.SMALL_POUCH));
         int robeColour = ROBE_COLOURS[this.random.nextInt(ROBE_COLOURS.length)];
         boolean ornament = this.random.nextBoolean();
         setItemSlot(EquipmentSlot.FEET, robe(LOTRMiscItems.HARAD_ROBE_SHOES, robeColour));
@@ -100,5 +102,10 @@ public class LOTRNomadMerchantEntity extends LOTRNomadEntity implements LOTRTrav
         setItemSlot(EquipmentSlot.CHEST, robe(LOTRMiscItems.HARAD_ROBE, robeColour));
         setItemSlot(EquipmentSlot.HEAD, LOTRHaradTurbanItem.setHasOrnament(turban(robeColour), ornament));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_NOMAD_MERCHANT);
     }
 }

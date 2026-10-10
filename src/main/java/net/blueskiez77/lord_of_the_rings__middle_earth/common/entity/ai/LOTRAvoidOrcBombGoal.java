@@ -67,6 +67,11 @@ public class LOTRAvoidOrcBombGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         if (this.bomb != null) {
             this.mob.getNavigation().setSpeedModifier(

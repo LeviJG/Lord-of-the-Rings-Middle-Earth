@@ -72,6 +72,11 @@ public class LOTRBanditFleeGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         if (this.targetPlayer != null && this.theBanditAsNPC.getNavigation().isDone()) {
             Vec3 away = DefaultRandomPos.getPosAway(this.theBanditAsNPC, (int) this.range, 10, this.targetPlayer.position());

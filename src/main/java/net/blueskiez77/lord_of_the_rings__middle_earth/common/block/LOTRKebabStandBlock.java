@@ -3,6 +3,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRKebabStandBlockEntity;
 
@@ -198,12 +200,16 @@ public class LOTRKebabStandBlock extends Block implements EntityBlock {
             return InteractionResult.PASS;
         }
         if (!level.isClientSide()) {
+            boolean wasCooked = stand.isCooked();
             ItemStack meat = stand.removeFirstMeat();
             if (!meat.isEmpty() && !player.getInventory().add(meat)) {
                 Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), meat);
             }
             level.playSound(null, pos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS,
                     0.5f, 0.5f + level.getRandom().nextFloat() * 0.5f);
+            if (!meat.isEmpty() && wasCooked) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.COOK_KEBAB);
+            }
         }
         return InteractionResult.SUCCESS;
     }

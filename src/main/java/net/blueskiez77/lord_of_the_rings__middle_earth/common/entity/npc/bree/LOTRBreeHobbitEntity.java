@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
@@ -17,15 +18,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBreelandBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityBreeHobbit: the Little Folk of Bree-land. A hobbit in all its
  * ways, but of Bree: its names are mostly Bree names, it eats and drinks as
  * Bree-land does, marries only its own kind, and leaves a Bree-land house's
  * odds and ends when slain.
- *
- * <p>NOT ported yet: the pull of Bree-land on its wandering (with the biomes),
- * and the killBreeHobbit achievement (D7).
  */
 public class LOTRBreeHobbitEntity extends LOTRHobbitEntity implements IPickpocketable {
 
@@ -90,5 +91,16 @@ public class LOTRBreeHobbitEntity extends LOTRHobbitEntity implements IPickpocke
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.BREE.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_BREE_HOBBIT;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRBreelandBiome.class);
     }
 }

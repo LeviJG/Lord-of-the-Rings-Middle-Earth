@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
@@ -32,8 +34,6 @@ import org.jspecify.annotations.Nullable;
  * pledged or best faction and is told to all; if they slay the hunter instead, the hunter loses
  * standing with the bounty's faction and the target gains with theirs. A bounty another claims first
  * fails. Every fifth bounty brought in earns a headhunter's trophy.
- *
- * <p>NOT ported yet: the doMiniquestHunter, doMiniquestHunter5 and killHuntingPlayer achievements (D7).
  */
 public class LOTRMiniQuestBounty extends LOTRMiniQuest {
 
@@ -68,6 +68,10 @@ public class LOTRMiniQuestBounty extends LOTRMiniQuest {
             this.rewardItemTable.add(new ItemStack(LOTRMaterialItems.HEADHUNTERS_TROPHY));
         }
         super.complete(player, npc);
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DO_MINIQUEST_HUNTER);
+        if (bComplete > 0 && bComplete % 5 == 0) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DO_MINIQUEST_HUNTER5);
+        }
     }
 
     @Override
@@ -242,6 +246,7 @@ public class LOTRMiniQuestBounty extends LOTRMiniQuest {
         }
         this.killedByBounty = true;
         updateQuest();
+        LOTRPlayerAchievements.addAchievement(killer, LOTRAchievement.KILL_HUNTING_PLAYER);
         Component announce = Component.translatable("chat.lotr.killedByBounty", player.getName(), killer.getName())
                 .withStyle(ChatFormatting.YELLOW);
         if (player instanceof ServerPlayer serverPlayer) {

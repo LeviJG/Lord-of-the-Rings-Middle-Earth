@@ -40,8 +40,8 @@ public class LOTRVillageGenGulfHarad extends LOTRVillageGen {
     }
 
     @Override
-    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-        return new Instance(this, world, i, k, random, loc);
+    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+        return new Instance(this, worldSeed, i, k, random, loc);
     }
 
     public enum VillageType {
@@ -56,8 +56,8 @@ public class LOTRVillageGenGulfHarad extends LOTRVillageGen {
         public boolean townWall = true;
         public int rTownTower = 90;
 
-        public Instance(LOTRVillageGenGulfHarad village, WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-            super(village, world, i, k, random, loc);
+        public Instance(LOTRVillageGenGulfHarad village, long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+            super(village, worldSeed, i, k, random, loc);
         }
 
         @Override

@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
  * (bare-headed one time in ten), with an iron or bronze sword, dagger or
  * battleaxe or an iron pike; one in five carries an iron or bronze spear as
  * well, falling back on the other.
- *
- * <p>NOT ported yet: the Dunland shield (LOTRShields.ALIGNMENT_DUNLAND, D7).
  */
 public class LOTRDunlendingWarriorEntity extends LOTRDunlendingEntity {
 

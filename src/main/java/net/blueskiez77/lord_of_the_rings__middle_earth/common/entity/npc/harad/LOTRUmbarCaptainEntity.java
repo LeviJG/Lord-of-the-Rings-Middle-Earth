@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,16 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityUmbarCaptain: an Umbar warrior who leads, bare-headed with an
  * Umbaric pike. He seeks no one out -- he only answers attacks. He hires out
  * warriors (on foot or barded horses), archers and banner bearers to those at
  * +150 or better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.NEAR_HARAD) and warhorn
- * (LOTRInvasions.NEAR_HARAD_UMBAR), with NPC capes and D12, and the
- * tradeUmbarCaptain achievement (D7).
  */
 public class LOTRUmbarCaptainEntity extends LOTRUmbarWarriorEntity implements LOTRUnitTradeable {
 
@@ -51,6 +50,11 @@ public class LOTRUmbarCaptainEntity extends LOTRUmbarWarriorEntity implements LO
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.UMBAR_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.NEAR_HARAD_UMBAR;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -80,5 +84,10 @@ public class LOTRUmbarCaptainEntity extends LOTRUmbarWarriorEntity implements LO
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_UMBAR_CAPTAIN);
     }
 }

@@ -25,9 +25,6 @@ import org.jspecify.annotations.Nullable;
  * half-troll armour (the helmet three times in four), with a half-troll
  * battleaxe, warhammer, mace, scimitar, dagger (poisoned or not) or pike. One
  * in twelve rides a rhino, half the time barded.
- *
- * <p>NOT ported yet: the half-troll shield (LOTRShields.ALIGNMENT_HALF_TROLL,
- * D7).
  */
 public class LOTRHalfTrollWarriorEntity extends LOTRHalfTrollEntity {
 

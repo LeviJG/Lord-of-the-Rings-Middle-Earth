@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -10,6 +12,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
@@ -18,8 +21,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityBlueDwarfMerchant: a travelling trader of the Blue Mountains,
  * with an escort of Blue Mountains dwarves, who trades with anyone the Blue
  * Mountains do not dislike.
- *
- * <p>NOT ported yet: the tradeBlueDwarfMerchant achievement.
  */
 public class LOTRBlueDwarfMerchantEntity extends LOTRBlueDwarfEntity implements LOTRTravellingTrader {
 
@@ -73,5 +74,10 @@ public class LOTRBlueDwarfMerchantEntity extends LOTRBlueDwarfEntity implements 
     @Override
     public @Nullable String getSpeechBank(Player player) {
         return isFriendly(player) ? "blueDwarf/merchant/friendly" : "blueDwarf/dwarf/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BLUE_DWARF_MERCHANT);
     }
 }

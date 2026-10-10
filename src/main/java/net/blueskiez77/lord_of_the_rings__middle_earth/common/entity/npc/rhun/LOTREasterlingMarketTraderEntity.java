@@ -1,10 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
@@ -12,8 +16,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityEasterlingMarketTrader: a trader of a Rhûn market, trading with
  * anyone Rhûn does not dislike.
- *
- * <p>NOT ported yet: the tradeRhunMarketTrader achievement (D7).
  */
 public abstract class LOTREasterlingMarketTraderEntity extends LOTREasterlingEntity implements LOTRTradeable {
 
@@ -35,5 +37,10 @@ public abstract class LOTREasterlingMarketTraderEntity extends LOTREasterlingEnt
     @Override
     public @Nullable String getSpeechBank(Player player) {
         return isFriendly(player) ? "rhun/marketTrader/friendly" : "rhun/marketTrader/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_RHUN_MARKET_TRADER);
     }
 }

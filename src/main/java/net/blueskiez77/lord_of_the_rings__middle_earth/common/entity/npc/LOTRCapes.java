@@ -7,8 +7,6 @@ import net.minecraft.resources.Identifier;
 /**
  * LOTRCapes: the capes NPCs wear on their backs ({@code cape/<name>.png}),
  * set as an NPC's {@link LOTRNPCEntity#npcCape}.
- *
- * <p>NOT ported yet: players' capes, with titles and shields (D7).
  */
 public final class LOTRCapes {
 

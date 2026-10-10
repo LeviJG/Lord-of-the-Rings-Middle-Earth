@@ -28,8 +28,8 @@ public class LOTRVillageGenDunedain extends LOTRVillageGen {
     }
 
     @Override
-    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-        return new Instance(this, world, i, k, random, loc);
+    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+        return new Instance(this, worldSeed, i, k, random, loc);
     }
 
     public enum VillageType {
@@ -42,8 +42,8 @@ public class LOTRVillageGenDunedain extends LOTRVillageGen {
         public int innerSize;
         public boolean palisade;
 
-        public Instance(LOTRVillageGenDunedain village, WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-            super(village, world, i, k, random, loc);
+        public Instance(LOTRVillageGenDunedain village, long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+            super(village, worldSeed, i, k, random, loc);
         }
 
         @Override

@@ -38,10 +38,8 @@ import org.jspecify.annotations.Nullable;
  * the structure turns itself where it needs to. A few structures still use
  * it. As with the newer base, blocks are set without neighbour updates and
  * given their shapes when the whole structure is placed.
- *
- * <p>NOT ported yet: the mod's flower pot; the spawner chests; the biome checks natural generation makes (D10).
  */
-public abstract class LOTRStructureBase {
+public abstract class LOTRStructureBase implements net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenerator {
 
     public boolean restrictions = true;
     public @Nullable Player usingPlayer;
@@ -62,7 +60,7 @@ public abstract class LOTRStructureBase {
     }
 
     /** generate, then the shape pass over what it set (stairs kept straight, as 1.7.10's were). */
-    public boolean generateAndFinish(WorldGenLevel world, RandomSource random, int i, int j, int k) {
+    public synchronized boolean generateAndFinish(WorldGenLevel world, RandomSource random, int i, int j, int k) {
         this.placed.clear();
         boolean generated = generate(world, random, i, j, k);
         for (BlockPos pos : this.placed) {
@@ -80,9 +78,10 @@ public abstract class LOTRStructureBase {
         return generated;
     }
 
-    /** {@code world.getBiomeGenForCoords(i, k) instanceof <biome>}: the biomes come with D10, so none matches yet. */
+    /** {@code world.getBiomeGenForCoords(i, k) instanceof <biome>}, the biome by its original name. */
     public boolean isBiome(WorldGenLevel world, int i, int k, String biome) {
-        return false;
+        return net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.isBiomeOfClass(
+                world.getBiome(new BlockPos(i, world.getSeaLevel(), k)), biome);
     }
 
     /** placeSpawnerChest: a chest with a creature waiting in it (LOTRSpawnerChests). */
@@ -94,8 +93,10 @@ public abstract class LOTRStructureBase {
         }
     }
 
-    /** {@code LOTRTreeType.<type>.create(..).generate(..)}: with D10; nothing yet. */
+    /** {@code LOTRTreeType.<type>.create(false, random).generate(world, random, x, y, z)}. */
     public static void placeTree(WorldGenLevel world, RandomSource random, String treeType, int x, int y, int z) {
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRTreeType.valueOf(treeType)
+                .create(false, random).generate(world, random, x, y, z);
     }
 
     /**

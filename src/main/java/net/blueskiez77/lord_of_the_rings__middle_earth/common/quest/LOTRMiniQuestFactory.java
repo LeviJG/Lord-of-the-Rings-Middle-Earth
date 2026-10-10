@@ -57,6 +57,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LO
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRUrukWargEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.LOTRBarrowWightEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -79,8 +80,7 @@ import org.jspecify.annotations.Nullable;
  * <p>The original meant the kinds to be picked by weight but, its loop never stopping, always took
  * the last kind in its map; the port picks by weight. The nomads' coloured carpets were made as
  * stacks of white carpet (the colour given as the count), so white carpet is what they ask for, as in
- * the original. Not ported (user): the corsairs' chests of loot, which were pouches. NOT ported yet:
- * each group's achievement (D7).
+ * the original.
  */
 public enum LOTRMiniQuestFactory {
     HOBBIT("hobbit"),
@@ -130,6 +130,7 @@ public enum LOTRMiniQuestFactory {
     private List<LOTRLore.LoreCategory> loreCategories = new ArrayList<>();
     private @Nullable LOTRFaction alignmentRewardOverride;
     private boolean noAlignRewardForEnemy;
+    private @Nullable LOTRAchievement questAchievement;
 
     LOTRMiniQuestFactory(String s) {
         this.baseName = s;
@@ -157,6 +158,7 @@ public enum LOTRMiniQuestFactory {
         registerQuestClass(LOTRMiniQuestPickpocket.class, 6);
         registerQuestClass(LOTRMiniQuestKill.class, 8);
         registerQuestClass(LOTRMiniQuestBounty.class, 4);
+        HOBBIT.setAchievement(LOTRAchievement.DO_MINIQUEST_HOBBIT);
         HOBBIT.setLore(LOTRLore.LoreCategory.SHIRE);
         HOBBIT.addQuest(new LOTRMiniQuestCollect.QFCollect("pipeweed").setCollectItem(mod("pipeweed"), 20, 40).setRewardFactor(0.25f));
         HOBBIT.addQuest(new LOTRMiniQuestCollect.QFCollect("collectDrink").setCollectItem(mod("ale"), 1, 6).setRewardFactor(3.0f));
@@ -192,6 +194,7 @@ public enum LOTRMiniQuestFactory {
         HOBBIT.addQuest(new LOTRMiniQuestCollect.QFCollect("pastries").setCollectItem(mod("cherry_pie"), 3, 5).setRewardFactor(4.0f));
         HOBBIT.addQuest(new LOTRMiniQuestCollect.QFCollect("pastries").setCollectItem(mod("berry_pie"), 3, 5).setRewardFactor(4.0f));
         HOBBIT.addQuest(new LOTRMiniQuestCollect.QFCollect("pastries").setCollectItem(van(Items.CAKE), 3, 5).setRewardFactor(4.0f));
+        BREE.setAchievement(LOTRAchievement.DO_MINIQUEST_BREE);
         BREE.setLore(LOTRLore.LoreCategory.BREE);
         BREE.addQuest(new LOTRMiniQuestCollect.QFCollect("collectBucket").setCollectItem(van(Items.BUCKET), 1, 4).setRewardFactor(3.0f));
         BREE.addQuest(new LOTRMiniQuestCollect.QFCollect("collectDrink").setCollectItem(mod("ale"), 1, 6).setRewardFactor(3.0f));
@@ -241,6 +244,7 @@ public enum LOTRMiniQuestFactory {
         BREE.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killOrc").setKillEntity(() -> LOTREntities.GUNDABAD_ORC, LOTRGundabadOrcEntity.class, 10, 40));
         BREE.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWight").setKillEntity(() -> LOTREntities.BARROW_WIGHT, LOTRBarrowWightEntity.class, 5, 10).setRewardFactor(3.0f));
         BREE.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        RUFFIAN_SPY.setAchievement(LOTRAchievement.DO_MINIQUEST_RUFFIAN_SPY);
         RUFFIAN_SPY.setAlignmentRewardOverride(LOTRFaction.ISENGARD).setNoAlignRewardForEnemy();
         RUFFIAN_SPY.addQuest(new LOTRMiniQuestPickpocket.QFPickpocket("pickpocket").setPickpocketFaction(LOTRFaction.BREE, 2, 6));
         RUFFIAN_SPY.addQuest(new LOTRMiniQuestPickpocket.QFPickpocket("pickpocketForBoss").setPickpocketFaction(LOTRFaction.BREE, 2, 8).setRewardFactor(1.5f));
@@ -252,6 +256,7 @@ public enum LOTRMiniQuestFactory {
         RUFFIAN_SPY.addQuest(new LOTRMiniQuestCollect.QFCollect("collectMathom").setCollectItem(mod("hobbit_banner"), 10, 15).setRewardFactor(1.5f));
         RUFFIAN_SPY.addQuest(new LOTRMiniQuestCollect.QFCollect("collectMathom").setCollectItem(mod("smoking_pipe"), 1, 2).setRewardFactor(15.0f));
         RUFFIAN_SPY.addQuest(new LOTRMiniQuestCollect.QFCollect("collectMathom").setCollectItem(mod("pipeweed"), 10, 20).setRewardFactor(0.5f));
+        RUFFIAN_BRUTE.setAchievement(LOTRAchievement.DO_MINIQUEST_RUFFIAN_BRUTE);
         RUFFIAN_BRUTE.setAlignmentRewardOverride(LOTRFaction.ISENGARD).setNoAlignRewardForEnemy();
         RUFFIAN_BRUTE.addQuest(new LOTRMiniQuestCollect.QFCollect("collectDrink").setCollectItem(mod("ale"), 3, 6));
         RUFFIAN_BRUTE.addQuest(new LOTRMiniQuestCollect.QFCollect("collectDrink").setCollectItem(mod("cider"), 3, 6));
@@ -263,6 +268,7 @@ public enum LOTRMiniQuestFactory {
             qf.setRewardFactor(0.0f);
             qf.setHiring(0.0f);
         });
+        RANGER_NORTH.setAchievement(LOTRAchievement.DO_MINIQUEST_RANGER);
         RANGER_NORTH.setLore(LOTRLore.LoreCategory.ERIADOR);
         RANGER_NORTH.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWood").setCollectItem(van(Items.OAK_LOG), 30, 60).setRewardFactor(0.25f));
         RANGER_NORTH.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWood").setCollectItem(van(Items.SPRUCE_LOG), 30, 60).setRewardFactor(0.25f));
@@ -304,6 +310,7 @@ public enum LOTRMiniQuestFactory {
         RANGER_NORTH.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("avengeBrother").setKillEntity(() -> LOTREntities.GUNDABAD_WARG, LOTRGundabadWargEntity.class, 10, 30));
         RANGER_NORTH.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killHillmen").setKillEntity(() -> LOTREntities.ANGMAR_HILLMAN, LOTRAngmarHillmanEntity.class, 10, 30));
         RANGER_NORTH.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        RANGER_NORTH_ARNOR_RELIC.setAchievement(LOTRAchievement.DO_MINIQUEST_RANGER);
         RANGER_NORTH_ARNOR_RELIC.setBaseSpeechGroup(RANGER_NORTH);
         RANGER_NORTH_ARNOR_RELIC.setLore(LOTRLore.LoreCategory.ERIADOR);
         RANGER_NORTH_ARNOR_RELIC.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("arnorRelicKill").setKillFaction(LOTRFaction.GUNDABAD, 10, 30));
@@ -313,6 +320,7 @@ public enum LOTRMiniQuestFactory {
             qf.setRewardFactor(0.0f);
             qf.setRewardItems(List.of(mod("arnor_helmet"), mod("arnor_chestplate"), mod("arnor_leggings"), mod("arnor_boots"), mod("arnor_sword"), mod("arnor_dagger"), mod("arnor_spear")));
         });
+        BLUE_MOUNTAINS.setAchievement(LOTRAchievement.DO_MINIQUEST_BLUE_MOUNTAINS);
         BLUE_MOUNTAINS.setLore(LOTRLore.LoreCategory.BLUE_MOUNTAINS);
         BLUE_MOUNTAINS.addQuest(new LOTRMiniQuestCollect.QFCollect("mineMithril").setCollectItem(mod("mithril"), 1, 2).setRewardFactor(50.0f));
         BLUE_MOUNTAINS.addQuest(new LOTRMiniQuestCollect.QFCollect("collectMineral").setCollectItem(van(Items.GOLD_INGOT), 3, 15).setRewardFactor(4.0f));
@@ -330,6 +338,7 @@ public enum LOTRMiniQuestFactory {
         BLUE_MOUNTAINS.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killOrc").setKillEntity(() -> LOTREntities.GUNDABAD_ORC, LOTRGundabadOrcEntity.class, 10, 30));
         BLUE_MOUNTAINS.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.GUNDABAD_WARG, LOTRGundabadWargEntity.class, 10, 30));
         BLUE_MOUNTAINS.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        HIGH_ELF.setAchievement(LOTRAchievement.DO_MINIQUEST_HIGH_ELF);
         HIGH_ELF.setLore(LOTRLore.LoreCategory.LINDON);
         HIGH_ELF.addQuest(new LOTRMiniQuestCollect.QFCollect("collect").setCollectItem(van(Items.BIRCH_SAPLING), 5, 20).setRewardFactor(1.0f));
         HIGH_ELF.addQuest(new LOTRMiniQuestCollect.QFCollect("collect").setCollectItem(mod("beech_sapling"), 5, 20).setRewardFactor(1.0f));
@@ -373,6 +382,7 @@ public enum LOTRMiniQuestFactory {
         HIGH_ELF.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.ANGMAR_WARG, LOTRAngmarWargEntity.class, 10, 30));
         HIGH_ELF.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killTroll").setKillEntity(() -> LOTREntities.TROLL, LOTRTrollEntity.class, 10, 30));
         HIGH_ELF.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        RIVENDELL.setAchievement(LOTRAchievement.DO_MINIQUEST_RIVENDELL);
         RIVENDELL.setLore(LOTRLore.LoreCategory.RIVENDELL, LOTRLore.LoreCategory.EREGION);
         RIVENDELL.addQuest(new LOTRMiniQuestCollect.QFCollect("collect").setCollectItem(van(Items.BIRCH_SAPLING), 5, 20).setRewardFactor(1.0f));
         RIVENDELL.addQuest(new LOTRMiniQuestCollect.QFCollect("collect").setCollectItem(mod("beech_sapling"), 5, 20).setRewardFactor(1.0f));
@@ -416,6 +426,7 @@ public enum LOTRMiniQuestFactory {
         RIVENDELL.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.ANGMAR_WARG, LOTRAngmarWargEntity.class, 10, 30));
         RIVENDELL.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killTroll").setKillEntity(() -> LOTREntities.TROLL, LOTRTrollEntity.class, 10, 30));
         RIVENDELL.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        GUNDABAD.setAchievement(LOTRAchievement.DO_MINIQUEST_GUNDABAD);
         GUNDABAD.setLore(LOTRLore.LoreCategory.GUNDABAD);
         GUNDABAD.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(van(Items.IRON_SWORD), 1, 5).setRewardFactor(3.0f));
         GUNDABAD.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("iron_dagger"), 1, 6).setRewardFactor(2.0f));
@@ -443,6 +454,7 @@ public enum LOTRMiniQuestFactory {
         GUNDABAD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killElf").setKillEntity(() -> LOTREntities.GALADHRIM_ELF, LOTRGaladhrimElfEntity.class, 10, 30));
         GUNDABAD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killDwarf").setKillEntity(() -> LOTREntities.DWARF, LOTRDwarfEntity.class, 10, 30));
         GUNDABAD.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        ANGMAR.setAchievement(LOTRAchievement.DO_MINIQUEST_ANGMAR);
         ANGMAR.setLore(LOTRLore.LoreCategory.ANGMAR);
         ANGMAR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("angmar_sword"), 1, 5).setRewardFactor(3.0f));
         ANGMAR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("angmar_battleaxe"), 1, 5).setRewardFactor(3.0f));
@@ -470,6 +482,7 @@ public enum LOTRMiniQuestFactory {
         ANGMAR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killElf").setKillEntity(() -> LOTREntities.HIGH_ELF, LOTRHighElfEntity.class, 10, 30));
         ANGMAR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killElf").setKillEntity(() -> LOTREntities.RIVENDELL_ELF, LOTRRivendellElfEntity.class, 10, 30));
         ANGMAR.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        ANGMAR_HILLMAN.setAchievement(LOTRAchievement.DO_MINIQUEST_ANGMAR);
         ANGMAR_HILLMAN.setLore(LOTRLore.LoreCategory.ANGMAR);
         ANGMAR_HILLMAN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectMeat").setCollectItem(van(Items.COOKED_PORKCHOP), 4, 8).setRewardFactor(2.0f));
         ANGMAR_HILLMAN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectMeat").setCollectItem(van(Items.COOKED_BEEF), 4, 8).setRewardFactor(2.0f));
@@ -509,6 +522,7 @@ public enum LOTRMiniQuestFactory {
         ANGMAR_HILLMAN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killRangerMany").setKillFaction(LOTRFaction.RANGER_NORTH, 40, 60));
         ANGMAR_HILLMAN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killHighElf").setKillFaction(LOTRFaction.HIGH_ELF, 10, 30));
         ANGMAR_HILLMAN.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        WOOD_ELF.setAchievement(LOTRAchievement.DO_MINIQUEST_WOOD_ELF);
         WOOD_ELF.setLore(LOTRLore.LoreCategory.WOODLAND_REALM);
         WOOD_ELF.addQuest(new LOTRMiniQuestCollect.QFCollect("collectGoldenLeaves").setCollectItem(mod("mallorn_leaves"), 10, 20).setRewardFactor(1.0f));
         WOOD_ELF.addQuest(new LOTRMiniQuestCollect.QFCollect("collectMallornSapling").setCollectItem(mod("mallorn_sapling"), 3, 10).setRewardFactor(2.0f));
@@ -533,6 +547,7 @@ public enum LOTRMiniQuestFactory {
         WOOD_ELF.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.GUNDABAD_WARG, LOTRGundabadWargEntity.class, 10, 30));
         WOOD_ELF.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killSpider").setKillEntity(() -> LOTREntities.MIRKWOOD_SPIDER, LOTRMirkwoodSpiderEntity.class, 10, 40));
         WOOD_ELF.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        DOL_GULDUR.setAchievement(LOTRAchievement.DO_MINIQUEST_DOL_GULDUR);
         DOL_GULDUR.setLore(LOTRLore.LoreCategory.DOL_GULDUR);
         DOL_GULDUR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("dol_guldur_sword"), 1, 5).setRewardFactor(3.0f));
         DOL_GULDUR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("dol_guldur_battleaxe"), 1, 5).setRewardFactor(3.0f));
@@ -561,6 +576,7 @@ public enum LOTRMiniQuestFactory {
         DOL_GULDUR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killElf").setKillEntity(() -> LOTREntities.GALADHRIM_ELF, LOTRGaladhrimElfEntity.class, 10, 30));
         DOL_GULDUR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killElf").setKillEntity(() -> LOTREntities.WOOD_ELF, LOTRWoodElfEntity.class, 10, 30));
         DOL_GULDUR.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        DALE.setAchievement(LOTRAchievement.DO_MINIQUEST_DALE);
         DALE.setLore(LOTRLore.LoreCategory.DALE);
         DALE.addQuest(new LOTRMiniQuestCollect.QFCollect("pastries").setCollectItem(mod("dalish_pastry"), 3, 8).setRewardFactor(4.0f));
         DALE.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWine").setCollectItem(mod("red_wine"), 2, 5).setRewardFactor(5.0f));
@@ -608,6 +624,7 @@ public enum LOTRMiniQuestFactory {
         DALE.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killOrc").setKillEntity(() -> LOTREntities.DOL_GULDUR_ORC, LOTRDolGuldurOrcEntity.class, 10, 30));
         DALE.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.GUNDABAD_WARG, LOTRGundabadWargEntity.class, 10, 30));
         DALE.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        DURIN.setAchievement(LOTRAchievement.DO_MINIQUEST_DWARF);
         DURIN.setLore(LOTRLore.LoreCategory.DURIN);
         DURIN.addQuest(new LOTRMiniQuestCollect.QFCollect("mineMithril").setCollectItem(mod("mithril"), 1, 2).setRewardFactor(50.0f));
         DURIN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectMineral").setCollectItem(van(Items.GOLD_INGOT), 3, 15).setRewardFactor(4.0f));
@@ -626,6 +643,7 @@ public enum LOTRMiniQuestFactory {
         DURIN.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.GUNDABAD_WARG, LOTRGundabadWargEntity.class, 10, 30));
         DURIN.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killSpider").setKillEntity(() -> LOTREntities.MIRKWOOD_SPIDER, LOTRMirkwoodSpiderEntity.class, 20, 30));
         DURIN.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        GALADHRIM.setAchievement(LOTRAchievement.DO_MINIQUEST_GALADHRIM);
         GALADHRIM.setLore(LOTRLore.LoreCategory.LOTHLORIEN);
         GALADHRIM.addQuest(new LOTRMiniQuestCollect.QFCollect("collect").setCollectItem(mod("mallorn_sapling"), 5, 20).setRewardFactor(0.5f));
         GALADHRIM.addQuest(new LOTRMiniQuestCollect.QFCollect("collect").setCollectItem(mod("elanor"), 5, 30).setRewardFactor(0.25f));
@@ -660,6 +678,7 @@ public enum LOTRMiniQuestFactory {
         GALADHRIM.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killGundabad").setKillFaction(LOTRFaction.GUNDABAD, 10, 30));
         GALADHRIM.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.GUNDABAD_WARG, LOTRGundabadWargEntity.class, 10, 30));
         GALADHRIM.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        DUNLAND.setAchievement(LOTRAchievement.DO_MINIQUEST_DUNLAND);
         DUNLAND.setLore(LOTRLore.LoreCategory.DUNLAND);
         DUNLAND.addQuest(new LOTRMiniQuestCollect.QFCollect("collectResources").setCollectItem(van(Items.OAK_LOG), 30, 80).setRewardFactor(0.25f));
         DUNLAND.addQuest(new LOTRMiniQuestCollect.QFCollect("collectResources").setCollectItem(van(Items.SPRUCE_LOG), 30, 80).setRewardFactor(0.25f));
@@ -685,6 +704,7 @@ public enum LOTRMiniQuestFactory {
         DUNLAND.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("avengeKin").setKillFaction(LOTRFaction.ROHAN, 30, 60));
         DUNLAND.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killHorse").setKillEntity(() -> LOTREntities.HORSE, LOTRHorseEntity.class, 10, 20));
         DUNLAND.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        ISENGARD.setAchievement(LOTRAchievement.DO_MINIQUEST_ISENGARD);
         ISENGARD.setLore(LOTRLore.LoreCategory.ISENGARD);
         ISENGARD.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("uruk_cleaver"), 1, 5).setRewardFactor(3.0f));
         ISENGARD.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("uruk_pike"), 1, 5).setRewardFactor(3.0f));
@@ -712,6 +732,7 @@ public enum LOTRMiniQuestFactory {
         ISENGARD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killMen").setKillEntity(() -> LOTREntities.ROHIRRIM_WARRIOR, LOTRRohirrimWarriorEntity.class, 10, 30));
         ISENGARD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killMen").setKillEntity(() -> LOTREntities.GONDOR_SOLDIER, LOTRGondorSoldierEntity.class, 10, 30));
         ISENGARD.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        ROHAN.setAchievement(LOTRAchievement.DO_MINIQUEST_ROHAN);
         ROHAN.setLore(LOTRLore.LoreCategory.ROHAN);
         ROHAN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectFood").setCollectItem(van(Items.COOKED_PORKCHOP), 3, 8).setRewardFactor(2.0f));
         ROHAN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectFood").setCollectItem(van(Items.COOKED_BEEF), 3, 8).setRewardFactor(2.0f));
@@ -737,6 +758,7 @@ public enum LOTRMiniQuestFactory {
         ROHAN.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("avengeRiders").setKillEntity(() -> LOTREntities.URUK_WARG, LOTRUrukWargEntity.class, 10, 20));
         ROHAN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killDunland").setKillFaction(LOTRFaction.DUNLAND, 10, 40));
         ROHAN.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        ROHAN_SHIELDMAIDEN.setAchievement(LOTRAchievement.DO_MINIQUEST_ROHAN_SHIELDMAIDEN);
         ROHAN_SHIELDMAIDEN.setLore(LOTRLore.LoreCategory.ROHAN);
         ROHAN_SHIELDMAIDEN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killEnemies").setKillFaction(LOTRFaction.DUNLAND, 5, 20));
         ROHAN_SHIELDMAIDEN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killEnemies").setKillFaction(LOTRFaction.ISENGARD, 5, 20));
@@ -744,6 +766,7 @@ public enum LOTRMiniQuestFactory {
             qf.setRewardFactor(0.0f);
             qf.setHiring(150.0f);
         });
+        GONDOR.setAchievement(LOTRAchievement.DO_MINIQUEST_GONDOR);
         GONDOR.setLore(LOTRLore.LoreCategory.GONDOR);
         GONDOR.addQuest(new LOTRMiniQuestCollect.QFCollect("defences").setCollectItem(van(Items.OAK_LOG), 20, 60).setRewardFactor(0.25f));
         GONDOR.addQuest(new LOTRMiniQuestCollect.QFCollect("defences").setCollectItem(van(Items.OAK_PLANKS), 80, 160).setRewardFactor(0.125f));
@@ -772,9 +795,11 @@ public enum LOTRMiniQuestFactory {
         GONDOR.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killHarad").setKillFaction(LOTRFaction.NEAR_HARAD, 10, 40));
         GONDOR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killHarnennor").setKillEntity(() -> LOTREntities.HARNEDOR_WARRIOR, LOTRHarnedorWarriorEntity.class, 20, 30));
         GONDOR.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        GONDOR_KILL_RENEGADE.setAchievement(LOTRAchievement.DO_MINIQUEST_GONDOR_KILL_RENEGADE);
         GONDOR_KILL_RENEGADE.setBaseSpeechGroup(GONDOR);
         GONDOR_KILL_RENEGADE.setLore(LOTRLore.LoreCategory.GONDOR);
         GONDOR_KILL_RENEGADE.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killRenegades").setKillEntity(() -> LOTREntities.GONDOR_RENEGADE, LOTRGondorRenegadeEntity.class, 2, 6).setRewardFactor(8.0f));
+        MORDOR.setAchievement(LOTRAchievement.DO_MINIQUEST_MORDOR);
         MORDOR.setLore(LOTRLore.LoreCategory.MORDOR);
         MORDOR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("mordor_scimitar"), 1, 5).setRewardFactor(3.0f));
         MORDOR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapon").setCollectItem(mod("mordor_warscythe"), 1, 5).setRewardFactor(3.0f));
@@ -801,6 +826,7 @@ public enum LOTRMiniQuestFactory {
         MORDOR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killMen").setKillEntity(() -> LOTREntities.GONDOR_SOLDIER, LOTRGondorSoldierEntity.class, 10, 30));
         MORDOR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killRanger").setKillEntity(() -> LOTREntities.RANGER_ITHILIEN, LOTRRangerIthilienEntity.class, 10, 30));
         MORDOR.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        DORWINION.setAchievement(LOTRAchievement.DO_MINIQUEST_DORWINION);
         DORWINION.setLore(LOTRLore.LoreCategory.DORWINION);
         DORWINION.addQuest(new LOTRMiniQuestCollect.QFCollect("collectBarrel").setCollectItem(mod("barrel"), 3, 6).setRewardFactor(4.0f));
         DORWINION.addQuest(new LOTRMiniQuestCollect.QFCollect("feast").setCollectItem(mod("red_grapes"), 4, 12).setRewardFactor(2.0f));
@@ -834,6 +860,7 @@ public enum LOTRMiniQuestFactory {
         DORWINION.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killBandit").setKillEntity(() -> LOTREntities.BANDIT, LOTRBanditEntity.class, 1, 3).setRewardFactor(8.0f));
         DORWINION.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killOddmentCollector").setKillEntity(() -> LOTREntities.SCRAP_TRADER, LOTRScrapTraderEntity.class, 1, 2).setRewardFactor(15.0f));
         DORWINION.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        DORWINION_ELF.setAchievement(LOTRAchievement.DO_MINIQUEST_DORWINION);
         DORWINION_ELF.setLore(LOTRLore.LoreCategory.DORWINION);
         DORWINION_ELF.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWood").setCollectItem(van(Items.OAK_LOG), 20, 60).setRewardFactor(0.25f));
         DORWINION_ELF.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWood").setCollectItem(van(Items.BIRCH_LOG), 20, 60).setRewardFactor(0.25f));
@@ -860,6 +887,7 @@ public enum LOTRMiniQuestFactory {
         DORWINION_ELF.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.GUNDABAD_WARG, LOTRGundabadWargEntity.class, 10, 30));
         DORWINION_ELF.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killWarg").setKillEntity(() -> LOTREntities.MORDOR_WARG, LOTRMordorWargEntity.class, 10, 30));
         DORWINION_ELF.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        RHUN.setAchievement(LOTRAchievement.DO_MINIQUEST_RHUN);
         RHUN.setLore(LOTRLore.LoreCategory.RHUN);
         RHUN.addQuest(new LOTRMiniQuestCollect.QFCollect("bringRhunThing").setCollectItem(mod("pomegranate"), 4, 12).setRewardFactor(2.0f));
         RHUN.addQuest(new LOTRMiniQuestCollect.QFCollect("bringRhunThing").setCollectItem(mod("date"), 4, 12).setRewardFactor(2.0f));
@@ -915,6 +943,7 @@ public enum LOTRMiniQuestFactory {
         RHUN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killNorthmen").setKillFaction(LOTRFaction.DALE, 10, 40));
         RHUN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killDwarves").setKillFaction(LOTRFaction.DURINS_FOLK, 10, 40));
         RHUN.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        HARNENNOR.setAchievement(LOTRAchievement.DO_MINIQUEST_NEAR_HARAD);
         HARNENNOR.setLore(LOTRLore.LoreCategory.HARNENNOR);
         HARNENNOR.addQuest(new LOTRMiniQuestCollect.QFCollect("bringWater").setCollectItem(van(Items.WATER_BUCKET), 3, 5).setRewardFactor(5.0f));
         HARNENNOR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectBlackRock").setCollectItem(mod("mordor_rock"), 30, 50).setRewardFactor(0.5f));
@@ -956,6 +985,7 @@ public enum LOTRMiniQuestFactory {
         HARNENNOR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("reclaimHarondor").setKillEntity(() -> LOTREntities.GONDOR_SOLDIER, LOTRGondorSoldierEntity.class, 10, 30));
         HARNENNOR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killRohirrim").setKillEntity(() -> LOTREntities.ROHIRRIM_WARRIOR, LOTRRohirrimWarriorEntity.class, 10, 30));
         HARNENNOR.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        NEAR_HARAD.setAchievement(LOTRAchievement.DO_MINIQUEST_NEAR_HARAD);
         NEAR_HARAD.setLore(LOTRLore.LoreCategory.SOUTHRON);
         NEAR_HARAD.addQuest(new LOTRMiniQuestCollect.QFCollect("bringWater").setCollectItem(van(Items.WATER_BUCKET), 3, 5).setRewardFactor(5.0f));
         NEAR_HARAD.addQuest(new LOTRMiniQuestCollect.QFCollect("collectBlackRock").setCollectItem(mod("mordor_rock"), 30, 50).setRewardFactor(0.5f));
@@ -1000,6 +1030,7 @@ public enum LOTRMiniQuestFactory {
         NEAR_HARAD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("greenDemons").setKillEntity(() -> LOTREntities.RANGER_ITHILIEN, LOTRRangerIthilienEntity.class, 10, 20));
         NEAR_HARAD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killGondorSoldiers").setKillEntity(() -> LOTREntities.GONDOR_SOLDIER, LOTRGondorSoldierEntity.class, 10, 30));
         NEAR_HARAD.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        UMBAR.setAchievement(LOTRAchievement.DO_MINIQUEST_NEAR_HARAD);
         UMBAR.setLore(LOTRLore.LoreCategory.UMBAR);
         UMBAR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectBlackRock").setCollectItem(mod("mordor_rock"), 30, 50).setRewardFactor(0.5f));
         UMBAR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectDates").setCollectItem(mod("date"), 8, 15).setRewardFactor(2.0f));
@@ -1048,6 +1079,7 @@ public enum LOTRMiniQuestFactory {
         UMBAR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killRangers").setKillEntity(() -> LOTREntities.RANGER_ITHILIEN, LOTRRangerIthilienEntity.class, 10, 40));
         UMBAR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killSwanKnights").setKillEntity(() -> LOTREntities.SWAN_KNIGHT, LOTRSwanKnightEntity.class, 10, 30));
         UMBAR.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        CORSAIR.setAchievement(LOTRAchievement.DO_MINIQUEST_NEAR_HARAD);
         CORSAIR.setLore(LOTRLore.LoreCategory.UMBAR);
         CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("whipMaterial").setCollectItem(van(Items.STRING), 5, 12).setRewardFactor(1.0f));
         CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("whipMaterial").setCollectItem(mod("rope"), 5, 12).setRewardFactor(1.1f));
@@ -1063,6 +1095,7 @@ public enum LOTRMiniQuestFactory {
         CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectDrink").setCollectItem(mod("corn_liquor"), 4, 10).setRewardFactor(2.5f));
         CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectChests").setCollectItem(van(Items.CHEST), 8, 16).setRewardFactor(1.0f));
         CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectChests").setCollectItem(mod("reed_basket"), 5, 10).setRewardFactor(2.0f));
+        CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("collectChests").setCollectItem(mod("small_pouch"), 3, 5).setRewardFactor(5.0f));
         CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("poisonCaptain").setCollectItem(mod("bottle_of_poison"), 2, 4).setRewardFactor(5.0f));
         CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("fixSails").setCollectItem(van(Items.STRING), 5, 12).setRewardFactor(1.0f));
         CORSAIR.addQuest(new LOTRMiniQuestCollect.QFCollect("fixSails").setCollectItem(mod("rope"), 5, 12).setRewardFactor(1.1f));
@@ -1077,12 +1110,14 @@ public enum LOTRMiniQuestFactory {
         CORSAIR.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killRangers").setKillEntity(() -> LOTREntities.RANGER_ITHILIEN, LOTRRangerIthilienEntity.class, 10, 20).setRewardFactor(1.5f));
         CORSAIR.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killTaurethrim").setKillFaction(LOTRFaction.TAURETHRIM, 10, 30));
         CORSAIR.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        GONDOR_RENEGADE.setAchievement(LOTRAchievement.DO_MINIQUEST_GONDOR_RENEGADE);
         GONDOR_RENEGADE.setLore(LOTRLore.LoreCategory.UMBAR);
         GONDOR_RENEGADE.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killGondorSoldiers").setKillEntity(() -> LOTREntities.GONDOR_SOLDIER, LOTRGondorSoldierEntity.class, 3, 8));
         GONDOR_RENEGADE.forEachFactory(qf -> {
             qf.setRewardFactor(0.0f);
             qf.setHiring(50.0f);
         });
+        NOMAD.setAchievement(LOTRAchievement.DO_MINIQUEST_NEAR_HARAD);
         NOMAD.setLore(LOTRLore.LoreCategory.NOMAD);
         NOMAD.addQuest(new LOTRMiniQuestCollect.QFCollect("collectDates").setCollectItem(mod("date"), 8, 15).setRewardFactor(2.0f));
         NOMAD.addQuest(new LOTRMiniQuestCollect.QFCollect("collectFruit").setCollectItem(mod("lemon"), 4, 12).setRewardFactor(2.0f));
@@ -1113,6 +1148,7 @@ public enum LOTRMiniQuestFactory {
         NOMAD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killBandits").setKillEntity(() -> LOTREntities.BANDIT_HARAD, LOTRBanditHaradEntity.class, 1, 3).setRewardFactor(8.0f));
         NOMAD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killRangers").setKillEntity(() -> LOTREntities.RANGER_ITHILIEN, LOTRRangerIthilienEntity.class, 10, 20));
         NOMAD.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        GULF_HARAD.setAchievement(LOTRAchievement.DO_MINIQUEST_NEAR_HARAD);
         GULF_HARAD.setLore(LOTRLore.LoreCategory.GULF);
         GULF_HARAD.addQuest(new LOTRMiniQuestCollect.QFCollect("collectDates").setCollectItem(mod("date"), 8, 15).setRewardFactor(2.0f));
         GULF_HARAD.addQuest(new LOTRMiniQuestCollect.QFCollect("orangeJuice").setCollectItem(mod("orange_juice"), 2, 6).setRewardFactor(4.0f));
@@ -1146,6 +1182,7 @@ public enum LOTRMiniQuestFactory {
         GULF_HARAD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killScorpions").setKillEntity(() -> LOTREntities.DESERT_SCORPION, LOTRDesertScorpionEntity.class, 10, 30));
         GULF_HARAD.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killRangers").setKillEntity(() -> LOTREntities.RANGER_ITHILIEN, LOTRRangerIthilienEntity.class, 20, 40));
         GULF_HARAD.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        MOREDAIN.setAchievement(LOTRAchievement.DO_MINIQUEST_MOREDAIN);
         MOREDAIN.setLore(LOTRLore.LoreCategory.FAR_HARAD);
         MOREDAIN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectLionFur").setCollectItem(mod("lion_fur"), 3, 6).setRewardFactor(3.0f));
         MOREDAIN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectFood").setCollectItem(mod("cooked_lion"), 4, 6).setRewardFactor(3.0f));
@@ -1180,6 +1217,7 @@ public enum LOTRMiniQuestFactory {
         MOREDAIN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killTauredain").setKillFaction(LOTRFaction.TAURETHRIM, 20, 50));
         MOREDAIN.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killTauredainBlowgunner").setKillEntity(() -> LOTREntities.TAUREDAIN_BLOWGUNNER, LOTRTauredainBlowgunnerEntity.class, 10, 30));
         MOREDAIN.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        TAUREDAIN.setAchievement(LOTRAchievement.DO_MINIQUEST_TAUREDAIN);
         TAUREDAIN.setLore(LOTRLore.LoreCategory.FAR_HARAD_JUNGLE);
         TAUREDAIN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapons").setCollectItem(mod("taurethrim_sword"), 1, 4).setRewardFactor(5.0f));
         TAUREDAIN.addQuest(new LOTRMiniQuestCollect.QFCollect("collectWeapons").setCollectItem(mod("taurethrim_dagger"), 1, 4).setRewardFactor(4.0f));
@@ -1210,6 +1248,7 @@ public enum LOTRMiniQuestFactory {
         TAUREDAIN.addQuest(new LOTRMiniQuestKillFaction.QFKillFaction("killNearHaradrim").setKillFaction(LOTRFaction.NEAR_HARAD, 20, 50));
         TAUREDAIN.addQuest(new LOTRMiniQuestKillEntity.QFKillEntity("killNearHaradWarrior").setKillEntity(() -> LOTREntities.NEAR_HARADRIM_WARRIOR, LOTRNearHaradrimWarriorEntity.class, 10, 30));
         TAUREDAIN.addQuest(new LOTRMiniQuestBounty.QFBounty("bounty"));
+        HALF_TROLL.setAchievement(LOTRAchievement.DO_MINIQUEST_HALF_TROLL);
         HALF_TROLL.setLore(LOTRLore.LoreCategory.HALF_TROLL);
         HALF_TROLL.addQuest(new LOTRMiniQuestCollect.QFCollect("collectEquipment").setCollectItem(mod("half_troll_scimitar"), 2, 5).setRewardFactor(3.0f));
         HALF_TROLL.addQuest(new LOTRMiniQuestCollect.QFCollect("collectEquipment").setCollectItem(mod("half_troll_mace"), 2, 5).setRewardFactor(3.0f));
@@ -1352,6 +1391,18 @@ public enum LOTRMiniQuestFactory {
 
     public boolean isNoAlignRewardForEnemy() {
         return this.noAlignRewardForEnemy;
+    }
+
+    /** The achievement for completing one of this group's quests. */
+    public @Nullable LOTRAchievement getAchievement() {
+        return this.questAchievement;
+    }
+
+    private void setAchievement(LOTRAchievement a) {
+        if (this.questAchievement != null) {
+            throw new IllegalArgumentException("Miniquest achievement is already registered");
+        }
+        this.questAchievement = a;
     }
 
     private LOTRMiniQuestFactory setAlignmentRewardOverride(LOTRFaction fac) {

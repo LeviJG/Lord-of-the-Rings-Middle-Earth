@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRKhamulsFireJarBlock;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.LOTRBirdEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
 import net.minecraft.core.particles.BlockParticleOption;
@@ -15,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -32,8 +36,7 @@ import net.minecraft.world.phys.HitResult;
  * on one of Khamul's fire jars sets the jar off. Then it smashes -- shards of
  * the jar's own texture and a puff of flame and smoke.
  *
- * <p>NOT ported: the achievement for downing a bird in flight (tracked for
- * D7).
+ * <p>Striking a bird in flight earns its thrower hitBirdFirePot.
  */
 public class LOTRFirePotEntity extends ThrowableItemProjectile {
 
@@ -85,6 +88,9 @@ public class LOTRFirePotEntity extends ThrowableItemProjectile {
         }
         for (LivingEntity target : targets) {
             boolean direct = target == struck;
+            if (direct && getOwner() instanceof Player thrower && target instanceof LOTRBirdEntity bird && !bird.isBirdStill()) {
+                LOTRPlayerAchievements.addAchievement(thrower, LOTRAchievement.HIT_BIRD_FIRE_POT);
+            }
             if (!target.hurtServer(server, damageSources().thrown(this, getOwner()),
                     direct ? DAMAGE_DIRECT : DAMAGE_SPLASH)) {
                 continue;

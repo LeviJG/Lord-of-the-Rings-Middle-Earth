@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
@@ -24,8 +26,6 @@ import org.jspecify.annotations.Nullable;
  * stands and fights, in a green hat.
  *
  * <p>Unlike most traders it does not respawn.
- *
- * <p>NOT ported yet: the buyOrcharderFood achievement.
  */
 public class LOTRHobbitOrcharderEntity extends LOTRHobbitEntity implements LOTRTradeable {
 
@@ -90,5 +90,12 @@ public class LOTRHobbitOrcharderEntity extends LOTRHobbitEntity implements LOTRT
         this.npcItemsInv.setMeleeWeapon(new ItemStack(axe));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        if (type == LOTRTradeEntries.TradeType.BUY && stack.has(net.minecraft.core.component.DataComponents.FOOD)) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.BUY_ORCHARDER_FOOD);
+        }
     }
 }

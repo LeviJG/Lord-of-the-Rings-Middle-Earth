@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRTrollSnowballEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
@@ -35,8 +36,6 @@ import org.jspecify.annotations.Nullable;
  * further off it throws snowballs that hit for 3. Turned to stone by the sun
  * it bursts into snow. It leaves fur and snowballs, and only half the time
  * what it has eaten.
- *
- * <p>NOT ported yet: the killSnowTroll achievement (D7).
  */
 public class LOTRSnowTrollEntity extends LOTRTrollEntity {
 
@@ -194,5 +193,10 @@ public class LOTRSnowTrollEntity extends LOTRTrollEntity {
                         getZ() + this.random.nextGaussian() * getBbWidth() * 0.5, 0.0, 0.0, 0.0);
             }
         }
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_SNOW_TROLL;
     }
 }

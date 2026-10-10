@@ -8,6 +8,7 @@ import java.util.UUID;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBannerBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRInvasionSpawnerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 
@@ -34,13 +35,13 @@ import org.jspecify.annotations.Nullable;
  * range of its own, for a structure's). {@link #isProtected} asks whether a
  * spot lies in a banner's land that turns this actor away, by an
  * {@link IFilter} for the actor: a player (by the banner's whitelist or the
- * faction alignment it asks), an NPC or thrown thing (by its faction), or
- * anything at all. A player turned away is told whose land it is, at most once
+ * faction alignment it asks), an NPC, invasion or thrown thing (by its
+ * faction), or anything at all. A player turned away is told whose land it is, at most once
  * per "Protection Warning Cooldown".
  *
  * <p>Not here: the filters for TNT and TNT minecarts (the original's explosion
- * check that used them was switched off, as explosions were in Middle-earth),
- * the invasion spawner's (D12), and the Thaumcraft golem hook.
+ * check that used them was switched off, as explosions were in Middle-earth)
+ * and the Thaumcraft golem hook.
  */
 public final class LOTRBannerProtection {
 
@@ -118,6 +119,10 @@ public final class LOTRBannerProtection {
             }
             return banner.getBannerType().faction.isBadRelation(theFaction) ? ProtectType.FACTION : ProtectType.NONE;
         };
+    }
+
+    public static IFilter forInvasionSpawner(LOTRInvasionSpawnerEntity spawner) {
+        return forFaction(spawner.getInvasionType().invasionFaction);
     }
 
     public static IFilter forNPC(Mob entity) {

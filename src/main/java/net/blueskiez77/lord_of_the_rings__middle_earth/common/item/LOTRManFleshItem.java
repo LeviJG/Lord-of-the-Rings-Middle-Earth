@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -42,6 +44,9 @@ public class LOTRManFleshItem extends Item {
                     SoundSource.PLAYERS, 0.5f, level.getRandom().nextFloat() * 0.1f + 0.9f);
             stack.consume(1, player);
             return stack;
+        }
+        if (entity instanceof Player player && !level.isClientSide()) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.EAT_MAN_FLESH);
         }
         return super.finishUsingItem(stack, level, entity);
     }

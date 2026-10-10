@@ -9,8 +9,6 @@ import net.minecraft.world.level.Level;
 
 /**
  * LOTREntityEsgarothBannerBearer: a soldier of Dale who carries Esgaroth's banner.
- *
- * <p>NOT ported yet: the Esgaroth shield (LOTRShields.ALIGNMENT_ESGAROTH, D7).
  */
 public class LOTREsgarothBannerBearerEntity extends LOTRDaleSoldierEntity implements LOTRBannerBearer {
 

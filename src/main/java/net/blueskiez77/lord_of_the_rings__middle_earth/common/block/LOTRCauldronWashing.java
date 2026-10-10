@@ -18,7 +18,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRLeatherHa
 
 /**
  * The rest of LOTREventHandler's cauldron washing -- the dyed feather, party
- * hat and robes are vanilla's through #cauldron_can_remove_dye; the leather hat
+ * hat, robes and pouches are vanilla's through #cauldron_can_remove_dye; the leather hat
  * is here, because its feather is washed too. Each wash takes a level of
  * water, as func_150024_a(meta - 1) did.
  *

@@ -1,11 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTravellingTrader;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRHaradTurbanItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -26,8 +29,7 @@ import org.jspecify.annotations.Nullable;
  * robeless but for a turban of one of five colours, half the time set with a
  * gold ornament.
  *
- * <p>Not here: the pouch he held (pouches are not ported).
- * NOT ported yet: the tradeNearHaradMerchant achievement (D7).
+ * He holds a small pouch (the original's damage value 3, drawn as the small one).
  */
 public class LOTRNearHaradMerchantEntity extends LOTRNearHaradrimEntity implements LOTRTravellingTrader {
 
@@ -83,6 +85,7 @@ public class LOTRNearHaradMerchantEntity extends LOTRNearHaradrimEntity implemen
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
+        this.npcItemsInv.setIdleItem(new ItemStack(LOTRMiscItems.SMALL_POUCH));
         int robeColour = ROBE_COLOURS[this.random.nextInt(ROBE_COLOURS.length)];
         ItemStack turban = turban(robeColour);
         LOTRHaradTurbanItem.setHasOrnament(turban, this.random.nextBoolean());
@@ -91,5 +94,10 @@ public class LOTRNearHaradMerchantEntity extends LOTRNearHaradrimEntity implemen
         setItemSlot(EquipmentSlot.CHEST, ItemStack.EMPTY);
         setItemSlot(EquipmentSlot.HEAD, turban);
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_NEAR_HARAD_MERCHANT);
     }
 }

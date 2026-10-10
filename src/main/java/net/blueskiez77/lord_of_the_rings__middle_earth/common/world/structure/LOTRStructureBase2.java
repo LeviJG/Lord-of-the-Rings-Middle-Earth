@@ -1,5 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +29,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRMu
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRPlateBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRWeaponRackBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugBaseEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
@@ -117,13 +120,9 @@ import org.jspecify.annotations.Nullable;
  * the original's could not turn corners, and nothing is broken for want of
  * support, since 1.7.10 never looked again.
  *
- * <p>NOT ported yet: the timelapse (a debug option); the biome's own top and
- * filler blocks and LOTR biomes' flowers and grasses (D10), so until then a
- * structure's flowers and grass are vanilla's, as the original gave outside
- * its biomes; the spawner chests;
- * the mod's flower pot for its own plants (the port's pot is vanilla's).
+ * <p>NOT ported yet: the timelapse (a debug option).
  */
-public abstract class LOTRStructureBase2 {
+public abstract class LOTRStructureBase2 implements net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenerator {
 
     public boolean restrictions = true;
     public boolean notifyChanges;
@@ -153,12 +152,15 @@ public abstract class LOTRStructureBase2 {
 
     // -------------------------------------------------------------- generation
 
-    public boolean generate(WorldGenLevel world, RandomSource random, int i, int j, int k) {
+    public synchronized boolean generate(WorldGenLevel world, RandomSource random, int i, int j, int k) {
         return generateAndFinish(world, random, i, j, k, random.nextInt(4));
     }
 
-    /** generateWithSetRotation, then the shape pass over what it set. */
-    public boolean generateAndFinish(WorldGenLevel world, RandomSource random, int i, int j, int k, int rotation) {
+    /**
+     * generateWithSetRotation, then the shape pass over what it set. Synchronized, as LOTRFeature.generate
+     * is: a biome's random structures are shared between decorating threads.
+     */
+    public synchronized boolean generateAndFinish(WorldGenLevel world, RandomSource random, int i, int j, int k, int rotation) {
         this.placed = new ArrayList<>();
         boolean generated = generateWithSetRotation(world, random, i, j, k, rotation);
         finishPlacement(world);
@@ -216,6 +218,15 @@ public abstract class LOTRStructureBase2 {
         return str.generateWithSetRotation(world, random, i, j, k, r % 4);
     }
 
+    /**
+     * {@code child.generateWithSetRotation(world, random, x, y, z, rotation)}, at world coordinates
+     * as the original called it, with the child's blocks in this structure's shape pass.
+     */
+    public boolean generateChild(LOTRStructureBase2 child, WorldGenLevel world, RandomSource random, int x, int y, int z, int rotation) {
+        child.placed = this.placed;
+        return child.generateWithSetRotation(world, random, x, y, z, rotation);
+    }
+
     public void setupRandomBlocks(RandomSource random) {
     }
 
@@ -265,7 +276,7 @@ public abstract class LOTRStructureBase2 {
         };
     }
 
-    private @Nullable BlockPos worldPos(int i, int j, int k) {
+    public @Nullable BlockPos worldPos(int i, int j, int k) {
         int x = getX(i, k);
         int y = getY(j);
         int z = getZ(i, k);
@@ -375,9 +386,9 @@ public abstract class LOTRStructureBase2 {
 
     /**
      * isSurfaceStatic: ground a structure may stand on -- grass, dirt, gravel,
-     * paths, mud, sand, Mordor's dirt and gravel, looking through a half slab
-     * to what is under it, and never with liquid above. The biome's own top
-     * and filler blocks count too in the original; that waits for the biomes.
+     * paths, mud, sand, Mordor's dirt and gravel, or the Middle-earth biome's
+     * own top and filler blocks, looking through a half slab to what is under
+     * it, and never with liquid above.
      */
     public static boolean isSurfaceStatic(WorldGenLevel world, int i, int j, int k) {
         BlockPos pos = new BlockPos(i, j, k);
@@ -387,6 +398,10 @@ public abstract class LOTRStructureBase2 {
         }
         if (!world.getFluidState(pos.above()).isEmpty()) {
             return false;
+        }
+        LOTRBiome biome = LOTRBiomes.of(world.getBiome(pos));
+        if (biome != null && (state.is(biome.topBlock.getBlock()) || state.is(biome.fillerBlock.getBlock()))) {
+            return true;
         }
         return state.is(Blocks.GRASS_BLOCK) || state.is(Blocks.DIRT) || state.is(Blocks.GRAVEL)
                 || state.is(Blocks.DIRT_PATH) || state.is(Blocks.SAND)
@@ -532,13 +547,21 @@ public abstract class LOTRStructureBase2 {
         }
     }
 
-    /** setBiomeTop and setBiomeFiller: the biome's own blocks wait for D10; until then grass and dirt. */
+    /** getBiome: the Middle-earth biome at a place in the structure's coordinates, or null outside them or Middle-earth. */
+    public @Nullable LOTRBiome getBiome(WorldGenLevel world, int i, int k) {
+        BlockPos pos = worldPos(i, 0, k);
+        return pos == null ? null : LOTRBiomes.of(world.getBiome(pos.atY(world.getSeaLevel())));
+    }
+
+    /** setBiomeTop and setBiomeFiller: the biome's own blocks; outside Middle-earth, grass and dirt. */
     public void setBiomeTop(WorldGenLevel world, int i, int j, int k) {
-        setBlockState(world, i, j, k, Blocks.GRASS_BLOCK.defaultBlockState());
+        LOTRBiome biome = getBiome(world, i, k);
+        setBlockState(world, i, j, k, biome != null ? biome.topBlock : Blocks.GRASS_BLOCK.defaultBlockState());
     }
 
     public void setBiomeFiller(WorldGenLevel world, int i, int j, int k) {
-        setBlockState(world, i, j, k, Blocks.DIRT.defaultBlockState());
+        LOTRBiome biome = getBiome(world, i, k);
+        setBlockState(world, i, j, k, biome != null ? biome.fillerBlock : Blocks.DIRT.defaultBlockState());
     }
 
     // ------------------------------------------------------------ scans
@@ -904,13 +927,23 @@ public abstract class LOTRStructureBase2 {
         return null;
     }
 
-    /** getRandomFlower: outside the mod's biomes, a dandelion or a poppy. */
+    /** getRandomFlower: one of the biome's flowers at the origin; outside the mod's biomes, a dandelion or a poppy. */
     public ItemStack getRandomFlower(WorldGenLevel world, RandomSource random) {
+        LOTRBiome biome = getBiome(world, 0, 0);
+        LOTRBiome.FlowerEntry flower = biome == null ? null : biome.getRandomFlower(world, random, getX(0, 0), getY(0), getZ(0, 0));
+        if (flower != null) {
+            return new ItemStack(flower.state().getBlock());
+        }
         return new ItemStack(random.nextBoolean() ? Blocks.DANDELION : Blocks.POPPY);
     }
 
-    /** getRandomTallGrass: outside the mod's biomes, grass. */
+    /** getRandomTallGrass: one of the biome's grasses at the origin; outside the mod's biomes, grass. */
     public ItemStack getRandomTallGrass(WorldGenLevel world, RandomSource random) {
+        LOTRBiome biome = getBiome(world, 0, 0);
+        if (biome != null) {
+            LOTRBiome.GrassBlockAndMeta grass = biome.getRandomGrass(random);
+            return new ItemStack(grass.block().state(grass.meta()).getBlock());
+        }
         return new ItemStack(Blocks.SHORT_GRASS);
     }
 
@@ -1026,10 +1059,10 @@ public abstract class LOTRStructureBase2 {
 
     /**
      * {@code getBiome(world, i, k) instanceof LOTRBiomeGen<biome>}, in the
-     * structure's own coordinates: the biomes come with D10, so none matches yet.
+     * structure's own coordinates, the biome by its original name.
      */
     public boolean isBiome(WorldGenLevel world, int i, int k, String biome) {
-        return false;
+        return LOTRBiomes.isBiomeOfClass(world.getBiome(new BlockPos(getX(i, k), world.getSeaLevel(), getZ(i, k))), biome);
     }
 
     /** {@code block.getMaterial() == Material.plants}: flowers, grass, ferns, saplings, crops, bushes. */
@@ -1039,18 +1072,25 @@ public abstract class LOTRStructureBase2 {
 
     /**
      * {@code LOTRBiome.<biome>.func_150567_a(random).generate(..)}: one of the
-     * biome's own trees, grown here. The biomes' trees come with D10; until then
-     * nothing grows.
+     * biome's own trees, grown here (the biome by its original name, "shire").
      */
     public void placeBiomeTree(WorldGenLevel world, RandomSource random, String biome, int i, int j, int k) {
+        for (net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome b
+                : net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension.MIDDLE_EARTH.biomeList) {
+            if (b != null && b.biomeName.equals(biome)) {
+                BlockPos pos = worldPos(i, j, k);
+                if (pos != null) {
+                    b.decorator.getRandomTree(random).create(false, random).generate(world, random, pos.getX(), pos.getY(), pos.getZ());
+                }
+                return;
+            }
+        }
     }
 
-    /**
-     * {@code LOTRTreeType.<type>.create(..).generate(world, random, x, y, z)}:
-     * whether the tree grew. The mod's trees come with D10; until then none do.
-     */
+    /** {@code LOTRTreeType.<type>.create(false, random).generate(world, random, x, y, z)}: whether the tree grew. */
     public static boolean placeTree(WorldGenLevel world, RandomSource random, String treeType, int x, int y, int z) {
-        return false;
+        return net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRTreeType.valueOf(treeType)
+                .create(false, random).generate(world, random, x, y, z);
     }
 
     public void placeNPCRespawner(LOTRNPCRespawnerEntity entity, WorldGenLevel world, int i, int j, int k) {
@@ -1062,7 +1102,7 @@ public abstract class LOTRStructureBase2 {
         world.addFreshEntity(entity);
     }
 
-    public void placeRug(LOTRRugEntity rug, WorldGenLevel world, int i, int j, int k, float rotation) {
+    public void placeRug(LOTRRugBaseEntity rug, WorldGenLevel world, int i, int j, int k, float rotation) {
         BlockPos pos = worldPos(i, j, k);
         if (pos == null) {
             return;

@@ -5,6 +5,8 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import java.util.function.BiConsumer;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBannerBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRBannerItem;
@@ -99,6 +101,10 @@ public class LOTRBannerBlock extends BannerBlock {
                 && level.getBlockEntity(pos) instanceof LOTRBannerBlockEntity banner
                 && (banner.getPlacingPlayer() == null || !LOTRBannerItem.shouldKeepOriginalOwnerOnPlacement(player))) {
             banner.setPlacingPlayer(player);
+        }
+        if (!level.isClientSide() && placer instanceof Player player
+                && level.getBlockEntity(pos) instanceof LOTRBannerBlockEntity banner && banner.isProtectingTerritory()) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.BANNER_PROTECT);
         }
     }
 

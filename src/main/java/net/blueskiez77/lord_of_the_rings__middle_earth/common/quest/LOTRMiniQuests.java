@@ -268,6 +268,8 @@ public final class LOTRMiniQuests extends SavedData {
         private int completedBountyQuests;
         private @Nullable UUID trackingMiniQuestID;
         private final List<LOTRFaction> bountiesPlaced = new ArrayList<>();
+        /** LOTRPlayerQuestData's "Pouches": the Grey Wanderer's three pouches given. */
+        private boolean givenFirstPouches;
 
         PlayerQuests(UUID playerID) {
             this.playerID = playerID;
@@ -295,6 +297,7 @@ public final class LOTRMiniQuests extends SavedData {
             this.completedMiniquestCount = tag.getIntOr("MQCompleteCount", 0);
             this.completedBountyQuests = tag.getIntOr("MQCompletedBounties", 0);
             this.trackingMiniQuestID = tag.getString("MiniQuestTrack").map(UUID::fromString).orElse(null);
+            this.givenFirstPouches = tag.getBooleanOr("Pouches", false);
             this.bountiesPlaced.clear();
             for (Tag t : tag.getListOrEmpty("BountiesPlaced")) {
                 t.asString().map(LOTRFaction::forName).ifPresent(this.bountiesPlaced::add);
@@ -316,6 +319,7 @@ public final class LOTRMiniQuests extends SavedData {
             ListTag bounties = new ListTag();
             this.bountiesPlaced.forEach(f -> bounties.add(StringTag.valueOf(f.codeName())));
             tag.put("BountiesPlaced", bounties);
+            tag.putBoolean("Pouches", this.givenFirstPouches);
         }
 
         /** sendLoginPacket: every quest, and the one followed. */
@@ -482,6 +486,15 @@ public final class LOTRMiniQuests extends SavedData {
 
         public int getCompletedMiniQuestsTotal() {
             return this.completedMiniquestCount;
+        }
+
+        public boolean getGivenFirstPouches() {
+            return this.givenFirstPouches;
+        }
+
+        public void setGivenFirstPouches(boolean flag) {
+            this.givenFirstPouches = flag;
+            markDirty();
         }
 
         public void placeBountyFor(LOTRFaction faction) {

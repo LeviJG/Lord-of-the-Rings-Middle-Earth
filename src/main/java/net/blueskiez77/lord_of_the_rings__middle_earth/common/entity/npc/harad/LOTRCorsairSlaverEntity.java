@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -16,14 +18,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityCorsairSlaver: a corsair who sells slaves -- Harad slaves, hired
  * to farm -- to anyone Near Harad does not dislike, bare-headed and armed as
  * any corsair. He seeks no one out -- he only answers attacks. At rest he
  * holds a branding iron.
- *
- * <p>NOT ported yet: the hireHaradSlave achievement (D7).
  */
 public class LOTRCorsairSlaverEntity extends LOTRCorsairEntity implements LOTRUnitTradeable {
 
@@ -40,6 +41,11 @@ public class LOTRCorsairSlaverEntity extends LOTRCorsairEntity implements LOTRUn
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.CORSAIR_SLAVER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     /** canTradeWith: +0 alignment and friendly. */
@@ -63,5 +69,10 @@ public class LOTRCorsairSlaverEntity extends LOTRCorsairEntity implements LOTRUn
         this.npcItemsInv.setIdleItem(new ItemStack(LOTRToolItems.BRANDING_IRON));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_HARAD_SLAVE);
     }
 }

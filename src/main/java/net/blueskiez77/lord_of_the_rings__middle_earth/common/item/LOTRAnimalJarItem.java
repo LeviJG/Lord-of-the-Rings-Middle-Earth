@@ -1,11 +1,13 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
-
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.entity.EntitySpawnRequest;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.Entity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.LOTRButterflyEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRAnimalJarBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 
@@ -111,6 +113,9 @@ public class LOTRAnimalJarItem extends BlockItem {
                 entity.getSoundSource(), 0.5F,
                 0.5F + entity.level().getRandom().nextFloat() * 0.5F);
         entity.discard();
+        if (entity instanceof LOTRButterflyEntity) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.CATCH_BUTTERFLY);
+        }
         return InteractionResult.SUCCESS;
     }
 

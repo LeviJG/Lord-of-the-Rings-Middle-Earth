@@ -5,6 +5,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBl
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCarvedSignBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
@@ -120,5 +122,16 @@ public class LOTRCarvedSignBlock extends BaseEntityBlock {
     @Override
     protected ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state, boolean includeData) {
         return new ItemStack(this == LOTRUtilityBlocks.CARVED_ITHILDIN_SIGN ? LOTRToolItems.MOON_CHISEL : LOTRToolItems.CHISEL);
+    }
+
+    /** Turned with a structure, or by anything else that turns blocks. */
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 }

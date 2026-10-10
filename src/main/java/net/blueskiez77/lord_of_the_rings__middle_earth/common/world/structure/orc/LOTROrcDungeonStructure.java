@@ -6,6 +6,12 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldChunkManager;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.variant.LOTRBiomeVariant;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRBiomeSpawnList;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRSpawnEntry;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureBase;
 
@@ -114,10 +120,22 @@ public class LOTROrcDungeonStructure extends LOTRStructureBase {
                 }
             }
             EntityType<? extends LOTROrcEntity> backupClass = LOTREntities.GUNDABAD_ORC;
-            // The original filled this with the orcs the biome here spawns (its NPC spawn
-            // list at this spot's variant); the biomes come with D10, so until then every
-            // dungeon keeps its fallback, Gundabad orcs.
             ArrayList<EntityType<? extends LOTROrcEntity>> biomeClasses = new ArrayList<>();
+            LOTRBiome biome = LOTRBiomes.of(world.getBiome(new BlockPos(i, j, k)));
+            LOTRWorldChunkManager chunkManager = LOTRWorldChunkManager.of(world.getLevel());
+            if (biome != null && chunkManager != null) {
+                LOTRBiomeVariant variant = chunkManager.getBiomeVariantAt(i, k);
+                LOTRBiomeSpawnList biomeSpawns = biome.getNPCSpawnList(world, random, i, j, k, variant);
+                for (LOTRSpawnEntry spawnEntry : biomeSpawns.getAllSpawnEntries(world.getLevel())) {
+                    // isAssignableFrom: the entry's kind is an orc.
+                    if (!(spawnEntry.type().create(world.getLevel(), EntitySpawnReason.STRUCTURE) instanceof LOTROrcEntity)) {
+                        continue;
+                    }
+                    @SuppressWarnings("unchecked")
+                    EntityType<? extends LOTROrcEntity> spawnClass = (EntityType<? extends LOTROrcEntity>) spawnEntry.type();
+                    biomeClasses.add(spawnClass);
+                }
+            }
             int orcs = Mth.randomBetweenInclusive(random, 3, 6);
             while (orcs > 0) {
                 LOTROrcEntity orc;

@@ -44,6 +44,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * LOTREntityCrocodile. Breathes underwater and floats up through it, swims
@@ -55,9 +56,6 @@ import org.jspecify.annotations.Nullable;
  * <p>Drops: rotten flesh (the loot table {@code lotr:entities/crocodile}),
  * and in {@link #dropCustomDeathLoot} zero to two more plus looting, each a
  * bone, a raw fish, leather, raw zebra or a gemsbok hide.
- *
- * <p>NOT ported yet: getCanSpawnHere's water
- * search and the Far Harad swamp's light exemption (D10/D12).
  */
 public class LOTRCrocodileEntity extends Monster {
 
@@ -194,5 +192,40 @@ public class LOTRCrocodileEntity extends Monster {
     @Override
     protected SoundEvent getDeathSound() {
         return LOTRSounds.CROCODILE_DEATH;
+    }
+
+    /**
+     * getCanSpawnHere: no more than three others close by, room to stand, dark enough (anywhere in the
+     * Far Harad swamp), and water within eight blocks -- above sea level, any; below, one try in fifty.
+     */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        if (level.getEntitiesOfClass(getClass(), getBoundingBox().inflate(24.0, 12.0, 24.0)).size() > 3) {
+            return false;
+        }
+        boolean light = net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.of(level.getBiome(blockPosition()))
+                instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRFarHaradSwampBiome
+                || level instanceof net.minecraft.world.level.ServerLevelAccessor serverLevel
+                && Monster.isDarkEnoughToSpawn(serverLevel, blockPosition(), this.random);
+        if (level.isUnobstructed(this) && light && level.noCollision(this)) {
+            for (int i = -8; i <= 8; ++i) {
+                for (int j = -8; j <= 8; ++j) {
+                    for (int k = -8; k <= 8; ++k) {
+                        net.minecraft.core.BlockPos pos = blockPosition().offset(i, j, k);
+                        if (!level.hasChunkAt(pos) || !LOTRAmbientSpawnChecks.WATER.test(level.getBlockState(pos))) {
+                            continue;
+                        }
+                        if (getY() > 60.0) {
+                            return true;
+                        }
+                        if (this.random.nextInt(50) != 0) {
+                            continue;
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

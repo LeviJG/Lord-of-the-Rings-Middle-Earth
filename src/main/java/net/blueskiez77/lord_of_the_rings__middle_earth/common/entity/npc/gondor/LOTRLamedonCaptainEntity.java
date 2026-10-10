@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityLamedonCaptain: a warrior of Lamedon who leads, bare-headed
@@ -27,9 +30,6 @@ import org.jspecify.annotations.Nullable;
  *
  * He hires out hillmen, warriors (on foot or mounted), archers and banner
  * bearers to those at +200 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.GONDOR_LAMEDON, D12) and the
- * tradeLamedonCaptain achievement.
  */
 public class LOTRLamedonCaptainEntity extends LOTRLamedonSoldierEntity implements LOTRUnitTradeable {
 
@@ -56,6 +56,11 @@ public class LOTRLamedonCaptainEntity extends LOTRLamedonSoldierEntity implement
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.LAMEDON_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.GONDOR_LAMEDON;
     }
 
     /** canTradeWith: +200 alignment and friendly. */
@@ -88,5 +93,10 @@ public class LOTRLamedonCaptainEntity extends LOTRLamedonSoldierEntity implement
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.LAMEDON_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_LAMEDON_CAPTAIN);
     }
 }

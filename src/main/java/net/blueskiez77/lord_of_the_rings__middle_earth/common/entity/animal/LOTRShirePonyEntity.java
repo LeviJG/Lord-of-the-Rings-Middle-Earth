@@ -1,23 +1,28 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 /**
  * LOTREntityShirePony: a horse at four-fifths the size, weaker, slower and a
  * poorer jumper. The original let it be a donkey on the server (for a
- * donkey's lot) and a horse on the client (for a horse's coat), with horse
- * sounds forced back; it cannot carry a chest.
+ * donkey's lot: it carries a chest, LOTRChestedHorseEntity) and a horse on
+ * the client (for a horse's coat, so the chest is not drawn), with horse
+ * sounds forced back.
  *
- * <p>NOT ported yet: the rideShirePony achievement, for riding a saddled
- * pony carrying a chest -- which the pony cannot carry (D7).
+ * <p>Riding a saddled one carrying a chest earns rideShirePony.
  */
-public class LOTRShirePonyEntity extends LOTRHorseEntity {
+public class LOTRShirePonyEntity extends LOTRChestedHorseEntity {
 
     /** PONY_SCALE: the hitbox (LOTREntities) and the renderer. */
     public static final float PONY_SCALE = 0.8f;
@@ -66,5 +71,13 @@ public class LOTRShirePonyEntity extends LOTRHorseEntity {
     @Override
     protected SoundEvent getAngrySound() {
         return SoundEvents.HORSE_ANGRY;
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (level() instanceof ServerLevel && getFirstPassenger() instanceof Player player && isMountSaddled() && hasChest()) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.RIDE_SHIRE_PONY);
+        }
     }
 }

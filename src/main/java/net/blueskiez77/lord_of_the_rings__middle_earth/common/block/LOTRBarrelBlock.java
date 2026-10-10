@@ -11,6 +11,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDrinkItem
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.recipe.LOTRBrewingRecipes;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundSource;
@@ -52,7 +54,7 @@ import org.jspecify.annotations.Nullable;
  * <p>A bottle of poison used on any face poisons the drink inside
  * (canPoisonBarrel / poisonBarrel) rather than opening it.
  *
- * <p>Its item can also be set afloat on water and ridden (LOTRBarrelBoatEntity).
+ * <p>Its item can also be set afloat on water and ridden (LOTRBarrelEntity).
  */
 public class LOTRBarrelBlock extends BaseEntityBlock {
     public static final MapCodec<LOTRBarrelBlock> CODEC = simpleCodec(LOTRBarrelBlock::new);
@@ -202,5 +204,16 @@ public class LOTRBarrelBlock extends BaseEntityBlock {
             return barrel.getBarrelDrop();
         }
         return super.getCloneItemStack(level, pos, state, includeData);
+    }
+
+    /** Turned with a structure, or by anything else that turns blocks. */
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 }

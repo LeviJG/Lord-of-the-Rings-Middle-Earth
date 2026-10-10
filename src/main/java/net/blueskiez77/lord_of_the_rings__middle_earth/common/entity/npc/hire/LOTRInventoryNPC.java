@@ -55,7 +55,7 @@ public class LOTRInventoryNPC extends SimpleContainer {
         for (int i = 0; i < getContainerSize(); ++i) {
             ItemStack stack = getItem(i);
             if (!stack.isEmpty()) {
-                this.theNPC.spawnAtLocation(level, stack);
+                this.theNPC.dropUnpouched(level, stack);
                 setItem(i, ItemStack.EMPTY);
             }
         }

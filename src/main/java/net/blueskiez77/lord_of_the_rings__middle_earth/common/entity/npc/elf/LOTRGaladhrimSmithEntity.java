@@ -1,11 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
@@ -14,9 +17,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityGaladhrimSmith: an elven smith of Lothlórien, hooded in its
  * smith's cloak, who trades with those at +100 or better and seeks no one
  * out.
- *
- * <p>NOT ported yet: its cape (galadhrimSmith_cape, with NPC capes) and the
- * tradeGaladhrimSmith achievement.
  */
 public class LOTRGaladhrimSmithEntity extends LOTRGaladhrimElfEntity implements LOTRSmith {
 
@@ -62,5 +62,12 @@ public class LOTRGaladhrimSmithEntity extends LOTRGaladhrimElfEntity implements 
             return canTradeWith(player) ? "galadhrim/smith/friendly" : "galadhrim/smith/neutral";
         }
         return "galadhrim/smith/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        if (type == LOTRTradeEntries.TradeType.BUY) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_GALADHRIM_SMITH);
+        }
     }
 }

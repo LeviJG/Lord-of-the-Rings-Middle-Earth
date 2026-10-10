@@ -7,6 +7,7 @@ import com.mojang.math.Axis;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRElfModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRItemIn2D;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRRandomSkins;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRDorwinionElfEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf.LOTRElfEntity;
@@ -29,8 +30,8 @@ import org.jspecify.annotations.Nullable;
  * LOTRRenderElf: an elf in one of its people's skins for its sex. A jazz elf
  * has its own skins, one in two with a jazz outfit if bare-headed; in a solo
  * it spins on the spot, its whole body cycling through the colours, and its
- * held item is put away. On the first of April every elf is a quarter of its
- * size.
+ * held item is put away for a saxophone. On the first of April every elf is
+ * a quarter of its size.
  *
  * <p>LOTRRenderElvenTrader and LOTRRenderElvenSmith: a trader's or smith's
  * cloak ({@code elf/<outfit>.png}) always worn over it.
@@ -38,9 +39,6 @@ import org.jspecify.annotations.Nullable;
  * <p>LOTRRenderGaladhrimWarden: while a warden is unseen it is drawn at a
  * twentieth of its opacity. The original drew its armour and held items that
  * faintly too; here they are left out while it is unseen.
- *
- * <p>NOT ported yet: the saxophone
- * drawn in a jazz elf's hands (D16).
  */
 public class LOTRElfRenderer
         extends LOTRBipedRenderer<LOTRElfEntity, LOTRElfRenderer.State, LOTRElfModel<LOTRElfRenderer.State>> {
@@ -55,6 +53,8 @@ public class LOTRElfRenderer
     private static final LOTRRandomSkins DORWINION_FEMALE = LOTRRandomSkins.loadSkinsList("lotr:mob/elf/dorwinion_female", "elf/dorwinion_female");
     private static final LOTRRandomSkins JAZZ_MALE = LOTRRandomSkins.loadSkinsList("lotr:mob/elf/jazz_male", "elf/jazz_male");
     private static final LOTRRandomSkins JAZZ_FEMALE = LOTRRandomSkins.loadSkinsList("lotr:mob/elf/jazz_female", "elf/jazz_female");
+    /** LOTRItemRing.saxIcon. */
+    private static final Identifier SAX = Identifier.fromNamespaceAndPath("lotr", "textures/item/sax.png");
     private static final LOTRRandomSkins JAZZ_OUTFITS = LOTRRandomSkins.loadSkinsList("lotr:mob/elf/jazz_outfit", "elf/jazz_outfit");
 
     /** Opacity of an unseen warden, 0.05, over vanilla's own 0.15 for a see-through body. */
@@ -120,6 +120,23 @@ public class LOTRElfRenderer
                     coloredCutoutModelCopyLayerRender(jazzOutfitModel, state.jazzOutfit, poseStack, collector,
                             light, state, state.soloTint, 1);
                 }
+            }
+        });
+        // renderEquippedItems: in a solo, the saxophone held up before it.
+        addLayer(new RenderLayer<>(this) {
+            @Override
+            public void submit(PoseStack poseStack, SubmitNodeCollector collector, int light, State state,
+                               float yRot, float xRot) {
+                if (!state.jazzSolo) {
+                    return;
+                }
+                poseStack.pushPose();
+                poseStack.translate(0.0f, 0.75f, 0.1f);
+                poseStack.scale(1.0f, -1.0f, 1.0f);
+                poseStack.mulPose(Axis.YP.rotationDegrees(90.0f));
+                poseStack.mulPose(Axis.ZP.rotationDegrees(-20.0f));
+                LOTRItemIn2D.submit(poseStack, collector, SAX, 16, 16, state.soloTint, light);
+                poseStack.popPose();
             }
         });
     }

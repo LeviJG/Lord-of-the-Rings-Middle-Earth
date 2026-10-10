@@ -22,8 +22,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityAngmarHillmanWarrior: a hillman man-at-arms with an Angmar blade,
  * axe, warhammer, dagger, poleaxe or spear, in Angmar, bone or fur armour (a
  * bone or fur helmet four times in five). He leaves no house goods.
- *
- * <p>NOT ported yet: the Angmar shield (LOTRShields.ALIGNMENT_ANGMAR, D7).
  */
 public class LOTRAngmarHillmanWarriorEntity extends LOTRAngmarHillmanEntity {
 

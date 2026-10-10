@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal;
 
+import net.minecraft.world.level.LevelAccessor;
 import java.util.Random;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRGlowStyle;
@@ -38,10 +39,8 @@ import org.jspecify.annotations.Nullable;
  * the light of a mallorn torch -- which of the four colours is fixed by its
  * UUID, as LOTRWorldGenElfHouse.getRandomTorch seeded from it.
  *
- * <p>NOT ported yet: the kind from the biome it hatched in (Mirkwood and the
- * Woodland Realm, Lothlórien, the Far Harad jungle), which needs the LOTR
- * biomes (D10) -- until then every butterfly is a common one, as in any
- * other biome -- and LOTRAmbientSpawnChecks (D12).
+ * <p>Its kind is the biome's it hatched in (Mirkwood and the Woodland Realm,
+ * Lothlórien, the Far Harad jungle), common elsewhere.
  */
 public class LOTRButterflyEntity extends Mob {
 
@@ -77,7 +76,17 @@ public class LOTRButterflyEntity extends Mob {
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         LOTRSpawnEggItem.playHatchSound(this, reason);
-        setButterflyType(ButterflyType.COMMON);
+        // Its kind from the biome it hatched in.
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome biome = net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.of(level.getBiome(blockPosition()));
+        if (biome instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRMirkwoodBiome || biome instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRWoodlandRealmBiome) {
+            setButterflyType(ButterflyType.MIRKWOOD);
+        } else if (biome instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRLothlorienBiome) {
+            setButterflyType(ButterflyType.LORIEN);
+        } else if (biome instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRFarHaradJungleBiome) {
+            setButterflyType(ButterflyType.JUNGLE);
+        } else {
+            setButterflyType(ButterflyType.COMMON);
+        }
         return super.finalizeSpawn(level, difficulty, reason, groupData);
     }
 
@@ -247,5 +256,12 @@ public class LOTRButterflyEntity extends Mob {
         ButterflyType(String dir) {
             this.textureDir = dir;
         }
+    }
+
+    /** getCanSpawnHere: among plants, on its biome's top block, in light enough (LOTRAmbientSpawnChecks). */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason)
+                && LOTRAmbientSpawnChecks.canSpawn(this, level, 8, 4, 32, 4, LOTRAmbientSpawnChecks.PLANTS);
     }
 }

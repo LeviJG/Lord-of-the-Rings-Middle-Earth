@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityGondorianCaptain: a captain of Gondor, bare-headed in Gondorian
@@ -30,9 +33,6 @@ import org.jspecify.annotations.Nullable;
  * He hires out levymen, soldiers (on foot or mounted), archers, banner
  * bearers, and -- to those pledged to Gondor -- the Tower Guard, to those at
  * +200 or better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.GONDOR), his warhorn
- * (LOTRInvasions.GONDOR, D12), and the tradeGondorianCaptain achievement.
  */
 public class LOTRGondorianCaptainEntity extends LOTRGondorSoldierEntity implements LOTRUnitTradeable {
 
@@ -60,6 +60,11 @@ public class LOTRGondorianCaptainEntity extends LOTRGondorSoldierEntity implemen
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.GONDORIAN_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.GONDOR;
     }
 
     /** canTradeWith: +200 alignment and friendly. */
@@ -94,5 +99,10 @@ public class LOTRGondorianCaptainEntity extends LOTRGondorSoldierEntity implemen
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.GONDOR_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_GONDORIAN_CAPTAIN);
     }
 }

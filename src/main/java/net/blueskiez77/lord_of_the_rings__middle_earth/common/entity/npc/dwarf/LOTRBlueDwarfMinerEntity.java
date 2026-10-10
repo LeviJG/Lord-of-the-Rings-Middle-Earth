@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -22,9 +24,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityBlueDwarfMiner: a Blue Mountains dwarf with a pickaxe, who trades
  * food and drink for the mine's ore and gems with those at +100 or better.
- *
- * <p>NOT ported yet: that he spawns only underground (with the biomes), and
- * the tradeBlueDwarfMiner achievement.
  */
 public class LOTRBlueDwarfMinerEntity extends LOTRBlueDwarfEntity implements LOTRTradeable {
 
@@ -88,5 +87,16 @@ public class LOTRBlueDwarfMinerEntity extends LOTRBlueDwarfEntity implements LOT
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRToolItems.BLUE_DWARVEN_PICKAXE));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BLUE_DWARF_MINER);
+    }
+
+    /** Only underground. */
+    @Override
+    public boolean canDwarfSpawnAboveGround() {
+        return false;
     }
 }

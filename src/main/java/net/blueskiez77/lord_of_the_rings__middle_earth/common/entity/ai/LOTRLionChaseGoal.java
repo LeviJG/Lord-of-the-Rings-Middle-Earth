@@ -70,6 +70,11 @@ public class LOTRLionChaseGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         Animal quarry = this.target;
         if (quarry == null) {

@@ -15,6 +15,7 @@ public class LOTRFactionRank implements Comparable<LOTRFactionRank> {
     public String name;
     public boolean isGendered;
     public boolean hasRankAchievement;
+    public net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.@Nullable LOTRAchievementRank rankAchievement;
     public boolean hasRankTitle;
     public @Nullable LOTRTitle rankTitle;
     public @Nullable LOTRTitle rankTitleMasc;
@@ -109,8 +110,13 @@ public class LOTRFactionRank implements Comparable<LOTRFactionRank> {
         return this == fac.getPledgeRank();
     }
 
+    /** makeAchievement: its LOTRAchievementRank, in the faction's land. */
     public LOTRFactionRank makeAchievement() {
         hasRankAchievement = true;
+        var category = net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement.categoryForFaction(fac);
+        if (category != null) {
+            rankAchievement = new net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievementRank(this, category);
+        }
         return this;
     }
 

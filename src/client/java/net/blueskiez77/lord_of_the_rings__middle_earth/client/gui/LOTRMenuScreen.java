@@ -26,8 +26,7 @@ import org.lwjgl.glfw.GLFW;
  * fellowships, titles, shields, options -- each with a key of its own. The
  * menu key reopens whichever of them was last opened from here.
  *
- * <p>NOT ported yet, so their icons are greyed out: the achievements (D7)
- * and map (D13) screens; and
+ * <p>NOT ported yet, so its icon is greyed out: the map screen (D13); and
  * openMenu's welcome mini-quest forcing the map or factions (D14).
  */
 public class LOTRMenuScreen extends Screen {
@@ -64,7 +63,7 @@ public class LOTRMenuScreen extends Screen {
         int buttonGap = 10;
         int buttonSize = 32;
         List<MenuButton> buttons = new ArrayList<>();
-        buttons.add(new MenuButton(2, null, "lotr.gui.achievements", GLFW.GLFW_KEY_A, false));
+        buttons.add(new MenuButton(2, LOTRAchievementsScreen::new, "lotr.gui.achievements", GLFW.GLFW_KEY_A, true));
         buttons.add(new MenuButton(3, null, "lotr.gui.map", GLFW.GLFW_KEY_M, false));
         buttons.add(new MenuButton(4, LOTRFactionsScreen::new, "lotr.gui.factions", GLFW.GLFW_KEY_F, true));
         buttons.add(new MenuButton(0, null, null, -1, true));

@@ -895,3 +895,6 @@ yamRoast	*	lotr:roast_yam
 zebraCooked	*	lotr:cooked_zebra
 zebraRaw	*	lotr:raw_zebra
 brandingIron	*	lotr:branding_iron
+pouch	0	lotr:small_pouch
+pouch	1	lotr:medium_pouch
+pouch	2	lotr:large_pouch

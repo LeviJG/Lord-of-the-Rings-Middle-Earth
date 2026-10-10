@@ -3,18 +3,28 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
 import net.minecraft.network.chat.Component;
 
-// Minimal faithful port of 1.7.10 lotr.common.LOTRDimension. DELIBERATELY REDUCED: worldgen dropped, so WorldProvider classes, dimension registration/IDs, biome lists, and achievement categories are omitted. What remains is what factions/alignment/map need: identities, regions, faction lists.
+/**
+ * LOTRDimension: the mod's dimensions -- their names, NPC spawn caps, biomes, regions and factions.
+ * Middle-earth itself is a datapack dimension ({@code lotr:middle_earth}, LOTRWorldGen); Utumno is D15.
+ */
 public enum LOTRDimension {
     MIDDLE_EARTH("MiddleEarth", 100, EnumSet.of(DimensionRegion.WEST, DimensionRegion.EAST, DimensionRegion.SOUTH)),
     UTUMNO("Utumno", 500, EnumSet.of(DimensionRegion.REG_UTUMNO));
 
     public final String dimensionName;
     public final int spawnCap;
+    /** Its biomes by id, and by their colour on the map (as ARGB), and those it counts as major. */
+    public final LOTRBiome[] biomeList = new LOTRBiome[256];
+    public final Map<Integer, Integer> colorsToBiomeIDs = new HashMap<>();
+    public final List<LOTRBiome> majorBiomes = new ArrayList<>();
     public final Collection<LOTRFaction> factionList = new ArrayList<>();
     public final List<DimensionRegion> dimensionRegions = new ArrayList<>();
 
@@ -25,6 +35,11 @@ public enum LOTRDimension {
         for (DimensionRegion r : dimensionRegions) {
             r.setDimension(this);
         }
+    }
+
+    /** getCurrentDimensionWithFallback: Middle-earth for its level, and for any other (Utumno: D15). */
+    public static LOTRDimension getCurrentDimensionWithFallback(net.minecraft.world.level.Level level) {
+        return MIDDLE_EARTH;
     }
 
     public static LOTRDimension forName(String s) {

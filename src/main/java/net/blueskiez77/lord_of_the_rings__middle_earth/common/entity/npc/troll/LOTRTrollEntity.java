@@ -1,6 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRStoneTrollEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
@@ -58,6 +60,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
 
 /**
  * LOTREntityTroll (the Troll): a troll of Angmar -- 60 strong, armour 8, hitting
@@ -72,10 +76,9 @@ import org.jspecify.annotations.Nullable;
  * it sneezes out slime. It leaves troll bones and, now and then, slime and
  * whatever it has lately eaten.
  *
- * <p>NOT ported yet: the biomes where hostiles walk by day, which the sun
- * does not trouble (LOTRBiome.canSpawnHostilesInDay, D10), the killTroll,
- * killTrollFleeingSun and makeTrollSneeze achievements (D7), and the hired
- * unit's icon and health bar (with the hire screens).
+ * <p>In the biomes where hostiles walk by day, the sun does not trouble it.
+ *
+ * <p>NOT ported yet: the hired unit's icon and health bar (with the hire screens).
  */
 public class LOTRTrollEntity extends LOTRNPCEntity {
 
@@ -119,6 +122,12 @@ public class LOTRTrollEntity extends LOTRNPCEntity {
         builder.define(DATA_BURN_TIME, -1);
         builder.define(DATA_SNEEZING, (byte) 0);
         builder.define(DATA_TWO_HEADS, false);
+    }
+
+    /** A conquering troll comes out by day only if the sun cannot turn it to stone. */
+    @Override
+    public boolean conquestSpawnIgnoresDarkness() {
+        return this.trollImmuneToSun;
     }
 
     @Override
@@ -255,6 +264,7 @@ public class LOTRTrollEntity extends LOTRNPCEntity {
             this.npcTalkTick = getNPCTalkInterval() / 2;
             if (this.sneeze >= 3) {
                 setSneezingTime(16);
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.MAKE_TROLL_SNEEZE);
             } else {
                 LOTRSpeech.sendSpeech(player, this, LOTRSpeech.getRandomSpeechForPlayer(this, "troll/tickle", player, null, null));
                 playSound(LOTRSounds.TROLL_SNIFF, getSoundVolume(), getVoicePitch());
@@ -276,7 +286,9 @@ public class LOTRTrollEntity extends LOTRNPCEntity {
                         getZ() + (this.random.nextDouble() - 0.5) * getBbWidth(), 0.0, 0.0, 0.0);
             } else {
                 BlockPos pos = BlockPos.containing(getX(), getBoundingBox().minY, getZ());
-                if (this.trollImmuneToSun || !level().isBrightOutside() || !level().canSeeSky(pos)) {
+                LOTRBiome biome = LOTRBiomes.of(level().getBiome(pos));
+                if (this.trollImmuneToSun || biome != null && biome.canSpawnHostilesInDay() || !level().isBrightOutside()
+                        || !level().canSeeSky(pos)) {
                     setTrollBurnTime(-1);
                 } else {
                     setTrollBurnTime(getTrollBurnTime() - 1);
@@ -495,5 +507,19 @@ public class LOTRTrollEntity extends LOTRNPCEntity {
     @Override
     public boolean canReEquipHired(int slot, ItemStack stack) {
         return false;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_TROLL;
+    }
+
+    /** onDeath: slain by a player as it burns in the sun. */
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (!level().isClientSide() && source.getEntity() instanceof Player player && getTrollBurnTime() >= 0) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.KILL_TROLL_FLEEING_SUN);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal;
 
+import net.minecraft.world.level.LevelAccessor;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAvoidWithChanceGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
@@ -35,8 +36,7 @@ import org.jspecify.annotations.Nullable;
  * (LOTRAmbientCreature). It bolts from lions, and now and then from players.
  * Its calls are the deer's, pitched up by 1.3.
  *
- * <p>NOT ported yet: getCanSpawnHere's LOTRAmbientSpawnChecks (D12). It drops
- * nothing, as the original had no dropFewItems.
+ * <p>It drops nothing, as the original had no dropFewItems.
  */
 public class LOTRDikDikEntity extends PathfinderMob {
 
@@ -97,5 +97,12 @@ public class LOTRDikDikEntity extends PathfinderMob {
     @Override
     public int getAmbientSoundInterval() {
         return 300;
+    }
+
+    /** getCanSpawnHere: among plants, on its biome's top block, in light enough (LOTRAmbientSpawnChecks). */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason)
+                && LOTRAmbientSpawnChecks.canSpawn(this, level, 8, 4, 32, 4, LOTRAmbientSpawnChecks.PLANTS);
     }
 }

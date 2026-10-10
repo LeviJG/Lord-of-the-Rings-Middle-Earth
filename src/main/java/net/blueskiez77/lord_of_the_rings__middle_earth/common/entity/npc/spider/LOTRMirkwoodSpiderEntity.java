@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
@@ -11,10 +12,8 @@ import net.minecraft.world.level.Level;
  * LOTREntityMirkwoodSpider: a spider of Mirkwood, of Dol Guldur's faction,
  * sized 0 to 2; half have no venom, the rest slowness or poison. Slain by a
  * player, one in four leaves a mystery web.
- *
- * <p>NOT ported yet: the killMirkwoodSpider achievement (D7).
  */
-public class LOTRMirkwoodSpiderEntity extends LOTRSpiderEntity {
+public class LOTRMirkwoodSpiderEntity extends LOTRSpiderBaseEntity {
 
     public LOTRMirkwoodSpiderEntity(EntityType<? extends LOTRMirkwoodSpiderEntity> type, Level level) {
         super(type, level);
@@ -46,5 +45,10 @@ public class LOTRMirkwoodSpiderEntity extends LOTRSpiderEntity {
         if (killedByPlayer && this.random.nextInt(4) == 0) {
             spawnAtLocation(level, LOTRMiscItems.MYSTERY_WEB);
         }
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_MIRKWOOD_SPIDER;
     }
 }

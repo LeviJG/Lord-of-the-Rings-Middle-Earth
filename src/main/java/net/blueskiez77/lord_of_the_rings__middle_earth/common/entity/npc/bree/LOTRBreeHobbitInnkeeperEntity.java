@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBartender;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
@@ -20,8 +22,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityBreeHobbitInnkeeper: a Bree-hobbit who keeps an inn ("%s's Inn"),
  * with the Bree-man innkeeper's trades, a mug in hand and a bartender's
  * outfit.
- *
- * <p>NOT ported yet: the tradeBreeInnkeeper achievement.
  */
 public class LOTRBreeHobbitInnkeeperEntity extends LOTRBreeHobbitEntity implements LOTRBartender {
 
@@ -72,5 +72,10 @@ public class LOTRBreeHobbitInnkeeperEntity extends LOTRBreeHobbitEntity implemen
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         this.npcItemsInv.setIdleItem(new ItemStack(LOTRFoodItems.MUG));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BREE_INNKEEPER);
     }
 }

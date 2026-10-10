@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -25,8 +27,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityUmbarBlacksmith: an Umbar smith with his hammer and a turban
  * (0x441808), trading with those at +50 or better and leaving iron ingots
  * when slain.
- *
- * <p>NOT ported yet: the tradeUmbarBlacksmith achievement (D7).
  */
 public class LOTRUmbarBlacksmithEntity extends LOTRUmbarianEntity implements LOTRSmith {
 
@@ -90,5 +90,10 @@ public class LOTRUmbarBlacksmithEntity extends LOTRUmbarianEntity implements LOT
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, turban(4462600));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_UMBAR_BLACKSMITH);
     }
 }

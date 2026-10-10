@@ -211,11 +211,15 @@ public class LOTRHorseEntity extends Horse implements LOTRNPCMount {
         return this.entityData.get(DATA_BELONGS_NPC);
     }
 
+    /** setBelongsToNPC: an NPC's mount is tamed, saddled and grown. */
     @Override
     public void setBelongsToNPC(boolean flag) {
         this.entityData.set(DATA_BELONGS_NPC, flag);
         if (flag) {
             setTamed(true);
+            if (!isSaddled()) {
+                setItemSlot(net.minecraft.world.entity.EquipmentSlot.SADDLE, new ItemStack(Items.SADDLE));
+            }
             if (getAge() < 0) {
                 setAge(0);
             }

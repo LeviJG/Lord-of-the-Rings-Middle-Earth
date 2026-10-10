@@ -14,13 +14,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * LOTREntitySeagull: a songbird 1.4 times the size, with its own cry, that
  * also steals fish, raw or cooked.
- *
- * <p>NOT ported yet: canBirdSpawnHere's shore check (leaves or sand around,
- * fewer than two gulls within 16 blocks), D12.
  */
 public class LOTRSeagullEntity extends LOTRBirdEntity {
 
@@ -67,5 +65,16 @@ public class LOTRSeagullEntity extends LOTRBirdEntity {
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
         return LOTRSounds.BIRD_SEAGULL_HURT;
+    }
+
+    /** Among leaves or sand, and never with two others close by. */
+    @Override
+    public boolean canBirdSpawnHere(LevelAccessor level) {
+        if (LOTRAmbientSpawnChecks.canSpawn(this, level, 8, 4, 40, 4, state -> state.is(net.minecraft.tags.BlockTags.LEAVES)
+                || state.getBlock() instanceof net.minecraft.world.level.block.FallingBlock)) {
+            double range = 16.0;
+            return level.getEntitiesOfClass(LOTRSeagullEntity.class, getBoundingBox().inflate(range, range, range)).size() < 2;
+        }
+        return false;
     }
 }

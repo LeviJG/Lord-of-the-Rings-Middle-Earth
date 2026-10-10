@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jspecify.annotations.Nullable;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRBarrelBoatEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRBarrelEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
@@ -33,7 +33,7 @@ import net.minecraft.world.phys.HitResult;
  * in, and the tooltip shows the same subtitle as the barrel's screen.
  *
  * <p>Aimed at still water it sets the barrel afloat to be ridden
- * (onItemRightClick, LOTRBarrelBoatEntity).
+ * (onItemRightClick, LOTRBarrelEntity).
  */
 public class LOTRBarrelItem extends BlockItem implements LOTRTooltipItem {
     public LOTRBarrelItem(Block block, Properties properties) {
@@ -55,7 +55,7 @@ public class LOTRBarrelItem extends BlockItem implements LOTRTooltipItem {
         if (!level.getFluidState(pos).is(FluidTags.WATER) || !level.getFluidState(pos).isSource()) {
             return InteractionResult.PASS;
         }
-        LOTRBarrelBoatEntity barrel = new LOTRBarrelBoatEntity(LOTREntities.BARREL, level);
+        LOTRBarrelEntity barrel = new LOTRBarrelEntity(LOTREntities.BARREL, level);
         barrel.setInitialPos(pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5);
         barrel.setYRot(((Mth.floor(player.getYRot() * 4.0f / 360.0f + 0.5) & 3) - 1) * 90.0f);
         if (!level.noCollision(barrel, barrel.getBoundingBox().deflate(0.1))) {

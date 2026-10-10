@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -30,8 +31,6 @@ import org.jspecify.annotations.Nullable;
  * (poisoned or not), warhammer, pickaxe, axe or poleaxe; one in six carries a
  * spear as well, falling back on the other. Now and then it leaves something
  * from an Angmar tent.
- *
- * <p>NOT ported yet: the killAngmarOrc achievement (D7).
  */
 public class LOTRAngmarOrcEntity extends LOTROrcEntity {
 
@@ -109,5 +108,10 @@ public class LOTRAngmarOrcEntity extends LOTROrcEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.ANGMAR.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_ANGMAR_ORC;
     }
 }

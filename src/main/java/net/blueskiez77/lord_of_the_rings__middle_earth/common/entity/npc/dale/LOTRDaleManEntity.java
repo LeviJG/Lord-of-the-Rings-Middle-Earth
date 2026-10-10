@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
@@ -44,16 +45,16 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRDaleBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityDaleMan: the people of Dale, "Name of Dale". They keep out of the
  * water, open doors, fight back with a dagger or an axe, eat and drink as Dale
  * does, and can be hired. Slain, they leave bones and one time in six
  * something from a Dale house.
- *
- * <p>NOT ported yet: the pull of Dale on their wandering (+20 there) and their
- * natural spawn check (above y 62 on the biome's top block) -- with the biomes
- * (D10) -- and the killDalish achievement (D7).
  */
 public class LOTRDaleManEntity extends LOTRManEntity {
 
@@ -165,5 +166,22 @@ public class LOTRDaleManEntity extends LOTRManEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.DALE.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_DALISH;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRDaleBiome.class);
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
     }
 }

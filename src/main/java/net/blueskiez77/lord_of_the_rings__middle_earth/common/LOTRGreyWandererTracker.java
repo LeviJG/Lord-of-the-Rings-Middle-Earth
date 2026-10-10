@@ -19,11 +19,7 @@ import net.minecraft.core.UUIDUtil;
  * whenever it offers a player its welcome. A wanderer whose time is up
  * departs as soon as it is not fighting. Kept with the world in
  * LOTRLevelData, as "GreyWanderers" and "GWSpawnTick".
- *
- * <p>NOT ported yet: performSpawning -- a wanderer arriving, every two
- * minutes while none is abroad, 4 to 16 blocks from a player with no Grey
- * Wanderer quest -- which ran from LOTREventSpawner in the Middle-earth
- * dimension (D12). {@link #spawnCooldown} is kept and saved meanwhile.
+ * A new one arrives by LOTREventSpawner.performGreyWandererSpawning.
  */
 public final class LOTRGreyWandererTracker {
 

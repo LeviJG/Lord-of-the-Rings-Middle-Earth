@@ -20,9 +20,8 @@ import org.jspecify.annotations.Nullable;
  * bare-headed one time in ten, with a sword, battleaxe, warhammer, mattock or
  * pike; one in six carries a spear as well, falling back on his other weapon.
  *
- * <p>NOT ported yet: the Blue Mountains shield
- * (LOTRShields.ALIGNMENT_BLUE_MOUNTAINS, D7), and throwing the spear (spears
- * keep vanilla's mechanics, user).
+ * <p>NOT ported yet: throwing the spear (spears keep vanilla's mechanics,
+ * user).
  */
 public class LOTRBlueDwarfWarriorEntity extends LOTRBlueDwarfEntity {
 

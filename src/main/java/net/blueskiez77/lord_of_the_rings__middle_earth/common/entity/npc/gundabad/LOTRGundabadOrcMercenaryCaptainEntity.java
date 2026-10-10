@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -16,6 +18,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityGundabadOrcMercenaryCaptain (the Gundabad Orc Chieftain): a
@@ -23,9 +26,6 @@ import org.jspecify.annotations.Nullable;
  * only answers attacks. He hires out Gundabad's orcs and archers (either on
  * wargs), wargs, banner bearers, and Uruks and Uruk archers to those pledged
  * to Gundabad, at +100 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.GUNDABAD, D12) and the
- * tradeGundabadCaptain achievement (D7).
  */
 public class LOTRGundabadOrcMercenaryCaptainEntity extends LOTRGundabadUrukEntity implements LOTRUnitTradeable {
 
@@ -42,6 +42,11 @@ public class LOTRGundabadOrcMercenaryCaptainEntity extends LOTRGundabadUrukEntit
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.GUNDABAD_ORC_MERCENARY_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.GUNDABAD;
     }
 
     /** canTradeWith: +100 alignment and friendly. */
@@ -71,5 +76,10 @@ public class LOTRGundabadOrcMercenaryCaptainEntity extends LOTRGundabadUrukEntit
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_GUNDABAD_CAPTAIN);
     }
 }

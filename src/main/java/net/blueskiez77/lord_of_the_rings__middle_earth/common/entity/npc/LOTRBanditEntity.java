@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRBanditFleeGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRBanditStealGoal;
@@ -47,9 +49,6 @@ import org.jspecify.annotations.Nullable;
  * then runs; a player with nothing he could take he simply attacks. Every
  * NPC leaves him alone but a hired unit, which hunts him. Slain, he gives up
  * his loot, bones, coins in plenty, and one time in five a skull cup.
- *
- * <p>NOT ported yet: his spawning in the wilds (LOTREventSpawner, with the
- * biomes' bandit kinds, D10/D12), and the killThievingBandit achievement (D7).
  */
 public class LOTRBanditEntity extends LOTRManEntity implements LOTRBandit {
 
@@ -178,10 +177,13 @@ public class LOTRBanditEntity extends LOTRManEntity implements LOTRBandit {
         }
     }
 
-    /** onDeath: what he stole falls with him. */
+    /** onDeath: what he stole falls with him; slaying him with it earns killThievingBandit. */
     @Override
     public void die(DamageSource source) {
         super.die(source);
+        if (!level().isClientSide() && source.getEntity() instanceof Player player && !this.banditInventory.isEmpty()) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.KILL_THIEVING_BANDIT);
+        }
         if (!level().isClientSide()) {
             this.banditInventory.dropAllItems();
         }

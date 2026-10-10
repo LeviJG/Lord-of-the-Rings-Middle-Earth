@@ -1,11 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -27,8 +28,6 @@ import org.jspecify.annotations.Nullable;
  * in Gundabad Uruk armour with a cleaver, waraxe, bludgeon, dagger (poisoned
  * or not) or pike, and a spear one time in six. It speaks lower and leaves
  * Uruk steel.
- *
- * <p>NOT ported yet: the killGundabadUruk achievement (D7).
  */
 public class LOTRGundabadUrukEntity extends LOTRGundabadOrcEntity {
 
@@ -83,5 +82,10 @@ public class LOTRGundabadUrukEntity extends LOTRGundabadOrcEntity {
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.GUNDABAD_URUK_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.GUNDABAD_URUK_HELMET));
         return data;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_GUNDABAD_URUK;
     }
 }

@@ -1,12 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -22,6 +24,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityLebenninCaptain (the Lebennin Levymaster): a soldier of Gondor
@@ -30,10 +33,6 @@ import org.jspecify.annotations.Nullable;
  *
  * He hires out Lebennin levymen, soldiers, archers and banner bearers to
  * those at +150 or better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.GONDOR) and the Lebennin shield
- * (LOTRShields.ALIGNMENT_LEBENNIN), his warhorn (LOTRInvasions.GONDOR_LEBENNIN,
- * D12), and the tradeLebenninCaptain achievement.
  */
 public class LOTRLebenninCaptainEntity extends LOTRGondorSoldierEntity implements LOTRUnitTradeable {
 
@@ -62,6 +61,11 @@ public class LOTRLebenninCaptainEntity extends LOTRGondorSoldierEntity implement
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.LEBENNIN_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.GONDOR_LEBENNIN;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -96,5 +100,10 @@ public class LOTRLebenninCaptainEntity extends LOTRGondorSoldierEntity implement
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.GONDOR_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_LEBENNIN_CAPTAIN);
     }
 }

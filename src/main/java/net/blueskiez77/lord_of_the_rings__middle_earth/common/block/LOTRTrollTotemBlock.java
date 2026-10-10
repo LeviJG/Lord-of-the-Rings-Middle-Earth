@@ -20,7 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.level.Level;
@@ -136,9 +135,8 @@ public class LOTRTrollTotemBlock extends Block implements EntityBlock {
      * ENEMY of Angmar -- alignment strictly below zero. Trolls do not answer
      * their own kind's friends.
      *
-     * <p>The original tested the ore dictionary name "bone", which covers the
-     * vanilla bone and any modded equivalent. The port has no ore dictionary,
-     * so this uses the vanilla item plus the {@code c:bones} convention tag.
+     * <p>The original tested the ore dictionary name "bone": the vanilla bone
+     * and the mod's own (LOTRItemBone), which is {@code lotr:bones}.
      *
      * <p>PARTIAL: the chieftain entity is not ported yet, so
      * {@link LOTRTrollTotemBlockEntity#summon} raises a stand-in (PORT_PLAN
@@ -168,11 +166,11 @@ public class LOTRTrollTotemBlock extends Block implements EntityBlock {
 
     /** LOTRMod.isOreNameEqual(itemstack, "bone"). */
     private static boolean isBone(ItemStack stack) {
-        return stack.is(Items.BONE) || stack.is(BONES_TAG);
+        return stack.is(BONES_TAG);
     }
 
     private static final TagKey<Item> BONES_TAG = TagKey.create(Registries.ITEM,
-            Identifier.fromNamespaceAndPath("c", "bones"));
+            Identifier.fromNamespaceAndPath("lotr", "bones"));
 
     // ------------------------------------------------------------- placement
 

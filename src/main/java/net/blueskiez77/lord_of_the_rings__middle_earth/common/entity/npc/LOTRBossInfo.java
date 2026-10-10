@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -39,8 +40,9 @@ import org.jspecify.annotations.Nullable;
  * put up (BossStatus) for anyone who had the boss in view; here it shows to
  * the players the boss is tracked by.
  *
- * <p>NOT ported yet: the kill achievement for everyone who did it forty
- * damage (D7).
+ * <p>Its death earns its kill achievement for everyone who did it forty
+ * damage -- here, those of them who are online; the original could reach a
+ * player's data offline.
  */
 public class LOTRBossInfo {
 
@@ -154,6 +156,17 @@ public class LOTRBossInfo {
 
     public void onDeath(DamageSource source) {
         onHurt(source, 0.0f);
+        if (this.theNPC.level() instanceof ServerLevel level) {
+            for (Map.Entry<UUID, HurtRecord> entry : this.playerHurtTimes.entrySet()) {
+                if (entry.getValue().damage() < PLAYER_DAMAGE_THRESHOLD) {
+                    continue;
+                }
+                Player player = level.getServer().getPlayerList().getPlayer(entry.getKey());
+                if (player != null) {
+                    LOTRPlayerAchievements.addAchievement(player, this.theBoss.getBossKillAchievement());
+                }
+            }
+        }
     }
 
     /** onFall: landing a jump attack costs it nothing, and strikes all about. */

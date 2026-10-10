@@ -504,7 +504,7 @@ public final class LOTRStructures {
             @SuppressWarnings("unchecked")
             @Override
             public boolean generateStructure(ServerLevel level, Player player, int i, int j, int k) {
-                LOTRVillageGen.AbstractInstance<?> instance = village.createAndSetupVillageInstance(level, i, k,
+                LOTRVillageGen.AbstractInstance<?> instance = village.createAndSetupVillageInstance(level.getSeed(), i, k,
                         level.getRandom(), LocationInfo.SPAWNED_BY_PLAYER);
                 instance.setRotation((getRotationFromPlayer(player) + 2) % 4);
                 properties.apply((I) instance);

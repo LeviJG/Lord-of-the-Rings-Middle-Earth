@@ -4,6 +4,8 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.server.level.ServerPlayer;
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRGollumMenu;
 import java.util.List;
 import java.util.UUID;
@@ -73,8 +75,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>NOT ported yet: his natural spawning near the High Pass
  * (LOTRGollumSpawner, with the Middle-earth dimension and waypoints; the
- * gollumSpawned flag is kept and saved meanwhile) and the tameGollum
- * achievement (D7).
+ * gollumSpawned flag is kept and saved meanwhile).
  */
 public class LOTRGollumEntity extends LOTRNPCEntity implements LOTRCharacter {
 
@@ -287,6 +288,7 @@ public class LOTRGollumEntity extends LOTRNPCEntity implements LOTRCharacter {
             this.eatingTick = 20;
             if (this.fishRequired <= 0) {
                 setGollumOwnerUUID(player.getUUID().toString());
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TAME_GOLLUM);
                 LOTRSpeech.sendSpeech(player, this, LOTRSpeech.getRandomSpeechForPlayer(this, "char/gollum/tame", player, null, null));
                 if (level() instanceof ServerLevel level) {
                     level.getServer().getPlayerList().broadcastSystemMessage(

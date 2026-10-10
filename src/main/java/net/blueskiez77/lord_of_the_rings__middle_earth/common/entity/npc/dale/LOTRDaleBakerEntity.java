@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -22,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityDaleBaker: Dale's baker, of the bakery that bears his name,
  * holding a loaf with his rolling pin to hand. He trades with any who are
  * friendly, and leaves wheat and sugar when slain.
- *
- * <p>NOT ported yet: the tradeDaleBaker achievement (D7).
  */
 public class LOTRDaleBakerEntity extends LOTRDaleManEntity implements LOTRTradeable {
 
@@ -79,5 +79,10 @@ public class LOTRDaleBakerEntity extends LOTRDaleManEntity implements LOTRTradea
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.ROLLING_PIN));
         this.npcItemsInv.setIdleItem(new ItemStack(Items.BREAD));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DALE_BAKER);
     }
 }

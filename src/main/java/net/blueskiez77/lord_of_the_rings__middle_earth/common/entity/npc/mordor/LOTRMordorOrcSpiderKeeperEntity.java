@@ -1,10 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRMordorSpiderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
 import net.minecraft.server.level.ServerLevel;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityMordorOrcSpiderKeeper (the Mordor Spider Keeper): a man-sized
@@ -29,9 +32,6 @@ import org.jspecify.annotations.Nullable;
  * He seeks no one out -- he only answers attacks. He hires out Mordor
  * spiders, orcs and archers (either on spiders) and Nan Ungol banner bearers
  * to those at +250 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.MORDOR_NAN_UNGOL, D12), and
- * the tradeOrcSpiderKeeper achievement (D7).
  */
 public class LOTRMordorOrcSpiderKeeperEntity extends LOTRMordorOrcEntity implements LOTRUnitTradeable {
 
@@ -54,6 +54,11 @@ public class LOTRMordorOrcSpiderKeeperEntity extends LOTRMordorOrcEntity impleme
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.MORDOR_ORC_SPIDER_KEEPER;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.MORDOR_NAN_UNGOL;
     }
 
     /** canTradeWith: +250 alignment and friendly. */
@@ -97,5 +102,10 @@ public class LOTRMordorOrcSpiderKeeperEntity extends LOTRMordorOrcEntity impleme
             }
         }
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_ORC_SPIDER_KEEPER);
     }
 }

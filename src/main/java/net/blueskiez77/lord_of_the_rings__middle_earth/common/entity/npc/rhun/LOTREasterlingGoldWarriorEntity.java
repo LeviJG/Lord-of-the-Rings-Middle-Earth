@@ -21,8 +21,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityEasterlingGoldWarrior (the Golden Warrior): an Easterling warrior
  * of 25 health in golden Rhûnic armour, whose horse wears Rhûnic barding.
- *
- * <p>NOT ported yet: the Rhûn shield (LOTRShields.ALIGNMENT_RHUN, D7).
  */
 public class LOTREasterlingGoldWarriorEntity extends LOTREasterlingWarriorEntity {
 

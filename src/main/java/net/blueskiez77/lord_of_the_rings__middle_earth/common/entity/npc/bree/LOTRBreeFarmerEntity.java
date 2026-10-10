@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,12 +21,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityBreeFarmer: a Bree-man with an iron hoe and a light brown hat,
  * who sells the land's produce and hires out farmhands.
- *
- * <p>NOT ported yet: the buyAppleBreeFarmer and hireBreeFarmer achievements.
  */
 public class LOTRBreeFarmerEntity extends LOTRBreeManEntity implements LOTRTradeable, LOTRUnitTradeable {
 
@@ -45,6 +46,11 @@ public class LOTRBreeFarmerEntity extends LOTRBreeManEntity implements LOTRTrade
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.BREE_FARMER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     /** canTradeWith: not disliked, and friendly. */
@@ -71,5 +77,17 @@ public class LOTRBreeFarmerEntity extends LOTRBreeManEntity implements LOTRTrade
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, LOTRHobbitBounderEntity.hat(10390131, -1));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        if (type == LOTRTradeEntries.TradeType.BUY && (stack.is(net.minecraft.world.item.Items.APPLE) || stack.is(net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems.GREEN_APPLE))) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.BUY_APPLE_BREE_FARMER);
+        }
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_BREE_FARMER);
     }
 }

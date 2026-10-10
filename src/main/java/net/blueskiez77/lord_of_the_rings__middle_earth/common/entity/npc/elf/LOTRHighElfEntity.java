@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
@@ -18,13 +19,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRLindonBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityHighElf: an elf of Lindon, with its people's dagger and bow; its mounts
  * wear Lindon's barding.
- *
- * <p>NOT ported yet: the pull of Lindon on its wandering (with the biomes), and
- * the killHighElf achievement (D7).
  */
 public class LOTRHighElfEntity extends LOTRHighElfBaseEntity {
 
@@ -71,5 +72,16 @@ public class LOTRHighElfEntity extends LOTRHighElfBaseEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.HIGH_ELF.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_HIGH_ELF;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRLindonBiome.class);
     }
 }

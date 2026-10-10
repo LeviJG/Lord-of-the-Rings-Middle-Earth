@@ -39,8 +39,8 @@ public class LOTRVillageGenHarnedor extends LOTRVillageGen {
     }
 
     @Override
-    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-        return new Instance(this, world, i, k, random, loc);
+    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+        return new Instance(this, worldSeed, i, k, random, loc);
     }
 
     public LOTRVillageGenHarnedor setRuined() {
@@ -60,8 +60,8 @@ public class LOTRVillageGenHarnedor extends LOTRVillageGen {
         public int numOuterHouses;
         public boolean palisade;
 
-        public Instance(LOTRVillageGenHarnedor village, WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-            super(village, world, i, k, random, loc);
+        public Instance(LOTRVillageGenHarnedor village, long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+            super(village, worldSeed, i, k, random, loc);
             isRuined = village.isRuinedVillage;
         }
 

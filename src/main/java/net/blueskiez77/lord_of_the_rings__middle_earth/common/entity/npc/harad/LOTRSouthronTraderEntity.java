@@ -2,6 +2,9 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
 import java.awt.Color;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRHaradTurbanItem;
@@ -24,8 +27,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntitySouthronTrader: a bazaar trader of the coast, trading with anyone
  * Near Harad does not dislike, in a turban of a random rich colour, one time
  * in three set with a gold ornament.
- *
- * <p>NOT ported yet: the tradeBazaarTrader achievement (D7).
  */
 public abstract class LOTRSouthronTraderEntity extends LOTRNearHaradrimEntity implements LOTRTradeable {
 
@@ -64,5 +65,10 @@ public abstract class LOTRSouthronTraderEntity extends LOTRNearHaradrimEntity im
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         setItemSlot(EquipmentSlot.HEAD, createTraderTurban(this.random));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BAZAAR_TRADER);
     }
 }

@@ -98,7 +98,7 @@ public final class LOTRMountRenderers {
 
     /** LOTRRenderElk: shadow 0.5, random skins, the saddle pass, and the Christmas nose. */
     public static LOTRMountRenderer<LOTRElkEntity, LOTRElkModel> elk(EntityRendererProvider.Context context) {
-        LOTRRandomSkins skins = LOTRRandomSkins.loadSkinsList("lotr:mob/elk/elk", "elk");
+        LOTRRandomSkins skins = LOTRRandomSkins.loadSkinsList("lotr:mob/elk/elk", "elk/elk");
         LOTRElkModel noseOnly = new LOTRElkModel(LOTRElkModel.createBodyLayer(0.0f).bakeRoot(), true);
         LOTRElkModel noseOnlyBaby = new LOTRElkModel(LOTRElkModel.createBabyLayer(0.0f).bakeRoot(), true);
         LOTRMountRenderer<LOTRElkEntity, LOTRElkModel> renderer = LOTRMountRenderer.create(context,

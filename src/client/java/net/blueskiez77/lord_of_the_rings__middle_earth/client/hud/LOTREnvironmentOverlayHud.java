@@ -17,13 +17,11 @@ import net.minecraft.util.Mth;
 
 /**
  * LOTRTickHandlerClient's FROST and BURN overlays: four seconds of frost at
- * the screen's top and bottom edges, fading, after a chill (or, later, frost
- * damage); two of burning after the desert's heat.
+ * the screen's top and bottom edges, fading, after a chill; two of burning
+ * after the desert's heat. (The original's frost damage source was never
+ * dealt.)
  *
- * <p>NOT ported yet, with their sources: frost damage itself
- * (LOTRDamage.frost) and Utumno's ice wargs and spiders (D10), and the
- * desert heat that burns (D10) -- until then only the chilling modifier
- * frosts the screen and nothing burns it.
+ * <p>NOT ported yet: Utumno's ice wargs and spiders, whose bites frost it (D15).
  */
 public final class LOTREnvironmentOverlayHud {
 

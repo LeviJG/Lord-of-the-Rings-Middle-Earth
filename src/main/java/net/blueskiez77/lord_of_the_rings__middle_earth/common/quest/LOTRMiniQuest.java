@@ -11,6 +11,8 @@ import java.util.function.Supplier;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDate;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLore;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSpeech;
@@ -23,6 +25,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCoins;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPouchItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -48,8 +51,9 @@ import org.jspecify.annotations.Nullable;
  * in alignment, coins and sometimes an item, a lore book, a smith's scroll or (from a dwarf) a book of
  * true silver -- which the NPC's death, or another's hand, may fail. Saved by the original's keys.
  *
- * <p>Not ported (user): the reward pouch, one time in ten; its contents are dropped loose instead.
- * NOT ported yet: the biome it was given in (with the biomes, D10), and the questGroup achievements (D7).
+ * One time in ten the rewards come in a pouch, as many as fit.
+ *
+ * <p>NOT ported yet: the biome it was given in (with the biomes, D10).
  */
 public abstract class LOTRMiniQuest {
 
@@ -219,7 +223,14 @@ public abstract class LOTRMiniQuest {
                 this.itemsRewarded.add(mithrilBook.copy());
             }
         }
-        if (npc.level() instanceof ServerLevel level) {
+        if (npc.level() instanceof ServerLevel level && !dropItems.isEmpty()) {
+            if (canRewardVariousExtraItems() && rand.nextInt(10) == 0) {
+                ItemStack pouch = npc.createNPCPouchDrop();
+                LOTRPouchItem.fillPouchFromListAndRetainUnfilled(pouch, dropItems);
+                npc.spawnAtLocation(level, pouch);
+                // The red book lists a plain pouch: the original took the copy's tags off.
+                this.itemsRewarded.add(new ItemStack(pouch.getItem()));
+            }
             for (ItemStack drop : dropItems) {
                 npc.spawnAtLocation(level, drop);
             }
@@ -238,6 +249,10 @@ public abstract class LOTRMiniQuest {
             this.playerData.completeMiniQuest(this);
         }
         sendCompletedSpeech(player, npc);
+        LOTRAchievement achievement;
+        if (this.questGroup != null && (achievement = this.questGroup.getAchievement()) != null) {
+            LOTRPlayerAchievements.addAchievement(player, achievement);
+        }
     }
 
     public abstract float getAlignmentBonus();

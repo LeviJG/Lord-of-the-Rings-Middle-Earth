@@ -23,9 +23,6 @@ import org.jspecify.annotations.Nullable;
  * helmet four times in five, with a Taurethrim sword (three in eight),
  * dagger (poisoned or not), bludgeon, battleaxe or pike, and one in five a
  * Taurethrim spear as well. He seeks out his people's enemies.
- *
- * <p>NOT ported yet: the Taurethrim shield (LOTRShields.ALIGNMENT_TAUREDAIN,
- * D7).
  */
 public class LOTRTauredainWarriorEntity extends LOTRTauredainEntity {
 

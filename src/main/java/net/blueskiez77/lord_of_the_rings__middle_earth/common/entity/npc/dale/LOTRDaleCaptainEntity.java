@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
@@ -21,15 +23,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityDaleCaptain: a captain of Dale, 25 strong, bare-headed in Dale's
  * armour with a Dale sword, who seeks no one out. He hires out levymen,
  * soldiers (on foot or mounted), archers and the banner bearers of Dale and
  * Esgaroth, to those at +100 or better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.DALE), his warhorn
- * (LOTRInvasions.DALE, D12) and the tradeDaleCaptain achievement (D7).
  */
 public class LOTRDaleCaptainEntity extends LOTRDaleSoldierEntity implements LOTRUnitTradeable {
 
@@ -57,6 +57,11 @@ public class LOTRDaleCaptainEntity extends LOTRDaleSoldierEntity implements LOTR
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.DALE_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.DALE;
     }
 
     /** canTradeWith: +100 alignment and friendly. */
@@ -91,5 +96,10 @@ public class LOTRDaleCaptainEntity extends LOTRDaleSoldierEntity implements LOTR
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DALE_CAPTAIN);
     }
 }

@@ -6,7 +6,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRWargski
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRWargType;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRLionRugEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRGiraffeRugEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugBaseEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.LOTRBearEntity;
 import net.minecraft.world.level.Level;
 import java.util.function.Function;
@@ -38,7 +38,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockTag
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRThrownTermiteEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity;
 
 /**
@@ -103,13 +103,13 @@ public final class LOTRItems {
             props -> new LOTRRugItem(props, level -> bearRug(level, LOTRBearEntity.BearType.BLACK)),
             new Item.Properties().stacksTo(1));
 
-    private static LOTRRugEntity lionRug(Level level, LOTRLionRugEntity.RugType type) {
+    private static LOTRRugBaseEntity lionRug(Level level, LOTRLionRugEntity.RugType type) {
         LOTRLionRugEntity rug = new LOTRLionRugEntity(LOTREntities.LION_RUG, level);
         rug.setRugType(type);
         return rug;
     }
 
-    private static LOTRRugEntity bearRug(Level level, LOTRBearEntity.BearType type) {
+    private static LOTRRugBaseEntity bearRug(Level level, LOTRBearEntity.BearType type) {
         LOTRBearRugEntity rug = new LOTRBearRugEntity(LOTREntities.BEAR_RUG, level);
         rug.setRugType(type);
         return rug;
@@ -142,7 +142,7 @@ public final class LOTRItems {
             props -> new LOTRRugItem(props, level -> wargRug(level, LOTRWargType.FIRE)),
             new Item.Properties().stacksTo(1));
 
-    private static LOTRRugEntity wargRug(Level level, LOTRWargType type) {
+    private static LOTRRugBaseEntity wargRug(Level level, LOTRWargType type) {
         LOTRWargskinRugEntity rug = new LOTRWargskinRugEntity(LOTREntities.WARGSKIN_RUG, level);
         rug.setRugType(type);
         return rug;
@@ -443,10 +443,10 @@ public final class LOTRItems {
 
     /**
      * LOTRItemMountArmor(material, Mount.HORSE): vanilla's horse armour
-     * properties, but wearable only by the LOTR horses isValid allowed -- the
-     * horse, the Shire pony and the zebra -- and not by vanilla's horses (its
-     * sheets are painted for 1.7.10's horse model, which only the LOTR horses
-     * use).
+     * properties, but wearable only by the LOTR horse -- isValid allowed the
+     * pony and zebra too, but neither could wear armour (func_110259_cr) --
+     * and not by vanilla's horses (its sheets are painted for 1.7.10's horse
+     * model, which only the LOTR horses use).
      */
     static Item registerHorseArmor(String name, ArmorMaterial material) {
         return register(name, LOTRModifiableItem::new, new Item.Properties()
@@ -455,7 +455,7 @@ public final class LOTRItems {
                         net.minecraft.world.item.equipment.Equippable.builder(net.minecraft.world.entity.EquipmentSlot.BODY)
                                 .setEquipSound(net.minecraft.sounds.SoundEvents.HORSE_ARMOR)
                                 .setAsset(material.assetId())
-                                .setAllowedEntities(LOTREntities.HORSE, LOTREntities.SHIRE_PONY, LOTREntities.ZEBRA)
+                                .setAllowedEntities(LOTREntities.HORSE)
                                 .setDamageOnHurt(false)
                                 .setCanBeSheared(true)
                                 .setShearingSound(net.minecraft.sounds.SoundEvents.HORSE_ARMOR_UNEQUIP)

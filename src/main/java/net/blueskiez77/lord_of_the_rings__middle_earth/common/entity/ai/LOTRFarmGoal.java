@@ -5,11 +5,13 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCornBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRGrapevineBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRFarmhand;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRInventoryNPC;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRGrapeSeedsItem;
 
 import net.minecraft.core.BlockPos;
@@ -60,7 +62,7 @@ import org.jspecify.annotations.Nullable;
  * it plants the seeds it holds and keeps one seed back.
  *
  * <p>The crops it knows: those planted by a seed or stem seed (Forge's
- * EnumPlantType.Crop), and grapes on a post.
+ * EnumPlantType.Crop), corn, and grapes on a post.
  */
 public class LOTRFarmGoal extends Goal {
 
@@ -153,13 +155,14 @@ public class LOTRFarmGoal extends Goal {
 
     // --- The seeds and their crop --------------------------------------------
 
-    /** The plant a seed item puts down: a crop, a stem, or grapes -- Forge's Crop plant type. */
+    /** The plant a seed item puts down: a crop, a stem, corn, or grapes -- Forge's Crop plant type. */
     public static @Nullable Block getPlant(Item seed) {
         if (seed instanceof LOTRGrapeSeedsItem grapes) {
             return grapes.getBlock();
         }
         if (seed instanceof BlockItem blockItem
-                && (blockItem.getBlock() instanceof CropBlock || blockItem.getBlock() instanceof StemBlock)) {
+                && (blockItem.getBlock() instanceof CropBlock || blockItem.getBlock() instanceof StemBlock
+                || blockItem.getBlock() instanceof LOTRCornBlock)) {
             return blockItem.getBlock();
         }
         return null;
@@ -204,6 +207,9 @@ public class LOTRFarmGoal extends Goal {
         if (plant instanceof StemBlock stem) {
             Optional<Block> fruit = BuiltInRegistries.BLOCK.getOptional(stem.fruit);
             return fruit.map(b -> firstDropOtherThan(b.defaultBlockState(), Items.AIR)).orElse(null);
+        }
+        if (plant instanceof LOTRCornBlock) {
+            return new ItemStack(LOTRFoodItems.CORN);
         }
         if (plant instanceof LOTRGrapevineBlock) {
             return firstDropOtherThan(plant.defaultBlockState().setValue(LOTRGrapevineBlock.AGE, LOTRGrapevineBlock.MAX_AGE), seed);
@@ -431,6 +437,17 @@ public class LOTRFarmGoal extends Goal {
         if (plant instanceof StemBlock stem) {
             this.harvestingSolidBlock = true;
             return BuiltInRegistries.BLOCK.getOptional(stem.fruit).map(state::is).orElse(false);
+        }
+        if (plant instanceof LOTRCornBlock) {
+            if (state.is(plant)) {
+                for (int j1 = 0; j1 < LOTRCornBlock.MAX_HEIGHT; j1++) {
+                    BlockState above = level().getBlockState(pos.above(j1));
+                    if (above.is(plant) && above.getValue(LOTRCornBlock.HAS_CORN)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
         if (plant instanceof LOTRGrapevineBlock) {
             return state.is(plant) && state.getValue(LOTRGrapevineBlock.AGE) >= LOTRGrapevineBlock.MAX_AGE;
@@ -673,11 +690,23 @@ public class LOTRFarmGoal extends Goal {
         }
         this.theEntity.swing(InteractionHand.MAIN_HAND);
         BlockState state = level().getBlockState(this.actionTarget);
-        List<ItemStack> drops = new ArrayList<>(Block.getDrops(state, level(), this.actionTarget, null));
-        if (state.getBlock() instanceof LOTRGrapevineBlock) {
+        List<ItemStack> drops = new ArrayList<>();
+        if (state.getBlock() instanceof LOTRCornBlock) {
+            // Every ripe ear up the stalk comes off; the stalk stays.
+            for (int j1 = 0; j1 < LOTRCornBlock.MAX_HEIGHT; j1++) {
+                BlockPos pos = this.actionTarget.above(j1);
+                BlockState stalk = level().getBlockState(pos);
+                if (stalk.is(state.getBlock()) && stalk.getValue(LOTRCornBlock.HAS_CORN)) {
+                    drops.add(new ItemStack(LOTRFoodItems.CORN, level().getRandom().nextInt(4) == 0 ? 2 : 1));
+                    level().setBlock(pos, stalk.setValue(LOTRCornBlock.HAS_CORN, false), Block.UPDATE_ALL);
+                }
+            }
+        } else if (state.getBlock() instanceof LOTRGrapevineBlock) {
+            drops.addAll(Block.getDrops(state, level(), this.actionTarget, null));
             // removedByPlayer: the grapes come off and the post stays.
             level().setBlock(this.actionTarget, LOTRDecorationBlocks.GRAPEVINE.defaultBlockState(), Block.UPDATE_ALL);
         } else {
+            drops.addAll(Block.getDrops(state, level(), this.actionTarget, null));
             level().removeBlock(this.actionTarget, false);
         }
         SoundType sound = state.getSoundType();

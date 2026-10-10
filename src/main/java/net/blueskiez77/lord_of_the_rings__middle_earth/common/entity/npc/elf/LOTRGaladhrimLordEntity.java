@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityGaladhrimLord: a warrior who leads, bare-headed with an elven
@@ -25,9 +28,6 @@ import org.jspecify.annotations.Nullable;
  * It hires out elves, and -- to those pledged to any elven people -- wardens,
  * warriors (on foot or mounted) and banner bearers, to those at +300 or
  * better.
- *
- * <p>NOT ported yet: its cape (LOTRCapes.GALADHRIM), its warhorn
- * (LOTRInvasions.GALADHRIM, D12), and the tradeElfLord achievement.
  */
 public class LOTRGaladhrimLordEntity extends LOTRGaladhrimWarriorEntity implements LOTRUnitTradeable {
 
@@ -45,6 +45,11 @@ public class LOTRGaladhrimLordEntity extends LOTRGaladhrimWarriorEntity implemen
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.ELF_LORD;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.GALADHRIM;
     }
 
     /** canTradeWith: +300 alignment and friendly. */
@@ -77,5 +82,10 @@ public class LOTRGaladhrimLordEntity extends LOTRGaladhrimWarriorEntity implemen
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.GALADHRIM_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_ELF_LORD);
     }
 }

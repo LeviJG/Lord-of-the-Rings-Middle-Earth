@@ -649,6 +649,9 @@ public final class LOTRCreativeTabs {
             .title(Component.translatable("creativeTab.lotr.misc"))
             .displayItems((params, output) -> {
                 output.accept(LOTRMiscItems.GOLD_RING);
+                output.accept(LOTRMiscItems.SMALL_POUCH);
+                output.accept(LOTRMiscItems.MEDIUM_POUCH);
+                output.accept(LOTRMiscItems.LARGE_POUCH);
                 output.accept(LOTRMiscItems.SILVER_RING);
                 output.accept(LOTRMiscItems.MITHRIL_RING);
                 // getSubItems listed the pipe once per smoke colour.

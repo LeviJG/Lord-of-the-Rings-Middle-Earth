@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,15 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityHobbitFarmer: a hobbit who stands his ground with his iron hoe
  * rather than panicking, in a brown hat.
  *
  * He also hires out farmhands.
- *
- * <p>NOT ported yet: the buyPotatoHobbitFarmer and hireHobbitFarmer
- * achievements.
  */
 public class LOTRHobbitFarmerEntity extends LOTRHobbitEntity implements LOTRTradeable, LOTRUnitTradeable {
 
@@ -47,10 +47,14 @@ public class LOTRHobbitFarmerEntity extends LOTRHobbitEntity implements LOTRTrad
         return false;
     }
 
-    /** canTradeWith: not disliked, and friendly. */
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.HOBBIT_FARMER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     @Override
@@ -63,6 +67,7 @@ public class LOTRHobbitFarmerEntity extends LOTRHobbitEntity implements LOTRTrad
         return LOTRTradeEntries.HOBBIT_FARMER_SELL;
     }
 
+    /** canTradeWith: not disliked, and friendly. */
     @Override
     public boolean canTradeWith(Player player) {
         return LOTRPlayerAlignments.getAlignment(player, getFaction()) >= 0.0f && isFriendly(player);
@@ -86,5 +91,17 @@ public class LOTRHobbitFarmerEntity extends LOTRHobbitEntity implements LOTRTrad
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, LOTRHobbitBounderEntity.hat(10390131, -1));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        if (type == LOTRTradeEntries.TradeType.BUY && stack.is(net.minecraft.world.item.Items.POTATO)) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.BUY_POTATO_HOBBIT_FARMER);
+        }
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_HOBBIT_FARMER);
     }
 }

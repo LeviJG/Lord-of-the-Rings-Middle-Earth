@@ -7,18 +7,22 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBerryBushBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRAnimalJarUpdater;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRScarecrows;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRFarmGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRValuableItems;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.resources.Identifier;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.TagKey;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.DifficultyInstance;
@@ -38,9 +42,8 @@ import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
@@ -52,6 +55,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * LOTREntityBird: a small bird -- a common songbird, a crow, a magpie or a
@@ -68,13 +72,15 @@ import org.jspecify.annotations.Nullable;
  * reloaded from disk always came back with nothing (only the item in its beak,
  * saved as equipment, survived). Fixing that is left to the user.
  *
- * <p>NOT ported yet: the kind from the biome (Far Harad birds and crows there,
- * D10) -- elsewhere it is a crow one time in six, a magpie one in twelve and a
- * songbird otherwise, as in any other biome -- and LOTRAmbientSpawnChecks
- * (D12). The animal jar's updateInAnimalJar is with the jar's other hooks
- * (see the Deferred-port tracker).
+ * <p>Its kind is from the biome: in Far Harad its own birds, with a crow one
+ * time in eight; elsewhere a crow one time in six, a magpie one in twelve and
+ * a songbird otherwise. The animal jar's updateInAnimalJar is with the jar's
+ * other hooks (see the Deferred-port tracker).
  */
 public class LOTRBirdEntity extends Mob implements LOTRAnimalJarUpdater {
+
+    private static final TagKey<Item> BONES = TagKey.create(Registries.ITEM,
+            Identifier.fromNamespaceAndPath("lotr", "bones"));
 
     /** dataWatcher 16 and 17. */
     private static final EntityDataAccessor<Byte> DATA_TYPE =
@@ -120,7 +126,9 @@ public class LOTRBirdEntity extends Mob implements LOTRAnimalJarUpdater {
     public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficulty,
                                                   EntitySpawnReason reason, @Nullable SpawnGroupData groupData) {
         LOTRSpawnEggItem.playHatchSound(this, reason);
-        if (this.random.nextInt(6) == 0) {
+        if (net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.of(level.getBiome(blockPosition())) instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRFarHaradBiome) {
+            setBirdType(this.random.nextInt(8) == 0 ? BirdType.CROW : BirdType.FAR_HARAD);
+        } else if (this.random.nextInt(6) == 0) {
             setBirdType(BirdType.CROW);
         } else if (this.random.nextInt(10) == 0) {
             setBirdType(BirdType.MAGPIE);
@@ -174,10 +182,10 @@ public class LOTRBirdEntity extends Mob implements LOTRAnimalJarUpdater {
 
     public boolean isStealable(ItemStack stack) {
         return switch (getBirdType()) {
-            // IPlantable of EnumPlantType.Crop: seeds and the like.
-            case COMMON -> stack.getItem() instanceof BlockItem block && block.getBlock() instanceof CropBlock;
-            // ItemFood, or "bone" in the ore dictionary.
-            case CROW -> stack.has(DataComponents.FOOD) || stack.is(Items.BONE);
+            // IPlantable of EnumPlantType.Crop: seeds, stem seeds, corn and grape seeds.
+            case COMMON -> LOTRFarmGoal.getPlant(stack.getItem()) != null;
+            // ItemFood, or "bone" in the ore dictionary (the vanilla bone and the mod's).
+            case CROW -> stack.has(DataComponents.FOOD) || stack.is(BONES);
             case MAGPIE -> LOTRValuableItems.canMagpieSteal(stack);
             case FAR_HARAD -> false;
         };
@@ -561,5 +569,15 @@ public class LOTRBirdEntity extends Mob implements LOTRAnimalJarUpdater {
             this.textureDir = dir;
             this.canSteal = canSteal;
         }
+    }
+
+    /** getCanSpawnHere: among leaves, on its biome's top block, in light enough. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && canBirdSpawnHere(level);
+    }
+
+    public boolean canBirdSpawnHere(LevelAccessor level) {
+        return LOTRAmbientSpawnChecks.canSpawn(this, level, 8, 12, 40, 4, state -> state.is(net.minecraft.tags.BlockTags.LEAVES));
     }
 }

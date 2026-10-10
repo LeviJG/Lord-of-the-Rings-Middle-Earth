@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -20,16 +21,15 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRIthilienBiome;
 
 /**
  * LOTREntityRangerIthilien: a Ranger of Ithilien, of Gondor -- a Gondorian
  * dagger (three times in four) or sword and a Gondorian bow, in the Ithilien
  * rangers' hood, tunic, leggings and boots, eating and drinking as Gondor
  * does. Slain, one time in six he leaves something from a Gondor house.
- *
- * <p>NOT ported yet: his cape (with the NPC capes), the pull of Ithilien on his
- * wandering (+20 there, with the biomes, D10), and the killRangerIthilien
- * achievement (D7).
  */
 public class LOTRRangerIthilienEntity extends LOTRRangerEntity {
 
@@ -90,5 +90,20 @@ public class LOTRRangerIthilienEntity extends LOTRRangerEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.GONDOR.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_RANGER_ITHILIEN;
+    }
+
+    /** getBlockPathWeight: the Dúnedain's, and more in Ithilien. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        float f = super.getWalkTargetValue(pos, level);
+        if (biomeAt(level, pos) instanceof LOTRIthilienBiome) {
+            f += 20.0f;
+        }
+        return f;
     }
 }

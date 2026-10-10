@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.mixin;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRArmourSets;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomeEffects;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,9 +25,10 @@ abstract class LOTRLivingEntityMixin {
         return level > 0 ? ticks - Mth.floor(ticks * level * 0.15f) : ticks;
     }
 
-    /** LOTREventHandler.onLivingUpdate: the Wood-elven Scout set's speed. */
+    /** LOTREventHandler.onLivingUpdate: the Wood-elven Scout set's speed, and the biomes' effects. */
     @Inject(method = "tick", at = @At("TAIL"))
     private void lotr$armourSetTick(CallbackInfo ci) {
         LOTRArmourSets.tickScoutSpeed((LivingEntity) (Object) this);
+        LOTRBiomeEffects.tick((LivingEntity) (Object) this);
     }
 }

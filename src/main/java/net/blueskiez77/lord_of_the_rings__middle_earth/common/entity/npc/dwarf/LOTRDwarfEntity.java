@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTREatGoal;
@@ -51,6 +52,15 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBlueMountainsBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTREreborBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRIronHillsBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRRedMountainsBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LightLayer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRFeature;
 
 /**
  * LOTREntityDwarf: Durin's Folk, "Name son of Father". They keep out of the
@@ -60,11 +70,6 @@ import org.jspecify.annotations.Nullable;
  * spawned by hand or hired is a dwarf-woman, and one in twenty spawned by hand
  * a child. They cry out on attacking, cheer over a kill, and a woman's voice
  * is higher.
- *
- * <p>NOT ported yet: the pull of the dwarven mountains on their wandering and
- * their natural spawning -- underground on lit rock below y 60, or one time in
- * 200 anywhere -- (with the biomes), and the killDwarf, marryDwarf and
- * talkDwarfWoman achievements (D7).
  */
 public class LOTRDwarfEntity extends LOTRNPCEntity {
 
@@ -77,6 +82,7 @@ public class LOTRDwarfEntity extends LOTRNPCEntity {
         this.familyInfo.marriageEntityClass = LOTRDwarfEntity.class;
         this.familyInfo.marriageRing = LOTRMiscItems.DWARVEN_MARRIAGE_RING;
         this.familyInfo.marriageAlignmentRequired = 200.0f;
+        this.familyInfo.marriageAchievement = LOTRAchievement.MARRY_DWARF;
         this.familyInfo.potentialMaxChildren = 3;
         this.familyInfo.timeToMature = 72000;
         this.familyInfo.breedingDelay = 48000;
@@ -286,5 +292,48 @@ public class LOTRDwarfEntity extends LOTRNPCEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.DURIN.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_DWARF;
+    }
+
+    /** getTalkAchievement: talking to a dwarf-woman. */
+    @Override
+    public @Nullable LOTRAchievement getTalkAchievement() {
+        if (!this.familyInfo.isMale()) {
+            return LOTRAchievement.TALK_DWARF_WOMAN;
+        }
+        return super.getTalkAchievement();
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRIronHillsBiome.class, LOTREreborBiome.class, LOTRBlueMountainsBiome.class, LOTRRedMountainsBiome.class);
+    }
+
+    /** getCanSpawnHere: as a dwarf may (canDwarfSpawnHere). */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || canDwarfSpawnHere(level));
+    }
+
+    /**
+     * canDwarfSpawnHere: one time in two hundred, above ground if its kind may; else below y 60, on
+     * rock, out of sight of the sky and by a light of 10 or more from blocks.
+     */
+    public boolean canDwarfSpawnHere(LevelAccessor level) {
+        BlockPos pos = blockPosition();
+        if (this.random.nextInt(200) == 0) {
+            return canDwarfSpawnAboveGround();
+        }
+        return pos.getY() < 60 && LOTRFeature.isRock(level.getBlockState(pos.below())) && !level.canSeeSky(pos)
+                && level.getBrightness(LightLayer.BLOCK, pos) >= 10;
+    }
+
+    public boolean canDwarfSpawnAboveGround() {
+        return true;
     }
 }

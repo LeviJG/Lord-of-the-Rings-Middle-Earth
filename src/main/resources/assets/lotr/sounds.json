@@ -605,5 +605,14 @@
     "sounds": [
       "lotr:orc/say"
     ]
+  },
+  "music.jazzelf": {
+    "category": "record",
+    "sounds": [
+      {
+        "name": "lotr:music/jazzelf",
+        "stream": true
+      }
+    ]
   }
 }

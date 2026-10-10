@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
@@ -21,8 +23,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityRohanStablemaster: sells saddles and leads to those at +50 or
  * better, a lead in hand and a light brown hat on his head.
- *
- * <p>NOT ported yet: the tradeRohanStablemaster achievement.
  */
 public class LOTRRohanStablemasterEntity extends LOTRRohanManEntity implements LOTRTradeable {
 
@@ -71,5 +71,10 @@ public class LOTRRohanStablemasterEntity extends LOTRRohanManEntity implements L
         this.npcItemsInv.setIdleItem(new ItemStack(Items.LEAD));
         setItemSlot(EquipmentSlot.HEAD, LOTRHobbitBounderEntity.hat(10390131, -1));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_ROHAN_STABLEMASTER);
     }
 }

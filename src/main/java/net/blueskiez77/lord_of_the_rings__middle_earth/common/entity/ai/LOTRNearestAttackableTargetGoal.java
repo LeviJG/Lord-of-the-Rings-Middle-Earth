@@ -7,6 +7,7 @@ import java.util.function.Predicate;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBanditEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCRideableEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -15,6 +16,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
+import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.AABB;
 
@@ -26,9 +28,14 @@ import org.jspecify.annotations.Nullable;
  * any creature of a faction it is at war with -- sparing civilians unless its
  * faction approves of war crimes, and (for neutral factions) sparing all
  * unless its hiring player is their enemy. It prefers near targets that its
- * fellows are not already fighting.
+ * fellows are not already fighting. A tamed mount, or one a player rides,
+ * looks for no one.
  */
 public class LOTRNearestAttackableTargetGoal extends TargetGoal {
+
+    private static final TargetingConditions IN_SIGHT = TargetingConditions.forCombat();
+    /** Without checkSight, a target need not be in view. */
+    private static final TargetingConditions UNSEEN = TargetingConditions.forCombat().ignoreLineOfSight();
 
     private final Class<? extends LivingEntity> targetClass;
     private final int targetChance;
@@ -101,7 +108,7 @@ public class LOTRNearestAttackableTargetGoal extends TargetGoal {
         if (target == this.mob.getVehicle() || target == this.mob.getFirstPassenger()) {
             return false;
         }
-        if (!this.selector.test(target) || !canAttack(target, net.minecraft.world.entity.ai.targeting.TargetingConditions.forCombat())) {
+        if (!this.selector.test(target) || !canAttack(target, this.mustSee ? IN_SIGHT : UNSEEN)) {
             return false;
         }
         if (target instanceof Player player) {
@@ -119,9 +126,13 @@ public class LOTRNearestAttackableTargetGoal extends TargetGoal {
         if (this.targetChance > 0 && this.mob.getRandom().nextInt(this.targetChance) != 0) {
             return false;
         }
-        // A halted hired unit, or a child, looks for no one.
+        // A halted hired unit, or a child, looks for no one; nor does a tamed mount, or one a player rides.
         if (this.mob instanceof LOTRNPCEntity npc
                 && (npc.hiredNPCInfo.isActive && npc.hiredNPCInfo.isHalted() || npc.isBaby())) {
+            return false;
+        }
+        if (this.mob instanceof LOTRNPCRideableEntity mount
+                && (mount.isNPCTamed() || mount.getFirstPassenger() instanceof Player)) {
             return false;
         }
         double range = getFollowDistance();

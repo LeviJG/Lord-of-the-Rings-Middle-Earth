@@ -112,6 +112,11 @@ public class LOTRFollowHiringPlayerGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         LivingEntity target = this.bannerBearerTarget != null ? this.bannerBearerTarget : this.theHiringPlayer;
         this.npc.getLookControl().setLookAt(target, 10.0f, this.npc.getMaxHeadXRot());

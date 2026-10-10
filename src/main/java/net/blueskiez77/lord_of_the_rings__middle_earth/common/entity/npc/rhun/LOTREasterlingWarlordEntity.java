@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityEasterlingWarlord (the Easterling Warlord): a Golden Warrior who
@@ -25,9 +28,6 @@ import org.jspecify.annotations.Nullable;
  * than his men. He seeks no one out -- he only answers attacks. He hires out
  * Rhûn's soldiers to those at +150 or better, the Golden Warriors only to
  * those pledged to Rhûn.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.RHUN, D12) and the
- * tradeRhunCaptain achievement (D7).
  */
 public class LOTREasterlingWarlordEntity extends LOTREasterlingGoldWarriorEntity implements LOTRUnitTradeable {
 
@@ -49,6 +49,11 @@ public class LOTREasterlingWarlordEntity extends LOTREasterlingGoldWarriorEntity
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.EASTERLING_WARLORD;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.RHUN;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -78,5 +83,10 @@ public class LOTREasterlingWarlordEntity extends LOTREasterlingGoldWarriorEntity
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.RHUNIC_WARLORD_HELMET));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_RHUN_CAPTAIN);
     }
 }

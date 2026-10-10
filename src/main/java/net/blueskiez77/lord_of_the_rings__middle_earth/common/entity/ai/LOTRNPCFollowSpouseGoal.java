@@ -53,6 +53,11 @@ public class LOTRNPCFollowSpouseGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         --this.followTick;
         if (this.npc.distanceToSqr(this.spouse) > 144.0 || this.followTick <= 0) {

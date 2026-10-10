@@ -1,9 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -25,9 +26,6 @@ import org.jspecify.annotations.Nullable;
  * out Gondor's enemies, one in four on a barded horse. He fights with a
  * Dol Amroth sword, or one time in four a longspear; mounted, one in three
  * couches a lance.
- *
- * <p>NOT ported yet: the Dol Amroth shield (LOTRShields.ALIGNMENT_DOL_AMROTH,
- * D7) and the killSwanKnight achievement.
  */
 public class LOTRSwanKnightEntity extends LOTRDolAmrothSoldierEntity {
 
@@ -81,5 +79,10 @@ public class LOTRSwanKnightEntity extends LOTRDolAmrothSoldierEntity {
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.DOL_AMROTH_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.DOL_AMROTH_HELMET));
         return data;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_SWAN_KNIGHT;
     }
 }

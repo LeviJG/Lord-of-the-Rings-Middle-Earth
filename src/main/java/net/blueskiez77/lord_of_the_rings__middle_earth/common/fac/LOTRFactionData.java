@@ -26,8 +26,8 @@ import net.minecraft.world.entity.player.Player;
  * original's keys and sent to the player (LOTRPacketFactionData) for the
  * factions screen.
  *
- * <p>NOT ported yet: conquest earned and the conquest horn (D12/D14) -- they
- * stay at nothing until then.
+ * <p>NOT ported yet: conquest earned (conquest, D14) -- it stays at nothing
+ * until then.
  */
 public record LOTRFactionData(int npcsKilled, int enemiesKilled, int tradeCount, int hireCount,
                               int miniQuestsCompleted, float conquestEarned, boolean hasConquestHorn) {
@@ -101,6 +101,11 @@ public record LOTRFactionData(int npcsKilled, int enemiesKilled, int tradeCount,
     public static void completeMiniQuest(Player player, LOTRFaction faction) {
         update(player, faction, d -> new LOTRFactionData(d.npcsKilled, d.enemiesKilled, d.tradeCount, d.hireCount,
                 d.miniQuestsCompleted + 1, d.conquestEarned, d.hasConquestHorn));
+    }
+
+    public static void takeConquestHorn(Player player, LOTRFaction faction) {
+        update(player, faction, d -> new LOTRFactionData(d.npcsKilled, d.enemiesKilled, d.tradeCount, d.hireCount,
+                d.miniQuestsCompleted, d.conquestEarned, true));
     }
 
     public static void init() {

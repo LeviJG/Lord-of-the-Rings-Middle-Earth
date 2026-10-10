@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -19,15 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityHarnedorFarmer: a Harnennor farmer with a bronze hoe, trading with
  * anyone Near Harad does not dislike. His turban is plain: the original gave
  * it a colour with LOTRItemLeatherHat.setHatColor, which the turban never
  * read.
- *
- * <p>NOT ported yet: the tradeHaradFarmer and hireHarnedorFarmer achievements
- * (D7).
  */
 public class LOTRHarnedorFarmerEntity extends LOTRHarnedhrimEntity implements LOTRTradeable, LOTRUnitTradeable {
 
@@ -50,6 +50,11 @@ public class LOTRHarnedorFarmerEntity extends LOTRHarnedhrimEntity implements LO
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.HARNEDOR_FARMER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     @Override
@@ -81,5 +86,15 @@ public class LOTRHarnedorFarmerEntity extends LOTRHarnedhrimEntity implements LO
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRMiscItems.HARAD_TURBAN));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_HARAD_FARMER);
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_HARNEDOR_FARMER);
     }
 }

@@ -174,6 +174,9 @@ public final class LOTRSounds {
     public static final SoundEvent BIRD_SEAGULL_SAY = register("bird.seagull.say");
     public static final SoundEvent BIRD_SEAGULL_HURT = register("bird.seagull.hurt");
 
+    /** LOTRAmbience.jazzMusicPath: the jazz elf's solo. */
+    public static final SoundEvent MUSIC_JAZZ_ELF = register("music.jazzelf");
+
     private static SoundEvent register(String name) {
         Identifier id = Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, name);
         return Registry.register(BuiltInRegistries.SOUND_EVENT, id, SoundEvent.createVariableRangeEvent(id));

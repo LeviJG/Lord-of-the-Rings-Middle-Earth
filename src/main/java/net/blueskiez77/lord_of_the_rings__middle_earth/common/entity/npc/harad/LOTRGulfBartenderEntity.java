@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBartender;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -22,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityGulfBartender: the keeper of a Gulf tavern, trading with
  * anyone Near Harad is friendly to, with a skull cup in hand; slain, he
  * leaves a few of the Gulf's drinks.
- *
- * <p>NOT ported yet: the tradeHaradBartender achievement (D7).
  */
 public class LOTRGulfBartenderEntity extends LOTRGulfHaradrimEntity implements LOTRBartender {
 
@@ -78,5 +78,10 @@ public class LOTRGulfBartenderEntity extends LOTRGulfHaradrimEntity implements L
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         this.npcItemsInv.setIdleItem(new ItemStack(LOTRFoodItems.SKULL_CUP));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_HARAD_BARTENDER);
     }
 }

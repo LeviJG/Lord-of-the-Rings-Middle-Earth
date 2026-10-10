@@ -28,8 +28,14 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBloc
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRThrownTermiteEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems.*;
@@ -112,8 +118,17 @@ public final class LOTRFoodItems {
     public static final Item DWARVEN_ALE = register("dwarven_ale",
             props -> new LOTRDrinkItem(false, true, 0.4f, props).setDrinkStats(3, 0.3f),
             drink(true));
+    /** LOTRItemFood.onEaten: eating maggoty bread earns eatMaggotyBread. */
     public static final Item MAGGOTY_BREAD = register("maggoty_bread",
-            Item::new, new Item.Properties().food(food(4, 0.5f),
+            props -> new Item(props) {
+                @Override
+                public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity entity) {
+                    if (!level.isClientSide() && entity instanceof Player player) {
+                        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.EAT_MAGGOTY_BREAD);
+                    }
+                    return super.finishUsingItem(stack, level, entity);
+                }
+            }, new Item.Properties().food(food(4, 0.5f),
                     net.minecraft.world.item.component.Consumables.defaultFood().onConsume(
                             new net.minecraft.world.item.consume_effects.ApplyStatusEffectsConsumeEffect(
                                     new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.HUNGER, 400, 0), 0.4f)).build()));

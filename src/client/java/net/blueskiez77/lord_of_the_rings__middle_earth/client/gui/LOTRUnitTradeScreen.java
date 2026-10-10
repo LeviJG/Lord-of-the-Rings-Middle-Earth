@@ -6,6 +6,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LO
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitPledgeType;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntry;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRUnitTradeMenu;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCommandHornItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
@@ -31,6 +32,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.storage.TagValueInput;
 
@@ -41,7 +43,8 @@ import org.jspecify.annotations.Nullable;
  * time, turned with the arrows -- the unit itself, on its mount if it has
  * one, turning to follow the mouse; its name, price, the alignment it asks
  * and any pledge (the pledge's terms on hovering); a line of extra
- * information for some; a box naming the company to put it in; and Hire.
+ * information for some; a box naming the company to put it in; Hire; and
+ * for a captain with a warhorn, the alignment reward slot that sells it.
  */
 public class LOTRUnitTradeScreen extends AbstractContainerScreen<LOTRUnitTradeMenu> {
 
@@ -135,7 +138,21 @@ public class LOTRUnitTradeScreen extends AbstractContainerScreen<LOTRUnitTradeMe
         super.extractBackground(graphics, mouseX, mouseY, partialTick);
         graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos, this.topPos, 0.0F, 0.0F,
                 this.imageWidth, this.imageHeight, 256, 256);
+        if (this.menu.alignmentRewardSlots > 0) {
+            Slot slot = this.menu.getSlot(0);
+            graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos + slot.x - 3, this.topPos + slot.y - 3,
+                    this.imageWidth, 16.0F, 22, 22, 256, 256);
+            if (!slot.hasItem() && !hasRewardAlignment()) {
+                graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, this.leftPos + slot.x, this.topPos + slot.y,
+                        this.imageWidth, 0.0F, 16, 16, 256, 256);
+            }
+        }
         drawMobOnGui(graphics, mouseX, mouseY);
+    }
+
+    private boolean hasRewardAlignment() {
+        LOTRHireableBase trader = this.menu.unitTrader();
+        return trader != null && LOTRPlayerAlignments.getAlignment(this.minecraft.player, trader.getFaction()) >= 1500.0f;
     }
 
     private void centred(GuiGraphicsExtractor graphics, Component s, int x, int y) {
@@ -168,6 +185,11 @@ public class LOTRUnitTradeScreen extends AbstractContainerScreen<LOTRUnitTradeMe
             graphics.text(this.font, Component.translatable("container.lotr.unitTrade.pledge"),
                     REQ_X_TEXT, reqY + REQ_Y_TEXT_BELOW, TEXT_COLOUR, false);
         }
+        if (this.menu.alignmentRewardSlots > 0 && this.menu.getSlot(0).hasItem()) {
+            graphics.item(new ItemStack(LOTRMiscItems.SILVER_COIN), 160, 100);
+            graphics.text(this.font, String.valueOf(LOTRUnitTradeMenu.AlignmentRewardSlot.REWARD_COST), 179, 104,
+                    TEXT_COLOUR, false);
+        }
         if (curTrade.hasExtraInfo()) {
             boolean mouseover = isOverExtraInfo(mouseX, mouseY);
             graphics.blit(RenderPipelines.GUI_TEXTURED, TEXTURE, 49, 106, 220.0F, 38 + (mouseover ? 7 : 0), 9, 7,
@@ -195,6 +217,14 @@ public class LOTRUnitTradeScreen extends AbstractContainerScreen<LOTRUnitTradeMe
                 graphics.setTooltipForNextFrame(this.font, Component.translatable(
                         "lotr.hiredNPC.commandReq.pledge." + curTrade.getPledgeType().name(),
                         trader.getFaction().factionName()), mouseX, mouseY);
+            }
+        }
+        if (this.menu.alignmentRewardSlots > 0) {
+            Slot slot = this.menu.getSlot(0);
+            if (!slot.hasItem() && !hasRewardAlignment() && isHovering(slot.x, slot.y, 16, 16, mouseX, mouseY)) {
+                // The original passed 1500.0f to a %d and showed a format error.
+                graphics.setTooltipForNextFrame(this.font,
+                        Component.translatable("container.lotr.unitTrade.requiresAlignment", 1500), mouseX, mouseY);
             }
         }
         if (curTrade.hasExtraInfo() && isOverExtraInfo(mouseX, mouseY)) {

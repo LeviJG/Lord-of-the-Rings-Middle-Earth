@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBartender;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
@@ -25,8 +27,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityRohanMeadhost: keeps a mead hall ("%s's Hall"), a mug of mead in
  * hand even in a fight. NPCs who drink near a friendly meadhost may get
  * drunk. Slain, it leaves a hall's odds and ends besides a Rohirrim's.
- *
- * <p>NOT ported yet: the buyRohanMead achievement.
  */
 public class LOTRRohanMeadhostEntity extends LOTRRohanManEntity implements LOTRBartender {
 
@@ -90,5 +90,12 @@ public class LOTRRohanMeadhostEntity extends LOTRRohanManEntity implements LOTRB
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRFoodItems.MEAD));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        if (type == LOTRTradeEntries.TradeType.BUY && stack.is(net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems.MEAD)) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.BUY_ROHAN_MEAD);
+        }
     }
 }

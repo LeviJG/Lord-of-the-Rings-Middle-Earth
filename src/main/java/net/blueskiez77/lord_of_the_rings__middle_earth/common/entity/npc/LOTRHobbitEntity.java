@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTREatGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRHobbitChildFollowGoodPlayerGoal;
@@ -12,7 +14,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNPCM
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.bree.LOTRRuffianBruteEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRHuornBaseEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderBaseEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRTrollEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRWargEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -40,18 +42,20 @@ import net.minecraft.world.entity.ai.navigation.GroundPathNavigation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.effect.MobEffects;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRShireBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityHobbit: the folk of the Shire. They keep out of the water, open
  * doors, run from danger and from players the Shire hates, marry and raise
  * families, and eat, drink and smoke a good deal. They neither seek fights
  * nor fight back; the Shire's bounders, shirriffs, farmers and orcharders do.
- *
- * <p>NOT ported yet: the Shire's pull on their wandering
- * and their natural spawning (with the biomes), mini-quests, and the
- * achievements for killing, marrying and talking to a drunk hobbit.
  */
 public class LOTRHobbitEntity extends LOTRManEntity {
 
@@ -64,6 +68,7 @@ public class LOTRHobbitEntity extends LOTRManEntity {
         this.familyInfo.marriageEntityClass = LOTRHobbitEntity.class;
         this.familyInfo.marriageRing = LOTRMiscItems.HOBBIT_MARRIAGE_RING;
         this.familyInfo.marriageAlignmentRequired = 100.0f;
+        this.familyInfo.marriageAchievement = LOTRAchievement.MARRY_HOBBIT;
         this.familyInfo.potentialMaxChildren = 4;
         this.familyInfo.timeToMature = 48000;
         this.familyInfo.breedingDelay = 24000;
@@ -81,7 +86,7 @@ public class LOTRHobbitEntity extends LOTRManEntity {
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTROrcEntity.class, 12.0f, 1.5, 1.8));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRWargEntity.class, 12.0f, 1.5, 1.8));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRTrollEntity.class, 12.0f, 1.5, 1.8));
-        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRSpiderEntity.class, 12.0f, 1.5, 1.8));
+        this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRSpiderBaseEntity.class, 12.0f, 1.5, 1.8));
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRRuffianBruteEntity.class, 8.0f, 1.0, 1.5));
         // LOTREntityAIAvoidHuorn: only a huorn that has woken.
         this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, LOTRHuornBaseEntity.class,
@@ -212,5 +217,32 @@ public class LOTRHobbitEntity extends LOTRManEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.HOBBIT.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_HOBBIT;
+    }
+
+    /** speakTo: talking to a drunkard while drunk oneself earns speakToDrunkard. */
+    @Override
+    public boolean speakTo(Player player) {
+        boolean flag = super.speakTo(player);
+        if (flag && isDrunkard() && player.hasEffect(MobEffects.NAUSEA)) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.SPEAK_TO_DRUNKARD);
+        }
+        return flag;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRShireBiome.class);
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
     }
 }

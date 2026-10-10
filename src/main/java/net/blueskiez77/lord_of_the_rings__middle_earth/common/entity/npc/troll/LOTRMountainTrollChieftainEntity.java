@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRThrownRockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRBossJumpAttackGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
@@ -55,8 +56,6 @@ import net.minecraft.world.level.storage.ValueOutput;
  * bones, fifty to a hundred silver coins and more with looting, a troll's
  * hoard, its trophy, and sometimes Gondolin's sword and armour. It is worth
  * 50 alignment and 100 experience, and drops no totem.
- *
- * <p>NOT ported yet: the killMountainTrollChieftain achievement (D7).
  */
 public class LOTRMountainTrollChieftainEntity extends LOTRMountainTrollEntity implements LOTRBoss {
 
@@ -405,5 +404,10 @@ public class LOTRMountainTrollChieftainEntity extends LOTRMountainTrollEntity im
         setTrollSpawnTick(input.getIntOr("TrollSpawnTick", 0));
         this.trollDeathTick = input.getIntOr("TrollDeathTick", 0);
         input.getInt("TrollArmorLevel").ifPresent(this::setTrollArmorLevel);
+    }
+
+    @Override
+    public LOTRAchievement getBossKillAchievement() {
+        return LOTRAchievement.KILL_MOUNTAIN_TROLL_CHIEFTAIN;
     }
 }

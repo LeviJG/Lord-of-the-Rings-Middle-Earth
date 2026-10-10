@@ -30,8 +30,11 @@ import org.lwjgl.glfw.GLFW;
  * right through the region's factions, up and down through the regions (each remembering the faction
  * last viewed in it) -- at most one change each two ticks.
  *
- * <p>NOT ported yet: the original's other keys (the map key and the dismount key), with their
- * systems.
+ * <p>Map Teleport (M) and Fast Travel (F) act only in the map screen: an operator teleporting to the
+ * spot under the pointer, and travelling to the waypoint selected. They are registered here as the
+ * original registered them; the map screen that reads them is D13. F is also vanilla's
+ * swap-with-offhand key, which 1.7.10 did not have; the two never meet, the LOTR key acting only
+ * with the map open.
  */
 public final class LOTRKeyBindings {
 
@@ -39,6 +42,8 @@ public final class LOTRKeyBindings {
             KeyMapping.Category.register(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "general"));
 
     public static KeyMapping menu;
+    public static KeyMapping mapTeleport;
+    public static KeyMapping fastTravel;
     public static KeyMapping alignmentCycleLeft;
     public static KeyMapping alignmentCycleRight;
     public static KeyMapping alignmentGroupPrev;
@@ -55,6 +60,8 @@ public final class LOTRKeyBindings {
 
     public static void register() {
         menu = register("key.lotr.menu", GLFW.GLFW_KEY_L);
+        mapTeleport = register("key.lotr.mapTeleport", GLFW.GLFW_KEY_M);
+        fastTravel = register("key.lotr.fastTravel", GLFW.GLFW_KEY_F);
         alignmentCycleLeft = register("key.lotr.alignmentCycleLeft", GLFW.GLFW_KEY_LEFT);
         alignmentCycleRight = register("key.lotr.alignmentCycleRight", GLFW.GLFW_KEY_RIGHT);
         alignmentGroupPrev = register("key.lotr.alignmentGroupPrev", GLFW.GLFW_KEY_UP);

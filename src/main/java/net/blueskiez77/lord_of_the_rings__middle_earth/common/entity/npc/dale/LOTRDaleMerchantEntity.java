@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -24,9 +26,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityDaleMerchant: a travelling merchant of Dale in a feathered leather
  * hat, with a man of Dale for an escort, trading with any who are friendly.
- *
- * <p>NOT ported yet: the tradeDaleMerchant achievement (D7); the travelling
- * traders' spawning (D12).
  */
 public class LOTRDaleMerchantEntity extends LOTRDaleManEntity implements LOTRTravellingTrader {
 
@@ -88,5 +87,10 @@ public class LOTRDaleMerchantEntity extends LOTRDaleManEntity implements LOTRTra
         LOTRLeatherHatItem.setFeatherColor(hat, FEATHER_COLORS[this.random.nextInt(FEATHER_COLORS.length)]);
         setItemSlot(EquipmentSlot.HEAD, hat);
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DALE_MERCHANT);
     }
 }

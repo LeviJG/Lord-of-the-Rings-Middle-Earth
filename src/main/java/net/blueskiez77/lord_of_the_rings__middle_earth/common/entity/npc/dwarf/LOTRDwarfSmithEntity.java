@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -22,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityDwarfSmith: a smith of Durin's Folk with his hammer, who trades
  * with those at +100 or better and leaves dwarven steel when slain. He seeks
  * no one out -- he only answers attacks.
- *
- * <p>NOT ported yet: the tradeDwarfSmith achievement.
  */
 public class LOTRDwarfSmithEntity extends LOTRDwarfEntity implements LOTRSmith {
 
@@ -79,5 +79,10 @@ public class LOTRDwarfSmithEntity extends LOTRDwarfEntity implements LOTRSmith {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.BLACKSMITH_HAMMER));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DWARF_SMITH);
     }
 }

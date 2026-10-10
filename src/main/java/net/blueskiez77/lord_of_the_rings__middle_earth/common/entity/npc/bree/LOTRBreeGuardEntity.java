@@ -24,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityBreeGuard: Bree-land's watch, always men. They seek out their
  * people's enemies and flee no one, armed with an iron sword or pike, in
  * leather dyed in Bree-land's browns or in mail, under an iron helmet.
- *
- * <p>NOT ported yet: the Bree-land shield (LOTRShields.ALIGNMENT_BREE, D7).
  */
 public class LOTRBreeGuardEntity extends LOTRBreeManEntity {
 

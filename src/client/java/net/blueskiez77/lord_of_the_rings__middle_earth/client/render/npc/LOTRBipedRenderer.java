@@ -33,9 +33,10 @@ import org.jspecify.annotations.Nullable;
  * hired unit's icon and health bar are drawn over its head with the other
  * overhead marks (LOTROverheadRendering).
  *
- * <p>NOT ported yet: shields (with the alignment shields, D7), the
- * mini-quest book and offer icons (with mini-quests, D14), and the special
- * armour models (LOTRArmorModels) on NPCs.
+ * <p>Its shield, if it bears one, is the shield layer's; its mini-quest marks
+ * are drawn with the other overhead marks.
+ *
+ * <p>NOT ported yet: the special armour models (LOTRArmorModels) on NPCs.
  */
 public abstract class LOTRBipedRenderer<T extends LOTRNPCEntity, S extends LOTRNPCRenderState, M extends LOTRBipedModel<S>>
         extends HumanoidMobRenderer<T, S, M> {

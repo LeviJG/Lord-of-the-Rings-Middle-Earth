@@ -17,8 +17,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityPelargirMarine: a marine of Pelargir, always on foot, in full
  * Pelargir armour with a trident or an eket.
- *
- * <p>NOT ported yet: the Pelargir shield (LOTRShields.ALIGNMENT_PELARGIR, D7).
  */
 public class LOTRPelargirMarineEntity extends LOTRGondorSoldierEntity {
 

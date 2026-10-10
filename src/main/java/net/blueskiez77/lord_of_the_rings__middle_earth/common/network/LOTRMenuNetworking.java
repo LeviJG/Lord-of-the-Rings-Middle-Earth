@@ -56,6 +56,7 @@ public final class LOTRMenuNetworking {
                 }
             }
         });
+        PayloadTypeRegistry.clientboundPlay().register(LOTRInvasionPayloads.Watch.TYPE, LOTRInvasionPayloads.Watch.STREAM_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(LOTRAlignmentHudPayloads.EnvironmentOverlay.TYPE,
                 LOTRAlignmentHudPayloads.EnvironmentOverlay.STREAM_CODEC);
         PayloadTypeRegistry.clientboundPlay().register(LOTRAlignmentHudPayloads.AlignDrain.TYPE,

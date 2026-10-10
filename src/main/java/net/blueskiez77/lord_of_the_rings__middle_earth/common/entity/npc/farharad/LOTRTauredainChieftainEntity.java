@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,16 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityTauredainChieftain: a Taurethrim warrior of 25 health who leads,
  * with a Taurethrim sword and the chieftain's helmet. He seeks no one out --
  * he only answers attacks. He hires out warriors, blowgunners and banner
  * bearers to those at +200 or better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.TAURETHRIM) and warhorn
- * (LOTRInvasions.TAUREDAIN), with NPC capes and D12, and the
- * tradeTauredainChieftain achievement (D7).
  */
 public class LOTRTauredainChieftainEntity extends LOTRTauredainWarriorEntity implements LOTRUnitTradeable {
 
@@ -51,6 +50,11 @@ public class LOTRTauredainChieftainEntity extends LOTRTauredainWarriorEntity imp
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.TAUREDAIN_CHIEFTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.TAUREDAIN;
     }
 
     /** canTradeWith: +200 alignment and friendly. */
@@ -83,5 +87,10 @@ public class LOTRTauredainChieftainEntity extends LOTRTauredainWarriorEntity imp
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.TAURETHRIM_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.TAURETHRIM_CHIEFTAIN_HELMET));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_TAUREDAIN_CHIEFTAIN);
     }
 }

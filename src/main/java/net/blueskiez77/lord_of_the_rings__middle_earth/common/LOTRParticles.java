@@ -62,6 +62,8 @@ public final class LOTRParticles {
     public static final ParticleType<LOTRLeafParticleOptions> LEAF_MIRK = registerLeaf("leaf_mirk");
     public static final ParticleType<LOTRLeafParticleOptions> LEAF_GREEN = registerLeaf("leaf_green");
 
+    /** LOTREntityMusicFX ("music"): a note of a random colour drifting off a jazz elf in a solo. */
+    public static final SimpleParticleType MUSIC = register("music");
     /** LOTREntityPickpocketFX ("pickpocket"): a spinning coin that falls and bounces, off a picked pocket. */
     public static final SimpleParticleType PICKPOCKET = register("pickpocket");
     /** LOTREntityPickpocketFailFX ("pickpocketFail"): a scrap of lint, off a pocket missed. */

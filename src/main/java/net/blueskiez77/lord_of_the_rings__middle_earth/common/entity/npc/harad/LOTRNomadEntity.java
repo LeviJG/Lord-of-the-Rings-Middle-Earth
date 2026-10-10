@@ -28,10 +28,8 @@ import org.jspecify.annotations.Nullable;
  * nomad name, nomad food and drink, and now and then something from a nomad
  * tent. One in four wears a turban of one of five sandy colours. Nomads ride
  * camels, chested and carpeted.
- *
- * <p>NOT ported yet: ImmuneToHeat (D10).
  */
-public class LOTRNomadEntity extends LOTRNearHaradrimBaseEntity {
+public class LOTRNomadEntity extends LOTRNearHaradrimBaseEntity implements net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRNearHaradBiome.ImmuneToHeat {
 
     public static final int[] NOMAD_TURBAN_COLOURS = {15392448, 13550476, 10063441, 8354400, 8343622};
 

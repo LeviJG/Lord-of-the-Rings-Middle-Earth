@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityKineAraw: a bigger, tougher aurochs (scale 1.15), charging faster,
- * that drops the kine of Araw horn ({@code lotr:entities/kine_of_araw}).
+ * that drops the kine of Araw horn ({@code lotr:entities/kine_araw}).
  */
 public class LOTRKineArawEntity extends LOTRAurochsEntity {
 

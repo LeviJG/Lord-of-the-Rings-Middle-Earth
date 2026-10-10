@@ -366,7 +366,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.L
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohirrimWarriorEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRMirkwoodSpiderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRMordorSpiderEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderBaseEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRMirkTrollEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRMountainTrollChieftainEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTRMountainTrollEntity;
@@ -512,14 +512,14 @@ public final class LOTREntities {
                     .updateInterval(20));
 
     /** LOTREntityArrowPoisoned, an EntityArrow: sized and tracked as an arrow. */
-    public static final EntityType<LOTRPoisonedArrowEntity> POISONED_ARROW = register("poisoned_arrow",
-            EntityType.Builder.<LOTRPoisonedArrowEntity>of(LOTRPoisonedArrowEntity::new, MobCategory.MISC)
+    public static final EntityType<LOTRArrowPoisonedEntity> POISONED_ARROW = register("arrow_poison",
+            EntityType.Builder.<LOTRArrowPoisonedEntity>of(LOTRArrowPoisonedEntity::new, MobCategory.MISC)
                     .sized(0.5f, 0.5f)
                     .clientTrackingRange(4)
                     .updateInterval(20));
 
     /** LOTREntityFirePot, an EntityThrowable: sized and tracked as a snowball. */
-    public static final EntityType<LOTRFirePotEntity> FIRE_POT = register("fire_pot",
+    public static final EntityType<LOTRFirePotEntity> FIRE_POT = register("thrown_fire_pot",
             EntityType.Builder.<LOTRFirePotEntity>of(LOTRFirePotEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f)
                     .clientTrackingRange(4)
@@ -571,8 +571,8 @@ public final class LOTREntities {
                     .updateInterval(10));
 
     /** LOTREntityThrownTermite, an EntityThrowable sized 0.25. */
-    public static final EntityType<LOTRExplodingTermiteEntity> EXPLODING_TERMITE = register("exploding_termite",
-            EntityType.Builder.<LOTRExplodingTermiteEntity>of(LOTRExplodingTermiteEntity::new, MobCategory.MISC)
+    public static final EntityType<LOTRThrownTermiteEntity> EXPLODING_TERMITE = register("thrown_termite",
+            EntityType.Builder.<LOTRThrownTermiteEntity>of(LOTRThrownTermiteEntity::new, MobCategory.MISC)
                     .sized(0.25f, 0.25f)
                     .clientTrackingRange(4)
                     .updateInterval(10));
@@ -580,6 +580,12 @@ public final class LOTREntities {
     /** LOTREntityMysteryWeb, an EntityThrowable sized 0.25. */
     /** LOTREntitySmokeRing, puffed from a smoking pipe. */
     /** LOTREntityNPCRespawner: setSize(1.0, 1.0). */
+    /** LOTREntityInvasionSpawner: setSize(1.5, 1.5), tracked to 80 blocks. */
+    public static final EntityType<LOTRInvasionSpawnerEntity> INVASION_SPAWNER = register("invasion_spawner",
+            EntityType.Builder.<LOTRInvasionSpawnerEntity>of(LOTRInvasionSpawnerEntity::new, MobCategory.MISC)
+                    .sized(1.5f, 1.5f)
+                    .clientTrackingRange(5)
+                    .updateInterval(3));
     public static final EntityType<LOTRNPCRespawnerEntity> NPC_RESPAWNER = register("npc_respawner",
             EntityType.Builder.<LOTRNPCRespawnerEntity>of(LOTRNPCRespawnerEntity::new, MobCategory.MISC)
                     .sized(1.0f, 1.0f)
@@ -613,8 +619,8 @@ public final class LOTREntities {
                     .updateInterval(20));
 
     /** LOTREntityBarrel: setSize(1, 1). */
-    public static final EntityType<LOTRBarrelBoatEntity> BARREL = register("barrel",
-            EntityType.Builder.<LOTRBarrelBoatEntity>of(LOTRBarrelBoatEntity::new, MobCategory.MISC)
+    public static final EntityType<LOTRBarrelEntity> BARREL = register("barrel",
+            EntityType.Builder.<LOTRBarrelEntity>of(LOTRBarrelEntity::new, MobCategory.MISC)
                     .sized(1.0f, 1.0f)
                     .clientTrackingRange(10));
 
@@ -635,7 +641,7 @@ public final class LOTREntities {
             mount(LOTRShirePonyEntity::new, 1.4f * LOTRShirePonyEntity.PONY_SCALE, 1.6f * LOTRShirePonyEntity.PONY_SCALE));
 
     /** LOTREntityWildBoar: setSize(0.9, 0.8). */
-    public static final EntityType<LOTRWildBoarEntity> WILD_BOAR = register("wild_boar", mount(LOTRWildBoarEntity::new, 0.9f, 0.8f));
+    public static final EntityType<LOTRWildBoarEntity> WILD_BOAR = register("boar", mount(LOTRWildBoarEntity::new, 0.9f, 0.8f));
 
     /** LOTREntityGiraffe: setSize(1.7, 4.0). */
     public static final EntityType<LOTRGiraffeEntity> GIRAFFE = register("giraffe", mount(LOTRGiraffeEntity::new, 1.7f, 4.0f));
@@ -708,7 +714,7 @@ public final class LOTREntities {
             creature(LOTRUrukWargBombardierEntity::new, 1.5f, 1.7f).passengerAttachments(0.85f));
 
     /** LOTREntityWargskinRug: setSize(1.8, 0.3). */
-    public static final EntityType<LOTRWargskinRugEntity> WARGSKIN_RUG = register("wargskin_rug",
+    public static final EntityType<LOTRWargskinRugEntity> WARGSKIN_RUG = register("warg_rug",
             EntityType.Builder.<LOTRWargskinRugEntity>of(LOTRWargskinRugEntity::new, MobCategory.MISC)
                     .sized(1.8f, 0.3f)
                     .clientTrackingRange(5)
@@ -723,11 +729,11 @@ public final class LOTREntities {
             creature(LOTRHobbitBartenderEntity::new, 0.45f, 1.2f));
 
     /** LOTREntityHobbitBounder: as a hobbit, setSize(0.45, 1.2). */
-    public static final EntityType<LOTRHobbitBounderEntity> HOBBIT_BOUNDER = register("hobbit_bounder",
+    public static final EntityType<LOTRHobbitBounderEntity> HOBBIT_BOUNDER = register("hobbit_shirriff",
             creature(LOTRHobbitBounderEntity::new, 0.45f, 1.2f));
 
     /** LOTREntityHobbitShirriff: as a hobbit, setSize(0.45, 1.2). */
-    public static final EntityType<LOTRHobbitShirriffEntity> HOBBIT_SHIRRIFF = register("hobbit_shirriff",
+    public static final EntityType<LOTRHobbitShirriffEntity> HOBBIT_SHIRRIFF = register("hobbit_shirriff_chief",
             creature(LOTRHobbitShirriffEntity::new, 0.45f, 1.2f));
 
     /** LOTREntityHobbitOrcharder: as a hobbit, setSize(0.45, 1.2). */
@@ -1067,7 +1073,7 @@ public final class LOTREntities {
             creature(LOTRDorwinionVinekeeperEntity::new, 0.6f, 1.8f));
 
     /** LOTREntityDorwinionMerchantElf: as an elf, setSize(0.6, 1.8). */
-    public static final EntityType<LOTRDorwinionMerchantElfEntity> DORWINION_MERCHANT_ELF = register("dorwinion_merchant_elf",
+    public static final EntityType<LOTRDorwinionMerchantElfEntity> DORWINION_MERCHANT_ELF = register("dorwinion_merchant",
             creature(LOTRDorwinionMerchantElfEntity::new, 0.6f, 1.8f));
 
     /** LOTREntityDorwinionCrossbower: as a Dorwinion man, setSize(0.6, 1.8). */
@@ -1267,7 +1273,7 @@ public final class LOTREntities {
             creature(LOTRDolGuldurOrcArcherEntity::new, 0.5f, 1.55f));
 
     /** LOTREntityDolGuldurOrcChieftain: setSize(0.6, 1.8). */
-    public static final EntityType<LOTRDolGuldurOrcChieftainEntity> DOL_GULDUR_ORC_CHIEFTAIN = register("dol_guldur_orc_chieftain",
+    public static final EntityType<LOTRDolGuldurOrcChieftainEntity> DOL_GULDUR_ORC_CHIEFTAIN = register("dol_guldur_chieftain",
             creature(LOTRDolGuldurOrcChieftainEntity::new, 0.6f, 1.8f));
 
     /** LOTREntityDolGuldurOrcTrader: setSize(0.5, 1.55). */
@@ -1427,11 +1433,11 @@ public final class LOTREntities {
             creature(LOTRSouthronBakerEntity::new, 0.6f, 1.8f));
 
     /** LOTREntitySouthronBrewer: setSize(0.6, 1.8). */
-    public static final EntityType<LOTRSouthronBrewerEntity> SOUTHRON_BREWER = register("southron_brewer",
+    public static final EntityType<LOTRSouthronBrewerEntity> SOUTHRON_BREWER = register("near_harad_drinks_trader",
             creature(LOTRSouthronBrewerEntity::new, 0.6f, 1.8f));
 
     /** LOTREntitySouthronButcher: setSize(0.6, 1.8). */
-    public static final EntityType<LOTRSouthronButcherEntity> SOUTHRON_BUTCHER = register("southron_butcher",
+    public static final EntityType<LOTRSouthronButcherEntity> SOUTHRON_BUTCHER = register("near_harad_food_trader",
             creature(LOTRSouthronButcherEntity::new, 0.6f, 1.8f));
 
     /** LOTREntitySouthronFishmonger: setSize(0.6, 1.8). */
@@ -1439,7 +1445,7 @@ public final class LOTREntities {
             creature(LOTRSouthronFishmongerEntity::new, 0.6f, 1.8f));
 
     /** LOTREntitySouthronFlorist: setSize(0.6, 1.8). */
-    public static final EntityType<LOTRSouthronFloristEntity> SOUTHRON_FLORIST = register("southron_florist",
+    public static final EntityType<LOTRSouthronFloristEntity> SOUTHRON_FLORIST = register("near_harad_plants_trader",
             creature(LOTRSouthronFloristEntity::new, 0.6f, 1.8f));
 
     /** LOTREntitySouthronGoldsmith: setSize(0.6, 1.8). */
@@ -1455,7 +1461,7 @@ public final class LOTREntities {
             creature(LOTRSouthronMasonEntity::new, 0.6f, 1.8f));
 
     /** LOTREntitySouthronMiner: setSize(0.6, 1.8). */
-    public static final EntityType<LOTRSouthronMinerEntity> SOUTHRON_MINER = register("southron_miner",
+    public static final EntityType<LOTRSouthronMinerEntity> SOUTHRON_MINER = register("near_harad_minerals_trader",
             creature(LOTRSouthronMinerEntity::new, 0.6f, 1.8f));
 
     /** LOTREntityUmbarian: setSize(0.6, 1.8). */
@@ -2043,7 +2049,7 @@ public final class LOTREntities {
             creature(LOTRRohanManEntity::new, 0.6f, 1.8f));
 
     /** LOTREntityRohirrim: as a Rohan man, setSize(0.6, 1.8). */
-    public static final EntityType<LOTRRohirrimWarriorEntity> ROHIRRIM_WARRIOR = register("rohirrim_warrior",
+    public static final EntityType<LOTRRohirrimWarriorEntity> ROHIRRIM_WARRIOR = register("rohirrim",
             creature(LOTRRohirrimWarriorEntity::new, 0.6f, 1.8f));
 
     /** LOTREntityRohirrimArcher: as a Rohan man, setSize(0.6, 1.8). */
@@ -2207,7 +2213,7 @@ public final class LOTREntities {
             creature(LOTRAurochsEntity::new, 1.5f, 1.7f));
 
     /** LOTREntityKineAraw: the aurochs' size times KINE_SCALE. */
-    public static final EntityType<LOTRKineArawEntity> KINE_OF_ARAW = register("kine_of_araw",
+    public static final EntityType<LOTRKineArawEntity> KINE_OF_ARAW = register("kine_araw",
             creature(LOTRKineArawEntity::new, 1.5f * LOTRKineArawEntity.KINE_SCALE, 1.7f * LOTRKineArawEntity.KINE_SCALE));
 
     /** LOTREntityBear: setSize(1.6, 1.8). */
@@ -2496,8 +2502,8 @@ public final class LOTREntities {
         FabricDefaultAttributeRegistry.register(DOL_GULDUR_ORC_CHIEFTAIN, LOTRDolGuldurOrcChieftainEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(DOL_GULDUR_ORC_TRADER, LOTRDolGuldurOrcEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(DOL_GULDUR_BANNER_BEARER, LOTRDolGuldurOrcEntity.createAttributes());
-        FabricDefaultAttributeRegistry.register(MIRKWOOD_SPIDER, LOTRSpiderEntity.createAttributes());
-        FabricDefaultAttributeRegistry.register(MORDOR_SPIDER, LOTRSpiderEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(MIRKWOOD_SPIDER, LOTRSpiderBaseEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(MORDOR_SPIDER, LOTRSpiderBaseEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(MORDOR_ORC_SPIDER_KEEPER, LOTRMordorOrcSpiderKeeperEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ANGMAR_HILLMAN, LOTRAngmarHillmanEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ANGMAR_HILLMAN_WARRIOR, LOTRAngmarHillmanEntity.createAttributes());

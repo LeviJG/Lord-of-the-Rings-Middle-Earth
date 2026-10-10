@@ -54,6 +54,11 @@ public class LOTRNPCMateGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         this.npc.getLookControl().setLookAt(this.spouse, 10.0f, this.npc.getMaxHeadXRot());
         this.npc.getNavigation().moveTo(this.spouse, this.moveSpeed);

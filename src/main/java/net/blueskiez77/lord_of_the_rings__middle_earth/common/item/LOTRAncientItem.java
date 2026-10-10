@@ -3,6 +3,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
@@ -22,10 +24,8 @@ import net.minecraft.world.level.Level;
  * becomes one random item from its chest pool, worn and possibly bearing
  * modifiers, with a pop.
  *
- * One time in four the result is also Wraithbane, if it can be.
- *
- * <p>NOT yet: the craftAncientItem achievement (on the deferred-port tracker
- * in PORT_PLAN.md).
+ * One time in four the result is also Wraithbane, if it can be. Using one
+ * earns craftAncientItem.
  */
 public class LOTRAncientItem extends Item {
 
@@ -40,6 +40,7 @@ public class LOTRAncientItem extends Item {
     public InteractionResult use(Level level, Player player, InteractionHand hand) {
         if (level instanceof ServerLevel) {
             ItemStack result = LOTRChestContents.pick(this.pool, level.getRandom(), false);
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.CRAFT_ANCIENT_ITEM);
             if (LOTRConfig.enchantingLOTR && !result.isEmpty() && LOTRModifiers.canApply(LOTRModifier.BANE_WRAITH, result, false)
                     && level.getRandom().nextInt(4) == 0) {
                 List<LOTRModifier> modifiers = new ArrayList<>(LOTRModifiers.get(result));

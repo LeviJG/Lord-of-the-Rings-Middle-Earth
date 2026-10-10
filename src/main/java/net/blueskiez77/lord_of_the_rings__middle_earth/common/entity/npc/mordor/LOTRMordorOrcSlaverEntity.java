@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -19,14 +21,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityMordorOrcSlaver (the Mordor Slaver): a man-sized orc, no weak one,
  * bare-headed in Mordor armour, who sells Nurn slaves -- hired to farm -- to
  * those at +200 or better. He seeks no one out -- he only answers attacks, and
  * carries no warhorn. At rest he holds a branding iron.
- *
- * <p>NOT ported yet: the hireNurnSlave achievement (D7).
  */
 public class LOTRMordorOrcSlaverEntity extends LOTRMordorOrcEntity implements LOTRUnitTradeable {
 
@@ -49,6 +50,11 @@ public class LOTRMordorOrcSlaverEntity extends LOTRMordorOrcEntity implements LO
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.MORDOR_ORC_SLAVER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     /** canTradeWith: +200 alignment and friendly. */
@@ -85,5 +91,10 @@ public class LOTRMordorOrcSlaverEntity extends LOTRMordorOrcEntity implements LO
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.MORDOR_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_NURN_SLAVE);
     }
 }

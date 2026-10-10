@@ -71,7 +71,8 @@ and `tools/parity_class_overrides.csv` (classes) rather than editing the CSVs in
 - Textures: never edit pixels; do copy/rename PNGs from `old mod/.../textures/`.
 - Don't alter vanilla recipes; faction recipes stay on faction tables.
 - Intentionally excluded (never list as missing): `lotr:Gravel`, armour stand,
-  pouches, other vanilla duplicates.
+  other vanilla duplicates. (Pouches were excluded until the user asked for
+  them after D14b; see "Pouches" under D14.)
 - No ritual final `./gradlew build`; compile mid-change only to settle an API
   question. The user builds and tests in game.
 
@@ -312,7 +313,7 @@ say what the user should check in game.
     brewing is kept), GUI fill/bubbles/button, mug take/fill/drink/poison, rain
     filling, drops. Port additions noted: the button packet also checks
     `stillValid`. Needs other systems: floating barrel entity placed on water
-    (D4), `brewDrinkInBarrel` achievement (D7).
+    (D4). (`brewDrinkInBarrel`: D7c.)
   - [x] **B5c Hobbit oven, millstone, kebab stand.** *Result:* Hobbit oven —
     cooking logic matched; fixed the same gaps as the forge: now
     `BaseContainerBlockEntity` (name kept) + `WorldlyContainer` (hopper
@@ -328,8 +329,7 @@ say what the user should check in game.
     pick-block keeps it, creative break drops nothing) instead of spilling the
     meat; it no longer needs a block beneath it (the original never checked);
     holding meat at a full spit does nothing instead of taking a piece.
-    Screens matched. Needs other systems: `cookKebab` and
-    `smeltObsidianShard` achievements (D7).
+    Screens matched. (`cookKebab` and `smeltObsidianShard`: D7c.)
   - [x] **B5d Dale cracker, chest, plate, weapon rack, animal jar, ent jar.**
     *Result:* Chests (vanilla `ChestBlock` base, so lid/hopper/comparator
     are modern vanilla) — added tool tags from each chest's Material: stone and
@@ -348,7 +348,7 @@ say what the user should check in game.
     returns unsealed contents to the inventory, the modern convention, where
     the original dropped them). Needs other systems (D8): jar occupant
     bobbing/turning/sounds and the Lórien butterfly's light 7; catching needs
-    the LOTR birds/butterflies. `catchButterfly` achievement (D7).
+    the LOTR birds/butterflies. (`catchButterfly`: D7c.)
   - [x] **B5e Dart trap, beacon, table of command, troll totem, banner, carved
     sign, dwarven door block entities.** *Result:* Dart trap — debug code and
     a doubled launch sound (1002 played twice) removed. Beacon, table of
@@ -387,7 +387,7 @@ say what the user should check in game.
     (the original had no recipe book). They still unlock, which
     `limitedCrafting` needs. Menu, shift-click, 8-block reach mirror vanilla
     `CraftingMenu`; the faction screen has no recipe book, as in 1.7.10.
-    Pouch recipe at every table not ported (pouches excluded). Open: unlock
+    The pouch recipe at every table came with the pouches (after D14b). Open: unlock
     toasts still fire for faction recipes (`showNotification`); duplicate
     helpers `LOTRAlignmentMessages` vs `LOTRAlignmentValues` (Track C).
   - [x] **B6b Standard recipes** and **B6c Faction recipe lists** — done
@@ -461,8 +461,8 @@ say what the user should check in game.
     Blocked: feather dye and hat-feather recipes (`featherDyed` not ported;
     a feathered hat also could not be re-dyed); turban gold ornament (no
     ornament state on the port's turban); banner protection copy/clear
-    (`LOTRRecipesBanners`, needs banner protection — D). Pouch recipes
-    excluded. Open for B7/B10: the original's cauldron also washed pipe smoke
+    (`LOTRRecipesBanners`, needs banner protection — D). Pouch recipes came
+    with the pouches (after D14b). Open for B7/B10: the original's cauldron also washed pipe smoke
     colour and turned poisoned weapons back into plain ones; dyed-robe item
     icons are not tinted (B9).
 - [x] **B7 Weapons & tools** (`LOTRToolMaterials` 1457 lines, axes, spears,
@@ -787,8 +787,9 @@ say what the user should check in game.
       Ported, with a new `LOTRChestContents` holding the pool (all 40
       entries, `mithrilBook` = `BOOK_OF_TRUE_SILVER`) and `fillInventory`'s
       single pick:
-      - Pouch roll: its smith's-scroll branch is kept, via the new
-        `LOTRModifiers.randomTemplate` (`getRandomCommonTemplate`).
+      - Pouch roll: its smith's-scroll branch via the new
+        `LOTRModifiers.randomTemplate` (`getRandomCommonTemplate`); the
+        pouch branch itself came with the pouches (after D14b).
       - Damage up to three quarters, stack cap, and random modifiers,
         skilful 1 in 5.
       - Lore books are not ported.
@@ -918,7 +919,7 @@ say what the user should check in game.
   - Found out of scope, logged in the findings backlog: 703 mechanical
     recipes still generate under the mod-id namespace, 49 possibly
     duplicating `lotr` ones [B15→B6].
-- [ ] **B16 NPCs and mobs** (user, after the GUI unit: "go through the npcs
+- [x] **B16 NPCs and mobs** (user, after the GUI unit: "go through the npcs
   and mobs and find bugs, clean up the code and make necessary
   adjustments"). Every NPC and mob against its 1.7.10 class -- attributes,
   size, AI and its priorities, targeting, equipment, drops, speech, sounds,
@@ -964,17 +965,114 @@ say what the user should check in game.
     Kept: siblings are told apart by `equals` (the original compared UUIDs
     with `==`). The April Fools speech bank and every NPC named Gandalf on
     the first of April were restored (user).
-  - [ ] **B16b AI goals** (`entity/ai`).
-  - [ ] **B16c Animals** (`entity/animal`).
-  - [ ] **B16d Men of the West**: hobbits, Bree, Rangers, Gondor (and fiefs),
-    Rohan, Dale, Dorwinion, Dunland.
-  - [ ] **B16e Elves, dwarves, Ents and Huorns**.
-  - [ ] **B16f Orcs, trolls, wargs, spiders, wraiths**: the orc base, Mordor,
+  - [x] **B16b AI goals** (`entity/ai`): all 45 against the original's 56
+    (the rest: the horse goals, carried by the rider's goals through
+    `LOTRNPCMount`; the MF mate, vanilla breeding; the rabbit's, dropped with
+    it; the Balrog's and Sauron's, D15). *Result:* Fixed:
+    - **Water:** an NPC that keeps out of water (`setAvoidsWater(true)`,
+      water malus -1) now wades in when burning, as the original's panic
+      goal let it.
+    - **Tick rate:** 26.2 ticks a running goal only every other tick unless
+      it asks otherwise; 14 goals with timers (the bandits' chase, Gollum's
+      fishing and following, hired units following, lions' chase, marriage
+      and mating, ...) ran at half speed. All now tick every tick, as 1.7.10.
+    - **Targeting:** goals without sight checks (wargs, orcs and half-trolls
+      after rabbits; hired units taking up their player's fights) no longer
+      need the target in view; a tamed mount, or one a player rides, picks
+      no targets.
+    - **Farmhands** farm corn again (the corn stalk was a Crop seed).
+    - The Hobbit Bounder's ruffian hunting waits only on the Shire (D10).
+    Matched: the rest. Kept: goals look for something to start every 2
+    ticks (26.2), where 1.7.10 looked every 3, so chance-per-check goals
+    (eating, drinking, a lion's chase, orc skirmishes) start a third again
+    as often.
+  - [x] **B16c Animals** (`entity/animal`): all 33 against the original's
+    37 (the rest: the rabbit and fish, vanilla duplicates; the ambient and
+    animal spawn checks, D12). *Result:* Fixed:
+    - **NPC mounts** are saddled again (`setBelongsToNPC` saddled them).
+    - **Horse armour** fits only the horse: the pony and zebra could wear
+      none (`func_110259_cr`), though `isValid` named them.
+    - **Lion and lioness rugs** drop again (the drop was never ported).
+    - **The mod's bones** count as bones everywhere the original's ore
+      name "bone" did: the crow's thieving, the Troll totem and spider
+      feeding (`lotr:bones`, where `c:bones` had only the vanilla bone),
+      and wolves -- fed and tamed with them again (`LOTRInteractEvents`).
+    - **Songbirds** steal every Crop seed (stem seeds, corn, grape seeds),
+      not only crop-block seeds.
+    - **Milking** a cow, aurochs or zebra into an empty mug or other vessel
+      fills it with milk again (`LOTRInteractEvents`).
+    - **The Shire pony** carries a chest again, as the camel does
+      (`LOTRChestedHorseEntity`, user: "Yes"): the original's pony was a
+      donkey on the server; not drawn, as the original's client horse drew
+      none. rideShirePony is earned again.
+    Matched: the rest.
+  - [x] **B16d Men of the West**: hobbits, Bree, Rangers, Gondor (and fiefs),
+    Rohan, Dale, Dorwinion, Dunland. *Result:* hobbits, Bree, Rangers and
+    Gondor side by side; every class's attributes, speech banks, trade and
+    hire thresholds, riding, shields, capes, AI parameters, spawn equipment,
+    drops and overridden methods checked against the original by script.
+    Matched, apart from a misplaced doc comment (the hobbit farmer). The
+    biome pulls and natural spawn checks remain with the biomes (D10).
+  - [x] **B16e Elves, dwarves, Ents and Huorns**. *Result:* the same checks;
+    Matched. The Galadhrim trader's departing leaves never showed in the
+    original either (it was dead before the check ran); the Dwarves' family
+    interaction is in the NPC base; the Huorns' collisions and widened
+    render range, the Mallorn Ent's weapon shield, spawn freeze and leaf
+    healings sent to new watchers are all there. The pull of Fangorn and the
+    Old Forest stays with the biomes (D10).
+  - [x] **B16f Orcs, trolls, wargs, spiders, wraiths**: the orc base, Mordor,
     Isengard, Gundabad, Angmar, Dol Guldur, trolls and half-trolls.
-  - [ ] **B16g South and East**: Harad (Near Harad, Umbar, Gulf, Nomads,
-    Harnedor, corsairs), Far Harad, Rhûn.
-  - [ ] **B16h Characters** (Gandalf, Gollum, Saruman, the boss NPCs...).
-  - [ ] **B16i Renderers and models** of all of the above.
+    *Result:* the same checks; Matched. The trolls' fixed armour values are
+    attributes, the warg's is its armour's body-slot modifier; its random
+    colour, leash only when tamed and the saddle and armour sounds are
+    there; the marsh wraith ignores water and webs; the steel ingots and
+    warg rugs drop through `getOrcSteelDrop` and `LOTRWargType.rug`.
+  - [x] **B16g South and East**: Harad (Near Harad, Umbar, Gulf, Nomads,
+    Harnedor, corsairs), Far Harad, Rhûn. *Result:* the same checks;
+    Matched (the corsairs' shaking coins out of their kills is
+    `lootsExtraCoins` in the NPC base).
+  - [x] **B16h Characters** (Gandalf, Gollum, Saruman, the boss NPCs...).
+    *Result:* the same checks; Matched: Saruman's garbled name, the boss
+    trophies, the Chieftain's armour levels. The scrap trader's Utumno side
+    waits on D15.
+  - [x] **B16i Renderers and models** of all of the above. *Result:* every
+    one of the 437 entity types has a renderer; the original's 132 renderer
+    classes are all covered (merged into families: mounts, rugs, trolls,
+    spiders...), but for the Utumno ones (the Balrog, Sauron, the tormented
+    elf, the Utumno troll and ice spider: D15) and the vanilla duplicates
+    (fish, rabbit). Every texture the original's renderers name is in the
+    port, renamed; every scale, shadow and offset figure in them appears in
+    the port's renderers. `LOTRSwingHandler` (the attack-cooldown swing
+    animation) gives way to vanilla's attack speed, as the weapons do; the
+    falling fire jar and coin pile are vanilla falling blocks. Tracked: the
+    Dead Marshes' faces and the corrupted biomes' water effects (D10).
+  - [x] **B16 names** (user, at 0.4.0: "In an audit, make sure the names
+    match. If they don't rename them."). Renamed to the original's:
+    - **Entity ids**, to the names the original registered them under
+      (which sometimes differed from its class names): `arrow_poison`,
+      `thrown_fire_pot`, `thrown_termite`, `boar`, `warg_rug`,
+      `hobbit_shirriff` (the Bounder) and `hobbit_shirriff_chief` (the
+      Shirriff), `dorwinion_merchant`, `dol_guldur_chieftain`,
+      `near_harad_drinks_trader`/`_food_`/`_plants_`/`_minerals_trader` (the
+      Southron brewer, butcher, florist and miner), `rohirrim`, `kine_araw`
+      -- with their spawn eggs, lang keys, loot tables and tags.
+    - **Entity classes**: `LOTRBarrelEntity`, `LOTRThrownTermiteEntity`,
+      `LOTRArrowPoisonedEntity`, `LOTRRugBaseEntity`,
+      `LOTRSpiderBaseEntity`.
+    - **Textures**: `elk/elk/`, `kine_araw/`, `spider/spider_*.png`.
+    - **Display names**: Troll Statue, Craban, Fire Pot, Gandalf Fireball.
+    - **Items and blocks** (user: "Display names only" -- the port's modern
+      ids stay): every display name back to the original's en_US.lang text,
+      ~220 of them -- "X Wood Planks/Stairs/Slab/Beam", the fruit "X Wood"
+      logs, the stone buttons' and pressure plates' bare "Button" and
+      "Pressure Plate", "Mithril Ingot", "Red Clay" -- and the spawn eggs as
+      the original named them, "Spawn <creature>".
+    Port-only, no original name: the thrown trident, the command-sword
+    marker, the alignment-bonus popup, `LOTRChestedHorseEntity`.
+  - [x] **Spears' tags**: the 29 spears (vanilla's spear component, B7c)
+    moved from `#minecraft:swords` and `enchantable/sweeping` to
+    `#minecraft:spears`, so they enchant as vanilla's spears do (Lunge, no
+    Sweeping Edge); the longspears stay polearms.
 
 - [ ] **B17 Structures and villages** (user: "go through all the buildings
   and double check that they are built with the correct blocks, correct
@@ -1098,6 +1196,14 @@ say what the user should check in game.
     - Shire: the farm's animals use the Shire's creature weights. Hobbit
       couples' rings in the helmet slot stay hidden, as `RenderBiped` drew
       only blocks there.
+  - [x] **Fixed after B17 (user report: the blue dwarf house's weapon rack
+    faced the wrong way when built facing north):** structures turn their
+    blocks with `BlockState.rotate`, and the mug, weapon rack and barrel --
+    `BaseEntityBlock`s, whose `rotate` does nothing -- never turned, in
+    every rotated structure. They (and the carved sign) now turn and mirror
+    their FACING, as the original's rotateMeta turned them (one
+    `rotateRight` a step, `Rotation.CLOCKWISE_90`). Every other block that
+    faces somewhere has its own `rotate` or a vanilla parent's.
   - [x] **B17n Scans and oddments:** the 75 scans are identical, the Ticket
     Booth and the older-base structures pair and are clean. The Gondor
     smithy's four absolute-coordinate metadata calls are still left out,
@@ -1447,10 +1553,9 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
   - Default kept from the original: vanilla enchanting OFF (the port's anvil
     had always taken the enabled path).
   - Every other option waits on its system, listed on the tracker.
-- [ ] **D7 Titles, capes, shields, achievements** (achievements → advancements
-  or custom tracker; decide with user). Titles and shields are done; there
-  are no player capes in the original (`LOTRCapes` is the NPCs', done in
-  D9). Achievements are left for now (user).
+- [x] **D7 Titles, capes, shields, achievements.** Titles and shields are
+  done; there are no player capes in the original (`LOTRCapes` is the NPCs',
+  done in D9). Achievements: the original's own system (user), D7c.
   - [x] **D7a Titles** (`common/title`): `LOTRTitle` (the original's starter and
     alignment titles, and the rank titles each
     `makeTitle` rank now creates, feminine forms too); `LOTRPlayerTitles`
@@ -1475,6 +1580,27 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     `ExclusiveGroup`, the player-details web lookup that granted them).
   - Waiting on the achievements: the achievement titles, and the
     achievement shields' terms (no one may wear them until then).
+  - [x] **D7c Achievements** (`common/achievement`): `LOTRAchievement` (all
+    492 of the original's, by category, with the rank achievements each
+    `makeAchievement` rank creates, their titles and shields);
+    `LOTRPlayerAchievements` (`lotr:achievements`, kept through death, synced;
+    the popup, the server-wide announcement, the travel10-50 counts, and the
+    per-tick checks: pouch, crafting tables, bolts, hundreds, full armour
+    sets); `LOTRAchievementsScreen` from the LOTR menu and
+    `LOTRAchievementToast`; `/lotrAchievement`; fellowships led, 1 + one per
+    20 earned. Award sites: `LOTRAchievementEvents` (crafting tables and
+    crafting, smelting, pickups, rare ores, remains, banana) with
+    `LOTRResultSlotMixin`/`LOTRFurnaceResultSlotMixin`, and every other site
+    in the class that triggers it. Ported with it: the Morgul shroom eaten
+    from the hand (`LOTRMorgulShroomItem`) and the gold Ent-draught waking a
+    hired Huorn from a sapling, both missing until now (user: kept, as the
+    original's). New means, at the user's asking ("give them new
+    triggers"), where the port keeps vanilla's rabbit, spears and trident:
+    attackRabbit (hurting a rabbit among crops), useSpearFromFar (a kill
+    with a spear's charge while riding; its description changed to match),
+    hitByOrcSpear (an orc's spear blow on a mithril chestplate) and
+    useDunlendingTrident (killing a fish with it, in hand or thrown).
+    What cannot be earned yet is on the tracker.
 - [x] **D8 Animals & mounts** (`entity/animal`): horses, wargs, elk, boars,
   rhinos, camels, etc. — makes mount armour functional. Split into batches
   (wargs are NPCs and belong to D9):
@@ -2375,7 +2501,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     following a waypoint route (D13, tracked).
   - Left for their units: the map, fast travel and waypoints (D13);
     fellowships, the red book and mini-quests (D14); achievements, titles and
-    shields and their notifications (D7); the branding iron (its item).
+    shields and their notifications (D7, done); the branding iron (its item).
 - [ ] **D10 Dimension & world gen**: Middle-earth dimension, biome registry
   from `world/biome` + variants, genlayer → map-image-driven biome source,
   features (trees for saplings!), ores, `world/feature`. Large; plan it in its
@@ -2387,6 +2513,194 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     Middle-earth;
   - the "Middle-earth Classic" world type is ported later, as a late D10
     sub-unit, once the map-driven world works.
+
+  **Plan** (2026-10-09, user: "Everything is on the table now ... You may
+  start porting world gen and advancements when you need to"). The
+  original: `LOTRWorldProviderMiddleEarth` / `LOTRWorldChunkManager` (the
+  genlayer stack over `map/map.png`, one pixel 128 blocks, origin 810,730;
+  biome variants from four more layers) / `LOTRChunkProvider` (1.7.10 octave
+  noise, a 13x13 weighted sample of biome heights, roads and mountains
+  flattening or raising it, then each biome's surface, caves, ravines,
+  dwarven mines, Tauredain pyramids) and `populate` (lakes, the biome's
+  decorator, animals, snow and ice). In 26.2: a datapack dimension
+  (`lotr:middle_earth`, 0-255, sea level 62) whose chunk generator
+  (`LOTRChunkGenerator`) runs the original's terrain and decoration itself
+  and whose biome source reads the genlayers; the biomes as datapack JSON
+  (hand-kept, written from the original's data by a script, since datagen
+  launches the game) carrying temperature, rain and colours, the behaviour
+  staying in Java (`LOTRBiome`). The 1.7.10 noise generators are ported
+  exactly (`LOTRNoiseGeneratorOctaves`/`Improved`; the simplex Perlin on
+  vanilla's `SimplexNoise` with a legacy random, the same algorithm).
+  - [x] **D10a Terrain foundation**. *Result:* `common/world/noise`
+    (1.7.10's octave noise exactly, its y-cell caching quirk included; the
+    simplex Perlin on vanilla's `SimplexNoise`), `common/world/genlayer`
+    (every layer but the Classic ones, D10k; `LOTRGenLayers` per thread),
+    `LOTRWorldChunkManager`, `LOTRChunkGenerator` (generateTerrain,
+    initializeHeightNoise, replaceBlocksForBiome, in fillFromNoise),
+    `LOTRBiomeSource`, `LOTRWorldGen` (registration; the seed given as the
+    level loads), `LOTRBiome` (with `generateBiomeTerrain`),
+    `LOTRBiomeDecorator`'s settings, the variants, `LOTRTreeType` (types
+    only; their trees D10d), `LOTRWorldGenBoulder`, `LOTRBiomes` (all 169
+    from initBiomes, Utumno's D15). Every biome class exists with its
+    original superclass; their constructors' data lines (blocks, variants,
+    trees, decorator numbers, colours) and one-line overrides are ported,
+    the rest of each (spawn lists, structures, ores, flowers, overrides
+    such as Mordor's surface) is D10f, marked in each class. Data:
+    `dimension/middle_earth.json`, `dimension_type/middle_earth.json`
+    (0-255), 169 `worldgen/biome` JSONs, `biome.lotr.*` names from the
+    original's lang. `/lotrTravel [players]` (op) to and from
+    Middle-earth. The structures' `isSurfaceStatic` now also takes the
+    biome's top and filler, as the original's did.
+    **Fixed:** the source's zoom layer clamped every value to 0-255, which
+    left random rivers out entirely and every place the first of its
+    biome's variants; values now pass through, as the mod's layers meant.
+    Kept: `LOTRGenLayerZoomVoronoi`'s first-cell read
+    (`variants[k3 + xSizeZoom]`, where vanilla's is `(k3 + 1) * xSizeZoom`).
+  - [x] **D10b Map features in the terrain**. *Result:* `LOTRMountains`
+    (all 39, Mount Doom's lava crater), `LOTRFixedStructures` (the spawn,
+    Utumno entrance and Mordor cherry tree points, `hasMapFeatures` from
+    the config, the mountain-near and structure-near rules: a fixed
+    structure or waypoint within 256 blocks, a road within 32),
+    `LOTRRoadGenerator` (roads four deep by the biome's road type and
+    repair, slabs on downslopes, bridges over water with edges, fences and
+    pillars, flowers and hedges beside the flowered roads), all wired into
+    `LOTRChunkGenerator` (roads flatten the noise, mountains raise it, lava
+    fills the crater) and `LOTRWorldChunkManager` (no variant by a
+    mountain, no random lake or river by a structure);
+    `LOTRIsengardWallsStructure` and `LOTRRammasEchorStructure` (built by
+    Nan Curunír's and the Pelennor's decorate, D10e/f; the Isengard
+    ladders' `dz` from `centreX` kept as the original has it);
+    `LOTRBiomeVariantStorage` (a chunk attachment, saved and synced to the
+    players watching, as the original's chunk data and
+    `LOTRPacketBiomeVariantsWatch`); `LOTRBiome`'s road and bridge types
+    and its flower lists (`registerPlainsFlowers` and the rest). The
+    Middle-earth Classic world type's lack of map features waits on D10k.
+  - [x] **D10c Carvers and populate**. *Result:* `common/world/mapgen`:
+    `LOTRMapGenBase` (1.7.10's MapGenBase seeding, eight chunks round),
+    `LOTRMapGenCaves` (through the land's own blocks and water only, lava
+    under y 10, one cave in five may break the surface but never under a
+    road or village, the floor regrassed where it does; the dig a block
+    above its row kept, as the original's index runs) and
+    `LOTRMapGenRavine` (on 1.7.10's ravine roll; Gorgoroth riven with
+    twenty tries a chunk, lava up to y 60 there), both carved into the
+    chunk's terrain after its surface as provideChunk did;
+    `LOTRWorldGenLakes` (1.7.10's WorldGenLakes, vanilla's LakeFeature
+    being deprecated: lava lakes walled in stone, water lakes grassing
+    their sunlit shores and freezing in the cold); populate in
+    `applyBiomeDecoration` with the original's seeding -- a lake one chunk
+    in four below y 60, a lava lake one in eight, then snow and ice over
+    the chunk offset by eight (the vanilla biome's freezing and snowing,
+    which are 1.7.10's, and the LOTR biome's snow line). The Mordor and
+    Far Harad jungle shells' conditional lines (`isGorgoroth`, `isMuddy`)
+    restored, which D10a's script had made unconditional. Waiting: the
+    oceans' and tundra's own freezing and snow (LOTRWorldProvider, D10i);
+    the decorator's place in populate (D10e), the mines' and pyramids'
+    (D10h), the animals' (D12).
+  - [x] **D10d Trees and features** (`world/feature`). *Result:* all 55 of
+    the original's feature classes (`LOTRWorldGen*`, its names kept) on
+    `LOTRFeature` (1.7.10's WorldGenerator/WorldGenAbstractTree calls on
+    26.2 states; the leaves a feature places get their distance from the
+    nearest log afterwards, as vanilla's TreeFeature does, today's leaves
+    decaying by it), transliterated by script and finished by hand;
+    `LOTRTreeType` with all 111 factories -- the mod's trees, its 1.7.10
+    vanilla trees as today's vanilla configured trees (swamp oak, spruce,
+    pine, mega spruce and pine, jungle, mega jungle, acacia, dark oak; the
+    cloud forest's 30-high jungle giant on vanilla's mega jungle placer),
+    the extreme mallorn and the mirk, red and green oaks on their D11
+    structure ports, wrapped for their leaves. Saplings grow
+    (`LOTRSaplingGrowth`, every sapling's growTree: 5 x 5 great mallorns
+    on quendite grass, party trees, mallorn boughs from a cross, 2 x 2 to
+    5 x 5 redwoods and dragonbloods, the large kinds one in ten), vanilla's
+    six old saplings too, as LOTRVanillaSaplings grew them
+    (`LOTRSaplingBlockMixin`). Structures' `placeTree`/`placeBiomeTree`
+    grow their trees. Added with them: `TROLL_HOARD_ETTENMOORS` (the troll
+    totem pieces in one Ettenmoors hoard in five), Mordor's
+    `isSurfaceMordorBlock`. The structure bases are generators too.
+  - [x] **D10e The decorator** (`LOTRBiomeDecorator.decorate`). *Result:*
+    `decorate` whole, in the original's order and draws, called from
+    `applyBiomeDecoration` with the biome at the chunk's corner plus
+    sixteen: the default soils, ores and gems (`addDefaultOres`), the
+    variant's own decoration (orchards), cobwebs and stalactites,
+    quagmire, sand (white where set) and clay, surface gravel, the random
+    structures (their per-chunk seed, none by a road or within 32 blocks
+    of the origin), the three fixed easter eggs, trees (the variant's
+    factor and trees, the biome's increase chance, the clusters), water
+    willows, fallen leaves and bushes, logs, vines, flowers and double
+    flowers, grasses and double grasses (`LOTRBiome.getRandomGrass` and
+    the generator pickers), dead bushes, lily pads, mushrooms, cane,
+    reeds and dried reeds, corn, cacti, melons, pumpkins, berry bushes,
+    athelas, water and lava springs (Mordor's 50), orc dungeons, troll
+    hoards and the variants' boulders. 1.7.10's own small generators the
+    decorators used (WorldGenMinable, Flowers, TallGrass, DoublePlant,
+    Reed, Pumpkin, Melon, Waterlily, Vines, Cactus, DeadBush) are
+    `LOTRVanillaWorldGens`, as they placed. The marsh hut (map 1419, 1134,
+    `LOTRMarshHutStructure`) and Gruk's house (989, 528,
+    `LOTRGrukHouseStructure`) ported; the Ticket Booth placed at its spot.
+    With the biomes in place, structures now use them: `isBiome` (the
+    original's instanceof, subclasses included), `setBiomeTop`/`Filler`,
+    and the biome's flowers and grasses for `plantFlower`,
+    `plantTallGrass` and flower pots. *Divergences:* wild pumpkins are
+    today's plain pumpkin (1.7.10's faced pumpkin is today's carved one;
+    its facing draw is kept); the marsh hut's donkey is vanilla's and can
+    be ridden (the original's was the mod's horse, unmountable); the
+    easter eggs' animals have the most health today's attribute allows,
+    not 1.0E8; Gruk's door sign reads "chlebový", which the original had
+    garbled by a wrong encoding. *Changed with D10h:* the decoration runs
+    as 1.7.10's populate ran, not in the chunk generator's feature step
+    (`LOTRChunkPopulator`): a chunk is decorated once it and its
+    neighbours east, south and south-east are loaded, in the level itself
+    on the server's thread, a flag kept with the chunk once done. The
+    feature step can write only one chunk out and crashes on reading
+    further, which the original's structures do; the generators kept
+    state as they worked, too (they are synchronized as well, in case).
+  - [x] **D10f The biomes**, all 165 classes whole, converted from the
+    original's sources by script and finished by hand: their blocks,
+    variants, decorator settings, ores, random structures, villages and
+    fixed settlements, flowers, colours, NPC and animal spawn lists
+    (`LOTRSpawnList`, `LOTRBiomeSpawnList`, `LOTRSpawnEntry` -- the
+    original's rabbit and fish, vanilla duplicates, are vanilla's rabbit and
+    cod), invasions (`LOTRBiomeInvasionSpawns`), bandits, travelling
+    traders, music regions (`LOTRMusicRegion`, data), achievements,
+    waypoint regions, custom decoration and the 50 biomes' own terrain
+    passes. The terrain passes swapped the biome's top and filler fields
+    about the shared pass; that is now a pass with them given
+    (`generateBiomeTerrain(.., top, filler)`, `generateMountainTerrain` too),
+    and the two that changed shared state while decorating or laying
+    terrain have hooks instead (Kanuka's `isPodzolEnabled`, Near Harad's
+    `getGrassPerChunk`). Added for them: the eight structures only the
+    biomes placed (small stone ruins, Gondor ruins with their two chest
+    pools, Angmar hillman village, Near Harad desert camp, Dale village,
+    Dorwinion camp, Moredain village and camp); `getRandomFlower` by
+    variant again (Eriador's lavender, the roads' flowers); the decorator's
+    `genTree` and biome's `getTreeGen`; the flower pots', biome
+    flowers' and village paths' biome lookups. Waiting: Utumno's biome and
+    lists, the Forodwaith Utumno entrance (D15); the Tundra's grass colour
+    and the savannah's F3 line (D10g); spawning by these lists (D12);
+    conquest's effect on the lists (D12).
+  - [ ] **D10g Client**: grass and foliage colours (with the variants),
+    sky, fog and cloud colours blended, fog density, the water colour by
+    latitude, the sky, cloud and weather renderers, the Misty Mountains'
+    mist, sun flare, aurora, ambience; the F3 biome lines.
+  - [x] **D10h Structures in the world**. *Result:* villages found and
+    built as the original's were (`LOTRVillageGen`: fixed settlements at
+    their waypoints, the grid, the position caches, the road, mountain and
+    fixed-structure clearances, the biome and variant checks,
+    `generateInChunk`), the ground flattened under flat villages in the
+    terrain pass (`checkForVillages`, the world given by seed and chunk
+    manager, there being no level yet), variants kept off fixed villages;
+    the biomes' random structures and villages placed by the decorator; the
+    dwarven mines and Tauredain pyramids as 1.7.10's MapGenStructures
+    (`world/mapgen/structure`: its bounding box, component, start and map
+    gen, the starts kept with the level; `LOTRMapGenDwarvenMine` and
+    `LOTRMapGenTauredainPyramid` with their pieces), built in populate;
+    the mines' chests filled as vanilla's chest filler filled them
+    (`fillInventoryPlain`: no pouches, lore or modifiers, as the original).
+  - [ ] **D10i The dimension's rules**: respawning in Middle-earth (the
+    `MER*` config), the portal spawn point, the welcome and departure
+    messages, the day length, moon phases and eclipse.
+  - [ ] **D10j The tracker's D10 items** (biome achievements, the biome
+    pulls in NPC wandering, natural spawn checks, ImmuneToHeat, ...).
+  - [ ] **D10k Middle-earth Classic** world type.
 - [x] **D11 Structures & villages** (`structure`, `structure2`, `village`,
   mapgen dwarven mines/tpyr). Ported before D10 (user): each structure is
   built and tested through the structure spawner item, as the original's
@@ -2457,9 +2771,9 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     Rivendell, Galadhrim, Wood-elves, Dorwinion)~~ (ids 60-71, 200-204, 280-282, 700-706; with them
     the Gondor structure base and bath, and three tree generators the elves build in -- the
     extreme mallorn, the mirk-oak and the web of Ungoliant -- on the older base, ready for D10); ~~dwarves and Dale~~ (ids 50-52, 240-245, 260-265); ~~Rohan~~ (ids 300-322, 351; with Gondor's barn, which Rohan's is built on);
-    ~~Gondor and its fiefs~~ (ids 400-433, 450, 452, 500-562; the town trees and Ithilien hideout oak wait on the tree features like the elves'; the Smithy's four absolute-coordinate metadata calls, which only ever touched bedrock near the world origin, are left out with a note); ~~Mordor, Dol Guldur, Uruks, Angmar, Gundabad and
+    ~~Gondor and its fiefs~~ (ids 400-433, 450, 452, 500-562; the town trees and Ithilien hideout oak grow since D10d; the Smithy's four absolute-coordinate metadata calls, which only ever touched bedrock near the world origin, are left out with a note); ~~Mordor, Dol Guldur, Uruks, Angmar, Gundabad and
     the half-trolls~~ (ids 120-123, 140-145, 160-162, 220-225, 350-354, 600-605, 650-651, 670, 1700-1701; with them the Mordor orc slaver and the Nurn slaves the slaver tower and Nurn farms need; the orc dungeon's orcs from the biome's spawn list wait on D10 and it spawns its Gundabad fallback until then); ~~Dunland~~ (ids 380-383); ~~Near Harad (Southron, Umbar, Corsairs,
-    Harnedor, nomads, Gulf)~~ (ids 1000-1263; the town trees and the Corsair cove's palm wait on the tree features, and the town flowers on the biomes' flowers, as elsewhere); ~~Rhûn~~ (ids 750-777; the village farms' orchard trees wait on the tree features); ~~Far Harad (Moredain, Tauredain)~~ (ids 1500-1559; with the original's maze generator for the Tauredain pyramid; the village trees wait on the tree features); ~~the hidden Ticket Booth~~ (id 1994, on the Easterling town base; its fixed spot on the map, LOTRFixedStructures at map image 1583, 2527, waits on D10).
+    Harnedor, nomads, Gulf)~~ (ids 1000-1263; the town trees and the Corsair cove's palm grow since D10d, and the town flowers wait on the biomes' flowers, as elsewhere); ~~Rhûn~~ (ids 750-777; the village farms' orchard trees grow since D10d); ~~Far Harad (Moredain, Tauredain)~~ (ids 1500-1559; with the original's maze generator for the Tauredain pyramid; the village trees grow since D10d); ~~the hidden Ticket Booth~~ (id 1994, on the Easterling town base; placed at its fixed spot on the map, map image 1583, 2527, since D10e).
   - [x] **D11 villages** (`village/`, `LOTRVillageGen` and the twelve
     peoples'), each spawnable from its structure-spawner subtype.
     *Result:* `common/world/village/`: `LOTRVillageGen` (layout, the
@@ -2478,14 +2792,17 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     dwarven mines and Tauredain pyramids (`mapgen`), and conquest.
   - Banners among the structures are placed since D4c.
 - [ ] **D12 NPC spawning, invasions, spawn damping** (extend `LOTRInvasions`).
-- [ ] **D13 Map & waypoints / fast travel** (map GUI, `world/map`). Waits
+- [ ] **D13 Map & waypoints / fast travel** (map GUI, `world/map`; its two
+  keys, Map Teleport M and Fast Travel F, are registered already in
+  `LOTRKeyBindings` for the map screen to read). Waits
   on D10: the map places the player, waypoints and travel by Middle-earth's
   own coordinates, which mean nothing until its dimension exists. (The
   waypoints and roads as data, and the map drawing, came with the main
   menu.)
-- [ ] **D14 Quests, fellowships, mini-quests, Grey Wanderer.** Mostly
-  unblocked (the NPCs who give quests exist); conquest, and the quests and
-  fellowship features that use the map, wait on D10/D13. Split:
+- [x] **D14 Quests, fellowships, mini-quests, Grey Wanderer.** Everything
+  unblocked is done; conquest, the Grey Wanderer's natural arrival, and the
+  quest and fellowship features that use the map wait on D10/D12/D13
+  (tracked). Split:
   - [x] **D14a Fellowships** (`common/fellowship`, user: "do what is
     unblocked in D14"):
     - `LOTRFellowship` (saved by the original's keys) and `LOTRFellowships`,
@@ -2496,7 +2813,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       player's fellowships follow from the fellowships' member lists.
     - Every rule of LOTRPlayerData's fellowship methods: create (the
       config switch; one led fellowship, `getMaxLeadingFellowships`'s
-      +1 per 20 achievements waits on D7), invite / accept (the size limit,
+      +1 per 20 achievements, D7c), invite / accept (the size limit,
       DISBANDED / TOO_LARGE / NONEXISTENT answers) / reject, leave,
       disband, remove, transfer, op/deop, rename, icon from the hand, the
       PVP / hired-FF / map-show toggles, each with its notification (chat
@@ -2532,9 +2849,8 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       6, kill 8, bounty 4) but its loop never stopped, so the last kind in
       its map always won; the port picks by weight. Kept as the original
       had it: the nomads' "camel carpets" ask for white carpet (the colour
-      was passed as the stack size). Not ported (user): the corsairs'
-      chests of loot (pouches) and pouch rewards (their items are given
-      loose).
+      was passed as the stack size). The corsairs' chests-of-loot quest and
+      the 1-in-10 reward pouch came with the pouches (below).
     - Each player's quests (`LOTRMiniQuests`, saved data
       `lotr:miniquests`, as quests fail and bounties land while their
       players are away): in hand, done, the count done, bounties done,
@@ -2574,9 +2890,52 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       last seen (biome D10, waypoint D13), and the ruffian spy's paid-for
       help with it; the biome a quest was given in (D10); the daily advance
       of the Shire calendar (D10, with the world's time); mini-quests
-      paused during a siege (invasions, D12); the quest achievements (D7).
+      paused during a siege (invasions, D12). (The quest achievements: D7c.)
+  - [x] **Pouches** (user, after D14b: "Port the pouches and drop chances";
+    they had been excluded):
+    - `LOTRPouchItem`: three items for the three sizes (9, 18, 27 slots;
+      legacy `pouch` 0-2), one to a stack. Goods in vanilla's container
+      contents (hidden from the tooltip, which counts used slots), colour in
+      vanilla's dyed colour (the original's brown undyed), name in the
+      custom name. Washed in a cauldron (`#cauldron_can_remove_dye`).
+    - `LOTRPouchMenu` / `LOTRPouchScreen` (renamed as typed, the pouch held
+      fast while open, no pouch in a pouch); used on a chest, the mod's
+      chests, the ender chest (nothing solid on it) or a chest minecart:
+      `LOTRChestWithPouchMenu` / `LOTRChestWithPouchScreen` (not a spawner
+      chest still holding its creature); the open-pouch icon
+      (`lotr:pouch_open`).
+    - Picked-up goods go first into pouches already holding the like
+      (`LOTRItemEntityMixin`); the restock button on container screens
+      (`LOTRPouchRestockButton`, top left on the anvils', beside the barrel's).
+    - `LOTRPouchRecipe`: combining pouches (up to a large one's slots, goods
+      kept) and dyeing, anywhere; at every faction table (`faction_pouch`,
+      27 tables) a single pouch takes the faction's colour.
+    - Drop chances: a player's NPC kill, 1 in 60, leaves its drops in a
+      random pouch (6/3/1 in 10 small/medium/large, half in the faction's
+      colour), its inventories' goods never pouched; chest pools with
+      pouches, 1 in 50 a random pouch (before the 1 in 50 scroll); a
+      mini-quest reward, 1 in 10, in a pouch (lore books and scrolls too);
+      the Grey Wanderer's three small pouches at the welcome's thirteenth
+      stage, once per player ("Pouches"); the corsairs' "collectChests"
+      asks for 3-5 small pouches. Bandits steal pouches after weapons and
+      tools; the Near Harad and nomad merchants hold a small one; the Dale
+      cracker refuses them.
+    - Divergence (surfaced): dye colours are today's vanilla dye colours,
+      not 1.7.10's fleece colours.
+    - Waiting: the fishing treasure's pouches (20/10/5, with the
+      Middle-earth fish hook, D3/D10). (`getPouch`: D7c.)
 - [ ] **D15 Portals**: elven/morgul/utumno portals, Utumno dimension.
 - [ ] **D16 Remaining GUIs, commands, particles/fx, sounds, drunken speech.**
+  - [x] **Commands** (`LOTRMiscCommands`): `/pledgeCooldown`, `/lotrEnchant`
+    (the modifiers; `add`/`remove`/`clear`, suggesting what fits the held
+    item), `/lotrDate get|set|add` (the new date shown to everyone fading in
+    and out, `LOTRDateHud`, which is also where the client now hears the
+    date at all). Not ported: `/lotr_summon` (only offered the 1.7.10 entity
+    names to `/summon`, which today takes `lotr:` ids itself) and
+    `/strscan` (the authors' scan recorder, in 1.7.10 block ids). Waiting:
+    `/conquest`, `/invasion`, `/spawnDamping`
+    (D12/D14), `/lotr_time`, `/opHideMap`, `/fastTravelClock`,
+    `/wpCooldown`, `/lotrWaypoints` (D10/D13).
 
 ## Deferred-port tracker
 
@@ -2616,15 +2975,13 @@ only to the unit's *Result*.
 - [x] Floating barrel entity: `LOTRItemBarrel.onItemRightClick` puts a
   rideable barrel on water → `LOTRBarrelItem` [B5b] -- D4a
 - [ ] Banner protection waiting on other units [D4c] (fellowships on a
-  banner's whitelist: D14a): the `bannerProtect` achievement (D7); NPCs' `getCanSpawnHere` refusing
+  banner's whitelist: D14a; the `bannerProtect` achievement: D7c): NPCs' `getCanSpawnHere` refusing
   protected land, the invasion spawner's and conquest horn's checks (D12);
   custom waypoints in protected land (`LOTRPacketCreateCWP`, D13).
 
 ### D5/D6 — player data, config
 - [ ] Config options waiting on their systems (all read into `LOTRConfig`
   already) [D6]:
-  - D7: `enableTitles`, `strictFactionTitleRequirements`,
-    `protectHobbitKillers`.
   - D10: the `dimension` category, `middleEarthRespawning` and the four
     `MER*` values, `generateMapFeatures`, `generateFixedSettlements`, XP
     orbs removed in Middle-earth with vanilla enchanting off, the environment
@@ -2706,63 +3063,20 @@ only to the unit's *Result*.
   - The animal spawner (`LOTRSpawnerAnimals`) is D12.
 
 ### D7 — achievements and titles
-- [ ] Trading achievements: `earnManyCoins` (selling 1000 coins' worth at
-  once), `combineSmithScrolls` (taking a combined scroll from a smith) [G1]
-- [ ] `rideWarg` (a tamed, saddled warg ridden) [D9c]
-- [ ] Hobbit achievements: `killHobbit`, `marryHobbit` (the marriage goal's
-  `marriageAchievement`), `speakToDrunkard` (`LOTREntityHobbit.speakTo`),
-  `tradeHobbitShirriff`, `buyPotatoHobbitFarmer`, `hireHobbitFarmer`,
-  `buyOrcharderFood`, `tradeBartender`, `sellPipeweedLeaf` [D9a]
-- [ ] Achievements to wire up where their triggers already exist:
-  `harvestGrapes`, `pickBanana` [B3]; Dwarven door, grape, banana and beacon
-  achievements [B4]; `brewDrinkInBarrel` [B5b]; `cookKebab`,
-  `smeltObsidianShard` [B5c]; `catchButterfly` [B5d]; `unsmelt` [B5a];
-  drink achievements (`LOTRDrinkItem`) [B10]; Dale cracker [B5d];
-  `getTrollStatue` (`LOTRStoneTrollEntity`) [B13a]; `hitBirdFirePot`
-  (`LOTRFirePotEntity`) [B13c]; `craftAncientItem` (`LOTRAncientItem`)
-  [B13]; `pledgeService` and `checkAlignmentAchievements` on alignment
-  change and pledging (`LOTRPlayerAlignments`) [B12b]
-- [ ] Dwarf achievements: `killDwarf`, `killBlueDwarf`, `killWickedDwarf`,
-  `marryDwarf`, `marryBlueDwarf`, `talkDwarfWoman`, `tradeDwarfMiner`,
-  `tradeBlueDwarfMiner`, `tradeDwarfSmith`, `tradeBlueDwarfSmith`,
-  `tradeDwarfCommander`, `tradeBlueDwarfCommander`, `tradeIronHillsMerchant`,
-  `tradeBlueDwarfMerchant`, `tradeWickedDwarf`; the Durin's Folk and Blue
-  Mountains shields (`ALIGNMENT_DWARF`, `ALIGNMENT_BLUE_MOUNTAINS`) on
-  warriors [D9h]
-- [ ] Dorwinion achievements: `killDorwinion`, `killDorwinionElf`,
-  `stealDorwinionGrapes`, `tradeDorwinionCaptain`, `tradeDorwinionElfCaptain`,
-  `hireDorwinionVinekeeper`, `tradeDorwinionMerchant`, `buyWineVintner`; the
-  Dorwinion and Dorwinion elf shields [D9g]
-- [ ] Wood-elf achievements: `killWoodElf`, `tradeWoodElfCaptain`,
-  `tradeWoodElfSmith`; the Wood-elf shield (`ALIGNMENT_WOOD_ELF`) [D9g]
-- [ ] High Elf achievements: `killHighElf`, `killRivendellElf`,
-  `tradeHighElfLord`, `tradeRivendellLord`, `tradeHighElfSmith`,
-  `tradeRivendellSmith`, `tradeRivendellTrader`; the Lindon and Rivendell
-  shields (`ALIGNMENT_HIGH_ELF`, `ALIGNMENT_RIVENDELL`) on warriors [D9g]
-- [ ] Lothlórien achievements: `killElf`, `tradeElfLord`,
-  `tradeGaladhrimSmith`, `tradeElvenTrader`, `takeMallornWood`; the
-  Galadhrim shield (`LOTRShields.ALIGNMENT_GALADHRIM`) on warriors [D9g]
-- [ ] Fief achievements: `killSwanKnight`, `tradeDolAmrothCaptain`,
-  `tradeLossarnachCaptain`, `tradePelargirCaptain`, `tradePinnathGelinCaptain`,
-  `tradeBlackrootCaptain`, `tradeLebenninCaptain`, `tradeLamedonCaptain`; the
-  fief shields (`ALIGNMENT_DOL_AMROTH`, `_LOSSARNACH`, `_PELARGIR`,
-  `_PINNATH_GELIN`, `_BLACKROOT_VALE`, `_LEBENNIN`, `_LAMEDON`) [D9f]
-- [ ] Gondor achievements: `killGondorian`, `tradeGondorBlacksmith`,
-  `tradeGondorBartender`, `tradeGondorMarketTrader`, `buyPipeweedGondorFarmer`,
-  `hireGondorFarmer`, `tradeGondorianCaptain`; the Gondor shield
-  (`LOTRShields.ALIGNMENT_GONDOR`) on soldiers [D9f]
-- [ ] Rohan achievements: `killRohirrim`, `tradeRohanBlacksmith`,
-  `buyRohanMead`, `tradeRohanMarketTrader`, `tradeRohanFarmer`,
-  `hireRohanFarmer`, `tradeRohanStablemaster`, `tradeRohirrimMarshal`; and
-  the Rohan shield (`LOTRShields.ALIGNMENT_ROHAN`) on warriors [D9e]
-- [ ] Bree achievements: `killRuffianSpy`, `killRuffianBrute`,
-  `killBreelander`, `killBreeHobbit`,
-  `tradeBreeCaptain`, `tradeBreeBlacksmith`, `tradeBreeInnkeeper`,
-  `tradeBreeMarketTrader`, `buyAppleBreeFarmer`, `hireBreeFarmer`; and the
-  Bree-land shield (`LOTRShields.ALIGNMENT_BREE`) on guards [D9d]
-- [ ] Rank achievements and titles: `LOTRFactionRank.hasRankAchievement` /
-  `hasRankTitle` are flags only (`LOTRAchievementRank`, `LOTRTitle`) [B12a]
-
+- [x] ~~Every achievement whose trigger exists is wired (D7c): the kill, trade, buy/sell, hire,
+  marry and talk achievements on their NPCs; quest groups, bounties, pickpocketing and the Grey
+  Wanderer; crafting tables and crafting/smelting/pickups (`LOTRAchievementEvents`, the result-slot
+  mixins); blocks (beacon, banana, kebab, grapes, remains, ores, Dwarven door); items (drinks, foods,
+  pipe, jar, cracker, ancient item, Ent-draughts, banner); the anvil, unsmeltery, millstone, barrel
+  and selling; banes; bosses; mounts (camel, warg); rank achievements and pledging~~
+- [ ] Biome achievements (`enter*`, `climbMistyMountains`), `growBaobab` (tree growth),
+  `rideGiraffeShire`, `rideBarrelMirkwood` → D10
+- [ ] `fishRing` (the Middle-earth fish hook) → D3/D10; `defeatInvasion` → D12; `factionConquest`
+  → conquest (D14)
+- [ ] Utumno: `enterUtumno*`, `leaveUtumno`, `useElvenPortal`, `useMorgulPortal`, `killBalrog`,
+  `killTormentedElf`, `killUtumnoOrc/Troll/Warg`, `wearFullUtumno`, `craftUtumnoKey` (keys exist) → D15
+- [ ] A boss's kill achievement reaches only those of its damagers who are online (the original
+  could write an offline player's data)
 ### D8 — animals and mounts
 - [x] ~~Swan chestplate wings driven by the mount's stride when riding [B9]~~ — after B16a
 - [x] ~~Rohirric marshal helmet plume sway [B9]~~ — after B16a (the walk state was in the armour renderer's render state all along)
@@ -2775,11 +3089,11 @@ only to the unit's *Result*.
     unscaled; a butterfly faces the viewer.
   - The jar has a `lit` state: 7 with a Lórien butterfly inside.
   - The jar items draw their creature too (`LOTRAnimalJarSpecialRenderer`).
-- [ ] The fire pot's hitBirdFirePot achievement (a bird hit in flight) → D7;
-  the bird cage tag is done [B13c, D8f]
+- [x] ~~The fire pot's hitBirdFirePot achievement (a bird hit in flight);
+  the bird cage tag is done [B13c, D8f]~~ — D7c
 - [ ] Creatures' kinds by biome (butterfly: Mirkwood, Lórien, jungle; bird:
-  Far Harad) and the Midgewater swarms → D10; midges' shootDownMidges
-  achievement → D7 [D8f]
+  Far Harad) and the Midgewater swarms → D10 (midges' shootDownMidges:
+  D7c) [D8f]
 - [x] ~~LOTR rabbit~~ -- user: dropped as a vanilla duplicate (and with it
   `LOTREntityAIRabbitEatCrops` and the attackRabbit achievement) [D8b]
 - [x] ~~LOTR fish~~ -- user: dropped as a vanilla duplicate [D8f]
@@ -2792,8 +3106,8 @@ only to the unit's *Result*.
 - [ ] The scorpions' spawner flag and
   depth/pyramid spawn rules, the desert scorpion's ImmuneToHeat, and the
   crocodile's water search and Far Harad swamp light rule → D10-D12 [D8e]
-- [ ] Mount achievements rideShirePony, rideCamel, rideGiraffeShire → D7;
-  the Rohan and Dor-en-Ernil horse boosts, the camel's ImmuneToHeat, the
+- [ ] Mount achievements: rideCamel and rideShirePony done (D7c, B16c);
+  rideGiraffeShire on the D7 list; the Rohan and Dor-en-Ernil horse boosts, the camel's ImmuneToHeat, the
   Shire check → D10 [D8d]
 - [ ] Vanilla leather horse armour has no 1.7.10-layout sheet, so it is not
   drawn on LOTR horses [D8d]. (LOTR barding no longer goes on vanilla horses
@@ -2838,14 +3152,14 @@ only to the unit's *Result*.
   when he offers it: D14b)
 - [ ] Gollum: natural spawning within 128 of the High Pass waypoint
   (`LOTRGollumSpawner`, with the Middle-earth dimension and waypoints)
-  [D12, D13]; `tameGollum` achievement [D7] [D9r-b] (his pack's screen
+  [D12, D13] (`tameGollum`: D7c) [D9r-b] (his pack's screen
   and health bar: G4b/G5)
-- [ ] Structures (D11) until the biomes (D10): a structure's biome top and
+- [x] ~~Structures (D11) until the biomes (D10): a structure's biome top and
   filler blocks are grass and dirt; its flowers and grass are vanilla's
   dandelion, poppy and grass (the original's outside its biomes); a biome's
   own trees (`placeBiomeTree`, e.g. the hobbit hole's Shire tree) grow
   nothing; and natural generation's biome checks (`isBiome`) match nothing
-  [D11a]
+  [D11a]~~ -- D10d (trees), D10e
 - [x] Structures' banners (`placeBanner`, `placeWallBanner`) place nothing
   until the banner entities (D14) [D11a] -- D4c
 - [x] ~~Structures' flower pots hold only plants vanilla can pot; the mod's own
@@ -2861,7 +3175,7 @@ only to the unit's *Result*.
   bearer (D9t); the scrap trader with his anvil's half prices and mischief
   [D9, G1]~~ — the scrap trader after B16a
 - [ ] The scrap trader's Utumno side (fading away, no trading, unhurt; the
-  `utumno` speech bank), with D15; `tradeScrapTrader` (D7); and while he
+  `utumno` speech bank), with D15; and while he
   misbehaves, the LOTR biomes' sky going black (`LOTRBiome.getSkyColorByTemp`,
   D10) [after B16a]
 - [x] ~~His rare client-side misbehaving (`scrapTraderMisbehaveTick`)~~ --
@@ -2869,11 +3183,11 @@ only to the unit's *Result*.
   (`LOTRLightmapRenderStateExtractorMixin`), his towering ring of copies in
   `LOTRScrapTraderRenderer`, which also hides him from the screenshot key
   as the original did
-- [ ] Dale's warhorn (`LOTRInvasions.DALE`, D12), the Dale
-  and Esgaroth shields (D7), Dale's pull and spawn check
+- [ ] Dale's warhorn (`LOTRInvasions.DALE`, D12), Dale's pull and spawn check
   (D10), the merchant's travelling-trader spawning (D12) [D9t]
-- [ ] Structures' trees (`LOTRTreeType...generate`, `placeTree`) grow
-  nothing until the tree features (D10) [D11c]
+- [x] ~~Structures' trees (`LOTRTreeType...generate`, `placeTree`) grow
+  nothing until the tree features (D10) [D11c]~~ -- D10d (`placeTree`,
+  `placeBiomeTree`)
 - [ ] The Rangers of the North's warhorn (`LOTRInvasions.RANGER_NORTH`) and
   the Ithilien captain's (`GONDOR_ITHILIEN`), with D12 (their and the
   Dúnedain's mini-quests: D14b); the Dúnedain's natural
@@ -2960,44 +3274,42 @@ only to the unit's *Result*.
 - [ ] The Gulf: the warlord's warhorn (`NEAR_HARAD_GULF`, D12); the Gulf shield (`ALIGNMENT_GULF`);
   `tradeGulfWarlord`, `tradeGulfBlacksmith`, `tradeHaradBartender`,
   `tradeHaradFarmer`, `tradeBazaarTrader`; mini-quests; the Gulf house's lore
-  books and pouches [D9k]
+  books [D9k]
 - [ ] Rhûn: the warlord's warhorn (`LOTRInvasions.RHUN`, D12); the Rhûn shield
   (`ALIGNMENT_RHUN`); `killEasterling`, `tradeRhunCaptain`,
   `tradeRhunBlacksmith`, `tradeRhunBartender`, `tradeRhunMarketTrader`,
   `hireRhunFarmer`; the pull of the Rhûn lands and the y > 62 top-block spawn
-  rule (D10); mini-quests; the Easterling house's lore books and pouches [D9l]
+  rule (D10); mini-quests; the Easterling house's lore books [D9l]
 - [ ] The Moredain: the chieftain's warhorn (`LOTRInvasions.MOREDAIN`, D12);
   the Moredain shield (`ALIGNMENT_MOREDAIN`) on warriors and mercenaries;
   `killMoredain`, `tradeMoredainChieftain`, `tradeMoredainVillager`,
   `hireMoredainMercenary`; the pull of Far Harad and the y > 62 grass/sand
-  spawn rule (D10); mini-quests; the hut's lore books and pouches; bosses
+  spawn rule (D10); mini-quests; the hut's lore books; bosses
   among the non-civilians of `isCivilianNPC`, with the bosses [D9m]
 - [ ] The Tauredain: the chieftain's warhorn (`LOTRInvasions.TAUREDAIN`, D12); the Taurethrim shield
   (`ALIGNMENT_TAUREDAIN`); `killTauredain`, `tradeTauredainChieftain`,
   `tradeTauredainShaman`, `tradeTauredainSmith`, `tradeTauredainFarmer`,
   `hireTauredainFarmer`; the pull of Far Harad and the y > 62 top-block
-  spawn rule (D10); mini-quests; the house's lore books and pouches [D9m]
+  spawn rule (D10); mini-quests; the house's lore books [D9m]
 - [ ] The half-trolls: the warlord's warhorn (`LOTRInvasions.HALF_TROLL`, D12);
   the half-troll shield (`ALIGNMENT_HALF_TROLL`); `killHalfTroll`,
   `tradeHalfTrollWarlord`, `tradeHalfTrollScavenger`; mini-quests [D9m]
-- [ ] The trolls: `killTroll`, `killTrollFleeingSun`, `makeTrollSneeze`,
-  `killOlogHai`, `killMirkTroll`, `killMountainTroll`, `killSnowTroll` (D7); the biomes where hostiles walk by day,
+- [ ] The trolls (their achievements: D7c): the biomes where hostiles walk by day,
   which the sun does not trouble and where creatures of the dark are at home
   (`canSpawnHostilesInDay`, D10); conquest spawning's exemption from the
   dark (D12) [D9n]
-- [ ] Ents and huorns: `killEnt`, `talkEnt`, `killHuorn`, `killDarkHuorn` (D7);
-  the pull of Fangorn (the Old Forest for Dark Huorns) and the y > 62
+- [ ] Ents and huorns (their achievements: D7c): the pull of Fangorn (the Old Forest for Dark Huorns) and the y > 62
   grass-or-dirt spawn rule (D10) [D9o]
 - [ ] Wraiths and wights: the marsh wraiths rising in the Dead Marshes for
   whoever wades there (`LOTREventHandler.spawnMarshWraithIfConditionsMet`,
   with `wraith.spawn`) and the wight's y > 62 top-block spawn rule, with
   the biomes (D10); the darkening of the screen of a wight's quarry and the
   barrows' ambience (`LOTRTickHandlerClient`, `wight.ambience`, with the
-  HUD); `killBarrowWight`, `killMarshWraith` (D7) [D9p]
+  HUD) (`killBarrowWight`, `killMarshWraith`: D7c) [D9p]
 - [ ] The nomads: the chieftain's warhorn (`NEAR_HARAD_NOMAD`, D12);
   `tradeNomadWarlord`, `tradeNomadArmourer`, `tradeNomadMerchant`,
   `tradeBazaarTrader`; ImmuneToHeat (D10); mini-quests; the nomad tent's lore
-  books and pouches [D9k]
+  books [D9k]
 - [ ] The dwarf commanders' warhorns (`LOTRInvasions.DWARF`,
   `BLUE_MOUNTAINS`), with D12 [D9h]
 - [ ] Dwarves' natural spawning (underground on lit rock below y 60, or one
@@ -3019,9 +3331,7 @@ only to the unit's *Result*.
 - [x] ~~The branding iron in the Hobbit farmer's buy pool [D9b]~~ — after B16a
 - [x] ~~Hired units hunting bandits [D9b]~~ — after B16a
 - [ ] Bandits in the world (`LOTREventSpawner`: each biome's bandit kind),
-  the
-  killThievingBandit achievement (D7), and the Harad bandit's turban
-  ornament (with the ornament) [after B16a]
+  and the Harad bandit's turban ornament (with the ornament) [after B16a]
 - [x] ~~Faction trade and hire counters (`LOTRFactionData.addTrade`/`addHire`)
   [D9b]~~ — G1/G2
 - [x] ~~Refusing pickpocketed coins and trade items (`IPickpocketable`), with
@@ -3068,8 +3378,14 @@ only to the unit's *Result*.
   +20) and their natural spawn check (above y 62 on the biome's top block,
   `getCanSpawnHere`), with the biomes and D12 spawning [D9a]
 - [ ] `LOTREntityFishHook`: swapped in for vanilla's hook in Middle-earth
-  (LOTREventHandler), for the Middle-earth fishing loot [D3]
+  (LOTREventHandler), for the Middle-earth fishing loot (with its treasure's
+  pouches, weights 20/10/5 small/medium/large) [D3]
 - [ ] Marsh lights over the Dead Marshes' water (the block exists, D1d) [D1]
+- [ ] The biomes' water effects (`LOTRTickHandlerClient`'s environment FX):
+  Mirkwood's corrupted water bubbling (`mirkwoodWater`, a particle not yet
+  ported), the Morgul Vale's (`morgul_water`, ported), and the faces rising
+  in the Dead Marshes' water (`LOTREntityDeadMarshFace`, one in 800 water
+  blocks sampled), with the biomes (D10) [B16i]
 - [ ] Fallen leaves scattered under trees (the blocks exist, D1b) [D1]
 - [ ] Stalactites and stalagmites in caves (stone; ice and obsidian in their
   biomes) -- the blocks exist (D1) [D1]
@@ -3088,15 +3404,17 @@ only to the unit's *Result*.
   biomes and D12 spawning [D9d]
 - [ ] `LOTRFaction.isFactionDimension` returns true until the dimension
   exists [B12a]
-- [ ] Sapling tree growers are placeholders; grapes' ×1.6 Dorwinion bonus;
-  ent jar herb brewing needs the Fangorn biome; wild yam [B3, B5d]
+- [ ] ~~Sapling tree growers are placeholders~~ (D10d: `LOTRSaplingGrowth`);
+  grapes' ×1.6 Dorwinion bonus; ent jar herb brewing needs the Fangorn
+  biome; wild yam (the generator is D10d's `LOTRWorldGenYams`, placed by
+  the biomes' decorate, D10f) [B3, B5d]
 
 ### D11 — structures
-- [ ] The `LOTRChestContents` pools only biome decoration uses:
+- [x] ~~The `LOTRChestContents` pools only biome decoration uses:
   `TROLL_HOARD_ETTENMOORS` (`LOTRWorldGenTrollHoard`) and
   `GONDOR_RUINS_BONES` / `GONDOR_RUINS_TREASURE` (`LOTRWorldGenGondorRuins`),
   with those generators (D10). Every pool a spawnable structure uses is
-  ported and matches the original entry for entry (B17a).
+  ported and matches the original entry for entry (B17a).~~ -- D10d, D10f
 - [ ] The mod's logs with bark all round (metadata 12-15 of `wood`..`wood9`,
   `LOTRBlockWoodBase`): the port has no such blocks, so they place as
   upright logs. Only the extreme mallorn tree (D10) uses one.
@@ -3110,9 +3428,11 @@ only to the unit's *Result*.
 - [x] ~~Dorwinion mini-quests (`DORWINION`, `DORWINION_ELF`) [D9g]~~ — D14b
 - [x] ~~Galadhrim, Lindon, Rivendell and Wood-elf mini-quests (`GALADHRIM`,
   `HIGH_ELF`, `RIVENDELL`, `WOOD_ELF`) [D9g]~~ — D14b
-- [ ] The jazz elf's music notes (the "music" particle) and its jazz
+- [x] ~~The jazz elf's music notes (the "music" particle) and its jazz
   (`LOTRAmbience`, `music.jazzelf`), and the saxophone drawn in its hands
-  (`LOTRItemRing.saxIcon`) [D9g]
+  (`LOTRItemRing.saxIcon`) [D9g]~~ — `LOTRMusicParticle`, `LOTRJazzMusic`
+  (all other sound stopped, no music over it, the now-playing line), the
+  saxophone through `LOTRItemIn2D` (renderItemIn2D's extruded sprite)
 - [x] ~~Gondor mini-quests (`GONDOR`, the soldier's 1-in-8
   `GONDOR_KILL_RENEGADE`, the renegade's `GONDOR_RENEGADE` at +50, 1 in 4000)
   [D9f]~~ — D14b
@@ -3161,8 +3481,8 @@ only to the unit's *Result*.
     generation first asks for it, not at start-up as the original's were.
   - The map screen itself is still D13.
 - [ ] The LOTR menu's other screens, whose icons are greyed out until then:
-  achievements (D7), the map (D13; greyed only on a classic
-  world in the original), fellowships (D14) (titles and shields: D7a/b); the menu's title
+  the map (D13; greyed only on a classic world in the original) (the
+  achievements: D7c; titles and shields: D7a/b); the menu's title
   names the dimension the player is in (D10); openMenu's welcome
   mini-quest forcing the map (D13; the factions: D14b) [G3a]
 - [ ] Options: Show Map Location (the map, D13) and Conquest Kills
@@ -3294,10 +3614,10 @@ Append here: `- [unit] file:line — description (confirmed|suspected)`.
   (`updateShape` cannot drop). The vine's selection box also widened with age
   (0.1875 → 0.375 half-width). Breaking a vine uses the vanilla crop loot shape,
   not `getVineDrops`' age-scaled seed chance. (confirmed, minor)
-- [B3→D10] Saplings use placeholder `TreeGrower`s and cannot grow until the
-  LOTR tree features exist. Grapes' ×1.6 Dorwinion growth bonus needs the
+- [B3→D10] ~~Saplings use placeholder `TreeGrower`s and cannot grow until the
+  LOTR tree features exist~~ (D10d). Grapes' ×1.6 Dorwinion growth bonus needs the
   biome. Yam crop metadata 8 (wild yam on grass) belongs to world gen.
-- [B3→D7] Achievements `harvestGrapes` and `pickBanana` fire from these blocks.
+- [B3→D7] DONE (D7c) Achievements `harvestGrapes` and `pickBanana` fire from these blocks.
 - [B4] DEFERRED by the user ("leave the leaves for now") — leaf particles. `LOTRBlockLeaves` (gold mallorn, mirk-oak,
   red) and `LOTRBlockLeaves7` (green) drop falling-leaf particles drawn from
   cells of the sheet `old mod/.../assets/lotr/misc/particles.png`. Modern
@@ -3315,12 +3635,12 @@ Append here: `- [unit] file:line — description (confirmed|suspected)`.
   hand).
 - [B4→D] Needs other systems: termite mound spawning termites (mob), quagmire
   letting spiders through, Dwarven door / grape / banana / beacon achievements
-  (D7), banner protection smothering Khamûl's fire, the table of command's
+  (done, D7c), banner protection smothering Khamûl's fire, the table of command's
   squadron and conquest screens, kebab stand keeping meat in its item (original
   stored it in NBT; now it drops).
 - [B4→B5] Block-entity behaviour itself (dart trap firing, forge smelting,
   kebab cooking, animal jar, weapon rack contents) is B5's audit.
-- [B5a→D7] Unsmeltery `unsmelt` achievement on taking the output.
+- [B5a→D7] DONE (D7c) Unsmeltery `unsmelt` achievement on taking the output.
 - [B15→B6] DONE (user: fix it) Recipe namespace: B1 is marked DONE ("unified on `lotr`"), but
   `LOTRRecipeProvider`'s mechanical recipes (planks, beams, smooth stone,
   cut blocks, and smelting) are saved without an explicit id, so Fabric files

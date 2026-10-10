@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
  * in ten), with a Dale sword (three in five), battleaxe or pitchfork -- one
  * in six with a Dale spear to throw first; one in eight rides, on a horse in
  * Dale's barding.
- *
- * <p>NOT ported yet: the Dale shield (LOTRShields.ALIGNMENT_DALE, D7).
  */
 public class LOTRDaleSoldierEntity extends LOTRDaleLevymanEntity {
 

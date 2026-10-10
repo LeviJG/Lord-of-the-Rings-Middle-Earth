@@ -66,3 +66,9 @@ accessible field net/minecraft/client/gui/components/BossHealthOverlay events Lj
 
 # /alignmentsee reads an offline player's saved alignments, as LOTRCommandAlignmentSee read their data.
 accessible field net/minecraft/server/MinecraftServer playerDataStorage Lnet/minecraft/world/level/storage/PlayerDataStorage;
+
+# LOTRGuiHandler.addPouchRestockButton placed the pouch-restock button by a
+# container screen's corner (LOTRReflectionClient.getGuiLeft/getGuiTop),
+# which the screen keeps in these two protected fields.
+accessible	field	net/minecraft/client/gui/screens/inventory/AbstractContainerScreen	leftPos	I
+accessible	field	net/minecraft/client/gui/screens/inventory/AbstractContainerScreen	topPos	I

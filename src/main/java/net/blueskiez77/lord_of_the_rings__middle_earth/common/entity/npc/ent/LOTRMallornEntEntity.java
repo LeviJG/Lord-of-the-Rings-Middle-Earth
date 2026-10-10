@@ -5,6 +5,7 @@ import java.util.List;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMallornLeafBombEntity;
@@ -79,8 +80,6 @@ import org.jspecify.annotations.Nullable;
  * looting), an Ent's leavings, its trophy and sometimes the charred mallorn
  * mace. It is worth 50 alignment and 100 experience, and has no speech bank
  * of its own: it speaks only as it is called up and as its shield rises.
- *
- * <p>NOT ported yet: the killMallornEnt achievement (D7).
  */
 public class LOTRMallornEntEntity extends LOTREntEntity implements LOTRBoss {
 
@@ -593,5 +592,15 @@ public class LOTRMallornEntEntity extends LOTREntEntity implements LOTRBoss {
             this.leaf = new BlockPos(input.getIntOr("X", 0), input.getIntOr("Y", 0), input.getIntOr("Z", 0));
             this.healTime = input.getShortOr("healTime", (short) 0);
         }
+    }
+
+    @Override
+    public @Nullable LOTRAchievement getTalkAchievement() {
+        return null;
+    }
+
+    @Override
+    public LOTRAchievement getBossKillAchievement() {
+        return LOTRAchievement.KILL_MALLORN_ENT;
     }
 }

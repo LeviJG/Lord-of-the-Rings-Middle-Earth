@@ -28,7 +28,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorati
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRThrownTermiteEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity;
 
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.*;

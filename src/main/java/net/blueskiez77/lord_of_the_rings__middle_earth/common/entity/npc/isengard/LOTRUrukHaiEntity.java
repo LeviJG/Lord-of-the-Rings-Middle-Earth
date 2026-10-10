@@ -1,5 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -13,6 +16,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -35,8 +39,8 @@ import org.jspecify.annotations.Nullable;
  * a spear one time in six. It never skirmishes, speaks lower, and leaves Uruk
  * steel and things from an Uruk tent.
  *
- * <p>NOT ported yet: the killUrukHai and raidUrukCamp achievements (D7; the
- * latter asked for a player killing one near an Uruk NPC respawner).
+ * <p>Slain by a player within twelve blocks of an Uruk respawner -- an Uruk camp -- it earns them
+ * raidUrukCamp.
  */
 public class LOTRUrukHaiEntity extends LOTROrcEntity {
 
@@ -130,5 +134,26 @@ public class LOTRUrukHaiEntity extends LOTROrcEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.ISENGARD.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_URUK_HAI;
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel level && source.getEntity() instanceof Player player) {
+            double range = 12.0;
+            for (LOTRNPCRespawnerEntity spawner : level.getEntitiesOfClass(LOTRNPCRespawnerEntity.class,
+                    getBoundingBox().inflate(range))) {
+                Class<?> spawnClass = LOTRNPCRespawnerEntity.classOf(level, spawner.spawnClass1);
+                if (spawnClass != null && LOTRUrukHaiEntity.class.isAssignableFrom(spawnClass)) {
+                    LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.RAID_URUK_CAMP);
+                    break;
+                }
+            }
+        }
     }
 }

@@ -1,6 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.quest;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGreyWandererTracker;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSpeech;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
@@ -17,9 +19,10 @@ import net.minecraft.world.item.ItemStack;
  * book given and read, the map, the factions and alignment, then the road ahead -- each told in a
  * line of his. While a player is on it he stays; if he has moved on, it fails.
  *
- * <p>Not ported (user): the three pouches given at the thirteenth stage. NOT ported yet: the map
- * (D13), whose opening the fifth stage waits on -- until then the quest goes no further than that
- * stage -- and the doGreyQuest achievement (D7).
+ * The thirteenth stage gives three small pouches, once per player.
+ *
+ * <p>NOT ported yet: the map (D13), whose opening the fifth stage waits on -- until then the quest
+ * goes no further than that stage.
  */
 public class LOTRMiniQuestWelcome extends LOTRMiniQuest {
 
@@ -81,6 +84,7 @@ public class LOTRMiniQuestWelcome extends LOTRMiniQuest {
     public void complete(Player player, LOTRNPCEntity npc) {
         super.complete(player, npc);
         updateGreyWanderer();
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DO_GREY_QUEST);
     }
 
     @Override
@@ -212,7 +216,17 @@ public class LOTRMiniQuestWelcome extends LOTRMiniQuest {
             case 10 -> advance(player, npc, 9, 11);
             case 11 -> sendQuoteSpeech(player, npc, line(9));
             case 12 -> advance(player, npc, 10, 13);
-            case 13 -> advance(player, npc, 11, 14);
+            case 13 -> {
+                // Three small pouches, the first time a player comes this far.
+                LOTRMiniQuests.PlayerQuests quests = LOTRMiniQuests.forPlayer(player.getUUID());
+                if (!quests.getGivenFirstPouches() && npc.level() instanceof ServerLevel level) {
+                    for (int i = 0; i < 3; ++i) {
+                        npc.spawnAtLocation(level, new ItemStack(LOTRMiscItems.SMALL_POUCH));
+                    }
+                    quests.setGivenFirstPouches(true);
+                }
+                advance(player, npc, 11, 14);
+            }
             case 14 -> {
                 this.stage = 15;
                 updateQuest();

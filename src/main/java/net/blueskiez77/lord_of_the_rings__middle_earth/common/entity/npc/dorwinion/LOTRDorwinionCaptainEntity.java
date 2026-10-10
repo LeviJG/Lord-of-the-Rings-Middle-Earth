@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
@@ -21,6 +23,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityDorwinionCaptain (the Vintner Guard Captain): a guard who
@@ -29,9 +32,6 @@ import org.jspecify.annotations.Nullable;
  *
  * He hires out guards, crossbowers and banner bearers to those at +150 or
  * better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.DORWINION_CAPTAIN), his warhorn
- * (LOTRInvasions.DORWINION, D12), and the tradeDorwinionCaptain achievement.
  */
 public class LOTRDorwinionCaptainEntity extends LOTRDorwinionGuardEntity implements LOTRUnitTradeable {
 
@@ -59,6 +59,11 @@ public class LOTRDorwinionCaptainEntity extends LOTRDorwinionGuardEntity impleme
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.DORWINION_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.DORWINION;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -91,5 +96,10 @@ public class LOTRDorwinionCaptainEntity extends LOTRDorwinionGuardEntity impleme
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.DORWINION_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DORWINION_CAPTAIN);
     }
 }

@@ -3,7 +3,16 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -20,9 +29,7 @@ import net.minecraft.world.level.block.state.BlockState;
  * stone texture by registerNonConnectedGateIcons -- exactly the arrangement the
  * three portcullis gates use, so it needs no code here beyond the two flags.
  *
- * <p>The original also granted LOTRAchievement.useDwarvenDoor on a successful
- * activation. The port has no achievement system yet, so that is dropped rather
- * than stubbed; the block is otherwise complete.
+ * <p>Opening or closing one by hand earns useDwarvenDoor.
  */
 public class LOTRDwarvenDoorBlock extends LOTRGateBlock {
 
@@ -39,6 +46,25 @@ public class LOTRDwarvenDoorBlock extends LOTRGateBlock {
     @Override
     protected MapCodec<? extends Block> codec() {
         return CODEC;
+    }
+
+    @Override
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
+                                               Player player, BlockHitResult hitResult) {
+        return awardDoor(super.useWithoutItem(state, level, pos, player, hitResult), level, player);
+    }
+
+    @Override
+    protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
+                                          Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return awardDoor(super.useItemOn(stack, state, level, pos, player, hand, hitResult), level, player);
+    }
+
+    private static InteractionResult awardDoor(InteractionResult result, Level level, Player player) {
+        if (result.consumesAction() && !level.isClientSide()) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.USE_DWARVEN_DOOR);
+        }
+        return result;
     }
 
     /** LOTRBlockGateDwarven's constructor called setFullBlock(). */

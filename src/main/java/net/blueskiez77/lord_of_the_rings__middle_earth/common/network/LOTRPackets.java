@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.network;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBeaconBlockEntity;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
@@ -122,6 +124,7 @@ public final class LOTRPackets {
                 if (player.containerMenu instanceof LOTRBarrelMenu menu
                         && menu.barrel() != null && menu.stillValid(player)) {
                     menu.barrel().handleBrewingButtonPress();
+                    LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.BREW_DRINK_IN_BARREL);
                 }
             });
         });

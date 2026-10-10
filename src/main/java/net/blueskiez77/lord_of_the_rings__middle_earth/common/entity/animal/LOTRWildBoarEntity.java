@@ -19,7 +19,7 @@ import net.minecraft.world.level.storage.ValueInput;
 /**
  * LOTREntityWildBoar: a hostile mount (3 attack), bred on carrots, with a
  * pig's voice and step, at most 25 health, and boar barding. Drops are
- * {@code lotr:entities/wild_boar}: one to three porkchops plus looting.
+ * {@code lotr:entities/boar}: one to three porkchops plus looting.
  */
 public class LOTRWildBoarEntity extends LOTRHorseEntity {
 

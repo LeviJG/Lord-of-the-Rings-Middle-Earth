@@ -125,6 +125,11 @@ public class LOTRGollumFishingGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         Player owner = this.gollum.getGollumOwner();
         if (atFishingLocation()) {

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -20,8 +22,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityTauredainShaman: a Taurethrim shaman with a poisoned dagger and a
  * bottle of poison in hand, trading with those at +100 or better.
- *
- * <p>NOT ported yet: the tradeTauredainShaman achievement (D7).
  */
 public class LOTRTauredainShamanEntity extends LOTRTauredainEntity implements LOTRTradeable {
 
@@ -70,5 +70,10 @@ public class LOTRTauredainShamanEntity extends LOTRTauredainEntity implements LO
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.POISONED_TAURETHRIM_DAGGER));
         this.npcItemsInv.setIdleItem(new ItemStack(LOTRMiscItems.BOTTLE_OF_POISON));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_TAUREDAIN_SHAMAN);
     }
 }

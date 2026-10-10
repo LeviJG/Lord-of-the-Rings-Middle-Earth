@@ -65,7 +65,7 @@ public final class LOTRClientFellowships {
         return false;
     }
 
-    /** canCreateFellowships(true): fewer led than the most one may (one, until achievements). */
+    /** canCreateFellowships(true): fewer led than the most one may (one, and one for every twenty achievements). */
     public static boolean canCreateFellowships() {
         int leading = 0;
         for (LOTRFellowshipPayloads.View fs : FELLOWSHIPS) {
@@ -73,7 +73,10 @@ public final class LOTRClientFellowships {
                 ++leading;
             }
         }
-        return leading < 1;
+        net.minecraft.world.entity.player.Player player = net.minecraft.client.Minecraft.getInstance().player;
+        int achievements = player == null ? 0
+                : net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements.countEarned(player);
+        return leading < 1 + achievements / 20;
     }
 
     private static void addOrUpdate(List<LOTRFellowshipPayloads.View> list, LOTRFellowshipPayloads.View view) {

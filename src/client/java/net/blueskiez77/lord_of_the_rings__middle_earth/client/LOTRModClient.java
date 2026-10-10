@@ -93,6 +93,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrowin
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrownRockRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRThrownTridentRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRTraderRespawnRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRInvasionSpawnerRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRTrollTotemRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRUnsmelteryRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRWargRenderer;
@@ -378,6 +379,7 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.DIK_DIK, LOTRDikDikRenderer::new);
         EntityRenderers.register(LOTREntities.DEER, LOTRDeerRenderer::new);
         EntityRenderers.register(LOTREntities.TRADER_RESPAWN, LOTRTraderRespawnRenderer::new);
+        EntityRenderers.register(LOTREntities.INVASION_SPAWNER, LOTRInvasionSpawnerRenderer::new);
         EntityRenderers.register(LOTREntities.NPC_RESPAWNER, LOTRNPCRespawnerRenderer::new);
         LOTRBrandingIronItem.openScreen = () -> Minecraft.getInstance().setScreenAndShow(new LOTRBrandingIronScreen());
         LOTRNPCRespawnerEntity.clientCreative = () -> Minecraft.getInstance().player != null
@@ -817,7 +819,17 @@ public class LOTRModClient implements ClientModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.client.fellowship.LOTRClientFellowships.init();
         // Mini-quests: the client's record of them, their offers and markers, the red book and the tracker.
         net.blueskiez77.lord_of_the_rings__middle_earth.client.quest.LOTRClientMiniQuests.init();
+        // Pouches: their window, their window against a chest, and the restock button.
+        MenuScreens.register(net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus.POUCH,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRPouchScreen::new);
+        MenuScreens.register(net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRMenus.CHEST_WITH_POUCH,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRChestWithPouchScreen::new);
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRPouchRestockButton.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRMiniQuestTrackerHud.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRDateHud.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRInvasionHud.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRJazzMusic.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRAchievementToast.init();
         net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry.register(
                 context -> new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCHeadRenderer());
         net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRRedBookItem.openScreen = () -> Minecraft.getInstance()

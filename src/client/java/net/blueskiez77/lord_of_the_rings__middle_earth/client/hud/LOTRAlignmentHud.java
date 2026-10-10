@@ -1,6 +1,5 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.hud;
 
-import net.minecraft.util.Mth;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRMessageScreen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
@@ -9,6 +8,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntitie
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRViewingFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRAlignmentHudPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -18,8 +20,10 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntitySpawnReason;
 
 /**
@@ -29,16 +33,13 @@ import net.minecraft.world.entity.EntitySpawnReason;
  * drain icon beside it for ten seconds after a drain. Also the arrival of
  * the alignment popups (LOTRPacketAlignmentBonus).
  *
- * <p>The original drew the bar only in Middle-earth unless "Always show
- * alignment" was set; until the dimension is ported (D10) every world counts.
+ * <p>Drawn only in Middle-earth unless "Always show alignment" is set.
  *
  * <p>With it, the on-screen compass in the top right (LOTRModelCompass), with
- * the player's coordinates beneath if the config asks.
+ * the player's coordinates beneath and the LOTR biome's name above if the
+ * config asks.
  *
- * <p>The bar moves down out of the way of the boss bars.
- *
- * <p>NOT ported yet: moving it down for a watched invasion's bar (D12/D14);
- * the biome's name above the compass, for a LOTR biome (D10).
+ * <p>The bar moves down out of the way of the boss bars, and of a watched invasion's bar.
  */
 public final class LOTRAlignmentHud {
 
@@ -95,7 +96,8 @@ public final class LOTRAlignmentHud {
     /** onRenderTick's alignment half, a frame at a time as the original moved it. */
     private static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         Minecraft mc = Minecraft.getInstance();
-        if (mc.player == null || mc.level == null) {
+        if (mc.player == null || mc.level == null
+                || !(mc.level.dimension() == LOTRWorldGen.MIDDLE_EARTH || LOTRConfig.alwaysShowAlignment)) {
             return;
         }
         alignmentXPrev = alignmentXCurrent;
@@ -131,6 +133,14 @@ public final class LOTRAlignmentHud {
             String coords = Mth.floor(mc.player.getX()) + ", " + Mth.floor(mc.player.getBoundingBox().minY) + ", "
                     + Mth.floor(mc.player.getZ());
             graphics.text(mc.font, coords, x - mc.font.width(coords) / 2, y + 70, 0xFFFFFFFF, false);
+            BlockPos pos = BlockPos.containing(mc.player.getX(), 0.0, mc.player.getZ());
+            if (mc.level.hasChunkAt(pos)) {
+                LOTRBiome biome = LOTRBiomes.of(mc.level.getBiome(pos));
+                if (biome != null) {
+                    Component biomeName = biome.getBiomeDisplayName();
+                    graphics.text(mc.font, biomeName, x - mc.font.width(biomeName) / 2, y - 70, 0xFFFFFFFF, false);
+                }
+            }
             graphics.pose().popMatrix();
         }
     }
@@ -145,6 +155,9 @@ public final class LOTRAlignmentHud {
         int bossBars = mc.gui.hud.getBossOverlay().events.size();
         if (bossBars > 0) {
             alignmentYBase += 20 + 19 * (bossBars - 1);
+        }
+        if (LOTRInvasionHud.isActive()) {
+            alignmentYBase += 20;
         }
         if (firstAlignmentRender) {
             LOTRAlignmentTicker.updateAll(mc.player, true);

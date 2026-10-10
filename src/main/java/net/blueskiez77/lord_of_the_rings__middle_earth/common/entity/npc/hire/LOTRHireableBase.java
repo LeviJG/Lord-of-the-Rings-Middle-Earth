@@ -11,7 +11,7 @@ public interface LOTRHireableBase {
 
     LOTRFaction getFaction();
 
-    /** onUnitTrade: the hirer's own reaction (its achievements, not ported yet). */
+    /** onUnitTrade: the hirer's own reaction (its achievements). */
     default void onUnitTrade(Player player) {
     }
 }

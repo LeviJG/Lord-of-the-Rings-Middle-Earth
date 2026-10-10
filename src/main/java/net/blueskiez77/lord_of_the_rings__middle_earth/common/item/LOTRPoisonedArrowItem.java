@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRPoisonedArrowEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRArrowPoisonedEntity;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Position;
@@ -31,14 +31,14 @@ public class LOTRPoisonedArrowItem extends ArrowItem {
     @Override
     public AbstractArrow createArrow(Level level, ItemStack ammo, LivingEntity shooter,
             @Nullable ItemStack weapon) {
-        return new LOTRPoisonedArrowEntity(LOTREntities.POISONED_ARROW, shooter, level,
+        return new LOTRArrowPoisonedEntity(LOTREntities.POISONED_ARROW, shooter, level,
                 ammo.copyWithCount(1), weapon);
     }
 
     /** LOTRDispenseArrowPoisoned. */
     @Override
     public Projectile asProjectile(Level level, Position pos, ItemStack stack, Direction direction) {
-        LOTRPoisonedArrowEntity arrow = new LOTRPoisonedArrowEntity(LOTREntities.POISONED_ARROW, level,
+        LOTRArrowPoisonedEntity arrow = new LOTRArrowPoisonedEntity(LOTREntities.POISONED_ARROW, level,
                 pos.x(), pos.y(), pos.z(), stack.copyWithCount(1), null);
         arrow.pickup = AbstractArrow.Pickup.ALLOWED;
         return arrow;

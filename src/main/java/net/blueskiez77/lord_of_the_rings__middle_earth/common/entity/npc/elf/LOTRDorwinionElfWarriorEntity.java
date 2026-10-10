@@ -22,9 +22,8 @@ import org.jspecify.annotations.Nullable;
  * elven armour -- nine in ten helmeted -- with a Dorwinion elven sword, one
  * in five with a spear of Bladorthin besides, or else the spear alone.
  *
- * <p>NOT ported yet: the Dorwinion elf shield
- * (LOTRShields.ALIGNMENT_DORWINION_ELF, D7), and throwing the spear (spears
- * keep vanilla's mechanics, user).
+ * <p>NOT ported yet: throwing the spear (spears keep vanilla's mechanics,
+ * user).
  */
 public class LOTRDorwinionElfWarriorEntity extends LOTRDorwinionElfEntity {
 

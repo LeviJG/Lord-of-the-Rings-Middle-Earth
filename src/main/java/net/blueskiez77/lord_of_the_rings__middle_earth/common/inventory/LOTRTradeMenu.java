@@ -3,6 +3,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntry;
@@ -126,7 +128,9 @@ public class LOTRTradeMenu extends AbstractContainerMenu {
                 trader.traderNPCInfo.onTrade(player, e.getKey(), LOTRTradeEntries.TradeType.SELL, e.getValue());
             }
             LOTRCoins.giveCoins(totalCoins, player);
-            // NOT ported yet: the earnManyCoins achievement for 1000 or more, with achievements.
+            if (totalCoins >= 1000) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.EARN_MANY_COINS);
+            }
             trader.playTradeSound();
         }
         return true;

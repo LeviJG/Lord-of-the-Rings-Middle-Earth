@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
@@ -43,15 +44,16 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRGondorBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityGondorMan: the people of Gondor, "Name of Gondor". They keep out
  * of the water, open doors, fight back with a dagger or an axe, eat and drink
  * as Gondor does, and can be hired where their people allow it. Their mounts
  * come barded in Gondorian horse armour.
- *
- * <p>NOT ported yet: the pull of Gondor on their wandering and their natural
- * spawning (with the biomes), and the killGondorian achievement (D7).
  */
 public class LOTRGondorManEntity extends LOTRManEntity {
 
@@ -179,5 +181,22 @@ public class LOTRGondorManEntity extends LOTRManEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.GONDOR.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_GONDORIAN;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRGondorBiome.class);
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
     }
 }

@@ -27,10 +27,9 @@ import org.jspecify.annotations.Nullable;
  * otherwise) or several, and every faction rank that makes a title, in its feminine form too where
  * the rank has one.
  *
- * <p>Not ported (user): the original's player-exclusive titles, held by players its authors named.
+ * And the achievement titles, each held by those who have earned its achievement.
  *
- * <p>NOT ported yet: the achievement titles (LOTRAchievement's, with the achievements, which the
- * user has left for now).
+ * <p>Not ported (user): the original's player-exclusive titles, held by players its authors named.
  */
 public class LOTRTitle {
 
@@ -277,6 +276,9 @@ public class LOTRTitle {
     public float alignmentRequired;
     public boolean anyAlignment;
     public @Nullable LOTRFactionRank titleRank;
+    public net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.@Nullable LOTRAchievement titleAchievement;
+    /** Named by its achievement's title rather than its own. */
+    public boolean useAchievementName;
     public boolean isFeminineRank;
 
     /** A faction rank's title, in its feminine form if {@code fem}. */
@@ -285,6 +287,14 @@ public class LOTRTitle {
         this.titleType = TitleType.RANK;
         this.titleRank = rank;
         this.isFeminineRank = fem;
+    }
+
+    /** An achievement's title, named {@code s} or, if null, by the achievement. */
+    public LOTRTitle(@Nullable String s, net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement achievement) {
+        this(s == null ? achievement.getCodeName() : s);
+        this.titleType = TitleType.ACHIEVEMENT;
+        this.titleAchievement = achievement;
+        this.useAchievementName = s == null;
     }
 
     public LOTRTitle(String name) {
@@ -576,6 +586,10 @@ public class LOTRTitle {
                 }
                 return false;
             }
+            case ACHIEVEMENT -> {
+                return net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements
+                        .hasAchievement(player, this.titleAchievement);
+            }
             case RANK -> {
                 LOTRFaction faction = this.titleRank.fac;
                 if (LOTRPlayerAlignments.getAlignment(player, faction) >= this.titleRank.alignment) {
@@ -613,6 +627,9 @@ public class LOTRTitle {
                 return Component.translatable(requirePledge ? "lotr.titles.unlock.alignment.pledge"
                         : "lotr.titles.unlock.alignment", factions, alignLevel);
             }
+            case ACHIEVEMENT -> {
+                return this.titleAchievement.getDescription(player);
+            }
             case RANK -> {
                 String alignLevel = LOTRAlignmentValues.formatAlignForDisplay(this.titleRank.alignment);
                 boolean requirePledge = this.titleRank.isAbovePledgeRank()
@@ -638,6 +655,9 @@ public class LOTRTitle {
     }
 
     public String getUntranslatedName(Player player) {
+        if (this.useAchievementName && this.titleAchievement != null) {
+            return this.titleAchievement.getUntranslatedTitle(player);
+        }
         if (this.titleType == TitleType.RANK) {
             return this.isFeminineRank ? this.titleRank.getCodeFullNameFem() : this.titleRank.getCodeFullName();
         }

@@ -28,8 +28,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityLossarnachAxeman: an axeman of Lossarnach, always on foot, with
  * a Lossarnach battleaxe up close and Lossarnach throwing axes from 16 blocks
  * out, in Lossarnach armour; two in three wear its helmet.
- *
- * <p>NOT ported yet: the Lossarnach shield (LOTRShields.ALIGNMENT_LOSSARNACH, D7).
  */
 public class LOTRLossarnachAxemanEntity extends LOTRGondorSoldierEntity {
 

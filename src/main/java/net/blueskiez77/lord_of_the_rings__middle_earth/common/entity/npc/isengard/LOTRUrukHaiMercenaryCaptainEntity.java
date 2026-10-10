@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityUrukHaiMercenaryCaptain (the Uruk Chieftain): an Uruk who leads,
@@ -26,9 +29,6 @@ import org.jspecify.annotations.Nullable;
  * wargs, half the time barded), Uruks, crossbowers, sappers, berserkers
  * (pledged only), wargs, warg bombardiers and banner bearers to those at
  * +150 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.URUK_HAI, D12) and the
- * tradeUrukCaptain achievement (D7).
  */
 public class LOTRUrukHaiMercenaryCaptainEntity extends LOTRUrukHaiEntity implements LOTRUnitTradeable {
 
@@ -50,6 +50,11 @@ public class LOTRUrukHaiMercenaryCaptainEntity extends LOTRUrukHaiEntity impleme
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.URUK_HAI_MERCENARY_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.URUK_HAI;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -82,5 +87,10 @@ public class LOTRUrukHaiMercenaryCaptainEntity extends LOTRUrukHaiEntity impleme
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.URUK_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_URUK_CAPTAIN);
     }
 }

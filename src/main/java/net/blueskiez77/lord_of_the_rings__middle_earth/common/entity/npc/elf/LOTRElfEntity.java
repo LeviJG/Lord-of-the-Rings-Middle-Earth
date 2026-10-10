@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
@@ -43,6 +44,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.entity.EntitySpawnReason;
 
 /**
  * LOTREntityElf: the Eldar. Hardy (30 health), untouched by poison, and
@@ -54,17 +57,13 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>An elf whose "BoopBoopBaDoop" flag is set is a jazz elf: every so often
  * it plays a solo for three to eighteen seconds, head bobbing, spinning on
- * the spot in shifting colours with its saxophone.
+ * the spot in shifting colours with its saxophone, notes drifting off it.
  *
  * <p>An elf bows to a friendly player within eight blocks who belongs to the
  * bowing-elves group, holding the bow for two seconds, unless it has a
  * target. The original read that group from the mod authors' web service of
  * player details; here it is the vanilla player tag {@value #BOWING_ELVES_TAG}
  * (user decision), given with {@code /tag <player> add lotr.bowing_elves}.
- *
- * <p>NOT ported yet: the jazz solo's music notes and music, and the saxophone
- * drawn in its hands (D16); and natural spawning (canElfSpawnHere, with the
- * biomes).
  */
 public abstract class LOTRElfEntity extends LOTRNPCEntity {
 
@@ -318,6 +317,11 @@ public abstract class LOTRElfEntity extends LOTRNPCEntity {
             }
             setSolo(this.soloTick > 0);
         } else if (isSolo()) {
+            if (this.random.nextInt(3) == 0) {
+                level().addParticle(LOTRParticles.MUSIC, getX(), getBoundingBox().minY + getEyeHeight(), getZ(),
+                        Mth.nextDouble(this.random, -0.1, 0.1), Mth.nextDouble(this.random, -0.1, 0.1),
+                        Mth.nextDouble(this.random, -0.1, 0.1));
+            }
             if (this.soloSpinSpeed == 0.0f || this.random.nextInt(30) == 0) {
                 this.soloSpinSpeed = Mth.randomBetween(this.random, -25.0f, 25.0f);
             }
@@ -361,5 +365,14 @@ public abstract class LOTRElfEntity extends LOTRNPCEntity {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         setJazz(input.getBooleanOr("BoopBoopBaDoop", false));
+    }
+
+    /** canElfSpawnHere: where its kind of elf may spawn naturally. */
+    public abstract boolean canElfSpawnHere(LevelAccessor level);
+
+    /** getCanSpawnHere: where its kind of elf may (canElfSpawnHere). */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || canElfSpawnHere(level));
     }
 }

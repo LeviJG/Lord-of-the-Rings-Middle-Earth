@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
@@ -24,14 +25,13 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityBlueDwarf: the dwarves of the Blue Mountains, who marry only
  * their own. They eat without cram, fight back with a blue dwarven dagger,
  * and leave blue dwarven steel and the Blue Mountains' goods.
- *
- * <p>NOT ported yet: the killBlueDwarf and marryBlueDwarf achievements (D7).
  */
 public class LOTRBlueDwarfEntity extends LOTRDwarfEntity {
 
     public LOTRBlueDwarfEntity(EntityType<? extends LOTRBlueDwarfEntity> type, Level level) {
         super(type, level);
         this.familyInfo.marriageEntityClass = LOTRBlueDwarfEntity.class;
+        this.familyInfo.marriageAchievement = LOTRAchievement.MARRY_BLUE_DWARF;
     }
 
     @Override
@@ -82,5 +82,10 @@ public class LOTRBlueDwarfEntity extends LOTRDwarfEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.BLUE_MOUNTAINS.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_BLUE_DWARF;
     }
 }

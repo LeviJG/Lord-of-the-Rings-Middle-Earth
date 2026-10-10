@@ -1,9 +1,18 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRLothlorienBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenUtil;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -19,6 +28,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.block.state.BlockState;
 
 import org.jspecify.annotations.Nullable;
 
@@ -28,11 +43,13 @@ import org.jspecify.annotations.Nullable;
  * battlestaff or longspear, and a Galadhrim bow shooting from 24 blocks;
  * one in five carries a spear as well, one in four rides a barded horse.
  *
- * <p>NOT ported yet: the Galadhrim shield (LOTRShields.ALIGNMENT_GALADHRIM,
- * D7); warriors called out against a player felling mallorn in Lothlórien
- * ("DefendingTree", with the biomes) and the takeMallornWood achievement for
- * killing one (D7); and throwing the spear (spears keep vanilla's mechanics,
- * user).
+ * <p>One called out to defend the trees slain by a player earns them takeMallornWood.
+ *
+ * <p>Four to six are called out, one time in three, against a player of ill standing with
+ * Lothlórien who fells mallorn there (LOTRBlockWood.removedByPlayer).
+ *
+ * <p>NOT ported yet: throwing the spear (spears keep vanilla's
+ * mechanics, user).
  */
 public class LOTRGaladhrimWarriorEntity extends LOTRGaladhrimElfEntity {
 
@@ -111,5 +128,57 @@ public class LOTRGaladhrimWarriorEntity extends LOTRGaladhrimElfEntity {
             setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.GALADHRIM_HELMET));
         }
         return data;
+    }
+
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (!level().isClientSide() && this.isDefendingTree && source.getEntity() instanceof Player player) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TAKE_MALLORN_WOOD);
+        }
+    }
+
+    /**
+     * LOTRBlockWood.removedByPlayer: mallorn felled in Lothlórien by a player not in creative and
+     * in ill standing with Lothlórien calls out four to six warriors about them, one time in three --
+     * each on firm ground with room, if it may spawn there -- the first telling them why.
+     */
+    public static void defendTrees(ServerLevel world, Player player, BlockPos pos, BlockState state) {
+        if (!state.is(LOTRBuildingBlocks.MALLORN_LOG) || world.getRandom().nextInt(3) != 0
+                || !(LOTRBiomes.of(world.getBiome(pos)) instanceof LOTRLothlorienBiome)
+                || LOTRPlayerAlignments.getAlignment(player, LOTRFaction.LOTHLORIEN) >= 0.0f || player.isCreative()) {
+            return;
+        }
+        int elves = 4 + world.getRandom().nextInt(3);
+        boolean sentMessage = false;
+        for (int l = 0; l < elves; ++l) {
+            LOTRGaladhrimWarriorEntity elfWarrior = LOTREntities.GALADHRIM_WARRIOR.create(world, EntitySpawnReason.EVENT);
+            if (elfWarrior == null) {
+                continue;
+            }
+            int i1 = Mth.floor(player.getX()) - 6 + world.getRandom().nextInt(12);
+            int k1 = Mth.floor(player.getZ()) - 6 + world.getRandom().nextInt(12);
+            int j1 = LOTRWorldGenUtil.getTopSolidOrLiquidBlock(world, i1, k1);
+            BlockPos below = new BlockPos(i1, j1 - 1, k1);
+            BlockPos at = below.above();
+            if (!world.getBlockState(below).isFaceSturdy(world, below, Direction.UP)
+                    || world.getBlockState(at).isRedstoneConductor(world, at)
+                    || world.getBlockState(at.above()).isRedstoneConductor(world, at.above())) {
+                continue;
+            }
+            elfWarrior.snapTo(i1 + 0.5, j1, k1 + 0.5, 0.0f, 0.0f);
+            if (!elfWarrior.checkSpawnRules(world, EntitySpawnReason.EVENT)) {
+                continue;
+            }
+            elfWarrior.spawnRidingHorse = false;
+            elfWarrior.finalizeSpawn(world, world.getCurrentDifficultyAt(at), EntitySpawnReason.EVENT, null);
+            world.addFreshEntity(elfWarrior);
+            elfWarrior.isDefendingTree = true;
+            elfWarrior.setTarget(player);
+            if (!sentMessage) {
+                elfWarrior.sendSpeechBank(player, "galadhrim/warrior/defendTrees");
+                sentMessage = true;
+            }
+        }
     }
 }

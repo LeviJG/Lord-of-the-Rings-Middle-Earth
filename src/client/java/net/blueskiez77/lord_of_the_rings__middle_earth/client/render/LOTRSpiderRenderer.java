@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRSpiderModel;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderBaseEntity;
 
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -28,7 +28,7 @@ import java.util.function.ToIntFunction;
  * <p>The size comes through the entity's own scale (getNPCScale), as the
  * original's preRenderCallback applied it.
  */
-public class LOTRSpiderRenderer extends MobRenderer<LOTRSpiderEntity, LOTRSpiderRenderer.State, LOTRSpiderModel> {
+public class LOTRSpiderRenderer extends MobRenderer<LOTRSpiderBaseEntity, LOTRSpiderRenderer.State, LOTRSpiderModel> {
 
     private static final Identifier[] MIRKWOOD = {texture("mirkwood"), texture("mirkwood_slowness"), texture("mirkwood_poison")};
     private static final Identifier MORDOR = texture("mordor");
@@ -39,11 +39,11 @@ public class LOTRSpiderRenderer extends MobRenderer<LOTRSpiderEntity, LOTRSpider
         public Identifier skin = MORDOR;
     }
 
-    private final ToIntFunction<LOTRSpiderEntity> skinIndex;
+    private final ToIntFunction<LOTRSpiderBaseEntity> skinIndex;
     private final Identifier[] skins;
 
     private LOTRSpiderRenderer(EntityRendererProvider.Context context, Identifier[] skins,
-                               ToIntFunction<LOTRSpiderEntity> skinIndex) {
+                               ToIntFunction<LOTRSpiderBaseEntity> skinIndex) {
         super(context, new LOTRSpiderModel(LOTRSpiderModel.createBodyLayer(0.5f).bakeRoot()), 1.0f);
         this.skins = skins;
         this.skinIndex = skinIndex;
@@ -67,7 +67,7 @@ public class LOTRSpiderRenderer extends MobRenderer<LOTRSpiderEntity, LOTRSpider
 
     /** LOTRRenderMirkwoodSpider: the skin of its venom. */
     public static LOTRSpiderRenderer mirkwood(EntityRendererProvider.Context context) {
-        return new LOTRSpiderRenderer(context, MIRKWOOD, LOTRSpiderEntity::getSpiderType);
+        return new LOTRSpiderRenderer(context, MIRKWOOD, LOTRSpiderBaseEntity::getSpiderType);
     }
 
     /** LOTRRenderMordorSpider. */
@@ -76,7 +76,7 @@ public class LOTRSpiderRenderer extends MobRenderer<LOTRSpiderEntity, LOTRSpider
     }
 
     private static Identifier texture(String name) {
-        return Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "textures/entity/spider/" + name + ".png");
+        return Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "textures/entity/spider/spider_" + name + ".png");
     }
 
     @Override
@@ -85,7 +85,7 @@ public class LOTRSpiderRenderer extends MobRenderer<LOTRSpiderEntity, LOTRSpider
     }
 
     @Override
-    public void extractRenderState(LOTRSpiderEntity spider, State state, float partialTick) {
+    public void extractRenderState(LOTRSpiderBaseEntity spider, State state, float partialTick) {
         super.extractRenderState(spider, state, partialTick);
         int index = this.skinIndex.applyAsInt(spider);
         state.skin = this.skins[Math.clamp(index, 0, this.skins.length - 1)];

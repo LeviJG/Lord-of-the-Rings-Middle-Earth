@@ -1,11 +1,14 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
@@ -14,9 +17,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityWoodElfSmith: a smith of the Woodland Realm, hooded in its
  * smith's cloak, who trades with those at +100 or better and seeks no one
  * out.
- *
- * <p>NOT ported yet: its cape (woodElfSmith_cape, with NPC capes) and the
- * tradeWoodElfSmith achievement.
  */
 public class LOTRWoodElfSmithEntity extends LOTRWoodElfEntity implements LOTRSmith {
 
@@ -62,5 +62,12 @@ public class LOTRWoodElfSmithEntity extends LOTRWoodElfEntity implements LOTRSmi
             return canTradeWith(player) ? "woodElf/smith/friendly" : "woodElf/smith/neutral";
         }
         return "woodElf/smith/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        if (type == LOTRTradeEntries.TradeType.BUY) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_WOOD_ELF_SMITH);
+        }
     }
 }

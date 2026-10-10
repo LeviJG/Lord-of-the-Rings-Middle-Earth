@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -25,8 +27,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityEasterlingBlacksmith: a smith of Rhûn with his hammer, trading
  * with those at +50 or better and leaving iron or gilded iron ingots when
  * slain.
- *
- * <p>NOT ported yet: the tradeRhunBlacksmith achievement (D7).
  */
 public class LOTREasterlingBlacksmithEntity extends LOTREasterlingEntity implements LOTRSmith {
 
@@ -89,5 +89,10 @@ public class LOTREasterlingBlacksmithEntity extends LOTREasterlingEntity impleme
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.BLACKSMITH_HAMMER));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_RHUN_BLACKSMITH);
     }
 }

@@ -109,7 +109,10 @@ public class LOTRMiniQuestOfferScreen extends Screen {
         }
         super.extractRenderState(graphics, mouseX, mouseY, partialTick);
         graphics.centeredText(this.font, this.title, this.guiLeft + X_SIZE / 2, this.guiTop + 8, TEXT_COLOUR);
-        extractNPC(graphics, this.guiLeft + NPC_X, this.guiTop + NPC_Y, mouseX, mouseY, partialTick);
+        // The screen's own float is the time since the last frame, not the partial tick the head's
+        // tick-by-tick movement is drawn between (as on the main menu).
+        extractNPC(graphics, this.guiLeft + NPC_X, this.guiTop + NPC_Y, mouseX, mouseY,
+                this.minecraft.getDeltaTracker().getGameTimeDeltaPartialTick(false));
         int y = this.guiTop + DESCRIPTION_Y;
         for (FormattedCharSequence line : this.font.split(Component.literal(this.description), DESCRIPTION_WIDTH)) {
             graphics.text(this.font, line, this.guiLeft + DESCRIPTION_X, y, TEXT_COLOUR, false);

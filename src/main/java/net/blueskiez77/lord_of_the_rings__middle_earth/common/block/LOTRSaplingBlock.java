@@ -2,9 +2,14 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import java.util.Optional;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SaplingBlock;
 import net.minecraft.world.level.block.grower.TreeGrower;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * A LOTR sapling.
@@ -15,16 +20,23 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
  * tick that advances growth, and BonemealableBlock. SaplingBlock's own
  * constructor is protected, which is the only reason this subclass exists.
  *
- * <p>Growing is NOT wired up yet. Each sapling is handed its own TreeGrower with
- * no configured features, which is safe: TreeGrower.growTree resolves its feature
- * with Optional.orElse(null) and returns false when there is none, so the sapling
- * simply stays put on a random tick or when bone-mealed. When the tree features
- * are ported, replace {@link #placeholderGrower} with the real grower for each
- * species -- nothing else here needs to change.
+ * <p>Its tree is the original's growTree (LOTRSaplingGrowth), not a vanilla
+ * TreeGrower: the larger trees need their saplings planted in a square or a
+ * cross, which TreeGrower cannot ask. The grower each is handed is a
+ * placeholder that is never used.
  */
 public class LOTRSaplingBlock extends SaplingBlock {
     public LOTRSaplingBlock(TreeGrower grower, BlockBehaviour.Properties props) {
         super(grower, props);
+    }
+
+    @Override
+    public void advanceTree(ServerLevel level, BlockPos pos, BlockState state, RandomSource random) {
+        if (state.getValue(STAGE) == 0) {
+            level.setBlock(pos, state.cycle(STAGE), Block.UPDATE_INVISIBLE);
+        } else {
+            LOTRSaplingGrowth.growTree(level, pos, state, random);
+        }
     }
 
     // TreeGrower keys itself by name in a static map used by its codec, so each

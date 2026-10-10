@@ -1,11 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.DifficultyInstance;
@@ -29,9 +30,6 @@ import org.jspecify.annotations.Nullable;
  * warhammer, and a spear one time in six. It never skirmishes, speaks lower,
  * leaves Black Uruk steel and things from a Black Uruk fort, and -- slain by
  * a player, one time in 6000 less 500 a looting level -- a mithril shirt.
- *
- * <p>NOT ported yet: the Black Uruk shield (LOTRShields.ALIGNMENT_BLACK_URUK,
- * D7), the killBlackUruk achievement (D7).
  */
 public class LOTRBlackUrukEntity extends LOTRMordorOrcEntity {
 
@@ -107,5 +105,10 @@ public class LOTRBlackUrukEntity extends LOTRMordorOrcEntity {
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.BLACK_URUK_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.BLACK_URUK_HELMET));
         return data;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_BLACK_URUK;
     }
 }

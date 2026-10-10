@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -18,15 +20,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityDunlendingWarlord: a warrior who leads the others, armed as they
  * are but in a fur hat. He seeks no one out -- he only answers attacks. He
  * hires out Dunlendings, warriors, archers, axe-throwers, berserkers (pledged
  * only) and banner bearers to those at +100 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.DUNLAND, D12) and the
- * tradeDunlendingWarlord achievement (D7).
  */
 public class LOTRDunlendingWarlordEntity extends LOTRDunlendingWarriorEntity implements LOTRUnitTradeable {
 
@@ -48,6 +48,11 @@ public class LOTRDunlendingWarlordEntity extends LOTRDunlendingWarriorEntity imp
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.DUNLENDING_WARLORD;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.DUNLAND;
     }
 
     /** canTradeWith: +100 alignment and friendly. */
@@ -75,5 +80,10 @@ public class LOTRDunlendingWarlordEntity extends LOTRDunlendingWarriorEntity imp
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.FUR_HAT));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DUNLENDING_WARLORD);
     }
 }

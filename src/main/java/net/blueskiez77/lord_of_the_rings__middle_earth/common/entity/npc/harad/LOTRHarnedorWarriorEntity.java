@@ -24,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * pike, and one in five a Haradric spear as well. His head is bare one time
  * in ten, else one time in five in a turban of one of five colours, else in
  * a Harnedor helmet. One in eight rides out.
- *
- * <p>NOT ported yet: the Harnedor shield (LOTRShields.ALIGNMENT_HARNEDOR, D7).
  */
 public class LOTRHarnedorWarriorEntity extends LOTRHarnedhrimEntity {
 

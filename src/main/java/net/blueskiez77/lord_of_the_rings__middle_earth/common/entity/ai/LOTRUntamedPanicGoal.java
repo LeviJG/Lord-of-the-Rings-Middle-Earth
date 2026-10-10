@@ -56,6 +56,11 @@ public class LOTRUntamedPanicGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         if (this.mount.getRandom().nextInt(50) != 0) {
             return;

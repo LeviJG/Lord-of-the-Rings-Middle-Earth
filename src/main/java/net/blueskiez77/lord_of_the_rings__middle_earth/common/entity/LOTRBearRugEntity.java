@@ -14,7 +14,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /** LOTREntityBearRug: a bear's skin, in its colour (LOTREntityBear.BearType). */
-public class LOTRBearRugEntity extends LOTRRugEntity {
+public class LOTRBearRugEntity extends LOTRRugBaseEntity {
 
     /** dataWatcher 18. */
     private static final EntityDataAccessor<Byte> DATA_TYPE =

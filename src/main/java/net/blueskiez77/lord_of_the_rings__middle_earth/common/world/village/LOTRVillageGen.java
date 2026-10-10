@@ -2,12 +2,24 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.world.village;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldChunkManager;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenUtil;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRFixedStructures;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRMapCoords;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRMountains;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRRoads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRWaypoint;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRRoadType;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureBase2;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Block;
@@ -15,6 +27,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.LegacyRandomSource;
 
 import org.jspecify.annotations.Nullable;
 
@@ -24,44 +37,196 @@ import org.jspecify.annotations.Nullable;
  * at a time from a seed fixed by the world and the centre, so every chunk of
  * it agrees.
  *
- * <p>Ported: everything a village needs to be built where it is spawned (the
- * structure spawner, {@link #createAndSetupVillageInstance} then
- * {@link #generateCompleteVillageInstance}). The grid and spawn chance each
- * generator sets are kept for natural generation; finding village centres in
- * the world (isVillageCentre, its position cache, the road, mountain and
- * fixed-structure checks), the fixed settlements at waypoints, and the biome
- * each spawns in come with the world (D10).
+ * <p>A village is spawned whole by the structure spawner
+ * ({@link #createAndSetupVillageInstance} then {@link #generateCompleteVillageInstance}),
+ * or found in the world by its biome's decorator a chunk at a time
+ * ({@link #generateInChunk}): at its fixed settlements by the waypoints, or
+ * on a grid, by chance, clear of roads, mountains and fixed structures, where
+ * the biomes and variants all about suit it.
  */
 public abstract class LOTRVillageGen {
-    /** The biome the village belongs to, by the original's LOTRBiome field name (D10). */
-    public final String villageBiome;
+    /**
+     * The biome the village belongs to, by the original's LOTRBiome field name. A biome's own villages
+     * are made before it is named, so they are given null and named with it (LOTRBiome.setBiomeName).
+     */
+    public @Nullable String villageBiome;
     public int gridScale;
     public int gridRandomDisplace;
     public float spawnChance;
     public int villageChunkRadius;
     public int fixedVillageChunkRadius;
+    /** The biomes it may spawn across: its own. */
+    public final List<LOTRBiome> spawnBiomes = new ArrayList<>();
+    public final Collection<LocationInfo> fixedLocations = new ArrayList<>();
 
-    protected LOTRVillageGen(String biome) {
+    protected LOTRVillageGen(@Nullable String biome) {
         this.villageBiome = biome;
     }
+
+    /** The biome a biome's own village belongs to, given as the biome is named. */
+    public void setVillageBiome(LOTRBiome biome) {
+        if (this.villageBiome == null) {
+            this.villageBiome = biome.biomeName;
+            this.spawnBiomes.add(biome);
+        }
+    }
+
+    public static boolean hasFixedSettlements() {
+        // D10k: not in Middle-earth Classic either.
+        return LOTRConfig.generateFixedSettlements;
+    }
+
+    /** seedVillageRand: a random seeded by the world and a place. */
+    public static RandomSource seedVillageRand(long worldSeed, int i, int k) {
+        return new LegacyRandomSource(i * 6890360793007L + k * 456879569029062L + worldSeed + 274893855L);
+    }
+
+    public LocationInfo addFixedLocation(LOTRWaypoint wp, int addX, int addZ, int rotation, String name) {
+        LocationInfo loc = new LocationInfo(wp.getXCoord() + addX, wp.getZCoord() + addZ, rotation, name).setFixedLocation(wp);
+        this.fixedLocations.add(loc);
+        return loc;
+    }
+
+    public LocationInfo addFixedLocation(LOTRWaypoint wp, int rotation, String name) {
+        return addFixedLocation(wp, 0, 0, rotation, name);
+    }
+
+    public void addFixedLocationMapOffset(LOTRWaypoint wp, int addX, int addZ, int rotation, String name) {
+        addFixedLocation(wp, addX * LOTRMapCoords.SCALE, addZ * LOTRMapCoords.SCALE, rotation, name);
+    }
+
+    public boolean anyFixedVillagesAt(int i, int k) {
+        if (!hasFixedSettlements()) {
+            return false;
+        }
+        int checkRange = (this.fixedVillageChunkRadius + 2) << 4;
+        for (LocationInfo loc : this.fixedLocations) {
+            if (Math.abs(loc.posX - i) <= checkRange && Math.abs(loc.posZ - k) <= checkRange) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** generateInChunk: each village near enough to reach this chunk builds its part of it. */
+    public void generateInChunk(WorldGenLevel world, int i, int k) {
+        for (AbstractInstance<?> instance : getNearbyVillagesAtPosition(world, i, k)) {
+            instance.setupVillageStructures();
+            generateInstanceInChunk(instance, world, i, k);
+        }
+    }
+
+    /**
+     * getNearbyVillages: every village whose reach takes in this chunk. The world is given by its
+     * seed and chunk manager, which the terrain pass has before there is a level to give.
+     */
+    public List<AbstractInstance<?>> getNearbyVillages(long worldSeed, LOTRWorldChunkManager chunkManager, int chunkX, int chunkZ) {
+        List<AbstractInstance<?>> villages = new ArrayList<>();
+        int checkRange = Math.max(this.villageChunkRadius, this.fixedVillageChunkRadius);
+        for (int i = chunkX - checkRange; i <= chunkX + checkRange; ++i) {
+            for (int k = chunkZ - checkRange; k <= chunkZ + checkRange; ++k) {
+                LocationInfo loc = isVillageCentre(worldSeed, chunkManager, i, k);
+                if (!loc.isPresent()) {
+                    continue;
+                }
+                int centreX;
+                int centreZ;
+                if (loc.isFixedLocation()) {
+                    centreX = loc.posX;
+                    centreZ = loc.posZ;
+                } else {
+                    centreX = (i << 4) + 8;
+                    centreZ = (k << 4) + 8;
+                }
+                villages.add(createAndSetupVillageInstance(worldSeed, centreX, centreZ, seedVillageRand(worldSeed, centreX, centreZ), loc));
+            }
+        }
+        return villages;
+    }
+
+    public List<AbstractInstance<?>> getNearbyVillagesAtPosition(WorldGenLevel world, int i, int k) {
+        LOTRWorldChunkManager chunkManager = LOTRWorldChunkManager.of(world);
+        return chunkManager == null ? List.of() : getNearbyVillagesAtPosition(world.getSeed(), chunkManager, i, k);
+    }
+
+    public List<AbstractInstance<?>> getNearbyVillagesAtPosition(long worldSeed, LOTRWorldChunkManager chunkManager, int i, int k) {
+        return getNearbyVillages(worldSeed, chunkManager, i >> 4, k >> 4);
+    }
+
+    /**
+     * isVillageCentre: whether the village has its centre in this chunk -- a fixed settlement's
+     * chunk (and none other near one), else one on its grid, displaced at random, by its spawn
+     * chance, clear of roads, mountains and fixed structures, where the biomes and variants all
+     * about suit it.
+     */
+    public LocationInfo isVillageCentre(long worldSeed, LOTRWorldChunkManager worldChunkMgr, int chunkX, int chunkZ) {
+        LOTRVillagePositionCache cache = worldChunkMgr.getVillageCache(this);
+        LocationInfo cacheLocation = cache.getLocationAt(chunkX, chunkZ);
+        if (cacheLocation != null) {
+            return cacheLocation;
+        }
+        if (hasFixedSettlements()) {
+            for (LocationInfo loc : this.fixedLocations) {
+                int locChunkX = loc.posX >> 4;
+                int locChunkZ = loc.posZ >> 4;
+                if (chunkX == locChunkX && chunkZ == locChunkZ) {
+                    return cache.markResult(chunkX, chunkZ, loc);
+                }
+                int locCheckSize = Math.max(this.villageChunkRadius, this.fixedVillageChunkRadius);
+                if (Math.abs(chunkX - locChunkX) > locCheckSize || Math.abs(chunkZ - locChunkZ) > locCheckSize) {
+                    continue;
+                }
+                return cache.markResult(chunkX, chunkZ, LocationInfo.NONE_HERE);
+            }
+        }
+        int i2 = Mth.floor((double) chunkX / this.gridScale);
+        int k2 = Mth.floor((double) chunkZ / this.gridScale);
+        RandomSource villageRand = seedVillageRand(worldSeed, i2, k2);
+        i2 *= this.gridScale;
+        k2 *= this.gridScale;
+        i2 += LOTRWorldGenUtil.getRandomIntegerInRange(villageRand, -this.gridRandomDisplace, this.gridRandomDisplace);
+        if (chunkX == i2 && chunkZ == k2 + LOTRWorldGenUtil.getRandomIntegerInRange(villageRand, -this.gridRandomDisplace, this.gridRandomDisplace)) {
+            int i1 = chunkX * 16 + 8;
+            int k1 = chunkZ * 16 + 8;
+            int villageRange = this.villageChunkRadius * 16;
+            if (villageRand.nextFloat() < this.spawnChance) {
+                int diagRange = (int) Math.round((villageRange + 8) * SQRT2);
+                boolean anythingNear = LOTRRoads.isRoadNear(i1, k1, diagRange) >= 0.0f;
+                if (!anythingNear && !(anythingNear = LOTRMountains.mountainNear(i1, k1, diagRange))) {
+                    anythingNear = LOTRFixedStructures.structureNear(i1, k1, diagRange);
+                }
+                if (!anythingNear) {
+                    LocationInfo loc = LocationInfo.RANDOM_GEN_HERE;
+                    AbstractInstance<?> instance = createAndSetupVillageInstance(worldSeed, i1, k1, seedVillageRand(worldSeed, i1, k1), loc);
+                    boolean flat = instance.isFlat();
+                    if (worldChunkMgr.areBiomesViable(i1, k1, villageRange, this.spawnBiomes)
+                            && worldChunkMgr.areVariantsSuitableVillage(i1, k1, villageRange, flat)) {
+                        return cache.markResult(chunkX, chunkZ, loc);
+                    }
+                }
+            }
+        }
+        return cache.markResult(chunkX, chunkZ, LocationInfo.NONE_HERE);
+    }
+
+    private static final double SQRT2 = 1.4142135623730951;
 
     /**
      * LOTRBiome.getRoadBlock for the biomes a village asks it of -- only the
      * Gondor villages do: Dor-en-Ernil's own road, else Gondor's mixed one.
-     * The biomes themselves come with D10.
      */
     public static LOTRRoadType biomeRoadBlock(String biome) {
         return "dorEnErnil".equals(biome) ? LOTRRoadType.DOL_AMROTH : LOTRRoadType.GONDOR_MIX;
     }
 
-    public AbstractInstance<?> createAndSetupVillageInstance(WorldGenLevel world, int i, int k, RandomSource random,
+    public AbstractInstance<?> createAndSetupVillageInstance(long worldSeed, int i, int k, RandomSource random,
                                                              LocationInfo location) {
-        AbstractInstance<?> instance = createVillageInstance(world, i, k, random, location);
+        AbstractInstance<?> instance = createVillageInstance(worldSeed, i, k, random, location);
         instance.setupBaseAndVillageProperties();
         return instance;
     }
 
-    public abstract AbstractInstance<?> createVillageInstance(WorldGenLevel world, int i, int k, RandomSource random,
+    public abstract AbstractInstance<?> createVillageInstance(long worldSeed, int i, int k, RandomSource random,
                                                               LocationInfo loc);
 
     public void generateCompleteVillageInstance(AbstractInstance<?> instance, WorldGenLevel world, int i, int k) {
@@ -175,8 +340,9 @@ public abstract class LOTRVillageGen {
 
     /** A village laid out around a centre, with its own seeded random and the structures and paths it chose. */
     public abstract static class AbstractInstance<V extends LOTRVillageGen> implements LOTRStructureBase2.VillageSurface {
-        public final String instanceVillageBiome;
-        public final WorldGenLevel theWorld;
+        public final @Nullable String instanceVillageBiome;
+        /** The world's seed, which the village's own randoms are seeded from. */
+        public final long worldSeed;
         public final RandomSource instanceRand;
         public final long instanceRandSeed;
         public final int centreX;
@@ -185,9 +351,9 @@ public abstract class LOTRVillageGen {
         public final Collection<StructureInfo> structures = new ArrayList<>();
         public final LocationInfo locationInfo;
 
-        protected AbstractInstance(V village, WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
+        protected AbstractInstance(V village, long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
             this.instanceVillageBiome = village.villageBiome;
-            this.theWorld = world;
+            this.worldSeed = worldSeed;
             this.instanceRand = RandomSource.create();
             this.instanceRandSeed = random.nextLong();
             this.centreX = i;
@@ -255,7 +421,7 @@ public abstract class LOTRVillageGen {
         public abstract void setupVillageProperties(RandomSource random);
 
         public void setupVillageSeed() {
-            long seed = this.centreX * 580682095692076767L + this.centreZ * 12789948968296726L + this.theWorld.getSeed()
+            long seed = this.centreX * 580682095692076767L + this.centreZ * 12789948968296726L + this.worldSeed
                     + 49920968939865L;
             this.instanceRand.setSeed(seed + this.instanceRandSeed);
         }
@@ -271,7 +437,7 @@ public abstract class LOTRVillageGen {
             int[] coords = getRelativeCoords(i, k);
             long seed1 = this.instanceRand.nextLong();
             long seed2 = this.instanceRand.nextLong();
-            long seed = coords[0] * seed1 + coords[1] * seed2 ^ this.theWorld.getSeed();
+            long seed = coords[0] * seed1 + coords[1] * seed2 ^ this.worldSeed;
             this.instanceRand.setSeed(seed);
         }
     }

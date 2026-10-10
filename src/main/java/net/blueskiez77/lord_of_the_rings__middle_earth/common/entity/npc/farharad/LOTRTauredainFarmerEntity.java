@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -17,14 +19,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityTauredainFarmer: a Taurethrim farmer with a Taurethrim hoe,
  * trading with -- and hiring out farmhands to -- anyone the Taurethrim do not
  * dislike.
- *
- * <p>NOT ported yet: the tradeTauredainFarmer and hireTauredainFarmer
- * achievements (D7).
  */
 public class LOTRTauredainFarmerEntity extends LOTRTauredainEntity implements LOTRTradeable, LOTRUnitTradeable {
 
@@ -47,6 +47,11 @@ public class LOTRTauredainFarmerEntity extends LOTRTauredainEntity implements LO
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.TAUREDAIN_FARMER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     @Override
@@ -77,5 +82,15 @@ public class LOTRTauredainFarmerEntity extends LOTRTauredainEntity implements LO
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRToolItems.TAURETHRIM_HOE));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_TAUREDAIN_FARMER);
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_TAUREDAIN_FARMER);
     }
 }

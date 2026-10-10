@@ -1,0 +1,9 @@
+{
+  "type": "lotr:middle_earth",
+  "generator": {
+    "type": "lotr:middle_earth",
+    "biome_source": {
+      "type": "lotr:middle_earth"
+    }
+  }
+}

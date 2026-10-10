@@ -44,6 +44,10 @@ public final class LOTRMenus {
     public static ExtendedMenuType<LOTRNPCMountInventoryMenu, Integer> NPC_MOUNT_INVENTORY;
     /** openGui 10: Gollum's pack. */
     public static ExtendedMenuType<LOTRGollumMenu, Integer> GOLLUM;
+    /** openGui 15: a pouch, carrying its slot in the player's inventory. */
+    public static ExtendedMenuType<LOTRPouchMenu, Integer> POUCH;
+    /** openGui 63 and 64: a chest (or chest minecart) with a pouch used on it. */
+    public static ExtendedMenuType<LOTRChestWithPouchMenu, LOTRChestWithPouchMenu.OpeningData> CHEST_WITH_POUCH;
 
     public static MenuType<LOTRCraftingMenu> forTable(LOTRCraftingTable table) {
         MenuType<LOTRCraftingMenu> type = TYPES.get(table);
@@ -121,6 +125,14 @@ public final class LOTRMenus {
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "gollum"),
                 new ExtendedMenuType<>((containerId, inventory, entityId) -> new LOTRGollumMenu(containerId, inventory, entityId),
                         ByteBufCodecs.VAR_INT));
+
+        POUCH = Registry.register(BuiltInRegistries.MENU,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "pouch"),
+                new ExtendedMenuType<>(LOTRPouchMenu::new, ByteBufCodecs.VAR_INT));
+
+        CHEST_WITH_POUCH = Registry.register(BuiltInRegistries.MENU,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "chest_with_pouch"),
+                new ExtendedMenuType<>(LOTRChestWithPouchMenu::new, LOTRChestWithPouchMenu.OpeningData.STREAM_CODEC));
 
         for (LOTRCraftingTable table : LOTRCraftingTable.values()) {
             MenuType<LOTRCraftingMenu> type = new MenuType<>(

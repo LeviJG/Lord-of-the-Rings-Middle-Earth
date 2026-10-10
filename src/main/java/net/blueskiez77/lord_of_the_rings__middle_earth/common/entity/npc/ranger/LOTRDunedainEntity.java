@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
@@ -45,6 +46,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * LOTREntityDunedain: the Dúnedain of the North, "Name of the Dúnedain" --
@@ -54,10 +56,6 @@ import org.jspecify.annotations.Nullable;
  * mounts come in iron horse armour. They wander anywhere as readily
  * (getBlockPathWeight 20 everywhere). Slain, they leave bones and one time in
  * six something from a Ranger's house.
- *
- * <p>NOT ported yet: their natural spawn check (above y 62 on the biome's top
- * block, grass or sand -- with the biomes, D10), and the killDunedain
- * achievement (D7).
  */
 public class LOTRDunedainEntity extends LOTRManEntity {
 
@@ -202,5 +200,16 @@ public class LOTRDunedainEntity extends LOTRManEntity {
             return LOTRMiniQuestFactory.RANGER_NORTH_ARNOR_RELIC.createQuest(this);
         }
         return LOTRMiniQuestFactory.RANGER_NORTH.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_DUNEDAIN;
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block, grass or sand. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, true));
     }
 }

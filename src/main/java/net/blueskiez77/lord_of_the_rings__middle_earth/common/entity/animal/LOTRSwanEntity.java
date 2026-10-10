@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal;
 
+import net.minecraft.world.level.LevelAccessor;
 import java.util.List;
 import java.util.Random;
 
@@ -44,8 +45,7 @@ import org.jspecify.annotations.Nullable;
  * {@code lotr:entities/swan}: swan feathers.
  *
  * <p>Left out: the "wreck Balrogs" hooks, behind a static flag the original
- * never set. NOT ported yet: the biome's top block in the path weight (grass
- * stands in until D10) and LOTRAmbientSpawnChecks (D12).
+ * never set.
  */
 public class LOTRSwanEntity extends PathfinderMob {
 
@@ -209,7 +209,9 @@ public class LOTRSwanEntity extends PathfinderMob {
     /** getBlockPathWeight: the biome's top block (grass until the LOTR biomes), else the light. */
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
-        return level.getBlockState(pos.below()).is(Blocks.GRASS_BLOCK) ? 10.0f : level.getPathfindingCostFromLightLevels(pos);
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome biome = net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.of(level.getBiome(pos));
+        net.minecraft.world.level.block.state.BlockState top = biome == null ? Blocks.GRASS_BLOCK.defaultBlockState() : biome.topBlock;
+        return level.getBlockState(pos.below()).is(top.getBlock()) ? 10.0f : level.getPathfindingCostFromLightLevels(pos);
     }
 
     @Override
@@ -225,5 +227,12 @@ public class LOTRSwanEntity extends PathfinderMob {
     @Override
     public boolean removeWhenFarAway(double distSqr) {
         return true;
+    }
+
+    /** getCanSpawnHere: by water, on its biome's top block, in light enough (LOTRAmbientSpawnChecks). */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason)
+                && LOTRAmbientSpawnChecks.canSpawn(this, level, 16, 8, 40, 2, LOTRAmbientSpawnChecks.WATER);
     }
 }

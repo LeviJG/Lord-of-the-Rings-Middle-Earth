@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Locale;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -17,13 +19,10 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTRShields: the shields a player may bear -- on their back, on their arm with a weapon in hand,
  * or as the face of a vanilla shield they carry -- and those NPCs bear. A faction's shield is worn
- * at +1000 with it; the rest are won.
+ * at +1000 with it; the rest are won -- by 25, 50, 100 or 200 achievements, or by the
+ * gainHighAlcoholTolerance, killMountainTrollChieftain and killMallornEnt achievements.
  *
  * <p>Not ported (user): the original's exclusive shields, held by players its authors named.
- *
- * <p>NOT ported yet: the achievement shields' terms (25, 50, 100 and 200 achievements; the
- * gainHighAlcoholTolerance, killMountainTrollChieftain and killMallornEnt achievements), with the
- * achievements, which the user has left for now -- until then no one may wear them.
  */
 public enum LOTRShields {
     ALIGNMENT_BREE(LOTRFaction.BREE),
@@ -111,7 +110,16 @@ public enum LOTRShields {
         if (this.shieldType == ShieldType.ALIGNMENT) {
             return LOTRPlayerAlignments.getAlignment(player, this.alignmentFaction) >= 1000.0f;
         }
-        return false;
+        return switch (this) {
+            case ACHIEVEMENT_BRONZE -> LOTRPlayerAchievements.countEarned(player) >= 25;
+            case ACHIEVEMENT_SILVER -> LOTRPlayerAchievements.countEarned(player) >= 50;
+            case ACHIEVEMENT_GOLD -> LOTRPlayerAchievements.countEarned(player) >= 100;
+            case ACHIEVEMENT_MITHRIL -> LOTRPlayerAchievements.countEarned(player) >= 200;
+            case ALCOHOLIC -> LOTRPlayerAchievements.hasAchievement(player, LOTRAchievement.GAIN_HIGH_ALCOHOL_TOLERANCE);
+            case DEFEAT_MTC -> LOTRPlayerAchievements.hasAchievement(player, LOTRAchievement.KILL_MOUNTAIN_TROLL_CHIEFTAIN);
+            case DEFEAT_MALLORN_ENT -> LOTRPlayerAchievements.hasAchievement(player, LOTRAchievement.KILL_MALLORN_ENT);
+            default -> false;
+        };
     }
 
     public Component getShieldDesc() {

@@ -1,9 +1,13 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal;
 
+import net.minecraft.world.level.LevelAccessor;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
 
 import net.minecraft.core.BlockPos;
@@ -36,9 +40,9 @@ import org.jspecify.annotations.Nullable;
  * five are within 24 blocks). Each midge bobs on its own inside the two-block
  * cloud (a client-side {@link Midge}, as in the original).
  *
- * <p>NOT ported yet: the Midgewater marshes' denser swarms (D10), the
- * spawn rule (above y 62 on the biome's top block, D12), and the
- * shootDownMidges achievement for a hired archer's kill (D7/D9).
+ * <p>The Midgewater marshes' swarms come thicker; they spawn above sea level on the biome's top block.
+ *
+ * <p>A swarm shot down by a hired unit earns its player shootDownMidges.
  */
 public class LOTRMidgesEntity extends Mob {
 
@@ -75,9 +79,15 @@ public class LOTRMidgesEntity extends Mob {
         if (this.random.nextInt(5) == 0) {
             playSound(LOTRSounds.MIDGES_SWARM, getSoundVolume(), getVoicePitch());
         }
-        if (level() instanceof ServerLevel level && isAlive() && this.random.nextInt(500) == 0) {
-            List<LOTRMidgesEntity> swarms = level.getEntitiesOfClass(LOTRMidgesEntity.class, getBoundingBox().inflate(24.0));
-            if (swarms.size() < 5) {
+        if (level() instanceof ServerLevel level && isAlive()) {
+            // The Midgewater's swarms come thicker and closer together.
+            boolean inMidgewater = net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.of(level.getBiome(blockPosition())) instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRMidgewaterBiome;
+            int chance = inMidgewater ? 100 : 500;
+            double range = inMidgewater ? 16.0 : 24.0;
+            int threshold = inMidgewater ? 6 : 5;
+            List<LOTRMidgesEntity> swarms = this.random.nextInt(chance) == 0
+                    ? level.getEntitiesOfClass(LOTRMidgesEntity.class, getBoundingBox().inflate(range)) : null;
+            if (swarms != null && swarms.size() < threshold) {
                 LOTRMidgesEntity more = LOTREntities.MIDGES.create(level, EntitySpawnReason.BREEDING);
                 if (more != null) {
                     more.snapTo(getX(), getY(), getZ(), this.random.nextFloat() * 360.0f, 0.0f);
@@ -200,5 +210,31 @@ public class LOTRMidgesEntity extends Mob {
             }
             this.posY = this.initialPosY + 0.5f * Mth.sin(this.midgeTick / Mth.TWO_PI);
         }
+    }
+
+    /** onDeath: shot down -- indirect damage -- by a hired unit. */
+    @Override
+    public void die(DamageSource source) {
+        super.die(source);
+        if (level() instanceof ServerLevel && source.getDirectEntity() != source.getEntity()
+                && source.getEntity() instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive
+                && npc.hiredNPCInfo.getHiringPlayer() != null) {
+            LOTRPlayerAchievements.addAchievement(npc.hiredNPCInfo.getHiringPlayer(), LOTRAchievement.SHOOT_DOWN_MIDGES);
+        }
+    }
+
+    /** getCanSpawnHere: above sea level, on its biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        int i = Mth.floor(getX());
+        int j = Mth.floor(getY());
+        int k = Mth.floor(getZ());
+        if (j < 62) {
+            return false;
+        }
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome biome =
+                net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.of(level.getBiome(new BlockPos(i, j, k)));
+        return biome != null && level.getBlockState(new BlockPos(i, j - 1, k)).is(biome.topBlock.getBlock())
+                && super.checkSpawnRules(level, reason);
     }
 }

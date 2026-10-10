@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai;
 
 import java.util.EnumSet;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -20,9 +21,8 @@ import org.jspecify.annotations.Nullable;
  * seeks the nearest one who can marry it within 16 blocks, walks to it
  * showing hearts and after three seconds, within three blocks, marries it:
  * the rings go on their heads, the names change, the number of children is
- * set, and whoever gave each ring gains alignment.
- *
- * <p>NOT ported: the marriage achievement.
+ * set, and whoever gave each ring gains alignment and the people's marriage
+ * achievement.
  */
 public class LOTRNPCMarryGoal extends Goal {
 
@@ -74,6 +74,11 @@ public class LOTRNPCMarryGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         this.npc.getLookControl().setLookAt(this.spouse, 10.0f, this.npc.getMaxHeadXRot());
         this.npc.getNavigation().moveTo(this.spouse, this.moveSpeed);
@@ -113,6 +118,9 @@ public class LOTRNPCMarryGoal extends Goal {
         Player player = npc.familyInfo.getRingGivingPlayer();
         if (player != null) {
             LOTRPlayerAlignments.addAlignment(player, LOTRAlignmentValues.MARRIAGE_BONUS, npc.getFaction(), npc);
+            if (npc.familyInfo.marriageAchievement != null) {
+                LOTRPlayerAchievements.addAchievement(player, npc.familyInfo.marriageAchievement);
+            }
         }
     }
 }

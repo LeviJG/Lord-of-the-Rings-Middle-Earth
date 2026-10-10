@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTREatGoal;
@@ -35,14 +36,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRDorwinionBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityDorwinionMan (the Dorwinman): the men of Dorwinion, "Name of
  * Dorwinion". They keep out of the water, open doors, eat and drink as
  * Dorwinion does, and run from a fight rather than join it.
- *
- * <p>NOT ported yet: the pull of Dorwinion on their wandering and their natural
- * spawning (with the biomes), and the killDorwinion achievement (D7).
  */
 public class LOTRDorwinionManEntity extends LOTRManEntity {
 
@@ -146,5 +149,22 @@ public class LOTRDorwinionManEntity extends LOTRManEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.DORWINION.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_DORWINION;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRDorwinionBiome.class);
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
     }
 }

@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
@@ -15,6 +17,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
@@ -27,8 +30,6 @@ import org.jspecify.annotations.Nullable;
  * <p>It dies in a burst of golden leaves. The original also sent the burst as
  * it departed, but only once its departure had already removed it, so it never
  * showed; that is kept.
- *
- * <p>NOT ported yet: the tradeElvenTrader achievement.
  */
 public class LOTRGaladhrimTraderEntity extends LOTRGaladhrimElfEntity implements LOTRTravellingTrader {
 
@@ -131,5 +132,10 @@ public class LOTRGaladhrimTraderEntity extends LOTRGaladhrimElfEntity implements
             return canTradeWith(player) ? "galadhrim/trader/friendly" : "galadhrim/trader/neutral";
         }
         return "galadhrim/trader/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_ELVEN_TRADER);
     }
 }

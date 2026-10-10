@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -20,13 +22,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityDorwinionVinekeeper: keeps the vineyards, with an iron hoe for a
  * weapon and a bunch of grapes in hand. It sells grapes and vines to anyone
  * Dorwinion does not dislike, and hires out vinehands.
- *
- * <p>NOT ported yet: the hireDorwinionVinekeeper achievement.
  */
 public class LOTRDorwinionVinekeeperEntity extends LOTRDorwinionManEntity implements LOTRTradeable, LOTRUnitTradeable {
 
@@ -52,6 +53,11 @@ public class LOTRDorwinionVinekeeperEntity extends LOTRDorwinionManEntity implem
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.DORWINION_VINEKEEPER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     /** canTradeWith: not disliked, and friendly. */
@@ -84,5 +90,10 @@ public class LOTRDorwinionVinekeeperEntity extends LOTRDorwinionManEntity implem
         this.npcItemsInv.setIdleItem(new ItemStack(this.random.nextBoolean()
                 ? LOTRFoodItems.RED_GRAPES : LOTRFoodItems.GREEN_GRAPES));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_DORWINION_VINEKEEPER);
     }
 }

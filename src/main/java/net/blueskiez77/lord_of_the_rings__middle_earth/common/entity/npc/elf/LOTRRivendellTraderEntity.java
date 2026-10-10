@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
@@ -12,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
 import org.jspecify.annotations.Nullable;
@@ -20,9 +23,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityRivendellTrader (the Rivendell Wanderer): a travelling trader of
  * Rivendell who trades with those at +75 or better, with an escort of
  * Rivendell elves, well protected (armour 10) and seeking no one out.
- *
- * <p>NOT ported yet: its cape (LOTRCapes.RIVENDELL_TRADER, with NPC capes) and
- * the tradeRivendellTrader achievement.
  */
 public class LOTRRivendellTraderEntity extends LOTRRivendellElfEntity implements LOTRTravellingTrader {
 
@@ -98,5 +98,10 @@ public class LOTRRivendellTraderEntity extends LOTRRivendellElfEntity implements
             return canTradeWith(player) ? "rivendell/trader/friendly" : "rivendell/trader/neutral";
         }
         return "rivendell/trader/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_RIVENDELL_TRADER);
     }
 }

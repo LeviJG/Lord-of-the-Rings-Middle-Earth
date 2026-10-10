@@ -12,6 +12,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBloc
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -26,9 +27,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * LOTRChestContents: the structures' chest pools, and those items and
- * entities draw from, with fillChest and fillInventory's single pick. Not
- * here yet: the Ettenmoors troll hoard and the Gondor ruins' bones and
- * treasure, which only biome decoration places (D10).
+ * entities draw from, with fillChest and fillInventory's single pick.
  */
 public final class LOTRChestContents {
 
@@ -36,10 +35,9 @@ public final class LOTRChestContents {
     }
 
     /**
-     * A pool: how many stacks a chest gets (minItems to maxItems), its entries, whether it enabled pouches, the vessels its
-     * drinks come in (setDrinkVessels), if any, and its lore books (setLore), if any. Pouches are deliberately not
-     * ported, so a pool with them keeps only the pouch roll's other branch,
-     * the 1 in 50 smith's scroll.
+     * A pool: how many stacks a chest gets (minItems to maxItems), its entries, whether it enabled pouches (a 1 in 50
+     * pouch, else a 1 in 50 smith's scroll, in place of an entry), the vessels its drinks come in (setDrinkVessels),
+     * if any, and its lore books (setLore), if any.
      */
     public record Pool(int minItems, int maxItems, List<Entry> entries, boolean pouches,
                        LOTRVessel @Nullable [] vessels, int loreChance, List<LOTRLore.LoreCategory> loreCategories) {
@@ -1160,7 +1158,7 @@ public final class LOTRChestContents {
 
     /**
      * NOMAD_TENT, its drinks served in the nomads' vessels. It also carries
-     * nomad lore at 1 in 50, and pouches; pouches are not ported.
+     * nomad lore at 1 in 50, and pouches.
      */
     public static final Pool NOMAD_TENT = new Pool(2, 5, List.of(
             new Entry(() -> new ItemStack(LOTRCombatItems.HARADRIC_SWORD), 1, 1, 100),
@@ -1204,7 +1202,7 @@ public final class LOTRChestContents {
 
     /**
      * GULF_HOUSE, its drinks served in the Gulf's vessels. It also carries
-     * Gulf lore at 1 in 30, and pouches; pouches are not ported.
+     * Gulf lore at 1 in 30, and pouches.
      */
     public static final Pool GULF_HOUSE = new Pool(2, 5, List.of(
             new Entry(() -> new ItemStack(LOTRCombatItems.GULFEN_KHOPESH), 1, 1, 100),
@@ -1259,7 +1257,7 @@ public final class LOTRChestContents {
 
     /**
      * EASTERLING_HOUSE, its drinks served in Rhûn's vessels. It also carries
-     * Rhûn lore at 1 in 20, and pouches; pouches are not ported.
+     * Rhûn lore at 1 in 20, and pouches.
      */
     public static final Pool EASTERLING_HOUSE = new Pool(4, 6, List.of(
             new Entry(() -> new ItemStack(Items.PAPER), 2, 8, 50),
@@ -1339,7 +1337,7 @@ public final class LOTRChestContents {
 
     /**
      * MOREDAIN_HUT, its drinks served in the Moredain's vessels. It also
-     * carries Far Harad lore at 1 in 30, and pouches; pouches are not ported.
+     * carries Far Harad lore at 1 in 30, and pouches.
      */
     public static final Pool MOREDAIN_HUT = new Pool(4, 6, List.of(
             new Entry(() -> new ItemStack(LOTRCombatItems.MORWAITH_HELMET), 1, 1, 10),
@@ -1386,7 +1384,7 @@ public final class LOTRChestContents {
 
     /**
      * TAUREDAIN_HOUSE, its drinks served in the Taurethrim's vessels. It also
-     * carries Far Harad jungle lore at 1 in 20, and pouches; pouches are not ported.
+     * carries Far Harad jungle lore at 1 in 20, and pouches.
      */
     public static final Pool TAUREDAIN_HOUSE = new Pool(4, 6, List.of(
             new Entry(() -> new ItemStack(LOTRMaterialItems.OBSIDIAN_SHARD), 1, 4, 50),
@@ -1551,6 +1549,36 @@ public final class LOTRChestContents {
             new Entry(() -> new ItemStack(LOTRCombatItems.ARNOR_DAGGER), 1, 1, 10),
             new Entry(() -> new ItemStack(LOTRCombatItems.ARNOR_SPEAR), 1, 1, 10),
             new Entry(() -> new ItemStack(Items.COMPASS), 1, 1, 25)), true).withLore(12, LOTRLore.LoreCategory.RUINS, LOTRLore.LoreCategory.ERIADOR);
+
+    /** TROLL_HOARD_ETTENMOORS: one in five of the Ettenmoors' troll hoards adds a piece of a troll totem. */
+    public static final Pool TROLL_HOARD_ETTENMOORS = new Pool(1, 1, List.of(
+            new Entry(() -> new ItemStack(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks.TROLL_TOTEM_HEAD), 1, 1, 100),
+            new Entry(() -> new ItemStack(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks.TROLL_TOTEM_BODY), 1, 1, 100),
+            new Entry(() -> new ItemStack(net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks.TROLL_TOTEM_BASE), 1, 1, 100)), false);
+
+    /** GONDOR_RUINS_BONES: the bones in the Gondor ruins' crypt. */
+    public static final Pool GONDOR_RUINS_BONES = new Pool(6, 6, List.of(
+            new Entry(() -> new ItemStack(Items.BONE), 1, 1, 100),
+            new Entry(() -> new ItemStack(Items.SKELETON_SKULL), 1, 1, 25)), false);
+
+    /**
+     * GONDOR_RUINS_TREASURE: the treasure in the Gondor ruins' crypt, its drinks served in Gondor's
+     * vessels. It also carries Gondor lore at 1 in 20.
+     */
+    public static final Pool GONDOR_RUINS_TREASURE = new Pool(6, 6, List.of(
+            new Entry(() -> new ItemStack(Items.IRON_INGOT), 2, 5, 100),
+            new Entry(() -> new ItemStack(Items.GOLD_INGOT), 1, 3, 100),
+            new Entry(() -> new ItemStack(LOTRMaterialItems.SILVER_INGOT), 2, 3, 100),
+            new Entry(() -> new ItemStack(Items.GOLD_NUGGET), 2, 9, 100),
+            new Entry(() -> new ItemStack(LOTRMaterialItems.SILVER_NUGGET), 2, 9, 100),
+            new Entry(() -> new ItemStack(LOTRMiscItems.SILVER_COIN), 2, 20, 100),
+            new Entry(() -> new ItemStack(LOTRCombatItems.GONDOR_SWORD), 1, 1, 25),
+            new Entry(() -> new ItemStack(LOTRCombatItems.GONDOR_SPEAR), 1, 1, 25),
+            new Entry(() -> new ItemStack(LOTRCombatItems.GONDOR_DAGGER), 1, 1, 25),
+            new Entry(() -> new ItemStack(LOTRCombatItems.GONDOR_WARHAMMER), 1, 1, 25),
+            new Entry(() -> new ItemStack(LOTRFoodItems.GOLDEN_GOBLET), 1, 3, 25),
+            new Entry(() -> new ItemStack(LOTRFoodItems.SILVER_GOBLET), 1, 3, 25)),
+            true, LOTRFoods.GONDOR_DRINK.getDrinkVessels()).withLore(20, LOTRLore.LoreCategory.GONDOR);
 
     /**
      * HARNENNOR_HOUSE, its drinks served in Harnedor's vessels. It also carries
@@ -2484,6 +2512,11 @@ public final class LOTRChestContents {
             new Entry(() -> new ItemStack(Items.SKELETON_SKULL), 1, 1, 50),
             new Entry(() -> new ItemStack(Items.BONE), 1, 3, 100),
             new Entry(() -> new ItemStack(Items.ROTTEN_FLESH), 1, 3, 100),
+            new Entry(() -> LOTRWarhornItem.createHorn(LOTRInvasions.NEAR_HARAD_COAST), 1, 1, 1),
+            new Entry(() -> LOTRWarhornItem.createHorn(LOTRInvasions.NEAR_HARAD_UMBAR), 1, 1, 1),
+            new Entry(() -> LOTRWarhornItem.createHorn(LOTRInvasions.NEAR_HARAD_HARNEDOR), 1, 1, 1),
+            new Entry(() -> LOTRWarhornItem.createHorn(LOTRInvasions.NEAR_HARAD_GULF), 1, 1, 1),
+            new Entry(() -> LOTRWarhornItem.createHorn(LOTRInvasions.NEAR_HARAD_NOMAD), 1, 1, 1),
             new Entry(() -> new ItemStack(LOTRCombatItems.OLD_HARADRIC_SACRIFICIAL_DAGGER), 1, 1, 50),
             new Entry(() -> new ItemStack(LOTRCombatItems.BLACK_NUMENOREAN_HELMET), 1, 1, 20),
             new Entry(() -> new ItemStack(LOTRCombatItems.BLACK_NUMENOREAN_CHESTPLATE), 1, 1, 20),
@@ -2648,6 +2681,7 @@ public final class LOTRChestContents {
             new Entry(() -> new ItemStack(LOTRCombatItems.GOLDEN_TAURETHRIM_CHESTPLATE), 1, 1, 20),
             new Entry(() -> new ItemStack(LOTRCombatItems.GOLDEN_TAURETHRIM_LEGGINGS), 1, 1, 20),
             new Entry(() -> new ItemStack(LOTRCombatItems.GOLDEN_TAURETHRIM_BOOTS), 1, 1, 20),
+            new Entry(() -> LOTRWarhornItem.createHorn(LOTRInvasions.TAUREDAIN), 1, 1, 20),
             new Entry(() -> new ItemStack(LOTRMiscItems.TAURETHRIM_AMULET), 1, 2, 40)), true).withLore(30, LOTRLore.LoreCategory.FAR_HARAD_JUNGLE);
 
     /**
@@ -2691,8 +2725,28 @@ public final class LOTRChestContents {
     }
 
     /**
+     * 1.7.10's WeightedRandomChestContent.generateChestContents: the pool's entries alone, each a
+     * count in its range (more than a stack's worth as single items), into random slots -- without
+     * the mod's pouches, lore, wear, drinks or modifiers, which only its own fillChest gave.
+     */
+    public static void fillInventoryPlain(Container inventory, RandomSource random, Pool pool, int amount) {
+        for (int i = 0; i < amount; ++i) {
+            Entry entry = chooseEntry(pool, random);
+            ItemStack rolled = entry.item().get();
+            int count = Mth.nextInt(random, entry.min(), entry.max());
+            if (count > rolled.getMaxStackSize()) {
+                for (int l = 0; l < count; ++l) {
+                    inventory.setItem(random.nextInt(inventory.getContainerSize()), rolled.copyWithCount(1));
+                }
+            } else {
+                inventory.setItem(random.nextInt(inventory.getContainerSize()), rolled.copyWithCount(count));
+            }
+        }
+    }
+
+    /**
      * One of fillInventory's picks: a weighted entry and a count in its range;
-     * for a pool with pouches, a pouch (not ported) or else a smith's scroll,
+     * for a pool with pouches, a pouch or else a smith's scroll,
      * each 1 in 50; for a pool with lore, perhaps a lore book; a damageable item worn up to three quarters; a brewed drink light to strong,
      * in one of the pool's vessels if it has them; the stack cut
      * to its maximum; and the mod's modifiers rolled on, skilful 1 in 5 unless
@@ -2718,8 +2772,12 @@ public final class LOTRChestContents {
     }
 
     private static ItemStack finish(ItemStack stack, Pool pool, RandomSource random, boolean isNPCDrop) {
-        if (!isNPCDrop && pool.pouches() && random.nextInt(50) != 0 && random.nextInt(50) == 0) {
-            stack = LOTRModifiers.randomTemplate(random);
+        if (!isNPCDrop && pool.pouches()) {
+            if (random.nextInt(50) == 0) {
+                stack = LOTRPouchItem.randomPouch(random);
+            } else if (random.nextInt(50) == 0) {
+                stack = LOTRModifiers.randomTemplate(random);
+            }
         }
         if (!pool.loreCategories().isEmpty()) {
             // An NPC's drop gives a lore book three quarters as rarely again, but no rarer than 1 in 8.

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 
@@ -13,6 +15,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityHobbitShirriff (registered as "HobbitShirriffChief", the Hobbit
@@ -21,9 +24,6 @@ import org.jspecify.annotations.Nullable;
  * green feather.
  *
  * He hires out bounders to those at +50 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.HOBBIT, D12) and the
- * tradeHobbitShirriff achievement.
  */
 public class LOTRHobbitShirriffEntity extends LOTRHobbitBounderEntity implements LOTRUnitTradeable {
 
@@ -40,6 +40,11 @@ public class LOTRHobbitShirriffEntity extends LOTRHobbitBounderEntity implements
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.HOBBIT_SHIRRIFF;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.HOBBIT;
     }
 
     /** canTradeWith: +50 alignment and friendly. */
@@ -68,5 +73,10 @@ public class LOTRHobbitShirriffEntity extends LOTRHobbitBounderEntity implements
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         setItemSlot(EquipmentSlot.HEAD, hat(2301981, 3381529));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_HOBBIT_SHIRRIFF);
     }
 }

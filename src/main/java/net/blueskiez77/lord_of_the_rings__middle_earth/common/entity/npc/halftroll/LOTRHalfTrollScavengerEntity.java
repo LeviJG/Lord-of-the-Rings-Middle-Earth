@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -20,8 +22,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityHalfTrollScavenger: a half-troll with a poisoned dagger who
  * trades in what he has scavenged with those at +50 or better. Unlike the
  * other traders he still goes looking for enemies, and he does not respawn.
- *
- * <p>NOT ported yet: the tradeHalfTrollScavenger achievement (D7).
  */
 public class LOTRHalfTrollScavengerEntity extends LOTRHalfTrollEntity implements LOTRTradeable {
 
@@ -70,5 +70,10 @@ public class LOTRHalfTrollScavengerEntity extends LOTRHalfTrollEntity implements
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.POISONED_HALF_TROLL_DAGGER));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_HALF_TROLL_SCAVENGER);
     }
 }

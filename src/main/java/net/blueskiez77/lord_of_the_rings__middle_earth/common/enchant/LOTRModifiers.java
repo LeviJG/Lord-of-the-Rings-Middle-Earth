@@ -7,6 +7,8 @@ import java.util.Optional;
 import java.util.Set;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlockTags;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
@@ -562,7 +564,7 @@ public final class LOTRModifiers {
      * onKillEntity: every kill of a bane's foe with a weapon that could take it
      * counts. When the count reaches its target -- 100 to 250, drawn at the
      * first kill -- the weapon has earned the bane, and the whole server hears
-     * of it. A hired unit counts only with "Hired units killed count towards
+     * of it, and the player earns that bane's achievement. A hired unit counts only with "Hired units killed count towards
      * x-bane modifiers" on; the Utumno exclusion waits on Utumno (D15).
      */
     private static void onKill(net.minecraft.server.level.ServerPlayer player, LivingEntity target) {
@@ -609,6 +611,19 @@ public final class LOTRModifiers {
                     other.sendSystemMessage(Component.translatable(bane.translationKey() + ".earnName",
                             player.getName(), weapon.getHoverName()).withStyle(ChatFormatting.YELLOW));
                 }
+            }
+            LOTRAchievement baneAchievement = switch (bane) {
+                case BANE_ELF -> LOTRAchievement.ENCHANT_BANE_ELF;
+                case BANE_ORC -> LOTRAchievement.ENCHANT_BANE_ORC;
+                case BANE_DWARF -> LOTRAchievement.ENCHANT_BANE_DWARF;
+                case BANE_WARG -> LOTRAchievement.ENCHANT_BANE_WARG;
+                case BANE_TROLL -> LOTRAchievement.ENCHANT_BANE_TROLL;
+                case BANE_SPIDER -> LOTRAchievement.ENCHANT_BANE_SPIDER;
+                case BANE_WIGHT -> LOTRAchievement.ENCHANT_BANE_WIGHT;
+                default -> null;
+            };
+            if (baneAchievement != null) {
+                LOTRPlayerAchievements.addAchievement(player, baneAchievement);
             }
         }
     }
@@ -786,6 +801,26 @@ public final class LOTRModifiers {
     /** isReforgeable: it has modifiers, or could take one. */
     public static boolean isReforgeable(ItemStack stack) {
         return !get(stack).isEmpty() || canApplyAny(stack);
+    }
+
+    /** checkEnchantCompatible: every modifier already on the stack goes with this one. */
+    public static boolean compatibleWithAll(ItemStack stack, LOTRModifier modifier) {
+        for (LOTRModifier current : get(stack)) {
+            if (!current.isCompatibleWith(modifier)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /** clearEnchantsAndProgress: no modifiers left, and no bane's kill count. */
+    public static void clearWithProgress(ItemStack stack) {
+        set(stack, List.of(), false);
+        CustomData data = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY);
+        stack.set(DataComponents.CUSTOM_DATA, data.update(tag -> {
+            tag.remove(TAG);
+            tag.remove(TAG_PROGRESS);
+        }));
     }
 
     /** setEnchantList: write the modifiers onto a stack, effects and all. */

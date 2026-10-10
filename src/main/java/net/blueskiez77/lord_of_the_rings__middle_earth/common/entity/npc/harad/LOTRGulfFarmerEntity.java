@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -23,8 +25,6 @@ import org.jspecify.annotations.Nullable;
  * anyone Near Harad does not dislike. His turban is plain: the original gave
  * it a colour with LOTRItemLeatherHat.setHatColor, which the turban never
  * read.
- *
- * <p>NOT ported yet: the tradeHaradFarmer achievement (D7).
  */
 public class LOTRGulfFarmerEntity extends LOTRGulfHaradrimEntity implements LOTRTradeable {
 
@@ -72,5 +72,10 @@ public class LOTRGulfFarmerEntity extends LOTRGulfHaradrimEntity implements LOTR
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRMiscItems.HARAD_TURBAN));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_HARAD_FARMER);
     }
 }

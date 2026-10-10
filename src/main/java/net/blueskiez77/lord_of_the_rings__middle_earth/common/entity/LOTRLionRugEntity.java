@@ -15,7 +15,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /** LOTREntityLionRug: a lion's or a lioness's skin (LOTRItemLionRug.LionRugType). */
-public class LOTRLionRugEntity extends LOTRRugEntity {
+public class LOTRLionRugEntity extends LOTRRugBaseEntity {
 
     /** dataWatcher 18. */
     private static final EntityDataAccessor<Byte> DATA_TYPE =

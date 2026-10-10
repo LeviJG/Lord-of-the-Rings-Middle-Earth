@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 
 import net.minecraft.world.DifficultyInstance;
@@ -18,8 +19,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityRangerNorth: a Ranger of the North, with an iron dagger (two times
  * in five), a bronze one or a Barrow-blade, and a plain or a Ranger's bow;
  * one in twenty rides.
- *
- * <p>NOT ported yet: the killRangerNorth achievement (D7).
  */
 public class LOTRRangerNorthEntity extends LOTRRangerEntity {
 
@@ -54,5 +53,10 @@ public class LOTRRangerNorthEntity extends LOTRRangerEntity {
         }
         this.npcItemsInv.setRangedWeapon(new ItemStack(this.random.nextInt(2) == 0 ? Items.BOW : LOTRCombatItems.RANGER_BOW));
         return data;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_RANGER_NORTH;
     }
 }

@@ -13,7 +13,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRBearRug
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRWargskinRugEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRGiraffeRugEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRLionRugEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugBaseEntity;
 
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.SubmitNodeCollector;
@@ -31,7 +31,7 @@ import net.minecraft.resources.Identifier;
  * {@link #drawBear} are the two rug models' render methods, transform for
  * transform.
  */
-public abstract class LOTRRugRenderer<T extends LOTRRugEntity> extends EntityRenderer<T, LOTRRugRenderState> {
+public abstract class LOTRRugRenderer<T extends LOTRRugBaseEntity> extends EntityRenderer<T, LOTRRugRenderState> {
 
     protected LOTRRugRenderer(EntityRendererProvider.Context context) {
         super(context);

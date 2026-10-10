@@ -27,10 +27,14 @@ public final class LOTRDataComponents {
 
     /**
      * The LOTR shield whose face a vanilla shield is drawn with: put on the shield, as it is drawn,
-     * by the client, from the shield its bearer has chosen. Never saved or sent.
+     * by the client, from the shield its bearer has chosen. Never saved (no codec); 26.2 builds a
+     * component's stream codec from its codec unless given one, so it is given one by the shield's
+     * position, though it is never sent either.
      */
     public static final DataComponentType<net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields> SHIELD_DESIGN =
-            register("shield_design", b -> b);
+            register("shield_design", b -> b.networkSynchronized(net.minecraft.network.codec.ByteBufCodecs.idMapper(
+                    i -> net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.LOTRShields.values()[i], Enum::ordinal)
+                    .cast()));
 
     /**
      * IPickpocketable.Helper's "LOTRPickpocket": who an item was stolen from and who wanted it stolen,

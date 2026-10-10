@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRChestContents;
@@ -24,15 +25,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRLothlorienBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityGaladhrimElf: an elf of Lothlórien, with an elven dagger and a
  * mallorn bow; its mounts wear Galadhrim barding. Slain by a player it may
  * leave a drink of miruvor, and one time in six something from an elven
  * house.
- *
- * <p>NOT ported yet: the pull of Lothlórien on its wandering and its natural
- * spawning (with the biomes), and the killElf achievement (D7).
  */
 public class LOTRGaladhrimElfEntity extends LOTRElfEntity {
 
@@ -99,5 +101,22 @@ public class LOTRGaladhrimElfEntity extends LOTRElfEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.GALADHRIM.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_ELF;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRLothlorienBiome.class);
+    }
+
+    /** canElfSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean canElfSpawnHere(LevelAccessor level) {
+        return isAboveSeaOnTopBlock(level, false);
     }
 }

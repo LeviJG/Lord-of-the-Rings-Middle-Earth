@@ -201,6 +201,18 @@ public abstract class LOTRLionBaseEntity extends LOTRAnimalMF {
         return LOTRLionBaseEntity.class;
     }
 
+    /** getLionRugType: the rug a player's kill may leave. */
+    public abstract net.minecraft.world.item.Item getLionRug();
+
+    /** dropFewItems' rug: only a player's kill, 1 in (30 - 5 per looting level). */
+    @Override
+    protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean killedByPlayer) {
+        super.dropCustomDeathLoot(level, source, killedByPlayer);
+        if (killedByPlayer) {
+            LOTRRugDrops.dropRug(this, level, source, getLionRug());
+        }
+    }
+
     /** getExperiencePoints: 2-4. */
     @Override
     protected int getBaseExperienceReward(ServerLevel level) {

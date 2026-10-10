@@ -3,6 +3,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRUtilityBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
@@ -72,7 +74,8 @@ import org.jspecify.annotations.Nullable;
  * new random modifier (one time in five), and he has a word to say about it
  * as the screen closes.
  *
- * <p>NOT ported yet: the reforge and scroll-combining achievements.
+ * <p>Engraving earns engraveOwnership, reforging at a block anvil reforge,
+ * and having two smith's scrolls combined combineSmithScrolls.
  *
  * <p>With the vanilla enchanting system on, vanilla enchantments are combined
  * too, in 26.2's terms: each enchantment's own anvil cost and compatibility
@@ -117,6 +120,8 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
     private long lastReforgeTime = -1L;
     /** Whether the oddment collector has had his fun with something here. */
     private boolean doneMischief;
+    /** Whether the output is two smith's scrolls combined. */
+    private boolean isSmithScrollCombine;
 
     public LOTRAnvilMenu(int containerId, Inventory inventory) {
         this(containerId, inventory, ContainerLevelAccess.NULL);
@@ -390,6 +395,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
 
     /** updateRepairOutput. */
     private void updateRepairOutput() {
+        this.isSmithScrollCombine = false;
         ItemStack inputItem = input.getItem(INPUT);
         int materialCost = 0;
         int reforgeCost = 0;
@@ -450,6 +456,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         if (this.isTrader && (scrollCombine = LOTRModifierCombining.getCombinationResult(inputItem, combiner)) != null) {
             output.setItem(0, scrollCombine.createOutputItem());
             setCosts(scrollCombine.cost(), 0, 0);
+            this.isSmithScrollCombine = true;
             return;
         }
 
@@ -745,6 +752,9 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         playAnvilSound();
         lastReforgeTime = now;
         data.set(3, reforges() + 1);
+        if (!this.isTrader) {
+            LOTRPlayerAchievements.addAchievement(this.player, LOTRAchievement.REFORGE);
+        }
         return true;
     }
 
@@ -762,6 +772,7 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
         input.setItem(INPUT, inputItem);
         takeMaterialOrCoinAmount(cost);
         playAnvilSound();
+        LOTRPlayerAchievements.addAchievement(this.player, LOTRAchievement.ENGRAVE_OWNERSHIP);
         return true;
     }
 
@@ -872,6 +883,10 @@ public class LOTRAnvilMenu extends AbstractContainerMenu {
             }
             data.set(0, 0);
             playAnvilSound();
+            if (!player.level().isClientSide() && isSmithScrollCombine) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.COMBINE_SMITH_SCROLLS);
+            }
+            isSmithScrollCombine = false;
             super.onTake(player, stack);
         }
     }

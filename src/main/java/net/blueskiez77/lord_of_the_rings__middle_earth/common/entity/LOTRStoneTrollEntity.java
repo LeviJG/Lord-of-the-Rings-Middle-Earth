@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRTrollStatueItem;
 
@@ -40,8 +42,7 @@ import net.minecraft.world.phys.Vec3;
  *
  * <p>Banner protection keeps it from players a banner turns away.
  *
- * <p>NOT ported: the achievement the original gave for prising a statue loose
- * with a pickaxe (D7).
+ * <p>Prising a statue loose with a pickaxe earns getTrollStatue.
  */
 public class LOTRStoneTrollEntity extends Entity implements LOTRBannerProtectable {
 
@@ -179,6 +180,9 @@ public class LOTRStoneTrollEntity extends Entity implements LOTRBannerProtectabl
             level.broadcastEntityEvent(this, EVENT_SHATTERED);
             if (drops) {
                 if (dropStatue) {
+                    if (source.getDirectEntity() instanceof Player player) {
+                        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.GET_TROLL_STATUE);
+                    }
                     dropAsStatue();
                 } else {
                     int stone = 6 + this.random.nextInt(7);

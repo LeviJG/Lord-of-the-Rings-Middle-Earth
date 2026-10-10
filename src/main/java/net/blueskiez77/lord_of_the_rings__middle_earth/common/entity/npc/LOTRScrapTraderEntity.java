@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
@@ -44,9 +46,7 @@ import org.jspecify.annotations.Nullable;
  * job alone (LOTRAnvilMenu).
  *
  * <p>NOT ported yet: his fading away in Utumno, where he will not trade and
- * cannot be hurt (D15); the tradeScrapTrader achievement (D7); the travelling
- * traders' spawning (D12); and his rare misbehaving on the client, when he
- * looms tall over a world gone dark.
+ * cannot be hurt (D15).
  */
 public class LOTRScrapTraderEntity extends LOTRManEntity implements LOTRTravellingTrader, LOTRSmith {
 
@@ -190,5 +190,10 @@ public class LOTRScrapTraderEntity extends LOTRManEntity implements LOTRTravelli
         LOTRLeatherHatItem.setFeatherColor(hat, Mth.hsvToRgb(h, s, b) & 0xFFFFFF);
         setItemSlot(EquipmentSlot.HEAD, hat);
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_SCRAP_TRADER);
     }
 }

@@ -5,6 +5,8 @@ import com.mojang.serialization.MapCodec;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRWeaponRackBlockEntity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -196,4 +198,15 @@ public class LOTRWeaponRackBlock extends BaseEntityBlock {
         return InteractionResult.SUCCESS;
     }
 
+
+    /** Turned with a structure, or by anything else that turns blocks. */
+    @Override
+    protected BlockState rotate(BlockState state, Rotation rotation) {
+        return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    }
+
+    @Override
+    protected BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.getRotation(state.getValue(FACING)));
+    }
 }

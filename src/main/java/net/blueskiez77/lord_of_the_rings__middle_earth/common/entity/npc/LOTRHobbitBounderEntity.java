@@ -6,6 +6,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAtta
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRFollowHiringPlayerGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRHiredRemainStillGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRHobbitTargetRuffianGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
@@ -43,10 +44,7 @@ import org.jspecify.annotations.Nullable;
  * out the Shire's enemies, and fights with a dagger up close and a sling from
  * afar, in a green hat with a white feather.
  *
- * One in three rides a Shire pony.
- *
- * <p>NOT ported yet: hunting Bree ruffians (LOTREntityAIHobbitTargetRuffian,
- * with the ruffians).
+ * One in three rides a Shire pony. In the Shire it hunts Bree ruffians.
  */
 public class LOTRHobbitBounderEntity extends LOTRHobbitEntity implements RangedAttackMob {
 
@@ -81,7 +79,8 @@ public class LOTRHobbitBounderEntity extends LOTRHobbitEntity implements RangedA
         this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, LOTRNPCEntity.class, 5.0f, 0.02f));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Mob.class, 8.0f, 0.02f));
         this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
-        addTargetTasks(true);
+        int target = addTargetTasks(true);
+        this.targetSelector.addGoal(target + 1, new LOTRHobbitTargetRuffianGoal(this, 0, true));
     }
 
     protected Goal createHobbitMeleeAttackAI() {

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
@@ -42,8 +44,7 @@ import net.minecraft.world.level.Level;
  *
  * <p>The original was one item with five colour subtypes; the port keeps its
  * five colours as five items, and the empty bit as {@code lotr:cracker_empty}.
- *
- * <p>NOT ported: the achievement (D7).
+ * Pulling one earns openDaleCracker.
  */
 public class LOTRDaleCrackerItem extends Item implements LOTRTooltipItem {
     /** getMaxItemUseDuration. */
@@ -169,6 +170,7 @@ public class LOTRDaleCrackerItem extends Item implements LOTRTooltipItem {
                     player.drop(item, false);
                 }
             }
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.OPEN_DALE_CRACKER);
         }
         if (!player.hasInfiniteMaterials()) {
             stack.shrink(1);

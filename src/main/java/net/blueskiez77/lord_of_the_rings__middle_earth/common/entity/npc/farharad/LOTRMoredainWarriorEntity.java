@@ -22,8 +22,6 @@ import org.jspecify.annotations.Nullable;
  * helmet one time in three. Four times in five he carries a Moredain weapon,
  * else half the time an Umbaric one and half a Haradric bronze one; one in
  * three has a Moredain spear as well. One in ten rides out on a zebra.
- *
- * <p>NOT ported yet: the Moredain shield (LOTRShields.ALIGNMENT_MOREDAIN, D7).
  */
 public class LOTRMoredainWarriorEntity extends LOTRMoredainEntity {
 

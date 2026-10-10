@@ -23,8 +23,6 @@ import org.jspecify.annotations.Nullable;
  * Umbaric spear and a scimitar, poleaxe or mace to fall back on, in coast
  * Southron armour and a champion's helmet -- 25 health, and quicker to strike
  * from the saddle.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.SOUTHRON_CHAMPION), with NPC capes.
  */
 public class LOTRSouthronChampionEntity extends LOTRNearHaradrimWarriorEntity {
 

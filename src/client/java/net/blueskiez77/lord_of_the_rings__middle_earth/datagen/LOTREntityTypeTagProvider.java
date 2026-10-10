@@ -38,12 +38,11 @@ public class LOTREntityTypeTagProvider extends FabricTagsProvider.EntityTypeTags
                 LOTREntities.GIRAFFE, LOTREntities.ZEBRA, LOTREntities.RHINO, LOTREntities.CAMEL, LOTREntities.ELK)) {
             saddle.add(key(mount));
         }
-        // LOTRItemMountArmor.isValid: horse barding fits every mount that is not
-        // an elk, boar, camel, warg, giraffe or rhino -- the horse, pony and zebra.
+        // LOTRItemMountArmor.isValid allowed horse barding on the horse, pony and
+        // zebra, but the pony and zebra could wear none at all (func_110259_cr):
+        // only the horse.
         builder(EntityTypeTags.CAN_WEAR_HORSE_ARMOR)
-                .add(key(LOTREntities.HORSE))
-                .add(key(LOTREntities.SHIRE_PONY))
-                .add(key(LOTREntities.ZEBRA));
+                .add(key(LOTREntities.HORSE));
 
         // LOTREntityScorpion, LOTREntityTermite and LOTREntitySpiderBase.
         builder(EntityTypeTags.ARTHROPOD)

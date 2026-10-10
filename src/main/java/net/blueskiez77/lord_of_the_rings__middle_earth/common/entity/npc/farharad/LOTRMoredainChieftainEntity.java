@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -18,15 +20,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityMoredainChieftain: a Moredain warrior of 25 health who leads, in
  * the lion-skin armour of a chieftain with a Moredain battleaxe. He seeks no
  * one out -- he only answers attacks. He hires out warriors (on foot or on
  * zebras) and banner bearers to those at +150 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.MOREDAIN, D12) and the
- * tradeMoredainChieftain achievement (D7).
  */
 public class LOTRMoredainChieftainEntity extends LOTRMoredainWarriorEntity implements LOTRUnitTradeable {
 
@@ -48,6 +48,11 @@ public class LOTRMoredainChieftainEntity extends LOTRMoredainWarriorEntity imple
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.MOREDAIN_CHIEFTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.MOREDAIN;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -80,5 +85,10 @@ public class LOTRMoredainChieftainEntity extends LOTRMoredainWarriorEntity imple
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.MORWAITH_CHIEFTAIN_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.MORWAITH_CHIEFTAIN_HELMET));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_MOREDAIN_CHIEFTAIN);
     }
 }

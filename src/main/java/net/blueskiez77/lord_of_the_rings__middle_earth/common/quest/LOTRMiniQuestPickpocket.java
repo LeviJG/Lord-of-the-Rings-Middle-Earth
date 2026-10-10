@@ -7,6 +7,8 @@ import java.util.UUID;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -39,8 +41,6 @@ import org.jspecify.annotations.Nullable;
  * something; a third of those, and a quarter of the misses, are noticed, and the victim turns on the
  * thief; others of its friends near enough who see it may too. Any notice costs the thief a little
  * standing with the faction.
- *
- * <p>NOT ported yet: the pickpocket achievement (D7).
  */
 public class LOTRMiniQuestPickpocket extends LOTRMiniQuestCollectBase {
 
@@ -140,6 +140,7 @@ public class LOTRMiniQuestPickpocket extends LOTRMiniQuestCollectBase {
             spawnPickingFX(level, LOTRParticles.PICKPOCKET, 1.0, npc);
             this.pickpocketedEntityIDs.add(id);
             updateQuest();
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.PICKPOCKET);
         } else {
             player.sendSystemMessage(Component.translatable("chat.lotr.pickpocket.missed", npc.getNPCName()));
             npc.playSound(SoundEvents.WOOL_BREAK, 0.5f, ((rand.nextFloat() - rand.nextFloat()) * 0.7f + 1.0f) * 2.0f);

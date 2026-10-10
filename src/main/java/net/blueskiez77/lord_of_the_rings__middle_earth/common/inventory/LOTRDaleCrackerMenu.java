@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDaleCrackerItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPouchItem;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
@@ -37,7 +38,13 @@ public class LOTRDaleCrackerMenu extends AbstractContainerMenu {
         super(LOTRMenus.DALE_CRACKER, containerId);
         this.hand = hand;
         for (int i = 0; i < CAPACITY; i++) {
-            addSlot(new Slot(contents, i, 62 + i * 18, 24));
+            // LOTRSlotDaleCracker: no pouch goes in a cracker.
+            addSlot(new Slot(contents, i, 62 + i * 18, 24) {
+                @Override
+                public boolean mayPlace(ItemStack stack) {
+                    return !LOTRPouchItem.isPouch(stack) && super.mayPlace(stack);
+                }
+            });
         }
         addStandardInventorySlots(inventory, 8, 84);
         // slotClick refused the player's current hotbar slot, so the cracker

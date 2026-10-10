@@ -82,6 +82,11 @@ public class LOTRNPCAvoidEvilPlayerGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         this.npc.getNavigation().setSpeedModifier(
                 this.npc.distanceToSqr(this.avoided) < 49.0 ? this.nearSpeed : this.farSpeed);

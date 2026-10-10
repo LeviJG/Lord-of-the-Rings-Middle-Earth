@@ -1,5 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRInvasionSpawnerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 import net.minecraft.core.component.DataComponents;
@@ -7,7 +14,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemUseAnimation;
 import net.minecraft.world.item.component.DyedItemColor;
 import java.util.function.Consumer;
 
@@ -18,28 +29,15 @@ import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
 /**
- * LOTRItemConquestHorn: a warhorn, and blowing one brings a host down on you.
+ * LOTRItemConquestHorn: a warhorn -- held to the lips for two seconds, it calls its warband's
+ * invasion down about the one who blew it. Only one with 1500 alignment with the warband's faction
+ * may blow it, and not where a banner of the faction's enemies, or a respawner against it, holds
+ * the land. Every horn is keyed to an invasion type, so Gondor has eight, one for each fief, and the
+ * high elves have Lindon's and Rivendell's.
  *
- * <p>Every horn belongs to somebody. The original stored an invasion type on
- * the stack and, when it was blown, spawned an LOTREntityInvasionSpawner of that
- * type on top of the player -- a warband of that faction, persistent, hostile,
- * and yours to survive. That is the item's whole purpose.
- *
- * <p>It is keyed to an INVASION TYPE, as the original is -- not to a faction.
- * That matters: a faction can field several kinds of warband, so Gondor alone
- * has eight horns, one per fief, and the high elves have Lindon and Rivendell.
- * Forty-five in all, which is what getSubItems offered and what the creative tab
- * offers now. Only LOTRInvasions' mob table is missing; its names and factions
- * are ported.
- *
- * <p>WHAT IT DOES NOT DO, and cannot yet: call the warband. There is no invasion
- * system and no NPCs, so {@link #summon} is where that goes and is empty, as
- * LOTRCommandHornItem's and LOTRCommandSwordItem's are.
- *
- * <p>The colour is the faction's own, and it reaches the sprite through the
- * DYED_COLOR component: the model tints its base layer from it and leaves the
- * overlay alone, which is the two-render-pass trick the original used, said in
- * the way 26.2 says it.
+ * <p>The colour is the faction's own, and it reaches the sprite through the DYED_COLOR component: the
+ * model tints its base layer from it and leaves the overlay alone, the two render passes the
+ * original used.
  */
 public class LOTRWarhornItem extends Item implements LOTRTooltipItem {
 
@@ -88,22 +86,74 @@ public class LOTRWarhornItem extends Item implements LOTRTooltipItem {
         builder.accept(getInvasion(stack).invasionName());
     }
 
-    /**
-     * onEaten: blow it, and the warband comes.
-     *
-     * <p>canUseHorn refused inside Utumno, and refused a faction whose invasion
-     * you had not earned the right to call. Both tests, and the spawn itself,
-     * wait on the invasion system.
-     */
-    @Override
-    public InteractionResult use(Level level, Player player, InteractionHand hand) {
-        if (!level.isClientSide()) {
-            summon(level, player, player.getItemInHand(hand));
-        }
-        return InteractionResult.SUCCESS;
+    /** createHorn: a warhorn of this invasion. */
+    public static ItemStack createHorn(LOTRInvasions type) {
+        return stack(LOTRCombatItems.WARHORN, type);
     }
 
-    private static void summon(Level level, Player player, ItemStack stack) {
-        // Intentionally empty. See the class note.
+    /** canUseHorn: never in Utumno; only with 1500 alignment; never where its enemies' banner or a respawner holds the land. */
+    public static boolean canUseHorn(ItemStack stack, Level level, Player player, boolean sendMessage) {
+        LOTRInvasions invasionType = getInvasion(stack);
+        LOTRFaction invasionFaction = invasionType.invasionFaction;
+        float alignmentRequired = 1500.0f;
+        if (LOTRPlayerAlignments.getAlignment(player, invasionFaction) >= alignmentRequired) {
+            boolean blocked = LOTRBannerProtection.isProtected(level, player, LOTRBannerProtection.forFaction(invasionFaction), false)
+                    || LOTRNPCRespawnerEntity.isSpawnBlocked(player, invasionFaction);
+            if (blocked) {
+                if (sendMessage && !level.isClientSide()) {
+                    player.sendSystemMessage(Component.translatable("chat.lotr.conquestHornProtected", invasionFaction.factionName()));
+                }
+                return false;
+            }
+            return true;
+        }
+        if (sendMessage && !level.isClientSide()) {
+            LOTRAlignmentValues.notifyAlignmentNotHighEnough(player, alignmentRequired, invasionFaction);
+        }
+        return false;
+    }
+
+    /** onItemRightClick: put it to the lips. */
+    @Override
+    public InteractionResult use(Level level, Player player, InteractionHand hand) {
+        canUseHorn(player.getItemInHand(hand), level, player, false);
+        player.startUsingItem(hand);
+        return InteractionResult.CONSUME;
+    }
+
+    @Override
+    public int getUseDuration(ItemStack stack, LivingEntity user) {
+        return 40;
+    }
+
+    @Override
+    public ItemUseAnimation getUseAnimation(ItemStack stack) {
+        return ItemUseAnimation.BOW;
+    }
+
+    /** onEaten: the warband comes, three blocks above the one who blew it; the horn is spent but in creative. */
+    @Override
+    public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity user) {
+        if (!(user instanceof Player player)) {
+            return stack;
+        }
+        LOTRInvasions invasionType = getInvasion(stack);
+        if (canUseHorn(stack, level, player, true)) {
+            if (level instanceof ServerLevel server) {
+                LOTRInvasionSpawnerEntity invasion = LOTREntities.INVASION_SPAWNER.create(server, EntitySpawnReason.TRIGGERED);
+                if (invasion != null) {
+                    invasion.setInvasionType(invasionType);
+                    invasion.isWarhorn = true;
+                    invasion.spawnsPersistent = true;
+                    invasion.snapTo(player.getX(), player.getY() + 3.0, player.getZ(), 0.0f, 0.0f);
+                    server.addFreshEntity(invasion);
+                    invasion.startInvasion(player);
+                }
+            }
+            if (!player.getAbilities().instabuild) {
+                stack.shrink(1);
+            }
+        }
+        return stack;
     }
 }

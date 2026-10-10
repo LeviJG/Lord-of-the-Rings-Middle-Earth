@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -22,15 +23,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRDorwinionBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityDorwinionElf: an elf of Dorwinion, of the Dorwinion faction with
  * its men. It fights only up close, with an elven dagger, drinks as
  * Dorwinion does, bears a Sindarin name, and slain by a player may leave a
  * Dorwinion wine, and one time in six something from a Dorwinion house.
- *
- * <p>NOT ported yet: its natural spawn check and the pull of Dorwinion on its
- * wandering (with the biomes), and the killDorwinionElf achievement (D7).
  */
 public class LOTRDorwinionElfEntity extends LOTRElfEntity {
 
@@ -113,5 +115,22 @@ public class LOTRDorwinionElfEntity extends LOTRElfEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.DORWINION_ELF.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_DORWINION_ELF;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRDorwinionBiome.class);
+    }
+
+    /** canElfSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean canElfSpawnHere(LevelAccessor level) {
+        return isAboveSeaOnTopBlock(level, false);
     }
 }

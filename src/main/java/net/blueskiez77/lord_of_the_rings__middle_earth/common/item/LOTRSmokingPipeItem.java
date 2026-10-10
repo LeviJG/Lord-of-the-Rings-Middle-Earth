@@ -3,6 +3,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import java.util.function.Consumer;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRSmokeRingEntity;
 
 import net.minecraft.sounds.SoundSource;
@@ -96,6 +98,9 @@ public class LOTRSmokingPipeItem extends Item implements LOTRTooltipItem {
             ring.shootFromRotation(player, player.getXRot(), player.getYRot(), 0.0f,
                     LOTRSmokeRingEntity.SPEED, 1.0f);
             server.addFreshEntity(ring);
+            if (getSmokeColor(stack) == MAGIC_COLOR) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.USE_MAGIC_PIPE);
+            }
         }
         level.playSound(null, player.getX(), player.getY(), player.getZ(), LOTRSounds.ITEM_PUFF,
                 SoundSource.PLAYERS, 1.0f,

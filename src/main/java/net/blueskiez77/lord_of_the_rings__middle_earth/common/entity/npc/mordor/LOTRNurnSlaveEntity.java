@@ -39,6 +39,9 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRNurnBiome;
 
 /**
  * LOTREntityNurnSlave: a man or woman of Gondor enslaved to farm the fields of
@@ -46,9 +49,6 @@ import org.jspecify.annotations.Nullable;
  * through Mordor -- and, until freed, only Mordor's enemies may set upon them.
  * They keep out of the water, open doors, farm, eat maggoty bread, drink water
  * or orc draught from a skin, and fight only when struck.
- *
- * <p>NOT ported yet: their pull back towards the Nurn biome while unfree
- * (getBlockPathWeight, +20 there), with the biomes (D10).
  */
 public class LOTRNurnSlaveEntity extends LOTRManEntity implements LOTRFarmhand {
 
@@ -160,5 +160,11 @@ public class LOTRNurnSlaveEntity extends LOTRManEntity implements LOTRFarmhand {
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRToolItems.MORDOR_HOE));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon());
         return data;
+    }
+
+    /** getBlockPathWeight: drawn back to Nurn while unfree. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return !this.isFree && biomeAt(level, pos) instanceof LOTRNurnBiome ? 20.0f : 0.0f;
     }
 }

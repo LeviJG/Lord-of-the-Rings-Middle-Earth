@@ -1,7 +1,9 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
 import net.minecraft.world.DifficultyInstance;
@@ -9,6 +11,7 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
@@ -18,9 +21,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityDorwinionElfVintner (the Dorwinion Vintner-elf): sells wine of
  * every strength to those at +50 or better, hooded in its cloak, with one of
  * its wines in hand, and seeks no one out.
- *
- * <p>NOT ported yet: its cape (dorwinionVintner_cape, with NPC capes) and the
- * buyWineVintner achievement.
  */
 public class LOTRDorwinionElfVintnerEntity extends LOTRDorwinionElfEntity implements LOTRTradeable {
 
@@ -70,5 +70,12 @@ public class LOTRDorwinionElfVintnerEntity extends LOTRDorwinionElfEntity implem
             return canTradeWith(player) ? "dorwinion/elfVintner/friendly" : "dorwinion/elfVintner/neutral";
         }
         return "dorwinion/elf/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        if (type == LOTRTradeEntries.TradeType.BUY) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.BUY_WINE_VINTNER);
+        }
     }
 }

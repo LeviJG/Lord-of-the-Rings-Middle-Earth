@@ -45,6 +45,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * LOTREntityBear: light, dark or black, a cub taking either parent's colour.
@@ -58,12 +59,8 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>Drops are {@code lotr:entities/bear}: one to three fur plus looting. The
  * rug of its colour drops in {@link #dropCustomDeathLoot}.
- *
- * <p>NOT ported yet: getCanSpawnHere's LOTRAnimalSpawnConditions check (a
- * biome variant with at least one tree per chunk), which needs the LOTR
- * biomes (D10/D12).
  */
-public class LOTRBearEntity extends Animal {
+public class LOTRBearEntity extends Animal implements LOTRAnimalSpawnConditions {
 
     /** dataWatcher 18. */
     private static final EntityDataAccessor<Byte> DATA_TYPE =
@@ -307,5 +304,26 @@ public class LOTRBearEntity extends Animal {
                 case BLACK -> net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.BLACK_BEAR_RUG;
             };
         }
+    }
+
+    /** canWorldGenSpawnAt: only where the variant here has trees. */
+    @Override
+    public boolean canWorldGenSpawnAt(int i, int j, int k, net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome biome,
+                                      net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.variant.LOTRBiomeVariant variant) {
+        return biome.decorator.getVariantTreesPerChunk(variant) >= 1;
+    }
+
+    /** getCanSpawnHere: in Middle-earth, only where the variant here has trees. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldChunkManager chunkManager = level instanceof net.minecraft.world.level.WorldGenLevel w
+                ? net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldChunkManager.of(w) : null;
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome biome =
+                net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.of(level.getBiome(blockPosition()));
+        if (chunkManager != null && biome != null) {
+            return super.checkSpawnRules(level, reason)
+                    && canWorldGenSpawnAt(getBlockX(), getBlockY(), getBlockZ(), biome, chunkManager.getBiomeVariantAt(getBlockX(), getBlockZ()));
+        }
+        return super.checkSpawnRules(level, reason);
     }
 }

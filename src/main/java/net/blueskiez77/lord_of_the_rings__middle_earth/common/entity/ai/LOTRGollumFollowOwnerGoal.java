@@ -68,6 +68,11 @@ public class LOTRGollumFollowOwnerGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         Player player = this.owner;
         if (player == null) {

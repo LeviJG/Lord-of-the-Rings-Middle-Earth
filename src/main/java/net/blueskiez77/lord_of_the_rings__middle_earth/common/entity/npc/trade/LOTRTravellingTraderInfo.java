@@ -21,7 +21,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 /**
  * LOTRTravellingTraderInfo: a travelling trader's visit. Once started (by
- * the travelling trader spawner, D12), it lasts a day: every player is
+ * the travelling trader spawner), it lasts a day: every player is
  * told of the arrival, the trader and its escort of two to four keep within
  * sixteen blocks of where they came, two minutes before the end the trader
  * says it is leaving, and at the end everyone is told it has gone and it and

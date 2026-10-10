@@ -17,6 +17,9 @@ public class LOTRHiringPlayerHurtTargetGoal extends TargetGoal {
 
     private final LOTRNPCEntity npc;
     private @Nullable LivingEntity theTarget;
+    /** isSuitableTarget(target, false): the target need not be in sight. */
+    private static final TargetingConditions UNSEEN = TargetingConditions.forCombat().ignoreLineOfSight();
+
     private int playerLastAttackerTime;
 
     public LOTRHiringPlayerHurtTargetGoal(LOTRNPCEntity npc) {
@@ -39,7 +42,7 @@ public class LOTRHiringPlayerHurtTargetGoal extends TargetGoal {
             return false;
         }
         return LOTRAttackRules.canNPCAttackEntity(this.npc, this.theTarget, true)
-                && canAttack(this.theTarget, TargetingConditions.DEFAULT);
+                && canAttack(this.theTarget, UNSEEN);
     }
 
     @Override

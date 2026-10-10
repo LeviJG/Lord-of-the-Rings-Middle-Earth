@@ -18,7 +18,7 @@ import net.minecraft.resources.Identifier;
 public class LOTRAurochsRenderer extends AgeableMobRenderer<LOTRAurochsEntity, LOTRAurochsRenderState, LOTRAurochsModel> {
 
     private static final LOTRRandomSkins AUROCHS_SKINS = LOTRRandomSkins.loadSkinsList("lotr:mob/aurochs", "aurochs");
-    private static final LOTRRandomSkins KINE_SKINS = LOTRRandomSkins.loadSkinsList("lotr:mob/kineAraw", "kine_of_araw");
+    private static final LOTRRandomSkins KINE_SKINS = LOTRRandomSkins.loadSkinsList("lotr:mob/kineAraw", "kine_araw");
 
     private final boolean kine;
 

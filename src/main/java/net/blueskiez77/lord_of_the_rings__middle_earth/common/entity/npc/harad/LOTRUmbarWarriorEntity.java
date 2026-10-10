@@ -22,8 +22,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityUmbarWarrior: a warrior of Umbar in Umbaric armour (bare-headed
  * one time in ten) with an Umbaric scimitar, dagger, poleaxe, mace or pike,
  * and one in five an Umbaric spear as well. One in six rides out.
- *
- * <p>NOT ported yet: the Umbar shield (LOTRShields.ALIGNMENT_UMBAR, D7).
  */
 public class LOTRUmbarWarriorEntity extends LOTRUmbarianEntity {
 

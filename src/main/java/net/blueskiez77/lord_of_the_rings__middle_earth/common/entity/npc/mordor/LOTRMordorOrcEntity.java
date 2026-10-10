@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.mordor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -32,8 +33,6 @@ import org.jspecify.annotations.Nullable;
  * in five), with a battleaxe, dagger (poisoned or not), scimitar, warhammer,
  * pickaxe, axe or warscythe; one in six carries a spear as well, falling back
  * on the other. Now and then it leaves something from an orc tent.
- *
- * <p>NOT ported yet: the killMordorOrc achievement (D7).
  */
 public class LOTRMordorOrcEntity extends LOTROrcEntity {
 
@@ -110,5 +109,10 @@ public class LOTRMordorOrcEntity extends LOTROrcEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.MORDOR.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_MORDOR_ORC;
     }
 }

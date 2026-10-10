@@ -8,6 +8,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRAlignmentHudPayloads;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRBrokenPledgePayload;
@@ -146,10 +148,24 @@ public final class LOTRPlayerAlignments {
         return get(player).getAlignment(faction);
     }
 
+    /** LOTRFaction.checkAlignmentAchievements: every rank achievement the player now stands at. */
+    public static void checkAlignmentAchievements(Player player, LOTRFaction faction) {
+        if (!(player instanceof ServerPlayer serverPlayer)) {
+            return;
+        }
+        for (LOTRFactionRank rank : faction.ranksSortedDescending) {
+            var rankAch = rank.rankAchievement;
+            if (rankAch != null && rankAch.isPlayerRequiredRank(player)) {
+                LOTRPlayerAchievements.addAchievement(serverPlayer, rankAch);
+            }
+        }
+    }
+
     /** setAlignment: and a pledge the new figures no longer allow is broken. */
     public static void setAlignment(Player player, LOTRFaction faction, float value) {
         if (faction.isPlayableAlignmentFaction()) {
             player.setAttached(ALIGNMENT_DATA, get(player).withAlignment(faction, value));
+            checkAlignmentAchievements(player, faction);
         }
         LOTRFaction pledge = get(player).pledgeFaction();
         if (player instanceof ServerPlayer serverPlayer && pledge != null && !canPledgeTo(player, pledge)) {
@@ -314,6 +330,11 @@ public final class LOTRPlayerAlignments {
     public static void setPledgeFaction(Player player, LOTRFaction faction) {
         player.setAttached(ALIGNMENT_DATA, get(player).withPledgeFaction(faction));
         cooldowns(player).killCooldown = 0;
+        if (faction != null) {
+            checkAlignmentAchievements(player, faction);
+            LOTRPlayerAchievements.addAchievement(player,
+                    LOTRAchievement.PLEDGE_SERVICE);
+        }
         if (faction != null && !player.level().isClientSide()) {
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                     LOTRSounds.EVENT_PLEDGE, SoundSource.PLAYERS, 1.0f, 1.0f);
@@ -373,6 +394,7 @@ public final class LOTRPlayerAlignments {
                 LOTRSounds.EVENT_UNPLEDGE, SoundSource.PLAYERS, 1.0f, 1.0f);
         player.sendSystemMessage(Component.translatable(
                 intentional ? "chat.lotr.unpledge" : "chat.lotr.autoUnpledge", wasPledge.factionName()));
+        checkAlignmentAchievements(player, wasPledge);
     }
 
     /**
@@ -380,6 +402,11 @@ public final class LOTRPlayerAlignments {
      * cooldown starting, ending, or rising past its recorded start -- or every
      * fifth tick, and the player is told when it runs out.
      */
+    /** /pledgeCooldown. */
+    public static void setPledgeBreakCooldownByCommand(ServerPlayer player, int value) {
+        setPledgeBreakCooldown(player, value);
+    }
+
     private static void setPledgeBreakCooldown(ServerPlayer player, int value) {
         LOTRPledgeCooldowns cd = cooldowns(player);
         int preCD = cd.breakCooldown;

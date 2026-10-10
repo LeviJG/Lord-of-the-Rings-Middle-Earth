@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -17,14 +19,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityEasterlingFarmer: a farmer of Rhûn in a green-brown kaftan with a
  * bronze hoe, trading with -- and hiring out farmhands to -- anyone Rhûn does
  * not dislike.
  *
- * <p>NOT ported yet: the hireRhunFarmer achievement (D7). The original gave
- * no achievement for his trades.
+ * <p>The original gave no achievement for his trades.
  */
 public class LOTREasterlingFarmerEntity extends LOTREasterlingEntity implements LOTRTradeable, LOTRUnitTradeable {
 
@@ -41,6 +43,11 @@ public class LOTREasterlingFarmerEntity extends LOTREasterlingEntity implements 
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.EASTERLING_FARMER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     @Override
@@ -72,5 +79,10 @@ public class LOTREasterlingFarmerEntity extends LOTREasterlingEntity implements 
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         wearKaftan(7577646);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_RHUN_FARMER);
     }
 }

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRUnsmelteryBlockEntity;
 
 import net.minecraft.world.Container;
@@ -49,6 +51,15 @@ public class LOTRUnsmelteryMenu extends AbstractContainerMenu {
             @Override
             public boolean mayPlace(ItemStack stack) {
                 return false;
+            }
+
+            /** LOTRSlotUnsmeltResult.onPickupFromSlot: taking the metal back earns unsmelt. */
+            @Override
+            public void onTake(Player player, ItemStack stack) {
+                super.onTake(player, stack);
+                if (!player.level().isClientSide()) {
+                    LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.UNSMELT);
+                }
             }
         });
 

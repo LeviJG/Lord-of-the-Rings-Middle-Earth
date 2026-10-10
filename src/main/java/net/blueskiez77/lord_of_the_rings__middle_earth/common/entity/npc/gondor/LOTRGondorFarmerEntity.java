@@ -1,5 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,12 +22,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityGondorFarmer: a Gondorian with an iron hoe and a light brown hat,
  * who sells the land's produce and hires out farmhands.
- *
- * <p>NOT ported yet: the buyPipeweedGondorFarmer and hireGondorFarmer achievements.
  */
 public class LOTRGondorFarmerEntity extends LOTRGondorManEntity implements LOTRTradeable, LOTRUnitTradeable {
 
@@ -45,6 +47,11 @@ public class LOTRGondorFarmerEntity extends LOTRGondorManEntity implements LOTRT
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.GONDOR_FARMER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     /** canTradeWith: not disliked, and friendly. */
@@ -71,5 +78,17 @@ public class LOTRGondorFarmerEntity extends LOTRGondorManEntity implements LOTRT
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, LOTRHobbitBounderEntity.hat(10390131, -1));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        if (type == LOTRTradeEntries.TradeType.BUY && stack.is(LOTRDecorationBlocks.PIPEWEED_PLANT.asItem())) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.BUY_PIPEWEED_GONDOR_FARMER);
+        }
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_GONDOR_FARMER);
     }
 }

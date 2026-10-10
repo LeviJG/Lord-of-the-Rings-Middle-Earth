@@ -1,7 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.hud;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider.LOTRSpiderBaseEntity;
 
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
@@ -32,7 +32,7 @@ public final class LOTRSpiderClimbHud {
 
     private static void render(GuiGraphicsExtractor graphics, DeltaTracker deltaTracker) {
         Minecraft minecraft = Minecraft.getInstance();
-        if (minecraft.player == null || !(minecraft.player.getVehicle() instanceof LOTRSpiderEntity spider)
+        if (minecraft.player == null || !(minecraft.player.getVehicle() instanceof LOTRSpiderBaseEntity spider)
                 || !spider.shouldRenderClimbingMeter()) {
             return;
         }

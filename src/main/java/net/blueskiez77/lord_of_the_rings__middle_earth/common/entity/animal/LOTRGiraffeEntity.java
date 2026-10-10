@@ -16,8 +16,8 @@ import net.minecraft.world.level.Level;
  * horse sounds. Drops leather ({@code lotr:entities/giraffe}) and, to a
  * player, now and then its rug ({@link LOTRRugDrops}).
  *
- * <p>NOT ported yet: the rideGiraffeShire achievement (D7, and the Shire
- * biome, D10).
+ * <p>NOT ported yet: the rideGiraffeShire achievement, for riding a saddled
+ * one in the Shire (with the biomes, D10).
  */
 public class LOTRGiraffeEntity extends LOTRHorseEntity {
 

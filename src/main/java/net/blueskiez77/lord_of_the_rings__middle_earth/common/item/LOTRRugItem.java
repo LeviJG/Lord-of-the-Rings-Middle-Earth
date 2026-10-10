@@ -2,7 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 
 import java.util.function.Function;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRRugBaseEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -26,9 +26,9 @@ import net.minecraft.world.phys.Vec3;
  */
 public class LOTRRugItem extends Item {
 
-    private final Function<Level, LOTRRugEntity> factory;
+    private final Function<Level, LOTRRugBaseEntity> factory;
 
-    public LOTRRugItem(Properties properties, Function<Level, LOTRRugEntity> factory) {
+    public LOTRRugItem(Properties properties, Function<Level, LOTRRugBaseEntity> factory) {
         super(properties);
         this.factory = factory;
     }
@@ -57,7 +57,7 @@ public class LOTRRugItem extends Item {
         }
         // The click's position within the block it was on, carried to the new spot.
         Vec3 hit = context.getClickLocation();
-        LOTRRugEntity rug = this.factory.apply(level);
+        LOTRRugBaseEntity rug = this.factory.apply(level);
         rug.placeAt(pos.getX() + (hit.x - clicked.getX()), pos.getY(), pos.getZ() + (hit.z - clicked.getZ()), player);
         AABB box = rug.getBoundingBox();
         if (level.getEntities(rug, box, e -> e.blocksBuilding).isEmpty() && level.noCollision(rug, box)

@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBeaconBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 
@@ -169,6 +171,9 @@ public class LOTRBeaconBlock extends BaseEntityBlock {
 
         if (canItemLightBeacon(stack) && !lit && !isWaterAbove(level, pos)) {
             ignite(level, pos, state);
+            if (!level.isClientSide()) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.LIGHT_GONDOR_BEACON);
+            }
             if (!player.isCreative()) {
                 if (stack.isDamageableItem()) {
                     stack.hurtAndBreak(1, player, hand.asEquipmentSlot());

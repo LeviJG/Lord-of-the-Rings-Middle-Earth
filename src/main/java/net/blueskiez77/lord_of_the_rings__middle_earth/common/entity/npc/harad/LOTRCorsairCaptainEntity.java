@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -18,14 +20,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityCorsairCaptain: a corsair who leads, bare-headed with a harpoon,
  * 25 health. He seeks no one out -- he only answers attacks. He hires out
  * corsairs, who loot coins the better, to those at +150 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.NEAR_HARAD_CORSAIR, D12) and
- * the tradeCorsairCaptain achievement (D7).
  */
 public class LOTRCorsairCaptainEntity extends LOTRCorsairEntity implements LOTRUnitTradeable {
 
@@ -47,6 +47,11 @@ public class LOTRCorsairCaptainEntity extends LOTRCorsairEntity implements LOTRU
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.CORSAIR_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.NEAR_HARAD_CORSAIR;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -76,5 +81,10 @@ public class LOTRCorsairCaptainEntity extends LOTRCorsairEntity implements LOTRU
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_CORSAIR_CAPTAIN);
     }
 }

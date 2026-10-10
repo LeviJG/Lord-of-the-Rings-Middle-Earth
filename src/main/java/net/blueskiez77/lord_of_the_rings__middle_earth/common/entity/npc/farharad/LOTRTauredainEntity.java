@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.farharad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
@@ -41,6 +42,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRFarHaradBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityTauredain: a man or woman of the Taurethrim, the jungle folk of
@@ -48,10 +53,6 @@ import org.jspecify.annotations.Nullable;
  * Taurethrim do, fight back with a Taurethrim dagger but seek no one out
  * (their warriors do), speak kindly only to those both friendly and aligned,
  * and leave bones and, one time in five, something from a Taurethrim house.
- *
- * <p>NOT ported yet: the pull of Far Harad on their wandering and their
- * spawning above y 62 on the biome's top block (with the biomes), and the
- * killTauredain achievement (D7).
  */
 public class LOTRTauredainEntity extends LOTRManEntity {
 
@@ -166,5 +167,22 @@ public class LOTRTauredainEntity extends LOTRManEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.TAUREDAIN.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_TAUREDAIN;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRFarHaradBiome.class);
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
     }
 }

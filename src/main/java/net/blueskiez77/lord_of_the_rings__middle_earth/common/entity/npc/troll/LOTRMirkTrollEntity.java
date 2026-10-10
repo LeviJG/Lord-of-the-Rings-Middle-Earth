@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRFollowHiringPlayerGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRHiredRemainStillGoal;
@@ -34,8 +35,6 @@ import org.jspecify.annotations.Nullable;
  * 2.0, looks for Dol Guldur's enemies as the orcs do, has no name of its own,
  * will not be tickled or speak, and, slain by a player, sometimes leaves orc
  * steel.
- *
- * <p>NOT ported yet: the killMirkTroll achievement (D7).
  */
 public class LOTRMirkTrollEntity extends LOTRTrollEntity {
 
@@ -124,5 +123,10 @@ public class LOTRMirkTrollEntity extends LOTRTrollEntity {
     @Override
     protected int getBaseExperienceReward(ServerLevel level) {
         return 4 + this.random.nextInt(7);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_MIRK_TROLL;
     }
 }

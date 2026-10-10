@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -20,6 +22,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * LOTREntityWickedDwarf: a dwarf gone over to the Enemy, of Mordor's faction.
@@ -27,10 +30,6 @@ import org.jspecify.annotations.Nullable;
  * carries a dwarven pickaxe when idle, and one time in four wears dwarven
  * armour without the helmet. He works the forge for anyone at +100 with
  * Mordor, Angmar or Rhûn.
- *
- * <p>NOT ported yet: his natural spawning -- above y 62 on the biome's own
- * top block -- (with the biomes), and the killWickedDwarf and tradeWickedDwarf
- * achievements (D7).
  */
 public class LOTRWickedDwarfEntity extends LOTRDwarfEntity implements LOTRSmith {
 
@@ -108,5 +107,21 @@ public class LOTRWickedDwarfEntity extends LOTRDwarfEntity implements LOTRSmith 
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return null;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_WICKED_DWARF;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_WICKED_DWARF);
+    }
+
+    /** Above y 62, on the biome's own top block. */
+    @Override
+    public boolean canDwarfSpawnHere(LevelAccessor level) {
+        return isAboveSeaOnTopBlock(level, false);
     }
 }

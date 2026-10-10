@@ -43,7 +43,7 @@ public class LOTRInventoryHiredReplacedItems extends LOTRInventoryNPC {
             if (!hasReplacedEquipment(i) || (stack = getEquippedReplacement(i)).isEmpty()) {
                 continue;
             }
-            this.theNPC.spawnAtLocation(level, stack);
+            this.theNPC.dropUnpouched(level, stack);
             equipReplacement(i, getReplacedEquipment(i));
             setReplacedEquipment(i, ItemStack.EMPTY, false);
         }

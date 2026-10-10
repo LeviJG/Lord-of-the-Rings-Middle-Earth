@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -16,14 +18,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityRangerIthilienCaptain: a captain of the Ithilien rangers, with a
  * Gondorian sword, who seeks no one out. He hires out rangers and banner
  * bearers to those at +300 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.GONDOR_ITHILIEN, D12) and the
- * tradeRangerIthilienCaptain achievement (D7).
  */
 public class LOTRRangerIthilienCaptainEntity extends LOTRRangerIthilienEntity implements LOTRUnitTradeable {
 
@@ -40,6 +40,11 @@ public class LOTRRangerIthilienCaptainEntity extends LOTRRangerIthilienEntity im
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.RANGER_ITHILIEN_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.GONDOR_ITHILIEN;
     }
 
     /** canTradeWith: +300 alignment and friendly. */
@@ -72,5 +77,10 @@ public class LOTRRangerIthilienCaptainEntity extends LOTRRangerIthilienEntity im
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.GONDOR_SWORD));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_RANGER_ITHILIEN_CAPTAIN);
     }
 }

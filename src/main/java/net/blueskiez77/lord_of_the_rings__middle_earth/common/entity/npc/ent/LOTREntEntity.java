@@ -2,9 +2,10 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent;
 
 import java.util.Random;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLeafParticleOptions;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCorruptMallornBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDecorationBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
@@ -52,8 +53,6 @@ import org.jspecify.annotations.Nullable;
  * Mallorn Ent. It has an Ent's name, a slow heavy tread,
  * its eyes blink shut now and then, and it may have extra branches on its
  * head. Slain by a player it may leave an Ent-draught.
- *
- * <p>NOT ported yet: the killEnt and talkEnt achievements (D7).
  */
 public class LOTREntEntity extends LOTRTreeEntity {
 
@@ -263,5 +262,15 @@ public class LOTREntEntity extends LOTRTreeEntity {
         input.getString("EntName").ifPresent(this.familyInfo::setName);
         input.getInt("SaplingHealX").ifPresent(x -> this.saplingHealTarget = new BlockPos(x,
                 input.getIntOr("SaplingHealY", 0), input.getIntOr("SaplingHealZ", 0)));
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_ENT;
+    }
+
+    @Override
+    public @Nullable LOTRAchievement getTalkAchievement() {
+        return LOTRAchievement.TALK_ENT;
     }
 }

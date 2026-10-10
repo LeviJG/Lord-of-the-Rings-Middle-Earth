@@ -29,7 +29,8 @@ import org.jspecify.annotations.Nullable;
  * {@code lotr:swinging}. ConditionalItemModelProperties.ID_MAPPER is widened to
  * public by Fabric's transitive access wideners. The structure spawner adds
  * {@code lotr:village_structure} and its tint {@code lotr:structure_spawner}
- * (ItemTintSources.ID_MAPPER widened by the mod's own).
+ * (ItemTintSources.ID_MAPPER widened by the mod's own), and the pouch
+ * {@code lotr:pouch_open}.
  */
 public final class LOTRItemModelProperties {
 
@@ -46,6 +47,32 @@ public final class LOTRItemModelProperties {
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "village_structure"), VillageStructure.MAP_CODEC);
         ItemTintSources.ID_MAPPER.put(
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "structure_spawner"), StructureSpawnerTint.MAP_CODEC);
+        ConditionalItemModelProperties.ID_MAPPER.put(
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "pouch_open"), PouchOpen.MAP_CODEC);
+    }
+
+    /** LOTRItemPouch.getIcon's open pouch: the one the player has open, in its window or against a chest. */
+    public record PouchOpen() implements ConditionalItemModelProperty {
+        public static final MapCodec<PouchOpen> MAP_CODEC = MapCodec.unit(new PouchOpen());
+
+        @Override
+        public boolean get(ItemStack stack, @Nullable ClientLevel level, @Nullable LivingEntity owner,
+                int seed, ItemDisplayContext displayContext) {
+            net.minecraft.world.entity.player.Player player = net.minecraft.client.Minecraft.getInstance().player;
+            if (player == null) {
+                return false;
+            }
+            int slot = player.containerMenu instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRPouchMenu menu
+                    ? menu.pouchSlot
+                    : player.containerMenu instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.inventory.LOTRChestWithPouchMenu chest
+                    ? chest.pouchSlot : -1;
+            return slot >= 0 && player.getInventory().getItem(slot) == stack;
+        }
+
+        @Override
+        public MapCodec<PouchOpen> type() {
+            return MAP_CODEC;
+        }
     }
 
     /** A structure spawner for a village, drawn with the village icon. */

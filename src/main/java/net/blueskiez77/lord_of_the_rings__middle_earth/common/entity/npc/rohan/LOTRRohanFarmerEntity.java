@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,12 +21,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityRohanFarmer: a Rohirrim with an iron hoe and a light brown hat,
  * who sells the land's produce and hires out farmhands.
- *
- * <p>NOT ported yet: the tradeRohanFarmer and hireRohanFarmer achievements.
  */
 public class LOTRRohanFarmerEntity extends LOTRRohanManEntity implements LOTRTradeable, LOTRUnitTradeable {
 
@@ -45,6 +46,11 @@ public class LOTRRohanFarmerEntity extends LOTRRohanManEntity implements LOTRTra
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.ROHAN_FARMER;
+    }
+
+    @Override
+    public @Nullable LOTRInvasions getWarhorn() {
+        return null;
     }
 
     /** canTradeWith: not disliked, and friendly. */
@@ -71,5 +77,15 @@ public class LOTRRohanFarmerEntity extends LOTRRohanManEntity implements LOTRTra
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, LOTRHobbitBounderEntity.hat(10390131, -1));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_ROHAN_FARMER);
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HIRE_ROHAN_FARMER);
     }
 }

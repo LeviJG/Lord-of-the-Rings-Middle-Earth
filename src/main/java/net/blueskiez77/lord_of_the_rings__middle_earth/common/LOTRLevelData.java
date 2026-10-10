@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,12 +36,13 @@ import org.jspecify.annotations.Nullable;
  */
 public final class LOTRLevelData extends SavedData {
 
-    /** LOTRPacketDate: the Shire Reckoning's day, for the red book. */
-    public record LOTRDatePayload(int shireDate) implements net.minecraft.network.protocol.common.custom.CustomPacketPayload {
+    /** LOTRPacketDate: the Shire Reckoning's day; {@code update} when it has just changed, to be shown. */
+    public record LOTRDatePayload(int shireDate, boolean update) implements net.minecraft.network.protocol.common.custom.CustomPacketPayload {
         public static final Type<LOTRDatePayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "date"));
         public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, LOTRDatePayload> STREAM_CODEC =
                 net.minecraft.network.codec.StreamCodec.composite(net.minecraft.network.codec.ByteBufCodecs.VAR_INT,
-                        LOTRDatePayload::shireDate, LOTRDatePayload::new);
+                        LOTRDatePayload::shireDate, net.minecraft.network.codec.ByteBufCodecs.BOOL, LOTRDatePayload::update,
+                        LOTRDatePayload::new);
 
         @java.lang.Override
         public Type<? extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> type() {
@@ -55,6 +57,12 @@ public final class LOTRLevelData extends SavedData {
     public static boolean gollumSpawned;
     /** structuresBanned: 1 when /banStructures has turned structure spawners off for everyone. */
     public static int structuresBanned;
+    /** The Middle-earth ring portal's spot, which is Middle-earth's spawn point (LOTRWorldProviderMiddleEarth). */
+    public static int middleEarthPortalX;
+    public static int middleEarthPortalY;
+    public static int middleEarthPortalZ;
+    /** Each kind of travelling trader's wait, by its entity id ("TravellingTraders"). */
+    private static final Map<String, Integer> travellingTraderTimes = new HashMap<>();
 
     private static @Nullable LOTRLevelData instance;
     private static @Nullable MinecraftServer server;
@@ -75,10 +83,20 @@ public final class LOTRLevelData extends SavedData {
             Codec.INT.optionalFieldOf("GWSpawnTick", 2400).forGetter(d -> LOTRGreyWandererTracker.spawnCooldown),
             Codec.BOOL.optionalFieldOf("GollumSpawned", false).forGetter(d -> gollumSpawned),
             Codec.INT.optionalFieldOf("StructuresBanned", 0).forGetter(d -> structuresBanned),
+            Codec.INT.optionalFieldOf("MiddleEarthX", 0).forGetter(d -> middleEarthPortalX),
+            Codec.INT.optionalFieldOf("MiddleEarthY", 0).forGetter(d -> middleEarthPortalY),
+            Codec.INT.optionalFieldOf("MiddleEarthZ", 0).forGetter(d -> middleEarthPortalZ),
+            Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("TravellingTraders", Map.of())
+                    .forGetter(d -> new HashMap<>(travellingTraderTimes)),
             // LOTRDate.saveDates: {"Dates": {"ShireDate": day}}.
             Codec.INT.fieldOf("ShireDate").codec().optionalFieldOf("Dates", 0)
                     .forGetter(d -> LOTRDate.ShireReckoning.currentDay)
-    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned, shireDate) -> {
+    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned, meX, meY, meZ, traders, shireDate) -> {
+        travellingTraderTimes.clear();
+        travellingTraderTimes.putAll(traders);
+        middleEarthPortalX = meX;
+        middleEarthPortalY = meY;
+        middleEarthPortalZ = meZ;
         LOTRDate.ShireReckoning.currentDay = shireDate;
         gollumSpawned = gollum;
         structuresBanned = banned;
@@ -102,6 +120,10 @@ public final class LOTRLevelData extends SavedData {
         LOTRGreyWandererTracker.reset();
         gollumSpawned = false;
         structuresBanned = 0;
+        middleEarthPortalX = 0;
+        middleEarthPortalY = 0;
+        middleEarthPortalZ = 0;
+        travellingTraderTimes.clear();
         LOTRDate.ShireReckoning.currentDay = 0;
         return new LOTRLevelData();
     }
@@ -129,7 +151,7 @@ public final class LOTRLevelData extends SavedData {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, s) -> {
             ServerPlayNetworking.send(handler.player, new LOTRAlignmentZonesPayload(enableAlignmentZones));
             ServerPlayNetworking.send(handler.player, relationsPayload());
-            ServerPlayNetworking.send(handler.player, new LOTRDatePayload(LOTRDate.ShireReckoning.currentDay));
+            ServerPlayNetworking.send(handler.player, new LOTRDatePayload(LOTRDate.ShireReckoning.currentDay, false));
         });
     }
 
@@ -143,12 +165,41 @@ public final class LOTRLevelData extends SavedData {
         }
     }
 
+    /** LOTRDate.setDate: saved, and every player shown the new date. */
+    public static void setShireDate(int date) {
+        LOTRDate.ShireReckoning.currentDay = date;
+        markDirty();
+        if (server != null) {
+            for (net.minecraft.server.level.ServerPlayer player : server.getPlayerList().getPlayers()) {
+                ServerPlayNetworking.send(player, new LOTRDatePayload(date, true));
+            }
+        }
+    }
+
     public static boolean structuresBanned() {
         return structuresBanned == 1;
     }
 
     public static void setStructuresBanned(boolean banned) {
         structuresBanned = banned ? 1 : 0;
+        markDirty();
+    }
+
+    /** A travelling trader's saved wait, or the given one if it has none. */
+    public static int getTravellingTraderTime(String trader, int fallback) {
+        return travellingTraderTimes.getOrDefault(trader, fallback);
+    }
+
+    public static void setTravellingTraderTime(String trader, int time) {
+        travellingTraderTimes.put(trader, time);
+        markDirty();
+    }
+
+    /** markMiddleEarthPortalLocation: where the ring portal stands, Middle-earth's spawn point. */
+    public static void markMiddleEarthPortalLocation(int i, int j, int k) {
+        middleEarthPortalX = i;
+        middleEarthPortalY = j;
+        middleEarthPortalZ = k;
         markDirty();
     }
 

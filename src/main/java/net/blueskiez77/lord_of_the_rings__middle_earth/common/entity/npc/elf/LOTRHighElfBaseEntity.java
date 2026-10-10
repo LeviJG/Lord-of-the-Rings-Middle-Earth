@@ -11,13 +11,12 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.block.Blocks;
 
 /**
  * LOTREntityHighElfBase: the High Elves, of Lindon and of Rivendell alike.
  * Slain by a player they may leave a drink of miruvor.
- *
- * <p>NOT ported yet: their natural spawn check (above y 62 on grass, with
- * the biomes).
  */
 public abstract class LOTRHighElfBaseEntity extends LOTRElfEntity {
 
@@ -48,5 +47,11 @@ public abstract class LOTRHighElfBaseEntity extends LOTRElfEntity {
             elfDrink.set(LOTRDataComponents.VESSEL, vessels[this.random.nextInt(vessels.length)]);
             spawnAtLocation(level, elfDrink, 0.0f);
         }
+    }
+
+    /** canElfSpawnHere: above y 62, on grass. */
+    @Override
+    public boolean canElfSpawnHere(LevelAccessor level) {
+        return blockPosition().getY() > 62 && level.getBlockState(blockPosition().below()).is(Blocks.GRASS_BLOCK);
     }
 }

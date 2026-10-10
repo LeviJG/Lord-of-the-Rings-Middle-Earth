@@ -21,7 +21,7 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityAIAttackOnCollide: the mod's melee attack. Run at the target,
  * re-path every 10-19 ticks while it can be seen (always, if sight is not
  * required), and hit it whenever it is within the bounding box's average edge
- * plus one block, every 20 ticks.
+ * plus one block.
  *
  * <p>A passive NPC never attacks. The held weapon sets the reach and the
  * time between blows (LOTRWeaponStats, from the weapon's own reach and

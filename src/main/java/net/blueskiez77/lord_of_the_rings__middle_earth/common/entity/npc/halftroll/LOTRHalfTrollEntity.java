@@ -1,6 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.halftroll;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTREatGoal;
@@ -55,8 +56,6 @@ import org.jspecify.annotations.Nullable;
  * a mohawk, half have horns and half of those full horns. It eats and drinks
  * as half-trolls do, takes an orc's name, and leaves rotten flesh and troll
  * bones. Hired, it will wear only half-troll armour.
- *
- * <p>NOT ported yet: the killHalfTroll achievement (D7).
  */
 public class LOTRHalfTrollEntity extends LOTRNPCEntity {
 
@@ -248,5 +247,10 @@ public class LOTRHalfTrollEntity extends LOTRNPCEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.HALF_TROLL.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_HALF_TROLL;
     }
 }

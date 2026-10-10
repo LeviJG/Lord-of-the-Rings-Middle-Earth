@@ -14,4 +14,9 @@ public class LOTRLionessEntity extends LOTRLionBaseEntity {
     public boolean isMale() {
         return false;
     }
+
+    @Override
+    public net.minecraft.world.item.Item getLionRug() {
+        return net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems.LIONESS_RUG;
+    }
 }

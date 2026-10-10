@@ -58,6 +58,10 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
 
 /**
  * LOTREntityOrc: the orcs of every people. They keep out of the water, open
@@ -74,9 +78,6 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>They hunt rabbits (vanilla's, standing in for LOTREntityRabbit as they
  * do for the wargs), one chance in 2000 a tick, bombardiers excepted.
- *
- * <p>NOT ported yet: spawning in darkness and the dwarven biomes' top-block rule, and the biomes
- * that let hostiles walk by day (D10/D12).
  */
 public abstract class LOTROrcEntity extends LOTRNPCEntity {
 
@@ -337,5 +338,22 @@ public abstract class LOTROrcEntity extends LOTRNPCEntity {
         super.readAdditionalSaveData(input);
         input.getString("OrcName").ifPresent(this.familyInfo::setName);
         this.orcSkirmishTick = input.getIntOr("OrcSkirmish", 0);
+    }
+
+    /** getCanSpawnHere: in a dwarven biome, only on its own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        if (super.checkSpawnRules(level, reason)) {
+            if (this.liftSpawnRestrictions) {
+                return true;
+            }
+            BlockPos pos = blockPosition();
+            LOTRBiome biome = biomeAt(level, pos);
+            if (biome != null && level instanceof ServerLevelAccessor serverLevel && biome.isDwarvenBiome(serverLevel.getLevel())) {
+                return level.getBlockState(pos.below()).is(biome.topBlock.getBlock());
+            }
+            return true;
+        }
+        return false;
     }
 }

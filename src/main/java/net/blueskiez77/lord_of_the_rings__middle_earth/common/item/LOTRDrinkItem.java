@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -52,7 +54,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock
  *
  * <p>An NPC drinks through {@link #applyToNPC}.
  *
- * <p>NOT ported: the achievements.
+ * <p>Getting drunk, drinking from a skull, and drinking mango juice, the
+ * orc-draught, the Athelas brew, wine or the dwarven tonic each earn an
+ * achievement.
  */
 public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
 
@@ -255,6 +259,7 @@ public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
                 int duration = (int) (60.0f * (1.0f + level.getRandom().nextFloat() * 0.5f) * power);
                 if (duration >= 1) {
                     player.addEffect(new MobEffectInstance(MobEffects.NAUSEA, duration * 20));
+                    LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.GET_DRUNK);
                     LOTRAlcoholTolerance.set(player, tolerance + Math.round(duration / 20.0f));
                 }
             }
@@ -293,6 +298,24 @@ public class LOTRDrinkItem extends Item implements LOTRTooltipItem {
             }
             default -> {
             }
+        }
+        if (vessel(stack) == LOTRVessel.SKULL) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DRINK_SKULL);
+        }
+        if (this == LOTRFoodItems.MANGO_JUICE) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DRINK_MANGO_JUICE);
+        }
+        if (this == LOTRFoodItems.ORC_DRAUGHT) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DRINK_ORC_DRAUGHT);
+        }
+        if (this == LOTRFoodItems.ATHELAS_BREW) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DRINK_ATHELAS_BREW);
+        }
+        if (this == LOTRFoodItems.RED_WINE || this == LOTRFoodItems.WHITE_WINE) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DRINK_WINE);
+        }
+        if (this == LOTRFoodItems.DWARVEN_TONIC) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DRINK_DWARVEN_TONIC);
         }
     }
 

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -21,8 +23,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityDolGuldurOrcTrader: an orc of Dol Guldur in its armour, with a
  * poisoned dagger, who trades with those at +100 or better. He seeks no one
  * out -- he only answers attacks.
- *
- * <p>NOT ported yet: the tradeDolGuldurTrader achievement (D7).
  */
 public class LOTRDolGuldurOrcTraderEntity extends LOTRDolGuldurOrcEntity implements LOTRSmith {
 
@@ -72,5 +72,10 @@ public class LOTRDolGuldurOrcTraderEntity extends LOTRDolGuldurOrcEntity impleme
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.POISONED_DOL_GULDUR_DAGGER));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DOL_GULDUR_TRADER);
     }
 }

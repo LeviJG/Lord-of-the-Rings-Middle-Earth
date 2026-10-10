@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dunland;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCombatBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
@@ -44,6 +45,11 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRAdornlandBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRDunlandBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityDunlending: a hillman of Dunland, man or woman, who keeps out of
@@ -53,10 +59,6 @@ import org.jspecify.annotations.Nullable;
  * leaves bones and now and then something from a Dunlending house. One in
  * 10000 comes riding an Uruk warg bombardier with an orc bomb for a hat and
  * another in hand.
- *
- * <p>NOT ported yet: the pull of Dunland and Adorland on their wandering and
- * their spawning above y 62 on the biome's own top block (with the biomes), and
- * the killDunlending achievement (D7).
  */
 public class LOTRDunlendingEntity extends LOTRManEntity {
 
@@ -204,5 +206,22 @@ public class LOTRDunlendingEntity extends LOTRManEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.DUNLAND.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_DUNLENDING;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRDunlandBiome.class, LOTRAdornlandBiome.class);
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
     }
 }

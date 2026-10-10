@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionMerchantManEntity;
@@ -14,6 +16,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
@@ -23,8 +26,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityDorwinionMerchantElf (the Dorwinion Elf Merchant): a travelling
  * trader, the Dorwinion merchant's elven counterpart, with the same wares,
  * hat and escort of Vintner Guards.
- *
- * <p>NOT ported yet: the tradeDorwinionMerchant achievement.
  */
 public class LOTRDorwinionMerchantElfEntity extends LOTRDorwinionElfEntity implements LOTRTravellingTrader {
 
@@ -81,5 +82,10 @@ public class LOTRDorwinionMerchantElfEntity extends LOTRDorwinionElfEntity imple
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         setItemSlot(EquipmentSlot.HEAD, LOTRDorwinionMerchantManEntity.merchantHat(this.random));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DORWINION_MERCHANT);
     }
 }

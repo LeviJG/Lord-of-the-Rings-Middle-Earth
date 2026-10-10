@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.isengard;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -33,8 +34,6 @@ import org.jspecify.annotations.Nullable;
  * (two times in three), chestplate, leggings and boots each of leather,
  * bronze, fur, bone or (but for the helmet) Uruk make. Now and then it leaves
  * something from an Uruk tent.
- *
- * <p>NOT ported yet: the killIsengardSnaga achievement (D7).
  */
 public class LOTRIsengardSnagaEntity extends LOTROrcEntity {
 
@@ -127,5 +126,10 @@ public class LOTRIsengardSnagaEntity extends LOTROrcEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.ISENGARD.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_ISENGARD_SNAGA;
     }
 }

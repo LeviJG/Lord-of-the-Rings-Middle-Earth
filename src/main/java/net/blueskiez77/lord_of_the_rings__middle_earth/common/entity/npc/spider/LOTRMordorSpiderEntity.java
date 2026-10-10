@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.spider;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -18,10 +19,8 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityMordorSpider: a spider of Mordor, sized 1 to 3, always poisonous.
  * One time in three it spawns with a Mordor orc or orc archer on its back --
  * but not when hired.
- *
- * <p>NOT ported yet: the killMordorSpider achievement (D7).
  */
-public class LOTRMordorSpiderEntity extends LOTRSpiderEntity {
+public class LOTRMordorSpiderEntity extends LOTRSpiderBaseEntity {
 
     private boolean forHire;
 
@@ -74,5 +73,10 @@ public class LOTRMordorSpiderEntity extends LOTRSpiderEntity {
             }
         }
         return data;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_MORDOR_SPIDER;
     }
 }

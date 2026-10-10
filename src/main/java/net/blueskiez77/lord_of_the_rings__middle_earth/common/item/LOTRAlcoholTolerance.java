@@ -3,6 +3,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import com.mojang.serialization.Codec;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
@@ -30,6 +32,9 @@ public final class LOTRAlcoholTolerance {
 
     public static void set(Player player, int tolerance) {
         player.setAttached(TOLERANCE, tolerance);
+        if (tolerance >= 250 && !player.level().isClientSide()) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.GAIN_HIGH_ALCOHOL_TOLERANCE);
+        }
     }
 
     public static void init() {

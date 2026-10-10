@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -23,8 +25,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTREntityRohanBlacksmith: a smith with his hammer, who trades with those
  * at +50 or better and leaves a stack of iron ingots when slain.
- *
- * <p>NOT ported yet: the tradeRohanBlacksmith achievement.
  */
 public class LOTRRohanBlacksmithEntity extends LOTRRohanManEntity implements LOTRSmith {
 
@@ -84,5 +84,10 @@ public class LOTRRohanBlacksmithEntity extends LOTRRohanManEntity implements LOT
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.BLACKSMITH_HAMMER));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_ROHAN_BLACKSMITH);
     }
 }

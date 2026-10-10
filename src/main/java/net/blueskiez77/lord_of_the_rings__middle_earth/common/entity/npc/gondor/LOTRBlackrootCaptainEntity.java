@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gondor;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityBlackrootCaptain (the Blackroot Vale Bowlord): a bowman who
@@ -26,9 +29,6 @@ import org.jspecify.annotations.Nullable;
  *
  * He hires out levymen, soldiers (on foot or mounted), bowmen and banner
  * bearers to those at +150 or better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.BLACKROOT), his warhorn
- * (LOTRInvasions.GONDOR_BLACKROOT, D12), and the tradeBlackrootCaptain achievement.
  */
 public class LOTRBlackrootCaptainEntity extends LOTRBlackrootArcherEntity implements LOTRUnitTradeable {
 
@@ -51,6 +51,11 @@ public class LOTRBlackrootCaptainEntity extends LOTRBlackrootArcherEntity implem
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.BLACKROOT_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.GONDOR_BLACKROOT;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -83,5 +88,10 @@ public class LOTRBlackrootCaptainEntity extends LOTRBlackrootArcherEntity implem
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.BLACKROOT_VALE_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BLACKROOT_CAPTAIN);
     }
 }

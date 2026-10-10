@@ -48,6 +48,10 @@ public class LOTRPebbleEntity extends ThrowableItemProjectile {
         super(type, level);
     }
 
+    public boolean isSling() {
+        return this.slung;
+    }
+
     public LOTRPebbleEntity(EntityType<? extends LOTRPebbleEntity> type, LivingEntity thrower,
             Level level, ItemStack stack) {
         super(type, thrower, level, stack);

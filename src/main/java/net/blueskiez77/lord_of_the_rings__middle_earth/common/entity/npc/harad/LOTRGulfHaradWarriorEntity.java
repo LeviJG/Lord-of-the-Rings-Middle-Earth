@@ -24,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * Haradric sword, dagger (poisoned or not) or pike; one in five has a
  * Haradric spear as well. His head is bare one time in ten, else in a Gulfen
  * helmet. One in ten rides out.
- *
- * <p>NOT ported yet: the Gulf shield (LOTRShields.ALIGNMENT_GULF, D7).
  */
 public class LOTRGulfHaradWarriorEntity extends LOTRGulfHaradrimEntity {
 

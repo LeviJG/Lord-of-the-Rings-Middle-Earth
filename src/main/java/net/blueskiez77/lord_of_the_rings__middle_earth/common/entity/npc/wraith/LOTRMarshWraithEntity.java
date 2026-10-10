@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMarshWraithBallEntity;
@@ -50,10 +51,10 @@ import org.jspecify.annotations.Nullable;
  * gone, it fades out again. It seeks no one else, ignores webs and water, is
  * undead, and leaves rotten flesh and what the drowned left behind.
  *
- * <p>NOT ported yet: rising in the Dead Marshes for whoever enters them
- * (LOTREventHandler.spawnMarshWraithIfConditionsMet), with the biomes (D10);
- * spawned by an egg it has no mark and fades at once, as it did then. The
- * killMarshWraith achievement (D7).
+ * <p>Its rising in the Dead Marshes for whoever wades there
+ * (LOTRBiomeEffects.spawnMarshWraithIfConditionsMet) never comes, as it never
+ * did: the original's check could not be met. Spawned by an egg it has no
+ * mark and fades at once, as it did then.
  */
 public class LOTRMarshWraithEntity extends LOTRNPCEntity {
 
@@ -273,5 +274,10 @@ public class LOTRMarshWraithEntity extends LOTRNPCEntity {
     @Override
     public boolean canReEquipHired(int slot, ItemStack stack) {
         return false;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_MARSH_WRAITH;
     }
 }

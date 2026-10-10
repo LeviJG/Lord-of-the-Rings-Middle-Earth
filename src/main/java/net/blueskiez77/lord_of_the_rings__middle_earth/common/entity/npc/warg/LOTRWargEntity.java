@@ -3,6 +3,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg;
 import net.minecraft.world.entity.HasCustomInventoryScreen;
 import net.minecraft.world.Container;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRFollowHiringPlayerGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRHiredRemainStillGoal;
@@ -69,7 +71,8 @@ import org.jspecify.annotations.Nullable;
  * They go on through its screen (openGUI): sneak-right-click a tame one, use
  * a saddle on an unsaddled one, or press the inventory key while riding it.
  *
- * <p>NOT ported yet: the rideWarg achievement (D7).
+ * <p>A player of too little standing with its faction is thrown off; one riding a tame, saddled warg
+ * earns rideWarg.
  */
 public abstract class LOTRWargEntity extends LOTRNPCRideableEntity implements HasCustomInventoryScreen {
 
@@ -344,9 +347,12 @@ public abstract class LOTRWargEntity extends LOTRNPCRideableEntity implements Ha
     @Override
     public void aiStep() {
         super.aiStep();
-        if (level() instanceof ServerLevel && getFirstPassenger() instanceof Player player
-                && LOTRPlayerAlignments.getAlignment(player, getFaction()) < 50.0f) {
-            player.stopRiding();
+        if (level() instanceof ServerLevel && getFirstPassenger() instanceof Player player) {
+            if (LOTRPlayerAlignments.getAlignment(player, getFaction()) < 50.0f) {
+                player.stopRiding();
+            } else if (isNPCTamed() && isMountSaddled()) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.RIDE_WARG);
+            }
         }
         if (this.eatingTick > 0) {
             if (this.eatingTick % 4 == 0) {

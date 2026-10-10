@@ -56,9 +56,7 @@ import org.jspecify.annotations.Nullable;
  * <p>While abroad he offers his welcome mini-quest to any player who has not
  * had it.
  *
- * <p>NOT ported yet: his natural arrival beside players (LOTRGreyWandererTracker,
- * D12); his cape (LOTRCapes.GANDALF,
- * with the NPC capes); his hunting of Balrogs (with Utumno, D15).
+ * <p>NOT ported yet: his hunting of Balrogs (with Utumno, D15).
  */
 public class LOTRGandalfEntity extends LOTRNPCEntity {
 

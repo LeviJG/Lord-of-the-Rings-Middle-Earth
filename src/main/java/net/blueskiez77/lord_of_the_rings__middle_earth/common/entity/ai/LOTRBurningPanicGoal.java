@@ -8,13 +8,15 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.phys.Vec3;
 
 import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityAIBurningPanic: an NPC on fire with no one to fight runs for
- * water within eight blocks, or anywhere at all.
+ * water within eight blocks, or anywhere at all -- into the water even if it
+ * otherwise keeps out of it.
  */
 public class LOTRBurningPanicGoal extends Goal {
 
@@ -23,6 +25,7 @@ public class LOTRBurningPanicGoal extends Goal {
     private double x;
     private double y;
     private double z;
+    private float waterMalus;
 
     public LOTRBurningPanicGoal(PathfinderMob mob, double speed) {
         this.mob = mob;
@@ -70,6 +73,13 @@ public class LOTRBurningPanicGoal extends Goal {
 
     @Override
     public void start() {
+        this.waterMalus = this.mob.getPathfindingMalus(PathType.WATER);
+        this.mob.setPathfindingMalus(PathType.WATER, Math.max(this.waterMalus, 0.0f));
         this.mob.getNavigation().moveTo(this.x, this.y, this.z, this.speed);
+    }
+
+    @Override
+    public void stop() {
+        this.mob.setPathfindingMalus(PathType.WATER, this.waterMalus);
     }
 }

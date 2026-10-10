@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dale;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -26,8 +28,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityDaleBlacksmith: a smith of Dale with his hammer, 25 strong,
  * trades with those at +50 or better and leaves iron
  * ingots when slain.
- *
- * <p>NOT ported yet: the tradeDaleBlacksmith achievement (D7).
  */
 public class LOTRDaleBlacksmithEntity extends LOTRDaleManEntity implements LOTRSmith {
 
@@ -100,5 +100,10 @@ public class LOTRDaleBlacksmithEntity extends LOTRDaleManEntity implements LOTRS
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.BLACKSMITH_HAMMER));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DALE_BLACKSMITH);
     }
 }

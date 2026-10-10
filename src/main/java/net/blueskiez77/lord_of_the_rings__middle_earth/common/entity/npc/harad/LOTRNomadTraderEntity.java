@@ -1,5 +1,8 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 
@@ -20,7 +23,7 @@ import org.jspecify.annotations.Nullable;
  * Near Harad does not dislike, in a turban of a random rich colour.
  *
  * <p>Not here: the turban's gold ornament one time in three (tracked with the
- * turban ornament). NOT ported yet: the tradeBazaarTrader achievement (D7).
+ * turban ornament).
  */
 public abstract class LOTRNomadTraderEntity extends LOTRNomadEntity implements LOTRTradeable {
 
@@ -50,5 +53,10 @@ public abstract class LOTRNomadTraderEntity extends LOTRNomadEntity implements L
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         setItemSlot(EquipmentSlot.HEAD, LOTRSouthronTraderEntity.createTraderTurban(this.random));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BAZAAR_TRADER);
     }
 }

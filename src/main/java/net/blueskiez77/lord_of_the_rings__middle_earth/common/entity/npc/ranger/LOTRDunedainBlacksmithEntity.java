@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ranger;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -24,8 +26,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityDunedainBlacksmith: a Dúnadan smith with his hammer, 25 strong,
  * who seeks no one out, trades with those at +50 or better and leaves iron
  * ingots when slain.
- *
- * <p>NOT ported yet: the tradeDunedainBlacksmith achievement (D7).
  */
 public class LOTRDunedainBlacksmithEntity extends LOTRDunedainEntity implements LOTRSmith {
 
@@ -99,5 +99,10 @@ public class LOTRDunedainBlacksmithEntity extends LOTRDunedainEntity implements 
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.BLACKSMITH_HAMMER));
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DUNEDAIN_BLACKSMITH);
     }
 }

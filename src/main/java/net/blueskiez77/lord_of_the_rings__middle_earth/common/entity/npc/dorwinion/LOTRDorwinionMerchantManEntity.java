@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRHobbitBounderEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
@@ -26,8 +28,6 @@ import org.jspecify.annotations.Nullable;
  * trader of Dorwinion, with an escort of Vintner Guards, who trades with
  * anyone Dorwinion does not dislike, in a feathered hat of one of the
  * merchants' colours.
- *
- * <p>NOT ported yet: the tradeDorwinionMerchant achievement.
  */
 public class LOTRDorwinionMerchantManEntity extends LOTRDorwinionManEntity implements LOTRTravellingTrader {
 
@@ -93,5 +93,10 @@ public class LOTRDorwinionMerchantManEntity extends LOTRDorwinionManEntity imple
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         setItemSlot(EquipmentSlot.HEAD, merchantHat(this.random));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DORWINION_MERCHANT);
     }
 }

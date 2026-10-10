@@ -21,6 +21,10 @@ public class LOTRTicketBoothStructure extends LOTREasterlingStructureTownStructu
         super(flag);
     }
 
+    public static boolean generatesAt(int i, int k) {
+        return net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRFixedStructures.generatesAtMapImageCoords(i, k, 1583, 2527);
+    }
+
 
     public void generateSupports(WorldGenLevel world, int i, int j, int k, LegacyBlock stairBlock, int stairMeta, LegacyBlock woodBlock, int woodMeta) {
         setBlockAndMetadata(world, i, j, k, stairBlock, stairMeta);

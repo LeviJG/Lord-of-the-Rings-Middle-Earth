@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSmith;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -25,8 +27,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityHarnedorBlacksmith (the Harnennor Bronzesmith): a smith of
  * Harnennor with his hammer and a turban (0x191413), trading with those at
  * +50 or better and leaving bronze ingots when slain.
- *
- * <p>NOT ported yet: the tradeHarnedorBlacksmith achievement (D7).
  */
 public class LOTRHarnedorBlacksmithEntity extends LOTRHarnedhrimEntity implements LOTRSmith {
 
@@ -96,5 +96,10 @@ public class LOTRHarnedorBlacksmithEntity extends LOTRHarnedhrimEntity implement
         this.npcItemsInv.setIdleItem(this.npcItemsInv.getMeleeWeapon().copy());
         setItemSlot(EquipmentSlot.HEAD, turban(1643539));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_HARNEDOR_BLACKSMITH);
     }
 }

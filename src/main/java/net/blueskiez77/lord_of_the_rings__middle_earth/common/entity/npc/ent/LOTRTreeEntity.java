@@ -24,6 +24,13 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRFangornBiome;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * LOTREntityTree: a creature of wood -- an Ent or a huorn -- of one of three
@@ -32,10 +39,6 @@ import org.jspecify.annotations.Nullable;
  * or an axe swung by hand; it is hard to knock back, never turns on another
  * tree, cannot be re-equipped when hired, drops no rares, and leaves logs of
  * its wood and sticks.
- *
- * <p>NOT ported yet: the pull of its home forest (Fangorn; the Old Forest
- * for Dark Huorns) on its wandering and its spawning above y 62 on grass or
- * dirt, with the biomes (D10).
  */
 public abstract class LOTRTreeEntity extends LOTRNPCEntity {
 
@@ -179,6 +182,31 @@ public abstract class LOTRTreeEntity extends LOTRNPCEntity {
     /** canReEquipHired: its player cannot dress it. */
     @Override
     public boolean canReEquipHired(int slot, ItemStack stack) {
+        return false;
+    }
+
+    /** getBlockPathWeight: drawn to its home forest. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return isTreeHomeBiome(biomeAt(level, pos)) ? 20.0f : 0.0f;
+    }
+
+    public boolean isTreeHomeBiome(@Nullable LOTRBiome biome) {
+        return biome instanceof LOTRFangornBiome;
+    }
+
+    /** getCanSpawnHere: above y 62, on grass or dirt (coarse dirt and podzol, the old dirt's metadata, too). */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        if (super.checkSpawnRules(level, reason)) {
+            if (this.liftSpawnRestrictions) {
+                return true;
+            }
+            BlockPos pos = blockPosition();
+            BlockState below = level.getBlockState(pos.below());
+            return pos.getY() > 62 && (below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.DIRT) || below.is(Blocks.COARSE_DIRT)
+                    || below.is(Blocks.PODZOL));
+        }
         return false;
     }
 }

@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.gundabad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
@@ -36,8 +37,6 @@ import org.jspecify.annotations.Nullable;
  * drawn from leather, bronze, fur, bone, Angmar, Mordor, Dol Guldur or
  * Gundabad Uruk gear. Now and then it leaves something from a Gundabad tent,
  * and one time in 4000 a block of dirt named "Such Wealth".
- *
- * <p>NOT ported yet: the killGundabadOrc achievement (D7).
  */
 public class LOTRGundabadOrcEntity extends LOTROrcEntity {
 
@@ -150,5 +149,10 @@ public class LOTRGundabadOrcEntity extends LOTROrcEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.GUNDABAD.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_GUNDABAD_ORC;
     }
 }

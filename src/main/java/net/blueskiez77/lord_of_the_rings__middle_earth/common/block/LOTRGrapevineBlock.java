@@ -27,7 +27,10 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionGuardEntity;
 
 /**
  * LOTRBlockGrapevine with hasGrapes: a vine growing up a post, ripening over
@@ -161,6 +164,8 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
             return InteractionResult.PASS;
         }
         if (level instanceof ServerLevel server) {
+            // LOTREventHandler.onPlayerInteract: picking ripe grapes may rouse a vineyard's guards.
+            LOTRDorwinionGuardEntity.defendGrapevines(player, server, pos.getX(), pos.getY(), pos.getZ());
             // LOTRBlockGrapevine.getVineDrops(meta 7, fortune 0): three tries at
             // a seed, each landing if nextInt(15) <= 7; one bunch, two a third
             // of the time.
@@ -177,10 +182,20 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
                 popResource(server, pos, new ItemStack(asItem(), seeds));
             }
             server.setBlock(pos, LOTRDecorationBlocks.GRAPEVINE.defaultBlockState(), Block.UPDATE_ALL);
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HARVEST_GRAPES);
         }
         level.playSound(null, pos, SoundEvents.SWEET_BERRY_BUSH_PICK_BERRIES, SoundSource.BLOCKS, 1.0f,
                 0.8f + level.getRandom().nextFloat() * 0.4f);
         return InteractionResult.SUCCESS;
+    }
+
+    /** LOTRBlockGrapevine.removedByPlayer: breaking a vine with grapes is a harvest too. */
+    @Override
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (!level.isClientSide() && this != LOTRDecorationBlocks.GRAPEVINE) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.HARVEST_GRAPES);
+        }
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     // LOTRBlockGrapevine.removedByPlayer: a player breaking the vine takes the

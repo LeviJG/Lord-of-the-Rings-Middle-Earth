@@ -13,7 +13,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import org.jspecify.annotations.Nullable;
 
 /** LOTREntityGiraffeRug: a giraffe's hide. Its noise was "", so it never growls. */
-public class LOTRGiraffeRugEntity extends LOTRRugEntity {
+public class LOTRGiraffeRugEntity extends LOTRRugBaseEntity {
 
     public LOTRGiraffeRugEntity(EntityType<? extends LOTRGiraffeRugEntity> type, Level level) {
         super(type, level);

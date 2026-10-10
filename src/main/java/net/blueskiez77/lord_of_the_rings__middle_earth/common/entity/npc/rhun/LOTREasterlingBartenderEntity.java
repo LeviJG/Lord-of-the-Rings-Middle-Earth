@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rhun;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBartender;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
@@ -22,8 +24,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityEasterlingBartender: the keeper of a Rhûn tavern, trading with
  * anyone Rhûn is friendly to, with a mug in hand; slain, he leaves a few of
  * Rhûn's drinks.
- *
- * <p>NOT ported yet: the tradeRhunBartender achievement (D7).
  */
 public class LOTREasterlingBartenderEntity extends LOTREasterlingEntity implements LOTRBartender {
 
@@ -72,5 +72,10 @@ public class LOTREasterlingBartenderEntity extends LOTREasterlingEntity implemen
         SpawnGroupData data = super.finalizeSpawn(level, difficulty, reason, groupData);
         this.npcItemsInv.setIdleItem(new ItemStack(LOTRFoodItems.MUG));
         return data;
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_RHUN_BARTENDER);
     }
 }

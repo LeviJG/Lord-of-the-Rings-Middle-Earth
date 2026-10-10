@@ -172,9 +172,12 @@ public final class LOTRFellowships extends SavedData {
         return false;
     }
 
-    /** getMaxLeadingFellowships: one, and one more for every twenty achievements (none yet, D7). */
+    /** getMaxLeadingFellowships: one, and one more for every twenty achievements. */
     public static int getMaxLeadingFellowships(UUID player) {
-        return 1;
+        net.minecraft.server.level.ServerPlayer online = server == null ? null : server.getPlayerList().getPlayer(player);
+        int achievements = online == null ? 0
+                : net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements.countEarned(online);
+        return 1 + achievements / 20;
     }
 
     public static boolean canCreateFellowships(UUID player) {

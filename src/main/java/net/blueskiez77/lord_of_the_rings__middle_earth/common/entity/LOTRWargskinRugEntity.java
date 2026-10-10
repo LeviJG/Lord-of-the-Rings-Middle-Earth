@@ -14,7 +14,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 
 /** LOTREntityWargskinRug: a warg's skin, in its coat (LOTREntityWarg.WargType). */
-public class LOTRWargskinRugEntity extends LOTRRugEntity {
+public class LOTRWargskinRugEntity extends LOTRRugBaseEntity {
 
     /** dataWatcher 18. */
     private static final EntityDataAccessor<Byte> DATA_TYPE =

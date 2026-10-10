@@ -49,6 +49,11 @@ public class LOTRNPCFollowParentGoal extends Goal {
     }
 
     @Override
+    public boolean requiresUpdateEveryTick() {
+        return true;
+    }
+
+    @Override
     public void tick() {
         if (--this.followTick <= 0) {
             this.followTick = 10;

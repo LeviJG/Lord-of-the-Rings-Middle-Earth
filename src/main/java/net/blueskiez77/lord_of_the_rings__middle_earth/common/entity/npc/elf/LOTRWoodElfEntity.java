@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRRangedAttackGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRWoodElfTargetGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRFoods;
@@ -27,6 +28,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRWoodlandRealmBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
 
 /**
  * LOTREntityWoodElf: an elf of the Woodland Realm, who trusts no one short of
@@ -34,10 +40,6 @@ import org.jspecify.annotations.Nullable;
  * Mirkwood bow -- in close as well. It drinks wine as the Wood-elves do,
  * bears a Sindarin name, and slain by a player may leave red wine, and one
  * time in six something from a Wood-elven house.
- *
- * <p>NOT ported yet: its natural spawn check (above y 62 on grass) and the pull
- * of the Woodland Realm on its wandering (with the biomes), and the killWoodElf
- * achievement (D7).
  */
 public class LOTRWoodElfEntity extends LOTRElfEntity {
 
@@ -136,5 +138,22 @@ public class LOTRWoodElfEntity extends LOTRElfEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.WOOD_ELF.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_WOOD_ELF;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRWoodlandRealmBiome.class);
+    }
+
+    /** canElfSpawnHere: above y 62, on grass. */
+    @Override
+    public boolean canElfSpawnHere(LevelAccessor level) {
+        return blockPosition().getY() > 62 && level.getBlockState(blockPosition().below()).is(Blocks.GRASS_BLOCK);
     }
 }

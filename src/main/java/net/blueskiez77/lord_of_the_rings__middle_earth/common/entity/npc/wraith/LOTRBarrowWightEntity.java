@@ -2,6 +2,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRFollowHiringPlayerGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRHiredRemainStillGoal;
@@ -42,6 +43,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.pathfinder.PathType;
 
 import org.jspecify.annotations.Nullable;
+import net.minecraft.world.entity.EntitySpawnReason;
+import net.minecraft.world.level.LevelAccessor;
 
 /**
  * LOTREntityBarrowWight: a wight of the barrows -- 50 strong, hitting for 6,
@@ -52,10 +55,8 @@ import org.jspecify.annotations.Nullable;
  * is synced for that). Slain, it leaves bones and, half the time, some of the
  * barrows' grave-goods; it can drop rares.
  *
- * <p>NOT ported yet: the darkening of the screen of the one it hunts, and
- * the barrows' ambience about it (LOTRTickHandlerClient, with the HUD); its
- * spawning above y 62 on the biome's top block (D10); the killBarrowWight
- * achievement (D7).
+ * <p>NOT ported yet: the darkening of the screen of the one it hunts, and the
+ * barrows' ambience about it (LOTRTickHandlerClient, with the HUD).
  */
 public class LOTRBarrowWightEntity extends LOTRNPCEntity {
 
@@ -193,5 +194,16 @@ public class LOTRBarrowWightEntity extends LOTRNPCEntity {
     @Override
     public boolean canReEquipHired(int slot, ItemStack stack) {
         return false;
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_BARROW_WIGHT;
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
     }
 }

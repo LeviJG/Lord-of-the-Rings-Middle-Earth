@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRAttackRules;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRFollowHiringPlayerGoal;
@@ -38,8 +39,6 @@ import org.jspecify.annotations.Nullable;
  * does not fear the sun, charges at 2.0, looks for Mordor's enemies as the
  * orcs do, has no name of its own, will not be tickled or speak, and, slain
  * by a player, sometimes leaves orc steel.
- *
- * <p>NOT ported yet: the killOlogHai achievement (D7).
  */
 public class LOTROlogHaiEntity extends LOTRTrollEntity {
 
@@ -149,5 +148,10 @@ public class LOTROlogHaiEntity extends LOTRTrollEntity {
     @Override
     protected int getBaseExperienceReward(ServerLevel level) {
         return 5 + this.random.nextInt(8);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_OLOG_HAI;
     }
 }

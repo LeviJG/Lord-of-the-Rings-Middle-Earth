@@ -26,8 +26,6 @@ import org.jspecify.annotations.Nullable;
  * same make as well. His head is bare one time in ten, else one time in five
  * in a turban of one of five colours, else in a coast Southron helmet. He
  * never spawns mounted.
- *
- * <p>NOT ported yet: the Near Harad shield (LOTRShields.ALIGNMENT_NEAR_HARAD, D7).
  */
 public class LOTRNearHaradrimWarriorEntity extends LOTRNearHaradrimEntity {
 

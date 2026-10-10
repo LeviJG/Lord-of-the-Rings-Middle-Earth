@@ -17,7 +17,7 @@ public interface LOTRTradeable {
 
     LOTRTradeEntries getSellPool();
 
-    /** onPlayerTrade: the trader's own reaction (its achievements, not ported yet). */
+    /** onPlayerTrade: the trader's own reaction (its achievements). */
     default void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
     }
 }

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityRohirrimMarshal: a warrior who leads the éored, in marshal's
@@ -27,9 +30,6 @@ import org.jspecify.annotations.Nullable;
  *
  * He hires out warriors, bowmen (either mounted) and banner bearers to those
  * at +150 or better.
- *
- * <p>NOT ported yet: his cape (LOTRCapes.ROHAN), his warhorn
- * (LOTRInvasions.ROHAN, D12), and the tradeRohirrimMarshal achievement.
  */
 public class LOTRRohirrimMarshalEntity extends LOTRRohirrimWarriorEntity implements LOTRUnitTradeable {
 
@@ -52,6 +52,11 @@ public class LOTRRohirrimMarshalEntity extends LOTRRohirrimWarriorEntity impleme
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.ROHIRRIM_MARSHAL;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.ROHAN;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -86,5 +91,10 @@ public class LOTRRohirrimMarshalEntity extends LOTRRohirrimWarriorEntity impleme
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.ROHIRRIC_MARSHAL_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, new ItemStack(LOTRCombatItems.ROHIRRIC_MARSHAL_HELMET));
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_ROHIRRIM_MARSHAL);
     }
 }

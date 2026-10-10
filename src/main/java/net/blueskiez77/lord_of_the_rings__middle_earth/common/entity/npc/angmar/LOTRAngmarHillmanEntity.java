@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.angmar;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTREatGoal;
@@ -41,6 +42,10 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRAngmarBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityAngmarHillman: a hillman of Rhudaur, of Angmar's faction, man or
@@ -48,10 +53,6 @@ import org.jspecify.annotations.Nullable;
  * with whatever wood, stone, iron or bronze blade or axe he has (one in eight
  * a spear as well), eats and drinks as Rhudaur does, and leaves bones and now
  * and then something from a hillman's house.
- *
- * <p>NOT ported yet: the pull of Angmar on their wandering and their spawning
- * above y 62 on the biome's own top block (with the biomes), and the
- * killAngmarHillman achievement (D7).
  */
 public class LOTRAngmarHillmanEntity extends LOTRManEntity {
 
@@ -169,5 +170,22 @@ public class LOTRAngmarHillmanEntity extends LOTRManEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.ANGMAR_HILLMAN.createQuest(this);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_ANGMAR_HILLMAN;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRAngmarBiome.class);
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
     }
 }

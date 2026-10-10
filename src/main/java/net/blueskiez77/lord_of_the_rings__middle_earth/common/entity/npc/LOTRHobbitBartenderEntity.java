@@ -1,9 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.trade.LOTRTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 
 import net.minecraft.server.level.ServerLevel;
@@ -19,8 +22,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityHobbitBartender: keeps a tavern, which its speech names after it
  * ("%s's Tavern"). Hobbits who drink near a friendly bartender may get drunk.
  * Slain, it leaves a tavern's odds and ends instead of a hobbit hole's.
- *
- * <p>NOT ported yet: the tradeBartender and sellPipeweedLeaf achievements.
  */
 public class LOTRHobbitBartenderEntity extends LOTRHobbitEntity implements LOTRBartender {
 
@@ -82,5 +83,13 @@ public class LOTRHobbitBartenderEntity extends LOTRHobbitEntity implements LOTRB
     @Override
     public @Nullable String getSpeechBank(Player player) {
         return isFriendly(player) ? "hobbit/bartender/friendly" : "hobbit/bartender/hostile";
+    }
+
+    @Override
+    public void onPlayerTrade(Player player, LOTRTradeEntries.TradeType type, ItemStack stack) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_BARTENDER);
+        if (type == LOTRTradeEntries.TradeType.SELL && stack.is(LOTRMaterialItems.PIPEWEED_LEAF)) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.SELL_PIPEWEED_LEAF);
+        }
     }
 }

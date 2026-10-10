@@ -1,5 +1,6 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.harad;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRDrinkGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTREatGoal;
@@ -39,6 +40,14 @@ import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRGulfHaradBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRHarnedorBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRHarondorBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRNearHaradFertileBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRUmbarBiome;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 
 /**
  * LOTREntityNearHaradrimBase: the peoples of Near Harad -- the coast
@@ -47,10 +56,6 @@ import org.jspecify.annotations.Nullable;
  * about them a little further than most, fight back with a Haradric dagger
  * but seek no one out (their warriors do), and leave bones and their own
  * people's goods.
- *
- * <p>NOT ported yet: the pull of the Harad lands on their wandering and their
- * spawning above y 62 on grass, sand or the biome's top block (with the
- * biomes), and the killNearHaradrim achievement (D7).
  */
 public abstract class LOTRNearHaradrimBaseEntity extends LOTRManEntity {
 
@@ -152,5 +157,22 @@ public abstract class LOTRNearHaradrimBaseEntity extends LOTRManEntity {
     protected void readAdditionalSaveData(ValueInput input) {
         super.readAdditionalSaveData(input);
         input.getString("HaradrimName").ifPresent(this.familyInfo::setName);
+    }
+
+    @Override
+    public LOTRAchievement getKillAchievement() {
+        return LOTRAchievement.KILL_NEAR_HARADRIM;
+    }
+
+    /** getBlockPathWeight: drawn to its own lands. */
+    @Override
+    public float getWalkTargetValue(BlockPos pos, LevelReader level) {
+        return homeBiomePull(level, pos, LOTRNearHaradFertileBiome.class, LOTRHarondorBiome.class, LOTRHarnedorBiome.class, LOTRUmbarBiome.class, LOTRGulfHaradBiome.class);
+    }
+
+    /** getCanSpawnHere: above y 62, on the biome's own top block, grass or sand. */
+    @Override
+    public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
+        return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, true));
     }
 }

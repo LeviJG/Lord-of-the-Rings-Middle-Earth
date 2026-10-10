@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.elf;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRCapes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
@@ -17,6 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityDorwinionElfCaptain (the Captain of Bladorthin): a warrior who
@@ -25,10 +28,6 @@ import org.jspecify.annotations.Nullable;
  *
  * It hires out warriors, archers and banner bearers to those at +250 or
  * better.
- *
- * <p>NOT ported yet: its cape (LOTRCapes.DORWINION_ELF_CAPTAIN), its warhorn
- * (LOTRInvasions.DORWINION_ELF, D12), and the tradeDorwinionElfCaptain
- * achievement.
  */
 public class LOTRDorwinionElfCaptainEntity extends LOTRDorwinionElfWarriorEntity implements LOTRUnitTradeable {
 
@@ -46,6 +45,11 @@ public class LOTRDorwinionElfCaptainEntity extends LOTRDorwinionElfWarriorEntity
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.DORWINION_ELF_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.DORWINION_ELF;
     }
 
     /** canTradeWith: +250 alignment and friendly. */
@@ -79,5 +83,10 @@ public class LOTRDorwinionElfCaptainEntity extends LOTRDorwinionElfWarriorEntity
         setItemSlot(EquipmentSlot.CHEST, new ItemStack(LOTRCombatItems.DORWINION_ELVEN_CHESTPLATE));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DORWINION_ELF_CAPTAIN);
     }
 }

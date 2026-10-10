@@ -77,8 +77,6 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>A whitelisted fellowship counts only while it stands and the placer is
  * in it; until then its line matches no one and is not shown.
- *
- * <p>NOT ported yet: the bannerProtect achievement (D7).
  */
 public class LOTRBannerBlockEntity extends BlockEntity {
 

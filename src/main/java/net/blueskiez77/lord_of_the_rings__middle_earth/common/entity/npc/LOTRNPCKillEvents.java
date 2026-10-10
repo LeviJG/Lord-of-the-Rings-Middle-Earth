@@ -3,14 +3,23 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRCrossbowBoltEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRThrowingAxeEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRNearestAttackableTargetGoal;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.LOTRButterflyEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.rohan.LOTRRohanManEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.troll.LOTROlogHaiEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRWargBombardierEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionData;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuests;
 
@@ -19,6 +28,7 @@ import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
@@ -46,10 +56,16 @@ import net.minecraft.world.entity.player.Player;
  * killer (LOTRFactionBounties). The player's own kills count towards their
  * mini-quests, and a slain player's quests learn who slew them.
  *
- * <p>NOT ported yet: the kill achievements (D7); mini-quests' pause during a
- * siege (with invasions, D12); and entities registered through
- * LOTREntityRegistry's own file, LOTR_EntityRegistry.txt (on the
- * deferred-port tracker).
+ * <p>The kill's achievements: slaying a butterfly; and, slaying a foe, a hired warg bombardier's or
+ * olog-hai's kill, or the player's own while drunk, of a bombardier still holding its bomb, with a
+ * crossbow bolt or with a dwarven throwing axe. useSpearFromFar cannot be earned: spears keep the
+ * vanilla spear's mechanics and are never thrown.
+ *
+ * <p>Mini-quests were not told of kills during a siege, which only other mods'
+ * messages ever began; there is never one here.
+ *
+ * <p>NOT ported yet: entities registered through LOTREntityRegistry's own
+ * file, LOTR_EntityRegistry.txt (on the deferred-port tracker).
  */
 public final class LOTRNPCKillEvents {
 
@@ -82,6 +98,48 @@ public final class LOTRNPCKillEvents {
         }
         if (entity.getType() == LOTREntities.HORSE && source.getEntity() instanceof Player killer && !killer.isCreative()) {
             avengeHorse(level, killer, entity);
+        }
+        killAchievements(entity, source);
+    }
+
+    private static void killAchievements(LivingEntity entity, DamageSource source) {
+        if (entity instanceof LOTRButterflyEntity && source.getEntity() instanceof Player killer) {
+            LOTRPlayerAchievements.addAchievement(killer, LOTRAchievement.KILL_BUTTERFLY);
+        }
+        Player attackingPlayer = null;
+        LOTRNPCEntity attackingHiredUnit = null;
+        if (source.getEntity() instanceof Player directPlayer) {
+            attackingPlayer = directPlayer;
+        } else if (source.getEntity() instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive
+                && npc.hiredNPCInfo.getHiringPlayer() != null) {
+            attackingPlayer = npc.hiredNPCInfo.getHiringPlayer();
+            attackingHiredUnit = npc;
+        }
+        if (attackingPlayer == null
+                || LOTRPlayerAlignments.getAlignment(attackingPlayer, LOTRNearestAttackableTargetGoal.factionOf(entity)) >= 0.0f) {
+            return;
+        }
+        if (attackingHiredUnit != null) {
+            if (attackingHiredUnit instanceof LOTRWargBombardierEntity) {
+                LOTRPlayerAchievements.addAchievement(attackingPlayer, LOTRAchievement.HIRE_WARG_BOMBARDIER);
+            }
+            if (attackingHiredUnit instanceof LOTROlogHaiEntity) {
+                LOTRPlayerAchievements.addAchievement(attackingPlayer, LOTRAchievement.HIRE_OLOG_HAI);
+            }
+            return;
+        }
+        if (attackingPlayer.hasEffect(MobEffects.NAUSEA)) {
+            LOTRPlayerAchievements.addAchievement(attackingPlayer, LOTRAchievement.KILL_WHILE_DRUNK);
+        }
+        if (entity instanceof LOTROrcEntity orc && orc.isOrcBombardier() && !orc.npcItemsInv.getBomb().isEmpty()) {
+            LOTRPlayerAchievements.addAchievement(attackingPlayer, LOTRAchievement.KILL_BOMBARDIER);
+        }
+        if (source.getDirectEntity() instanceof LOTRCrossbowBoltEntity) {
+            LOTRPlayerAchievements.addAchievement(attackingPlayer, LOTRAchievement.USE_CROSSBOW);
+        }
+        if (source.getDirectEntity() instanceof LOTRThrowingAxeEntity axe
+                && axe.getWeaponItem().is(LOTRCombatItems.DWARVEN_THROWING_AXE)) {
+            LOTRPlayerAchievements.addAchievement(attackingPlayer, LOTRAchievement.USE_DWARVEN_THROWING_AXE);
         }
     }
 

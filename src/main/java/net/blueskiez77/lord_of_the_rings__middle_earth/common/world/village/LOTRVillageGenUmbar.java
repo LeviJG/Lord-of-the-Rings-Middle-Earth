@@ -39,13 +39,13 @@ public class LOTRVillageGenUmbar extends LOTRVillageGenSouthron {
     }
 
     @Override
-    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-        return new InstanceUmbar(this, world, i, k, random, loc);
+    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+        return new InstanceUmbar(this, worldSeed, i, k, random, loc);
     }
 
     public static class InstanceUmbar extends LOTRVillageGenSouthron.Instance {
-        public InstanceUmbar(LOTRVillageGenUmbar village, WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-            super(village, world, i, k, random, loc);
+        public InstanceUmbar(LOTRVillageGenUmbar village, long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+            super(village, worldSeed, i, k, random, loc);
         }
 
         @Override

@@ -1,5 +1,7 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dolguldur;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeEntries;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRUnitTradeable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -18,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRInvasions;
 
 /**
  * LOTREntityDolGuldurOrcChieftain: a man-sized orc, no weak one, bare-headed
@@ -25,10 +28,6 @@ import org.jspecify.annotations.Nullable;
  * his old weapon, as the original left him). He seeks no one out -- he only
  * answers attacks. He hires out Dol Guldur's orcs and archers (either on
  * Mirkwood spiders), spiders and banner bearers to those at +150 or better.
- *
- * <p>NOT ported yet: his warhorn (LOTRInvasions.DOL_GULDUR, D12), the Mirk
- * trolls he hires out (with the trolls), and the tradeDolGuldurCaptain
- * achievement (D7).
  */
 public class LOTRDolGuldurOrcChieftainEntity extends LOTRDolGuldurOrcEntity implements LOTRUnitTradeable {
 
@@ -51,6 +50,11 @@ public class LOTRDolGuldurOrcChieftainEntity extends LOTRDolGuldurOrcEntity impl
     @Override
     public LOTRUnitTradeEntries getUnits() {
         return LOTRUnitTradeEntries.DOL_GULDUR_CAPTAIN;
+    }
+
+    @Override
+    public LOTRInvasions getWarhorn() {
+        return LOTRInvasions.DOL_GULDUR;
     }
 
     /** canTradeWith: +150 alignment and friendly. */
@@ -79,5 +83,10 @@ public class LOTRDolGuldurOrcChieftainEntity extends LOTRDolGuldurOrcEntity impl
         this.npcItemsInv.setMeleeWeapon(new ItemStack(LOTRCombatItems.ORC_SKULL_STAFF));
         setItemSlot(EquipmentSlot.HEAD, ItemStack.EMPTY);
         return data;
+    }
+
+    @Override
+    public void onUnitTrade(Player player) {
+        LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.TRADE_DOL_GULDUR_CAPTAIN);
     }
 }

@@ -18,8 +18,6 @@ import org.jspecify.annotations.Nullable;
  * LOTREntityBlackrootSoldier (the Blackroot Vale Soldier): a soldier of the
  * Blackroot Vale with a Gondorian sword, one in ten mounted; one in ten goes
  * bare-headed.
- *
- * <p>NOT ported yet: the Blackroot Vale shield (LOTRShields.ALIGNMENT_BLACKROOT_VALE, D7).
  */
 public class LOTRBlackrootSoldierEntity extends LOTRGondorSoldierEntity {
 

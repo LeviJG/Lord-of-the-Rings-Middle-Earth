@@ -60,8 +60,6 @@ import org.jspecify.annotations.Nullable;
  * plus looting.
  *
  * <p>It spares the Harad pyramid wraiths (noWraiths).
- *
- * <p>NOT ported yet: LOTRMobSpawnerCondition's spawner flag (D12).
  */
 public abstract class LOTRScorpionEntity extends Monster {
 

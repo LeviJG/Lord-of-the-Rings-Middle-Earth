@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRRoadType;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRWaypoint;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRNPCRespawnerStructure;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureBase2;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.bree.LOTRBreeBarnStructure;
@@ -41,8 +42,8 @@ public class LOTRVillageGenBree extends LOTRVillageGen {
     }
 
     @Override
-    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-        return new Instance(this, world, i, k, random, loc);
+    public LOTRVillageGen.AbstractInstance<?> createVillageInstance(long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+        return new Instance(this, worldSeed, i, k, random, loc);
     }
 
     public enum VillageType {
@@ -58,8 +59,8 @@ public class LOTRVillageGenBree extends LOTRVillageGen {
         public int innerSize;
         public boolean hamletHedge;
 
-        public Instance(LOTRVillageGenBree village, WorldGenLevel world, int i, int k, RandomSource random, LocationInfo loc) {
-            super(village, world, i, k, random, loc);
+        public Instance(LOTRVillageGenBree village, long worldSeed, int i, int k, RandomSource random, LocationInfo loc) {
+            super(village, worldSeed, i, k, random, loc);
             if (hobbitPathLookup == null) {
                 int l;
                 int size = 361;
@@ -383,7 +384,7 @@ public class LOTRVillageGenBree extends LOTRVillageGen {
                 }
             }, 0, -120, 0);
             LOTRBreeInnStructure inn = new LOTRBreeInnStructure(false);
-            if ("BREE".equals(locationInfo.getAssociatedWaypoint())) {
+            if (locationInfo.getAssociatedWaypoint() == LOTRWaypoint.BREE) {
                 inn.setPresets(new String[]{"The Prancing", "Pony"}, "Barliman Butterbur", true, false);
             }
             addStructure(inn, 15, 8, 0, true);
@@ -399,7 +400,7 @@ public class LOTRVillageGenBree extends LOTRVillageGen {
                 if (i1 <= -houses + 2 || i1 == houses) {
                     house1 = new LOTRBreeRuffianHouseStructure(false);
                     house2 = new LOTRBreeRuffianHouseStructure(false);
-                    if ("BREE".equals(locationInfo.getAssociatedWaypoint()) && i1 == -houses) {
+                    if (locationInfo.getAssociatedWaypoint() == LOTRWaypoint.BREE && i1 == -houses) {
                         house1 = new LOTRBreeRuffianHouseStructure(false).setRuffianName("Bill Ferny");
                         forceHouse1 = true;
                     }

@@ -3,7 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTREffects;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRConkerEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRExplodingTermiteEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRThrownTermiteEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRMysteryWebEntity;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems.*;
 import static net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems.*;
@@ -27,15 +27,18 @@ public final class LOTRMiscItems {
     public static final Item MECHANISM = register("mechanism", LOTRMechanismItem::new, new Item.Properties());
 
     //
-    // NOT registered: the pouch, which is a container item with an inventory of
-    // its own, and the NPC respawner, which needs NPCs. The smoking pipe is
-    // LOTRSmokingPipeItem, which puffs smoke rings.
+    // The smoking pipe is LOTRSmokingPipeItem, which puffs smoke rings. The
+    // pouch's three sizes (its damage values) are three items (LOTRPouchItem),
+    // their contents hidden from the tooltip, which counts the slots instead.
     //
-    // The coins keep their three 1.7.10 stack values as three items; the value
-    // system that counted them is not ported. The ancient items roll a random
-    // weapon or armour piece out of their chest pool (LOTRAncientItem); the
-    // parts are plain crafting materials.
+    // The coins keep their three 1.7.10 stack values as three items, valued
+    // by LOTRCoins. The ancient items roll a random weapon or armour piece out
+    // of their chest pool (LOTRAncientItem); the parts are plain crafting
+    // materials.
     public static final Item GOLD_RING = register("gold_ring", Item::new, new Item.Properties());
+    public static final Item SMALL_POUCH = registerPouch("small_pouch", 0);
+    public static final Item MEDIUM_POUCH = registerPouch("medium_pouch", 1);
+    public static final Item LARGE_POUCH = registerPouch("large_pouch", 2);
     public static final Item SILVER_RING = register("silver_ring", Item::new, new Item.Properties());
     public static final Item MITHRIL_RING = register("mithril_ring", Item::new, new Item.Properties());
     public static final Item SMOKING_PIPE = register("smoking_pipe", LOTRSmokingPipeItem::new,
@@ -86,7 +89,7 @@ public final class LOTRMiscItems {
                     () -> LOTREntities.MYSTERY_WEB, props),
             new Item.Properties());
     public static final Item EXPLODING_TERMITE = register("exploding_termite",
-            props -> new LOTRThrownMiscItem(LOTRExplodingTermiteEntity::new, 1.5f,
+            props -> new LOTRThrownMiscItem(LOTRThrownTermiteEntity::new, 1.5f,
                     () -> LOTREntities.EXPLODING_TERMITE, props),
             new Item.Properties().stacksTo(16));
     public static final Item CONKER = register("conker",
@@ -165,6 +168,13 @@ public final class LOTRMiscItems {
             .usingConvertsTo(net.minecraft.world.item.Items.GLASS_BOTTLE));
 
     private LOTRMiscItems() {
+    }
+
+    /** LOTRItemPouch: one to a stack; its goods are not listed in the tooltip, which counts slots instead. */
+    private static Item registerPouch(String name, int size) {
+        return register(name, props -> new LOTRPouchItem(size, props), new Item.Properties().stacksTo(1)
+                .component(DataComponents.TOOLTIP_DISPLAY, net.minecraft.world.item.component.TooltipDisplay.DEFAULT
+                        .withHidden(DataComponents.CONTAINER, true)));
     }
 
     /** Forces class-load, so the static fields register. Called from LOTRItems.init. */

@@ -11,6 +11,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRParticles;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.banner.LOTRBannerProtection;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifierSpecials;
@@ -18,8 +20,10 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifi
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRCrossbowBoltEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRNPCRespawnerEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRPlateEntity;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRPoisonedArrowEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRArrowPoisonedEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRTraderRespawnEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRBurningPanicGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRHiringPlayerHurtByTargetGoal;
@@ -44,6 +48,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCrossbowI
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItemOwnership;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRLeatherHatItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPouchItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredInfoPayload;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
@@ -99,8 +104,11 @@ import net.minecraft.world.item.component.DyedItemColor;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
@@ -128,10 +136,7 @@ import org.jspecify.annotations.Nullable;
  *     when it dies; for a hired unit, its service ({@link #hiredNPCInfo}).</li>
  * </ul>
  *
- * <p>NOT ported yet: invasions and conquest spawning (D12); the biomes' part in
- * spawning -- where hostiles walk by day, and the spawn count multiplier (D10);
- * the kill and talk achievements (D7); and Utumno's drops (D15). Pouches are
- * left out (user).
+ * <p>NOT ported yet: Utumno's drops (D15).
  */
 public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttackMob {
 
@@ -158,6 +163,9 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     public net.blueskiez77.lord_of_the_rings__middle_earth.common.shield.@Nullable LOTRShields npcShield;
     public final LOTRHiredNPCInfo hiredNPCInfo = new LOTRHiredNPCInfo(this);
     public final LOTRNPCQuestInfo questInfo = new LOTRNPCQuestInfo(this);
+    /** enpouchedDrops / enpouchNPCDrops: its drops as it dies, held back for a pouch. */
+    private final List<ItemStack> enpouchedDrops = new ArrayList<>();
+    private boolean enpouchNPCDrops;
     /** What a hired unit had on before its player re-equipped it. */
     public final LOTRInventoryHiredReplacedItems hiredReplacedInv = new LOTRInventoryHiredReplacedItems(this);
 
@@ -169,7 +177,11 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     /** A boss's own record (LOTRBoss); null for any other NPC. */
     public final @Nullable LOTRBossInfo bossInfo;
     public boolean liftSpawnRestrictions;
-    /** Spawns even where a banner protects the land against it (the Grey Wanderer's arrival, D12). */
+    /** Spawned by its faction's conquest of the land (which may bring it out by day). */
+    public boolean isConquestSpawning;
+    /** The invasion that brought it, if any (saved as "InvasionID"). */
+    public java.util.@Nullable UUID invasionID;
+    /** Spawns even where a banner protects the land against it (the Grey Wanderer's arrival). */
     public boolean liftBannerRestrictions;
     public boolean isTargetSeeker;
     public final List<LOTRFaction> killBonusFactions = new ArrayList<>();
@@ -360,51 +372,147 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
                 && !(this instanceof LOTRBoss);
     }
 
+    /** Whether a conquest spawn of it may come out where it is not dark (the trolls only if the sun spares them). */
+    public boolean conquestSpawnIgnoresDarkness() {
+        return true;
+    }
+
+    public java.util.@Nullable UUID getInvasionID() {
+        return this.invasionID;
+    }
+
+    public void setInvasionID(java.util.@Nullable UUID id) {
+        this.invasionID = id;
+    }
+
+    public boolean isInvasionSpawned() {
+        return this.invasionID != null;
+    }
+
+    /** LOTRMod.getDamagingPlayerIncludingUnits: the player who struck, or whose hired unit did. */
+    public static @Nullable Player getDamagingPlayerIncludingUnits(DamageSource source) {
+        if (source.getEntity() instanceof Player player) {
+            return player;
+        }
+        if (source.getEntity() instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive && npc.hiredNPCInfo.getHiringPlayer() != null) {
+            return npc.hiredNPCInfo.getHiringPlayer();
+        }
+        return null;
+    }
+
+    public void setConquestSpawning(boolean flag) {
+        this.isConquestSpawning = flag;
+    }
+
+    public void setShouldTraderRespawn(boolean flag) {
+        this.shouldTraderRespawn = flag;
+    }
+
+    /** Whether hostiles walk by day in the biome at this spot. */
+    /** The LOTR biome of a column, if it is one. */
+    public static @Nullable LOTRBiome biomeAt(LevelReader level, BlockPos pos) {
+        return LOTRBiomes.of(level.getBiome(pos));
+    }
+
+    /** getBlockPathWeight's pull of a people's own lands: 20 in any of them, else nothing. */
+    @SafeVarargs
+    protected static float homeBiomePull(LevelReader level, BlockPos pos, Class<? extends LOTRBiome>... homes) {
+        LOTRBiome biome = biomeAt(level, pos);
+        for (Class<? extends LOTRBiome> home : homes) {
+            if (home.isInstance(biome)) {
+                return 20.0f;
+            }
+        }
+        return 0.0f;
+    }
+
+    /**
+     * The usual getCanSpawnHere rule of a people: above y 62, standing on the biome's own top
+     * block or, if given, on grass or sand (the old sand counting red sand, its metadata).
+     */
+    protected boolean isAboveSeaOnTopBlock(LevelAccessor level, boolean orGrassOrSand) {
+        BlockPos pos = blockPosition();
+        BlockState below = level.getBlockState(pos.below());
+        LOTRBiome biome = biomeAt(level, pos);
+        boolean onTop = biome != null && below.is(biome.topBlock.getBlock());
+        if (orGrassOrSand) {
+            onTop |= below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.SAND) || below.is(Blocks.RED_SAND);
+        }
+        return pos.getY() > 62 && onTop;
+    }
+
+    /** The Moredain's getCanSpawnHere rule: above y 62, on grass or sand (red sand too). */
+    protected boolean isAboveSeaOnGrassOrSand(LevelAccessor level) {
+        BlockPos pos = blockPosition();
+        BlockState below = level.getBlockState(pos.below());
+        return pos.getY() > 62 && (below.is(Blocks.GRASS_BLOCK) || below.is(Blocks.SAND) || below.is(Blocks.RED_SAND));
+    }
+
+    private static boolean hostilesWalkByDay(LevelReader level, BlockPos pos) {
+        LOTRBiome biome = LOTRBiomes.of(level.getBiome(pos));
+        return biome != null && biome.canSpawnHostilesInDay();
+    }
+
     /**
      * getBlockPathWeight: anywhere, once spawn restrictions are lifted; for a
-     * creature of the dark, the darker the better (half less the light's
-     * brightness); otherwise nowhere in particular.
-     *
-     * <p>NOT ported yet: a creature of the dark being at home anywhere in a
-     * biome where hostiles walk by day (LOTRBiome.canSpawnHostilesInDay, with
-     * the biomes, D10), and conquest spawning's exemption (D12).
+     * creature of the dark (unless conquest brought it, by day), anywhere in a
+     * biome where hostiles walk by day, else the darker the better (half less
+     * the light's brightness); otherwise nowhere in particular.
      */
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
         if (this.liftSpawnRestrictions) {
             return 1.0f;
         }
-        if (this.spawnsInDarkness) {
-            return 0.5f - LOTRLegacyWorld.brightness(level, pos);
+        if (!this.isConquestSpawning || !conquestSpawnIgnoresDarkness()) {
+            if (this.spawnsInDarkness && hostilesWalkByDay(level, pos)) {
+                return 1.0f;
+            }
+            if (this.spawnsInDarkness) {
+                return 0.5f - LOTRLegacyWorld.brightness(level, pos);
+            }
         }
         return 0.0f;
+    }
+
+    /**
+     * getSpawnCountValue: how much it counts against the spawn cap -- nothing if it is kept for
+     * good, a trader's to come back or hired; else the biome's multiplier (the Shire's three).
+     */
+    public int getSpawnCountValue() {
+        if (this.isNPCPersistent || this.shouldTraderRespawn || this.hiredNPCInfo.isActive) {
+            return 0;
+        }
+        LOTRBiome biome = LOTRBiomes.of(level().getBiome(blockPosition()));
+        return biome == null ? 1 : biome.spawnCountMultiplier();
     }
 
     /**
      * getCanSpawnHere: a creature of the dark only where it is dark enough,
      * unless its spawn restrictions are lifted; and no NPC where a banner
      * protects the land against it or a respawner blocks its faction's
-     * spawns, unless its banner restrictions are lifted.
-     *
-     * <p>NOT ported yet: the biomes where hostiles walk by day (D10) and
-     * conquest spawning's exemptions (D12).
+     * spawns (which conquest overrides), unless its banner restrictions are
+     * lifted. Conquest brings it out by day.
      */
     @Override
     public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
-        if ((!this.spawnsInDarkness || this.liftSpawnRestrictions || isValidLightLevelForDarkSpawn(level))
-                && super.checkSpawnRules(level, reason)) {
+        if ((!this.spawnsInDarkness || this.liftSpawnRestrictions || this.isConquestSpawning && conquestSpawnIgnoresDarkness()
+                || isValidLightLevelForDarkSpawn(level)) && super.checkSpawnRules(level, reason)) {
             return this.liftBannerRestrictions
                     || !LOTRBannerProtection.isProtected(level(), this, LOTRBannerProtection.forNPC(this), false)
-                    && !LOTRNPCRespawnerEntity.isSpawnBlocked(this);
+                    && (this.isConquestSpawning || !LOTRNPCRespawnerEntity.isSpawnBlocked(this));
         }
         return false;
     }
 
     /**
-     * isValidLightLevelForDarkSpawn: a monster's darkness. The original copied
-     * 1.7.10's monster light check, so this is 26.2's.
+     * isValidLightLevelForDarkSpawn: anywhere in a biome where hostiles walk by day; else a
+     * monster's darkness -- the original copied 1.7.10's monster light check, so this is 26.2's.
      */
     private boolean isValidLightLevelForDarkSpawn(LevelAccessor level) {
+        if (this.spawnsInDarkness && hostilesWalkByDay(level, blockPosition())) {
+            return true;
+        }
         return level instanceof ServerLevelAccessor serverLevel
                 && Monster.isDarkEnoughToSpawn(serverLevel, blockPosition(), this.random);
     }
@@ -745,6 +853,14 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         if (hurt && this.hurtOnlyByPlates) {
             this.hurtOnlyByPlates = source.getDirectEntity() instanceof LOTRPlateEntity;
         }
+        // A player striking an invader is shown its invasion's bar.
+        if (hurt && isInvasionSpawned() && source.getEntity() instanceof net.minecraft.server.level.ServerPlayer player) {
+            net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRInvasionSpawnerEntity invasion =
+                    net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRInvasionSpawnerEntity.locateInvasionNearby(this, this.invasionID);
+            if (invasion != null) {
+                invasion.setWatchingInvasion(player, true);
+            }
+        }
         return hurt;
     }
 
@@ -868,6 +984,11 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         markNPCSpoken();
     }
 
+    /** getKillAchievement: earned by the player who slays one of this kind, if its kind has one. */
+    public @Nullable LOTRAchievement getKillAchievement() {
+        return null;
+    }
+
     /** The mini-quest this NPC would set, if its kind sets any. */
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return null;
@@ -904,9 +1025,18 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         }
         if (bank != null) {
             sendSpeechBank(player, bank);
+            LOTRAchievement talkAchievement = getTalkAchievement();
+            if (talkAchievement != null) {
+                LOTRPlayerAchievements.addAchievement(player, talkAchievement);
+            }
             return true;
         }
         return false;
+    }
+
+    /** getTalkAchievement: earned by talking to one of this kind, if its kind has one. */
+    public @Nullable LOTRAchievement getTalkAchievement() {
+        return null;
     }
 
     /**
@@ -1159,7 +1289,7 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         float accuracy = (float) getAttributeValue(LOTRNPCAttributes.NPC_RANGED_ACCURACY);
         AbstractArrow arrow;
         if (this.random.nextFloat() < getPoisonedArrowChance()) {
-            arrow = new LOTRPoisonedArrowEntity(LOTREntities.POISONED_ARROW, this, level,
+            arrow = new LOTRArrowPoisonedEntity(LOTREntities.POISONED_ARROW, this, level,
                     new ItemStack(LOTRCombatItems.POISONED_ARROW), held.isEmpty() ? null : held);
         } else {
             arrow = ProjectileUtil.getMobArrow(this, new ItemStack(Items.ARROW), power, held);
@@ -1327,19 +1457,45 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
 
     /**
      * entityDropItem / npcDropItem: everything an NPC drops that does not
-     * stack remembers it as a previous owner.
+     * stack remembers it as a previous owner; while it is dying, its drops are
+     * held back, for a pouch perhaps (enpouchNPCDrops).
      */
     @Override
     public @Nullable ItemEntity spawnAtLocation(ServerLevel level, ItemStack stack, Vec3 offset) {
         if (!stack.isEmpty() && stack.getMaxStackSize() == 1) {
             LOTRItemOwnership.addPreviousOwner(stack, getName().getString());
         }
+        if (this.enpouchNPCDrops && !stack.isEmpty()) {
+            this.enpouchedDrops.add(stack);
+            return null;
+        }
         return super.spawnAtLocation(level, stack, offset);
+    }
+
+    /** npcDropItem(..., enpouch false): its inventories' goods, never pouched. */
+    public @Nullable ItemEntity dropUnpouched(ServerLevel level, ItemStack stack) {
+        boolean enpouch = this.enpouchNPCDrops;
+        this.enpouchNPCDrops = false;
+        try {
+            return spawnAtLocation(level, stack);
+        } finally {
+            this.enpouchNPCDrops = enpouch;
+        }
+    }
+
+    /** createNPCPouchDrop: a pouch of a random size, half the time in the NPC's faction colour. */
+    public ItemStack createNPCPouchDrop() {
+        ItemStack pouch = LOTRPouchItem.randomPouch(this.random);
+        if (this.random.nextBoolean()) {
+            LOTRPouchItem.setPouchColor(pouch, getFaction().getFactionColor());
+        }
+        return pouch;
     }
 
     /** onDeath: a trader who should come back leaves its respawner. */
     @Override
     public void die(DamageSource source) {
+        this.enpouchNPCDrops = true;
         this.hiredNPCInfo.onDeath(source);
         if (this.travellingTraderInfo != null) {
             this.travellingTraderInfo.onDeath();
@@ -1348,6 +1504,39 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             this.bossInfo.onDeath(source);
         }
         super.die(source);
+        // One time in 60, a player's kill leaves its drops in a pouch, as many as fit.
+        if (level() instanceof ServerLevel level) {
+            if (this.lastHurtByPlayerMemoryTime > 0 && canDropRares() && level.getGameRules().get(GameRules.MOB_DROPS)
+                    && this.random.nextInt(60) == 0) {
+                ItemStack pouch = createNPCPouchDrop();
+                LOTRPouchItem.fillPouchFromListAndRetainUnfilled(pouch, this.enpouchedDrops);
+                this.enpouchNPCDrops = false;
+                spawnAtLocation(level, pouch);
+            }
+            this.enpouchNPCDrops = false;
+            List<ItemStack> drops = new ArrayList<>(this.enpouchedDrops);
+            this.enpouchedDrops.clear();
+            drops.forEach(drop -> super.spawnAtLocation(level, drop, Vec3.ZERO));
+        }
+        this.enpouchNPCDrops = false;
+        // The slayer's achievements: with plates alone, a big enemy with a sling, an orc, a warg, its kind.
+        if (level() instanceof ServerLevel && source.getEntity() instanceof Player player) {
+            if (this.hurtOnlyByPlates && source.getDirectEntity() instanceof LOTRPlateEntity) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.KILL_USING_ONLY_PLATES);
+            }
+            if (source.getDirectEntity() instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRPebbleEntity pebble
+                    && pebble.isSling() && getBbWidth() * getBbWidth() * getBbHeight() > 5.0f
+                    && LOTRPlayerAlignments.getAlignment(player, getFaction()) < 0.0f) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.KILL_LARGE_MOB_WITH_SLINGSHOT);
+            }
+            if (this instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.orc.LOTROrcEntity) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.KILL_ORC);
+            }
+            if (this instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.warg.LOTRWargEntity) {
+                LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.KILL_WARG);
+            }
+            LOTRPlayerAchievements.addAchievement(player, getKillAchievement());
+        }
         if (level() instanceof ServerLevel level && tradesOrHires() && this.shouldTraderRespawn) {
             LOTRTraderRespawnEntity respawn = new LOTRTraderRespawnEntity(LOTREntities.TRADER_RESPAWN, level);
             respawn.snapTo(getX(), getBoundingBox().minY + getBbHeight() / 2.0f, getZ(), 0.0f, 0.0f);
@@ -1357,6 +1546,16 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         }
         if (level() instanceof ServerLevel) {
             this.questInfo.onDeath();
+            // An invader slain by a player, or a player's hired unit, counts against its invasion.
+            Player killer = isInvasionSpawned() ? getDamagingPlayerIncludingUnits(source) : null;
+            net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRInvasionSpawnerEntity invasion = killer == null ? null
+                    : net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTRInvasionSpawnerEntity.locateInvasionNearby(this, this.invasionID);
+            if (invasion != null) {
+                invasion.addPlayerKill(killer);
+                if (source.getEntity() == killer && killer instanceof net.minecraft.server.level.ServerPlayer serverPlayer) {
+                    invasion.setWatchingInvasion(serverPlayer, true);
+                }
+            }
         }
     }
 
@@ -1537,6 +1736,9 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
             output.putInt("NPCHomeRadius", getHomeRadius());
         }
         output.putBoolean("NPCPersistent", this.isNPCPersistent);
+        if (this.invasionID != null) {
+            output.putString("InvasionID", this.invasionID.toString());
+        }
         if (this.bossInfo != null) {
             this.bossInfo.save(output);
         }
@@ -1584,6 +1786,13 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
                     input.getIntOr("NPCHomeZ", 0)), radius);
         }
         this.isNPCPersistent = input.getBooleanOr("NPCPersistent", this.isNPCPersistent);
+        input.getString("InvasionID").ifPresent(id -> {
+            try {
+                this.invasionID = java.util.UUID.fromString(id);
+            } catch (IllegalArgumentException e) {
+                LOTRMod.LOGGER.warn("LOTR: Error loading NPC invasion ID - {} is not a valid UUID", id);
+            }
+        });
         this.npcLocationName = input.getString("NPCLocationName").orElse(null);
         this.hasSpecificLocationName = input.getBooleanOr("SpecificLocationName", false);
         this.hurtOnlyByPlates = input.getBooleanOr("HurtOnlyByPlates", false);
