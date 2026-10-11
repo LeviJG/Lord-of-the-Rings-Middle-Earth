@@ -207,9 +207,14 @@ public enum LOTRTreeType {
         return this.treeFactory.createTree(flag, random);
     }
 
-    /** One of vanilla's configured trees, planted at the position given. */
+    /**
+     * One of vanilla's configured trees, planted at the position given if the ground there could
+     * hold a sapling, as the 1.7.10 trees checked (canSustainPlant). Today that check is the placed
+     * feature's, and the configured tree lays dirt under its trunk wherever it stands -- over water too.
+     */
     private static LOTRWorldGenerator vanilla(ResourceKey<ConfiguredFeature<?, ?>> key) {
-        return (world, random, i, j, k) -> world.registryAccess().lookup(Registries.CONFIGURED_FEATURE)
+        return (world, random, i, j, k) -> LOTRFeature.canSustainPlant(world, i, j - 1, k)
+                && world.registryAccess().lookup(Registries.CONFIGURED_FEATURE)
                 .flatMap(registry -> registry.get(key))
                 .map(feature -> feature.value().place(world, world.getLevel().getChunkSource().getGenerator(), random, new BlockPos(i, j, k)))
                 .orElse(false);
@@ -225,8 +230,8 @@ public enum LOTRTreeType {
                 new TwoLayersFeatureSize(1, 1, 2),
                 BlockStateProvider.simple(Blocks.DIRT))
                 .decorators(List.of(TrunkVineDecorator.INSTANCE, new LeaveVineDecorator(0.25f))).build();
-        return (world, random, i, j, k) -> Feature.TREE.place(config, world, world.getLevel().getChunkSource().getGenerator(),
-                random, new BlockPos(i, j, k));
+        return (world, random, i, j, k) -> LOTRFeature.canSustainPlant(world, i, j - 1, k)
+                && Feature.TREE.place(config, world, world.getLevel().getChunkSource().getGenerator(), random, new BlockPos(i, j, k));
     }
 
     /** A tree built on the structure base (the extreme mallorn, the mirk-oaks): its leaves' distances set after. */

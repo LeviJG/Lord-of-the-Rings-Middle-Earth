@@ -84,6 +84,8 @@ public final class LOTRLevelData extends SavedData {
     /** The waypoints' longest and shortest fast travel wait, in seconds ("WpCdMax", "WpCdMin"). */
     private static int waypointCooldownMax = 1800;
     private static int waypointCooldownMin = 180;
+    /** The world's conquest rate, by which every kill's conquest is multiplied ("ConqRate"). */
+    private static float conquestRate = 1.0f;
     /**
      * commemorateEmpressShamiir ("CommemorateEmpressShamiir"): set in a world's save by hand, it gives the
      * Fertile Valley waypoint its lore remembering the Empress; the client learns it on joining, and
@@ -150,9 +152,12 @@ public final class LOTRLevelData extends SavedData {
                     .forGetter(d -> LOTRDate.ShireReckoning.currentDay),
             Codec.INT.optionalFieldOf("WpCdMax", 1800).forGetter(d -> waypointCooldownMax),
             Codec.INT.optionalFieldOf("WpCdMin", 180).forGetter(d -> waypointCooldownMin),
-            Codec.BOOL.optionalFieldOf("CommemorateEmpressShamiir", false).forGetter(d -> commemorateEmpressShamiir)
-    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned, portals, traders, shireDate, wpCdMax, wpCdMin, shamiir) -> {
+            Codec.BOOL.optionalFieldOf("CommemorateEmpressShamiir", false).forGetter(d -> commemorateEmpressShamiir),
+            Codec.FLOAT.optionalFieldOf("ConqRate", 1.0f).forGetter(d -> conquestRate)
+    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned, portals, traders, shireDate, wpCdMax, wpCdMin, shamiir,
+                conqRate) -> {
         commemorateEmpressShamiir = shamiir;
+        conquestRate = conqRate;
         waypointCooldownMax = wpCdMax;
         waypointCooldownMin = wpCdMin;
         travellingTraderTimes.clear();
@@ -187,6 +192,7 @@ public final class LOTRLevelData extends SavedData {
         waypointCooldownMax = 1800;
         waypointCooldownMin = 180;
         commemorateEmpressShamiir = false;
+        conquestRate = 1.0f;
         return new LOTRLevelData();
     }
 
@@ -265,6 +271,15 @@ public final class LOTRLevelData extends SavedData {
                         .CooldownPayload(waypointCooldownMax, waypointCooldownMin));
             }
         }
+    }
+
+    public static float getConquestRate() {
+        return conquestRate;
+    }
+
+    public static void setConquestRate(float f) {
+        conquestRate = f;
+        markDirty();
     }
 
     public static boolean structuresBanned() {

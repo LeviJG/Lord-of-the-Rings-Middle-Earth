@@ -1,10 +1,13 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.gui;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 import com.mojang.blaze3d.platform.InputConstants;
@@ -21,8 +24,13 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.client.quest.LOTRClientMi
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRMiscCommands;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRControlZone;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionRank;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRRankOptions;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRViewingFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fellowship.LOTRFellowshipPayloads.View;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
@@ -33,6 +41,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBi
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.genlayer.LOTRGenLayerWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRAbstractWaypoint;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestGrid;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestZone;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRCustomWaypoint;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRCustomWaypoints;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRFastTravel;
@@ -55,6 +65,7 @@ import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.util.ARGB;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
@@ -74,8 +85,9 @@ import org.lwjgl.glfw.GLFW;
  * ones hidden; the toggles for waypoints, custom ones and hidden shared ones are kept by the server.
  * From the factions screen it shows a faction's areas of influence instead.
  *
- * <p>NOT ported yet: the conquest grid (setConquestGrid, with conquest) and the conquest unlocking of
- * an enemy's waypoint that its locked tooltip mentions.
+ * A locked enemy waypoint that conquest could open says so. From the Table of Command it is the
+ * conquest map (setConquestGrid): a smaller sepia map in a frame, a faction's conquest strength in
+ * each zone, asked of the server faction by faction, the factions chosen by region and a scroll bar.
  */
 public class LOTRMapScreen extends LOTRMenuBaseScreen {
 
@@ -147,12 +159,47 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
     private boolean mouseControlZoneReduced;
     /** The tooltips the original drew raised above the map, drawn here once the map is done. */
     private final List<Runnable> raisedTooltips = new ArrayList<>();
+    private static final Identifier CONQUEST_TEXTURE = Identifier.fromNamespaceAndPath("lotr", "map/conquest.png");
+    /** LOTRClientProxy.alignmentTexture. */
+    private static final Identifier ALIGNMENT_TEXTURE = Identifier.fromNamespaceAndPath("lotr", "gui/alignment.png");
+    private static LOTRDimension.@Nullable DimensionRegion currentRegion;
+    private static LOTRDimension.@Nullable DimensionRegion prevRegion;
+    private static List<LOTRFaction> currentFactionList = List.of();
+    private static final Map<LOTRDimension.DimensionRegion, LOTRFaction> lastViewedRegions = new EnumMap<>(LOTRDimension.DimensionRegion.class);
+    private boolean isConquestGrid;
+    private boolean loadingConquestGrid;
+    private final Map<LOTRFaction, List<LOTRConquestZone>> facConquestGrids = new EnumMap<>(LOTRFaction.class);
+    private final Set<LOTRFaction> requestedFacGrids = EnumSet.noneOf(LOTRFaction.class);
+    private final Set<LOTRFaction> receivedFacGrids = EnumSet.noneOf(LOTRFaction.class);
+    private int ticksUntilRequestFac = 40;
+    private float highestViewedConqStr;
+    private int currentFactionIndex;
+    private int prevFactionIndex;
+    private @Nullable LOTRFaction conquestViewingFaction;
+    private float currentFacScroll;
+    private boolean isFacScrolling;
+    private boolean wasMouseDown;
+    private boolean mouseInFacScroll;
+    private static final int FAC_SCROLL_WIDTH = 240;
+    private static final int FAC_SCROLL_HEIGHT = 14;
+    private static final int FAC_SCROLL_BORDER = 1;
+    private static final int FAC_SCROLL_WIDGET_WIDTH = 17;
+    private static final int FAC_SCROLL_WIDGET_HEIGHT = 12;
+    private int facScrollX;
+    private int facScrollY;
+    private @Nullable LOTRRedBookButton buttonConquestRegions;
 
     public LOTRMapScreen() {
         super(Component.translatable("lotr.gui.map.title"));
         if (!LOTRGenLayerWorld.loadedBiomeImage()) {
             new LOTRGenLayerWorld();
         }
+    }
+
+    /** setConquestGrid: the conquest map, from the Table of Command. */
+    public LOTRMapScreen setConquestGrid() {
+        this.isConquestGrid = true;
+        return this;
     }
 
     /** setControlZone: the faction's areas of influence, from the factions screen. */
@@ -194,11 +241,28 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
             this.buttonMenuReturn.setX(midX - d - this.buttonMenuReturn.getWidth());
             this.buttonMenuReturn.setY(4);
         }
-        if (this.hasControlZones) {
+        if (this.isConquestGrid || this.hasControlZones) {
             removeWidget(this.buttonMenuReturn);
         }
         setupMapWidgets();
         setupMapDimensions();
+        if (this.isConquestGrid) {
+            this.loadingConquestGrid = true;
+            LOTRFaction faction = LOTRPlayerAlignments.get(this.minecraft.player).pledgeFaction();
+            if (faction == null) {
+                faction = LOTRViewingFaction.getViewingFaction(this.minecraft.player);
+            }
+            this.conquestViewingFaction = faction;
+            prevRegion = currentRegion = faction.factionRegion;
+            currentFactionList = currentRegion.factionList;
+            this.prevFactionIndex = this.currentFactionIndex = currentFactionList.indexOf(faction);
+            lastViewedRegions.put(currentRegion, faction);
+            this.facScrollX = this.mapXMin;
+            this.facScrollY = this.mapYMax + 8;
+            setCurrentScrollFromFaction();
+            this.buttonConquestRegions = addRenderableWidget(new LOTRRedBookButton(this.mapXMax - 120, this.mapYMax + 5, 120, 20,
+                    Component.empty(), this::nextConquestRegion));
+        }
         if (this.hasControlZones && this.controlZoneFaction != null) {
             int[] zoneBorders = this.controlZoneFaction.calculateFullControlZoneWorldBorders();
             int xMin = zoneBorders[0];
@@ -236,7 +300,14 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
     }
 
     private void setupMapDimensions() {
-        if (fullscreen) {
+        if (this.isConquestGrid) {
+            int windowWidth = 400;
+            int windowHeight = 240;
+            this.mapXMin = this.width / 2 - windowWidth / 2;
+            this.mapXMax = this.width / 2 + windowWidth / 2;
+            this.mapYMin = this.height / 2 - 16 - windowHeight / 2;
+            this.mapYMax = this.mapYMin + windowHeight;
+        } else if (fullscreen) {
             this.mapXMin = 30;
             this.mapXMax = this.width - 30;
             this.mapYMin = 30;
@@ -268,6 +339,11 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
         this.widgetShareCWP = addMapWidget(-16, 48, "shareCWP", 10, 10);
         this.widgetHideSWP = addMapWidget(-16, 20, "hideSWP", 20, 0);
         this.widgetUnhideSWP = addMapWidget(-16, 20, "unhideSWP", 20, 10);
+        if (this.isConquestGrid) {
+            this.mapWidgets.clear();
+            this.mapWidgets.addAll(List.of(this.widgetToggleWPs, this.widgetToggleCWPs, this.widgetToggleHiddenSWPs,
+                    this.widgetZoomIn, this.widgetZoomOut, this.widgetLabels));
+        }
     }
 
     private Widget addMapWidget(int x, int y, String name, int u, int v) {
@@ -311,6 +387,9 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
     }
 
     private boolean hasMapLabels() {
+        if (this.isConquestGrid) {
+            return LOTRConfig.mapLabelsConquest;
+        }
         return LOTRConfig.mapLabels;
     }
 
@@ -321,7 +400,7 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
 
     /** canTeleport: in Middle-earth, standing in a loaded chunk, and an operator as the server says (requestIsOp). */
     private boolean canTeleport() {
-        if (!isMiddleEarth()) {
+        if (!isMiddleEarth() || this.loadingConquestGrid) {
             return false;
         }
         LocalPlayer player = this.minecraft.player;
@@ -390,13 +469,23 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
     @Override
     public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
         setupMapDimensions();
-        if (fullscreen) {
+        if (this.isConquestGrid) {
+            // The frame's parchment, in the colour of the faction viewed.
+            super.extractBackground(graphics, mouseX, mouseY, partialTick);
+            float[] cqColors = this.conquestViewingFaction != null ? this.conquestViewingFaction.getFactionRGB() : new float[]{0.65f, 0.5f, 0.35f};
+            int w = 8;
+            int up = 22;
+            int down = 54;
+            graphics.blit(RenderPipelines.GUI_TEXTURED, LOTRMapRenderer.MAP_OVERLAY, this.mapXMin - w, this.mapYMin - up, 0.0f, 0.0f,
+                    this.mapWidth + w * 2, this.mapHeight + up + down, 256, 256, 256, 256, ARGB.colorFromFloat(1.0f, cqColors[0], cqColors[1], cqColors[2]));
+        } else if (fullscreen) {
             graphics.blit(RenderPipelines.GUI_TEXTURED, LOTRMapRenderer.MAP_OVERLAY, 0, 0, 0.0f, 0.0f, this.width, this.height, 256, 256, 256, 256,
                     ARGB.colorFromFloat(1.0f, 0.65f, 0.5f, 0.35f));
         } else {
             super.extractBackground(graphics, mouseX, mouseY, partialTick);
         }
-        renderGraduatedRects(graphics, this.mapXMin - 1, this.mapYMin - 1, this.mapXMax + 1, this.mapYMax + 1, BORDER_COLOR, -16777216, 4);
+        renderGraduatedRects(graphics, this.mapXMin - 1, this.mapYMin - 1, this.mapXMax + 1, this.mapYMax + 1, BORDER_COLOR, -16777216,
+                this.isConquestGrid ? 2 : 4);
     }
 
     @Override
@@ -405,10 +494,16 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
         LocalPlayer player = this.minecraft.player;
         setupMapDimensions();
         setupZoomVariables(f);
+        if (this.isConquestGrid) {
+            this.loadingConquestGrid = !this.receivedFacGrids.contains(this.conquestViewingFaction);
+            this.highestViewedConqStr = 0.0f;
+            setupConquestScrollBar(i, j);
+            this.buttonConquestRegions.setMessage(currentRegion.getRegionName());
+        }
         this.posX = this.prevPosX;
         this.posY = this.prevPosY;
         this.isMouseWithinMap = i >= this.mapXMin && i < this.mapXMax && j >= this.mapYMin && j < this.mapYMax;
-        if (!this.hasOverlay && this.zoomTicks == 0 && isLeftButtonDown()) {
+        if (!this.hasOverlay && !this.isFacScrolling && this.zoomTicks == 0 && isLeftButtonDown()) {
             if ((this.isMouseButtonDown == 0 || this.isMouseButtonDown == 1) && this.isMouseWithinMap) {
                 if (this.isMouseButtonDown == 0) {
                     this.isMouseButtonDown = 1;
@@ -431,11 +526,13 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
         this.prevPosY = this.posY;
         this.posX += this.posXMove * f;
         this.posY += this.posYMove * f;
-        boolean isSepia = LOTRConfig.enableSepiaMap;
+        boolean isSepia = this.isConquestGrid || LOTRConfig.enableSepiaMap;
         setupScrollBars(i, j);
         graphics.fill(this.mapXMin, this.mapYMin, this.mapXMax, this.mapYMax, LOTRMapRenderer.getMapOceanColor(isSepia));
-        Component title = Component.translatable("lotr.gui.map.title");
-        graphics.centeredText(this.font, title, this.width / 2, fullscreen ? 10 : this.guiTop - 30, 0xFFFFFFFF);
+        if (!this.isConquestGrid) {
+            Component title = Component.translatable("lotr.gui.map.title");
+            graphics.centeredText(this.font, title, this.width / 2, fullscreen ? 10 : this.guiTop - 30, 0xFFFFFFFF);
+        }
         this.map.setView(this.posX, this.posY, this.zoomExp, this.zoomScaleStable);
         this.map.setWindow(this.mapXMin, this.mapYMin, this.mapXMax, this.mapYMax);
         this.map.enableZoomOutWPFading = true;
@@ -466,6 +563,12 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
             }
         } else {
             this.map.drawMapAndOverlay(graphics, player, isSepia, 1.0f, true);
+            if (this.isConquestGrid && this.conquestViewingFaction != null) {
+                requestConquestGridIfNeed(this.conquestViewingFaction);
+                if (!this.loadingConquestGrid) {
+                    renderConquestZones(graphics, i, j);
+                }
+            }
         }
         // LOTRTextures.drawMapCompassBottomLeft.
         graphics.blit(RenderPipelines.GUI_TEXTURED, LOTRMapRenderer.MAP_ICONS, this.mapXMin + 12, this.mapYMax - 12 - 32, 224.0f, 200.0f, 32, 32, 256, 256);
@@ -473,7 +576,9 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
             this.map.drawRoads(graphics, this.font, hasMapLabels());
         }
         renderPlayers(graphics, i, j);
-        renderMiniQuests(graphics, i, j);
+        if (!this.loadingConquestGrid) {
+            renderMiniQuests(graphics, i, j);
+        }
         List<LOTRAbstractWaypoint> waypoints = getAllAvailableWaypoints();
         boolean showWaypoints = (showWP() || showCWP() || showHiddenSWP()) && LOTRFixedStructures.hasMapFeatures();
         if (showWaypoints) {
@@ -485,16 +590,23 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
         this.raisedTooltips.forEach(Runnable::run);
         if (showWaypoints) {
             LOTRAbstractWaypoint mouseOverWP = this.map.waypointUnderMouse(waypoints, player, this::isWaypointVisible, i, j, this.selectedWaypoint);
-            if (mouseOverWP != null && !this.hasOverlay) {
+            if (mouseOverWP != null && !this.hasOverlay && !this.loadingConquestGrid) {
                 renderWaypointTooltip(graphics, mouseOverWP, false);
             }
         }
-        if (this.selectedWaypoint != null && isWaypointVisible(this.selectedWaypoint)) {
+        if (!this.loadingConquestGrid && this.selectedWaypoint != null && isWaypointVisible(this.selectedWaypoint)) {
             if (!this.hasOverlay) {
                 renderWaypointTooltip(graphics, this.selectedWaypoint, true);
             }
         } else {
             this.selectedWaypoint = null;
+        }
+        if (this.isConquestGrid) {
+            if (this.loadingConquestGrid) {
+                renderConquestLoading(graphics);
+            }
+            graphics.blit(RenderPipelines.GUI_TEXTURED, CONQUEST_TEXTURE, this.mapXMin - 8, this.mapYMin - 22, 0.0f, 0.0f,
+                    this.mapWidth + 16, this.mapHeight + 22 + 54, 512, 512);
         }
         if (!this.hasOverlay) {
             if (isMiddleEarth() && this.selectedWaypoint != null) {
@@ -502,6 +614,9 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
             } else if (this.isMouseWithinMap) {
                 renderMouseInfo(graphics, i, j);
             }
+        }
+        if (this.isConquestGrid && this.conquestViewingFaction != null) {
+            renderConquestHeader(graphics);
         }
         if (!this.hasOverlay && this.hasControlZones && this.controlZoneFaction != null) {
             Component s = Component.translatable("lotr.gui.map.controlZones", this.controlZoneFaction.factionName());
@@ -535,12 +650,19 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
         } else if (wp instanceof LOTRWaypoint fixed) {
             notUnlocked = Component.translatable(!fixed.isCompatibleAlignment(player) ? "lotr.gui.map.locked.enemy" : "lotr.gui.map.locked.region");
         }
+        LOTRFaction pledge = LOTRPlayerAlignments.get(player).pledgeFaction();
+        Component conquestUnlock = pledge == null ? Component.empty() : Component.translatable("lotr.gui.map.locked.conquerable", pledge.factionName());
+        boolean conquerable = wp instanceof LOTRWaypoint fixedWp && fixedWp.isConquestUnlockable(player);
         Component ftPrompt = Component.translatable("lotr.gui.map.fastTravel.prompt", LOTRKeyBindings.fastTravel.getTranslatedKeyMessage());
         Component ftMoreTime = Component.translatable("lotr.gui.map.fastTravel.moreTime", LOTRMiscCommands.hmsTime(timeRemaining));
         Component ftWaitTime = Component.translatable("lotr.gui.map.fastTravel.waitTime", LOTRMiscCommands.hmsTime(wpTimeThreshold));
-        if (fullscreen) {
+        if (fullscreen || this.isConquestGrid) {
             if (!hasUnlocked) {
-                renderFullscreenSubtitles(graphics, notUnlocked);
+                if (conquerable) {
+                    renderFullscreenSubtitles(graphics, notUnlocked, conquestUnlock);
+                } else {
+                    renderFullscreenSubtitles(graphics, notUnlocked);
+                }
             } else if (canFastTravel) {
                 renderFullscreenSubtitles(graphics, ftPrompt, ftWaitTime);
             } else {
@@ -553,6 +675,9 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
                 lines.add(ftWaitTime);
             } else {
                 lines.add(notUnlocked);
+                if (conquerable) {
+                    lines.add(conquestUnlock);
+                }
             }
             int stringHeight = this.font.lineHeight;
             int border = 3;
@@ -582,11 +707,15 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
         Component coords = Component.translatable("lotr.gui.map.coords", this.mouseXCoord, this.mouseZCoord);
         Component teleport = Component.translatable("lotr.gui.map.tp", LOTRKeyBindings.mapTeleport.getTranslatedKeyMessage());
         int stringHeight = this.font.lineHeight;
-        if (fullscreen) {
+        if (fullscreen || this.isConquestGrid) {
             renderFullscreenSubtitles(graphics, biomeName, coords);
             if (canTeleport()) {
                 graphics.pose().pushMatrix();
-                graphics.pose().translate((float) this.width / 2 - 30 - (float) this.font.width(teleport) / 2, 0.0f);
+                if (this.isConquestGrid) {
+                    graphics.pose().translate((float) (this.mapXMax - this.mapXMin) / 2 - 8 - (float) this.font.width(teleport) / 2, 0.0f);
+                } else {
+                    graphics.pose().translate((float) this.width / 2 - 30 - (float) this.font.width(teleport) / 2, 0.0f);
+                }
                 renderFullscreenSubtitles(graphics, teleport);
                 graphics.pose().popMatrix();
             }
@@ -612,6 +741,9 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
     private void renderFullscreenSubtitles(GuiGraphicsExtractor graphics, Component... lines) {
         int strX = this.mapXMin + this.mapWidth / 2;
         int strY = this.mapYMax + 7;
+        if (this.isConquestGrid) {
+            strY = this.mapYMax + 26;
+        }
         int border = this.font.lineHeight + 3;
         if (lines.length == 1) {
             strY += border / 2;
@@ -1124,6 +1256,300 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
         if (protection != null) {
             setCWPProtectionMessage(protection);
         }
+        if (this.isConquestGrid) {
+            updateCurrentDimensionAndFaction();
+            if (this.ticksUntilRequestFac > 0) {
+                --this.ticksUntilRequestFac;
+            }
+        }
+    }
+
+    // ---------------------------------------------------------------- the conquest map
+
+    /** receiveConquestGrid: a faction's grid, from the server. */
+    public void receiveConquestGrid(LOTRFaction conqFac, List<LOTRConquestZone> allZones) {
+        if (this.isConquestGrid) {
+            this.receivedFacGrids.add(conqFac);
+            this.facConquestGrids.put(conqFac, allZones);
+        }
+    }
+
+    private void requestConquestGridIfNeed(LOTRFaction conqFac) {
+        if (!this.requestedFacGrids.contains(conqFac) && this.ticksUntilRequestFac <= 0) {
+            this.requestedFacGrids.add(conqFac);
+            ClientPlayNetworking.send(new LOTRConquestGrid.GridRequestPayload(conqFac));
+        }
+    }
+
+    private boolean hasConquestScrollBar() {
+        return this.isConquestGrid && currentFactionList.size() > 1;
+    }
+
+    private void setCurrentScrollFromFaction() {
+        this.currentFacScroll = (float) this.currentFactionIndex / (currentFactionList.size() - 1);
+    }
+
+    private void nextConquestRegion() {
+        List<LOTRDimension.DimensionRegion> regionList = LOTRDimension.MIDDLE_EARTH.dimensionRegions;
+        if (!regionList.isEmpty()) {
+            currentRegion = regionList.get(Math.floorMod(regionList.indexOf(currentRegion) + 1, regionList.size()));
+            updateCurrentDimensionAndFaction();
+            setCurrentScrollFromFaction();
+        }
+    }
+
+    /** setupConquestScrollBar: dragging the faction scroll bar picks the faction under it. */
+    private void setupConquestScrollBar(int i, int j) {
+        boolean isMouseDown = isLeftButtonDown();
+        int i1 = this.facScrollX;
+        int j1 = this.facScrollY;
+        int i2 = i1 + FAC_SCROLL_WIDTH;
+        int j2 = j1 + FAC_SCROLL_HEIGHT;
+        this.mouseInFacScroll = i >= i1 && j >= j1 && i < i2 && j < j2;
+        if (!this.wasMouseDown && isMouseDown && this.mouseInFacScroll) {
+            this.isFacScrolling = true;
+        }
+        if (!isMouseDown) {
+            this.isFacScrolling = false;
+        }
+        this.wasMouseDown = isMouseDown;
+        if (this.isFacScrolling) {
+            this.currentFacScroll = Mth.clamp((i - i1 - FAC_SCROLL_WIDGET_WIDTH / 2.0f) / ((float) (i2 - i1) - FAC_SCROLL_WIDGET_WIDTH), 0.0f, 1.0f);
+            this.currentFactionIndex = Math.round(this.currentFacScroll * (currentFactionList.size() - 1));
+        }
+    }
+
+    private void updateCurrentDimensionAndFaction() {
+        if (this.currentFactionIndex != this.prevFactionIndex) {
+            this.conquestViewingFaction = currentFactionList.get(this.currentFactionIndex);
+            this.ticksUntilRequestFac = 40;
+        }
+        this.prevFactionIndex = this.currentFactionIndex;
+        if (currentRegion != prevRegion) {
+            lastViewedRegions.put(prevRegion, this.conquestViewingFaction);
+            currentFactionList = currentRegion.factionList;
+            this.conquestViewingFaction = lastViewedRegions.containsKey(currentRegion) ? lastViewedRegions.get(currentRegion)
+                    : currentRegion.factionList.get(0);
+            this.prevFactionIndex = this.currentFactionIndex = currentFactionList.indexOf(this.conquestViewingFaction);
+            this.ticksUntilRequestFac = 40;
+        }
+        prevRegion = currentRegion;
+    }
+
+    /**
+     * The faction's zones in view, each red by its strength against the strongest in view (striped
+     * where it only aids allies, grey where it does nothing); the zone under the mouse ringed, with
+     * its strength.
+     */
+    private void renderConquestZones(GuiGraphicsExtractor graphics, int i, int j) {
+        LOTRFaction faction = this.conquestViewingFaction;
+        List<LOTRConquestZone> allZones = this.facConquestGrids.getOrDefault(faction, List.of());
+        List<LOTRConquestZone> zonesInView = new ArrayList<>();
+        this.highestViewedConqStr = 0.0f;
+        float mouseOverStr = 0.0f;
+        LOTRConquestZone mouseOverZone = null;
+        LOTRConquestGrid.ConquestEffective mouseOverEffect = null;
+        graphics.enableScissor(this.mapXMin, this.mapYMin, this.mapXMax, this.mapYMax);
+        LOTRMapQuadsRenderState quads = new LOTRMapQuadsRenderState(new ScreenRectangle(this.mapXMin, this.mapYMin, this.mapWidth, this.mapHeight),
+                graphics.scissorStack.peek());
+        for (int pass = 0; pass <= 1; ++pass) {
+            if (pass == 1 && this.highestViewedConqStr <= 0.0f) {
+                continue;
+            }
+            for (LOTRConquestZone zone : pass == 0 ? allZones : zonesInView) {
+                float strength = zone.getConquestStrength(faction, this.minecraft.level);
+                int[] min = LOTRConquestGrid.getMinCoordsOnMap(zone);
+                int[] max = LOTRConquestGrid.getMaxCoordsOnMap(zone);
+                float[] minF = this.map.transformMapCoords(min[0], min[1]);
+                float[] maxF = this.map.transformMapCoords(max[0], max[1]);
+                float minX = minF[0];
+                float maxX = maxF[0];
+                float minY = minF[1];
+                float maxY = maxF[1];
+                if (maxX < this.mapXMin || minX > this.mapXMax || maxY < this.mapYMin || minY > this.mapYMax) {
+                    continue;
+                }
+                if (pass == 0) {
+                    this.highestViewedConqStr = Math.max(this.highestViewedConqStr, strength);
+                    zonesInView.add(zone);
+                    continue;
+                }
+                if (strength <= 0.0f) {
+                    continue;
+                }
+                float strAlpha = Math.max(Mth.clamp(strength / this.highestViewedConqStr, 0.0f, 1.0f), 0.1f);
+                LOTRConquestGrid.ConquestEffective effect = LOTRConquestGrid.getConquestEffectIn(this.minecraft.level, zone, faction);
+                int zoneColor = 0xBB0000 | Math.round(strAlpha * 255.0f) << 24;
+                int zoneColor2 = 0x1E1E1E | Math.round(strAlpha * 255.0f) << 24;
+                if (effect == LOTRConquestGrid.ConquestEffective.EFFECTIVE) {
+                    quads.add(minX, minY, maxX, maxY, zoneColor);
+                } else if (effect == LOTRConquestGrid.ConquestEffective.ALLY_BOOST) {
+                    int strips = 8;
+                    float stripYSize = (maxY - minY) / strips;
+                    for (int l = 0; l < strips; ++l) {
+                        quads.add(minX, minY + stripYSize * l, maxX, minY + stripYSize * (l + 1), l % 2 == 0 ? zoneColor : zoneColor2);
+                    }
+                } else {
+                    quads.add(minX, minY, maxX, maxY, zoneColor2);
+                }
+                if (i >= minX && i < maxX && j >= minY && j < maxY) {
+                    mouseOverStr = strength;
+                    mouseOverZone = zone;
+                    mouseOverEffect = effect;
+                }
+            }
+        }
+        if (mouseOverZone != null && this.isMouseWithinMap) {
+            int[] min = LOTRConquestGrid.getMinCoordsOnMap(mouseOverZone);
+            int[] max = LOTRConquestGrid.getMaxCoordsOnMap(mouseOverZone);
+            float[] minF = this.map.transformMapCoords(min[0], min[1]);
+            float[] maxF = this.map.transformMapCoords(max[0], max[1]);
+            float minX = minF[0];
+            float maxX = maxF[0];
+            float minY = minF[1];
+            float maxY = maxF[1];
+            quads.add(minX - 1.0f, minY - 1.0f, maxX + 1.0f, minY, -16777216);
+            quads.add(minX - 1.0f, maxY, maxX + 1.0f, maxY + 1.0f, -16777216);
+            quads.add(minX - 1.0f, minY, minX, maxY, -16777216);
+            quads.add(maxX, minY, maxX + 1.0f, maxY, -16777216);
+            quads.add(minX - 2.0f, minY - 2.0f, maxX + 2.0f, minY - 1.0f, -4521984);
+            quads.add(minX - 2.0f, maxY + 1.0f, maxX + 2.0f, maxY + 2.0f, -4521984);
+            quads.add(minX - 2.0f, minY - 1.0f, minX - 1.0f, maxY + 1.0f, -4521984);
+            quads.add(maxX + 1.0f, minY - 1.0f, maxX + 2.0f, maxY + 1.0f, -4521984);
+            Component tooltip = Component.literal(LOTRAlignmentValues.formatConqForDisplay(mouseOverStr, false));
+            Component subtip = null;
+            if (mouseOverEffect == LOTRConquestGrid.ConquestEffective.ALLY_BOOST) {
+                subtip = Component.translatable("lotr.gui.map.conquest.allyBoost", faction.factionName());
+            } else if (mouseOverEffect == LOTRConquestGrid.ConquestEffective.NO_EFFECT) {
+                subtip = Component.translatable("lotr.gui.map.conquest.noEffect");
+            }
+            Component finalSubtip = subtip;
+            this.raisedTooltips.add(() -> renderConquestTooltip(graphics, i, j, tooltip, finalSubtip));
+        }
+        graphics.guiRenderState.addGuiElement(quads);
+        graphics.disableScissor();
+    }
+
+    /** The zone's strength by the conquest icon, and below it, smaller, what the strength does there. */
+    private void renderConquestTooltip(GuiGraphicsExtractor graphics, int i, int j, Component tooltip, @Nullable Component subtip) {
+        int strWidth = this.font.width(tooltip);
+        int subWidth = subtip == null ? 0 : this.font.width(subtip);
+        int strHeight = this.font.lineHeight;
+        float guiScale = this.minecraft.getWindow().getGuiScale();
+        float subScale = guiScale <= 2.0f ? guiScale : guiScale - 1.0f;
+        float subScaleRel = subScale / guiScale;
+        int border = 3;
+        int iconSize = 16;
+        int rectWidth = border * 2 + Math.max(strWidth + iconSize + border, (int) (subWidth * subScaleRel));
+        int rectHeight = Math.max(strHeight, iconSize) + border * 2;
+        if (subtip != null) {
+            rectHeight += border + (int) (strHeight * subScaleRel);
+        }
+        int mapBorder2 = 2;
+        int rectX = Math.min(Math.max(i + 12, this.mapXMin + mapBorder2), this.mapXMax - mapBorder2 - rectWidth);
+        int rectY = Math.min(Math.max(j - 12, this.mapYMin + mapBorder2), this.mapYMax - mapBorder2 - rectHeight);
+        drawFancyRect(graphics, rectX, rectY, rectX + rectWidth, rectY + rectHeight);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, ALIGNMENT_TEXTURE, rectX + border, rectY + border, 0.0f, 228.0f, iconSize, iconSize, 256, 256);
+        graphics.text(this.font, tooltip, rectX + iconSize + border * 2, rectY + border + (iconSize - strHeight) / 2, 0xFFFFFFFF, false);
+        if (subtip != null) {
+            graphics.pose().pushMatrix();
+            graphics.pose().scale(subScaleRel, subScaleRel);
+            int subX = rectX + border;
+            int subY = rectY + border * 2 + iconSize;
+            graphics.text(this.font, subtip, Math.round(subX / subScaleRel), Math.round(subY / subScaleRel), 0xFFFFFFFF, false);
+            graphics.pose().popMatrix();
+        }
+    }
+
+    /** While the grid is coming (or cannot be seen): the map veiled, and why. */
+    private void renderConquestLoading(GuiGraphicsExtractor graphics) {
+        graphics.fill(this.mapXMin, this.mapYMin, this.mapXMax, this.mapYMax, -1429949539);
+        graphics.blit(RenderPipelines.GUI_TEXTURED, LOTRMapRenderer.MAP_OVERLAY, this.mapXMin, this.mapYMin, 0.0f, 0.0f, this.mapWidth, this.mapHeight,
+                256, 256, 256, 256, ARGB.colorFromFloat(0.2f, 1.0f, 1.0f, 1.0f));
+        LocalPlayer player = this.minecraft.player;
+        LOTRConquestGrid.ConquestViewableQuery query = LOTRConquestGrid.canPlayerViewConquest(player, this.conquestViewingFaction);
+        Component loadText;
+        if (query.result() == LOTRConquestGrid.ConquestViewable.CAN_VIEW) {
+            loadText = Component.translatable("lotr.gui.map.conquest.wait").append(".".repeat(1 + this.tickCounter / 10 % 3));
+        } else if (query.result() == LOTRConquestGrid.ConquestViewable.UNPLEDGED) {
+            loadText = Component.translatable("lotr.gui.map.conquest.noPledge");
+        } else {
+            LOTRFaction pledgeFac = LOTRPlayerAlignments.get(player).pledgeFaction();
+            LOTRFactionRank needRank = query.needRank();
+            String needAlign = LOTRAlignmentValues.formatAlignForDisplay(needRank.alignment);
+            loadText = Component.translatable("lotr.gui.map.conquest.needRank", pledgeFac.factionName(),
+                    needRank.getFullNameWithGender(LOTRRankOptions.useFeminineRanks(player)), needAlign);
+        }
+        // The lang's line breaks are real ones here, which Font.split keeps.
+        List<FormattedCharSequence> loadLines = this.font.split(loadText, 250);
+        int stringX = this.mapXMin + this.mapWidth / 2;
+        int stringY = (this.mapYMin + this.mapYMax) / 2 - loadLines.size() * this.font.lineHeight / 2;
+        for (FormattedCharSequence line : loadLines) {
+            graphics.centeredText(this.font, line, stringX, stringY, 0xFF000000 | 3748142);
+            stringY += this.font.lineHeight;
+        }
+    }
+
+    /** The title, the strength key in the corner and the faction scroll bar. */
+    private void renderConquestHeader(GuiGraphicsExtractor graphics) {
+        Component s = Component.translatable("lotr.gui.map.conquest.title", this.conquestViewingFaction.factionName());
+        int x = this.mapXMin + this.mapWidth / 2;
+        LOTRAlignmentBarRenderer.drawAlignmentText(graphics, this.font, x - this.font.width(s) / 2, this.mapYMin - 14, s, 1.0f);
+        if (!this.loadingConquestGrid) {
+            int keyBorder = 8;
+            int keyWidth = 24;
+            int keyHeight = 12;
+            int iconSize = 16;
+            int iconGap = keyBorder / 2;
+            float guiScale = this.minecraft.getWindow().getGuiScale();
+            float labelScale = guiScale <= 2.0f ? guiScale : guiScale - 1.0f;
+            float labelScaleRel = labelScale / guiScale;
+            graphics.blit(RenderPipelines.GUI_TEXTURED, ALIGNMENT_TEXTURE, this.mapXMax - keyBorder - iconSize, this.mapYMax - keyBorder - iconSize,
+                    0.0f, 228.0f, iconSize, iconSize, 256, 256);
+            for (int pass = 0; pass <= 1; ++pass) {
+                for (int l = 0; l <= 10; ++l) {
+                    float frac = (10 - l) / 10.0f;
+                    int x1 = this.mapXMax - keyBorder - iconSize - iconGap - l * keyWidth;
+                    int x0 = x1 - keyWidth;
+                    int y1 = this.mapYMax - keyBorder - (iconSize - keyHeight) / 2;
+                    int y0 = y1 - keyHeight;
+                    if (pass == 0) {
+                        graphics.fill(x0, y0, x1, y1, 0xBB0000 | Math.round(frac * 255.0f) << 24);
+                        continue;
+                    }
+                    if (l % 2 != 0) {
+                        continue;
+                    }
+                    Component keyLabel = Component.literal(LOTRAlignmentValues.formatConqForDisplay(frac * this.highestViewedConqStr, false));
+                    int strX = (int) ((x0 + keyWidth / 2) / labelScaleRel);
+                    int strY = (int) ((y0 + keyHeight / 2) / labelScaleRel) - this.font.lineHeight / 2;
+                    graphics.pose().pushMatrix();
+                    graphics.pose().scale(labelScaleRel, labelScaleRel);
+                    graphics.centeredText(this.font, keyLabel, strX, strY, 0xFFFFFFFF);
+                    graphics.pose().popMatrix();
+                }
+            }
+        }
+        if (hasConquestScrollBar()) {
+            int x0 = this.facScrollX;
+            int y0 = this.facScrollY;
+            graphics.blit(RenderPipelines.GUI_TEXTURED, LOTRFactionsScreen.FACTIONS_TEXTURE, x0, y0, 0.0f, 128.0f, FAC_SCROLL_WIDTH, FAC_SCROLL_HEIGHT, 256, 256);
+            int factions = currentFactionList.size();
+            int inner = FAC_SCROLL_WIDTH - FAC_SCROLL_BORDER * 2;
+            for (int index = 0; index < factions; ++index) {
+                float[] rgb = currentFactionList.get(index).getFactionRGB();
+                float shade = 0.6f;
+                int colour = ARGB.colorFromFloat(1.0f, rgb[0] * shade, rgb[1] * shade, rgb[2] * shade);
+                int xMin = x0 + FAC_SCROLL_BORDER + Math.round((float) index / factions * inner);
+                int xMax = x0 + FAC_SCROLL_BORDER + Math.round((float) (index + 1) / factions * inner);
+                graphics.blit(RenderPipelines.GUI_TEXTURED, LOTRFactionsScreen.FACTIONS_TEXTURE, xMin, y0 + FAC_SCROLL_BORDER,
+                        FAC_SCROLL_BORDER, 128 + FAC_SCROLL_BORDER, xMax - xMin, FAC_SCROLL_HEIGHT - FAC_SCROLL_BORDER * 2,
+                        inner, FAC_SCROLL_HEIGHT - FAC_SCROLL_BORDER * 2, 256, 256, colour);
+            }
+            int scroll = (int) (this.currentFacScroll * (inner - FAC_SCROLL_WIDGET_WIDTH));
+            graphics.blit(RenderPipelines.GUI_TEXTURED, LOTRFactionsScreen.FACTIONS_TEXTURE, x0 + FAC_SCROLL_BORDER + scroll, y0 + FAC_SCROLL_BORDER,
+                    0.0f, 142.0f, FAC_SCROLL_WIDGET_WIDTH, FAC_SCROLL_WIDGET_HEIGHT, 256, 256);
+        }
     }
 
     private void handleMapKeyboardMovement() {
@@ -1181,7 +1607,7 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
             return true;
         }
         LocalPlayer player = this.minecraft.player;
-        if (LOTRKeyBindings.fastTravel.matches(event) && isMiddleEarth() && this.selectedWaypoint != null
+        if (!this.loadingConquestGrid && LOTRKeyBindings.fastTravel.matches(event) && isMiddleEarth() && this.selectedWaypoint != null
                 && this.selectedWaypoint.hasPlayerUnlocked(player)
                 && LOTRClientFastTravel.getTimeSinceFT() >= LOTRClientFastTravel.getWaypointFTTime(this.selectedWaypoint, player)) {
             boolean custom = this.selectedWaypoint instanceof LOTRCustomWaypoint;
@@ -1190,7 +1616,8 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
             onClose();
             return true;
         }
-        if (this.selectedWaypoint == null && LOTRKeyBindings.mapTeleport.matches(event) && this.isMouseWithinMap && canTeleport()) {
+        if (!this.loadingConquestGrid && this.selectedWaypoint == null && LOTRKeyBindings.mapTeleport.matches(event) && this.isMouseWithinMap
+                && canTeleport()) {
             ClientPlayNetworking.send(new LOTRMapPlayerData.TeleportPayload(this.mouseXCoord, this.mouseZCoord));
             onClose();
             return true;
@@ -1205,6 +1632,15 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
     @Override
     public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY) {
         int k = (int) Math.signum(scrollY);
+        if (this.isConquestGrid && hasConquestScrollBar() && this.mouseInFacScroll && k != 0) {
+            if (k < 0) {
+                this.currentFactionIndex = Math.min(this.currentFactionIndex + 1, Math.max(0, currentFactionList.size() - 1));
+            } else {
+                this.currentFactionIndex = Math.max(this.currentFactionIndex - 1, 0);
+            }
+            setCurrentScrollFromFaction();
+            return true;
+        }
         if (!this.hasOverlay && this.zoomTicks == 0) {
             if (k < 0 && zoomPower > -3) {
                 zoom(-1);
@@ -1305,11 +1741,15 @@ public class LOTRMapScreen extends LOTRMenuBaseScreen {
                 return true;
             }
             if (mouseWidget == this.widgetLabels) {
-                LOTRConfig.toggleMapLabels();
+                if (this.isConquestGrid) {
+                    LOTRConfig.toggleMapLabelsConquest();
+                } else {
+                    LOTRConfig.toggleMapLabels();
+                }
                 return true;
             }
         }
-        if (!this.hasOverlay && k == 0 && this.isMouseWithinMap) {
+        if (!this.hasOverlay && !this.loadingConquestGrid && k == 0 && this.isMouseWithinMap) {
             this.selectedWaypoint = null;
             double distanceSelectedWP = Double.MAX_VALUE;
             LocalPlayer player = this.minecraft.player;

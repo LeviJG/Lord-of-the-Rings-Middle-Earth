@@ -173,7 +173,8 @@ public final class LOTRWorldChunkManager {
                     zPos <<= 2;
                 }
                 boolean mountainNear = isMountainNear(xPos, zPos);
-                boolean structureNear = isStructureNear(xPos, zPos);
+                // structureNear only matters where the biome has rivers, and is costly: worked out there alone.
+                boolean structureNear = biome.getEnableRiver() && isStructureNear(xPos, zPos);
                 boolean fixedVillageNear = anyFixedVillagesAt(biome, xPos, zPos);
                 if (!mountainNear && !fixedVillageNear) {
                     float variantChance = biome.variantChance;

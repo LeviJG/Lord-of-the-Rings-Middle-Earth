@@ -44,6 +44,7 @@ public class LOTRUtumnoChunkGenerator extends ChunkGenerator implements LOTRDeco
     ).apply(i, LOTRUtumnoChunkGenerator::new));
 
     private volatile long seed;
+    private volatile LOTRDecoration.TerrainCache terrainCache = new LOTRDecoration.TerrainCache();
 
     public LOTRUtumnoChunkGenerator(BiomeSource biomeSource) {
         super(biomeSource);
@@ -51,12 +52,20 @@ public class LOTRUtumnoChunkGenerator extends ChunkGenerator implements LOTRDeco
 
     /** Called as the level loads, with the world's seed. */
     public void init(long seed) {
+        if (this.seed != seed) {
+            this.terrainCache = new LOTRDecoration.TerrainCache();
+        }
         this.seed = seed;
     }
 
     @Override
     protected MapCodec<? extends ChunkGenerator> codec() {
         return CODEC;
+    }
+
+    /** provideTerrain, kept for the chunks asked about again (getBaseHeight, getBaseColumn, decoration). Read only. */
+    private LOTRChunkTerrain cachedTerrain(int i, int k) {
+        return this.terrainCache.get(i, k, this::provideTerrain);
     }
 
     /** provideChunk: the levels, then the caves. */
@@ -125,11 +134,11 @@ public class LOTRUtumnoChunkGenerator extends ChunkGenerator implements LOTRDeco
     }
 
     @Override
-    public BlockState terrainBlock(LOTRDecoration.TerrainCache cache, int x, int y, int z) {
+    public BlockState terrainBlock(int x, int y, int z) {
         if (y < 0 || y >= LOTRChunkTerrain.HEIGHT) {
             return LOTRDecoration.outsideOriginalWorld(y);
         }
-        return cache.get(x >> 4, z >> 4, this::provideTerrain).blocks[LOTRChunkTerrain.index((x & 15) * 16 + (z & 15), y)];
+        return cachedTerrain(x >> 4, z >> 4).blocks[LOTRChunkTerrain.index((x & 15) * 16 + (z & 15), y)];
     }
 
     @Override
@@ -153,7 +162,7 @@ public class LOTRUtumnoChunkGenerator extends ChunkGenerator implements LOTRDeco
 
     @Override
     public int getBaseHeight(int x, int z, Heightmap.Types type, LevelHeightAccessor level, RandomState randomState) {
-        LOTRChunkTerrain terrain = provideTerrain(x >> 4, z >> 4);
+        LOTRChunkTerrain terrain = cachedTerrain(x >> 4, z >> 4);
         int xzIndex = (x & 15) * 16 + (z & 15);
         for (int y = LOTRChunkTerrain.HEIGHT - 1; y >= 0; --y) {
             if (type.isOpaque().test(terrain.blocks[LOTRChunkTerrain.index(xzIndex, y)])) {
@@ -165,7 +174,7 @@ public class LOTRUtumnoChunkGenerator extends ChunkGenerator implements LOTRDeco
 
     @Override
     public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level, RandomState randomState) {
-        LOTRChunkTerrain terrain = provideTerrain(x >> 4, z >> 4);
+        LOTRChunkTerrain terrain = cachedTerrain(x >> 4, z >> 4);
         int xzIndex = (x & 15) * 16 + (z & 15);
         BlockState[] column = new BlockState[LOTRChunkTerrain.HEIGHT];
         for (int y = 0; y < column.length; ++y) {

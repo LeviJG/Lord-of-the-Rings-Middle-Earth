@@ -22,9 +22,9 @@ import org.jspecify.annotations.Nullable;
  * {@code lotr.waypoint.<NAME>} and {@code .info}.
  *
  * <p>A player has one unlocked once they have been to its region (LOTRPlayerWaypoints) and are not
- * an enemy of its faction.
- *
- * <p>NOT ported yet: unlocking an enemy's waypoints by conquering its land (with conquest).
+ * an enemy of its faction -- or, an enemy of their pledged faction's, once that faction holds 500
+ * conquest where it stands (LOTRConquestGrid). The client knows those from the server
+ * (LOTRConquestGrid.CONQUEST_WAYPOINTS).
  */
 public enum LOTRWaypoint implements LOTRAbstractWaypoint {
     HIMLING(Region.OCEAN, LOTRFaction.UNALIGNED, 485.0, 523.0),
@@ -364,7 +364,10 @@ public enum LOTRWaypoint implements LOTRAbstractWaypoint {
 
     @Override
     public WaypointLockState getLockState(Player player) {
-        return hasPlayerUnlocked(player) ? WaypointLockState.STANDARD_UNLOCKED : WaypointLockState.STANDARD_LOCKED;
+        if (hasPlayerUnlocked(player)) {
+            return isUnlockedByConquest(player) ? WaypointLockState.STANDARD_UNLOCKED_CONQUEST : WaypointLockState.STANDARD_UNLOCKED;
+        }
+        return WaypointLockState.STANDARD_LOCKED;
     }
 
     @Override
@@ -414,14 +417,41 @@ public enum LOTRWaypoint implements LOTRAbstractWaypoint {
         return 64;
     }
 
-    /** Its region reached, and its faction no enemy. */
+    /** Its region reached, and its faction no enemy, or its land conquered. */
     @Override
     public boolean hasPlayerUnlocked(Player player) {
-        return LOTRPlayerWaypoints.isFTRegionUnlocked(player, this.region) && isCompatibleAlignment(player);
+        return LOTRPlayerWaypoints.isFTRegionUnlocked(player, this.region) && (isCompatibleAlignment(player) || isConqueredFor(player));
     }
 
     public boolean isCompatibleAlignment(Player player) {
         return this.faction == LOTRFaction.UNALIGNED || LOTRPlayerAlignments.getAlignment(player, this.faction) >= 0.0f;
+    }
+
+    /** isConquered: the player's pledged faction holds 500 conquest in its zone. On the server. */
+    public boolean isConquered(Player player) {
+        LOTRConquestZone zone = LOTRConquestGrid.getZoneByWorldCoords(this.xCoord, this.zCoord);
+        LOTRFaction pledgeFac = LOTRPlayerAlignments.get(player).pledgeFaction();
+        return pledgeFac != null && zone.getConquestStrength(pledgeFac, player.level()) >= 500.0f;
+    }
+
+    /** isConquestUnlockable: an enemy of the player's pledged faction's, in land that faction's conquest counts in. */
+    public boolean isConquestUnlockable(Player player) {
+        LOTRFaction pledgeFac = LOTRPlayerAlignments.get(player).pledgeFaction();
+        return pledgeFac != null && pledgeFac.isBadRelation(this.faction)
+                && LOTRConquestGrid.getConquestEffectIn(player.level(), LOTRConquestGrid.worldToGridX(this.xCoord),
+                        LOTRConquestGrid.worldToGridZ(this.zCoord), pledgeFac) == LOTRConquestGrid.ConquestEffective.EFFECTIVE;
+    }
+
+    public boolean isUnlockedByConquest(Player player) {
+        return !isCompatibleAlignment(player) && isConqueredFor(player);
+    }
+
+    /** Conquerable and conquered: worked out on the server, as the server last sent it on the client. */
+    private boolean isConqueredFor(Player player) {
+        if (player.level().isClientSide()) {
+            return player.getAttachedOrCreate(LOTRConquestGrid.CONQUEST_WAYPOINTS).contains(ordinal());
+        }
+        return isConquestUnlockable(player) && isConquered(player);
     }
 
     public enum Region {

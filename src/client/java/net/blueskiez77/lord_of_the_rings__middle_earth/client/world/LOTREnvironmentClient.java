@@ -97,7 +97,7 @@ public final class LOTREnvironmentClient {
     /** anyWightsViewed: a wight hunting the viewer was drawn this tick or the last. */
     public static boolean anyWightsViewed() {
         Minecraft mc = Minecraft.getInstance();
-        return mc.level != null && mc.level.getGameTime() - wightViewedTick <= 1L;
+        return mc.level != null && wightViewedTick >= mc.level.getGameTime() - 1L;
     }
 
     /** LOTRRenderBarrowWight: a wight hunting the viewer was drawn this frame. */
@@ -144,7 +144,7 @@ public final class LOTREnvironmentClient {
             --mistTick;
         }
         prevWightLookTick = wightLookTick;
-        if (level.getGameTime() - wightViewedTick <= 1L) {
+        if (wightViewedTick >= level.getGameTime() - 1L) {
             if (wightLookTick < 100) {
                 ++wightLookTick;
             }

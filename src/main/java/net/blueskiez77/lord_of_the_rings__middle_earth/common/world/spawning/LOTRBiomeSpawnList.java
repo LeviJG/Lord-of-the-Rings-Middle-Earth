@@ -10,6 +10,8 @@ import java.util.Map;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestGrid;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestZone;
 
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -21,9 +23,6 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTRBiomeSpawnList: a biome's NPCs -- its factions, each weighted, each with its own spawn lists
  * (weighted, some only where the faction has conquered) -- and how fast conquest is won there.
- *
- * <p>NOT ported yet: conquest (LOTRConquestGrid), so each faction's conquest strength is nil and
- * conquest-only lists never come (D14).
  */
 public class LOTRBiomeSpawnList {
 
@@ -99,6 +98,7 @@ public class LOTRBiomeSpawnList {
     /** getRandomSpawnEntry: a faction by weight (conquest adding to it), then one of its lists, then an entry. */
     public LOTRSpawnEntry.@Nullable Instance getRandomSpawnEntry(RandomSource rand, Level level, int i, int j, int k) {
         determineFactions(level);
+        LOTRConquestZone zone = LOTRConquestGrid.getZoneByWorldCoords(i, k);
         int totalWeight = 0;
         Map<FactionContainer, Integer> cachedFacWeights = new HashMap<>();
         Map<FactionContainer, Float> cachedConqStrengths = new HashMap<>();
@@ -106,7 +106,7 @@ public class LOTRBiomeSpawnList {
             if (cont.isEmpty()) {
                 continue;
             }
-            float conq = cont.getEffectiveConquestStrength(level, i, k);
+            float conq = cont.getEffectiveConquestStrength(level, zone);
             int weight = cont.getFactionWeight(conq);
             if (weight <= 0) {
                 continue;
@@ -192,8 +192,18 @@ public class LOTRBiomeSpawnList {
             }
         }
 
-        /** getEffectiveConquestStrength: nil until conquest is ported. */
-        public float getEffectiveConquestStrength(Level level, int i, int k) {
+        /** getEffectiveConquestStrength: the faction's conquest here, and a third of each ally's not already in the biome. */
+        public float getEffectiveConquestStrength(Level level, LOTRConquestZone zone) {
+            if (LOTRConquestGrid.conquestEnabled(level) && !zone.isEmpty()) {
+                float conqStr = zone.getConquestStrength(this.theFaction, level);
+                for (LOTRFaction allyFac : this.theFaction.getConquestBoostRelations()) {
+                    if (this.parent.isFactionPresent(level, allyFac)) {
+                        continue;
+                    }
+                    conqStr += zone.getConquestStrength(allyFac, level) * 0.333f;
+                }
+                return conqStr;
+            }
             return 0.0f;
         }
 

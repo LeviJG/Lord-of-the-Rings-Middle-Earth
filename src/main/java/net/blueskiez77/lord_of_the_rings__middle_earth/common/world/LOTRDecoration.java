@@ -7,13 +7,11 @@ import java.lang.reflect.Proxy;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Predicate;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.SectionPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.world.entity.Entity;
@@ -24,6 +22,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.material.FluidState;
 
@@ -37,7 +36,7 @@ import org.jspecify.annotations.Nullable;
  * <p>Today a chunk being decorated may only touch the chunks next to it, so the decorators work
  * through a {@link WorldGenLevel} of their own: next to the chunk it is the generation region
  * itself; beyond that, what they read is the terrain as the generator makes it, and what they would
- * build there is left out (counted, and logged now and then).
+ * build there is left out.
  *
  * <p>The decorators keep state of their own between calls, so one chunk is decorated at a time.
  */
@@ -49,26 +48,39 @@ public final class LOTRDecoration {
         void decorate(WorldGenLevel level, ServerLevel server, int chunkX, int chunkZ);
 
         /** The terrain before decoration: the block at (x, y, z). */
-        BlockState terrainBlock(TerrainCache cache, int x, int y, int z);
+        BlockState terrainBlock(int x, int y, int z);
     }
 
-    /** A few chunks' generated terrain, for reading where the region does not reach. */
+    /**
+     * The most recently used chunks' generated terrain, shared by the threads generating the world
+     * (a chunk missing is made outside the lock; two threads may both make it, to the same result).
+     */
     public static final class TerrainCache {
-        private final LinkedHashMap<Long, LOTRChunkTerrain> chunks = new LinkedHashMap<>(16, 0.75f, true) {
+        private static final int CAPACITY = 96;
+        private final LinkedHashMap<Long, LOTRChunkTerrain> chunks = new LinkedHashMap<>(128, 0.75f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<Long, LOTRChunkTerrain> eldest) {
-                return size() > 48;
+                return size() > CAPACITY;
             }
         };
 
         public LOTRChunkTerrain get(int chunkX, int chunkZ, java.util.function.BiFunction<Integer, Integer, LOTRChunkTerrain> make) {
-            return this.chunks.computeIfAbsent(ChunkPos.pack(chunkX, chunkZ), key -> make.apply(chunkX, chunkZ));
+            long key = ChunkPos.pack(chunkX, chunkZ);
+            synchronized (this.chunks) {
+                LOTRChunkTerrain terrain = this.chunks.get(key);
+                if (terrain != null) {
+                    return terrain;
+                }
+            }
+            LOTRChunkTerrain made = make.apply(chunkX, chunkZ);
+            synchronized (this.chunks) {
+                LOTRChunkTerrain terrain = this.chunks.putIfAbsent(key, made);
+                return terrain != null ? terrain : made;
+            }
         }
     }
 
     private static final ReentrantLock LOCK = new ReentrantLock();
-    private static final TerrainCache TERRAIN = new TerrainCache();
-    private static final AtomicLong DROPPED = new AtomicLong();
 
     private LOTRDecoration() {
     }
@@ -87,13 +99,6 @@ public final class LOTRDecoration {
             generator.decorate(level, server, chunk.x(), chunk.z());
         } finally {
             LOCK.unlock();
-        }
-    }
-
-    private static void dropped(BlockPos pos) {
-        long n = DROPPED.incrementAndGet();
-        if (n == 1 || n % 1000 == 0) {
-            LOTRMod.LOGGER.debug("Decoration reaching past the chunks about it left out ({} so far, e.g. at {})", n, pos);
         }
     }
 
@@ -118,14 +123,13 @@ public final class LOTRDecoration {
             if (inRegion(pos)) {
                 return this.region.getBlockState(pos);
             }
-            return this.generator.terrainBlock(TERRAIN, pos.getX(), pos.getY(), pos.getZ());
+            return this.generator.terrainBlock(pos.getX(), pos.getY(), pos.getZ());
         }
 
         private boolean setBlock(BlockPos pos, BlockState state, int flags, int maxUpdateDepth) {
             if (inRegion(pos)) {
                 return this.region.setBlock(pos, state, flags, maxUpdateDepth);
             }
-            dropped(pos);
             return false;
         }
 
@@ -141,7 +145,6 @@ public final class LOTRDecoration {
             if (inRegion(pos)) {
                 return this.region.addFreshEntity(entity);
             }
-            dropped(pos);
             return false;
         }
 
@@ -158,7 +161,14 @@ public final class LOTRDecoration {
         /** Heightmap.Types at (x, z): one above the highest block of that kind, as the original's world reads it. */
         private int getHeight(Heightmap.Types type, int x, int z) {
             BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, 0, z);
-            int top = this.region.getMaxY();
+            // From the top of the highest section holding anything; beyond the region, the terrain's top.
+            int top = LOTRChunkTerrain.HEIGHT - 1;
+            if (inRegion(pos)) {
+                ChunkAccess chunk = this.region.getChunk(x >> 4, z >> 4);
+                int section = chunk.getHighestFilledSectionIndex();
+                top = section < 0 ? this.region.getMinY() - 1
+                        : SectionPos.sectionToBlockCoord(chunk.getSectionYFromSectionIndex(section)) + 15;
+            }
             for (int y = top; y >= this.region.getMinY(); --y) {
                 if (type.isOpaque().test(getBlockState(pos.setY(y)))) {
                     return y + 1;

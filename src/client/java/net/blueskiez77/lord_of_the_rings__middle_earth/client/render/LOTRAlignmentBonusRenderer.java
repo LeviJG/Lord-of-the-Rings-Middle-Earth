@@ -33,10 +33,8 @@ import org.jspecify.annotations.Nullable;
  * LOTRRenderAlignmentBonus: the change in the alignment the player is
  * viewing (or, failing that, the one that matters most), with the name of
  * what earned it, floating where it was earned and fading in its last
- * quarter; a smaller line naming the faction if it is not the one viewed.
- *
- * <p>NOT ported yet: the conquest line's value, with conquest (D14); it is
- * shown whenever a conquest bonus arrives, which none yet does.
+ * quarter; a smaller line naming the faction if it is not the one viewed,
+ * and the conquest the kill earned (or cleansed) when there is any.
  */
 public class LOTRAlignmentBonusRenderer extends EntityRenderer<LOTRAlignmentBonusEntity, LOTRAlignmentBonusRenderer.State> {
 

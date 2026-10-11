@@ -63,9 +63,8 @@ import org.jspecify.annotations.Nullable;
  * its NPCs come, a few at a time, while a player is within 80 blocks, until as many as it numbered
  * have been killed by players. Those who helped and stand near when it ends, if no friend of its
  * faction, earn defeatInvasion. A creative player strikes it to end it; one who uses it sees the
- * factions killing its NPCs also counts for.
- *
- * <p>NOT ported yet: the conquest boost its defeat gave the pledged enemies of its faction (conquest).
+ * factions killing its NPCs also counts for. Those pledged to an enemy of its faction share fifty
+ * conquest between them (givePureConquestBonus).
  */
 public class LOTRInvasionSpawnerEntity extends Entity {
     public static final int MAX_INVASION_SIZE = 10000;
@@ -197,6 +196,7 @@ public class LOTRInvasionSpawnerEntity extends Entity {
         if (completed && level() instanceof ServerLevel level) {
             LOTRFaction invasionFac = getInvasionType().invasionFaction;
             Collection<Player> achievementPlayers = new HashSet<>();
+            Collection<Player> conqRewardPlayers = new HashSet<>();
             for (UUID id : this.recentPlayerContributors.keySet()) {
                 Player player = level.getPlayerByUUID(id);
                 double range = 100.0;
@@ -206,9 +206,20 @@ public class LOTRInvasionSpawnerEntity extends Entity {
                 if (LOTRPlayerAlignments.getAlignment(player, invasionFac) <= 0.0f) {
                     achievementPlayers.add(player);
                 }
+                LOTRFaction pledged = LOTRPlayerAlignments.get(player).pledgeFaction();
+                if (pledged != null && pledged.isBadRelation(invasionFac)) {
+                    conqRewardPlayers.add(player);
+                }
             }
             for (Player player : achievementPlayers) {
                 LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.DEFEAT_INVASION);
+            }
+            if (!conqRewardPlayers.isEmpty()) {
+                float boostPerPlayer = 50.0f / conqRewardPlayers.size();
+                for (Player player : conqRewardPlayers) {
+                    LOTRPlayerAlignments.givePureConquestBonus(player, LOTRPlayerAlignments.get(player).pledgeFaction(), invasionFac,
+                            boostPerPlayer, "lotr.alignment.invasionDefeat", getX(), getY(), getZ());
+                }
             }
         }
         level().explode(this, getX(), getY() + getBbHeight() / 2.0, getZ(), 0.0f, Level.ExplosionInteraction.NONE);

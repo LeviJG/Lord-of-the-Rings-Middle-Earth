@@ -3196,163 +3196,58 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     date at all). Not ported: `/lotr_summon` (only offered the 1.7.10 entity
     names to `/summon`, which today takes `lotr:` ids itself) and
     `/strscan` (the authors' scan recorder, in 1.7.10 block ids). Waiting:
-    `/conquest`, `/invasion`, `/spawnDamping`
-    (D12/D14), `/lotr_time` (D10). (`/opHideMap`, `/fastTravelClock`,
+    `/invasion`, `/spawnDamping` (D12) (`/conquest`: D17a), `/lotr_time` (D10). (`/opHideMap`, `/fastTravelClock`,
     `/wpCooldown`, `/lotrWaypoints`: D13.)
 
-## Track W — World-gen review, biome by biome (user, 2026-10-11: before conquest)
+- [ ] **D17 Conquest** (user, 2026-10-11: next after Track W). The original's
+  `LOTRConquestGrid`/`LOTRConquestZone` and everything waiting on them.
+  - [x] **D17a Server core**: the zones (8 map pixels a side, the strengths
+    decaying after an hour's grace) kept as `SavedData` under the original's
+    keys; `ConqRate` in the level data and `/conquest`; conquest from kills
+    (`onConquestKill`, radial over 3.5 zones, cleansing an enemy's first) and
+    from a defeated invasion (`givePureConquestBonus`); the faction data's
+    `Conquest`; the "Conquest Kills" option (`ConquestKills`); spawning by
+    conquest (`getEffectiveConquestStrength`); enemy waypoints unlocked by
+    conquest; the conquest notification and the alignment popup's conquest line.
+    *Result:* `world/map/LOTRConquestZone` and `LOTRConquestGrid` (the SavedData
+    "lotr:conquest_zones", each zone under "X", "Z", "Time", "<faction>_str"; the
+    `conquest_kills` attachment; the notification payload), `LOTRConquestCommand`,
+    `LOTRLevelData` "ConqRate", `LOTRPlayerAlignments.addAlignment`/
+    `givePureConquestBonus`, `LOTRInvasionSpawnerEntity.endInvasion`,
+    `LOTRBiomeSpawnList.getEffectiveConquestStrength`, `LOTRWaypoint` (500 conquest
+    opens an enemy waypoint in land the faction's conquest counts in), the Options
+    button, `client/LOTRConquestToast`, and the map's "You can unlock it through
+    conquest" line. Divergence: the client learns its conquest-opened waypoints from
+    the server (`conquest_waypoints`, every two seconds) -- in 1.7.10 a client away
+    from the server read empty zones and showed them locked.
+  - [x] **D17b Conquest map**: the grid sent on request
+    (`LOTRPacketConquestGrid`/`GridRequest`), the map screen's conquest view
+    (`setConquestGrid`, the Table of Command opening it), `factionConquest`,
+    `mapLabelsConquest`.
+    *Result:* `LOTRConquestGrid` `GridRequestPayload`/`GridPayload` (only the zones
+    where the faction still holds strength, as the original sent) and
+    `OpenMapPayload`; `sendConquestGridTo` earns `factionConquest` for one's own
+    faction; `LOTRTableOfCommandBlock` opens it (right-click, not sneaking, with
+    conquest on); `client/map/LOTRClientConquest`; `LOTRMapScreen.setConquestGrid`
+    (the 400x240 sepia map in the faction-tinted frame, `map/conquest.png` copied
+    from the original; the zones red by strength against the strongest in view,
+    striped where they only aid allies, grey where they do nothing; the zone under
+    the mouse ringed with its strength; the strength key; the title; the region
+    button and faction scroll bar; the waiting, unpledged and need-rank messages;
+    its own labels toggle, `mapLabelsConquest`).
+  - [ ] **D17c The Table of Command's map and squadron screens** (with D16).
 
-The user's in-game pass found Middle-earth's underground broken ("complete
-garbage") and asked for the whole of world gen to be reviewed biome by biome.
-Track W comes before conquest and the D16 leftovers. Work in small pieces; after
-each fix, tell the user what to look at in game, and wait for their check.
+## World-gen decisions (Track W, done 2026-10-11)
 
-**Method for every unit.** Compare the port's classes with the original's line
-by line (`old mod/.../common/world/...`), not by sampling. Where behaviour can
-be checked outside the game, use the headless harness: it builds chunks with
-the real generator and decorators on a fake level, for any seed and chunk, and
-reports block counts per height and the call stack of any block replaced.
-Move it from the scratchpad into `tools/worldgen-harness/` in W0. Each unit ends
-with a short list of coordinates (seed, x, z) for the user to visit. Divergences
-are surfaced, unportable parts go to the Deferred-port tracker, and values kept
-modern are recorded in the Result.
-
-**Per-biome checklist** (each biome unit covers all of it):
-1. Registration: id, name, map colour, climate (temperature, rainfall), the
-   biome JSON, the lang key; spawning rules that hang on the biome.
-2. Terrain: `rootHeight`/`heightVariation`, `biomeTerrain` (xz scale, height
-   stretch), `enableRocky`, `enablePodzol`, how it blends with its neighbours
-   (`initializeHeightNoise`), and the map's mountains, lava and roads through it.
-3. Surface and underground: top/filler blocks, `generateBiomeTerrain` and
-   `generateMountainTerrain` overrides, the rock layers (Gondor, Rohan, Mordor,
-   Dorwinion, Harad and the rest), sandstone under sand.
-4. Variants: the list and weights, each variant's height, hills, trees,
-   boulders, marsh, scrubland/wasteland/orchard terrain.
-5. Decorator: trees (per chunk, cluster chance, types and weights), flowers,
-   grass and double grass, logs, reeds, cactus, mushrooms, melons/pumpkins,
-   sand/clay/quagmire, ores and gems (`biomeOreFactor`/`biomeGemFactor`), cave
-   cobwebs, stalactites, streams, lava streams, orc dungeons, troll hoards, the
-   biome's own `decorate` override, random structures and their chances,
-   villages and fixed settlements.
-6. Life: animal and NPC spawn lists, invasion lists, banners.
-7. Client: water, grass, foliage and sky colours, fog, clouds, music region,
-   ambience, entry achievement.
-
-- [ ] **W0 Underground and shared generation** (do first).
-  - [ ] **W0a The hollow underground.** Seen again in "New World (4)": Rohan and
-    Mordor hollow (Mordor down to air, lava, bedrock and cobwebs: its surface
-    of Mordor rock, dirt and gravel gone as well), Harad and Far Harad whole.
-    Diagnostic in the build: `LOTRDebugStoneRemovalMixin` (temporary) logs the
-    stack of stone/rock/ore turned to air, "[LOTR W0a]". Found so far (2026-10-11):
-    in Rohan the chunk holds its stone at the end of `fillFromNoise` and none at
-    the very next step (`buildSurface`, status noise), and no block change removes
-    it, so the generating chunk's sections are replaced in between; the spawn area
-    keeps its stone. Stage checks: `LOTRDebugW0a` (temporary, "[LOTR W0a stage]").
-    - User decision (2026-10-11): Middle-earth takes today's overworld height,
-      -64 to 320 (`LOTRChunkGenerator.MIN_Y`/`WORLD_HEIGHT`, the dimension type).
-      The original's terrain keeps its 0-256 heights; below it is deepslate over a
-      bedrock floor at -64, and the original's bedrock at 0-4 is deepslate.
-    - User decision (2026-10-11): the generator follows 26.2's chunk steps rather
-      than building the whole column in `fillFromNoise`. NOISE runs
-      `generateTerrain` only; SURFACE runs `replaceBlocksForBiome` over the
-      chunk's own blocks; CARVERS runs the caves and ravines over them (the
-      chunk's road and village flags recomputed, `chunkFlagsAfterSurface`,
-      `LOTRRoadGenerator.marksRoadFlag`). Same random seeds as provideChunk:
-      the harness found 0 differing blocks in 48 chunks (Rohan, Pinnath Gelin,
-      Mordor) against the one-shot `provideTerrain`, which stays for
-      getBaseHeight/getBaseColumn.
-    - User decision (2026-10-11): "the same type of world gen, not chunk by
-      chunk resemblance", then "port the world gen fully to 26.2 style".
-      Structures are today's: `structure/legacy/LOTRLegacyStructure` (type
-      `lotr:legacy`, structure set every chunk, biome tag
-      `has_structure/legacy`) plans, in STRUCTURE_STARTS, what the original
-      would build in the chunk -- the decorator's random structures (chunk
-      chances, off roads), the marsh hut, Gruk's house, the ticket booth, the
-      villages' buildings whose plan falls in the chunk, and each biome's own
-      (`LOTRBiome.planStructures`: Blue Mountains houses, Iron Hills dwarf
-      houses, Ungoliant's webs, the underwater elven ruins, the Utumno
-      entrance, Forodwaith's mirk-oak) -- building each once with its own code
-      into `LOTRBlueprint` (a recording level over the generator's terrain);
-      `LOTRBlueprintPiece` places each chunk's part in FEATURES. A structure
-      whose code fails while planned is logged and left out. Decoration
-      (`LOTRDecoration`, replacing `LOTRChunkPopulator`, deleted) runs the
-      rest of populate in FEATURES over the chunk's own square; what reaches
-      past the chunks next to it is left out, reads there come from the
-      generator's terrain. Village paths, the Isengard walls and the Rammas
-      Echor are laid column by column there; the dwarven mines and Tauredain
-      pyramids keep their 1.7.10 MapGenStructure pieces, clipped to the chunk.
-      Signs are written through their saved data (no level while generating). Found in "WorldGen test #6": in the
-    Rohan, Shire/Pinnath Gelin and Mordor regions nearly every chunk had lost
-    all its stone, the mod's rocks and its ores between bedrock and the surface
-    crust; dirt, grass, gravel, lava, bedrock and cave cobwebs stayed. The
-    Rhûn region and the chunks about the origin were whole. The harness shows
-    the generator and the whole of `populate` (lakes, decorator, snow) leave the
-    stone in place, and the cobwebs (which only grow next to stone) prove the
-    stone was there when the chunk was decorated, so it is removed later, in the
-    running game. Find what removes it, fix it, and confirm with the user.
-  - [ ] **W0b Caves and ravines** (`LOTRMapGenCaves`, `LOTRMapGenRavine`, the
-    Gorgoroth ravines): frequency, size, lava levels, surface cuts under roads
-    and villages, compared with the original.
-  - [ ] **W0c Ores and underground features**: the decorator's ore, soil and
-    gem lists and heights, the biome factors, stalactites, cobwebs, streams and
-    lava streams, water and lava lakes, dungeons, troll hoards, dwarven mines and
-    Tauredain pyramids (spawn biomes, chances).
-  - [ ] **W0d Shared terrain**: the noise (`initializeHeightNoise`), the
-    genlayers (map biomes, rivers, lakes, oases, beaches, variants and their
-    distribution), roads and bridges, mountains and their lava, the world
-    height (256) against 26.2's limits, sea level, the M.E. Classic world type.
-  - [ ] **W0e Performance**: the "Can't keep up" stalls after teleporting
-    (12 s behind on reaching Mordor); the "UUID of added entity already exists"
-    warnings (orc archers spawned twice); saving the world takes "an extremely
-    long time" (user, 2026-10-11).
-  - [ ] **W0f Screen corners dark in normal play** (user, 2026-10-11): 26.2's
-    vignette (`Hud.extractVignette`, strength 1 − light at the eyes, toggle in
-    Video Settings; 1.7.10 drew it only on Fancy). Check whether Middle-earth's
-    sky darkness (`world_clock`/timeline) leaves it dark in daylight.
-- [ ] **W1 Eriador and Lindon**: Shire, Shire Woodlands, Shire Moors, Shire
-  Marshes, White Downs, Tower Hills, Lindon, Lindon Woodlands, Lindon Coast,
-  Blue Mountains, Blue Mountains Foothills, Bree-land, Chetwood, Midgewater,
-  Old Forest, Barrow-downs, Lone-lands, Lone-lands Hills, Eriador, Eriador
-  Downs, Minhiriath, Enedwaith, Eregion, Trollshaws, Rivendell, Rivendell Hills,
-  Ettenmoors, Coldfells, Angmar, Angmar Mountains, Angle, Swanfleet, Pukel
-  (Drúwaith Iaur), Andrast, Dunland, Nan Curunír, Kanuka (where the original
-  placed it).
-- [ ] **W2 The Misty Mountains and the Vales of Anduin**: Misty Mountains,
-  Misty Mountains Foothills, Anduin Vale, Anduin, Anduin Mouth, Gladden Fields,
-  Celebrant, Lothlórien, Lothlórien Edge, Long Marshes, Brown Lands, Wold, Emyn
-  Muil, Nindalf, Fangorn, Fangorn Clearing, Fangorn Wasteland.
-- [ ] **W3 Rhovanion**: Mirkwood (North, Corrupted, Mountains, the Woodland
-  Realm and its hills, Dol Guldur), Wilderland, Wilderland North, Dale, Erebor,
-  Iron Hills, Grey Mountains, Grey Mountains Foothills, Eastern Desolation,
-  Half-troll Forest (where the original placed it), Dorwinion, Dorwinion Hills.
-- [ ] **W4 Rohan and Gondor**: Rohan, Rohan Woodlands, Rohan Uruk Highlands,
-  Adornland, Entwash Mouth, White Mountains, White Mountains Foothills, Gondor,
-  Gondor Woodlands, Pelennor, Lossarnach, Imloth Melui, Lebennin, Lamedon,
-  Lamedon Hills, Blackroot Vale, Pinnath Gelin, Dor-en-Ernil, Dor-en-Ernil
-  Hills, Pelargir, Tolfalas, Ithilien, Ithilien Hills, Ithilien Wasteland,
-  Harondor.
-- [ ] **W5 Mordor**: Mordor (and Gorgoroth), Mordor Mountains, Morgul Vale,
-  Nan Ungol, Udûn, Dagorlad, Dead Marshes, Nurn, Nurnen, Nurn Marshes.
-- [ ] **W6 Rhûn and the East**: Rhûn, Rhûn Forest, Rhûn Island, Rhûn Island
-  Forest, Rhûn-land (and its hills, steppe and red forest), East Bight, Wind
-  Mountains, Wind Mountains Foothills, Red Mountains, Red Mountains Foothills,
-  Last Desert.
-- [ ] **W7 Harad**: Near Harad (and its fertile land, fertile forest, hills,
-  oasis, red desert, riverbank, semi-desert), Harnedor, Umbar, Umbar Forest,
-  Gulf of Harad and its forest, Lostladen, Harad Mountains, Far Harad (and its
-  arid land, bushland, cloud forest, coast, forest, jungle, jungle edge, jungle
-  lake, jungle mountains, mangrove, savannah, swamp, volcano), Tauredain
-  Clearing, Pertorogwaith, Meneltarma. User, 2026-10-11: far too many squid off
-  the coast of the Far Harad volcano (check the water-creature spawning there).
-- [ ] **W8 The North and the seas**: Forodwaith, Forodwaith Coast, Forodwaith
-  Glacier, Forodwaith Mountains, Tundra, Taiga, Ocean, Lake, River, Beach and
-  the Utumno entrance's surroundings.
-- [ ] **W9 Utumno**: its three levels, caves, decoration, spawning (D15b's
-  generation, checked against the original as the rest).
-
-The regional lists follow `LOTRBiomes`; a biome found to belong elsewhere is
-moved, not dropped. Every one of the 170 biome registrations is ticked in
-exactly one unit.
+The world-gen review is done. Its user decisions stand, so they are not "fixed" back:
+- Middle-earth takes today's overworld height, -64 to 320 (`LOTRChunkGenerator.MIN_Y`/`WORLD_HEIGHT`):
+  the original's terrain keeps its 0-256 heights, deepslate below over a bedrock floor at -64.
+- The generator follows 26.2's chunk steps (NOISE `generateTerrain`, SURFACE `replaceBlocksForBiome`,
+  CARVERS the caves and ravines), with provideChunk's random seeds.
+- Structures are today's (`structure/legacy/LOTRLegacyStructure`, planned in STRUCTURE_STARTS into
+  `LOTRBlueprint`), and decoration (`LOTRDecoration`) runs populate in FEATURES over each chunk's own
+  square: the populate corner is 8 blocks back of the original's, so anything aligned to the chunk
+  grid (the orchard's tree row) is offset to match.
 
 ---
 
@@ -3412,7 +3307,7 @@ only to the unit's *Result*.
     config screen.)
   - D11: `strTimelapse`/`strTimelapseInterval` and `/strTimelapse`.
   - (D12 is done. `fixMobSpawning` was read by nothing in the original.)
-  - Conquest: `enableConquest`, `mapLabelsConquest`. (D14's others are done.)
+  - (Conquest is done: `enableConquest` (D17a), `mapLabelsConquest` (D17b); D14's others are done.)
   - (D15 is done: `enablePortals` (D15a), `disableEnderChestsUtumno` and
     Utumno's kills not counting towards banes (D15b), `balrogWings` (D15c).)
   - D16: the ENCHANTING message (the config screen, `LOTRGuiConfig`, is
@@ -3486,7 +3381,7 @@ only to the unit's *Result*.
   and selling; banes; bosses; mounts (camel, warg); rank achievements and pledging~~
 - [x] ~~Biome achievements (`enter*`, `climbMistyMountains`), `growBaobab` (tree growth),
   `rideGiraffeShire`, `rideBarrelMirkwood` → D10~~ -- D10j: `LOTRPlayerAchievements.runAchievementChecks` (lands, enterMiddleEarth, climbMistyMountains), `LOTRBoneMealItemMixin`, the giraffe's and barrel's ticks
-- [ ] `factionConquest` → conquest (D14) (`fishRing`: the Middle-earth fishing, after D10g; `defeatInvasion`: D12)
+- [x] ~~`factionConquest` → the conquest map~~ — D17b (`fishRing`: the Middle-earth fishing, after D10g; `defeatInvasion`: D12)
 - [x] ~~Utumno: `killBalrog`, `killTormentedElf`, `killUtumnoOrc/Troll/Warg` → D15c~~ — D15c
   (`useElvenPortal`, `useMorgulPortal`: D15a; `enterUtumno*`, `leaveUtumno`: D15b;
   `wearFullUtumno`, `craftUtumnoKey` were already in)
@@ -3542,7 +3437,7 @@ only to the unit's *Result*.
 - [x] ~~The third Ent slain by a player beside a corrupt mallorn summoning the
   Mallorn Ent (`LOTRBlockCorruptMallorn.summonEntBoss`); until then the count
   stops at two, with the bosses [D9o]~~ — D9q
-- [ ] `LOTRFactionData`'s conquest stats (`Conquest`, `ConquestHorn`), with conquest [B12d] (the other stats, the bounties and kill records: G3, D14b)
+- [x] ~~`LOTRFactionData`'s conquest stats (`Conquest`, `ConquestHorn`), with conquest [B12d]~~ — D17a (`addConquest`) (the other stats, the bounties and kill records: G3, D14b)
 - [x] Alignment from kills: every NPC's kill value
   (`LOTRAlignmentValues.Bonuses`), checked per NPC in B16d–h [B12a/b]
   (forced bonus factions and `onPledgeKill`: B16a) -- done: each NPC's kill value (B16d-h)
@@ -3702,7 +3597,7 @@ only to the unit's *Result*.
 - [x] The half-trolls: ~~the warlord's warhorn (`LOTRInvasions.HALF_TROLL`, D12)~~;
   the half-troll shield (`ALIGNMENT_HALF_TROLL`); `killHalfTroll`,
   `tradeHalfTrollWarlord`, `tradeHalfTrollScavenger`; mini-quests [D9m] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
-- [ ] The trolls: conquest spawning's exemption from the dark, with conquest [D9n] (the biomes where hostiles walk by day: D10j)
+- [x] ~~The trolls: conquest spawning's exemption from the dark, with conquest [D9n]~~ — D17a (`LOTRTrollEntity.conquestSpawnIgnoresDarkness`, now that conquest spawns come) (the biomes where hostiles walk by day: D10j)
 - [x] ~~Ents and huorns (their achievements: D7c): the pull of Fangorn (the Old Forest for Dark Huorns) and the y > 62
   grass-or-dirt spawn rule (D10) [D9o]~~ -- D10j (`LOTRTreeEntity`, `LOTRDarkHuornEntity.isTreeHomeBiome`)
 - [x] Wraiths and wights: the marsh wraiths rising in the Dead Marshes for
@@ -3755,7 +3650,7 @@ only to the unit's *Result*.
 - [x] ~~Other mods' NPCs given a faction by config (`LOTREntityRegistry`),
   which `getNPCFaction` and the attack rules also read [D9a]~~ — with the D6
   entry above
-- [ ] Conquest spawning's exemptions for NPCs, with conquest [B16a] (`InvasionID`, the spawn count multiplier: D12)
+- [x] ~~Conquest spawning's exemptions for NPCs, with conquest [B16a]~~ — D17a (`LOTRNPCEntity.checkSpawnRules`, now that conquest spawns come) (`InvasionID`, the spawn count multiplier: D12)
 - [x] ~~Utumno NPCs' drops (`LOTREntityNPC.dropFewItems`): key parts on the ice
   and obsidian levels (1 in 12), Chill of Daedelos from chilly NPCs on the
   ice level, the Utumno pickaxe on the fire level, mithril nuggets (1 in
@@ -3852,8 +3747,8 @@ only to the unit's *Result*.
   the Shire calendar's daily advance (`LOTRDate.update`), with D10 [D14b]~~ -- D10j (`biomeGiven`, `LOTRDate.update` on Middle-earth's own clock)
 - [x] ~~Mini-quests paused during a siege (`isSiegeActive`), with invasions
   (D12) [D14b]~~ -- not ported: a siege was only ever begun by other mods' messages (LOTRInterModComms), so it is never on
-- [ ] Table of command map, squadron and conquest screens [B4, B5e]
-- [ ] Conquest (`LOTRConquestGrid`, `onConquestKill`) [B12] (the mini-quest
+- [ ] Table of command map and squadron screens [B4, B5e] (D17c; the conquest screen: D17b)
+- [x] ~~Conquest (`LOTRConquestGrid`, `onConquestKill`) [B12]~~ — D17a (the mini-quest
   and bounty callers of `createMiniquestBonus`: D14b; `notifyMiniQuestsNeeded`
   had no caller in the original)
 
@@ -3885,14 +3780,14 @@ only to the unit's *Result*.
 - [x] ~~The LOTR menu: its title naming the dimension the player is in (D15)
   [G3a]~~ — D15b (the map, openMenu's welcome forcing it: D13d; greyed on a classic
   world: D10k-b)
-- [ ] Options: Conquest Kills (conquest, D14) (Show Map Location: D13d); the other
-  keys (map, dismount; alignment cycling: D14b) [G3a]
+- [x] ~~Options: Conquest Kills (conquest, D14) (Show Map Location: D13d); the other
+  keys (map, dismount; alignment cycling: D14b) [G3a]~~ — Conquest Kills: D17a
 - [x] ~~The Utumno warning message's trigger, the Utumno portal (D10) [G3a]~~ — D15b
 - [x] ~~The menu's and factions screen's dimension (always Middle-earth
   until Utumno, D15) [G3b]~~ — D15b (the factions screen's map and control-zone
   button: D13d)
 - [x] ~~An operator in creative told who branded a creature (clock) [G2b]~~ — with the branding iron, after B16a
-- [ ] The alignment popup's conquest line, with conquest [G4a] (the bar moving down for a watched invasion: D12)
+- [x] ~~The alignment popup's conquest line, with conquest [G4a]~~ — D17a (it was drawn already; conquest now earns it) (the bar moving down for a watched invasion: D12)
 - [x] ~~With fellowships (D14): a fellow's alignment shown overhead even when
   they hide it, and fellow players' health bars (`fellowPlayerHealthBars`)
   [G4b]~~ — D14a

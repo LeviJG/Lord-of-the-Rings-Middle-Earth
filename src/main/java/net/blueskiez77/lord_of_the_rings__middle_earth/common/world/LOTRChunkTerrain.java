@@ -21,12 +21,24 @@ public final class LOTRChunkTerrain {
     public static final BlockState STONE = Blocks.STONE.defaultBlockState();
     public static final BlockState WATER = Blocks.WATER.defaultBlockState();
 
-    public final BlockState[] blocks = new BlockState[16 * 16 * HEIGHT];
+    public final BlockState[] blocks;
     /** The chunk's biome variants, a column each at {@code x + z * 16}, once its surface is laid. */
     public LOTRBiomeVariant @Nullable [] variants;
 
     public LOTRChunkTerrain() {
+        this.blocks = new BlockState[16 * 16 * HEIGHT];
         Arrays.fill(this.blocks, AIR);
+    }
+
+    /** The same blocks in an array of their own (the variants are shared). */
+    public LOTRChunkTerrain copy() {
+        LOTRChunkTerrain copy = new LOTRChunkTerrain(this.blocks.clone());
+        copy.variants = this.variants;
+        return copy;
+    }
+
+    private LOTRChunkTerrain(BlockState[] blocks) {
+        this.blocks = blocks;
     }
 
     public static int index(int xzIndex, int y) {

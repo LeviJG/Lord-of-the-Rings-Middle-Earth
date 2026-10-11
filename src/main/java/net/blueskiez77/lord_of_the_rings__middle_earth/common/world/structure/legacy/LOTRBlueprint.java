@@ -26,6 +26,7 @@ import net.minecraft.util.ProblemReporter;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.attribute.EnvironmentAttributeReader;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
@@ -90,6 +91,7 @@ public final class LOTRBlueprint {
         private final int height;
         private final int seaLevel;
         private final WorldGenLevel level;
+        private long subTickCount;
 
         public Recorder(Terrain terrain, ServerLevel server, BiomeSource biomeSource, Climate.Sampler sampler, long seed,
                         int minY, int height, int seaLevel) {
@@ -223,6 +225,11 @@ public final class LOTRBlueprint {
                 case "getBlockTicks":
                 case "getFluidTicks":
                     return BlackholeTickAccess.emptyLevelList();
+                case "nextSubTickCount":
+                    return this.subTickCount++;
+                case "environmentAttributes":
+                    // As WorldGenRegion's: none while generating (a spawned animal's variant reads it).
+                    return EnvironmentAttributeReader.EMPTY;
                 case "ensureCanWrite":
                     return true;
                 case "hashCode":

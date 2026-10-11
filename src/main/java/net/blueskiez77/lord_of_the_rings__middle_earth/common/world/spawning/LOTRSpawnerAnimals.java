@@ -34,6 +34,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
@@ -186,7 +187,10 @@ public final class LOTRSpawnerAnimals {
                                 continue;
                             }
                             entity.snapTo(f, f1, f2, rand.nextFloat() * 360.0f, 0.0f);
-                            if (!entity.checkSpawnRules(level, EntitySpawnReason.NATURAL) || !entity.checkSpawnObstruction(level)) {
+                            // getCanSpawnHere: a vanilla mob's own rules (the bat's darkness under cover, the
+                            // animals' grass) are its SpawnPlacements today, which checkSpawnRules does not read.
+                            if (!SpawnPlacements.checkSpawnRules(spawnEntry.type(), level, EntitySpawnReason.NATURAL, pos, rand)
+                                    || !entity.checkSpawnRules(level, EntitySpawnReason.NATURAL) || !entity.checkSpawnObstruction(level)) {
                                 continue;
                             }
                             ++totalSpawned;

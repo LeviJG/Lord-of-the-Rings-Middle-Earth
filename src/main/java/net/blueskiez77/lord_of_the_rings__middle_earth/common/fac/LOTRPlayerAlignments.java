@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestGrid;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRGuiMessageTypes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
@@ -200,9 +201,8 @@ public final class LOTRPlayerAlignments {
      * (LOTRPlayerData.sendAlignmentBonusPacket) a popup of it to the player
      * at the given spot. A kill's forced bonus factions (an invasion's, for
      * those who fought it off) take their bonus in full wherever the kill was.
-     *
-     * <p>NOT ported yet: the conquest a kill earns for the pledged faction
-     * (LOTRConquestGrid.onConquestKill, D14).
+     * A kill of the pledged faction's enemy also earns it conquest
+     * (LOTRConquestGrid.onConquestKill), a quarter as much by a hired unit.
      */
     public static LOTRAlignmentBonusMap addAlignment(Player player, LOTRAlignmentValues.AlignmentBonus source,
                                                      LOTRFaction faction,
@@ -212,6 +212,7 @@ public final class LOTRPlayerAlignments {
         LOTRAlignmentBonusMap factionBonusMap = new LOTRAlignmentBonusMap();
         float prevMainAlignment = getAlignment(player, faction);
         float conquestBonus = 0.0f;
+        LOTRFaction pledgeFaction = get(player).pledgeFaction();
 
         if (source.isKill) {
             for (LOTRFaction bonusFaction : faction.getBonusesForKilling()) {
@@ -233,6 +234,15 @@ public final class LOTRPlayerAlignments {
                         factionBonusMap.put(bonusFaction, factionBonus);
                     }
                 }
+                if (bonusFaction != pledgeFaction) {
+                    continue;
+                }
+                float conq = bonus;
+                if (source.killByHiredUnit) {
+                    conq *= 0.25f;
+                }
+                conquestBonus = LOTRConquestGrid.onConquestKill(player, bonusFaction, faction, conq);
+                LOTRFactionData.addConquest(player, bonusFaction, Math.abs(conquestBonus));
             }
             for (LOTRFaction penaltyFaction : faction.getPenaltiesForKilling()) {
                 if (!penaltyFaction.isPlayableAlignmentFaction() || source.killByHiredUnit) {
@@ -264,6 +274,19 @@ public final class LOTRPlayerAlignments {
                     source.killByHiredUnit));
         }
         return factionBonusMap;
+    }
+
+    /** givePureConquestBonus: conquest alone (a defeated invasion's), and a popup of it if any came. */
+    public static void givePureConquestBonus(Player player, LOTRFaction bonusFac, LOTRFaction enemyFac, float conq, String title,
+                                             double posX, double posY, double posZ) {
+        conq = LOTRConquestGrid.onConquestKill(player, bonusFac, enemyFac, conq);
+        LOTRFactionData.addConquest(player, bonusFac, Math.abs(conq));
+        if (conq != 0.0f && player instanceof ServerPlayer serverPlayer) {
+            LOTRAlignmentValues.AlignmentBonus source = new LOTRAlignmentValues.AlignmentBonus(0.0f, title);
+            ServerPlayNetworking.send(serverPlayer, new LOTRAlignmentHudPayloads.AlignmentBonus(bonusFac, getAlignment(player, bonusFac),
+                    new LOTRAlignmentBonusMap(), conq, posX, posY, posZ, source.name, source.needsTranslation, source.isKill,
+                    source.killByHiredUnit));
+        }
     }
 
     private static float checkBonusForPledgeEnemyLimit(Player player, LOTRFaction faction, float bonus) {

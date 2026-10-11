@@ -1,15 +1,19 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.variant;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRChunkTerrain;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldChunkManager;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenUtil;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRRoads;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 /** LOTRBiomeVariantOrchard: rows of fruit trees, two to a chunk, between rows of fence, away from the roads. */
 public class LOTROrchardBiomeVariant extends LOTRBiomeVariant {
@@ -25,10 +29,36 @@ public class LOTROrchardBiomeVariant extends LOTRBiomeVariant {
 
     @Override
     public void decorateVariant(WorldGenLevel world, RandomSource random, int i, int k, LOTRBiome biome) {
+        // The original's k + 8, between the fence rows: the port's populate corner is 8 blocks back
+        // (each chunk decorates its own square), so the row is k + 16 here.
         for (int i1 : new int[]{i + 3, i + 11}) {
-            int k1 = k + 8;
+            int k1 = k + 16;
             int j1 = LOTRWorldGenUtil.getHeightValue(world, i1, k1);
             getRandomTree(random).create(false, random).generate(world, random, i1, j1, k1);
+        }
+    }
+
+    /**
+     * The fence rows laid with the terrain, joined up: 1.7.10 drew a fence joined to what stood
+     * beside it, where 26.2 keeps that in the block, set once the chunks about it are there. A row
+     * runs along each chunk's first column of z (k mod 16 == 0); x0, z0 is the chunk's corner.
+     */
+    public static void connectFences(WorldGenLevel world, LOTRWorldChunkManager chunkManager, int x0, int z0) {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        for (int x = x0; x < x0 + 16; ++x) {
+            if (!(chunkManager.getBiomeVariantAt(x, z0) instanceof LOTROrchardBiomeVariant)) {
+                continue;
+            }
+            for (int y = world.getHeight(Heightmap.Types.WORLD_SURFACE, x, z0) - 1; y > world.getMinY(); --y) {
+                BlockState state = world.getBlockState(pos.set(x, y, z0));
+                if (state.is(Blocks.OAK_FENCE)) {
+                    world.setBlock(pos, Block.updateFromNeighbourShapes(state, world, pos), Block.UPDATE_CLIENTS);
+                    break;
+                }
+                if (LOTRChunkTerrain.isOpaque(state)) {
+                    break;
+                }
+            }
         }
     }
 

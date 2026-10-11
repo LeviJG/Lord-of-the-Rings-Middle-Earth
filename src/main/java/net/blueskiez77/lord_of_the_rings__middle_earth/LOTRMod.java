@@ -90,12 +90,16 @@ public class LOTRMod implements ModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRMiscCommands.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRWaypointCommands.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRFastTravel.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestGrid.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRConquestCommand.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry.init();
 
         LOTRPlayerAlignments.init();
         LOTRLevelData.init();
+        // Before LOTRLegacyBlocks and the world gen: the biomes, their decorators and the structures
+        // resolve the original's blocks as they are built, and a block not yet registered is air.
+        LOTRBlocks.init();
         LOTRLegacyBlocks.init();
-        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRDebugW0a.init(); // TEMPORARY W0a
         net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRSaplingGrowth.init();
         LOTRLegacyItems.init();
@@ -116,7 +120,6 @@ public class LOTRMod implements ModInitializer {
         LOTRMenus.init();
         LOTRSounds.init();
         LOTRParticles.init();
-        LOTRBlocks.init();
         LOTRBlockEntities.init();
         LOTRBlockBehaviours.init();
         LOTRDataComponents.init();

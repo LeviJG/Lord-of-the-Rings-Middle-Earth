@@ -861,6 +861,8 @@ public class LOTRModClient implements ClientModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.client.map.LOTRClientCustomWaypoints.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRJazzMusic.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRAchievementToast.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRConquestToast.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.map.LOTRClientConquest.init();
         net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry.register(
                 context -> new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCHeadRenderer());
         net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRRedBookItem.openScreen = () -> Minecraft.getInstance()

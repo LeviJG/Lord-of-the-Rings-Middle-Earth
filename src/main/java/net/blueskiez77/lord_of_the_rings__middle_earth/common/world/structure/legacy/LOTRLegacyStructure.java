@@ -9,7 +9,6 @@ import com.mojang.serialization.MapCodec;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRChunkGenerator;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRDecoration;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldChunkManager;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
@@ -64,7 +63,6 @@ public class LOTRLegacyStructure extends Structure {
 
     /** The structures keep placement state of their own between calls: one is planned at a time. */
     private static final ReentrantLock LOCK = new ReentrantLock();
-    private static final LOTRDecoration.TerrainCache TERRAIN = new LOTRDecoration.TerrainCache();
     private static volatile @Nullable MinecraftServer server;
 
     public LOTRLegacyStructure(StructureSettings settings) {
@@ -235,7 +233,7 @@ public class LOTRLegacyStructure extends Structure {
     /** Builds one structure into a blueprint, and keeps it if it built anything. */
     private static void record(List<Planned> planned, LOTRChunkGenerator generator, ServerLevel level, GenerationContext context,
                                Object structure, Build build, @Nullable RandomSource rand) {
-        LOTRBlueprint.Recorder recorder = new LOTRBlueprint.Recorder((x, y, z) -> generator.terrainBlock(TERRAIN, x, y, z),
+        LOTRBlueprint.Recorder recorder = new LOTRBlueprint.Recorder((x, y, z) -> generator.terrainBlock(x, y, z),
                 level, context.biomeSource(), context.randomState().sampler(), context.seed(),
                 context.heightAccessor().getMinY(), context.heightAccessor().getHeight(), generator.getSeaLevel());
         String name = (structure instanceof Class<?> c ? c : structure.getClass()).getSimpleName();

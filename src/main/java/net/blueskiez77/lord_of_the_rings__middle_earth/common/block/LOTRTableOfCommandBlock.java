@@ -7,6 +7,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRTa
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.hire.LOTRHiredNetworking;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestGrid;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
@@ -33,8 +34,7 @@ import org.jspecify.annotations.Nullable;
  * every side, with a map of Middle-earth projected onto the top. Commanders use
  * it to review conquest and to direct squadrons of hired troops.
  *
- * <p>NOT ported yet: the conquest map screen it opens and the map drawn on its
- * surface, with conquest (D14).
+ * <p>NOT ported yet: the map drawn on its surface (D17c).
  */
 public class LOTRTableOfCommandBlock extends Block implements EntityBlock {
 
@@ -78,16 +78,21 @@ public class LOTRTableOfCommandBlock extends Block implements EntityBlock {
 
     /**
      * LOTRBlockCommandTable.onBlockActivated: SNEAK-right-click cycles the
-     * map's zoom.
-     *
-     * <p>NOT ported yet: otherwise, with conquest on, the conquest map (gui
-     * 60), with conquest (D14).
+     * map's zoom; otherwise, with conquest on, the conquest map (gui 60).
      */
     @Override
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos,
                                                Player player, BlockHitResult hitResult) {
         if (!player.isSecondaryUseActive()) {
-            return InteractionResult.PASS;
+            if (!LOTRConquestGrid.conquestEnabled(level)) {
+                return InteractionResult.PASS;
+            }
+            if (player instanceof ServerPlayer serverPlayer) {
+                ServerPlayNetworking.send(serverPlayer, new LOTRConquestGrid.OpenMapPayload());
+                level.playSound(null, pos, getSoundType(state).getBreakSound(), SoundSource.BLOCKS,
+                        (getSoundType(state).getVolume() + 1.0f) / 2.0f, getSoundType(state).getPitch() * 0.5f);
+            }
+            return InteractionResult.SUCCESS;
         }
         if (!(level.getBlockEntity(pos) instanceof LOTRTableOfCommandBlockEntity table)) {
             return InteractionResult.PASS;

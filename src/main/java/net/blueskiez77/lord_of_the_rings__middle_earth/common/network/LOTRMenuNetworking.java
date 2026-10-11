@@ -6,6 +6,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionData;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRRankOptions;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestGrid;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRViewingFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestEvent;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuests;
@@ -19,8 +20,6 @@ import net.minecraft.server.level.ServerPlayer;
 /**
  * The server's side of the Options screen (LOTRPacketSetOption) and the
  * one-time messages.
- *
- * <p>NOT ported yet: option 5 (conquest kills, with conquest).
  */
 public final class LOTRMenuNetworking {
 
@@ -90,6 +89,7 @@ public final class LOTRMenuNetworking {
                 case SHOW_ALIGNMENT -> LOTRPlayerAlignments.setHideAlignment(player, !LOTRPlayerAlignments.getHideAlignment(player));
                 case SHOW_MAP_LOCATION -> LOTRMapPlayerData.setHideMapLocation(player, !LOTRMapPlayerData.getHideMapLocation(player));
                 case FEM_RANK -> LOTRRankOptions.setFemRankOverride(player, !LOTRRankOptions.getFemRankOverride(player));
+                case CONQUEST -> LOTRConquestGrid.setEnableConquestKills(player, !LOTRConquestGrid.getEnableConquestKills(player));
                 default -> {
                 }
             }

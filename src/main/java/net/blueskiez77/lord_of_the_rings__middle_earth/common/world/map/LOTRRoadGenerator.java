@@ -28,7 +28,9 @@ public final class LOTRRoadGenerator {
         return !state.getFluidState().isEmpty();
     }
 
-    public static boolean generateRoad(RandomSource rand, int i, int k, LOTRBiome biome, LOTRChunkTerrain terrain, double[] heightNoise) {
+    /** generateRoad; the terrain's height noise is asked for only where a road's top is laid. */
+    public static boolean generateRoad(RandomSource rand, int i, int k, LOTRBiome biome, LOTRChunkTerrain terrain,
+                                       java.util.function.Supplier<double[]> heightNoiseSource) {
         BlockState[] blocks = terrain.blocks;
         int xzIndex = (i & 0xF) * 16 + (k & 0xF);
         int ySize = LOTRChunkTerrain.HEIGHT;
@@ -106,6 +108,7 @@ public final class LOTRRoadGenerator {
                     boolean isTop = j == roadTop;
                     boolean isSlab = false;
                     if (isTop && j >= 63) {
+                        double[] heightNoise = heightNoiseSource.get();
                         isSlab = (heightNoise[index] + heightNoise[index + 1]) / 2.0 < 0.0;
                     }
                     blocks[index] = roadType.getBlock(rand, isTop, isSlab).state();

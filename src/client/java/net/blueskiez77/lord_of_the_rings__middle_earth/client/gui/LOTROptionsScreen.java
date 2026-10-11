@@ -8,6 +8,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRRankOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuNetworking;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestGrid;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRMapPlayerData;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -22,9 +23,6 @@ import net.minecraft.world.entity.player.Player;
  * LOTRGuiOptions: the player's own Middle-earth options, each a button that
  * shows its state and flips it on the server; hovering one explains both
  * settings.
- *
- * <p>NOT ported yet: Conquest Kills (with conquest). Its row is left where
- * it stood.
  */
 public class LOTROptionsScreen extends LOTRMenuBaseScreen {
 
@@ -47,6 +45,7 @@ public class LOTROptionsScreen extends LOTRMenuBaseScreen {
         option(LOTRMenuNetworking.HIRED_DEATH_MESSAGES, buttonX, buttonY + 24, "lotr.gui.options.hiredDeathMessages");
         option(LOTRMenuNetworking.SHOW_ALIGNMENT, buttonX, buttonY + 48, "lotr.gui.options.showAlignment");
         option(LOTRMenuNetworking.SHOW_MAP_LOCATION, buttonX, buttonY + 72, "lotr.gui.options.showMapLocation");
+        option(LOTRMenuNetworking.CONQUEST, buttonX, buttonY + 96, "lotr.gui.options.conquest");
         option(LOTRMenuNetworking.FEM_RANK, buttonX, buttonY + 120, "lotr.gui.options.femRank");
         updateStates();
     }
@@ -64,7 +63,8 @@ public class LOTROptionsScreen extends LOTRMenuBaseScreen {
         setState(1, LOTRPlayerNPCOptions.getEnableHiredDeathMessages(player));
         setState(2, !LOTRPlayerAlignments.getHideAlignment(player));
         setState(3, !LOTRMapPlayerData.getHideMapLocation(player));
-        setState(4, LOTRRankOptions.getFemRankOverride(player));
+        setState(4, LOTRConquestGrid.getEnableConquestKills(player));
+        setState(5, LOTRRankOptions.getFemRankOverride(player));
     }
 
     private void setState(int i, boolean flag) {

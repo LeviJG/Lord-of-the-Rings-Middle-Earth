@@ -30,7 +30,7 @@ public final class LOTRRoads {
 
     private static List<LOTRRoads> allRoads;
     private static List<LOTRRoads> displayOnlyRoads;
-    private static RoadPointDatabase roadPointDatabase;
+    private static volatile @Nullable RoadPointDatabase roadPointDatabase;
 
     public final List<RoadPoint> endpoints = new ArrayList<>();
     public final String roadName;
@@ -179,34 +179,28 @@ public final class LOTRRoads {
 
     /** How close to a road this is, as the squared fraction of the width, or -1 if no road is within it. */
     public static float isRoadNear(int x, int z, int width) {
-        double widthSq = width * width;
-        float leastSqRatio = -1.0f;
-        for (RoadPoint point : database().getPointsForCoords(x, z)) {
-            double dx = point.x - x;
-            double dz = point.z - z;
-            double distSq = dx * dx + dz * dz;
-            if (distSq >= widthSq) {
-                continue;
-            }
-            float f = (float) (distSq / widthSq);
-            if (leastSqRatio == -1.0f || f < leastSqRatio) {
-                leastSqRatio = f;
-            }
-        }
-        return leastSqRatio;
+        return database().leastSqRatio(x, z, width);
     }
 
-    private static synchronized RoadPointDatabase database() {
-        if (roadPointDatabase == null) {
-            RoadPointDatabase database = new RoadPointDatabase();
-            for (LOTRRoads road : getAllRoadsInWorld()) {
-                for (RoadPoint point : road.roadPoints()) {
-                    database.add(point);
+    /** Built once, then only read: the world-gen threads ask it without taking a lock. */
+    private static RoadPointDatabase database() {
+        RoadPointDatabase database = roadPointDatabase;
+        if (database == null) {
+            synchronized (LOTRRoads.class) {
+                database = roadPointDatabase;
+                if (database == null) {
+                    database = new RoadPointDatabase();
+                    for (LOTRRoads road : getAllRoadsInWorld()) {
+                        for (RoadPoint point : road.roadPoints()) {
+                            database.add(point);
+                        }
+                    }
+                    database.bake();
+                    roadPointDatabase = database;
                 }
             }
-            roadPointDatabase = database;
         }
-        return roadPointDatabase;
+        return database;
     }
 
     private static void registerDisplayOnlyRoad(String name, Object... waypoints) {
@@ -315,22 +309,65 @@ public final class LOTRRoads {
     }
 
     /** The road points by area, a thousand blocks a cell, each point in its cell and the eight around it. */
+    /**
+     * The original's RoadPointDatabase, its points filed in cells of 32 blocks rather than 1000 so a
+     * lookup reads only the points that can be in range. Any point within a width under 500 -- as
+     * every caller's is -- was in the original's 3x3 cells about the spot, so the answer is the same.
+     */
     private static final class RoadPointDatabase {
-        private static final int COORD_LOOKUP_SIZE = 1000;
-        private final Map<Long, List<RoadPoint>> pointMap = new HashMap<>();
+        private static final int CELL_SHIFT = 5;
+        private Map<Long, List<RoadPoint>> building = new HashMap<>();
+        /** Each cell's points as x, z pairs. */
+        private final Map<Long, double[]> cells = new HashMap<>();
 
         void add(RoadPoint point) {
-            int x = (int) Math.round(point.x() / COORD_LOOKUP_SIZE);
-            int z = (int) Math.round(point.z() / COORD_LOOKUP_SIZE);
-            for (int i = -1; i <= 1; ++i) {
-                for (int k = -1; k <= 1; ++k) {
-                    this.pointMap.computeIfAbsent(key(x + i, z + k), unused -> new ArrayList<>()).add(point);
-                }
-            }
+            int x = (int) Math.floor(point.x()) >> CELL_SHIFT;
+            int z = (int) Math.floor(point.z()) >> CELL_SHIFT;
+            this.building.computeIfAbsent(key(x, z), unused -> new ArrayList<>()).add(point);
         }
 
-        List<RoadPoint> getPointsForCoords(int x, int z) {
-            return this.pointMap.getOrDefault(key(x / COORD_LOOKUP_SIZE, z / COORD_LOOKUP_SIZE), List.of());
+        void bake() {
+            for (Map.Entry<Long, List<RoadPoint>> e : this.building.entrySet()) {
+                List<RoadPoint> points = e.getValue();
+                double[] xz = new double[points.size() * 2];
+                for (int n = 0; n < points.size(); ++n) {
+                    xz[n * 2] = points.get(n).x();
+                    xz[n * 2 + 1] = points.get(n).z();
+                }
+                this.cells.put(e.getKey(), xz);
+            }
+            this.building = null;
+        }
+
+        /** isRoadNear over the cells the width reaches. */
+        float leastSqRatio(int x, int z, int width) {
+            double widthSq = width * width;
+            float leastSqRatio = -1.0f;
+            int cx0 = (x - width) >> CELL_SHIFT;
+            int cx1 = (x + width) >> CELL_SHIFT;
+            int cz0 = (z - width) >> CELL_SHIFT;
+            int cz1 = (z + width) >> CELL_SHIFT;
+            for (int cx = cx0; cx <= cx1; ++cx) {
+                for (int cz = cz0; cz <= cz1; ++cz) {
+                    double[] xz = this.cells.get(key(cx, cz));
+                    if (xz == null) {
+                        continue;
+                    }
+                    for (int n = 0; n < xz.length; n += 2) {
+                        double dx = xz[n] - x;
+                        double dz = xz[n + 1] - z;
+                        double distSq = dx * dx + dz * dz;
+                        if (distSq >= widthSq) {
+                            continue;
+                        }
+                        float f = (float) (distSq / widthSq);
+                        if (leastSqRatio == -1.0f || f < leastSqRatio) {
+                            leastSqRatio = f;
+                        }
+                    }
+                }
+            }
+            return leastSqRatio;
         }
 
         private static long key(int x, int z) {

@@ -113,7 +113,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import org.jspecify.annotations.Nullable;
 
@@ -1251,27 +1255,41 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
     }
 
     /**
-     * onSpawnWithEgg's mount: made where the NPC stands and ridden, if there
-     * is room -- an NPC's own, seeing as far as its rider.
+     * onSpawnWithEgg's mount: made where the NPC stands and ridden, if no block is in its way
+     * (getCollidingBoundingBoxes) -- an NPC's own, seeing as far as its rider. Everything goes
+     * through the level the NPC is spawned into, which while the world generates is the chunk
+     * being built, not the live level (reading that off the server's thread waits on it).
      */
     private void spawnOnMount(ServerLevelAccessor accessor) {
-        ServerLevel level = accessor.getLevel();
-        Mob mount = createMountToRide(level);
+        Mob mount = createMountToRide(accessor.getLevel());
         if (mount == null) {
             return;
         }
         mount.snapTo(getX(), getY(), getZ(), getYRot(), 0.0f);
-        if (!level.noCollision(mount)) {
+        if (collidesWithBlocks(accessor, mount.getBoundingBox())) {
             return;
         }
-        mount.finalizeSpawn(accessor, level.getCurrentDifficultyAt(mount.blockPosition()), EntitySpawnReason.JOCKEY, null);
-        level.addFreshEntity(mount);
+        mount.finalizeSpawn(accessor, accessor.getCurrentDifficultyAt(mount.blockPosition()), EntitySpawnReason.JOCKEY, null);
+        accessor.addFreshEntity(mount);
         startRiding(mount, true, false);
         if (mount instanceof LOTRNPCMount npcMount && !(mount instanceof LOTRNPCEntity)) {
             setRidingHorse(true);
             npcMount.setBelongsToNPC(true);
             LOTRNPCMount.setNavigatorRangeFromNPC(mount, this);
         }
+    }
+
+    /** World.getCollidingBoundingBoxes, blocks only: whether any block's collision box meets the box. */
+    private static boolean collidesWithBlocks(LevelAccessor level, AABB box) {
+        VoxelShape boxShape = Shapes.create(box);
+        for (BlockPos pos : BlockPos.betweenClosed(Mth.floor(box.minX), Mth.floor(box.minY), Mth.floor(box.minZ),
+                Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ))) {
+            VoxelShape shape = level.getBlockState(pos).getCollisionShape(level, pos);
+            if (!shape.isEmpty() && Shapes.joinIsNotEmpty(shape.move(pos), boxShape, BooleanOp.AND)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** initCreatureForHire: equipped as on spawning, without a mount. */
