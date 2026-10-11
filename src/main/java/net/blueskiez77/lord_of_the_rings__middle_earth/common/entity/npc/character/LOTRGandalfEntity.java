@@ -54,9 +54,7 @@ import org.jspecify.annotations.Nullable;
  * farewell the same way and is gone.
  *
  * <p>While abroad he offers his welcome mini-quest to any player who has not
- * had it.
- *
- * <p>NOT ported yet: his hunting of Balrogs (with Utumno, D15).
+ * had it. He hunts any Balrog he sees, and Saruman.
  */
 public class LOTRGandalfEntity extends LOTRNPCEntity {
 
@@ -98,6 +96,8 @@ public class LOTRGandalfEntity extends LOTRNPCEntity {
         this.goalSelector.addGoal(5, new LookAtPlayerGoal(this, Mob.class, 8.0f, 0.02f));
         this.goalSelector.addGoal(6, new RandomLookAroundGoal(this));
         int target = addTargetTasks(false);
+        this.targetSelector.addGoal(target + 1, new LOTRNearestAttackableTargetGoal(this,
+                net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRBalrogEntity.class, 0, true, null));
         this.targetSelector.addGoal(target + 2,
                 new LOTRNearestAttackableTargetGoal(this, LOTRSarumanEntity.class, 0, true, null));
     }

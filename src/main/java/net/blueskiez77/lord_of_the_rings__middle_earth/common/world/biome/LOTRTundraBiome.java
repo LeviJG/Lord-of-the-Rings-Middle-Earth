@@ -19,6 +19,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.ra
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.ranger.LOTRSmallStoneRuinStructure;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.ARGB;
+import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.WorldGenLevel;
@@ -160,5 +162,25 @@ public class LOTRTundraBiome extends LOTRBiome {
     @Override
     public float getTreeIncreaseChance() {
         return 0.04f;
+    }
+
+    /** getBiomeGrassColor: between two browns, in patches, by the terrain noise. */
+    @Override
+    public int getBiomeGrassColor(int i, int k, LOTRBiomeVariant variant) {
+        int color1 = 10708034;
+        int color2 = 13747522;
+        double d1 = BIOME_TERRAIN_NOISE.getValue(i * 0.002, k * 0.002);
+        double d2 = BIOME_TERRAIN_NOISE.getValue(i * 0.04, k * 0.04);
+        float noise = (float) Mth.clamp(d1 + d2 * 0.4, -2.0, 2.0);
+        noise += 2.0f;
+        noise /= 4.0f;
+        return lerpRgb(color1, color2, noise);
+    }
+
+    private static int lerpRgb(int c1, int c2, float f) {
+        int r = (int) ((ARGB.red(c1) + (ARGB.red(c2) - ARGB.red(c1)) * f) + 0.5f);
+        int g = (int) ((ARGB.green(c1) + (ARGB.green(c2) - ARGB.green(c1)) * f) + 0.5f);
+        int b = (int) ((ARGB.blue(c1) + (ARGB.blue(c2) - ARGB.blue(c1)) * f) + 0.5f);
+        return ARGB.color(255, r, g, b);
     }
 }

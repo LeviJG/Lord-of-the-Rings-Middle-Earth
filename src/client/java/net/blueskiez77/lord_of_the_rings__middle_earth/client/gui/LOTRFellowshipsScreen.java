@@ -56,6 +56,18 @@ public class LOTRFellowshipsScreen extends LOTRMenuBaseScreen {
     private final List<View> allFellowshipsOther = new ArrayList<>();
     private final List<View> allFellowshipInvites = new ArrayList<>();
     private @Nullable View mouseOverFellowship;
+
+    public void clearMouseOverFellowship() {
+        this.mouseOverFellowship = null;
+    }
+
+    public @Nullable View getMouseOverFellowship() {
+        return this.mouseOverFellowship;
+    }
+
+    public int getXSize() {
+        return this.xSize;
+    }
     private @Nullable View viewingFellowship;
     private @Nullable UUID mouseOverPlayer;
     private boolean mouseOverPlayerRemove;
@@ -633,8 +645,14 @@ public class LOTRFellowshipsScreen extends LOTRMenuBaseScreen {
     }
 
     private void drawFellowshipEntry(GuiGraphicsExtractor graphics, View fs, int x, int y, int mouseX, int mouseY, boolean isInvite) {
+        drawFellowshipEntry(graphics, fs, x, y, mouseX, mouseY, isInvite, this.xSize);
+    }
+
+    /** Also the map's list of the fellowships a custom waypoint is shared with, wider for its remove icons. */
+    public void drawFellowshipEntry(GuiGraphicsExtractor graphics, View fs, int x, int y, int mouseX, int mouseY, boolean isInvite,
+                                    int selectWidth) {
         int selectX0 = x - 2;
-        int selectX1 = x + this.xSize + 2;
+        int selectX1 = x + selectWidth + 2;
         int selectY0 = y - 2;
         int selectY1 = y + this.font.lineHeight + 2;
         if (mouseX >= selectX0 && mouseX <= selectX1 && mouseY >= selectY0 && mouseY <= selectY1) {

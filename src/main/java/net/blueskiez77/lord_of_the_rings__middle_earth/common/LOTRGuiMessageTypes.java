@@ -21,8 +21,6 @@ import net.minecraft.world.entity.player.Player;
  * LOTRGuiMessageTypes: the one-time explanations a player is shown the first
  * time something happens, remembered once sent (LOTRPlayerData's
  * "SentMessageTypes").
- *
- * <p>NOT ported yet: UTUMNO_WARN's trigger, the Utumno portal (D10).
  */
 public enum LOTRGuiMessageTypes {
     FRIENDLY_FIRE("friendlyFire"), UTUMNO_WARN("utumnoWarn"), ENCHANTING("enchanting"), ALIGN_DRAIN("alignDrain");

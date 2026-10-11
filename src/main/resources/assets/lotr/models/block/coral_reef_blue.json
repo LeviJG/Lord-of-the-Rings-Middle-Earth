@@ -1,0 +1,7 @@
+{
+    "parent": "lotr:block/coral_reef_plant",
+    "textures": {
+        "all": "lotr:block/coral_reef",
+        "plant": "lotr:block/coral_reef_blue"
+    }
+}

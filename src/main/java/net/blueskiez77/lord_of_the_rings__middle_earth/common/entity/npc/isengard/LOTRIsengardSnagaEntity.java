@@ -27,6 +27,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityIsengardSnaga: a lesser orc of Isengard, armed and armoured from
  * what it has scavenged -- any of 23 blades, axes, picks and pikes of stone,
@@ -131,5 +132,10 @@ public class LOTRIsengardSnagaEntity extends LOTROrcEntity {
     @Override
     public LOTRAchievement getKillAchievement() {
         return LOTRAchievement.KILL_ISENGARD_SNAGA;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.ISENGARD;
     }
 }

@@ -9,6 +9,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCombatItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.EntitySpawnReason;
@@ -21,8 +22,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import org.jspecify.annotations.Nullable;
 import net.minecraft.world.level.LevelAccessor;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityWickedDwarf: a dwarf gone over to the Enemy, of Mordor's faction.
@@ -123,5 +125,10 @@ public class LOTRWickedDwarfEntity extends LOTRDwarfEntity implements LOTRSmith 
     @Override
     public boolean canDwarfSpawnHere(LevelAccessor level) {
         return isAboveSeaOnTopBlock(level, false);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return null;
     }
 }

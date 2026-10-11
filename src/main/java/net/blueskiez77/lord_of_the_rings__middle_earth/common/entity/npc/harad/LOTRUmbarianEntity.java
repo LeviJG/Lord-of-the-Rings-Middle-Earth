@@ -23,6 +23,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityUmbarian: a man or woman of Umbar, "Name of Umbar", with an
  * Umbaric dagger, an Umbar name, Southron food and drink, and now and then
@@ -92,5 +93,10 @@ public class LOTRUmbarianEntity extends LOTRNearHaradrimBaseEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.UMBAR.createQuest(this);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.UMBAR;
     }
 }

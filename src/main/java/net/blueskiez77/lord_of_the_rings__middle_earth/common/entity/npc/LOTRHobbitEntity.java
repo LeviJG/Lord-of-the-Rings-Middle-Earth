@@ -44,12 +44,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.effect.MobEffects;
 
-import org.jspecify.annotations.Nullable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRShireBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityHobbit: the folk of the Shire. They keep out of the water, open
@@ -244,5 +245,10 @@ public class LOTRHobbitEntity extends LOTRManEntity {
     @Override
     public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
         return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.HOBBIT;
     }
 }

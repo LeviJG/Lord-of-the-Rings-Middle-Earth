@@ -17,10 +17,11 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-import org.jspecify.annotations.Nullable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBreelandBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityBreeHobbit: the Little Folk of Bree-land. A hobbit in all its
@@ -102,5 +103,10 @@ public class LOTRBreeHobbitEntity extends LOTRHobbitEntity implements IPickpocke
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
         return homeBiomePull(level, pos, LOTRBreelandBiome.class);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.BREE;
     }
 }

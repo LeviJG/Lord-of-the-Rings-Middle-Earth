@@ -32,9 +32,8 @@ import org.lwjgl.glfw.GLFW;
  * are in hand and done, or -- a quest picked -- its diary: when and where it was given, what was said,
  * what was asked, how it goes, and, done, what came of it. On the right, the quests in hand (by
  * faction and giver) or those done (newest first), four at a time with a scroll bar; each may be
- * followed, or abandoned (or its record removed) after asking.
- *
- * <p>NOT ported yet: the biome a quest was given in (with the biomes, D10).
+ * followed, or abandoned (or its record removed) after asking. A quest's diary page gives the day and
+ * the land it was taken in.
  */
 public class LOTRRedBookScreen extends Screen {
 
@@ -244,6 +243,9 @@ public class LOTRRedBookScreen extends Screen {
         String[] dayYear = LOTRDate.ShireReckoning.getShireDate(quest.dateGiven).getDayAndYearNames(false);
         pageText.add(dayYear[0]);
         pageText.add(dayYear[1]);
+        if (quest.biomeGiven != null) {
+            pageText.add(quest.biomeGiven.getBiomeDisplayName().getString());
+        }
         pageText.add("");
         pageText.add(quote(quest, quest.quoteStart, this.minecraft.player));
         pageText.add("");

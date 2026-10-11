@@ -25,14 +25,14 @@ import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 /**
- * LOTRKeyHandler: L (key 38 in 1.7.10) opens the LOTR menu, or the menu screen last opened from it;
+ * LOTRKeyHandler: L (key 38 in 1.7.10) opens the LOTR menu, or the menu screen last opened from it
+ * -- in place of vanilla's advancements while the two share the key;
  * and, with no screen open, the arrow keys cycle the faction whose alignment is shown -- left and
  * right through the region's factions, up and down through the regions (each remembering the faction
  * last viewed in it) -- at most one change each two ticks.
  *
  * <p>Map Teleport (M) and Fast Travel (F) act only in the map screen: an operator teleporting to the
- * spot under the pointer, and travelling to the waypoint selected. They are registered here as the
- * original registered them; the map screen that reads them is D13. F is also vanilla's
+ * spot under the pointer, and travelling to the waypoint selected (LOTRMapScreen). F is also vanilla's
  * swap-with-offhand key, which 1.7.10 did not have; the two never meet, the LOTR key acting only
  * with the map open.
  */
@@ -50,6 +50,8 @@ public final class LOTRKeyBindings {
     public static KeyMapping alignmentGroupNext;
 
     private static int alignmentChangeTick;
+    /** Presses of the menu key taken this tick, before vanilla could act on the same key. */
+    private static int menuPresses;
 
     private LOTRKeyBindings() {
     }
@@ -66,8 +68,20 @@ public final class LOTRKeyBindings {
         alignmentCycleRight = register("key.lotr.alignmentCycleRight", GLFW.GLFW_KEY_RIGHT);
         alignmentGroupPrev = register("key.lotr.alignmentGroupPrev", GLFW.GLFW_KEY_UP);
         alignmentGroupNext = register("key.lotr.alignmentGroupNext", GLFW.GLFW_KEY_DOWN);
+        // L was the menu's in 1.7.10, which had no advancements key; 26.2's is L too. Sharing it,
+        // the menu takes the press: taken before vanilla handles its keys, the advancements' with it.
+        ClientTickEvents.START_CLIENT_TICK.register(client -> {
+            int presses = clicks(menu);
+            if (presses > 0) {
+                menuPresses += presses;
+                if (menu.same(client.options.keyAdvancements)) {
+                    clicks(client.options.keyAdvancements);
+                }
+            }
+        });
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (menu.consumeClick()) {
+            menuPresses += clicks(menu);
+            for (; menuPresses > 0; --menuPresses) {
                 if (client.gui.screen() == null && client.player != null) {
                     client.setScreenAndShow(LOTRMenuScreen.openMenu());
                 }

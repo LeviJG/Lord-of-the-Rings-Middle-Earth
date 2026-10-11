@@ -12,7 +12,8 @@ import net.minecraft.world.entity.ai.attributes.RangedAttribute;
 /**
  * LOTREntityNPC's own attributes: its unarmed, extra and drunken damage, its
  * aim, and its horse's charge speed; and a mountain troll's thrown rocks
- * (LOTREntityMountainTroll.thrownRockDamage, 5 by default, at most 100).
+ * (LOTREntityMountainTroll.thrownRockDamage, 5 by default, at most 100), and a
+ * Balrog's charge.
  */
 public final class LOTRNPCAttributes {
 
@@ -26,6 +27,8 @@ public final class LOTRNPCAttributes {
      */
     public static final Holder<Attribute> HORSE_ATTACK_SPEED = register("horse_attack_speed", 1.7);
     public static final Holder<Attribute> THROWN_ROCK_DAMAGE = register("thrown_rock_damage", 5.0, 100.0);
+    /** LOTREntityBalrog.balrogChargeDamage ("Balrog Charge Damage"): what its charge deals each one it strikes. */
+    public static final Holder<Attribute> BALROG_CHARGE_DAMAGE = register("balrog_charge_damage", 2.0);
 
     private LOTRNPCAttributes() {
     }

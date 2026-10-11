@@ -43,12 +43,17 @@ import org.jspecify.annotations.Nullable;
  * his hand and a dagger for trouble. He buys heather and suspicious meat,
  * takes all manner of scrap, comes alone, and once slain does not come back.
  * His anvil is half the price of any other smith's, and he cannot leave a
- * job alone (LOTRAnvilMenu).
- *
- * <p>NOT ported yet: his fading away in Utumno, where he will not trade and
- * cannot be hurt (D15).
+ * job alone (LOTRAnvilMenu). In Utumno he will not trade and cannot be hurt
+ * or freely attacked: struck, or five seconds after he is spoken to, he fades
+ * away over three seconds and is gone.
  */
 public class LOTRScrapTraderEntity extends LOTRManEntity implements LOTRTravellingTrader, LOTRSmith {
+
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Integer> DATA_FADEOUT_TICK =
+            net.minecraft.network.syncher.SynchedEntityData.defineId(LOTRScrapTraderEntity.class,
+                    net.minecraft.network.syncher.EntityDataSerializers.INT);
+
+    public int timeUntilFadeOut;
 
     public LOTRScrapTraderEntity(EntityType<? extends LOTRScrapTraderEntity> type, Level level) {
         super(type, level);
@@ -110,8 +115,79 @@ public class LOTRScrapTraderEntity extends LOTRManEntity implements LOTRTravelli
     }
 
     @Override
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_FADEOUT_TICK, -1);
+    }
+
+    public int getFadeoutTick() {
+        return this.entityData.get(DATA_FADEOUT_TICK);
+    }
+
+    public void setFadeoutTick(int i) {
+        this.entityData.set(DATA_FADEOUT_TICK, i);
+    }
+
+    /** getFadeoutProgress: how far through his three seconds of fading he is. */
+    public float getFadeoutProgress(float f) {
+        int i = getFadeoutTick();
+        return i >= 0 ? (60 - i + f) / 60.0f : 0.0f;
+    }
+
+    private boolean inUtumno() {
+        return net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension.getCurrentDimension(level())
+                == net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension.UTUMNO;
+    }
+
+    /** attackEntityFrom: in Utumno a blow only sets him fading. */
+    @Override
+    public boolean hurtServer(ServerLevel level, net.minecraft.world.damagesource.DamageSource source, float amount) {
+        if (source.getEntity() != null && inUtumno()) {
+            if (getFadeoutTick() < 0) {
+                setFadeoutTick(60);
+            }
+            return false;
+        }
+        return super.hurtServer(level, source, amount);
+    }
+
+    @Override
+    public boolean canBeFreelyTargetedBy(Mob attacker) {
+        return !inUtumno() && super.canBeFreelyTargetedBy(attacker);
+    }
+
+    @Override
     public boolean canTradeWith(Player player) {
-        return isFriendly(player);
+        return isFriendly(player) && !inUtumno();
+    }
+
+    /** interact: spoken to in Utumno, he lingers five seconds. */
+    @Override
+    protected net.minecraft.world.InteractionResult mobInteract(Player player, net.minecraft.world.InteractionHand hand) {
+        net.minecraft.world.InteractionResult result = super.mobInteract(player, hand);
+        if (result.consumesAction() && !level().isClientSide() && inUtumno() && this.timeUntilFadeOut <= 0) {
+            this.timeUntilFadeOut = 100;
+        }
+        return result;
+    }
+
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!level().isClientSide() && inUtumno()) {
+            if (this.timeUntilFadeOut > 0) {
+                --this.timeUntilFadeOut;
+                if (this.timeUntilFadeOut <= 0) {
+                    setFadeoutTick(60);
+                }
+            }
+            if (getFadeoutTick() > 0) {
+                setFadeoutTick(getFadeoutTick() - 1);
+                if (getFadeoutTick() <= 0) {
+                    discard();
+                }
+            }
+        }
     }
 
     /** He travels alone. */
@@ -138,7 +214,10 @@ public class LOTRScrapTraderEntity extends LOTRManEntity implements LOTRTravelli
 
     @Override
     public @Nullable String getSpeechBank(Player player) {
-        return isFriendly(player) ? "misc/scrapTrader/friendly" : "misc/scrapTrader/hostile";
+        if (isFriendly(player)) {
+            return inUtumno() ? "misc/scrapTrader/utumno" : "misc/scrapTrader/friendly";
+        }
+        return "misc/scrapTrader/hostile";
     }
 
     /** getTotalArmorValue: 5, whatever he wears. */

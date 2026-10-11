@@ -135,6 +135,13 @@ public final class LOTRModifiers {
                 tryApplyRandom(player.containerMenu.getCarried(), random);
             }
         });
+        // LOTREventHandler.onEntityJoinWorld: without vanilla enchanting, no experience in Middle-earth.
+        ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
+            if (!LOTRConfig.enchantingVanilla && entity instanceof net.minecraft.world.entity.ExperienceOrb
+                    && level.dimension() == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.MIDDLE_EARTH) {
+                entity.discard();
+            }
+        });
         // tryApplyRandomEnchantsForEquipment: a mob's gear, once.
         ServerEntityEvents.ENTITY_LOAD.register((entity, level) -> {
             if (LOTRConfig.enchantingLOTR && entity instanceof Mob mob && !mob.entityTags().contains(ENTITY_ROLLED)) {
@@ -565,15 +572,16 @@ public final class LOTRModifiers {
      * counts. When the count reaches its target -- 100 to 250, drawn at the
      * first kill -- the weapon has earned the bane, and the whole server hears
      * of it, and the player earns that bane's achievement. A hired unit counts only with "Hired units killed count towards
-     * x-bane modifiers" on; the Utumno exclusion waits on Utumno (D15).
+     * x-bane modifiers" on, and nothing killed in Utumno counts.
      */
     private static void onKill(net.minecraft.server.level.ServerPlayer player, LivingEntity target) {
         ItemStack weapon = player.getMainHandItem();
         if (weapon.isEmpty()) {
             return;
         }
-        // doesEntityKillCountTowardsBane: a hired unit's death counts only if the config allows.
-        if (!LOTRConfig.hiredUnitKillsCountForBane && target instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive) {
+        // doesEntityKillCountTowardsBane: a hired unit's death counts only if the config allows; none in Utumno.
+        if (!LOTRConfig.hiredUnitKillsCountForBane && target instanceof LOTRNPCEntity npc && npc.hiredNPCInfo.isActive
+                || net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumno.isUtumno(target.level())) {
             return;
         }
         for (LOTRModifier bane : LOTRModifier.values()) {

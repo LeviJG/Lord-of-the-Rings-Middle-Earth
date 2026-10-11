@@ -9,6 +9,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
@@ -158,6 +159,22 @@ public class LOTRReedBlock extends VegetationBlock implements BonemealableBlock,
         BlockState updated = super.updateShape(state, level, ticks, pos, direction,
                 neighbourPos, neighbourState, random);
         return updated.is(this) ? describe(updated, level, pos) : updated;
+    }
+
+    /**
+     * LOTRWorldGenReeds' column: segments from the foot up, waterlogged where they stand in water,
+     * then each told whether it is the tip or the stem's foot -- placed as world generation places
+     * blocks, without the neighbour updates that would otherwise set those.
+     */
+    public void placeColumn(LevelAccessor level, BlockPos foot, int height, int flags) {
+        for (int n = 0; n < height; ++n) {
+            BlockPos pos = foot.above(n);
+            level.setBlock(pos, defaultBlockState().setValue(WATERLOGGED, level.getFluidState(pos).is(Fluids.WATER)), flags);
+        }
+        for (int n = 0; n < height; ++n) {
+            BlockPos pos = foot.above(n);
+            level.setBlock(pos, describe(level.getBlockState(pos), level, pos), flags);
+        }
     }
 
     /** Fills in TOP and LOWER from what is actually above and below the block. */

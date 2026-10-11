@@ -8,6 +8,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPC
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -212,7 +213,7 @@ public class LOTRCrocodileEntity extends Monster {
                 for (int j = -8; j <= 8; ++j) {
                     for (int k = -8; k <= 8; ++k) {
                         net.minecraft.core.BlockPos pos = blockPosition().offset(i, j, k);
-                        if (!level.hasChunkAt(pos) || !LOTRAmbientSpawnChecks.WATER.test(level.getBlockState(pos))) {
+                        if (!LOTRLegacyWorld.hasChunkAt(level, pos) || !LOTRAmbientSpawnChecks.WATER.test(level.getBlockState(pos))) {
                             continue;
                         }
                         if (getY() > 60.0) {

@@ -15,7 +15,7 @@ import org.jspecify.annotations.Nullable;
 
 /**
  * LOTRBiome.initBiomes: Middle-earth's biomes, each with its id (LOTRConfigBiomeID's defaults),
- * temperature and rain, height and hilliness, colour on the map and name. Utumno's waits on D15.
+ * temperature and rain, height and hilliness, colour on the map and name; and Utumno's.
  */
 public final class LOTRBiomes {
 
@@ -188,6 +188,7 @@ public final class LOTRBiomes {
     public static LOTRBiome FAR_HARAD_JUNGLE_MOUNTAINS;
     public static LOTRBiome HALF_TROLL_FOREST;
     public static LOTRBiome FAR_HARAD_KANUKA;
+    public static LOTRBiome UTUMNO;
 
     private static final Map<ResourceKey<Biome>, LOTRBiome> BY_KEY = new HashMap<>();
 
@@ -364,9 +365,12 @@ public final class LOTRBiomes {
         FAR_HARAD_JUNGLE_MOUNTAINS = new LOTRFarHaradJungleMountainsBiome(166, true).setTemperatureRainfall(1.0f, 1.0f).setMinMaxHeight(1.8f, 1.5f).setColor(6511174).setBiomeName("farHaradJungleMountains");
         HALF_TROLL_FOREST = new LOTRHalfTrollForestBiome(167, true).setTemperatureRainfall(0.8f, 0.2f).setMinMaxHeight(0.3f, 0.4f).setColor(5992500).setBiomeName("halfTrollForest");
         FAR_HARAD_KANUKA = new LOTRKanukaBiome(168, true).setTemperatureRainfall(1.0f, 1.0f).setMinMaxHeight(0.3f, 0.5f).setColor(5142552).setBiomeName("farHaradKanuka");
-        for (LOTRBiome biome : LOTRDimension.MIDDLE_EARTH.biomeList) {
-            if (biome != null) {
-                BY_KEY.put(biome.key, biome);
+        UTUMNO = new LOTRUtumnoBiome(169).setTemperatureRainfall(2.0f, 0.0f).setMinMaxHeight(0.0f, 0.0f).setColor(0).setBiomeName("utumno");
+        for (LOTRDimension dim : LOTRDimension.values()) {
+            for (LOTRBiome biome : dim.biomeList) {
+                if (biome != null) {
+                    BY_KEY.put(biome.key, biome);
+                }
             }
         }
     }

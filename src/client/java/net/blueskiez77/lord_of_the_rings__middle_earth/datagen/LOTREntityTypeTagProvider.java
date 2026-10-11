@@ -48,6 +48,7 @@ public class LOTREntityTypeTagProvider extends FabricTagsProvider.EntityTypeTags
         builder(EntityTypeTags.ARTHROPOD)
                 .add(key(LOTREntities.MIRKWOOD_SPIDER))
                 .add(key(LOTREntities.MORDOR_SPIDER))
+                .add(key(LOTREntities.UTUMNO_ICE_SPIDER))
                 .add(key(LOTREntities.JUNGLE_SCORPION))
                 .add(key(LOTREntities.DESERT_SCORPION))
                 .add(key(LOTREntities.TERMITE));

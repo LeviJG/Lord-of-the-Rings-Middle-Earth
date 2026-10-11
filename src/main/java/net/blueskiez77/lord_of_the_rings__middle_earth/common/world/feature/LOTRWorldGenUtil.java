@@ -24,6 +24,11 @@ public final class LOTRWorldGenUtil {
      * (has a collision shape) and is not leaves -- water and lava are passed through.
      */
     public static int getTopSolidOrLiquidBlock(WorldGenLevel world, int x, int z) {
+        // 1.7.10 loaded (or generated) the chunk to read it; today's heightmap of a chunk not yet
+        // loaded is the bottom of the world.
+        if (world instanceof net.minecraft.server.level.ServerLevel) {
+            world.getChunk(x >> 4, z >> 4);
+        }
         BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(x, 0, z);
         for (int y = world.getHeight(Heightmap.Types.WORLD_SURFACE, x, z); y > world.getMinY(); --y) {
             BlockState state = world.getBlockState(pos.setY(y));

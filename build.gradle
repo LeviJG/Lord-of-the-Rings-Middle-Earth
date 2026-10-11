@@ -55,15 +55,17 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
-    inputs.property "minecraft_version", project.minecraft_version
-    inputs.property "loader_version", project.loader_version
-    filteringCharset "UTF-8"
+    // Read at configuration, so the task does not reach for the project while it runs.
+    def expandProps = [
+            "version"          : project.version.toString(),
+            "minecraft_version": project.minecraft_version,
+            "loader_version"   : project.loader_version
+    ]
+    inputs.properties(expandProps)
+    filteringCharset = "UTF-8"
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version,
-                "minecraft_version": project.minecraft_version,
-                "loader_version": project.loader_version
+        expand(expandProps)
     }
 }
 
@@ -92,8 +94,9 @@ java {
 }
 
 jar {
+    def archivesBaseName = project.archives_base_name
     from("LICENSE") {
-        rename { "${it}_${project.archives_base_name}" }
+        rename { "${it}_${archivesBaseName}" }
     }
 }
 

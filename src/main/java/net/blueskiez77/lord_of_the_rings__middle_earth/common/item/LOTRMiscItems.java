@@ -69,14 +69,19 @@ public final class LOTRMiscItems {
     // LOTRItemNPCRespawner: setMaxStackSize(1).
     public static final Item NPC_RESPAWNER = register("npc_respawner", LOTRNPCRespawnerItem::new,
             new Item.Properties().stacksTo(1));
-    public static final Item KEY_OF_ICE = register("key_of_ice", Item::new, new Item.Properties());
-    public static final Item KEY_OF_OBSIDIAN = register("key_of_obsidian", Item::new, new Item.Properties());
-    public static final Item ICE_KEY_HANDLE = register("ice_key_handle", Item::new, new Item.Properties());
-    public static final Item ICE_KEY_SHAFT = register("ice_key_shaft", Item::new, new Item.Properties());
-    public static final Item ICE_KEY_PIN = register("ice_key_pin", Item::new, new Item.Properties());
-    public static final Item OBSIDIAN_KEY_HANDLE = register("obsidian_key_handle", Item::new, new Item.Properties());
-    public static final Item OBSIDIAN_KEY_SHAFT = register("obsidian_key_shaft", Item::new, new Item.Properties());
-    public static final Item OBSIDIAN_KEY_PIN = register("obsidian_key_pin", Item::new, new Item.Properties());
+    // LOTRItemUtumnoKey: setMaxStackSize(1), the two whole keys and their six parts.
+    public static final Item KEY_OF_ICE = register("key_of_ice",
+            props -> new LOTRUtumnoKeyItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.ICE, props),
+            new Item.Properties().stacksTo(1));
+    public static final Item KEY_OF_OBSIDIAN = register("key_of_obsidian",
+            props -> new LOTRUtumnoKeyItem(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.OBSIDIAN, props),
+            new Item.Properties().stacksTo(1));
+    public static final Item ICE_KEY_HANDLE = register("ice_key_handle", Item::new, new Item.Properties().stacksTo(1));
+    public static final Item ICE_KEY_SHAFT = register("ice_key_shaft", Item::new, new Item.Properties().stacksTo(1));
+    public static final Item ICE_KEY_PIN = register("ice_key_pin", Item::new, new Item.Properties().stacksTo(1));
+    public static final Item OBSIDIAN_KEY_HANDLE = register("obsidian_key_handle", Item::new, new Item.Properties().stacksTo(1));
+    public static final Item OBSIDIAN_KEY_SHAFT = register("obsidian_key_shaft", Item::new, new Item.Properties().stacksTo(1));
+    public static final Item OBSIDIAN_KEY_PIN = register("obsidian_key_pin", Item::new, new Item.Properties().stacksTo(1));
     public static final Item TAURETHRIM_AMULET = register("taurethrim_amulet", Item::new, new Item.Properties());
     // LOTRItemDaleCracker's five colours, one to a stack.
     public static final Item RED_DALISH_CRACKER = register("red_dalish_cracker", LOTRDaleCrackerItem::new, new Item.Properties().stacksTo(1));

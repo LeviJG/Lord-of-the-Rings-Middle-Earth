@@ -19,7 +19,6 @@ import org.jspecify.annotations.Nullable;
  * LOTRSpawnList: the named NPC lists the biomes draw from -- one faction's people or soldiers each,
  * weighted, with their group sizes.
  *
- * <p>NOT ported yet: Utumno's lists (UTUMNO_ICE, UTUMNO_OBSIDIAN, UTUMNO_FIRE), with Utumno and its creatures (D15).
  */
 public class LOTRSpawnList {
     public static final LOTRSpawnList HOBBITS = new LOTRSpawnList(
@@ -79,6 +78,19 @@ public class LOTRSpawnList {
             new LOTRSpawnEntry(LOTREntities.TROLL, 10, 1, 3));
     public static final LOTRSpawnList HILL_TROLLS = new LOTRSpawnList(
             new LOTRSpawnEntry(LOTREntities.MOUNTAIN_TROLL, 10, 1, 3));
+    public static final LOTRSpawnList UTUMNO_ICE = new LOTRSpawnList(
+            new LOTRSpawnEntry(LOTREntities.UTUMNO_ORC, 20, 4, 6), new LOTRSpawnEntry(LOTREntities.UTUMNO_ORC_ARCHER, 10, 4, 6),
+            new LOTRSpawnEntry(LOTREntities.UTUMNO_WARG, 10, 2, 4), new LOTRSpawnEntry(LOTREntities.UTUMNO_ICE_WARG, 10, 2, 4),
+            new LOTRSpawnEntry(LOTREntities.UTUMNO_ICE_SPIDER, 10, 2, 4), new LOTRSpawnEntry(LOTREntities.UTUMNO_SNOW_TROLL, 5, 1, 3));
+    public static final LOTRSpawnList UTUMNO_OBSIDIAN = new LOTRSpawnList(
+            new LOTRSpawnEntry(LOTREntities.UTUMNO_ORC, 20, 4, 6), new LOTRSpawnEntry(LOTREntities.UTUMNO_ORC_ARCHER, 10, 4, 6),
+            new LOTRSpawnEntry(LOTREntities.UTUMNO_WARG, 10, 2, 4), new LOTRSpawnEntry(LOTREntities.UTUMNO_OBSIDIAN_WARG, 10, 2, 4),
+            new LOTRSpawnEntry(LOTREntities.TORMENTED_ELF, 10, 2, 6), new LOTRSpawnEntry(LOTREntities.UTUMNO_TROLL, 5, 2, 4));
+    public static final LOTRSpawnList UTUMNO_FIRE = new LOTRSpawnList(
+            new LOTRSpawnEntry(LOTREntities.UTUMNO_ORC, 20, 4, 6), new LOTRSpawnEntry(LOTREntities.UTUMNO_ORC_ARCHER, 10, 4, 6),
+            new LOTRSpawnEntry(LOTREntities.UTUMNO_WARG, 10, 2, 4), new LOTRSpawnEntry(LOTREntities.UTUMNO_FIRE_WARG, 10, 2, 4),
+            new LOTRSpawnEntry(LOTREntities.TORMENTED_ELF, 15, 2, 6), new LOTRSpawnEntry(LOTREntities.UTUMNO_TROLL, 15, 2, 4),
+            new LOTRSpawnEntry(LOTREntities.BALROG, 2, 1, 1));
     public static final LOTRSpawnList SNOW_TROLLS = new LOTRSpawnList(
             new LOTRSpawnEntry(LOTREntities.SNOW_TROLL, 10, 1, 3));
     public static final LOTRSpawnList WOOD_ELVES = new LOTRSpawnList(

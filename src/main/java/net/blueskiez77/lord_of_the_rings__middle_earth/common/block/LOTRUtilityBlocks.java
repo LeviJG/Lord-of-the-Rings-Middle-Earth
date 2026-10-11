@@ -319,6 +319,52 @@ public final class LOTRUtilityBlocks {
                     .pushReaction(PushReaction.DESTROY),
             true);
 
+    // LOTRBlockElvenPortal and LOTRBlockMorgulPortal: Material.portal, hardness -1, glass steps,
+    // setLightLevel(0.875f), dropping nothing and with no item.
+    public static final Block ELVEN_PORTAL = register("elven_portal", LOTRElvenPortalBlock::new, portalProperties(), false);
+    public static final Block MORGUL_PORTAL = register("morgul_portal", LOTRMorgulPortalBlock::new, portalProperties(), false);
+
+    // LOTRBlockUtumnoPortal: Material.portal, hardness -1 and resistance Float.MAX_VALUE, stone steps; no item.
+    public static final Block UTUMNO_PORTAL = register("utumno_portal", LOTRUtumnoPortalBlock::new,
+            BlockBehaviour.Properties.of()
+                    .strength(-1.0f, 3600000.0f)
+                    .sound(SoundType.STONE)
+                    .noCollision()
+                    .noOcclusion()
+                    .noLootTable()
+                    .pushReaction(PushReaction.BLOCK),
+            false);
+    // LOTRBlockUtumnoReturnPortal: as the Utumno portal, at full light.
+    public static final Block UTUMNO_RETURN_PORTAL = register("utumno_return_portal", LOTRUtumnoReturnPortalBlock::new,
+            BlockBehaviour.Properties.of()
+                    .strength(-1.0f, 3600000.0f)
+                    .sound(SoundType.STONE)
+                    .lightLevel(state -> 15)
+                    .noCollision()
+                    .noOcclusion()
+                    .noLootTable()
+                    .pushReaction(PushReaction.BLOCK),
+            false);
+    // LOTRBlockUtumnoBrickEntrance: Material.rock, hardness -1 and resistance Float.MAX_VALUE; drops ice Utumno brick.
+    public static final Block UTUMNO_BRICK_ENTRANCE = register("utumno_brick_entrance", LOTRUtumnoBrickEntranceBlock::new,
+            BlockBehaviour.Properties.of()
+                    .mapColor(MapColor.STONE)
+                    .strength(-1.0f, 3600000.0f)
+                    .sound(SoundType.STONE)
+                    .pushReaction(PushReaction.BLOCK),
+            true);
+
+    private static BlockBehaviour.Properties portalProperties() {
+        return BlockBehaviour.Properties.of()
+                .strength(-1.0f, 0.0f)
+                .sound(SoundType.GLASS)
+                .lightLevel(state -> 13)
+                .noCollision()
+                .noOcclusion()
+                .noLootTable()
+                .pushReaction(PushReaction.BLOCK);
+    }
+
     public static final Block CHERRY_TRAPDOOR = registerTrapdoor("cherry_trapdoor");
     public static final Block ALMOND_TRAPDOOR = registerTrapdoor("almond_trapdoor");
     public static final Block APPLE_TRAPDOOR = registerTrapdoor("apple_trapdoor");

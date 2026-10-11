@@ -96,6 +96,14 @@ public final class LOTRSounds {
     public static final SoundEvent ORC_FIRE = register("orc.fire");
     /** Breaking a pledge, "lotr:event.unpledge". */
     public static final SoundEvent EVENT_UNPLEDGE = register("event.unpledge");
+    /** The start of a journey by waypoint, "lotr:event.fastTravel" (LOTRGuiFastTravel). */
+    public static final SoundEvent EVENT_FAST_TRAVEL = register("event.fast_travel");
+
+    /** LOTRAmbience ("New weather" and "Ambience"): the sea's waves, and Middle-earth's own rain, thunder and wind. */
+    public static final SoundEvent AMBIENT_TERRAIN_SEA = register("ambient.terrain.sea");
+    public static final SoundEvent AMBIENT_WEATHER_RAIN = register("ambient.weather.rain");
+    public static final SoundEvent AMBIENT_WEATHER_THUNDER = register("ambient.weather.thunder");
+    public static final SoundEvent AMBIENT_WEATHER_WIND = register("ambient.weather.wind");
 
     /** A plate smashing, "lotr:block.plate.break". */
     public static final SoundEvent BLOCK_PLATE_BREAK = register("block.plate.break");

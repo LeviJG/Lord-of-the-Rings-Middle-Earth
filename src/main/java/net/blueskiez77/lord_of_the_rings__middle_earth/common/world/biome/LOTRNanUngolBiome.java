@@ -37,11 +37,15 @@ public class LOTRNanUngolBiome extends LOTRMordorBiome {
     @Override
     public void decorate(WorldGenLevel world, RandomSource random, int i, int k) {
         super.decorate(world, random, i, k);
+    }
+
+    @Override
+    public void planStructures(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.legacy.LOTRLegacyStructure.Planner planner, RandomSource random, int i, int k) {
         for (int l = 0; l < 4; ++l) {
             int i1 = i + random.nextInt(16) + 8;
             int j1 = random.nextInt(128);
             int k1 = k + random.nextInt(16) + 8;
-            new LOTRWebOfUngoliantStructure(false, 64).generate(world, random, i1, j1, k1);
+            planner.plan(LOTRWebOfUngoliantStructure.class, (world, r) -> new LOTRWebOfUngoliantStructure(false, 64).generate(world, r, i1, j1, k1));
         }
     }
 

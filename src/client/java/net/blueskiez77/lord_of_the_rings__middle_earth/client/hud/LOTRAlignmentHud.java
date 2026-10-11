@@ -11,6 +11,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRAlignm
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
@@ -134,7 +135,7 @@ public final class LOTRAlignmentHud {
                     + Mth.floor(mc.player.getZ());
             graphics.text(mc.font, coords, x - mc.font.width(coords) / 2, y + 70, 0xFFFFFFFF, false);
             BlockPos pos = BlockPos.containing(mc.player.getX(), 0.0, mc.player.getZ());
-            if (mc.level.hasChunkAt(pos)) {
+            if (LOTRLegacyWorld.hasChunkAt(mc.level, pos)) {
                 LOTRBiome biome = LOTRBiomes.of(mc.level.getBiome(pos));
                 if (biome != null) {
                     Component biomeName = biome.getBiomeDisplayName();

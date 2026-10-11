@@ -4,14 +4,28 @@
   "package": "net.blueskiez77.lord_of_the_rings__middle_earth.mixin.client",
   "compatibilityLevel": "JAVA_25",
   "client": [
+    "LOTRAtmosphericFogMixin",
+    "LOTRCameraMixin",
+    "LOTRClientLevelAccessor",
+    "LOTRCloudRendererMixin",
+    "LOTRClientLevelSoundMixin",
+    "LOTRClientLevelTintMixin",
+    "LOTREnvironmentProbeMixin",
+    "LOTRCreateWorldTabMixin",
+    "LOTRDebugEntryBiomeMixin",
     "LOTRDebugRendererMixin",
     "LOTREntityRenderStateMixin",
     "LOTREntityRendererMixin",
     "LOTRGuiSetScreenMixin",
     "LOTRItemModelResolverMixin",
+    "LOTRLevelLoadingScreenMixin",
     "LOTRLightmapRenderStateExtractorMixin",
     "LOTRMouseHandlerMixin",
-    "LOTRTitleScreenMixin"
+    "LOTRRenderTypeInvoker",
+    "LOTRSkyRendererMixin",
+    "LOTRTitleScreenMixin",
+    "LOTRWeatherEffectRendererMixin",
+    "LOTRWeatherRenderStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1

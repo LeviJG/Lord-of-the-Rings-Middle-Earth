@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.chunk.ChunkAccess;
 
 /**
  * The 1.7.10 world queries the original's logic was written against, worked
@@ -65,5 +66,17 @@ public final class LOTRLegacyWorld {
             }
         }
         return true;
+    }
+
+    /** blockExists / hasChunkAt: the chunk holding this column is loaded (at any height). */
+    public static boolean hasChunkAt(LevelReader level, BlockPos pos) {
+        return level.hasChunk(SectionPos.blockToSectionCoord(pos.getX()), SectionPos.blockToSectionCoord(pos.getZ()));
+    }
+
+    /** getTopFilledSegment: the bottom of the highest section holding anything, or the floor if none. */
+    public static int getHighestSectionPosition(ChunkAccess chunk) {
+        int index = chunk.getHighestFilledSectionIndex();
+        return index == ChunkAccess.NO_FILLED_SECTION ? chunk.getMinY()
+                : SectionPos.sectionToBlockCoord(chunk.getSectionYFromSectionIndex(index));
     }
 }

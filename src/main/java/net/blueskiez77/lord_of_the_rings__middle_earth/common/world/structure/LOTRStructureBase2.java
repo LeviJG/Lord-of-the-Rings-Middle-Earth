@@ -464,6 +464,11 @@ public abstract class LOTRStructureBase2 implements net.blueskiez77.lord_of_the_
         }
         int flags = placeFlags();
         state = joinHalves(world, pos, rotateState(state), flags, this.sbb);
+        // A carved pumpkin's onPlace looks for a golem's body around it, reading the neighbouring
+        // chunks without loading them, and fails on one that is not there yet.
+        if (state.getBlock() instanceof net.minecraft.world.level.block.CarvedPumpkinBlock) {
+            flags |= net.minecraft.world.level.block.Block.UPDATE_SKIP_ON_PLACE;
+        }
         world.setBlock(pos, state, flags);
         this.placed.add(pos);
     }
@@ -849,13 +854,26 @@ public abstract class LOTRStructureBase2 implements net.blueskiez77.lord_of_the_
             for (int l = 0; l < text.length && l < 4; ++l) {
                 signText = signText.setMessage(l, Component.literal(text[l]));
             }
-            sign.setText(signText, true);
+            setFrontText(sign, signText);
         }
     }
 
     /** {@code sign.signText[line] = text}: one line of a sign's front. */
     public static void setSignLine(SignBlockEntity sign, int line, String text) {
-        sign.setText(sign.getFrontText().setMessage(line, Component.literal(text)), true);
+        setFrontText(sign, sign.getFrontText().setMessage(line, Component.literal(text)));
+    }
+
+    /**
+     * A sign's front text, set through its saved data: SignBlockEntity.setText tells the level of the
+     * change, and a sign built as the world is generated has no level yet.
+     */
+    private static void setFrontText(SignBlockEntity sign, net.minecraft.world.level.block.entity.SignText text) {
+        net.minecraft.core.RegistryAccess registries = net.minecraft.core.RegistryAccess.EMPTY;
+        net.minecraft.nbt.CompoundTag tag = sign.saveWithoutMetadata(registries);
+        tag.put("front_text", net.minecraft.world.level.block.entity.SignText.DIRECT_CODEC
+                .encodeStart(net.minecraft.nbt.NbtOps.INSTANCE, text).getOrThrow());
+        sign.loadWithComponents(net.minecraft.world.level.storage.TagValueInput.create(
+                net.minecraft.util.ProblemReporter.DISCARDING, registries, tag));
     }
 
     public void placeSkull(WorldGenLevel world, RandomSource random, int i, int j, int k) {
@@ -1138,7 +1156,10 @@ public abstract class LOTRStructureBase2 implements net.blueskiez77.lord_of_the_
         if (pos == null) {
             return;
         }
-        LeashFenceKnotEntity leash = LeashFenceKnotEntity.getOrCreateKnot(world.getLevel(), pos);
+        // A new knot through the level being built, not getOrCreateKnot, which adds it to the
+        // live level -- off the server's thread while the world is generated.
+        LeashFenceKnotEntity leash = new LeashFenceKnotEntity(world.getLevel(), pos);
+        world.addFreshEntity(leash);
         entity.setLeashedTo(leash, true);
     }
 

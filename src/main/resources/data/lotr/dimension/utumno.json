@@ -1,0 +1,10 @@
+{
+  "type": "lotr:utumno",
+  "generator": {
+    "type": "lotr:utumno",
+    "biome_source": {
+      "type": "minecraft:fixed",
+      "biome": "lotr:utumno"
+    }
+  }
+}

@@ -47,7 +47,7 @@ import org.jspecify.annotations.Nullable;
  * <p>Left out: the "wreck Balrogs" hooks, behind a static flag the original
  * never set.
  */
-public class LOTRSwanEntity extends PathfinderMob {
+public class LOTRSwanEntity extends PathfinderMob implements LOTRAmbientCreature {
 
     private static final Random VIOLENCE_RAND = new Random();
     private static final byte EVENT_PECK = 100;

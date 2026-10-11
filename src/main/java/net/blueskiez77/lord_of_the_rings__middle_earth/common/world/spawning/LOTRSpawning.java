@@ -11,7 +11,7 @@ import net.minecraft.world.level.gamerules.GameRules;
 /**
  * Middle-earth's spawning each tick: its creatures (LOTRSpawnerAnimals, in place of vanilla's
  * spawner, animals every 400 ticks), its NPCs (LOTRSpawnerNPCs) and its rarer comings
- * (LOTREventSpawner), while mobs may spawn.
+ * (LOTREventSpawner), while mobs may spawn; and in Utumno, while a player is there, its NPCs only.
  */
 public final class LOTRSpawning {
 
@@ -23,6 +23,12 @@ public final class LOTRSpawning {
     }
 
     private static void tick(ServerLevel level) {
+        if (level.getChunkSource().getGenerator() instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoChunkGenerator) {
+            if (!level.players().isEmpty() && level.getGameRules().get(GameRules.SPAWN_MOBS)) {
+                LOTRSpawnerNPCs.performSpawning(level);
+            }
+            return;
+        }
         if (!(level.getChunkSource().getGenerator() instanceof LOTRChunkGenerator) || !level.getGameRules().get(GameRules.SPAWN_MOBS)) {
             return;
         }

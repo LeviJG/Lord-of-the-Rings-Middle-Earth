@@ -1,18 +1,12 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.client.gui;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRMapCoords;
-import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRRoads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.map.LOTRMapRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRWaypoint;
 
-import com.mojang.blaze3d.platform.NativeImage;
 
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.fabric.api.client.screen.v1.Screens;
@@ -23,7 +17,6 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.PlainTextButton;
 import net.minecraft.client.gui.components.SpriteIconButton;
-import net.minecraft.client.gui.navigation.ScreenRectangle;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.input.InputWithModifiers;
@@ -43,21 +36,13 @@ import net.minecraft.util.Util;
  * black, zooming in. The buttons sit lower, as red-book buttons, and the
  * mod's title stands under the logo.
  *
- * <p>The map is drawn here as the original's map renderer drew it for the
- * menu (LOTRGuiRendererMap, without labels, the sepia map or the player's
- * waypoints); the full map screen is D13.
+ * <p>The map is drawn by {@link LOTRMapRenderer}, as the original's
+ * LOTRGuiRendererMap drew it: no labels, no fading, every waypoint locked.
  */
 public class LOTRMainMenuScreen extends TitleScreen {
 
-    private static final Identifier MAP = Identifier.fromNamespaceAndPath("lotr", "map/map.png");
-    private static final Identifier MAP_OVERLAY = Identifier.fromNamespaceAndPath("lotr", "map/map_overlay.png");
-    private static final Identifier MAP_ICONS = Identifier.fromNamespaceAndPath("lotr", "map/map_screen.png");
     private static final Identifier MENU_OVERLAY = Identifier.fromNamespaceAndPath("lotr", "gui/menu_overlay.png");
-    private static final Identifier VIGNETTE = Identifier.withDefaultNamespace("textures/misc/vignette.png");
-    private static final int MAP_IMAGE_WIDTH = 3200;
-    private static final int MAP_IMAGE_HEIGHT = 4000;
     /** LOTRBiome.ocean's colour. */
-    private static final int OCEAN_COLOUR = 0xFF000000 | 153997;
 
     private static final List<LOTRWaypoint> WAYPOINT_ROUTE = new ArrayList<>();
     private static final Random RAND = new Random();
@@ -70,6 +55,7 @@ public class LOTRMainMenuScreen extends TitleScreen {
     private static float mapVelY;
 
     private final boolean fadeIn = isFirstMenu;
+    private final LOTRMapRenderer mapRenderer = new LOTRMapRenderer();
     private long firstRenderTime;
     private double prevMapX;
     private double mapX;
@@ -289,10 +275,7 @@ public class LOTRMainMenuScreen extends TitleScreen {
         }
         this.zoomStable = (float) Math.pow(2.0, -0.1);
         renderMap(graphics, partialTick);
-        for (int l = 0; l < 2; ++l) {
-            graphics.blit(RenderPipelines.VIGNETTE, VIGNETTE, 0, 0, 0.0f, 0.0f, this.width, this.height,
-                    this.width, this.height, -1);
-        }
+        LOTRMapRenderer.drawVignettes(graphics, 2, 0, 0, this.width, this.height, this.width, this.height);
         float overlayAlpha = this.fadeIn ? Mth.clamp(1.0f - fade, 0.0f, 1.0f) : 0.0f;
         if (overlayAlpha > 0.0f) {
             graphics.blit(RenderPipelines.GUI_TEXTURED, MENU_OVERLAY, 0, 0, 0.0f, 0.0f, this.width, this.height,
@@ -310,230 +293,11 @@ public class LOTRMainMenuScreen extends TitleScreen {
         }
     }
 
-    /** LOTRGuiRendererMap.renderMap over the whole screen: the ocean, the map and its overlay, the roads, the waypoints. */
+    /** LOTRGuiRendererMap.renderMap over the whole screen, the view eased between ticks. */
     private void renderMap(GuiGraphicsExtractor graphics, float partialTick) {
-        graphics.fill(0, 0, this.width, this.height, OCEAN_COLOUR);
-        float zoom = (float) Math.pow(2.0, this.zoomExp);
         double posX = this.prevMapX + (this.mapX - this.prevMapX) * partialTick;
         double posY = this.prevMapY + (this.mapY - this.prevMapY) * partialTick;
-
-        // renderMapAndOverlay: the part of the map image in view, clipped to the image's edges.
-        double mapScaleX = this.width / zoom;
-        double mapScaleY = this.height / zoom;
-        double minU = (posX - mapScaleX / 2.0) / MAP_IMAGE_WIDTH;
-        double maxU = (posX + mapScaleX / 2.0) / MAP_IMAGE_WIDTH;
-        double minV = (posY - mapScaleY / 2.0) / MAP_IMAGE_HEIGHT;
-        double maxV = (posY + mapScaleY / 2.0) / MAP_IMAGE_HEIGHT;
-        int x0 = 0;
-        int x1 = this.width;
-        int y0 = 0;
-        int y1 = this.height;
-        if (minU < 0.0) {
-            x0 = (int) Math.round(-minU * MAP_IMAGE_WIDTH * zoom);
-            minU = 0.0;
-        }
-        if (maxU > 1.0) {
-            x1 = this.width - (int) Math.round((maxU - 1.0) * MAP_IMAGE_WIDTH * zoom);
-            maxU = 1.0;
-        }
-        if (minV < 0.0) {
-            y0 = (int) Math.round(-minV * MAP_IMAGE_HEIGHT * zoom);
-            minV = 0.0;
-        }
-        if (maxV > 1.0) {
-            y1 = this.height - (int) Math.round((maxV - 1.0) * MAP_IMAGE_HEIGHT * zoom);
-            maxV = 1.0;
-        }
-        if (x1 > x0 && y1 > y0) {
-            graphics.blit(MAP, x0, y0, x1, y1, (float) minU, (float) maxU, (float) minV, (float) maxV);
-        }
-        graphics.blit(RenderPipelines.GUI_TEXTURED, MAP_OVERLAY, 0, 0, 0.0f, 0.0f, this.width, this.height,
-                256, 256, 256, 256, ARGB.white(0.2f));
-
-        // renderRoads(false): a dot of black every so many points along each road. renderWaypoints(all,
-        // labels off, toggles overridden): a locked waypoint's dot for each not hidden. Both are drawn as
-        // one element of rectangles, smoothed to the screen's own pixels (see drawSmoothSprite).
-        int guiScale = this.minecraft.getWindow().getGuiScale();
-        LOTRMapQuadsRenderState quads = new LOTRMapQuadsRenderState(new ScreenRectangle(0, 0, this.width, this.height),
-                graphics.scissorStack.peek());
-        float[] dots = roadDots(Math.max(Math.round(400.0f / this.zoomStable), 1));
-        for (int d = 0; d < dots.length; d += 2) {
-            float x = screenX(dots[d], posX, zoom);
-            float y = screenY(dots[d + 1], posY, zoom);
-            if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
-                // The original's quad, x..x+1 by y..y+1, at the point itself.
-                drawSmoothSprite(quads, x, y, guiScale, ROAD_DOT, 1);
-            }
-        }
-        int[] waypointIcon = waypointIcon();
-        for (LOTRWaypoint waypoint : LOTRWaypoint.values()) {
-            if (waypoint.isHidden()) {
-                continue;
-            }
-            float x = screenX(mapX(waypoint.xCoord), posX, zoom);
-            float y = screenY(mapZ(waypoint.zCoord), posY, zoom);
-            if (x >= -200 && x <= this.width + 200 && y >= -200 && y <= this.height + 200) {
-                // drawTexturedModalRectFloat: the 4 by 4 icon centred on the waypoint itself.
-                drawSmoothSprite(quads, x - 2.0f, y - 2.0f, guiScale, waypointIcon, WAYPOINT_ICON_SIZE);
-            }
-        }
-        if (!quads.isEmpty()) {
-            graphics.guiRenderState.addGuiElement(quads);
-        }
-    }
-
-    private static final int[] ROAD_DOT = {0xFF000000};
-    private static final int WAYPOINT_ICON_SIZE = 4;
-    private int @org.jspecify.annotations.Nullable [] waypointIcon;
-
-    /** The locked waypoint icon's colours, read from map_screen.png at (0, 200), row by row. */
-    private int[] waypointIcon() {
-        if (this.waypointIcon == null) {
-            int[] icon = new int[WAYPOINT_ICON_SIZE * WAYPOINT_ICON_SIZE];
-            try (InputStream in = this.minecraft.getResourceManager().open(MAP_ICONS);
-                 NativeImage image = NativeImage.read(in)) {
-                for (int y = 0; y < WAYPOINT_ICON_SIZE; ++y) {
-                    for (int x = 0; x < WAYPOINT_ICON_SIZE; ++x) {
-                        icon[y * WAYPOINT_ICON_SIZE + x] = image.getPixel(x, 200 + y);
-                    }
-                }
-            } catch (IOException e) {
-                LOTRMod.LOGGER.warn("LOTR: could not read the waypoint icon from {}", MAP_ICONS, e);
-            }
-            this.waypointIcon = icon;
-        }
-        return this.waypointIcon;
-    }
-
-    /**
-     * A size by size sprite of texels, each a GUI pixel, its top left at a GUI position, drawn in the
-     * screen's own pixels: wholly covered pixels take their texel's colour, and those on a texel's edge
-     * a mix of the texels (and what lies beneath) by how much of the pixel each covers. Drawn so, it
-     * glides as the map moves and zooms, rather than stepping a pixel at a time out of step with the
-     * sprites beside it.
-     */
-    private static void drawSmoothSprite(LOTRMapQuadsRenderState quads, float guiX, float guiY, int guiScale,
-                                         int[] texels, int size) {
-        Bands cols = new Bands(guiX * guiScale, size, guiScale);
-        Bands rows = new Bands(guiY * guiScale, size, guiScale);
-        for (int c = 0; c < cols.count; ++c) {
-            if (cols.width[c] <= 0) {
-                continue;
-            }
-            for (int r = 0; r < rows.count; ++r) {
-                if (rows.width[r] <= 0) {
-                    continue;
-                }
-                float alpha = 0.0f;
-                float red = 0.0f;
-                float green = 0.0f;
-                float blue = 0.0f;
-                for (int a = 0; a < 2; ++a) {
-                    int tx = cols.texel[c][a];
-                    for (int b = 0; b < 2; ++b) {
-                        int ty = rows.texel[r][b];
-                        if (tx < 0 || ty < 0) {
-                            continue;
-                        }
-                        int texel = texels[ty * size + tx];
-                        float weight = cols.weight[c][a] * rows.weight[r][b] * ARGB.alpha(texel) / 255.0f;
-                        alpha += weight;
-                        red += ARGB.red(texel) * weight;
-                        green += ARGB.green(texel) * weight;
-                        blue += ARGB.blue(texel) * weight;
-                    }
-                }
-                int alphaByte = Math.round(alpha * 255.0f);
-                if (alphaByte > 0) {
-                    quads.add((float) cols.start[c] / guiScale, (float) rows.start[r] / guiScale,
-                            (float) (cols.start[c] + cols.width[c]) / guiScale,
-                            (float) (rows.start[r] + rows.width[r]) / guiScale,
-                            ARGB.color(alphaByte, Math.round(red / alpha), Math.round(green / alpha),
-                                    Math.round(blue / alpha)));
-                }
-            }
-        }
-    }
-
-    /**
-     * One axis of a smoothed sprite, in screen pixels: for each texel boundary, the pixel line it falls
-     * in, shared by the texel before (by how far in the boundary lies) and the texel after; between
-     * them, each texel's wholly covered lines. A texel of -1 is none, beyond the sprite.
-     */
-    private static final class Bands {
-        final int count;
-        final int[] start;
-        final int[] width;
-        final int[][] texel;
-        final float[][] weight;
-
-        Bands(float screenPos, int size, int scale) {
-            int origin = Mth.floor(screenPos);
-            float frac = screenPos - origin;
-            this.count = size * 2 + 1;
-            this.start = new int[this.count];
-            this.width = new int[this.count];
-            this.texel = new int[this.count][2];
-            this.weight = new float[this.count][2];
-            for (int k = 0; k <= size; ++k) {
-                int edge = k * 2;
-                this.start[edge] = origin + k * scale;
-                this.width[edge] = 1;
-                this.texel[edge][0] = k > 0 ? k - 1 : -1;
-                this.weight[edge][0] = frac;
-                this.texel[edge][1] = k < size ? k : -1;
-                this.weight[edge][1] = 1.0f - frac;
-                if (k < size) {
-                    this.start[edge + 1] = origin + k * scale + 1;
-                    this.width[edge + 1] = scale - 1;
-                    this.texel[edge + 1][0] = k;
-                    this.weight[edge + 1][0] = 1.0f;
-                    this.texel[edge + 1][1] = -1;
-                }
-            }
-        }
-    }
-
-    private static float @org.jspecify.annotations.Nullable [] roadDots;
-    private static int roadDotsInterval;
-
-    /** The road points drawn, every interval-th of each road, on the map image, worked out once (they do not move, only the view does). */
-    private static float[] roadDots(int interval) {
-        if (roadDots == null || roadDotsInterval != interval) {
-            List<Float> dots = new ArrayList<>();
-            for (Iterator<LOTRRoads> roads = LOTRRoads.getAllRoadsForDisplay(); roads.hasNext(); ) {
-                LOTRRoads road = roads.next();
-                for (int i = 0; i < road.pointCount(); i += interval) {
-                    LOTRRoads.RoadPoint point = road.pointAt(i);
-                    dots.add((float) mapX(point.x()));
-                    dots.add((float) mapZ(point.z()));
-                }
-            }
-            float[] array = new float[dots.size()];
-            for (int i = 0; i < array.length; ++i) {
-                array[i] = dots.get(i);
-            }
-            roadDots = array;
-            roadDotsInterval = interval;
-        }
-        return roadDots;
-    }
-
-    /** transformCoords, first half: a world position to the map image. */
-    private static double mapX(double worldX) {
-        return worldX / LOTRMapCoords.SCALE + LOTRMapCoords.ORIGIN_X;
-    }
-
-    private static double mapZ(double worldZ) {
-        return worldZ / LOTRMapCoords.SCALE + LOTRMapCoords.ORIGIN_Z;
-    }
-
-    /** transformCoords, second half: a place on the map image to the screen, by the view's centre and zoom. */
-    private float screenX(double mapX, double posX, float zoom) {
-        return (float) ((mapX - posX) * zoom + this.width / 2.0);
-    }
-
-    private float screenY(double mapZ, double posY, float zoom) {
-        return (float) ((mapZ - posY) * zoom + this.height / 2.0);
+        this.mapRenderer.setView(posX, posY, this.zoomExp, this.zoomStable);
+        this.mapRenderer.renderMap(graphics, this.font, null, false, 0, 0, this.width, this.height);
     }
 }

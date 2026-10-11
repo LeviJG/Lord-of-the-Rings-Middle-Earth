@@ -35,12 +35,13 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.PathType;
 
-import org.jspecify.annotations.Nullable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRDorwinionBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityDorwinionMan (the Dorwinman): the men of Dorwinion, "Name of
@@ -166,5 +167,10 @@ public class LOTRDorwinionManEntity extends LOTRManEntity {
     @Override
     public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
         return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, false));
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.DORWINION;
     }
 }

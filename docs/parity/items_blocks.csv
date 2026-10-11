@@ -195,7 +195,7 @@ block,clover,clover,0,Clover,clover,ported,name,
 block,clover,clover,1,Four-leaf Clover,four_leaf_clover,ported,name,
 block,cobblebrick,cobblebrick,0,Drystone,drystone,ported,name,
 block,commandTable,commandTable,,Table of Command,table_of_command,ported,name,
-block,coralReef,coralReef,,Coral Reef,,missing,override,worldgen coral reef block; not the gem coral_block
+block,coralReef,coralReef,,Coral Reef,coral_reef,ported,override,worldgen coral reef block; not the gem coral_block
 block,cornStalk,cornStalk,,Corn Stalks,corn_stalk,ported,name,
 block,corruptMallorn,corruptMallorn,,Corrupt Mallorn Sapling,corrupt_mallorn,ported,name,
 block,daleTable,daleCraftingTable,,Dalish Crafting Table,dale_crafting_table,ported,name,

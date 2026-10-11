@@ -28,6 +28,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityMordorOrc: an orc of Mordor in Mordor armour (bare-headed one time
  * in five), with a battleaxe, dagger (poisoned or not), scimitar, warhammer,
@@ -114,5 +115,10 @@ public class LOTRMordorOrcEntity extends LOTROrcEntity {
     @Override
     public LOTRAchievement getKillAchievement() {
         return LOTRAchievement.KILL_MORDOR_ORC;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.MORDOR;
     }
 }

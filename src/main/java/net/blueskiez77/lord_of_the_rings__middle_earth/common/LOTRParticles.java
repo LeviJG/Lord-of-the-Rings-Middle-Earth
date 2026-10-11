@@ -22,12 +22,18 @@ public final class LOTRParticles {
     public static final SimpleParticleType MORGUL_PORTAL = register("morgul_portal");
     /** LOTREntityRiverWaterFX in the Morgul Vale's water colour ("morgulWater"). */
     public static final SimpleParticleType MORGUL_WATER = register("morgul_water");
+    /** LOTREntityRiverWaterFX in corrupted Mirkwood's water colour ("mirkwoodWater"). */
+    public static final SimpleParticleType MIRKWOOD_WATER = register("mirkwood_water");
+    /** LOTREntityWaveFX ("wave"): a puff of spray riding in on the sea towards the shore. */
+    public static final SimpleParticleType WAVE = register("wave");
     /** LOTREntityWhiteSmokeFX. */
     public static final SimpleParticleType WHITE_SMOKE = register("white_smoke");
     /** LOTREntityQuenditeSmokeFX: blue-green smoke off quendite grass. */
     public static final SimpleParticleType QUENDITE_SMOKE = register("quendite_smoke");
     /** LOTREntityChillFX: pale blue smoke that hangs and sinks, off a Chilling blow. */
     public static final SimpleParticleType CHILL = register("chill");
+    /** LOTREntityUtumnoKillFX ("utumnoKill"): a dark flame running into an altar of Utumno. */
+    public static final SimpleParticleType UTUMNO_KILL = register("utumno_kill");
     /** LOTREntityMarshFlameFX: a long-lived flame, off the marsh lights. */
     public static final SimpleParticleType MARSH_FLAME = register("marsh_flame");
     /** LOTREntityMarshLightFX: a pale grey light, off the marsh lights. */

@@ -67,17 +67,21 @@ public class LOTROceanBiome extends LOTRBiome {
     }
 
     @Override
+    public void planStructures(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.legacy.LOTRLegacyStructure.Planner planner, RandomSource random, int i, int k) {
+        if (i < LOTRWaypoint.MITHLOND_SOUTH.getXCoord() && k > LOTRWaypoint.SOUTH_FOROCHEL.getZCoord() && k < LOTRWaypoint.ERYN_VORN.getZCoord() && random.nextInt(200) == 0) {
+            int i1 = i + random.nextInt(16) + 8;
+            int k1 = k + random.nextInt(16) + 8;
+            planner.plan(LOTRUnderwaterElvenRuinStructure.class, (world, r) ->
+                    new LOTRUnderwaterElvenRuinStructure(false).generate(world, r, i1, LOTRWorldGenUtil.getTopSolidOrLiquidBlock(world, i1, k1), k1));
+        }
+    }
+
+    @Override
     public void decorate(WorldGenLevel world, RandomSource random, int i, int k) {
         int j1;
         int i1;
         int k1;
         super.decorate(world, random, i, k);
-        if (i < LOTRWaypoint.MITHLOND_SOUTH.getXCoord() && k > LOTRWaypoint.SOUTH_FOROCHEL.getZCoord() && k < LOTRWaypoint.ERYN_VORN.getZCoord() && random.nextInt(200) == 0) {
-            i1 = i + random.nextInt(16) + 8;
-            k1 = k + random.nextInt(16) + 8;
-            j1 = LOTRWorldGenUtil.getTopSolidOrLiquidBlock(world, i1, k1);
-            new LOTRUnderwaterElvenRuinStructure(false).generate(world, random, i1, j1, k1);
-        }
         if (k > -30000) {
             if (random.nextInt(12) == 0 && ((j1 = LOTRWorldGenUtil.getTopSolidOrLiquidBlock(world, i1 = i + random.nextInt(16) + 8, k1 = k + random.nextInt(16) + 8)) < 60 || random.nextBoolean())) {
                 spongeGen.generate(world, random, i1, j1, k1);

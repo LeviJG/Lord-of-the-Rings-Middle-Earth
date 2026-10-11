@@ -21,6 +21,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityNearHaradrim (the Southron): a Southron of the coast, with an
  * Umbaric dagger, a coast name (one time in three an Umbar one), Southron
@@ -82,5 +83,10 @@ public class LOTRNearHaradrimEntity extends LOTRNearHaradrimBaseEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.NEAR_HARAD.createQuest(this);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.NEAR_HARAD;
     }
 }

@@ -20,8 +20,8 @@ import org.jspecify.annotations.Nullable;
  * an icon, and whether its members may not hurt one another or one another's hired units.
  * Saved by the original's keys.
  *
- * <p>NOT ported yet: the map's side -- members' places shown on the map (ShowMap, kept and
- * toggled but shown nowhere) and custom waypoints shared to it (D13).
+ * <p>Its members may share custom waypoints with it (LOTRCustomWaypoints), and see one another on
+ * the map even when hiding from others there ("ShowMap", LOTRMapPlayerData).
  */
 public class LOTRFellowship {
 

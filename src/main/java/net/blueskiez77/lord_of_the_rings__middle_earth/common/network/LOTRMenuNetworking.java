@@ -9,6 +9,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRRankOption
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRViewingFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestEvent;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuests;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRMapPlayerData;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -19,8 +20,7 @@ import net.minecraft.server.level.ServerPlayer;
  * The server's side of the Options screen (LOTRPacketSetOption) and the
  * one-time messages.
  *
- * <p>NOT ported yet: options 3 (show map location, with the map, D13) and 5
- * (conquest kills, with conquest, D14).
+ * <p>NOT ported yet: option 5 (conquest kills, with conquest).
  */
 public final class LOTRMenuNetworking {
 
@@ -88,6 +88,7 @@ public final class LOTRMenuNetworking {
                 case HIRED_DEATH_MESSAGES -> LOTRPlayerNPCOptions.setEnableHiredDeathMessages(player,
                         !LOTRPlayerNPCOptions.getEnableHiredDeathMessages(player));
                 case SHOW_ALIGNMENT -> LOTRPlayerAlignments.setHideAlignment(player, !LOTRPlayerAlignments.getHideAlignment(player));
+                case SHOW_MAP_LOCATION -> LOTRMapPlayerData.setHideMapLocation(player, !LOTRMapPlayerData.getHideMapLocation(player));
                 case FEM_RANK -> LOTRRankOptions.setFemRankOverride(player, !LOTRRankOptions.getFemRankOverride(player));
                 default -> {
                 }

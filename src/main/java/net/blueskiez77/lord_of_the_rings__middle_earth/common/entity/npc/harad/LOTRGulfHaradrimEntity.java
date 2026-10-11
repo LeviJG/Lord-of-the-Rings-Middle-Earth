@@ -19,6 +19,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityGulfHaradrim (the Gulfing): a man or woman of the Gulf of Harad,
  * with a Haradric dagger, a Gulf name, the Gulf's food and drink, and now and
@@ -76,5 +77,10 @@ public class LOTRGulfHaradrimEntity extends LOTRNearHaradrimBaseEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.GULF_HARAD.createQuest(this);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.GULF_HARAD;
     }
 }

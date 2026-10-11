@@ -22,6 +22,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBi
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenUtil;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRWaypoint;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.MinecraftServer;
@@ -224,7 +225,7 @@ public final class LOTREventSpawner {
         int i = LOTRWorldGenUtil.getRandomIntegerInRange(rand, x - homeRange, x + homeRange);
         int j = LOTRWorldGenUtil.getRandomIntegerInRange(rand, 16, 32);
         int k = LOTRWorldGenUtil.getRandomIntegerInRange(rand, z - homeRange, z + homeRange);
-        if (!world.hasChunksAt(i - checkRange, k - checkRange, i + checkRange, k + checkRange)) {
+        if (!LOTRLegacyWorld.hasChunksAt(world, i - checkRange, k - checkRange, i + checkRange, k + checkRange)) {
             return;
         }
         AABB aabb = new AABB(i, j, k, i + 1, j + 1, k + 1).inflate(checkRange);

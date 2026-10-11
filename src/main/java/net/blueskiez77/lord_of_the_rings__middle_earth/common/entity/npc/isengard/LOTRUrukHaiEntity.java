@@ -32,6 +32,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityUrukHai: a fighting Uruk of Isengard, man-sized and no weak orc,
  * in Uruk armour (bare-headed one time in ten) with a cleaver or pike (two
@@ -155,5 +156,10 @@ public class LOTRUrukHaiEntity extends LOTROrcEntity {
                 }
             }
         }
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.ISENGARD;
     }
 }

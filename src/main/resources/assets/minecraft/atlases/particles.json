@@ -447,6 +447,27 @@
           "y": 11,
           "width": 1,
           "height": 1
+        },
+        {
+          "sprite": "lotr:utumno_kill_0",
+          "x": 0,
+          "y": 9,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:utumno_kill_1",
+          "x": 1,
+          "y": 9,
+          "width": 1,
+          "height": 1
+        },
+        {
+          "sprite": "lotr:utumno_kill_2",
+          "x": 2,
+          "y": 9,
+          "width": 1,
+          "height": 1
         }
       ]
     },

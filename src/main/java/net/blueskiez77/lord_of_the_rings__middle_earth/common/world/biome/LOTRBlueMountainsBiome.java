@@ -83,11 +83,16 @@ public class LOTRBlueMountainsBiome extends LOTRBiome {
     @Override
     public void decorate(WorldGenLevel world, RandomSource random, int i, int k) {
         super.decorate(world, random, i, k);
+    }
+
+    @Override
+    public void planStructures(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.legacy.LOTRLegacyStructure.Planner planner, RandomSource random, int i, int k) {
         for (int l = 0; l < 4; ++l) {
             int i1 = i + random.nextInt(16) + 8;
             int j1 = 70 + random.nextInt(80);
             int k1 = k + random.nextInt(16) + 8;
-            new LOTRBlueMountainsHouseStructure(false).generate(world, random, i1, j1, k1);
+            planner.plan(LOTRBlueMountainsHouseStructure.class,
+                    (world, r) -> new LOTRBlueMountainsHouseStructure(false).generate(world, r, i1, j1, k1));
         }
     }
 

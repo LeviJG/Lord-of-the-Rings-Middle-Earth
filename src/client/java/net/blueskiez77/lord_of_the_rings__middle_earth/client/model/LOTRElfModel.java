@@ -58,6 +58,21 @@ public class LOTRElfModel<S extends LOTRElfModel.ElfState> extends LOTRBipedMode
         return LayerDefinition.create(createMesh(CubeDeformation.NONE, true), 64, 64);
     }
 
+    /** The tormented elf's glowing eyes: LOTRModelElf(0.05, 64, 64), of which only the head is drawn ({@link #showOnlyHead}). */
+    public static LayerDefinition createEyesLayer() {
+        return LayerDefinition.create(createMesh(new CubeDeformation(0.05f), true), 64, 64);
+    }
+
+    /** renderGlowingHead: the head alone, its ears with it, not the hair. */
+    public void showOnlyHead() {
+        this.hat.visible = false;
+        this.body.visible = false;
+        this.rightArm.visible = false;
+        this.leftArm.visible = false;
+        this.rightLeg.visible = false;
+        this.leftLeg.visible = false;
+    }
+
     /** The jazz outfit: LOTRModelElf(0.6, 64, 64). */
     public static LayerDefinition createOutfitLayer() {
         return LayerDefinition.create(createMesh(new CubeDeformation(0.6f), true), 64, 64);

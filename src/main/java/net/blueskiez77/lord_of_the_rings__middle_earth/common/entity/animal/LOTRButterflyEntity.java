@@ -42,7 +42,7 @@ import org.jspecify.annotations.Nullable;
  * <p>Its kind is the biome's it hatched in (Mirkwood and the Woodland Realm,
  * Lothlórien, the Far Harad jungle), common elsewhere.
  */
-public class LOTRButterflyEntity extends Mob {
+public class LOTRButterflyEntity extends Mob implements LOTRAmbientCreature {
 
     /** dataWatcher 16 and 17. */
     private static final EntityDataAccessor<Byte> DATA_TYPE =

@@ -51,7 +51,6 @@ import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 import net.minecraft.world.level.storage.ValueInput;
 
-import org.jspecify.annotations.Nullable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBlueMountainsBiome;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTREreborBiome;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRIronHillsBiome;
@@ -61,6 +60,8 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.LightLayer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRFeature;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityDwarf: Durin's Folk, "Name son of Father". They keep out of the
@@ -335,5 +336,10 @@ public class LOTRDwarfEntity extends LOTRNPCEntity {
 
     public boolean canDwarfSpawnAboveGround() {
         return true;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.DURIN;
     }
 }

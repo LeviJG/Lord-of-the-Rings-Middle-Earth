@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.client.render.npc;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.model.LOTRBarrowWightModel;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.world.LOTREnvironmentClient;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRRandomSkins;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.wraith.LOTRBarrowWightEntity;
 
@@ -18,11 +19,8 @@ import org.jspecify.annotations.Nullable;
 /**
  * LOTRRenderBarrowWight: a wight in one of the wight skins, casting no
  * shadow, bobbing gently in the air; dying, it does not topple but swells to
- * twice its size and fades away over a second.
- *
- * <p>NOT ported yet: marking that the viewer is the wight's quarry, for the
- * darkening of their screen (LOTRTickHandlerClient.anyWightsViewed, with the
- * HUD).
+ * twice its size and fades away over a second. Drawn hunting the viewer, it
+ * darkens their screen (LOTRTickHandlerClient.anyWightsViewed).
  */
 public class LOTRBarrowWightRenderer extends LOTRBipedRenderer<LOTRBarrowWightEntity, LOTRNPCRenderState,
         LOTRBarrowWightModel<LOTRNPCRenderState>> {
@@ -45,6 +43,7 @@ public class LOTRBarrowWightRenderer extends LOTRBipedRenderer<LOTRBarrowWightEn
     @Override
     public void extractRenderState(LOTRBarrowWightEntity wight, LOTRNPCRenderState state, float partialTick) {
         super.extractRenderState(wight, state, partialTick);
+        LOTREnvironmentClient.markWightViewed(wight);
         state.skin = SKINS.getRandomSkin(wight.getUUID());
         // setRotationAngles: f1 = 0, so it never walks.
         state.walkAnimationSpeed = 0.0f;

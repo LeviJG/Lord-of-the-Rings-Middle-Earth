@@ -50,6 +50,18 @@ public final class LOTRLevelData extends SavedData {
         }
     }
 
+    /** LOTRPacketLogin's commemorateEmpressShamiir. */
+    public record ShamiirPayload(boolean commemorate) implements net.minecraft.network.protocol.common.custom.CustomPacketPayload {
+        public static final Type<ShamiirPayload> TYPE = new Type<>(Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "shamiir"));
+        public static final net.minecraft.network.codec.StreamCodec<net.minecraft.network.RegistryFriendlyByteBuf, ShamiirPayload> STREAM_CODEC =
+                net.minecraft.network.codec.StreamCodec.composite(net.minecraft.network.codec.ByteBufCodecs.BOOL, ShamiirPayload::commemorate,
+                        ShamiirPayload::new);
+
+        @java.lang.Override
+        public Type<? extends net.minecraft.network.protocol.common.custom.CustomPacketPayload> type() {
+            return TYPE;
+        }
+    }
 
     /** enableAlignmentZones: on unless a save says otherwise. */
     public static boolean enableAlignmentZones = true;
@@ -57,10 +69,28 @@ public final class LOTRLevelData extends SavedData {
     public static boolean gollumSpawned;
     /** structuresBanned: 1 when /banStructures has turned structure spawners off for everyone. */
     public static int structuresBanned;
+    /** madePortal ("MadePortal"): 1 once the Ring portal has been made in the overworld. */
+    public static int madePortal;
+    /** madeMiddleEarthPortal ("MadeMiddlePortal"): 1 once someone has first come to Middle-earth (and its Ring portal stands). */
+    public static int madeMiddleEarthPortal;
+    /** Where the overworld's Ring portal was made: where one comes out of Middle-earth's ("OverworldX/Y/Z"). */
+    public static int overworldPortalX;
+    public static int overworldPortalY;
+    public static int overworldPortalZ;
     /** The Middle-earth ring portal's spot, which is Middle-earth's spawn point (LOTRWorldProviderMiddleEarth). */
     public static int middleEarthPortalX;
     public static int middleEarthPortalY;
     public static int middleEarthPortalZ;
+    /** The waypoints' longest and shortest fast travel wait, in seconds ("WpCdMax", "WpCdMin"). */
+    private static int waypointCooldownMax = 1800;
+    private static int waypointCooldownMin = 180;
+    /**
+     * commemorateEmpressShamiir ("CommemorateEmpressShamiir"): set in a world's save by hand, it gives the
+     * Fertile Valley waypoint its lore remembering the Empress; the client learns it on joining, and
+     * until then assumes it.
+     */
+    public static boolean commemorateEmpressShamiir;
+    public static boolean clientside_thisServer_commemorateEmpressShamiir = true;
     /** Each kind of travelling trader's wait, by its entity id ("TravellingTraders"). */
     private static final Map<String, Integer> travellingTraderTimes = new HashMap<>();
 
@@ -75,6 +105,35 @@ public final class LOTRLevelData extends SavedData {
                         .fieldOf("Rel").forGetter(Override::relation)).apply(i, Override::new));
     }
 
+    /** The portals' places, kept flat beside the rest as LOTR.dat kept them. */
+    private record Portals(int made, int madeME, int owX, int owY, int owZ, int meX, int meY, int meZ) {
+        static final com.mojang.serialization.MapCodec<Portals> MAP_CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
+                Codec.INT.optionalFieldOf("MadePortal", 0).forGetter(Portals::made),
+                Codec.INT.optionalFieldOf("MadeMiddlePortal", 0).forGetter(Portals::madeME),
+                Codec.INT.optionalFieldOf("OverworldX", 0).forGetter(Portals::owX),
+                Codec.INT.optionalFieldOf("OverworldY", 0).forGetter(Portals::owY),
+                Codec.INT.optionalFieldOf("OverworldZ", 0).forGetter(Portals::owZ),
+                Codec.INT.optionalFieldOf("MiddleEarthX", 0).forGetter(Portals::meX),
+                Codec.INT.optionalFieldOf("MiddleEarthY", 0).forGetter(Portals::meY),
+                Codec.INT.optionalFieldOf("MiddleEarthZ", 0).forGetter(Portals::meZ)).apply(i, Portals::new));
+
+        static Portals current() {
+            return new Portals(madePortal, madeMiddleEarthPortal, overworldPortalX, overworldPortalY, overworldPortalZ,
+                    middleEarthPortalX, middleEarthPortalY, middleEarthPortalZ);
+        }
+
+        void load() {
+            madePortal = made;
+            madeMiddleEarthPortal = madeME;
+            overworldPortalX = owX;
+            overworldPortalY = owY;
+            overworldPortalZ = owZ;
+            middleEarthPortalX = meX;
+            middleEarthPortalY = meY;
+            middleEarthPortalZ = meZ;
+        }
+    }
+
     private static final Codec<LOTRLevelData> CODEC = RecordCodecBuilder.create(i -> i.group(
             Codec.BOOL.optionalFieldOf("AlignmentZones", true).forGetter(d -> enableAlignmentZones),
             Override.CODEC.listOf().optionalFieldOf("Overrides", List.of()).forGetter(d -> currentOverrides()),
@@ -83,20 +142,22 @@ public final class LOTRLevelData extends SavedData {
             Codec.INT.optionalFieldOf("GWSpawnTick", 2400).forGetter(d -> LOTRGreyWandererTracker.spawnCooldown),
             Codec.BOOL.optionalFieldOf("GollumSpawned", false).forGetter(d -> gollumSpawned),
             Codec.INT.optionalFieldOf("StructuresBanned", 0).forGetter(d -> structuresBanned),
-            Codec.INT.optionalFieldOf("MiddleEarthX", 0).forGetter(d -> middleEarthPortalX),
-            Codec.INT.optionalFieldOf("MiddleEarthY", 0).forGetter(d -> middleEarthPortalY),
-            Codec.INT.optionalFieldOf("MiddleEarthZ", 0).forGetter(d -> middleEarthPortalZ),
+            Portals.MAP_CODEC.forGetter(d -> Portals.current()),
             Codec.unboundedMap(Codec.STRING, Codec.INT).optionalFieldOf("TravellingTraders", Map.of())
                     .forGetter(d -> new HashMap<>(travellingTraderTimes)),
             // LOTRDate.saveDates: {"Dates": {"ShireDate": day}}.
             Codec.INT.fieldOf("ShireDate").codec().optionalFieldOf("Dates", 0)
-                    .forGetter(d -> LOTRDate.ShireReckoning.currentDay)
-    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned, meX, meY, meZ, traders, shireDate) -> {
+                    .forGetter(d -> LOTRDate.ShireReckoning.currentDay),
+            Codec.INT.optionalFieldOf("WpCdMax", 1800).forGetter(d -> waypointCooldownMax),
+            Codec.INT.optionalFieldOf("WpCdMin", 180).forGetter(d -> waypointCooldownMin),
+            Codec.BOOL.optionalFieldOf("CommemorateEmpressShamiir", false).forGetter(d -> commemorateEmpressShamiir)
+    ).apply(i, (zones, overrides, wanderers, gwSpawnTick, gollum, banned, portals, traders, shireDate, wpCdMax, wpCdMin, shamiir) -> {
+        commemorateEmpressShamiir = shamiir;
+        waypointCooldownMax = wpCdMax;
+        waypointCooldownMin = wpCdMin;
         travellingTraderTimes.clear();
         travellingTraderTimes.putAll(traders);
-        middleEarthPortalX = meX;
-        middleEarthPortalY = meY;
-        middleEarthPortalZ = meZ;
+        portals.load();
         LOTRDate.ShireReckoning.currentDay = shireDate;
         gollumSpawned = gollum;
         structuresBanned = banned;
@@ -120,11 +181,12 @@ public final class LOTRLevelData extends SavedData {
         LOTRGreyWandererTracker.reset();
         gollumSpawned = false;
         structuresBanned = 0;
-        middleEarthPortalX = 0;
-        middleEarthPortalY = 0;
-        middleEarthPortalZ = 0;
+        new Portals(0, 0, 0, 0, 0, 0, 0, 0).load();
         travellingTraderTimes.clear();
         LOTRDate.ShireReckoning.currentDay = 0;
+        waypointCooldownMax = 1800;
+        waypointCooldownMin = 180;
+        commemorateEmpressShamiir = false;
         return new LOTRLevelData();
     }
 
@@ -140,6 +202,8 @@ public final class LOTRLevelData extends SavedData {
     public static void init() {
         net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(LOTRDatePayload.TYPE,
                 LOTRDatePayload.STREAM_CODEC);
+        net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry.clientboundPlay().register(ShamiirPayload.TYPE,
+                ShamiirPayload.STREAM_CODEC);
         ServerLifecycleEvents.SERVER_STARTED.register(s -> {
             server = s;
             instance = s.getDataStorage().computeIfAbsent(TYPE);
@@ -152,6 +216,7 @@ public final class LOTRLevelData extends SavedData {
             ServerPlayNetworking.send(handler.player, new LOTRAlignmentZonesPayload(enableAlignmentZones));
             ServerPlayNetworking.send(handler.player, relationsPayload());
             ServerPlayNetworking.send(handler.player, new LOTRDatePayload(LOTRDate.ShireReckoning.currentDay, false));
+            ServerPlayNetworking.send(handler.player, new ShamiirPayload(commemorateEmpressShamiir));
         });
     }
 
@@ -172,6 +237,32 @@ public final class LOTRLevelData extends SavedData {
         if (server != null) {
             for (net.minecraft.server.level.ServerPlayer player : server.getPlayerList().getPlayers()) {
                 ServerPlayNetworking.send(player, new LOTRDatePayload(date, true));
+            }
+        }
+    }
+
+    public static int getWaypointCooldownMax() {
+        return waypointCooldownMax;
+    }
+
+    public static int getWaypointCooldownMin() {
+        return waypointCooldownMin;
+    }
+
+    /** setWaypointCooldown: neither below nought, the shortest no longer than the longest; every player told. */
+    public static void setWaypointCooldown(int max, int min) {
+        max = Math.max(0, max);
+        min = Math.max(0, min);
+        if (min > max) {
+            min = max;
+        }
+        waypointCooldownMax = max;
+        waypointCooldownMin = min;
+        markDirty();
+        if (server != null) {
+            for (net.minecraft.server.level.ServerPlayer player : server.getPlayerList().getPlayers()) {
+                ServerPlayNetworking.send(player, new net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRFastTravel
+                        .CooldownPayload(waypointCooldownMax, waypointCooldownMin));
             }
         }
     }
@@ -200,6 +291,23 @@ public final class LOTRLevelData extends SavedData {
         middleEarthPortalX = i;
         middleEarthPortalY = j;
         middleEarthPortalZ = k;
+        markDirty();
+    }
+
+    public static void markOverworldPortalLocation(int i, int j, int k) {
+        overworldPortalX = i;
+        overworldPortalY = j;
+        overworldPortalZ = k;
+        markDirty();
+    }
+
+    public static void setMadePortal(int i) {
+        madePortal = i;
+        markDirty();
+    }
+
+    public static void setMadeMiddleEarthPortal(int i) {
+        madeMiddleEarthPortal = i;
         markDirty();
     }
 

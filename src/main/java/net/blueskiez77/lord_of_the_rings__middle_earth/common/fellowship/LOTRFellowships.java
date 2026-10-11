@@ -283,6 +283,7 @@ public final class LOTRFellowships extends SavedData {
         data().invites.remove(invite);
         markDirty();
         updateForAllMembers(fs);
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRCustomWaypoints.syncFellowship(fs);
         if (entityplayer != null) {
             ServerPlayNetworking.send(entityplayer, new LOTRFellowshipPayloads.Remove(fs.getFellowshipID(), true));
             ServerPlayNetworking.send(entityplayer, new LOTRFellowshipPayloads.AcceptResult(fs.getFellowshipID(),
@@ -357,6 +358,7 @@ public final class LOTRFellowships extends SavedData {
             markDirty();
             updateForAllMembers(fs);
             sendRemove(player, fs);
+            net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRCustomWaypoints.onLeftFellowship(player, fs);
         }
     }
 

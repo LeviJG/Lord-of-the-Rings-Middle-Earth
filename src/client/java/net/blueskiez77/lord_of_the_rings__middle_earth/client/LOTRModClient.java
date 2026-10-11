@@ -201,6 +201,7 @@ public class LOTRModClient implements ClientModInitializer {
         LOTRFallenLeavesPlugin.init();
         LOTRHatFeatherTint.init();
         LOTRParticleProviders.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.particle.LOTRDeadMarshFaceParticle.init();
         LOTRMallornEntClient.init();
 
         // lotr:sneaking and lotr:swinging, which the pikes' item models pose by.
@@ -283,6 +284,17 @@ public class LOTRModClient implements ClientModInitializer {
         BlockEntityRenderers.register(
                 LOTRBlockEntities.TROLL_TOTEM, LOTRTrollTotemRenderer::new);
 
+        // The built portals' surfaces: the elven portal's starry depths, the Morgul portal's glow.
+        BlockEntityRenderers.register(LOTRBlockEntities.ELVEN_PORTAL,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRElvenPortalRenderer::new);
+        BlockEntityRenderers.register(LOTRBlockEntities.MORGUL_PORTAL,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRMorgulPortalRenderer::new);
+        // Utumno's: the darkness at the bottom of the entrance, and the shaft of light out.
+        BlockEntityRenderers.register(LOTRBlockEntities.UTUMNO_PORTAL,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRUtumnoPortalRenderer::new);
+        BlockEntityRenderers.register(LOTRBlockEntities.UTUMNO_RETURN_PORTAL,
+                net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRUtumnoReturnPortalRenderer::new);
+
         // The unsmeltery's cauldron, which sways while it works.
         BlockEntityRenderers.register(
                 LOTRBlockEntities.UNSMELTERY, LOTRUnsmelteryRenderer::new);
@@ -316,6 +328,7 @@ public class LOTRModClient implements ClientModInitializer {
 
         // Boss trophies: the chieftain's skulls and the mallorn ent's trunk.
         EntityRenderers.register(LOTREntities.BOSS_TROPHY, LOTRBossTrophyRenderer::new);
+        EntityRenderers.register(LOTREntities.PORTAL, net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRPortalRenderer::new);
 
         // The orc bomb rides on vanilla's TNT renderer: it draws the block
         // state the entity carries, which is the bomb block, so the swelling
@@ -768,6 +781,18 @@ public class LOTRModClient implements ClientModInitializer {
         EntityRenderers.register(LOTREntities.BEAR_RUG, LOTRRugRenderer::bear);
         EntityRenderers.register(LOTREntities.WARGSKIN_RUG, LOTRRugRenderer::warg);
         EntityRenderers.register(LOTREntities.MORDOR_WARG, LOTRWargRenderer::new);
+        // Utumno's creatures.
+        EntityRenderers.register(LOTREntities.UTUMNO_ORC, LOTROrcRenderer::new);
+        EntityRenderers.register(LOTREntities.UTUMNO_ORC_ARCHER, LOTROrcRenderer::new);
+        EntityRenderers.register(LOTREntities.UTUMNO_WARG, LOTRWargRenderer::new);
+        EntityRenderers.register(LOTREntities.UTUMNO_ICE_WARG, LOTRWargRenderer::new);
+        EntityRenderers.register(LOTREntities.UTUMNO_OBSIDIAN_WARG, LOTRWargRenderer::new);
+        EntityRenderers.register(LOTREntities.UTUMNO_FIRE_WARG, LOTRWargRenderer::new);
+        EntityRenderers.register(LOTREntities.UTUMNO_ICE_SPIDER, net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRSpiderRenderer::utumnoIce);
+        EntityRenderers.register(LOTREntities.BALROG, net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRBalrogRenderer::new);
+        EntityRenderers.register(LOTREntities.TORMENTED_ELF, LOTRElfRenderer::new);
+        EntityRenderers.register(LOTREntities.UTUMNO_TROLL, LOTRTrollRenderer.of(LOTRTrollRenderer.Kind.UTUMNO_TROLL));
+        EntityRenderers.register(LOTREntities.UTUMNO_SNOW_TROLL, LOTRTrollRenderer.of(LOTRTrollRenderer.Kind.SNOW_TROLL));
         EntityRenderers.register(LOTREntities.MORDOR_WARG_BOMBARDIER, LOTRWargRenderer::new);
         EntityRenderers.register(LOTREntities.GUNDABAD_WARG, LOTRWargRenderer::new);
         EntityRenderers.register(LOTREntities.ANGMAR_WARG, LOTRWargRenderer::new);
@@ -828,6 +853,12 @@ public class LOTRModClient implements ClientModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRMiniQuestTrackerHud.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRDateHud.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRInvasionHud.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.map.LOTRClientFastTravel.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.map.LOTRClientMap.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.world.LOTREnvironmentClient.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.world.LOTRBiomeColoursClient.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.world.LOTRAmbienceClient.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.map.LOTRClientCustomWaypoints.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRJazzMusic.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRAchievementToast.init();
         net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry.register(
@@ -893,6 +924,8 @@ public class LOTRModClient implements ClientModInitializer {
                     }
                 }));
         LOTREnvironmentOverlayHud.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.world.LOTRPortalsClient.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.world.LOTRUtumnoClient.init();
         LOTRSpiderClimbHud.init();
         PictureInPictureRendererRegistry.register(context -> new LOTRCompassRenderer());
         EntityRenderers.register(LOTREntities.ALIGNMENT_BONUS, LOTRAlignmentBonusRenderer::new);

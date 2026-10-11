@@ -56,7 +56,8 @@ public class LOTRTrollRenderer extends MobRenderer<LOTRTrollEntity, LOTRTrollRen
                 LOTRTrollLivingModel.Piece.WOODEN_CLUB_SPIKED),
         MOUNTAIN_TROLL_CHIEFTAIN("lotr:mob/troll/mountainTroll", "troll/mountain_troll", null,
                 LOTRTrollLivingModel.Piece.WOODEN_CLUB_SPIKED),
-        SNOW_TROLL("lotr:mob/troll/snowTroll", "troll/snow_troll", null, LOTRTrollLivingModel.Piece.WOODEN_CLUB_SPIKED);
+        SNOW_TROLL("lotr:mob/troll/snowTroll", "troll/snow_troll", null, LOTRTrollLivingModel.Piece.WOODEN_CLUB_SPIKED),
+        UTUMNO_TROLL("lotr:mob/troll/utumno", "troll/utumno", null, LOTRTrollLivingModel.Piece.WOODEN_CLUB_SPIKED);
 
         private final LOTRRandomSkins skins;
         private final @Nullable LOTRRandomSkins armorSkins;

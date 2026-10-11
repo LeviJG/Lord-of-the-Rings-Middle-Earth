@@ -7,6 +7,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.mojang.serialization.Codec;
+
+import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSpawnDamping;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.LOTRAnimalSpawnConditions;
@@ -16,8 +20,12 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.varian
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWeightedRandom;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenUtil;
 
+import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
+import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
+
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
@@ -26,6 +34,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
@@ -40,6 +49,13 @@ import org.jspecify.annotations.Nullable;
  * animals placed as the world is made (worldGenSpawnAnimals).
  */
 public final class LOTRSpawnerAnimals {
+
+    /**
+     * A rabbit this spawner made, standing in for the original's, which despawned when far from
+     * players (canDespawn) as vanilla's does not (LOTRAnimalMixin).
+     */
+    public static final AttachmentType<Boolean> WILD_RABBIT = AttachmentRegistry.create(
+            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "wild_rabbit"), builder -> builder.persistent(Codec.BOOL));
     private static final Map<ResourceKey<Level>, Integer> TICKS_SINCE_CYCLE = new HashMap<>();
     private static final Map<ResourceKey<Level>, Map<LOTRCreatureType, TypeInfo>> DIM_INFOS = new HashMap<>();
 
@@ -62,7 +78,7 @@ public final class LOTRSpawnerAnimals {
     }
 
     /** SpawnerAnimals.canCreatureTypeSpawnAtLocation: in water for the water kinds; else on solid ground with room. */
-    public static boolean canCreatureTypeSpawnAtLocation(LOTRCreatureType type, ServerLevel level, int i, int j, int k) {
+    public static boolean canCreatureTypeSpawnAtLocation(LOTRCreatureType type, net.minecraft.world.level.LevelReader level, int i, int j, int k) {
         BlockPos pos = new BlockPos(i, j, k);
         BlockPos above = pos.above();
         if (type.water) {
@@ -157,7 +173,7 @@ public final class LOTRSpawnerAnimals {
                             float f = i1 + 0.5f;
                             float f1 = j1;
                             float f2 = k1 + 0.5f;
-                            if (!level.hasChunkAt(pos) || !canCreatureTypeSpawnAtLocation(creatureType, level, i1, j1, k1)
+                            if (!LOTRLegacyWorld.hasChunkAt(level, pos) || !canCreatureTypeSpawnAtLocation(creatureType, level, i1, j1, k1)
                                     || level.getNearestPlayer(f, f1, f2, 24.0, false) != null
                                     || spawnPoint.distToCenterSqr(f, f1, f2) < 576.0) {
                                 continue;
@@ -174,6 +190,9 @@ public final class LOTRSpawnerAnimals {
                                 continue;
                             }
                             ++totalSpawned;
+                            if (entity instanceof Rabbit) {
+                                entity.setAttached(WILD_RABBIT, true);
+                            }
                             entityData = entity.finalizeSpawn(level, level.getCurrentDifficultyAt(pos), EntitySpawnReason.NATURAL, entityData);
                             level.addFreshEntityWithPassengers(entity);
                             ++newlySpawned;
@@ -203,7 +222,7 @@ public final class LOTRSpawnerAnimals {
      * worldGenSpawnAnimals: as the chunk is populated, packs of the biome's creatures about it, one
      * pack in ten (vanilla's spawning chance), each animal where it would stand and where it allows.
      */
-    public static void worldGenSpawnAnimals(ServerLevel level, LOTRBiome biome, LOTRBiomeVariant variant, int i, int k, RandomSource rand) {
+    public static void worldGenSpawnAnimals(net.minecraft.world.level.WorldGenLevel level, LOTRBiome biome, LOTRBiomeVariant variant, int i, int k, RandomSource rand) {
         int spawnRange = 16;
         int spawnFuzz = 5;
         List<LOTRSpawnEntry> spawnList = biome.spawnableCreatureList;
@@ -223,7 +242,7 @@ public final class LOTRSpawnerAnimals {
                 for (int a = 0; !spawned && a < 4; ++a) {
                     int j1 = LOTRWorldGenUtil.getTopSolidOrLiquidBlock(level, i1, k1);
                     if (canCreatureTypeSpawnAtLocation(LOTRCreatureType.CREATURE, level, i1, j1, k1)) {
-                        Entity created = spawnEntry.type().create(level, EntitySpawnReason.CHUNK_GENERATION);
+                        Entity created = spawnEntry.type().create(level.getLevel(), EntitySpawnReason.CHUNK_GENERATION);
                         if (created instanceof Mob entity && (!(entity instanceof LOTRAnimalSpawnConditions conditions)
                                 || conditions.canWorldGenSpawnAt(i1, j1, k1, biome, variant))) {
                             entity.snapTo(i1 + 0.5f, j1, k1 + 0.5f, rand.nextFloat() * 360.0f, 0.0f);

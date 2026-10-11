@@ -70,6 +70,11 @@ public class LOTRSpiderRenderer extends MobRenderer<LOTRSpiderBaseEntity, LOTRSp
         return new LOTRSpiderRenderer(context, MIRKWOOD, LOTRSpiderBaseEntity::getSpiderType);
     }
 
+    /** LOTRRenderUtumnoIceSpider. */
+    public static LOTRSpiderRenderer utumnoIce(EntityRendererProvider.Context context) {
+        return new LOTRSpiderRenderer(context, new Identifier[]{texture("utumno_ice")}, spider -> 0);
+    }
+
     /** LOTRRenderMordorSpider. */
     public static LOTRSpiderRenderer mordor(EntityRendererProvider.Context context) {
         return new LOTRSpiderRenderer(context, new Identifier[]{MORDOR}, spider -> 0);

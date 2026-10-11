@@ -24,10 +24,8 @@ import org.lwjgl.glfw.GLFW;
 /**
  * LOTRGuiMenu: two rows of icons -- achievements, map, factions, "?",
  * fellowships, titles, shields, options -- each with a key of its own. The
- * menu key reopens whichever of them was last opened from here.
- *
- * <p>NOT ported yet, so its icon is greyed out: the map screen (D13); and
- * openMenu's welcome mini-quest forcing the map or factions (D14).
+ * menu key reopens whichever of them was last opened from here, unless the
+ * Grey Wanderer's welcome is asking for the map or the factions.
  */
 public class LOTRMenuScreen extends Screen {
 
@@ -37,15 +35,20 @@ public class LOTRMenuScreen extends Screen {
     private static @Nullable Supplier<Screen> lastMenuScreen;
 
     public LOTRMenuScreen() {
-        super(Component.translatable("lotr.gui.menu", LOTRDimension.MIDDLE_EARTH.getDimensionName()));
+        super(Component.translatable("lotr.gui.menu",
+                LOTRDimension.getCurrentDimensionWithFallback(net.minecraft.client.Minecraft.getInstance().level).getDimensionName()));
     }
 
     /**
-     * openMenu: the factions screen while the Grey Wanderer's welcome asks for it (the map, which it
-     * asks for first, with the map, D13); else the last menu screen.
+     * openMenu: the map or the factions screen while the Grey Wanderer's welcome asks for it; else the
+     * last menu screen.
      */
     public static Screen openMenu() {
-        if (LOTRMiniQuestWelcome.forceMenuMapFactions(LOTRClientMiniQuests.getActiveMiniQuests())[1]) {
+        boolean[] force = LOTRMiniQuestWelcome.forceMenuMapFactions(LOTRClientMiniQuests.getActiveMiniQuests());
+        if (force[0]) {
+            return new LOTRMapScreen();
+        }
+        if (force[1]) {
             return new LOTRFactionsScreen();
         }
         return lastMenuScreen != null ? lastMenuScreen.get() : new LOTRMenuScreen();
@@ -64,7 +67,9 @@ public class LOTRMenuScreen extends Screen {
         int buttonSize = 32;
         List<MenuButton> buttons = new ArrayList<>();
         buttons.add(new MenuButton(2, LOTRAchievementsScreen::new, "lotr.gui.achievements", GLFW.GLFW_KEY_A, true));
-        buttons.add(new MenuButton(3, null, "lotr.gui.map", GLFW.GLFW_KEY_M, false));
+        // canDisplayMenu: no map on an "M.E. Classic" world.
+        buttons.add(new MenuButton(3, LOTRMapScreen::new, "lotr.gui.map", GLFW.GLFW_KEY_M,
+                !net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.classic));
         buttons.add(new MenuButton(4, LOTRFactionsScreen::new, "lotr.gui.factions", GLFW.GLFW_KEY_F, true));
         buttons.add(new MenuButton(0, null, null, -1, true));
         buttons.add(new MenuButton(6, LOTRFellowshipsScreen::new, "lotr.gui.fellowships", GLFW.GLFW_KEY_P, true));

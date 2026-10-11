@@ -34,12 +34,15 @@ public final class LOTRWorldChunkManager {
 
     public final LOTRDimension dimension;
     public final long seed;
+    /** An "M.E. Classic" world's: its biomes at random, not from the map. */
+    public final boolean classic;
     private final ThreadLocal<LOTRGenLayers> layers;
 
-    public LOTRWorldChunkManager(LOTRDimension dimension, long seed) {
+    public LOTRWorldChunkManager(LOTRDimension dimension, long seed, boolean classic) {
         this.dimension = dimension;
         this.seed = seed;
-        this.layers = ThreadLocal.withInitial(() -> new LOTRGenLayers(dimension, seed));
+        this.classic = classic;
+        this.layers = ThreadLocal.withInitial(() -> new LOTRGenLayers(dimension, seed, classic));
     }
 
     private LOTRGenLayer[] chunkGenLayers() {

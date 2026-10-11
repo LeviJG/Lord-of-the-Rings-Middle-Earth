@@ -23,8 +23,8 @@ public final class LOTRGenLayers {
     public final LOTRGenLayer[] chunkGenLayers;
     public final LOTRGenLayer[] worldLayers;
 
-    public LOTRGenLayers(LOTRDimension dim, long worldSeed) {
-        this.chunkGenLayers = createWorld(dim);
+    public LOTRGenLayers(LOTRDimension dim, long worldSeed, boolean classic) {
+        this.chunkGenLayers = createWorld(dim, classic);
         this.worldLayers = new LOTRGenLayer[this.chunkGenLayers.length];
         for (int i = 0; i < this.worldLayers.length; ++i) {
             this.worldLayers[i] = new LOTRGenLayerZoomVoronoi(10L, this.chunkGenLayers[i]);
@@ -36,9 +36,13 @@ public final class LOTRGenLayers {
         }
     }
 
-    private static LOTRGenLayer[] createWorld(LOTRDimension dim) {
+    /** The world's layers; on an "M.E. Classic" world the map image's biomes give way to random ones. */
+    private static LOTRGenLayer[] createWorld(LOTRDimension dim, boolean classic) {
         if (dim == LOTRDimension.UTUMNO) {
-            throw new UnsupportedOperationException("Utumno waits on D15");
+            // Utumno's one biome everywhere (its level is a fixed biome source, dimension/utumno.json).
+            LOTRGenLayer biomes = new LOTRGenLayerBiome(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes.UTUMNO);
+            LOTRGenLayer variants = new LOTRGenLayerBiomeVariants(300L);
+            return new LOTRGenLayer[]{biomes, variants, variants, variants, variants};
         }
         LOTRGenLayer rivers = new LOTRGenLayerRiverInit(100L);
         rivers = LOTRGenLayerZoom.magnify(1000L, rivers, 10);
@@ -48,6 +52,13 @@ public final class LOTRGenLayers {
         LOTRGenLayer biomeSubtypes = new LOTRGenLayerBiomeSubtypesInit(3000L);
         biomeSubtypes = LOTRGenLayerZoom.magnify(3000L, biomeSubtypes, 2);
         LOTRGenLayer biomes = new LOTRGenLayerWorld();
+        if (classic) {
+            LOTRGenLayer oceans = new LOTRGenLayerClassicOcean(2012L);
+            oceans = LOTRGenLayerZoom.magnify(200L, oceans, 3);
+            oceans = new LOTRGenLayerClassicRemoveOcean(400L, oceans);
+            biomes = new LOTRGenLayerClassicBiomes(2013L, oceans, dim);
+            biomes = LOTRGenLayerZoom.magnify(300L, biomes, 2);
+        }
         LOTRGenLayer mapRivers = new LOTRGenLayerExtractMapRivers(5000L, biomes);
         biomes = new LOTRGenLayerRemoveMapRivers(1000L, biomes, dim);
         biomes = new LOTRGenLayerBiomeSubtypes(1000L, biomes, biomeSubtypes);

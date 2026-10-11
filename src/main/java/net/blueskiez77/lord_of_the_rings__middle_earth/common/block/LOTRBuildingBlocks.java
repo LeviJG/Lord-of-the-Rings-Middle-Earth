@@ -257,6 +257,10 @@ public final class LOTRBuildingBlocks {
     public static final Block TOPAZ_BLOCK = registerCube("topaz_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block AMETHYST_BLOCK = registerCube("amethyst_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block CORAL_BLOCK = registerCube("coral_block", 5.0f, 6.0f, Tier.NONE, SoundType.METAL);
+    /** LOTRBlockCoralReef: Material.rock at hardness 1.0, resistance 5.0, with stone steps. */
+    public static final Block CORAL_REEF = register("coral_reef", LOTRCoralReefBlock::new,
+            BlockBehaviour.Properties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops().strength(1.0f, 5.0f)
+                    .sound(SoundType.STONE).noOcclusion(), true);
     public static final Block EMERALD_BLOCK = registerCube("emerald_block", 5.0f, 6.0f, Tier.IRON, SoundType.METAL);
     public static final Block TOPAZ_ORE = registerOre("topaz_ore", Tier.IRON, 0, 0, 2);
     public static final Block BURNING_UTUMNO_BRICK = registerCube("burning_utumno_brick", 1.5f, UTUMNO_RESISTANCE, Tier.NONE, SoundType.STONE, 12);

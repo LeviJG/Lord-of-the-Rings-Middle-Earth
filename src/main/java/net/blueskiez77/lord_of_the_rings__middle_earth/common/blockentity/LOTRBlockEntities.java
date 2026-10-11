@@ -35,11 +35,28 @@ public final class LOTRBlockEntities {
     public static BlockEntityType<LOTRPlateBlockEntity> PLATE;
     public static BlockEntityType<LOTRMugBlockEntity> MUG;
     public static BlockEntityType<LOTRCarvedSignBlockEntity> CARVED_SIGN;
+    public static BlockEntityType<LOTRPortalBlockEntity> ELVEN_PORTAL;
+    public static BlockEntityType<LOTRPortalBlockEntity> MORGUL_PORTAL;
+    public static BlockEntityType<LOTRUtumnoPortalBlockEntity> UTUMNO_PORTAL;
+    public static BlockEntityType<LOTRUtumnoReturnPortalBlockEntity> UTUMNO_RETURN_PORTAL;
 
     private LOTRBlockEntities() {
     }
 
     public static void init() {
+        ELVEN_PORTAL = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "elven_portal"),
+                new BlockEntityType<>(LOTRPortalBlockEntity::elven, Set.of(LOTRUtilityBlocks.ELVEN_PORTAL)));
+        MORGUL_PORTAL = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "morgul_portal"),
+                new BlockEntityType<>(LOTRPortalBlockEntity::morgul, Set.of(LOTRUtilityBlocks.MORGUL_PORTAL)));
+        UTUMNO_PORTAL = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "utumno_portal"),
+                new BlockEntityType<>(LOTRUtumnoPortalBlockEntity::new, Set.of(LOTRUtilityBlocks.UTUMNO_PORTAL)));
+        UTUMNO_RETURN_PORTAL = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "utumno_return_portal"),
+                new BlockEntityType<>(LOTRUtumnoReturnPortalBlockEntity::new, Set.of(LOTRUtilityBlocks.UTUMNO_RETURN_PORTAL)));
+
         CARVED_SIGN = Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE,
                 Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "carved_sign"),
                 new BlockEntityType<>(LOTRCarvedSignBlockEntity::new, Set.copyOf(LOTRUtilityBlocks.ALL_CARVED_SIGNS)));

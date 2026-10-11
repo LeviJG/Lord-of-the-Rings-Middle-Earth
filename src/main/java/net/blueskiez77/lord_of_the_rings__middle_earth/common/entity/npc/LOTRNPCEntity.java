@@ -52,6 +52,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPouchItem
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRHiredInfoPayload;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -136,7 +137,8 @@ import org.jspecify.annotations.Nullable;
  *     when it dies; for a hired unit, its service ({@link #hiredNPCInfo}).</li>
  * </ul>
  *
- * <p>NOT ported yet: Utumno's drops (D15).
+ * <p>Utumno's servants, dying there, drop its keys' parts, the Chill of
+ * Daedelos, the Pickaxe of the Underworld and mithril ({@link #dropUtumnoItems}).
  */
 public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttackMob {
 
@@ -998,6 +1000,17 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
         return getFaction().getFactionColor();
     }
 
+    /** sendSpeechBank with a place and an objective of the caller's own (the bounty help). */
+    public void sendSpeechBank(Player player, String bank, @Nullable CharSequence location, @Nullable CharSequence objective) {
+        LOTRSpeech.sendSpeech(player, this, LOTRSpeech.getRandomSpeechForPlayer(this, bank, player, location, objective));
+        markNPCSpoken();
+    }
+
+    /** getBountyHelpSpeechDir: the mini-quest group whose bounty-help speech this kind speaks, if any. */
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return null;
+    }
+
     public void sendSpeechBankLine(Player player, String bank, int line) {
         LOTRSpeech.sendSpeech(player, this, LOTRSpeech.getSpeechLineForPlayer(this, bank, line, player, null, null));
         markNPCSpoken();
@@ -1613,7 +1626,67 @@ public abstract class LOTRNPCEntity extends PathfinderMob implements RangedAttac
                 spawnAtLocation(level, LOTRModifiers.randomTemplate(this.random));
             }
         }
+        dropUtumnoItems(level, looting);
         dropNPCItems(level, killedByPlayer, looting);
+    }
+
+    /**
+     * dropFewItems, in Utumno: 1 in 12 a part of the key to the next level down (on the ice or obsidian
+     * level), the Chill of Daedelos from the chilly ones of the ice level (1 in 30 - 3 x looting, more
+     * with looting), the Pickaxe of the Underworld on the fire level (1 in 100 - 20 x looting), and 1 in
+     * 20 a mithril nugget.
+     */
+    private void dropUtumnoItems(ServerLevel level, int i) {
+        if (getFaction() != net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction.UTUMNO
+                || !net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumno.isUtumno(level)) {
+            return;
+        }
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel utumnoLevel =
+                net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.forY((int) getY());
+        if (this.random.nextInt(12) == 0) {
+            if (utumnoLevel == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.ICE) {
+                spawnAtLocation(level, new ItemStack(switch (this.random.nextInt(3)) {
+                    case 0 -> LOTRMiscItems.ICE_KEY_HANDLE;
+                    case 1 -> LOTRMiscItems.ICE_KEY_SHAFT;
+                    default -> LOTRMiscItems.ICE_KEY_PIN;
+                }));
+            } else if (utumnoLevel == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.OBSIDIAN) {
+                spawnAtLocation(level, new ItemStack(switch (this.random.nextInt(3)) {
+                    case 0 -> LOTRMiscItems.OBSIDIAN_KEY_HANDLE;
+                    case 1 -> LOTRMiscItems.OBSIDIAN_KEY_SHAFT;
+                    default -> LOTRMiscItems.OBSIDIAN_KEY_PIN;
+                }));
+            }
+        }
+        if (utumnoLevel == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.ICE && this.isChilly) {
+            int chillChance = 30 - i * 3;
+            if (this.random.nextInt(Math.max(chillChance, 1)) == 0) {
+                int chills = 1;
+                if (i > 0) {
+                    float x = net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenUtil.randomFloatClamp(
+                            this.random, 0.0f, i * 0.667f);
+                    while (x > 1.0f) {
+                        x -= 1.0f;
+                        ++chills;
+                    }
+                    if (this.random.nextFloat() < x) {
+                        ++chills;
+                    }
+                }
+                for (int l = 0; l < chills; ++l) {
+                    spawnAtLocation(level, new ItemStack(net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems.CHILL_OF_DAEDELOS));
+                }
+            }
+        }
+        if (utumnoLevel == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.FIRE && canDropRares()) {
+            int pickChance = 100 - i * 20;
+            if (this.random.nextInt(Math.max(pickChance, 1)) == 0) {
+                spawnAtLocation(level, new ItemStack(net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems.UTUMNO_PICKAXE));
+            }
+        }
+        if (this.random.nextInt(20) == 0) {
+            spawnAtLocation(level, new ItemStack(net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems.MITHRIL_NUGGET));
+        }
     }
 
     /** The subclass's own dropFewItems. */

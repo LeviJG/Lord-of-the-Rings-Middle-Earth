@@ -18,6 +18,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBi
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.variant.LOTRBiomeVariant;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenUtil;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -87,7 +88,7 @@ public final class LOTRSpawnerNPCs {
         RandomSource rand = level.getRandom();
         int i1 = chunkCoords.x() * 16 + rand.nextInt(16);
         int k1 = chunkCoords.z() * 16 + rand.nextInt(16);
-        int j = rand.nextInt(Math.max(chunk.getHighestSectionPosition() + 16 - 1, 1));
+        int j = rand.nextInt(Math.max(LOTRLegacyWorld.getHighestSectionPosition(chunk) + 16 - 1, 1));
         return new BlockPos(i1, j, k1);
     }
 
@@ -195,7 +196,7 @@ public final class LOTRSpawnerNPCs {
                         float f = i1 + 0.5f;
                         float f1 = j1;
                         float f2 = k1 + 0.5f;
-                        if (!level.hasChunkAt(pos) || !canNPCSpawnAtLocation(level, i1, j1, k1)
+                        if (!LOTRLegacyWorld.hasChunkAt(level, pos) || !canNPCSpawnAtLocation(level, i1, j1, k1)
                                 || level.getNearestPlayer(f, f1, f2, 24.0, false) != null
                                 || spawnPoint.distToCenterSqr(f, f1, f2) < 576.0) {
                             continue;

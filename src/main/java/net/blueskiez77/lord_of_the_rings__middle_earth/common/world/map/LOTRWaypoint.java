@@ -4,9 +4,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLevelData;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenUtil;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTRWaypoint: the fixed waypoints of Middle-earth -- their region, the
@@ -14,11 +21,12 @@ import net.minecraft.network.chat.Component;
  * whether they are hidden until found. Their names and lore are
  * {@code lotr.waypoint.<NAME>} and {@code .info}.
  *
- * <p>NOT ported yet: unlocking, conquest and fast travel (D13), which the
- * original's waypoints answered for a player; for now they are the map's
- * places, as the main menu's map draws them.
+ * <p>A player has one unlocked once they have been to its region (LOTRPlayerWaypoints) and are not
+ * an enemy of its faction.
+ *
+ * <p>NOT ported yet: unlocking an enemy's waypoints by conquering its land (with conquest).
  */
-public enum LOTRWaypoint {
+public enum LOTRWaypoint implements LOTRAbstractWaypoint {
     HIMLING(Region.OCEAN, LOTRFaction.UNALIGNED, 485.0, 523.0),
     TOL_FUIN(Region.OCEAN, LOTRFaction.UNALIGNED, 357.0, 542.0),
     TOL_MORWEN(Region.OCEAN, LOTRFaction.UNALIGNED, 87.0, 698.0),
@@ -321,34 +329,99 @@ public enum LOTRWaypoint {
         return new ArrayList<>(List.of(values()));
     }
 
+    public static LOTRWaypoint.@Nullable Region regionForName(String name) {
+        for (Region region : Region.values()) {
+            if (region.name().equals(name)) {
+                return region;
+            }
+        }
+        return null;
+    }
+
+    public static @Nullable LOTRWaypoint waypointForName(String name) {
+        for (LOTRWaypoint wp : values()) {
+            if (wp.getCodeName().equals(name)) {
+                return wp;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public String getCodeName() {
         return name();
     }
 
+    @Override
     public Component getDisplayName() {
         return Component.translatable("lotr.waypoint." + getCodeName());
     }
 
+    @Override
+    public int getID() {
+        return ordinal();
+    }
+
+    @Override
+    public WaypointLockState getLockState(Player player) {
+        return hasPlayerUnlocked(player) ? WaypointLockState.STANDARD_UNLOCKED : WaypointLockState.STANDARD_LOCKED;
+    }
+
+    @Override
+    public Component getLoreText(Player player) {
+        String key = "lotr.waypoint." + getCodeName() + ".info";
+        if (this == FERTILE_VALLEY && LOTRLevelData.clientside_thisServer_commemorateEmpressShamiir) {
+            key += ".shamiir";
+        }
+        return Component.translatable(key);
+    }
+
     /** The map image's coordinates. */
+    @Override
     public double getX() {
         return this.imgX;
     }
 
+    @Override
     public double getY() {
         return this.imgY;
     }
 
+    @Override
     public boolean isHidden() {
         return this.isHidden;
     }
 
     /** The world's coordinates. */
+    @Override
     public int getXCoord() {
         return this.xCoord;
     }
 
+    @Override
     public int getZCoord() {
         return this.zCoord;
+    }
+
+    /** LOTRMod.getTrueTopBlock. */
+    @Override
+    public int getYCoord(ServerLevel level, int i, int k) {
+        return LOTRWorldGenUtil.getTopSolidOrLiquidBlock(level, i, k);
+    }
+
+    @Override
+    public int getYCoordSaved() {
+        return 64;
+    }
+
+    /** Its region reached, and its faction no enemy. */
+    @Override
+    public boolean hasPlayerUnlocked(Player player) {
+        return LOTRPlayerWaypoints.isFTRegionUnlocked(player, this.region) && isCompatibleAlignment(player);
+    }
+
+    public boolean isCompatibleAlignment(Player player) {
+        return this.faction == LOTRFaction.UNALIGNED || LOTRPlayerAlignments.getAlignment(player, this.faction) >= 0.0f;
     }
 
     public enum Region {

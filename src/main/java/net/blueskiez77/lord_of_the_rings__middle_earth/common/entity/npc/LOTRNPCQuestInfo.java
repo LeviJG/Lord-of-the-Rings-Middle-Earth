@@ -7,12 +7,19 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuest;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestBounty;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuestFactory;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.LOTRMiniQuests;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.MiniQuestSelector;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRLastKnownLocation;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRWaypoint;
 
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -25,6 +32,7 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.storage.ValueInput;
@@ -32,14 +40,14 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityQuestInfo: the mini-quest an NPC has to offer -- now and then one of its people's, held
  * for a day unless someone is reading it -- or one meant for a single player; the players on its
  * quests (who keep it from despawning, and are told where it has gone); and, to each player watching,
- * whether it has something for them.
- *
- * <p>NOT ported yet: the bounty help -- where a bounty's target was last seen, told to a player
- * hunting them -- which needs players' last biome and waypoint (D10, D13).
+ * whether it has something for them. With nothing else to say, one in three times it tells a player
+ * hunting a bounty for its people where the target was last seen -- the biome or the waypoint
+ * (LOTRLastKnownLocation) -- if its kind knows such speech (getBountyHelpSpeechDir).
  */
 public class LOTRNPCQuestInfo {
 
@@ -56,9 +64,27 @@ public class LOTRNPCQuestInfo {
     private final Collection<UUID> activeQuestPlayers = new ArrayList<>();
     public boolean clientIsOffering;
     public int clientOfferColor;
+    private Predicate<Player> bountyHelpPredicate;
+    private Predicate<Player> bountyHelpConsumer;
+    private MiniQuestSelector.BountyActiveAnyFaction activeBountySelector;
 
     public LOTRNPCQuestInfo(LOTRNPCEntity npc) {
         this.theNPC = npc;
+        this.bountyHelpPredicate = player -> this.theNPC.getRandom().nextInt(3) == 0;
+        this.bountyHelpConsumer = player -> true;
+        this.activeBountySelector = new MiniQuestSelector.BountyActiveFaction(this.theNPC::getFaction);
+    }
+
+    public void setBountyHelpPredicate(Predicate<Player> predicate) {
+        this.bountyHelpPredicate = predicate;
+    }
+
+    public void setBountyHelpConsumer(Predicate<Player> predicate) {
+        this.bountyHelpConsumer = predicate;
+    }
+
+    public void setActiveBountySelector(MiniQuestSelector.BountyActiveAnyFaction selector) {
+        this.activeBountySelector = selector;
     }
 
     // ---------------------------------------------------------------- packets
@@ -227,6 +253,32 @@ public class LOTRNPCQuestInfo {
                     this.theNPC.sendSpeechBank(player, offer.speechBankTooMany, offer);
                 }
                 return true;
+            }
+            LOTRMiniQuestFactory bountyHelpSpeechDir = this.theNPC.getBountyHelpSpeechDir();
+            List<LOTRMiniQuest> bountyQuests;
+            if (bountyHelpSpeechDir != null && player.level().getServer() != null && this.bountyHelpPredicate.test(player)
+                    && !(bountyQuests = playerData.selectMiniQuests(this.activeBountySelector)).isEmpty()) {
+                LOTRMiniQuestBounty bQuest = (LOTRMiniQuestBounty) bountyQuests.get(this.theNPC.getRandom().nextInt(bountyQuests.size()));
+                MinecraftServer server = player.level().getServer();
+                LOTRMiniQuestBounty.BountyHelp helpType = LOTRMiniQuestBounty.BountyHelp.getRandomHelpType(this.theNPC.getRandom());
+                String location = null;
+                if (helpType == LOTRMiniQuestBounty.BountyHelp.BIOME) {
+                    LOTRBiome lastBiome = LOTRLastKnownLocation.getLastKnownBiome(server, bQuest.targetID);
+                    if (lastBiome != null) {
+                        location = lastBiome.getBiomeDisplayName().getString();
+                    }
+                } else if (helpType == LOTRMiniQuestBounty.BountyHelp.WAYPOINT) {
+                    LOTRWaypoint lastWP = LOTRLastKnownLocation.getLastKnownWaypoint(server, bQuest.targetID);
+                    if (lastWP != null) {
+                        location = lastWP.getDisplayName().getString();
+                    }
+                }
+                if (location != null) {
+                    String speechBank = "miniquest/" + bountyHelpSpeechDir.getBaseName() + "/_bountyHelp_" + helpType.speechName;
+                    this.theNPC.sendSpeechBank(player, speechBank, location, bQuest.targetName);
+                    this.bountyHelpConsumer.test(player);
+                    return true;
+                }
             }
         }
         return false;

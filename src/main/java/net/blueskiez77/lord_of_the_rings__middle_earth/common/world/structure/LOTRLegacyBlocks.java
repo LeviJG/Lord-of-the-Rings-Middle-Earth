@@ -48,6 +48,7 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.SlabBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.TorchBlock;
+import net.minecraft.world.level.block.VineBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import net.minecraft.world.level.block.WallSkullBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -72,7 +73,7 @@ import org.jspecify.annotations.Nullable;
  * listed; the orientation the rest of it carried is read as the vanilla
  * block of the same shape read it (stairs as oak stairs, slabs as stone
  * slabs, logs and beams as logs, doors, trapdoors, gates, torches, chests,
- * furnace-like blocks, ladders, beds, crops, leaves, buttons, levers), and
+ * furnace-like blocks, ladders, beds, crops, leaves, vines, buttons, levers), and
  * whichever of those properties the port block has are copied across. The
  * mod's own gate, mugs and weapon racks read their metadata themselves: the
  * gate its direction below 8 and open above; a mug the way it faces; a rack
@@ -336,6 +337,9 @@ public final class LOTRLegacyBlocks {
         }
         if (block instanceof RotatedPillarBlock) {
             return "log";
+        }
+        if (block instanceof VineBlock) {
+            return "vine";
         }
         if (block instanceof DoorBlock) {
             return "wooden_door";

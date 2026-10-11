@@ -101,6 +101,12 @@ public class LOTRTurbanOrnamentRecipe implements CraftingRecipe {
         return PlacementInfo.NOT_PLACEABLE;
     }
 
+    /** A special recipe, as vanilla's own dynamic ones are: it adds to whatever turban is given. */
+    @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
     @Override
     public List<RecipeDisplay> display() {
         return List.of();

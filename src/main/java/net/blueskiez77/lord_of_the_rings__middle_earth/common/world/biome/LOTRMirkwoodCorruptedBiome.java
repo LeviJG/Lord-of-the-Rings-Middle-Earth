@@ -62,11 +62,15 @@ public class LOTRMirkwoodCorruptedBiome extends LOTRMirkwoodBiome {
                 LOTRTreeType.MIRK_OAK.create(false, random).generate(world, random, i1, j1, k1);
             }
         }
-        for (l = 0; l < 6; ++l) {
-            i1 = i + random.nextInt(16) + 8;
+    }
+
+    @Override
+    public void planStructures(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.legacy.LOTRLegacyStructure.Planner planner, RandomSource random, int i, int k) {
+        for (int l = 0; l < 6; ++l) {
+            int i1 = i + random.nextInt(16) + 8;
             int j1 = random.nextInt(128);
             int k1 = k + random.nextInt(16) + 8;
-            new LOTRWebOfUngoliantStructure(false, 64).generate(world, random, i1, j1, k1);
+            planner.plan(LOTRWebOfUngoliantStructure.class, (world, r) -> new LOTRWebOfUngoliantStructure(false, 64).generate(world, r, i1, j1, k1));
         }
     }
 

@@ -36,10 +36,10 @@ import org.jspecify.annotations.Nullable;
  */
 public class LOTRAttackOnCollideGoal extends Goal {
 
-    private final PathfinderMob owner;
+    protected final PathfinderMob owner;
     private final double moveSpeed;
     private final boolean sightNotRequired;
-    private @Nullable LivingEntity attackTarget;
+    protected @Nullable LivingEntity attackTarget;
     private @Nullable Path path;
     private int attackTick;
     private int pathCheckTimer;
@@ -126,18 +126,7 @@ public class LOTRAttackOnCollideGoal extends Goal {
         if (target == null) {
             return;
         }
-        this.owner.getLookControl().setLookAt(target, 30.0f, 30.0f);
-        if (this.owner.getFirstPassenger() instanceof Mob rider) {
-            rider.setYRot(this.owner.getYRot());
-            rider.setYHeadRot(this.owner.getYHeadRot());
-        }
-        if ((this.sightNotRequired || this.owner.getSensing().hasLineOfSight(target)) && --this.pathCheckTimer <= 0) {
-            this.pathCheckTimer = 10 + this.owner.getRandom().nextInt(10);
-            Path newPath = this.owner.getNavigation().createPath(target, 0);
-            if (newPath != null) {
-                this.owner.getNavigation().moveTo(newPath, speed());
-            }
-        }
+        updateLookAndPathing();
         if (this.attackTick > 0) {
             --this.attackTick;
         }
@@ -151,6 +140,26 @@ public class LOTRAttackOnCollideGoal extends Goal {
                 this.owner.doHurtTarget(level, target);
             }
             this.owner.swing(InteractionHand.MAIN_HAND);
+        }
+    }
+
+    /** updateLookAndPathing: facing the target, and its path to it renewed every half-second or so. */
+    protected void updateLookAndPathing() {
+        LivingEntity target = this.attackTarget;
+        if (target == null) {
+            return;
+        }
+        this.owner.getLookControl().setLookAt(target, 30.0f, 30.0f);
+        if (this.owner.getFirstPassenger() instanceof Mob rider) {
+            rider.setYRot(this.owner.getYRot());
+            rider.setYHeadRot(this.owner.getYHeadRot());
+        }
+        if ((this.sightNotRequired || this.owner.getSensing().hasLineOfSight(target)) && --this.pathCheckTimer <= 0) {
+            this.pathCheckTimer = 10 + this.owner.getRandom().nextInt(10);
+            Path newPath = this.owner.getNavigation().createPath(target, 0);
+            if (newPath != null) {
+                this.owner.getNavigation().moveTo(newPath, speed());
+            }
         }
     }
 }

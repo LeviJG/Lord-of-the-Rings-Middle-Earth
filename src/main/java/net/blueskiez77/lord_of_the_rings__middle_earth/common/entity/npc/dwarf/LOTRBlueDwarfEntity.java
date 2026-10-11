@@ -21,6 +21,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityBlueDwarf: the dwarves of the Blue Mountains, who marry only
  * their own. They eat without cram, fight back with a blue dwarven dagger,
@@ -87,5 +88,10 @@ public class LOTRBlueDwarfEntity extends LOTRDwarfEntity {
     @Override
     public LOTRAchievement getKillAchievement() {
         return LOTRAchievement.KILL_BLUE_DWARF;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.BLUE_MOUNTAINS;
     }
 }

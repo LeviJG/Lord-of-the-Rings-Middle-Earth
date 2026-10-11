@@ -28,12 +28,18 @@ public final class LOTRParticleProviders {
                 LOTRSpellParticle.morgulPortal(level, x, y, z, xd, yd, zd, sprites));
         registry.register(LOTRParticles.MORGUL_WATER, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
                 LOTRSpellParticle.morgulWater(level, x, y, z, xd, yd, zd, sprites));
+        registry.register(LOTRParticles.MIRKWOOD_WATER, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                LOTRSpellParticle.mirkwoodWater(level, x, y, z, xd, yd, zd, sprites));
+        registry.register(LOTRParticles.WAVE, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                new LOTRWaveParticle(level, x, y, z, xd, yd, zd, sprites));
         registry.register(LOTRParticles.WHITE_SMOKE, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
                 LOTRSmokeParticle.white(level, x, y, z, xd, yd, zd, sprites));
         registry.register(LOTRParticles.QUENDITE_SMOKE, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
                 LOTRSmokeParticle.quendite(level, x, y, z, xd, yd, zd, sprites));
         registry.register(LOTRParticles.CHILL, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
                 LOTRSmokeParticle.chill(level, x, y, z, xd, yd, zd, sprites));
+        registry.register(LOTRParticles.UTUMNO_KILL, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
+                new LOTRUtumnoKillParticle(level, x, y, z, xd, yd, zd, sprites, random));
         registry.register(LOTRParticles.MARSH_FLAME, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->
                 LOTRMarshParticle.flame(level, x, y, z, xd, yd, zd, sprites, random));
         registry.register(LOTRParticles.MARSH_LIGHT, sprites -> (type, level, x, y, z, xd, yd, zd, random) ->

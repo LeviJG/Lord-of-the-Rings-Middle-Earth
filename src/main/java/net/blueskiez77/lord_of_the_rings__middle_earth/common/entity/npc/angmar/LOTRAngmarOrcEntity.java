@@ -25,6 +25,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityAngmarOrc: an orc of Angmar in Angmar armour (bare-headed one
  * time in five), with a sword (three times in ten), battleaxe, dagger
@@ -113,5 +114,10 @@ public class LOTRAngmarOrcEntity extends LOTROrcEntity {
     @Override
     public LOTRAchievement getKillAchievement() {
         return LOTRAchievement.KILL_ANGMAR_ORC;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.ANGMAR;
     }
 }

@@ -424,6 +424,17 @@ public final class LOTRSpawnItems {
     public static final LOTRSpawnEggItem GOLLUM_SPAWN_EGG = egg("gollum", LOTREntities.GOLLUM, 13417872, 9471333);
     public static final LOTRSpawnEggItem SARUMAN_SPAWN_EGG = egg("saruman", LOTREntities.SARUMAN, 15132390, 11776947);
     public static final LOTRSpawnEggItem GANDALF_SPAWN_EGG = egg("gandalf", LOTREntities.GANDALF, 9605778, 5923198);
+    public static final LOTRSpawnEggItem UTUMNO_ORC_SPAWN_EGG = egg("utumno_orc", LOTREntities.UTUMNO_ORC, 2694951, 10377233);
+    public static final LOTRSpawnEggItem UTUMNO_ORC_ARCHER_SPAWN_EGG = egg("utumno_orc_archer", LOTREntities.UTUMNO_ORC_ARCHER, 2694951, 10377233);
+    public static final LOTRSpawnEggItem UTUMNO_WARG_SPAWN_EGG = egg("utumno_warg", LOTREntities.UTUMNO_WARG, 4600617, 2694422);
+    public static final LOTRSpawnEggItem UTUMNO_ICE_WARG_SPAWN_EGG = egg("utumno_ice_warg", LOTREntities.UTUMNO_ICE_WARG, 15066080, 9348269);
+    public static final LOTRSpawnEggItem UTUMNO_OBSIDIAN_WARG_SPAWN_EGG = egg("utumno_obsidian_warg", LOTREntities.UTUMNO_OBSIDIAN_WARG, 2960169, 1644310);
+    public static final LOTRSpawnEggItem UTUMNO_FIRE_WARG_SPAWN_EGG = egg("utumno_fire_warg", LOTREntities.UTUMNO_FIRE_WARG, 6958364, 13530368);
+    public static final LOTRSpawnEggItem UTUMNO_ICE_SPIDER_SPAWN_EGG = egg("utumno_ice_spider", LOTREntities.UTUMNO_ICE_SPIDER, 15594495, 7697919);
+    public static final LOTRSpawnEggItem BALROG_SPAWN_EGG = egg("balrog", LOTREntities.BALROG, 1772037, 13009920);
+    public static final LOTRSpawnEggItem TORMENTED_ELF_SPAWN_EGG = egg("tormented_elf", LOTREntities.TORMENTED_ELF, 14079919, 4337710);
+    public static final LOTRSpawnEggItem UTUMNO_TROLL_SPAWN_EGG = egg("utumno_troll", LOTREntities.UTUMNO_TROLL, 10580563, 7422265);
+    public static final LOTRSpawnEggItem UTUMNO_SNOW_TROLL_SPAWN_EGG = egg("utumno_snow_troll", LOTREntities.UTUMNO_SNOW_TROLL, 14606046, 11059905);
 
     private LOTRSpawnItems() {
     }

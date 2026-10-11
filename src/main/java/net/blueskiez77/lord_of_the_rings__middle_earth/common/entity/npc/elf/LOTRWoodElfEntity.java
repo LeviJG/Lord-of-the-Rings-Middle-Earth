@@ -27,12 +27,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import org.jspecify.annotations.Nullable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRWoodlandRealmBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityWoodElf: an elf of the Woodland Realm, who trusts no one short of
@@ -155,5 +156,10 @@ public class LOTRWoodElfEntity extends LOTRElfEntity {
     @Override
     public boolean canElfSpawnHere(LevelAccessor level) {
         return blockPosition().getY() > 62 && level.getBlockState(blockPosition().below()).is(Blocks.GRASS_BLOCK);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.WOOD_ELF;
     }
 }

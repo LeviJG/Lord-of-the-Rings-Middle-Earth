@@ -56,6 +56,9 @@ public class LOTRElfRenderer
     /** LOTRItemRing.saxIcon. */
     private static final Identifier SAX = Identifier.fromNamespaceAndPath("lotr", "textures/item/sax.png");
     private static final LOTRRandomSkins JAZZ_OUTFITS = LOTRRandomSkins.loadSkinsList("lotr:mob/elf/jazz_outfit", "elf/jazz_outfit");
+    private static final LOTRRandomSkins TORMENTED = LOTRRandomSkins.loadSkinsList("lotr:mob/elf/tormented", "elf/tormented");
+    /** The tormented elf's eyes, at (9, 12) and (13, 12), two pixels by one. */
+    private static final int[][] TORMENTED_EYES = {{9, 12}, {13, 12}};
 
     /** Opacity of an unseen warden, 0.05, over vanilla's own 0.15 for a see-through body. */
     private static final int UNSEEN_TINT = ARGB.color(85, 255, 255, 255);
@@ -65,6 +68,7 @@ public class LOTRElfRenderer
         public int soloTint = -1;
         public float soloSpin;
         public boolean unseen;
+        public boolean tormented;
     }
 
     private final @Nullable Identifier cloak;
@@ -122,6 +126,26 @@ public class LOTRElfRenderer
                 }
             }
         });
+        // renderModel: the tormented elf's eyes glowing.
+        LOTRElfModel<State> eyesModel = new LOTRElfModel<>(LOTRElfModel.createEyesLayer().bakeRoot()) {
+            @Override
+            public void setupAnim(State state) {
+                super.setupAnim(state);
+                showOnlyHead();
+            }
+        };
+        addLayer(new RenderLayer<>(this) {
+            @Override
+            public void submit(PoseStack poseStack, SubmitNodeCollector collector, int light, State state,
+                               float yRot, float xRot) {
+                if (state.tormented && !state.isInvisible) {
+                    Identifier eyes = net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRGlowingEyes
+                            .getEyesTexture(state.skin, TORMENTED_EYES, 2, 1);
+                    collector.order(3).submitModel(eyesModel, state, poseStack, net.minecraft.client.renderer.rendertype.RenderTypes.eyes(eyes),
+                            0xF000F0, net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY, -1, null, state.outlineColor, null);
+                }
+            }
+        });
         // renderEquippedItems: in a solo, the saxophone held up before it.
         addLayer(new RenderLayer<>(this) {
             @Override
@@ -152,8 +176,11 @@ public class LOTRElfRenderer
         boolean male = elf.familyInfo.isMale();
         boolean jazz = elf.isJazz();
         LOTRRandomSkins skins;
+        state.tormented = elf instanceof net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRTormentedElfEntity;
         if (jazz) {
             skins = male ? JAZZ_MALE : JAZZ_FEMALE;
+        } else if (state.tormented) {
+            skins = TORMENTED;
         } else if (elf instanceof LOTRDorwinionElfEntity) {
             skins = male ? DORWINION_MALE : DORWINION_FEMALE;
         } else if (elf instanceof LOTRHighElfBaseEntity) {

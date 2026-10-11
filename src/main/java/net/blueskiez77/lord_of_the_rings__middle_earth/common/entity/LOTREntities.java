@@ -553,6 +553,49 @@ public final class LOTREntities {
                     .clientTrackingRange(4)
                     .updateInterval(10));
 
+    // Utumno's creatures (LOTREntities 800-810).
+    /** LOTREntityUtumnoOrc: setSize(0.6, 1.8). */
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoOrcEntity> UTUMNO_ORC =
+            register("utumno_orc", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoOrcEntity::new, 0.6f, 1.8f));
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoOrcArcherEntity> UTUMNO_ORC_ARCHER =
+            register("utumno_orc_archer", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoOrcArcherEntity::new, 0.6f, 1.8f));
+    /** The Utumno wargs: a warg's setSize(1.5, 1.7), a rider at half its height; the fire warg unharmed by fire. */
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoWargEntity> UTUMNO_WARG =
+            register("utumno_warg", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoWargEntity::new, 1.5f, 1.7f)
+                    .passengerAttachments(0.85f));
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoIceWargEntity> UTUMNO_ICE_WARG =
+            register("utumno_ice_warg", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoIceWargEntity::new, 1.5f, 1.7f)
+                    .passengerAttachments(0.85f));
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoObsidianWargEntity> UTUMNO_OBSIDIAN_WARG =
+            register("utumno_obsidian_warg", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoObsidianWargEntity::new, 1.5f, 1.7f)
+                    .passengerAttachments(0.85f));
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoFireWargEntity> UTUMNO_FIRE_WARG =
+            register("utumno_fire_warg", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoFireWargEntity::new, 1.5f, 1.7f)
+                    .passengerAttachments(0.85f).fireImmune());
+    /** LOTREntityUtumnoIceSpider: a spider's setSize(1.4, 0.8). */
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoIceSpiderEntity> UTUMNO_ICE_SPIDER =
+            register("utumno_ice_spider", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoIceSpiderEntity::new, 1.4f, 0.8f));
+    /** LOTREntityBalrog: setSize(2.4, 5.0), isImmuneToFire. */
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRBalrogEntity> BALROG =
+            register("balrog", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRBalrogEntity::new, 2.4f, 5.0f).fireImmune());
+    /** LOTREntityTormentedElf: as an elf, setSize(0.6, 1.8). */
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRTormentedElfEntity> TORMENTED_ELF =
+            register("tormented_elf", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRTormentedElfEntity::new, 0.6f, 1.8f));
+    /** LOTREntityUtumnoTroll: a troll's setSize(1.6, 3.2) at its scale of 1.5. */
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoTrollEntity> UTUMNO_TROLL =
+            register("utumno_troll", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoTrollEntity::new, 2.4f, 4.8f));
+    /** LOTREntityUtumnoSnowTroll: as a snow troll. */
+    public static final EntityType<net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoSnowTrollEntity> UTUMNO_SNOW_TROLL =
+            register("utumno_snow_troll", creature(net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoSnowTrollEntity::new, 1.28f, 2.56f));
+
+    /** LOTREntityPortal ("Portal"): the Ring portal, 3 across and 1.5 high, tracked out to 80 blocks every 3 ticks. */
+    public static final EntityType<LOTRPortalEntity> PORTAL = register("portal",
+            EntityType.Builder.<LOTRPortalEntity>of(LOTRPortalEntity::new, MobCategory.MISC)
+                    .sized(3.0f, 1.5f)
+                    .fireImmune()
+                    .clientTrackingRange(5)
+                    .updateInterval(3));
+
     private LOTREntities() {
     }
 
@@ -2658,6 +2701,17 @@ public final class LOTREntities {
         FabricDefaultAttributeRegistry.register(MOUNTAIN_TROLL, LOTRMountainTrollEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(MOUNTAIN_TROLL_CHIEFTAIN, LOTRMountainTrollChieftainEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(SNOW_TROLL, LOTRSnowTrollEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_ORC, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoOrcEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_ORC_ARCHER, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoOrcEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_WARG, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoWargEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_ICE_WARG, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoWargEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_OBSIDIAN_WARG, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoWargEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_FIRE_WARG, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoWargEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_ICE_SPIDER, LOTRSpiderBaseEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(BALROG, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRBalrogEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(TORMENTED_ELF, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRTormentedElfEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_TROLL, net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.utumno.LOTRUtumnoTrollEntity.createAttributes());
+        FabricDefaultAttributeRegistry.register(UTUMNO_SNOW_TROLL, LOTRSnowTrollEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(ENT, LOTREntEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(MALLORN_ENT, LOTRMallornEntEntity.createAttributes());
         FabricDefaultAttributeRegistry.register(HUORN, LOTRHuornBaseEntity.createAttributes());

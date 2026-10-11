@@ -3,20 +3,53 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jspecify.annotations.Nullable;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen;
+
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTRDate: the Shire Reckoning, counted in days from 22 Halimath 1401, which dates mini-quests in the
  * red book. The day is kept with the world's LOTR data and sent to every player.
  *
- * <p>NOT ported yet: the day turning (LOTRDate.update, from the Middle-earth world's own clock, D10),
- * and with it the seasons; until then it stays the day it is. The /date command (D16).
+ * <p>The day turns with Middle-earth's own day ({@link #update}), and with it the seasons.
+ *
+ * <p>NOT ported yet: the /date command (D16).
  */
 public final class LOTRDate {
 
+    /** LOTRTime.DAY_LENGTH: Middle-earth's day, twice the overworld's (its clock's day timeline). */
+    public static final int TICKS_IN_DAY = 48000;
+
+    private static long prevWorldTime = -1L;
+
     private LOTRDate() {
+    }
+
+    public static void init() {
+        ServerLifecycleEvents.SERVER_STARTING.register(server -> prevWorldTime = -1L);
+        ServerTickEvents.END_LEVEL_TICK.register(level -> {
+            if (level.dimension() == LOTRWorldGen.MIDDLE_EARTH) {
+                update(level);
+            }
+        });
+    }
+
+    /** update: a day on when Middle-earth's clock passes into the next. */
+    public static void update(ServerLevel world) {
+        long worldTime = world.getDefaultClockTime();
+        if (prevWorldTime == -1L) {
+            prevWorldTime = worldTime;
+        }
+        if (worldTime / TICKS_IN_DAY != prevWorldTime / TICKS_IN_DAY) {
+            LOTRLevelData.setShireDate(ShireReckoning.currentDay + 1);
+        }
+        prevWorldTime = worldTime;
     }
 
     public enum Season {

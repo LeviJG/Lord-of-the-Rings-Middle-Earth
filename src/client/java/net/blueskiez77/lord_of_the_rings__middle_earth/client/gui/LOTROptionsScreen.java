@@ -8,6 +8,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRRankOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuNetworking;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRMenuPayloads;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRMapPlayerData;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 
@@ -22,8 +23,8 @@ import net.minecraft.world.entity.player.Player;
  * shows its state and flips it on the server; hovering one explains both
  * settings.
  *
- * <p>NOT ported yet: Show Map Location (the map, D13) and Conquest Kills
- * (conquest, D14). Their rows are left where they stood.
+ * <p>NOT ported yet: Conquest Kills (with conquest). Its row is left where
+ * it stood.
  */
 public class LOTROptionsScreen extends LOTRMenuBaseScreen {
 
@@ -45,6 +46,7 @@ public class LOTROptionsScreen extends LOTRMenuBaseScreen {
         option(LOTRMenuNetworking.FRIENDLY_FIRE, buttonX, buttonY, "lotr.gui.options.friendlyFire");
         option(LOTRMenuNetworking.HIRED_DEATH_MESSAGES, buttonX, buttonY + 24, "lotr.gui.options.hiredDeathMessages");
         option(LOTRMenuNetworking.SHOW_ALIGNMENT, buttonX, buttonY + 48, "lotr.gui.options.showAlignment");
+        option(LOTRMenuNetworking.SHOW_MAP_LOCATION, buttonX, buttonY + 72, "lotr.gui.options.showMapLocation");
         option(LOTRMenuNetworking.FEM_RANK, buttonX, buttonY + 120, "lotr.gui.options.femRank");
         updateStates();
     }
@@ -61,7 +63,8 @@ public class LOTROptionsScreen extends LOTRMenuBaseScreen {
         setState(0, LOTRPlayerNPCOptions.getFriendlyFire(player));
         setState(1, LOTRPlayerNPCOptions.getEnableHiredDeathMessages(player));
         setState(2, !LOTRPlayerAlignments.getHideAlignment(player));
-        setState(3, LOTRRankOptions.getFemRankOverride(player));
+        setState(3, !LOTRMapPlayerData.getHideMapLocation(player));
+        setState(4, LOTRRankOptions.getFemRankOverride(player));
     }
 
     private void setState(int i, boolean flag) {

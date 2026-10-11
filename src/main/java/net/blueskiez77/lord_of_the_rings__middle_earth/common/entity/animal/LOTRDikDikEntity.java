@@ -38,7 +38,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>It drops nothing, as the original had no dropFewItems.
  */
-public class LOTRDikDikEntity extends PathfinderMob {
+public class LOTRDikDikEntity extends PathfinderMob implements LOTRAmbientCreature {
 
     public LOTRDikDikEntity(EntityType<? extends LOTRDikDikEntity> type, Level level) {
         super(type, level);

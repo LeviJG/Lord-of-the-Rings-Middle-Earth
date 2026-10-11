@@ -29,6 +29,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityGundabadOrc: an orc of Gundabad, armed and armoured from
  * whatever it has scavenged -- any of 45 blades, axes, picks and polearms of
@@ -154,5 +155,10 @@ public class LOTRGundabadOrcEntity extends LOTROrcEntity {
     @Override
     public LOTRAchievement getKillAchievement() {
         return LOTRAchievement.KILL_GUNDABAD_ORC;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.GUNDABAD;
     }
 }

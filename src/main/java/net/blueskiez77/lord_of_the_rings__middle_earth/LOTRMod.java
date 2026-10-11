@@ -88,11 +88,14 @@ public class LOTRMod implements ModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.common.network.LOTRPouchNetworking.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRFellowshipCommands.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRMiscCommands.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRWaypointCommands.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRFastTravel.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry.init();
 
         LOTRPlayerAlignments.init();
         LOTRLevelData.init();
         LOTRLegacyBlocks.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRDebugW0a.init(); // TEMPORARY W0a
         net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRSaplingGrowth.init();
         LOTRLegacyItems.init();
@@ -124,6 +127,8 @@ public class LOTRMod implements ModInitializer {
 
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCAttributes.init();
         LOTREntities.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRPortals.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumno.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRSpeech.loadAllSpeechBanks();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNames.loadAllNameBanks();
         LOTRLore.loadAllLore();

@@ -83,16 +83,20 @@ public class LOTRIronHillsBiome extends LOTRBiome {
     }
 
     @Override
+    public void planStructures(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.legacy.LOTRLegacyStructure.Planner planner, RandomSource random, int i, int k) {
+        for (int l = 0; l < 4; ++l) {
+            int i1 = i + random.nextInt(16) + 8;
+            int j1 = 70 + random.nextInt(60);
+            int k1 = k + random.nextInt(16) + 8;
+            planner.plan(LOTRDwarfHouseStructure.class, (world, r) -> new LOTRDwarfHouseStructure(false).generate(world, r, i1, j1, k1));
+        }
+    }
+
+    @Override
     public void decorate(WorldGenLevel world, RandomSource random, int i, int k) {
         int i1;
         int l;
         super.decorate(world, random, i, k);
-        for (l = 0; l < 4; ++l) {
-            i1 = i + random.nextInt(16) + 8;
-            int j1 = 70 + random.nextInt(60);
-            int k1 = k + random.nextInt(16) + 8;
-            new LOTRDwarfHouseStructure(false).generate(world, random, i1, j1, k1);
-        }
         for (l = 0; l < 8; ++l) {
             int k1;
             i1 = i + random.nextInt(16) + 8;

@@ -49,6 +49,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityHalfTroll: a half-troll of Far Harad, 35 strong and hitting for
  * 6, seeing 24 blocks, who seeks out its people's enemies -- and rabbits
@@ -252,5 +253,10 @@ public class LOTRHalfTrollEntity extends LOTRNPCEntity {
     @Override
     public LOTRAchievement getKillAchievement() {
         return LOTRAchievement.KILL_HALF_TROLL;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.HALF_TROLL;
     }
 }

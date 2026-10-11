@@ -2,6 +2,8 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import com.mojang.serialization.MapCodec;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRDorwinionBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
@@ -108,10 +110,7 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
     /**
      * LOTRBlockGrapevine.getGrowthFactor: 1, plus the 3x3 of farmland at the
      * vine's farmland level -- 1 for dry and 3 for wet farmland, the eight
-     * around the centre counting a quarter.
-     *
-     * <p>The original also multiplied by 1.6 in the Dorwinion biome. That
-     * biome does not exist in the port yet (Track D); add it with the biomes.
+     * around the centre counting a quarter -- and 1.6 times that in Dorwinion.
      */
     private static float growthFactor(LevelReader level, BlockPos pos) {
         if (!canPlantGrapesAt(level, pos)) {
@@ -137,6 +136,9 @@ public class LOTRGrapevineBlock extends Block implements BonemealableBlock {
                 }
                 growth += f;
             }
+        }
+        if (LOTRBiomes.of(level.getBiome(pos)) instanceof LOTRDorwinionBiome) {
+            growth *= 1.6F;
         }
         return growth;
     }

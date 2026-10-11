@@ -8,13 +8,16 @@ import java.util.Map;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRClientFactionState;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRAlignmentBarRenderer;
+import net.blueskiez77.lord_of_the_rings__middle_earth.client.map.LOTRMapRenderer;
 import net.blueskiez77.lord_of_the_rings__middle_earth.client.quest.LOTRClientMiniQuests;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRAlignmentValues;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFaction;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionData;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionRank;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRFactionRelations;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRMapRegion;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRRankOptions;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRViewingFaction;
@@ -50,10 +53,8 @@ import org.jspecify.annotations.Nullable;
  * and unpledging each ask first, explaining what stands in the way.
  * /alignmentsee shows another player's alignments in the same screen.
  *
- * <p>NOT ported yet: the faction's map on the front page and the button to
- * its control zone on the full map (LOTRGuiMap, D13); the mini-quest events
- * of opening it and cycling factions (D14); regions of another dimension
- * (every player is in Middle-earth until Utumno, D10).
+ * Beside the page, the faction's lands on the map, with a button to its
+ * areas of influence on the full map.
  */
 public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
 
@@ -80,6 +81,9 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
     private final int pageMapX = 159;
     private final int pageMapY = 22;
     private final int pageMapSize = 80;
+    /** mapDrawGui: draws the faction's lands beside the page. */
+    private final LOTRMapRenderer mapDrawGui = new LOTRMapRenderer();
+    private FactionMapButton buttonFactionMap;
     private LOTRRedBookButton buttonRegions;
     private PageButton buttonPagePrev;
     private PageButton buttonPageNext;
@@ -154,7 +158,10 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
                     onClose();
                 }));
         this.buttonPledgeRevoke.isBroken = true;
-        prevDimension = currentDimension = LOTRDimension.MIDDLE_EARTH;
+        // Drawn by hand over the faction's map, which is drawn after the other widgets.
+        this.buttonFactionMap = addWidget(new FactionMapButton(this.guiLeft + this.pageMapX + this.pageMapSize - 3 - 8,
+                this.guiTop + this.pageY + this.pageMapY + 3));
+        prevDimension = currentDimension = LOTRDimension.getCurrentDimensionWithFallback(this.minecraft.level);
         this.currentFaction = LOTRViewingFaction.getViewingFaction(player());
         prevRegion = currentRegion = this.currentFaction.factionRegion;
         currentFactionList = currentRegion.factionList;
@@ -202,6 +209,13 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
         if (!this.isPledging && !this.isUnpledging) {
             this.buttonPagePrev.active = currentPage.prev() != null;
             this.buttonPageNext.active = currentPage.next() != null;
+            this.buttonFactionMap.active = currentPage != Page.RANKS && this.currentFaction.isPlayableAlignmentFaction()
+                    && LOTRDimension.getCurrentDimensionWithFallback(player.level()) == this.currentFaction.factionDimension;
+            this.buttonFactionMap.visible = this.buttonFactionMap.active;
+            if (!LOTRFaction.controlZonesEnabled(player.level())) {
+                this.buttonFactionMap.active = false;
+                this.buttonFactionMap.visible = false;
+            }
             if (!this.isOtherPlayer && currentPage == Page.FRONT) {
                 if (LOTRPlayerAlignments.isPledgedTo(player, this.currentFaction)) {
                     this.buttonPledge.isBroken = this.buttonPledge.isHovered();
@@ -230,6 +244,8 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
         } else {
             this.buttonPagePrev.active = false;
             this.buttonPageNext.active = false;
+            this.buttonFactionMap.active = false;
+            this.buttonFactionMap.visible = false;
             this.buttonPledge.active = false;
             this.buttonPledge.visible = false;
             if (this.isPledging) {
@@ -320,6 +336,22 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
         Component s = this.currentFaction.factionSubtitle();
         graphics.text(this.font, s, x - this.font.width(s) / 2, y + this.font.lineHeight + 22, 0xFFFFFFFF, false);
         if (!useFullPageTexture()) {
+            if (this.currentFaction.factionMapInfo != null) {
+                LOTRMapRegion mapInfo = this.currentFaction.factionMapInfo;
+                int xMin = this.guiLeft + this.pageMapX;
+                int xMax = xMin + this.pageMapSize;
+                int yMin = this.guiTop + this.pageY + this.pageMapY;
+                int yMax = yMin + this.pageMapSize;
+                int mapBorder = 1;
+                graphics.fill(xMin - mapBorder, yMin - mapBorder, xMax + mapBorder, yMax + mapBorder, -16777216);
+                float zoom = (float) this.pageMapSize / (mapInfo.radius() * 2);
+                float zoomExp = (float) Math.log(zoom) / (float) Math.log(2.0);
+                this.mapDrawGui.setView(mapInfo.mapX(), mapInfo.mapY(), zoomExp, zoom);
+                this.mapDrawGui.setWindow(xMin, yMin, xMax, yMax);
+                this.mapDrawGui.enableZoomOutWPFading = false;
+                this.mapDrawGui.drawMapAndOverlay(graphics, player, LOTRConfig.enableSepiaMap, 1.0f, true);
+            }
+            this.buttonFactionMap.extractRenderState(graphics, mouseX, mouseY, partialTick);
             int wcX = this.guiLeft + this.pageMapX + 3;
             int wcY = this.guiTop + this.pageY + this.pageMapY + this.pageMapSize + 5;
             int wcWidth = 8;
@@ -498,6 +530,10 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
                     LOTRPlayerAlignments.getPledgeEnemyAlignmentLimit(player, this.currentFaction));
             graphics.setTooltipForNextFrame(this.font, this.font.split(Component.translatable("lotr.gui.factions.pledgeLocked",
                     alignLimit, pledge == null ? Component.empty() : pledge.factionName()), 200), mouseX, mouseY);
+        }
+        if (this.buttonFactionMap.active && this.buttonFactionMap.isHovered()) {
+            graphics.setTooltipForNextFrame(this.font, this.font.split(Component.translatable("lotr.gui.factions.viewMap"), 200),
+                    mouseX, mouseY);
         }
         if (mouseOverWarCrimes) {
             graphics.setTooltipForNextFrame(this.font, this.font.split(Component.translatable(this.currentFaction.approvesWarCrimes
@@ -682,7 +718,7 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
             this.currentFaction = currentFactionList.get(this.currentFactionIndex);
         }
         this.prevFactionIndex = this.currentFactionIndex;
-        currentDimension = LOTRDimension.MIDDLE_EARTH;
+        currentDimension = LOTRDimension.getCurrentDimensionWithFallback(this.minecraft.level);
         if (currentDimension != prevDimension) {
             currentRegion = currentDimension.dimensionRegions.get(0);
         }
@@ -729,6 +765,30 @@ public class LOTRFactionsScreen extends LOTRMenuBaseScreen {
     }
 
     /** LOTRGuiButtonFactionsPage: a page corner, with an arrow beside it while it can turn. */
+    /** LOTRGuiButtonFactionsMap: the faction's areas of influence on the full map. */
+    private final class FactionMapButton extends AbstractButton {
+
+        FactionMapButton(int x, int y) {
+            super(x, y, 8, 8, Component.translatable("lotr.gui.factions.viewMap"));
+        }
+
+        @Override
+        public void onPress(InputWithModifiers input) {
+            LOTRFactionsScreen.this.minecraft.setScreenAndShow(new LOTRMapScreen().setControlZone(LOTRFactionsScreen.this.currentFaction));
+        }
+
+        @Override
+        protected void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTick) {
+            graphics.blit(RenderPipelines.GUI_TEXTURED, FACTIONS_TEXTURE, getX(), getY(), 17 + (isHovered() ? this.width : 0), 142.0F,
+                    this.width, this.height, 256, 256);
+        }
+
+        @Override
+        protected void updateWidgetNarration(NarrationElementOutput output) {
+            defaultButtonNarrationText(output);
+        }
+    }
+
     private final class PageButton extends AbstractButton {
         private final boolean leftOrRight;
 

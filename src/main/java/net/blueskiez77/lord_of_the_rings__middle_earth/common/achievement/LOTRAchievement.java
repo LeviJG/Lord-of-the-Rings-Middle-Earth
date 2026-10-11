@@ -39,9 +39,7 @@ import org.jspecify.annotations.Nullable;
  * (one who no longer qualifies keeps it, but it no longer counts). Saved by category and number, as
  * the original saved them. Earning one is told to every player in chat.
  *
- * <p>Listed but not yet earnable, until what they are earned by is ported: the biome achievements
- * (one for each land entered), climbMistyMountains, growBaobab, rideGiraffeShire and
- * rideBarrelMirkwood (with the biomes, D10); fishRing (fishing, D3/D10);
+ * <p>Listed but not yet earnable, until what they are earned by is ported: fishRing (the Middle-earth fish hook);
  * factionConquest (conquest, D14); and Utumno's and its monsters' (D15). attackRabbit,
  * useSpearFromFar, hitByOrcSpear and useDunlendingTrident are earned by new means
  * (LOTRAchievementEvents), the port keeping vanilla's rabbit, spear and trident.

@@ -20,10 +20,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBi
  * LOTREntityAITrollFleeSun: a troll caught under the open sky by day starts
  * to burn -- 300 ticks to turn to stone -- and runs for shelter: a spot
  * within 24 blocks (12 up or down) out of the sky and darker than half light,
- * or failing that anywhere within 12.
- *
- * <p>NOT ported yet: the biomes where hostiles walk by day, which the sun
- * does not trouble (LOTRBiome.canSpawnHostilesInDay, with the biomes, D10).
+ * or failing that anywhere within 12 -- unless the biome lets hostiles walk by
+ * day (LOTRBiome.canSpawnHostilesInDay), where the sun does not trouble it.
  */
 public class LOTRTrollFleeSunGoal extends Goal {
 

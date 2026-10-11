@@ -13,7 +13,7 @@ import net.minecraft.network.chat.Component;
 
 /**
  * LOTRDimension: the mod's dimensions -- their names, NPC spawn caps, biomes, regions and factions.
- * Middle-earth itself is a datapack dimension ({@code lotr:middle_earth}, LOTRWorldGen); Utumno is D15.
+ * Both are datapack dimensions ({@code lotr:middle_earth} and {@code lotr:utumno}, LOTRWorldGen).
  */
 public enum LOTRDimension {
     MIDDLE_EARTH("MiddleEarth", 100, EnumSet.of(DimensionRegion.WEST, DimensionRegion.EAST, DimensionRegion.SOUTH)),
@@ -37,9 +37,24 @@ public enum LOTRDimension {
         }
     }
 
-    /** getCurrentDimensionWithFallback: Middle-earth for its level, and for any other (Utumno: D15). */
-    public static LOTRDimension getCurrentDimensionWithFallback(net.minecraft.world.level.Level level) {
-        return MIDDLE_EARTH;
+    /** getCurrentDimension: the mod's dimension the level is, or none. */
+    public static @org.jspecify.annotations.Nullable LOTRDimension getCurrentDimension(net.minecraft.world.level.@org.jspecify.annotations.Nullable Level level) {
+        if (level == null) {
+            return null;
+        }
+        if (level.dimension() == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.MIDDLE_EARTH) {
+            return MIDDLE_EARTH;
+        }
+        if (level.dimension() == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.UTUMNO) {
+            return UTUMNO;
+        }
+        return null;
+    }
+
+    /** getCurrentDimensionWithFallback: Middle-earth for any level that is not one of the mod's. */
+    public static LOTRDimension getCurrentDimensionWithFallback(net.minecraft.world.level.@org.jspecify.annotations.Nullable Level level) {
+        LOTRDimension dim = getCurrentDimension(level);
+        return dim == null ? MIDDLE_EARTH : dim;
     }
 
     public static LOTRDimension forName(String s) {

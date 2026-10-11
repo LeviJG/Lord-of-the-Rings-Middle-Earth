@@ -4,6 +4,7 @@ import java.util.function.Predicate;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRLegacyWorld;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.FluidTags;
@@ -47,7 +48,7 @@ public final class LOTRAmbientSpawnChecks {
                     int k1 = k + rand.nextInt(xzRange) - rand.nextInt(xzRange);
                     int j1 = j + rand.nextInt(yRange) - rand.nextInt(yRange);
                     BlockPos pos = new BlockPos(i1, j1, k1);
-                    if (!world.hasChunkAt(pos) || !materials.test(world.getBlockState(pos)) || ++counted <= required) {
+                    if (!LOTRLegacyWorld.hasChunkAt(world, pos) || !materials.test(world.getBlockState(pos)) || ++counted <= required) {
                         continue;
                     }
                     return true;

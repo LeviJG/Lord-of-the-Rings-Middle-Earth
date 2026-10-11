@@ -9,6 +9,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRBan
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPouchItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRValuableItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRFastTravel;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.sounds.SoundEvents;
@@ -32,9 +33,7 @@ import org.jspecify.annotations.Nullable;
  * Within reach it takes one to its maximum thefts of up to eight items each:
  * coins always if it can, and then by preference valuables (gems, the metals
  * of good tools, rings, armour), then weapons and tools, then pouches, then anything. The
- * player is told, and the bandit drops any fight to make off with it.
- *
- * <p>NOT ported yet: cancelling the player's fast travel (D13).
+ * player is told, their fast travel is stopped, and the bandit drops any fight to make off with it.
  */
 public class LOTRBanditStealGoal extends Goal {
 
@@ -149,6 +148,7 @@ public class LOTRBanditStealGoal extends Goal {
             if (this.theBanditAsNPC.getTarget() != null) {
                 this.theBanditAsNPC.setTarget(null);
             }
+            LOTRFastTravel.cancelFastTravel(player);
         }
     }
 

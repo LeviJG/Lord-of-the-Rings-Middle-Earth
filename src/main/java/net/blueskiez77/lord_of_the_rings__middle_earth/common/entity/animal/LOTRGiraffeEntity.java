@@ -1,6 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRShireBiome;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.ItemTags;
@@ -10,14 +14,13 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * LOTREntityGiraffe: four blocks tall, bred on leaves, a weaker jumper, and
  * horse sounds. Drops leather ({@code lotr:entities/giraffe}) and, to a
- * player, now and then its rug ({@link LOTRRugDrops}).
- *
- * <p>NOT ported yet: the rideGiraffeShire achievement, for riding a saddled
- * one in the Shire (with the biomes, D10).
+ * player, now and then its rug ({@link LOTRRugDrops}). A player riding a
+ * saddled one in the Shire earns rideGiraffeShire.
  */
 public class LOTRGiraffeEntity extends LOTRHorseEntity {
 
@@ -56,6 +59,16 @@ public class LOTRGiraffeEntity extends LOTRHorseEntity {
         super.dropCustomDeathLoot(level, source, killedByPlayer);
         if (killedByPlayer) {
             LOTRRugDrops.dropRug(this, level, source, LOTRItems.GIRAFFE_RUG);
+        }
+    }
+
+    /** onLivingUpdate: rideGiraffeShire. */
+    @Override
+    public void aiStep() {
+        super.aiStep();
+        if (!level().isClientSide() && getFirstPassenger() instanceof Player player && isSaddled()
+                && LOTRBiomes.of(level().getBiome(blockPosition())) instanceof LOTRShireBiome) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.RIDE_GIRAFFE_SHIRE);
         }
     }
 }

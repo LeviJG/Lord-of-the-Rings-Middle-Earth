@@ -23,6 +23,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityNomad: a nomad of the Harad desert, with a Haradric dagger, a
  * nomad name, nomad food and drink, and now and then something from a nomad
@@ -97,5 +98,10 @@ public class LOTRNomadEntity extends LOTRNearHaradrimBaseEntity implements net.b
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.NOMAD.createQuest(this);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.NOMAD;
     }
 }

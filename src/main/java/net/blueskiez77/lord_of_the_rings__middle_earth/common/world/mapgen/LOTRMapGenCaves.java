@@ -50,7 +50,7 @@ public class LOTRMapGenCaves extends LOTRMapGenBase {
         return this.rand.nextInt(this.rand.nextInt(120) + 8);
     }
 
-    private void digBlock(BlockState[] blockArray, int index, int xzIndex, int j, LOTRBiome biome, boolean cutSurface) {
+    protected void digBlock(BlockState[] blockArray, int index, int xzIndex, int j, LOTRBiome biome, boolean cutSurface) {
         BlockState block = blockArray[index];
         boolean isTop = false;
         boolean belowVillageOrRoad = false;

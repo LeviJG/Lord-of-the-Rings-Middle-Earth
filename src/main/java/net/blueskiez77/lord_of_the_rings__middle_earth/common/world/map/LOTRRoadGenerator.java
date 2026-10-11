@@ -135,6 +135,11 @@ public final class LOTRRoadGenerator {
         return false;
     }
 
+    /** What generateRoad returns for column (i, k): a road there, or a road type that lines its way with flowers. */
+    public static boolean marksRoadFlag(int i, int k, LOTRBiome biome) {
+        return LOTRRoads.isRoadAt(i, k) || biome.getRoadBlock().hasFlowers();
+    }
+
     /** A road within {@code range} of (i, k), outside the square of {@code inner} about it. */
     private static boolean anyRoadWithin(int i, int k, int range, int inner) {
         for (int i1 = -range; i1 <= range; ++i1) {

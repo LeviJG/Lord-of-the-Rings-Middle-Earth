@@ -26,6 +26,9 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlig
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCoins;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMaterialItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPouchItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRDimension;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -51,9 +54,8 @@ import org.jspecify.annotations.Nullable;
  * in alignment, coins and sometimes an item, a lore book, a smith's scroll or (from a dwarf) a book of
  * true silver -- which the NPC's death, or another's hand, may fail. Saved by the original's keys.
  *
- * One time in ten the rewards come in a pouch, as many as fit.
- *
- * <p>NOT ported yet: the biome it was given in (with the biomes, D10).
+ * One time in ten the rewards come in a pouch, as many as fit. The land it was taken in is kept for
+ * the red book.
  */
 public abstract class LOTRMiniQuest {
 
@@ -81,6 +83,8 @@ public abstract class LOTRMiniQuest {
     public LOTRFaction entityFaction;
     public int questColor;
     public int dateGiven;
+    /** The land it was taken in, for the red book's diary. */
+    public @Nullable LOTRBiome biomeGiven;
     public float rewardFactor = 1.0f;
     public boolean willHire;
     public float hiringAlignment;
@@ -340,6 +344,13 @@ public abstract class LOTRMiniQuest {
         this.questColor = nbt.contains("Color") ? nbt.getIntOr("Color", 0)
                 : this.entityFaction == null ? 0 : this.entityFaction.getFactionColor();
         this.dateGiven = nbt.getIntOr("DateGiven", 0);
+        if (nbt.contains("BiomeID")) {
+            int biomeID = nbt.getByteOr("BiomeID", (byte) 0) & 0xFF;
+            LOTRDimension biomeDim = LOTRDimension.forName(nbt.getStringOr("BiomeDim", ""));
+            if (biomeDim != null) {
+                this.biomeGiven = biomeDim.biomeList[biomeID];
+            }
+        }
         this.rewardFactor = nbt.contains("RewardFactor") ? nbt.getFloatOr("RewardFactor", 1.0f) : 1.0f;
         this.willHire = nbt.getBooleanOr("WillHire", false);
         this.hiringAlignment = nbt.contains("HiringAlignment") ? nbt.getIntOr("HiringAlignment", 0)
@@ -404,6 +415,10 @@ public abstract class LOTRMiniQuest {
         nbt.putString("Faction", this.entityFaction.codeName());
         nbt.putInt("Color", this.questColor);
         nbt.putInt("DateGiven", this.dateGiven);
+        if (this.biomeGiven != null) {
+            nbt.putByte("BiomeID", (byte) this.biomeGiven.biomeID);
+            nbt.putString("BiomeDim", this.biomeGiven.biomeDimension.dimensionName);
+        }
         nbt.putFloat("RewardFactor", this.rewardFactor);
         nbt.putBoolean("WillHire", this.willHire);
         nbt.putFloat("HiringAlignF", this.hiringAlignment);
@@ -476,6 +491,10 @@ public abstract class LOTRMiniQuest {
     public void start(Player player, LOTRNPCEntity npc) {
         setNPCInfo(npc);
         this.dateGiven = LOTRDate.ShireReckoning.currentDay;
+        LOTRBiome biome = LOTRBiomes.of(player.level().getBiome(player.blockPosition()));
+        if (biome != null) {
+            this.biomeGiven = biome;
+        }
         this.playerData.addMiniQuest(this);
         npc.questInfo.addActiveQuestPlayer(player);
         this.playerData.setTrackingMiniQuest(this);

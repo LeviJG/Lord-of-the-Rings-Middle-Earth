@@ -44,7 +44,7 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>A swarm shot down by a hired unit earns its player shootDownMidges.
  */
-public class LOTRMidgesEntity extends Mob {
+public class LOTRMidgesEntity extends Mob implements LOTRAmbientCreature {
 
     public final Midge[] midges;
     private @Nullable BlockPos currentFlightTarget;

@@ -46,8 +46,6 @@ import org.jspecify.annotations.Nullable;
  * within 64 blocks, and not with the HUD hidden. The original drew these
  * from its biped, warg, spider, troll and Huorn renderers (Gollum's health
  * only), each at its own height; so here.
- *
- * <p>Every world counts as Middle-earth for the alignment until D10.
  */
 public final class LOTROverheadRendering {
 

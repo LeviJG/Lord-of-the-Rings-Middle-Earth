@@ -1,6 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.entity;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRFoodBlocks;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRMirkwoodBiome;
 
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -15,6 +19,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * LOTREntityBarrel: a barrel set on the water to ride, like a boat -- the
@@ -32,6 +38,8 @@ import net.minecraft.world.phys.Vec3;
  *   <li>broken, it drops the barrel item it was placed from, contents and all
  *       (getBarrelDrop, barrelItemData).</li>
  * </ul>
+ *
+ * <p>A player riding one through water in Mirkwood earns rideBarrelMirkwood.
  *
  * <p>Picking it gives a plain barrel: 26.2 makes a boat's getPickResult final,
  * where the original gave the barrel with its contents.
@@ -74,6 +82,11 @@ public class LOTRBarrelEntity extends Boat {
         if (isLocalInstanceAuthoritative() && getControllingPassenger() != null) {
             Vec3 motion = getDeltaMovement();
             setDeltaMovement(motion.x * RIDDEN_DRAG, motion.y, motion.z * RIDDEN_DRAG);
+        }
+        if (!level().isClientSide() && getFirstPassenger() instanceof Player player
+                && level().getBlockStates(getBoundingBox()).anyMatch(state -> state.getFluidState().is(FluidTags.WATER))
+                && LOTRBiomes.of(level().getBiome(blockPosition())) instanceof LOTRMirkwoodBiome) {
+            LOTRPlayerAchievements.addAchievement(player, LOTRAchievement.RIDE_BARREL_MIRKWOOD);
         }
     }
 

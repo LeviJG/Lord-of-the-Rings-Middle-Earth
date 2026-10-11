@@ -73,12 +73,11 @@ public final class LOTRPlayerAlignments {
 
     /**
      * updateRegionAndViewingFaction: a player viewing a faction of another
-     * dimension is turned to the last viewed of this one's first region. Every
-     * player counts as in Middle-earth until Utumno is ported (D10).
+     * dimension is turned to the last viewed of this one's first region.
      */
     private static void updateRegionAndViewingFaction(ServerPlayer player) {
         LOTRDimension.DimensionRegion currentRegion = LOTRViewingFaction.getViewingFaction(player).factionRegion;
-        LOTRDimension currentDim = LOTRDimension.MIDDLE_EARTH;
+        LOTRDimension currentDim = LOTRDimension.getCurrentDimensionWithFallback(player.level());
         if (currentRegion == null || currentRegion.getDimension() != currentDim) {
             currentRegion = currentDim.dimensionRegions.get(0);
             LOTRViewingFaction.setViewingFaction(player, LOTRViewingFaction.getRegionLastViewedFaction(player, currentRegion));

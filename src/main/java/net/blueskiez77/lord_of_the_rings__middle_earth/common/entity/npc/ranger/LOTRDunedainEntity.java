@@ -45,8 +45,9 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.pathfinder.PathType;
 
-import org.jspecify.annotations.Nullable;
 import net.minecraft.world.level.LevelAccessor;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityDunedain: the Dúnedain of the North, "Name of the Dúnedain" --
@@ -211,5 +212,10 @@ public class LOTRDunedainEntity extends LOTRManEntity {
     @Override
     public boolean checkSpawnRules(LevelAccessor level, EntitySpawnReason reason) {
         return super.checkSpawnRules(level, reason) && (this.liftSpawnRestrictions || isAboveSeaOnTopBlock(level, true));
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.RANGER_NORTH;
     }
 }

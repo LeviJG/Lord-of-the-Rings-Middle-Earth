@@ -20,10 +20,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import org.jspecify.annotations.Nullable;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRIthilienBiome;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityRangerIthilien: a Ranger of Ithilien, of Gondor -- a Gondorian
@@ -105,5 +106,10 @@ public class LOTRRangerIthilienEntity extends LOTRRangerEntity {
             f += 20.0f;
         }
         return f;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.GONDOR;
     }
 }

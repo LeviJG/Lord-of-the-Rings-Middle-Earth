@@ -20,9 +20,6 @@ import net.minecraft.world.item.ItemStack;
  * line of his. While a player is on it he stays; if he has moved on, it fails.
  *
  * The thirteenth stage gives three small pouches, once per player.
- *
- * <p>NOT ported yet: the map (D13), whose opening the fifth stage waits on -- until then the quest
- * goes no further than that stage.
  */
 public class LOTRMiniQuestWelcome extends LOTRMiniQuest {
 

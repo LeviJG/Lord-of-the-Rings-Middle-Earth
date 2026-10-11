@@ -54,19 +54,30 @@ import org.jspecify.annotations.Nullable;
  * LOTRChunkProvider: Middle-earth's terrain, as the original built it. Each chunk's shape comes
  * from 1.7.10's octave noise, raised and roughened by a weighted sample of the biomes and variants
  * within six cells (initializeHeightNoise); each column then gets its biome's surface
- * (replaceBlocksForBiome). The world is 256 high, the sea at 62.
+ * (replaceBlocksForBiome). Its terrain is the original's 0 to 256, the sea at 62; below it, down to
+ * today's floor at -64, deepslate (MIN_Y).
  *
  * <p>The terrain and its surface are both built in fillFromNoise, together, as provideChunk built
  * them, so the chunk's random numbers run as the original's did; buildSurface has nothing left
  * to do.
  */
-public class LOTRChunkGenerator extends ChunkGenerator {
+public class LOTRChunkGenerator extends ChunkGenerator implements LOTRDecoration.Decorating {
 
     public static final MapCodec<LOTRChunkGenerator> CODEC = RecordCodecBuilder.mapCodec(i -> i.group(
-            BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource)
+            BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
+            com.mojang.serialization.Codec.BOOL.optionalFieldOf("classic", false).forGetter(g -> g.classic)
     ).apply(i, LOTRChunkGenerator::new));
 
     public static final int SEA_LEVEL = 62;
+    /**
+     * The world's floor and height, as today's overworld's (user, 2026-10-11). The original's
+     * world was 0 to 256: its terrain keeps those heights, and below it is deepslate down to a
+     * bedrock floor at the bottom, where its own bedrock at 0 to 4 is deepslate.
+     */
+    public static final int MIN_Y = -64;
+    public static final int WORLD_HEIGHT = 384;
+    private static final BlockState DEEPSLATE = Blocks.DEEPSLATE.defaultBlockState();
+    private static final BlockState BEDROCK = Blocks.BEDROCK.defaultBlockState();
     /** The world's dwarven mines and Tauredain pyramids (1.7.10's dwarvenMineGenerator and tauredainPyramid). */
     private static final LOTRMapGenDwarvenMine DWARVEN_MINES = new LOTRMapGenDwarvenMine();
     private static final LOTRMapGenTauredainPyramid TAUREDAIN_PYRAMIDS = new LOTRMapGenTauredainPyramid();
@@ -87,9 +98,12 @@ public class LOTRChunkGenerator extends ChunkGenerator {
     }
 
     private volatile @Nullable World world;
+    /** "M.E. Classic" (LOTRMod.worldTypeMiddleEarthClassic): random biomes, and none of the map's roads, mountains and places. */
+    public final boolean classic;
 
-    public LOTRChunkGenerator(BiomeSource biomeSource) {
+    public LOTRChunkGenerator(BiomeSource biomeSource, boolean classic) {
         super(biomeSource);
+        this.classic = classic;
     }
 
     /** One world's generator state: its seed, its noise (read-only once made) and its chunk manager. */
@@ -103,9 +117,9 @@ public class LOTRChunkGenerator extends ChunkGenerator {
         final LOTRNoiseGeneratorOctaves noiseGen6;
         final LOTRNoiseGeneratorOctaves stoneNoiseGen;
 
-        World(long seed) {
+        World(long seed, boolean classic) {
             this.seed = seed;
-            this.chunkManager = new LOTRWorldChunkManager(LOTRDimension.MIDDLE_EARTH, seed);
+            this.chunkManager = new LOTRWorldChunkManager(LOTRDimension.MIDDLE_EARTH, seed, classic);
             Random rand = new Random(seed);
             this.noiseGen1 = new LOTRNoiseGeneratorOctaves(rand, 16);
             this.noiseGen2 = new LOTRNoiseGeneratorOctaves(rand, 16);
@@ -120,7 +134,8 @@ public class LOTRChunkGenerator extends ChunkGenerator {
     public void init(long seed) {
         World current = this.world;
         if (current == null || current.seed != seed) {
-            this.world = new World(seed);
+            this.world = new World(seed, this.classic);
+            LOTRWorldGen.classic = this.classic;
             if (this.biomeSource instanceof LOTRBiomeSource source) {
                 source.init(this.world.chunkManager);
             }
@@ -149,20 +164,56 @@ public class LOTRChunkGenerator extends ChunkGenerator {
 
     // --- provideChunk ------------------------------------------------------------
 
-    /** provideChunk: the terrain and the surface of chunk (i, k), in the original's arrays. */
+    /**
+     * provideChunk: the terrain, surface and caves of chunk (i, k) in one go, in the original's
+     * arrays -- the three passes the chunk's NOISE, SURFACE and CARVERS steps run in turn. Used
+     * where the whole column is wanted at once (getBaseHeight, getBaseColumn).
+     */
     public LOTRChunkTerrain provideTerrain(int i, int k) {
         World w = world();
-        RandomSource rand = new LegacyRandomSource(i * 341873128712L + k * 132897987541L);
         LOTRChunkTerrain terrain = new LOTRChunkTerrain();
         ChunkFlags chunkFlags = new ChunkFlags();
         double[] blockHeightNoise = generateTerrain(w, i, k, terrain, chunkFlags);
+        surfacePass(w, i, k, terrain, chunkFlags, blockHeightNoise);
+        carvePass(w, i, k, terrain, chunkFlags);
+        return terrain;
+    }
+
+    /**
+     * replaceBlocksForBiome, with provideChunk's random: each column's biome surface, the roads and
+     * the mountains' lava, over the bare terrain. Fills in the chunk's road flags.
+     */
+    private void surfacePass(World w, int i, int k, LOTRChunkTerrain terrain, ChunkFlags chunkFlags, double[] blockHeightNoise) {
+        RandomSource rand = new LegacyRandomSource(i * 341873128712L + k * 132897987541L);
         LOTRBiome[] biomes = w.chunkManager.getBiomeGenAt(i * 16, k * 16, 16, 16);
         LOTRBiomeVariant[] variants = w.chunkManager.getBiomeVariants(i * 16, k * 16, 16, 16);
         replaceBlocksForBiome(w, rand, i, k, terrain, biomes, variants, chunkFlags, blockHeightNoise);
+        terrain.variants = variants;
+    }
+
+    /** provideChunk's caves and ravines (caveGenerator, ravineGenerator). */
+    private void carvePass(World w, int i, int k, LOTRChunkTerrain terrain, ChunkFlags chunkFlags) {
+        LOTRBiome[] biomes = w.chunkManager.getBiomeGenAt(i * 16, k * 16, 16, 16);
         new LOTRMapGenCaves().generate(w.seed, i, k, terrain, biomes, chunkFlags);
         new LOTRMapGenRavine().generate(w.seed, i, k, terrain, biomes, chunkFlags);
-        terrain.variants = variants;
-        return terrain;
+    }
+
+    /**
+     * The chunk's flags as provideChunk had them once its surface was laid: whether it is in a
+     * village (from its height noise) and which columns had a road or the flowers by one.
+     */
+    private ChunkFlags chunkFlagsAfterSurface(World w, int i, int k) {
+        ChunkFlags chunkFlags = new ChunkFlags();
+        generateTerrain(w, i, k, new LOTRChunkTerrain(), chunkFlags);
+        if (LOTRFixedStructures.hasMapFeatures()) {
+            LOTRBiome[] biomes = w.chunkManager.getBiomeGenAt(i * 16, k * 16, 16, 16);
+            for (int i1 = 0; i1 < 16; ++i1) {
+                for (int k1 = 0; k1 < 16; ++k1) {
+                    chunkFlags.roadFlags[i1 * 16 + k1] = LOTRRoadGenerator.marksRoadFlag(i * 16 + i1, k * 16 + k1, biomes[i1 + k1 * 16]);
+                }
+            }
+        }
+        return chunkFlags;
     }
 
     /** generateTerrain: stone below the noise surface, water up to the sea, air above. */
@@ -429,18 +480,21 @@ public class LOTRChunkGenerator extends ChunkGenerator {
                                                         ChunkAccess chunk) {
         int chunkX = chunk.getPos().x();
         int chunkZ = chunk.getPos().z();
-        LOTRChunkTerrain terrain = provideTerrain(chunkX, chunkZ);
+        // NOISE: generateTerrain alone -- stone, water and air; the surface and caves are the next steps'.
+        LOTRChunkTerrain terrain = new LOTRChunkTerrain();
+        generateTerrain(world(), chunkX, chunkZ, terrain, new ChunkFlags());
         Heightmap oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         Heightmap worldSurface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
-        int minY = chunk.getMinY();
+        int x0 = chunkX * 16;
+        int z0 = chunkZ * 16;
         for (int i1 = 0; i1 < 16; ++i1) {
             for (int k1 = 0; k1 < 16; ++k1) {
-                for (int j1 = 0; j1 < LOTRChunkTerrain.HEIGHT; ++j1) {
-                    BlockState state = terrain.blocks[LOTRChunkTerrain.index(i1 * 16 + k1, j1)];
+                for (int y = MIN_Y; y < LOTRChunkTerrain.HEIGHT; ++y) {
+                    BlockState state = y < 0 ? floorBlock(x0 + i1, y, z0 + k1)
+                            : groundBlock(terrain.blocks[LOTRChunkTerrain.index(i1 * 16 + k1, y)], y);
                     if (state.isAir()) {
                         continue;
                     }
-                    int y = j1 + minY;
                     LevelChunkSection section = chunk.getSection(chunk.getSectionIndex(y));
                     section.setBlockState(i1, y & 15, k1, state, false);
                     oceanFloor.update(i1, y, k1, state);
@@ -448,44 +502,133 @@ public class LOTRChunkGenerator extends ChunkGenerator {
                 }
             }
         }
-        LOTRBiomeVariantStorage.setChunkBiomeVariants(chunk, terrain.variants);
+        LOTRDebugW0a.check("fillFromNoise", chunk, LOTRDebugW0a.count(terrain)); // TEMPORARY W0a
+        LOTRDebugW0a.recordFill(chunk); // TEMPORARY W0a
         return CompletableFuture.completedFuture(chunk);
     }
 
-    @Override
-    public void buildSurface(WorldGenRegion region, StructureManager structureManager, RandomState randomState, ChunkAccess chunk) {
+    /**
+     * Below the original's world: bedrock thinning out over the bottom five layers, as at its own
+     * floor, then deepslate. Decided by position alone, so getBaseColumn sees what the chunk has.
+     */
+    private static BlockState floorBlock(int x, int y, int z) {
+        int layer = y - MIN_Y;
+        long hash = (long) (x * 3129871) ^ z * 116129781L ^ y;
+        hash = hash * hash * 42317861L + hash * 11L;
+        return layer == 0 || layer < 5 && Math.floorMod(hash >> 16, 5) >= layer ? BEDROCK : DEEPSLATE;
     }
 
+    /** The original's terrain, its bedrock at 0 to 4 now deepslate over the new floor. */
+    private static BlockState groundBlock(BlockState state, int y) {
+        return y < 5 && state.is(Blocks.BEDROCK) ? DEEPSLATE : state;
+    }
+
+    /** The chunk's own blocks from 0 to 256, the original's world, as the terrain arrays hold them. */
+    private static LOTRChunkTerrain readTerrain(ChunkAccess chunk) {
+        LOTRChunkTerrain terrain = new LOTRChunkTerrain();
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        int x0 = chunk.getPos().getMinBlockX();
+        int z0 = chunk.getPos().getMinBlockZ();
+        for (int i1 = 0; i1 < 16; ++i1) {
+            for (int k1 = 0; k1 < 16; ++k1) {
+                for (int y = 0; y < LOTRChunkTerrain.HEIGHT; ++y) {
+                    terrain.blocks[LOTRChunkTerrain.index(i1 * 16 + k1, y)] = chunk.getBlockState(pos.set(x0 + i1, y, z0 + k1));
+                }
+            }
+        }
+        return terrain;
+    }
+
+    /** Writes back the blocks a pass changed, the original's bedrock at 0 to 4 as deepslate. */
+    private static void writeChanges(ChunkAccess chunk, LOTRChunkTerrain before, LOTRChunkTerrain after) {
+        BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
+        int x0 = chunk.getPos().getMinBlockX();
+        int z0 = chunk.getPos().getMinBlockZ();
+        for (int i1 = 0; i1 < 16; ++i1) {
+            for (int k1 = 0; k1 < 16; ++k1) {
+                for (int y = 0; y < LOTRChunkTerrain.HEIGHT; ++y) {
+                    int index = LOTRChunkTerrain.index(i1 * 16 + k1, y);
+                    BlockState state = groundBlock(after.blocks[index], y);
+                    if (state != before.blocks[index]) {
+                        chunk.setBlockState(pos.set(x0 + i1, y, z0 + k1), state, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    /** SURFACE: provideChunk's replaceBlocksForBiome, over the terrain the NOISE step left. */
+    @Override
+    public void buildSurface(WorldGenRegion region, StructureManager structureManager, RandomState randomState, ChunkAccess chunk) {
+        LOTRDebugW0a.check("surface", chunk, -1); // TEMPORARY W0a
+        int i = chunk.getPos().x();
+        int k = chunk.getPos().z();
+        World w = world();
+        LOTRChunkTerrain before = readTerrain(chunk);
+        LOTRChunkTerrain terrain = readTerrain(chunk);
+        ChunkFlags chunkFlags = new ChunkFlags();
+        // The height noise the roads read, and the village flags, as generateTerrain worked them out.
+        double[] blockHeightNoise = generateTerrain(w, i, k, new LOTRChunkTerrain(), chunkFlags);
+        surfacePass(w, i, k, terrain, chunkFlags, blockHeightNoise);
+        writeChanges(chunk, before, terrain);
+        LOTRBiomeVariantStorage.setChunkBiomeVariants(chunk, terrain.variants);
+    }
+
+    /** CARVERS: provideChunk's caves and ravines, through the surface the SURFACE step laid. */
     @Override
     public void applyCarvers(WorldGenRegion region, long seed, RandomState randomState, BiomeManager biomeManager,
                              StructureManager structureManager, ChunkAccess chunk) {
+        LOTRDebugW0a.check("carvers", chunk, -1); // TEMPORARY W0a
+        int i = chunk.getPos().x();
+        int k = chunk.getPos().z();
+        World w = world();
+        LOTRChunkTerrain before = readTerrain(chunk);
+        LOTRChunkTerrain terrain = readTerrain(chunk);
+        carvePass(w, i, k, terrain, chunkFlagsAfterSurface(w, i, k));
+        writeChanges(chunk, before, terrain);
     }
 
     /**
-     * populate: water and lava lakes, the biome's decorator, animals, then snow and
-     * ice -- over the area from eight blocks into this chunk, as the original's populate ran.
+     * FEATURES: the parts of today's structures standing in this chunk (the original's, planned by
+     * LOTRLegacyStructure), then the original's populate, through LOTRDecoration.
      */
     @Override
     public void applyBiomeDecoration(WorldGenLevel level, ChunkAccess chunk, StructureManager structureManager) {
-        // Middle-earth is decorated by LOTRChunkPopulator, as 1.7.10 populated it: see populate.
+        LOTRDebugW0a.check("features", chunk, -1); // TEMPORARY W0a
+        super.applyBiomeDecoration(level, chunk, structureManager);
+        LOTRDecoration.decorate(level, chunk.getPos(), this);
+    }
+
+    /** The chunk's terrain as generated, for the decorators' reads beyond the chunks about the one decorated. */
+    @Override
+    public BlockState terrainBlock(LOTRDecoration.TerrainCache cache, int x, int y, int z) {
+        if (y < 0) {
+            return floorBlock(x, y, z);
+        }
+        if (y >= LOTRChunkTerrain.HEIGHT) {
+            return LOTRChunkTerrain.AIR;
+        }
+        LOTRChunkTerrain terrain = cache.get(x >> 4, z >> 4, this::provideTerrain);
+        return groundBlock(terrain.blocks[LOTRChunkTerrain.index((x & 15) * 16 + (z & 15), y)], y);
     }
 
     /**
-     * populate: the chunk's decoration, as 1.7.10's ChunkProviderGenerate.populate did it once the
-     * chunk and its neighbours to the east, south and south-east were there -- lakes, the biome's
-     * decorator, then ice and snow -- in the level itself, so what it builds may reach into any
-     * chunk about it.
+     * populate: the chunk's decoration, as 1.7.10's ChunkProviderGenerate.populate did it -- the
+     * dwarven mines and Tauredain pyramids, lakes, the biome's decorator, animals, then ice and
+     * snow -- over the chunk's own square, as today's decoration is (the original's reached eight
+     * blocks into the chunks to the east and south, where 1.7.10 left room for it).
      */
-    public void populate(ServerLevel level, int i, int j) {
+    @Override
+    public void decorate(WorldGenLevel level, ServerLevel server, int i, int j) {
         World w = world();
-        int k = i * 16;
-        int l = j * 16;
+        int k = i * 16 - 8;
+        int l = j * 16 - 8;
         RandomSource rand = new LegacyRandomSource(w.seed);
         long l1 = rand.nextLong() / 2L * 2L + 1L;
         long l2 = rand.nextLong() / 2L * 2L + 1L;
         rand.setSeed(i * l1 + j * l2 ^ w.seed);
-        DWARVEN_MINES.generateStructuresInChunk(level, w.chunkManager, rand, i, j);
-        TAUREDAIN_PYRAMIDS.generateStructuresInChunk(level, w.chunkManager, rand, i, j);
+        DWARVEN_MINES.generateStructuresInChunk(level, server, w.chunkManager, rand, i, j, k + 8, l + 8);
+        TAUREDAIN_PYRAMIDS.generateStructuresInChunk(level, server, w.chunkManager, rand, i, j, k + 8, l + 8);
         if (rand.nextInt(4) == 0) {
             int i1 = k + rand.nextInt(16) + 8;
             int j1 = rand.nextInt(128);
@@ -537,7 +680,7 @@ public class LOTRChunkGenerator extends ChunkGenerator {
 
     @Override
     public int getGenDepth() {
-        return LOTRChunkTerrain.HEIGHT;
+        return WORLD_HEIGHT;
     }
 
     @Override
@@ -547,7 +690,7 @@ public class LOTRChunkGenerator extends ChunkGenerator {
 
     @Override
     public int getMinY() {
-        return 0;
+        return MIN_Y;
     }
 
     @Override
@@ -566,11 +709,13 @@ public class LOTRChunkGenerator extends ChunkGenerator {
     public NoiseColumn getBaseColumn(int x, int z, LevelHeightAccessor level, RandomState randomState) {
         LOTRChunkTerrain terrain = provideTerrain(x >> 4, z >> 4);
         int xzIndex = (x & 15) * 16 + (z & 15);
-        BlockState[] column = new BlockState[LOTRChunkTerrain.HEIGHT];
-        for (int y = 0; y < column.length; ++y) {
-            column[y] = terrain.blocks[LOTRChunkTerrain.index(xzIndex, y)];
+        BlockState[] column = new BlockState[WORLD_HEIGHT];
+        for (int y = MIN_Y; y < MIN_Y + WORLD_HEIGHT; ++y) {
+            column[y - MIN_Y] = y < 0 ? floorBlock(x, y, z)
+                    : y < LOTRChunkTerrain.HEIGHT ? groundBlock(terrain.blocks[LOTRChunkTerrain.index(xzIndex, y)], y)
+                    : LOTRChunkTerrain.AIR;
         }
-        return new NoiseColumn(0, column);
+        return new NoiseColumn(MIN_Y, column);
     }
 
     @Override

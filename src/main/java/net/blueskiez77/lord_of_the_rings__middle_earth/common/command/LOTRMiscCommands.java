@@ -74,7 +74,6 @@ public final class LOTRMiscCommands {
             registerEnchant(dispatcher);
             registerDate(dispatcher);
             registerAchievement(dispatcher);
-            registerTravel(dispatcher);
             registerSpawnDamping(dispatcher);
             registerInvasion(dispatcher);
         });
@@ -380,39 +379,6 @@ public final class LOTRMiscCommands {
         ctx.getSource().sendSuccess(() -> Component.translatable(give ? "commands.lotr.lotrAchievement.give"
                 : "commands.lotr.lotrAchievement.remove", player.getName(), ach.getTitle(player)), true);
         return 1;
-    }
-
-    /**
-     * /lotrTravel [players]: an operator's way to and from Middle-earth until the Ring portal
-     * (D15) -- to the same x and z in the other world, on its surface.
-     */
-    private static void registerTravel(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("lotrTravel")
-                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
-                .executes(ctx -> travel(ctx.getSource(), List.of(ctx.getSource().getPlayerOrException())))
-                .then(Commands.argument("targets", EntityArgument.players())
-                        .executes(ctx -> travel(ctx.getSource(), EntityArgument.getPlayers(ctx, "targets")))));
-    }
-
-    private static int travel(CommandSourceStack source, java.util.Collection<ServerPlayer> players) {
-        net.minecraft.server.MinecraftServer server = source.getServer();
-        net.minecraft.server.level.ServerLevel middleEarth = server.getLevel(
-                net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.MIDDLE_EARTH);
-        if (middleEarth == null) {
-            source.sendFailure(Component.translatable("commands.lotr.travel.noDimension"));
-            return 0;
-        }
-        for (ServerPlayer player : players) {
-            boolean leaving = player.level() == middleEarth;
-            net.minecraft.server.level.ServerLevel target = leaving ? server.overworld() : middleEarth;
-            int x = player.getBlockX();
-            int z = player.getBlockZ();
-            int y = target.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, x, z);
-            player.teleportTo(target, x + 0.5, y, z + 0.5, java.util.Set.of(), player.getYRot(), player.getXRot(), true);
-            source.sendSuccess(() -> Component.translatable(leaving ? "commands.lotr.travel.left" : "commands.lotr.travel.entered",
-                    player.getDisplayName()), true);
-        }
-        return players.size();
     }
 
 }

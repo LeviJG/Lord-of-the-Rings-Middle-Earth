@@ -23,10 +23,10 @@ public enum LOTRFixedStructures {
 
     /**
      * hasMapFeatures: roads, the fixed hills and mountains and the fixed structures, unless the
-     * config turns them off (the Middle-earth Classic world type has none either, D10k).
+     * config turns them off, or the world is "M.E. Classic".
      */
     public static boolean hasMapFeatures() {
-        return LOTRConfig.generateMapFeatures;
+        return LOTRConfig.generateMapFeatures && !net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.classic;
     }
 
     /** _mountainNear_structureNear's mountain half. */
@@ -70,6 +70,13 @@ public enum LOTRFixedStructures {
 
     public static boolean generatesAtMapImageCoords(int i, int k, double x, double z) {
         return generatesAt(i, k, LOTRMapCoords.mapToWorldX(x), LOTRMapCoords.mapToWorldZ(z));
+    }
+
+    /** distanceSqTo: across the ground, from the structure's middle. */
+    public double distanceSqTo(net.minecraft.world.entity.Entity entity) {
+        double dx = entity.getX() - (this.xCoord + 0.5);
+        double dz = entity.getZ() - (this.zCoord + 0.5);
+        return dx * dx + dz * dz;
     }
 
     public boolean isAt(int x, int z) {

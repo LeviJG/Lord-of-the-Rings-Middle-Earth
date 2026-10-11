@@ -24,7 +24,7 @@ import org.jspecify.annotations.Nullable;
  * points by area, at start-up, at a cost it noted itself (some 200MB). Here
  * a road keeps its curve and works out a point when asked; all of a road's
  * points, and the lookup, are built the first time a place is asked whether
- * a road runs there (world generation, D10).
+ * a road runs there, as world generation does.
  */
 public final class LOTRRoads {
 

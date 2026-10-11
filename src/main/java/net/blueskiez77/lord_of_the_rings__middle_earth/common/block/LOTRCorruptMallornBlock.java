@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRCorruptMallornBlockEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRMallornEntEntity;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -15,6 +16,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 
 import org.jspecify.annotations.Nullable;
 
@@ -23,8 +27,7 @@ import org.jspecify.annotations.Nullable;
  * Ents come to heal (LOTREntityAIEntHealSapling), and which keeps count, in
  * its metadata, of the Ents slain by players beside it.
  *
- * <p>NOT ported yet: its tile entity's spawning of Ents in Fangorn, with the
- * biomes (D10).
+ * <p>In Fangorn its block entity calls up Ents (LOTRCorruptMallornBlockEntity).
  */
 public class LOTRCorruptMallornBlock extends LOTRPlantBlock implements EntityBlock {
 
@@ -67,5 +70,11 @@ public class LOTRCorruptMallornBlock extends LOTRPlantBlock implements EntityBlo
     @Override
     public @Nullable BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new LOTRCorruptMallornBlockEntity(pos, state);
+    }
+
+    @Override
+    public <T extends BlockEntity> @Nullable BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+        return level.isClientSide() || type != LOTRBlockEntities.CORRUPT_MALLORN ? null
+                : (lvl, pos, st, be) -> LOTRCorruptMallornBlockEntity.serverTick((ServerLevel) lvl, pos);
     }
 }

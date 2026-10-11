@@ -52,11 +52,27 @@ public class LOTRForodwaithBiome extends LOTRBiome {
     }
 
     @Override
+    public void planStructures(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.legacy.LOTRLegacyStructure.Planner planner, RandomSource random, int i, int k) {
+        if (LOTRFixedStructures.UTUMNO_ENTRANCE.isAt(i, k)) {
+            planner.plan(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRUtumnoEntranceStructure.class, (world, r) ->
+                    new net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRUtumnoEntranceStructure()
+                            .generate(world, r, i, LOTRWorldGenUtil.getHeightValue(world, i, k), k));
+        }
+        if (random.nextInt(20000) == 0) {
+            int i1 = i + random.nextInt(16) + 8;
+            int k1 = k + random.nextInt(16) + 8;
+            planner.plan(LOTRMirkOakStructure.class, (world, r) -> {
+                LOTRMirkOakStructure tree = ((LOTRMirkOakStructure) LOTRTreeType.RED_OAK_WEIRWOOD.create(false, r)).disableRestrictions();
+                return tree.generate(world, r, i1, LOTRWorldGenUtil.getHeightValue(world, i1, k1), k1);
+            });
+        }
+    }
+
+    @Override
     public void decorate(WorldGenLevel world, RandomSource random, int i, int k) {
         int i1;
         int k1;
         super.decorate(world, random, i, k);
-        // D15: the Utumno entrance, at LOTRFixedStructures.UTUMNO_ENTRANCE.
         if (random.nextInt(32) == 0) {
             int boulders = 1 + random.nextInt(5);
             for (int l = 0; l < boulders; ++l) {
@@ -70,13 +86,6 @@ public class LOTRForodwaithBiome extends LOTRBiome {
             int j1 = random.nextInt(60);
             k1 = k + random.nextInt(16) + 8;
             stalactiteIceGen.generate(world, random, i1, j1, k1);
-        }
-        if (random.nextInt(20000) == 0) {
-            LOTRMirkOakStructure tree = ((LOTRMirkOakStructure) LOTRTreeType.RED_OAK_WEIRWOOD.create(false, random)).disableRestrictions();
-            i1 = i + random.nextInt(16) + 8;
-            int k12 = k + random.nextInt(16) + 8;
-            int j1 = LOTRWorldGenUtil.getHeightValue(world, i1, k12);
-            tree.generate(world, random, i1, j1, k12);
         }
     }
 

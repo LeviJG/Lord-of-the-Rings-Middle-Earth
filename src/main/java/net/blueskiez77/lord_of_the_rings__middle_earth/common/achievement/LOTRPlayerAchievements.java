@@ -22,6 +22,12 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRCrafting
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPCEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRCrossbowBoltItem;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRPouchItem;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRMistyMountainsBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRPlayerWaypoints;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRWaypoint;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentRegistry;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
@@ -53,9 +59,10 @@ import org.jspecify.annotations.Nullable;
  * tables, 128 crossbow bolts, a hundred hired units close by, a full set of one armour, and having
  * entered ten, twenty, thirty, forty and fifty lands.
  *
- * <p>NOT ported yet: entering Middle-earth and each land in it, and climbing the Misty Mountains
- * (with the dimension and its biomes, D10); entering Utumno and its levels, and its armour (D15);
- * the siege mode that held achievements back, never set by the mod itself.
+ * Entering Middle-earth and each land in it, Utumno and each of its levels, and climbing the Misty
+ * Mountains (runAchievementChecks).
+ *
+ * <p>Not ported: the siege mode that held achievements back, never set by the mod itself.
  */
 public final class LOTRPlayerAchievements {
 
@@ -235,6 +242,34 @@ public final class LOTRPlayerAchievements {
 
     /** runAchievementChecks. */
     private static void runAchievementChecks(ServerPlayer player) {
+        // The land the player stands in: its achievement, and its waypoint region unlocked.
+        LOTRBiome biome = LOTRBiomes.of(player.level().getBiome(player.blockPosition()));
+        if (biome != null) {
+            LOTRAchievement ach = biome.getBiomeAchievement();
+            if (ach != null) {
+                addAchievement(player, ach);
+            }
+            LOTRWaypoint.Region biomeRegion = biome.getBiomeWaypoints();
+            if (biomeRegion != null) {
+                LOTRPlayerWaypoints.unlockFTRegion(player, biomeRegion);
+            }
+        }
+        if (player.level().dimension() == LOTRWorldGen.MIDDLE_EARTH) {
+            addAchievement(player, LOTRAchievement.ENTER_MIDDLE_EARTH);
+        }
+        if (player.level().dimension() == LOTRWorldGen.UTUMNO) {
+            addAchievement(player, LOTRAchievement.ENTER_UTUMNO_ICE);
+            net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel level =
+                    net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.forY(net.minecraft.util.Mth.floor(player.getBoundingBox().minY));
+            if (level == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.OBSIDIAN) {
+                addAchievement(player, LOTRAchievement.ENTER_UTUMNO_OBSIDIAN);
+            } else if (level == net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRUtumnoLevel.FIRE) {
+                addAchievement(player, LOTRAchievement.ENTER_UTUMNO_FIRE);
+            }
+        }
+        if (biome instanceof LOTRMistyMountainsBiome && player.getY() > 192.0) {
+            addAchievement(player, LOTRAchievement.CLIMB_MISTY_MOUNTAINS);
+        }
         Set<Block> tables = new HashSet<>();
         int crossbowBolts = 0;
         boolean pouch = false;

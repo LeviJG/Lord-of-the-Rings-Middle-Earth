@@ -3,11 +3,12 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning;
 import java.util.List;
 import java.util.function.Predicate;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.animal.LOTRAmbientCreature;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRSpawnEntry;
 
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.ambient.AmbientCreature;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.fish.WaterAnimal;
@@ -20,10 +21,10 @@ import net.minecraft.world.entity.monster.Enemy;
  */
 public enum LOTRCreatureType {
     MONSTER("monster", 70, false, false, false, e -> e instanceof Enemy),
-    CREATURE("creature", 10, true, true, false, e -> e instanceof Animal || e instanceof AmbientCreature || e instanceof WaterAnimal),
+    CREATURE("creature", 10, true, true, false, e -> e instanceof Animal && !isLOTRAmbient(e)),
     AMBIENT("ambient", 15, true, false, false, e -> e instanceof AmbientCreature),
     WATER_CREATURE("waterCreature", 5, true, false, true, e -> e instanceof WaterAnimal),
-    LOTR_AMBIENT("LOTRAmbient", 45, true, false, false, e -> e.getType().getCategory() == MobCategory.AMBIENT && !(e instanceof AmbientCreature));
+    LOTR_AMBIENT("LOTRAmbient", 45, true, false, false, LOTRCreatureType::isLOTRAmbient);
 
     /** The name the spawn damping and its command know it by. */
     public final String typeName;
@@ -40,6 +41,14 @@ public enum LOTRCreatureType {
         this.animal = animal;
         this.water = water;
         this.counts = counts;
+    }
+
+    /**
+     * The LOTRAmbient kind: the mod's LOTRAmbientCreatures, and vanilla's rabbit, which stands in for
+     * the original's (a creature, not an animal, so it filled no other cap).
+     */
+    private static boolean isLOTRAmbient(Entity entity) {
+        return entity instanceof LOTRAmbientCreature || entity.getType() == EntityTypes.RABBIT;
     }
 
     /** isCreatureType(type, true): of this kind, and not kept from despawning. */

@@ -340,6 +340,9 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         // 1, 1) -- sapling meta 1 is the mallorn -- never the corrupt block.
         dropOther(LOTRDecorationBlocks.CORRUPT_MALLORN, LOTRDecorationBlocks.MALLORN_SAPLING);
 
+        // LOTRBlockUtumnoBrickEntrance.getDrops: ice Utumno brick.
+        dropOther(LOTRUtilityBlocks.UTUMNO_BRICK_ENTRANCE, net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBuildingBlocks.ICE_UTUMNO_BRICK);
+
         // Everything else in the family drops itself.
         List<Block> plantsWithOwnTable = List.of(LOTRDecorationBlocks.TALL_GRASS_SHORT,
                 LOTRDecorationBlocks.TALL_GRASS_FLOWER, LOTRDecorationBlocks.TALL_GRASS_WHEAT,
@@ -482,6 +485,8 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         // five, all multiplied by the ore Fortune factor and glowstone capped at
         // eight. LOTRBlockOreGem: one or two gems plus rand(fortune + 1).
         add(LOTRBuildingBlocks.NAURITE_ORE, oreDrops(LOTRBuildingBlocks.NAURITE_ORE, LOTRMaterialItems.DURNOR, 1, 2, 0));
+        // LOTRBlockCoralReef: one or two pieces of coral, more with Fortune; itself with Silk Touch.
+        add(LOTRBuildingBlocks.CORAL_REEF, oreDrops(LOTRBuildingBlocks.CORAL_REEF, LOTRMaterialItems.CORAL, 1, 2, 0));
         add(LOTRBuildingBlocks.QUENDITE_ORE, createOreDrop(LOTRBuildingBlocks.QUENDITE_ORE, LOTRMaterialItems.EDHELVIR));
         add(LOTRBuildingBlocks.GULDURIL_ORE, createOreDrop(LOTRBuildingBlocks.GULDURIL_ORE, LOTRMaterialItems.GULDURIL));
         add(LOTRBuildingBlocks.GULDURIL_MORDOR_ORE, createOreDrop(LOTRBuildingBlocks.GULDURIL_MORDOR_ORE, LOTRMaterialItems.GULDURIL));

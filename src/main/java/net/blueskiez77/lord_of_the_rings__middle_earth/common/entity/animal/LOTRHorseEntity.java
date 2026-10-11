@@ -8,6 +8,10 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRNPC
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.ai.LOTRAttackOnCollideGoal;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSpawnEggItem;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRDorEnErnilBiome;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRRohanBiome;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -87,9 +91,6 @@ import org.jspecify.annotations.Nullable;
  * rider and walks where its rider would. (isHorseSaddled's trick of reading
  * unsaddled while an NPC's horse moved, so its rider's input was not taken,
  * is 26.2's controlling-passenger rule: only a player rider steers by input.)
- *
- * <p>NOT ported yet (D10): onLOTRHorseSpawn's Rohan and Dor-en-Ernil breed
- * boosts.
  */
 public class LOTRHorseEntity extends Horse implements LOTRNPCMount {
 
@@ -151,8 +152,44 @@ public class LOTRHorseEntity extends Horse implements LOTRNPCMount {
         return Mth.clamp(speed, 0.08, 0.45);
     }
 
-    /** onLOTRHorseSpawn: the plain horse's breed boosts are biome-bound (D10). */
+    /**
+     * onLOTRHorseSpawn: a plain horse foaled in Rohan (up to half again the health, a third the speed,
+     * 0.2 more jump) or Dor-en-Ernil (0.3, 0.2, 0.1) is of the better breed; the jump is never raised
+     * past 1, or past its own if higher.
+     */
     protected void onLOTRHorseSpawn() {
+        if (getClass() != LOTRHorseEntity.class) {
+            return;
+        }
+        LOTRBiome biome = LOTRBiomes.of(level().getBiome(blockPosition()));
+        float healthBoost = 0.0f;
+        float speedBoost = 0.0f;
+        float jumpAdd = 0.0f;
+        if (biome instanceof LOTRRohanBiome) {
+            healthBoost = 0.5f;
+            speedBoost = 0.3f;
+            jumpAdd = 0.2f;
+        }
+        if (biome instanceof LOTRDorEnErnilBiome) {
+            healthBoost = 0.3f;
+            speedBoost = 0.2f;
+            jumpAdd = 0.1f;
+        }
+        if (healthBoost > 0.0f) {
+            double maxHealth = getAttributeValue(Attributes.MAX_HEALTH);
+            getAttribute(Attributes.MAX_HEALTH).setBaseValue(maxHealth * (1.0f + this.random.nextFloat() * healthBoost));
+            setHealth(getMaxHealth());
+        }
+        if (speedBoost > 0.0f) {
+            double movementSpeed = getAttributeValue(Attributes.MOVEMENT_SPEED);
+            getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(movementSpeed * (1.0f + this.random.nextFloat() * speedBoost));
+        }
+        double jumpStrength = getAttributeValue(Attributes.JUMP_STRENGTH);
+        double jumpLimit = Math.max(jumpStrength, 1.0);
+        if (jumpAdd > 0.0f) {
+            jumpStrength += jumpAdd;
+        }
+        getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(Math.min(jumpStrength, jumpLimit));
     }
 
     // --- Goals ------------------------------------------------------------

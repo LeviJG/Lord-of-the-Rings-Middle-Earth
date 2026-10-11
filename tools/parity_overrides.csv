@@ -10,7 +10,7 @@ brick4.6,carved_black_gondor_brick,ported,Carved Black Gondor Brick (not carved_
 glassBottle,bottle_block,ported,
 grapevineWhite,green_grapevine,ported,old White grapes renamed Green
 grapevineRed,red_grapevine,ported,
-coralReef,,missing,worldgen coral reef block; not the gem coral_block
+coralReef,coral_reef,ported,worldgen coral reef block; not the gem coral_block
 stairsStone,,vanilla?,vanilla stone stairs; fuzzy match to drystone is wrong
 slabSingleV.5,,vanilla?,vanilla stone slab; fuzzy match to drystone is wrong
 stairsStoneBrickMossy,,vanilla?,vanilla mossy stone brick stairs

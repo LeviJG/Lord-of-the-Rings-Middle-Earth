@@ -14,8 +14,8 @@ import net.minecraft.world.level.block.state.BlockState;
  * (BridgeType) are here too.
  *
  * <p>The original passed each call the biome as well; none of the kinds used
- * it, so it is left out. The roads themselves come with the world (D10); the
- * villages' paths use these now.
+ * it, so it is left out. The roads in the world and the villages' paths use
+ * these.
  */
 public abstract class LOTRRoadType {
     public static LOTRRoadType PATH = new LOTRRoadType() {

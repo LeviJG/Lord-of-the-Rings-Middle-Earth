@@ -108,6 +108,12 @@ public class LOTRFarHaradSavannahBiome extends LOTRFarHaradBiome {
     }
 
     @Override
+    public void addBiomeF3Info(java.util.List<String> info, net.minecraft.world.level.Level level, LOTRBiomeVariant variant, int i, int j, int k) {
+        super.addBiomeF3Info(info, level, variant, i, j, k);
+        info.add("HaradPopulated: " + isBiomePopulated(i, j, k));
+    }
+
+    @Override
     public void decorate(WorldGenLevel world, RandomSource random, int i, int k) {
         super.decorate(world, random, i, k);
         if (random.nextInt(32) == 0) {

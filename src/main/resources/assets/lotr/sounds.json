@@ -1,4 +1,36 @@
 {
+  "ambient.terrain.sea": {
+    "category": "ambient",
+    "sounds": [
+      "lotr:ambient/terrain/sea1",
+      "lotr:ambient/terrain/sea2",
+      "lotr:ambient/terrain/sea3"
+    ]
+  },
+  "ambient.weather.rain": {
+    "category": "weather",
+    "sounds": [
+      "lotr:ambient/weather/rain1",
+      "lotr:ambient/weather/rain2",
+      "lotr:ambient/weather/rain3"
+    ]
+  },
+  "ambient.weather.thunder": {
+    "category": "weather",
+    "sounds": [
+      "lotr:ambient/weather/thunder1",
+      "lotr:ambient/weather/thunder2",
+      "lotr:ambient/weather/thunder3"
+    ]
+  },
+  "ambient.weather.wind": {
+    "category": "weather",
+    "sounds": [
+      "lotr:ambient/weather/wind1",
+      "lotr:ambient/weather/wind2",
+      "lotr:ambient/weather/wind3"
+    ]
+  },
   "event.pledge": {
     "category": "player",
     "sounds": [
@@ -12,6 +44,12 @@
       "lotr:event/trade2",
       "lotr:event/trade3",
       "lotr:event/trade4"
+    ]
+  },
+  "event.fast_travel": {
+    "category": "player",
+    "sounds": [
+      "lotr:event/fast_travel"
     ]
   },
   "event.unpledge": {

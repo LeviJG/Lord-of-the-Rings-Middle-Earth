@@ -13,7 +13,8 @@ import net.minecraft.util.Mth;
  *
  * <p>{@link #morgulPortal} is LOTREntityMorgulPortalFX: pale green, full-bright
  * and spreading sideways ever faster. {@link #morgulWater} is
- * LOTREntityRiverWaterFX tinted with the Morgul Vale's water colour.
+ * LOTREntityRiverWaterFX tinted with the Morgul Vale's water colour, and
+ * {@link #mirkwoodWater} with corrupted Mirkwood's.
  */
 public class LOTRSpellParticle extends SingleQuadParticle {
 
@@ -22,6 +23,8 @@ public class LOTRSpellParticle extends SingleQuadParticle {
      * every biome's water colour into the base water 0x4A68EF.
      */
     private static final int MORGUL_VALE_WATER = 0x0F2749;
+    /** LOTRBiomeGenMirkwoodCorrupted's water 0x1A1326, multiplied the same way. */
+    private static final int MIRKWOOD_CORRUPTED_WATER = 0x070723;
 
     private final SpriteSet sprites;
     private final boolean portal;
@@ -51,10 +54,20 @@ public class LOTRSpellParticle extends SingleQuadParticle {
 
     public static LOTRSpellParticle morgulWater(ClientLevel level, double x, double y, double z,
             double xd, double yd, double zd, SpriteSet sprites) {
+        return riverWater(level, x, y, z, xd, yd, zd, sprites, MORGUL_VALE_WATER);
+    }
+
+    public static LOTRSpellParticle mirkwoodWater(ClientLevel level, double x, double y, double z,
+            double xd, double yd, double zd, SpriteSet sprites) {
+        return riverWater(level, x, y, z, xd, yd, zd, sprites, MIRKWOOD_CORRUPTED_WATER);
+    }
+
+    private static LOTRSpellParticle riverWater(ClientLevel level, double x, double y, double z,
+            double xd, double yd, double zd, SpriteSet sprites, int water) {
         LOTRSpellParticle p = new LOTRSpellParticle(level, x, y, z, xd, yd, zd, sprites, false);
-        float r = ((MORGUL_VALE_WATER >> 16) & 0xFF) / 255.0F;
-        float g = ((MORGUL_VALE_WATER >> 8) & 0xFF) / 255.0F;
-        float b = (MORGUL_VALE_WATER & 0xFF) / 255.0F;
+        float r = ((water >> 16) & 0xFF) / 255.0F;
+        float g = ((water >> 8) & 0xFF) / 255.0F;
+        float b = (water & 0xFF) / 255.0F;
         p.setColor(p.jitter(r), p.jitter(g), p.jitter(b));
         return p;
     }

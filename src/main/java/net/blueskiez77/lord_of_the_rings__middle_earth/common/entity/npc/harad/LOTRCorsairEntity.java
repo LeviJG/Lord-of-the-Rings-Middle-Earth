@@ -27,6 +27,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityCorsair: a corsair of Umbar, who seeks out Near Harad's enemies
  * with an eket, dagger (poisoned or not), harpoon or battleaxe up close (one
@@ -168,5 +169,10 @@ public class LOTRCorsairEntity extends LOTRUmbarianEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.CORSAIR.createQuest(this);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.CORSAIR;
     }
 }

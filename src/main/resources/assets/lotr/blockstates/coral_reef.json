@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "": [
+            { "model": "lotr:block/coral_reef_purple" },
+            { "model": "lotr:block/coral_reef_yellow" },
+            { "model": "lotr:block/coral_reef_blue" },
+            { "model": "lotr:block/coral_reef_red" },
+            { "model": "lotr:block/coral_reef_green" }
+        ]
+    }
+}

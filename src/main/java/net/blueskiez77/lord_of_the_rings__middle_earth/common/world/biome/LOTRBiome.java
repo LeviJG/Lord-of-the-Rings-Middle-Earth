@@ -41,6 +41,10 @@ import org.jspecify.annotations.Nullable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRDwarfEntity;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dwarf.LOTRWickedDwarfEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.util.Mth;
+import net.minecraft.world.level.FoliageColor;
+import net.minecraft.world.level.GrassColor;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.variant.LOTRBiomeVariantStorage;
 
 /**
  * LOTRBiome: one of Middle-earth's biomes -- its id, its colour on the map, its height and
@@ -529,6 +533,13 @@ public abstract class LOTRBiome {
         return this.decorator.getRandomTreeForVariant(random, variant).create(false, random);
     }
 
+    /**
+     * The structures this biome's own decorate built in the original, planned instead with today's
+     * structures (LOTRLegacyStructure) for the chunk whose decorated square starts at block i, k.
+     */
+    public void planStructures(net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.legacy.LOTRLegacyStructure.Planner planner, RandomSource random, int i, int k) {
+    }
+
     /** decorate: the decorator's pass over the chunk at block i, k. */
     public void decorate(WorldGenLevel world, RandomSource random, int i, int k) {
         this.decorator.decorate(world, random, i, k);
@@ -683,6 +694,44 @@ public abstract class LOTRBiome {
 
     public boolean hasSeasonalGrass() {
         return this.temperature > 0.3f && this.temperature < 1.0f;
+    }
+
+    /**
+     * getBaseGrassColor: the grass colour map at the biome's temperature and rainfall, each raised by
+     * the variant there. (The original took the temperature at the block's height, as 1.7.10's grass
+     * did; today's grass takes the biome's own, so this does.)
+     */
+    public int getBaseGrassColor(LOTRBiomeVariant variant) {
+        float temp = Mth.clamp(this.temperature + variant.tempBoost, 0.0f, 1.0f);
+        float rain = Mth.clamp(this.rainfall + variant.rainBoost, 0.0f, 1.0f);
+        return GrassColor.get(temp, rain);
+    }
+
+    /** getBaseFoliageColor: the same for leaves. */
+    public int getBaseFoliageColor(LOTRBiomeVariant variant) {
+        float temp = Mth.clamp(this.temperature + variant.tempBoost, 0.0f, 1.0f);
+        float rain = Mth.clamp(this.rainfall + variant.rainBoost, 0.0f, 1.0f);
+        return FoliageColor.get(temp, rain);
+    }
+
+    /** getBiomeGrassColor: the biome's own grass colour if it set one, else the colour map's. */
+    public int getBiomeGrassColor(int i, int k, LOTRBiomeVariant variant) {
+        return this.biomeColors.grass != null ? this.biomeColors.grass : getBaseGrassColor(variant);
+    }
+
+    /** getBiomeFoliageColor: the biome's own leaf colour if it set one, else the colour map's. */
+    public int getBiomeFoliageColor(int i, int k, LOTRBiomeVariant variant) {
+        return this.biomeColors.foliage != null ? this.biomeColors.foliage : getBaseFoliageColor(variant);
+    }
+
+    /** addBiomeF3Info: the biome's lines on the debug screen. */
+    public void addBiomeF3Info(List<String> info, Level level, LOTRBiomeVariant variant, int i, int j, int k) {
+        StringBuilder colorString = new StringBuilder(Integer.toHexString(this.color & 0xFFFFFF));
+        while (colorString.length() < 6) {
+            colorString.insert(0, "0");
+        }
+        info.add("Middle-earth biome: " + getBiomeDisplayName().getString() + ", ID: " + this.biomeID + ", c: #" + colorString);
+        info.add("Variant: " + variant.variantName + ", loaded: " + LOTRBiomeVariantStorage.getSize(level));
     }
 
     public int spawnCountMultiplier() {

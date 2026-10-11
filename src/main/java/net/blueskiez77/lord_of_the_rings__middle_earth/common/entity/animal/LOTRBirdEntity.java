@@ -77,7 +77,7 @@ import net.minecraft.world.level.LevelAccessor;
  * a songbird otherwise. The animal jar's updateInAnimalJar is with the jar's
  * other hooks (see the Deferred-port tracker).
  */
-public class LOTRBirdEntity extends Mob implements LOTRAnimalJarUpdater {
+public class LOTRBirdEntity extends Mob implements LOTRAnimalJarUpdater, LOTRAmbientCreature {
 
     private static final TagKey<Item> BONES = TagKey.create(Registries.ITEM,
             Identifier.fromNamespaceAndPath("lotr", "bones"));

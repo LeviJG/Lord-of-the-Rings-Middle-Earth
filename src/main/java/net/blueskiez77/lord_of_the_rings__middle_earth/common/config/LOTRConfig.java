@@ -20,8 +20,8 @@ import org.jspecify.annotations.Nullable;
  *
  * <p>The options are all here, but each takes effect only once the system
  * that reads it is ported; PORT_PLAN's tracker lists which are still waiting.
- * The {@code dimension} category (LOTRDimension.configureDimensions) comes with
- * the dimensions (D10), and the in-game config screen with the GUIs.
+ * The {@code dimension} category (LOTRDimension.configureDimensions) set the
+ * dimensions' numeric ids, which 26.2's named dimensions do not have.
  */
 public final class LOTRConfig {
     public static final String CATEGORY_DIMENSION = "dimension";

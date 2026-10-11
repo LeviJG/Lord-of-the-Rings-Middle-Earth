@@ -16,6 +16,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityRuffianBrute: a big ruffian (30 health) who goes about with his
  * weapon out. Bree-folk and hobbits give him a wide berth.
@@ -53,5 +54,10 @@ public class LOTRRuffianBruteEntity extends LOTRBreeRuffianEntity {
     @Override
     public LOTRAchievement getKillAchievement() {
         return LOTRAchievement.KILL_RUFFIAN_BRUTE;
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.RUFFIAN_BRUTE;
     }
 }

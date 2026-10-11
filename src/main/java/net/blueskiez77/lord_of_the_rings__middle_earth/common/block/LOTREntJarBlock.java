@@ -3,7 +3,6 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
-import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.LOTRSounds;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTRBlockEntities;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.blockentity.LOTREntJarBlockEntity;
@@ -11,13 +10,12 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTREntDraugh
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRFangornBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -28,7 +26,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.EntityBlock;
@@ -50,10 +47,6 @@ import org.jspecify.annotations.Nullable;
  * that Ent-draught, and bowls draw the draught out one at a time.
  */
 public class LOTREntJarBlock extends Block implements EntityBlock {
-    /** Where a herb brews: LOTRBiomeGenFangorn. Empty until the biome is ported. */
-    public static final TagKey<Biome> IS_FANGORN = TagKey.create(Registries.BIOME,
-            Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "is_fangorn"));
-
     public static final MapCodec<LOTREntJarBlock> CODEC =
             RecordCodecBuilder.mapCodec(instance -> instance.group(
                     propertiesCodec()
@@ -156,11 +149,6 @@ public class LOTREntJarBlock extends Block implements EntityBlock {
 
     /**
      * LOTRBlockEntJar.onBlockActivated, branch for branch.
-     *
-     * <p>The Fangorn test was {@code biome instanceof LOTRBiomeGenFangorn}. The
-     * port has no Fangorn biome yet, so it asks the {@code lotr:is_fangorn}
-     * biome tag instead, which ships empty: brewing switches on when the biome
-     * is added to it.
      */
     @Override
     protected InteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
@@ -199,7 +187,7 @@ public class LOTREntJarBlock extends Block implements EntityBlock {
 
         // Brewing: a herb thrown into water, in Fangorn, turns the whole jar.
         int draught = draughtFor(stack);
-        if (draught >= 0 && jar.getDrinkAmount() > 0 && level.getBiome(pos).is(IS_FANGORN)) {
+        if (draught >= 0 && jar.getDrinkAmount() > 0 && LOTRBiomes.of(level.getBiome(pos)) instanceof LOTRFangornBiome) {
             if (!level.isClientSide()) {
                 jar.brew(draught);
                 level.levelEvent(LevelEvent.PARTICLES_AND_SOUND_PLANT_GROWTH, pos, 0);

@@ -126,6 +126,7 @@ public final class LOTRCreativeTabs {
                         output.accept(b);
                     }
                 });
+                output.accept(LOTRBuildingBlocks.CORAL_REEF);
                 LOTRBlocks.ALL_SOIL_COLUMNS.forEach(output::accept);
                 LOTRBlocks.ALL_BOTTOM_TOP.forEach(output::accept);
                 LOTRBlocks.ALL_PILLARS.forEach(output::accept);

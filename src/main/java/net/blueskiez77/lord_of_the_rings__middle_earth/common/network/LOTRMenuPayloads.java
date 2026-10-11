@@ -34,9 +34,8 @@ public final class LOTRMenuPayloads {
 
     /**
      * LOTRPacketClientInfo: the faction the player now views, and the faction
-     * last viewed in each region left.
-     *
-     * <p>NOT ported yet: the map's waypoint toggles it also carried (D13).
+     * last viewed in each region left. The map's waypoint toggles it also
+     * carried are sent alone, as they change (LOTRMapPlayerData.TogglesPayload).
      */
     public record ClientInfo(LOTRFaction viewingFaction, Map<LOTRDimension.DimensionRegion, LOTRFaction> changedRegionMap)
             implements CustomPacketPayload {

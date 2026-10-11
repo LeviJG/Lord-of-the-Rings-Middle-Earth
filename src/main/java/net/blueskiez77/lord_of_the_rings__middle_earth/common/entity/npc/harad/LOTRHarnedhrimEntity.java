@@ -21,6 +21,7 @@ import net.minecraft.world.level.ServerLevelAccessor;
 
 import org.jspecify.annotations.Nullable;
 
+
 /**
  * LOTREntityHarnedhrim: a man or woman of Harnennor, "Name of Harnennor",
  * with a Haradric dagger, a Harnennor name, Harnedor food and drink, and now
@@ -87,5 +88,10 @@ public class LOTRHarnedhrimEntity extends LOTRNearHaradrimBaseEntity {
     @Override
     public @Nullable LOTRMiniQuest createMiniQuest() {
         return LOTRMiniQuestFactory.HARNENNOR.createQuest(this);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.HARNENNOR;
     }
 }

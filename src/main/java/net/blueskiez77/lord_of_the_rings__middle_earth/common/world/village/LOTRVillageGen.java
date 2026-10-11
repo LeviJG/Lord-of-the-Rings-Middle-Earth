@@ -71,9 +71,9 @@ public abstract class LOTRVillageGen {
         }
     }
 
+    /** hasFixedSettlements: unless the config turns them off, or the world is "M.E. Classic". */
     public static boolean hasFixedSettlements() {
-        // D10k: not in Middle-earth Classic either.
-        return LOTRConfig.generateFixedSettlements;
+        return LOTRConfig.generateFixedSettlements && !net.blueskiez77.lord_of_the_rings__middle_earth.common.world.LOTRWorldGen.classic;
     }
 
     /** seedVillageRand: a random seeded by the world and a place. */
@@ -112,7 +112,8 @@ public abstract class LOTRVillageGen {
     public void generateInChunk(WorldGenLevel world, int i, int k) {
         for (AbstractInstance<?> instance : getNearbyVillagesAtPosition(world, i, k)) {
             instance.setupVillageStructures();
-            generateInstanceInChunk(instance, world, i, k);
+            // The buildings are today's structures, planned in STRUCTURE_STARTS (LOTRLegacyStructure).
+            generateInstanceInChunk(instance, world, i, k, false);
         }
     }
 
@@ -236,12 +237,13 @@ public abstract class LOTRVillageGen {
             for (int k1 = -checkRange; k1 <= checkRange; ++k1) {
                 int i2 = i - 8 + i1 * 16;
                 int k2 = k - 8 + k1 * 16;
-                generateInstanceInChunk(instance, world, i2, k2);
+                generateInstanceInChunk(instance, world, i2, k2, true);
             }
         }
     }
 
-    public void generateInstanceInChunk(AbstractInstance<?> instance, WorldGenLevel world, int i, int k) {
+    /** generateInstanceInChunk: the village's paths over this square, and its buildings if {@code buildings}. */
+    public void generateInstanceInChunk(AbstractInstance<?> instance, WorldGenLevel world, int i, int k, boolean buildings) {
         for (int i1 = i; i1 <= i + 15; ++i1) {
             for (int k1 = k; k1 <= k + 15; ++k1) {
                 PathAt path = getHeightAndPath(instance, world, i1, k1);
@@ -255,6 +257,9 @@ public abstract class LOTRVillageGen {
                     if (!world.getBlockState(abovePos).canSurvive(world, abovePos)) {
                         world.setBlock(abovePos, Blocks.AIR.defaultBlockState(), 3);
                     }
+                }
+                if (!buildings) {
+                    continue;
                 }
                 instance.setupWorldPositionSeed(i1, k1);
                 for (StructureInfo struct : instance.structures) {

@@ -135,6 +135,7 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
         LOTRBlocks.ALL_RAILS.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
 
         LOTRBlocks.CUBES_NO_TIER.forEach(b -> pickaxe.add(LOTRBlocks.keyOf(b)));
+        pickaxe.add(LOTRBlocks.keyOf(LOTRBuildingBlocks.CORAL_REEF));
 
         LOTRBlocks.CUBES_STONE_TIER.forEach(b -> {
             pickaxe.add(LOTRBlocks.keyOf(b));

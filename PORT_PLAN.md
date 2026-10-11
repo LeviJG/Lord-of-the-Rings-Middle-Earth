@@ -1033,8 +1033,8 @@ say what the user should check in game.
     `lootsExtraCoins` in the NPC base).
   - [x] **B16h Characters** (Gandalf, Gollum, Saruman, the boss NPCs...).
     *Result:* the same checks; Matched: Saruman's garbled name, the boss
-    trophies, the Chieftain's armour levels. The scrap trader's Utumno side
-    waits on D15.
+    trophies, the Chieftain's armour levels. (The scrap trader's Utumno side:
+    D15b.)
   - [x] **B16i Renderers and models** of all of the above. *Result:* every
     one of the 437 entity types has a renderer; the original's 132 renderer
     classes are all covered (merged into families: mounts, rugs, trolls,
@@ -1329,12 +1329,16 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
   (≈10–30 items per unit), with all their systems.
   - Remaining `missing` rows (31) after Tracks A–C: most need other systems
     and are listed under their D unit on the tracker:
-    - portals and the Utumno entrance (D15);
+    - portals and the Utumno entrance (D15: done);
     - spawner chests and bookshelf storage (D2);
     - rugs (D4);
     - branding iron, NPC respawner, spawn eggs (D9);
     - structure spawner (D11);
-    - coral reef (D10).
+    - ~~coral reef (D10)~~ -- `LOTRCoralReefBlock` (`lotr:coral_reef`): rock with one
+      of five corals drawn in the water above it, picked by position; coral
+      drops with Fortune, itself with Silk Touch, 0-2 experience; scrapes
+      what walks on it but sea creatures. Placed by the oceans' coral
+      generator.
   - [x] **D1a Stalactites.** `LOTRBlockStalactite` → `LOTRStalactiteBlock`,
     six blocks: `stalactite`, `stalagmite`, `ice_*` and `obsidian_*`.
     - Taken from the model block: hardness, resistance, sound, tool and
@@ -1415,7 +1419,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     bookshelves -- and the flower pot (`LOTRBlockFlowerPot`,
     `LOTRTileEntityFlowerPot`).
   - Deferred: corrupt mallorn (spawns Ents in Fangorn: D9/D10), mob
-    spawner and spawner chests (NPCs: D9/D12), the portals (D15). The armour
+    spawner and spawner chests (NPCs: D9/D12), the portals (D15: done). The armour
     stand is a vanilla duplicate.
   - **Gulduril glow: not ported (user).** `LOTRTileEntityGulduril` /
     `LOTRRenderGuldurilGlow` drew a drifting glow around gulduril blocks and
@@ -1511,7 +1515,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     `shield`, `achievements`, `takenAlignmentRewards`.
   - **D9 NPCs / hired units:** `factionDataMap` (`LOTRFactionData`),
     `hiredDeathMessages`, `uuidToMount`/`uuidToMountTime`, `bountiesPlaced`.
-  - **D10 dimension:** `deathPoint`/`deathDim`, `lastBiome`, `teleportedME`,
+  - **D10 dimension:** `deathPoint`/`deathDim`, `lastBiome`, ~~`teleportedME`~~ (D10k-a),
     `structuresBanned`, `hasPre35Alignments`, `chosenUnwantedAlignments`.
   - **D12 invasions/sieges:** `siegeActiveTime`, `conquestKills`.
   - **D13 map, waypoints, fast travel:** `viewingFaction`,
@@ -1527,7 +1531,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
   - **D16 GUIs:** `sentMessageTypes`.
   - **Bookkeeping, not ported:** `playerUUID`, `needsSave`, `pdTick`,
     `lastOnlineTime` (bookkeeping the attachment API does itself).
-  - **`LOTRLevelData`:** portal positions (D15); `gollumSpawned` (D9);
+  - **`LOTRLevelData`:** portal positions (D15a: done); `gollumSpawned` (D9);
     waypoint cooldowns (D13); `conquestRate`, `difficulty` lock and the
     `clientside_thisServer_*` mirrors (D6 config).
 - [x] **D6 Config** (`LOTRConfig`, client options). *Result:* `common/config/`:
@@ -1712,8 +1716,8 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       mounts; a galloping mount's ram pushes a player only on a blow that
       lands (1.7.10 sent a player's motion only when struck).
   - [x] **D9d onward, one faction per unit:** ~~Bree~~, ~~Rohan~~, ~~Gondor and its fiefs~~, ~~Elves~~, ~~Dwarves~~, ~~Orcs/Mordor~~, ~~Isengard/Dunland~~, ~~Near Harad~~ (done)
-    → ~~Rhûn~~ → ~~Far Harad~~; then ~~trolls~~, spiders (the Utumno ice spider; the Mirkwood and Mordor ones are done), ~~ents/huorns~~ (the Mallorn Ent with the bosses), ~~wraiths~~, ~~bosses~~
-    and characters (~~Gandalf, Saruman, Gollum~~; the Balrog and the tormented elf go with Utumno).
+    → ~~Rhûn~~ → ~~Far Harad~~; then ~~trolls~~, ~~spiders~~ (the Utumno ice spider: D15c), ~~ents/huorns~~ (the Mallorn Ent with the bosses), ~~wraiths~~, ~~bosses~~
+    and characters (~~Gandalf, Saruman, Gollum~~; the Balrog and the tormented elf: D15c).
     - [x] **D9d-a Bree-land:** all twenty Bree NPCs (`npc/bree/`): the
       Bree-man base (`LOTRBreeManEntity`, with the original's goal layout
       and its attack/hiring/avoid hooks, Peter Jackson and
@@ -2502,7 +2506,7 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
   - Left for their units: the map, fast travel and waypoints (D13);
     fellowships, the red book and mini-quests (D14); achievements, titles and
     shields and their notifications (D7, done); the branding iron (its item).
-- [ ] **D10 Dimension & world gen**: Middle-earth dimension, biome registry
+- [x] **D10 Dimension & world gen**: Middle-earth dimension, biome registry
   from `world/biome` + variants, genlayer → map-image-driven biome source,
   features (trees for saplings!), ores, `world/feature`. Large; plan it in its
   own session first and add sub-units here. **Comes after D11 and the GUIs
@@ -2548,8 +2552,8 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     such as Mordor's surface) is D10f, marked in each class. Data:
     `dimension/middle_earth.json`, `dimension_type/middle_earth.json`
     (0-255), 169 `worldgen/biome` JSONs, `biome.lotr.*` names from the
-    original's lang. `/lotrTravel [players]` (op) to and from
-    Middle-earth. The structures' `isSurfaceStatic` now also takes the
+    original's lang. (`/lotrTravel [players]`, the op's way to and from
+    Middle-earth until the Ring portal, went with D15.) The structures' `isSurfaceStatic` now also takes the
     biome's top and filler, as the original's did.
     **Fixed:** the source's zoom layer clamped every value to 0-255, which
     left random rivers out entirely and every place the first of its
@@ -2673,14 +2677,55 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     Dorwinion camp, Moredain village and camp); `getRandomFlower` by
     variant again (Eriador's lavender, the roads' flowers); the decorator's
     `genTree` and biome's `getTreeGen`; the flower pots', biome
-    flowers' and village paths' biome lookups. Waiting: Utumno's biome and
-    lists, the Forodwaith Utumno entrance (D15); the Tundra's grass colour
+    flowers' and village paths' biome lookups. (Utumno's biome and the
+    Forodwaith Utumno entrance: D15b; its lists: D15c.) The Tundra's grass colour
     and the savannah's F3 line (D10g); spawning by these lists (D12);
     conquest's effect on the lists (D12).
-  - [ ] **D10g Client**: grass and foliage colours (with the variants),
-    sky, fog and cloud colours blended, fog density, the water colour by
-    latitude, the sky, cloud and weather renderers, the Misty Mountains'
-    mist, sun flare, aurora, ambience; the F3 biome lines.
+  - [x] **D10g Client**. *Result* (`client/world`):
+    - Colours (`LOTRBiomeColoursClient`, `LOTRClientLevelTintMixin`): grass
+      and leaves of the colour map at the biome's climate raised by the
+      variant there (the biome's temperature, not 1.7.10's height-cooled
+      one, as today's grass takes it), or the biome's own; the tundra's
+      patchy browns; the water of every biome without its own colour shading
+      north to south by the viewer's latitude, as the original's did, chunks
+      drawn from then on taking it.
+    - The air (`LOTREnvironmentClient`, `LOTREnvironmentProbeMixin`,
+      `LOTRAtmosphericFogMixin`): the fog and clouds tinted by the viewer's
+      biome (the original's blend range was only the viewer's own column at
+      any usual render distance); the sky black while the scrap trader
+      misbehaves; foggy biomes' close fog, and the fog thickening in rain
+      ("New weather"), in the Misty Mountains' mist and near a wight, which
+      greys the Barrow-downs' sky, clouds and fog (the Balrog's with
+      Utumno). Today's fog is the base: the original's thickenings act on
+      it as far as the render distance reaches. The sun's glare ("Sun
+      flare"), the mountains' mist and a hunting wight's darkness on the
+      screen.
+    - The sky (`LOTRSkyRenderer`, `LOTRSkyRendererMixin`, "LOTR sky"): the
+      mod's sun with its sunrise glow, the eight-phase moon by the Shire
+      calendar, red in a lunar eclipse, a starry skybox from `sky/night`
+      taken at dusk, Eärendil at dusk and dawn, none where a biome has no
+      sky; the sunrise fan greener. Today's sky colour, disc and fan.
+    - The clouds (`LOTRCloudRenderer`, "Cloud range"): two drifting sheets
+      of the clouds texture, the day's wind and thickness, thinning at the
+      range's edge (the original's fog there).
+    - The aurora (`LOTRAuroraRenderer`, "Aurora"): the original's curtains,
+      nights, colours and Utumno's red, drawn at the end of the sky brought
+      in a twentieth of the way (it looks the same, and stays within reach).
+    - Weather (`LOTRWeatherClient`, `LOTRWeatherEffectRendererMixin`): the
+      mod's rain and snow ("New weather"), ash over Mordor (not Nurn or the
+      Morgul Vale), Dagorlad and the Far Harad volcano, sandstorms over dry
+      sand or gravel, snow everywhere at Christmas.
+    - Sound and spray (`LOTRAmbienceClient`, `LOTRClientLevelSoundMixin`):
+      the mod's rain and thunder, wind high up (lower in rain and
+      sandstorms), the sea along the coasts with its waves (`lotr:wave`),
+      the wights' and haunted lands' noises; Mirkwood's and the Morgul
+      Vale's bubbles (`lotr:mirkwood_water`), the dead in the Dead Marshes'
+      water (`LOTRDeadMarshFaceParticle`), spray where falling water meets
+      still.
+    - The F3 lines (`LOTRDebugEntryBiomeMixin`): the biome, its id and map
+      colour, the variant and the chunks held, the savannah's HaradPopulated.
+    - Also: XP orbs removed in Middle-earth without vanilla enchanting; the
+      Rohan and Dor-en-Ernil horses (after D13d).
   - [x] **D10h Structures in the world**. *Result:* villages found and
     built as the original's were (`LOTRVillageGen`: fixed settlements at
     their waypoints, the grid, the position caches, the road, mountain and
@@ -2695,12 +2740,65 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     `LOTRMapGenTauredainPyramid` with their pieces), built in populate;
     the mines' chests filled as vanilla's chest filler filled them
     (`fillInventoryPlain`: no pouches, lore or modifiers, as the original).
-  - [ ] **D10i The dimension's rules**: respawning in Middle-earth (the
-    `MER*` config), the portal spawn point, the welcome and departure
-    messages, the day length, moon phases and eclipse.
-  - [ ] **D10j The tracker's D10 items** (biome achievements, the biome
-    pulls in NPC wandering, natural spawn checks, ImmuneToHeat, ...).
-  - [ ] **D10k Middle-earth Classic** world type.
+  - [x] **D10i The dimension's rules** (all but the portal spawn point, which is D15's): ~~the day length and moon
+    phases~~ (`data/lotr/world_clock/middle_earth.json`, `timeline/day.json`,
+    `timeline/moon.json`: Middle-earth's own clock, LOTRTime, with a 48000-tick
+    day -- vanilla's day timeline doubled, the 1.7.10 curve over
+    LOTRTime.DAY_LENGTH -- and a moon phase a day over eight days, as the
+    Shire date counted them, the slime chance with it; sleeping and /time
+    work on it as on the overworld's; a world's date and clock may stand at
+    different points of the eight, where the original took the phase from
+    the date itself); ~~respawning in Middle-earth (the
+    `MER*` config)~~ (`LOTRMiddleEarthRespawn`, `LOTRServerPlayerRespawnMixin`:
+    who dies in Middle-earth comes back there -- at a bed there, else the
+    spawn point -- moved 500-1500 blocks from where they fell when that is
+    over the threshold away; Utumno's dead with D15), the portal spawn
+    point (D15a: the Ring portal's place). (The lunar eclipse: D10g; the loading screen on
+    entering: D13c.)
+  - [x] **D10j The tracker's D10 items** (biome achievements, the biome
+    pulls in NPC wandering, natural spawn checks, ImmuneToHeat, ...). *Result:*
+    each people's pull to its lands and natural spawn rule as the original's
+    (`LOTRNPCEntity.homeBiomePull`, `isAboveSeaOnTopBlock`, the elves'
+    `canElfSpawnHere`, the dwarves' `canDwarfSpawnHere`, the orcs' dwarven
+    top-block rule, the Ents', the Nurn slaves', the Ithilien rangers'); the
+    trolls untroubled by the sun where hostiles walk by day; bounders hunting
+    ruffians in the Shire; the Galadhrim defending mallorn and the Vintner
+    Guards their vineyards; the corrupt mallorn calling Ents; the orc
+    dungeons' orcs from the biome; the biome achievements, climbMistyMountains,
+    enterMiddleEarth, growBaobab, rideGiraffeShire, rideBarrelMirkwood; the
+    alignment HUD and compass only in Middle-earth (the biome name above
+    it), the date only there; the quests' biome given; the Shire date turning
+    with Middle-earth's own day; isFactionDimension. (Fast-travel regions
+    unlocked by land: D13a; bounty help: after D13d.)
+  - [x] **D10k-a The Middle-earth world type** (user: "select world type as
+    Middle Earth, same as the og mod"). *Result:* "Middle-earth" among the
+    world types at world creation (`data/lotr/worldgen/world_preset/middle_earth.json`,
+    tagged `minecraft:normal`), its note "Spawn directly into Middle-earth"
+    on the World Type button (`LOTRCreateWorldTabMixin`, as vanilla notes
+    amplified). The overworld is vanilla's, as it was; each player is sent
+    is made in Middle-earth, by its spawn point (`LOTRPrepareSpawnTaskMixin`:
+    the original made them in the overworld and sent them on at login; here
+    nothing of the overworld is ever loaded for them). A player saved in the
+    overworld goes on once their client has loaded it (moved during the
+    login itself, the overworld's chunks and creatures still in flight
+    landed in the client's Middle-earth as blocks and mobs only it had)
+    (`LOTRWorldTypeMiddleEarth`, `lotr:teleported_me`, the original's
+    TeleportedME). 26.2 saves a world's dimensions but not its type's name, so
+    the overworld's biome source is a pass-through wrapper
+    (`LOTRWorldTypeBiomeSource`, `lotr:middle_earth_world_type`) that marks it.
+    (With the Ring portal, D15a: such an arrival marks the Middle-earth
+    portal made, so none is built.)
+  - [x] **D10k-b Middle-earth Classic** world type. *Result:* "M.E. Classic"
+    among the world types (`world_preset/middle_earth_classic.json`: the
+    Middle-earth type's overworld, and Middle-earth's generator with
+    `"classic": true`), spawning straight into Middle-earth like it; its
+    biomes from the classic layers (`LOTRGenLayerClassicOcean`,
+    `LOTRGenLayerClassicRemoveOcean` -- land at the middle, where one starts --
+    and `LOTRGenLayerClassicBiomes`, the major biomes at random); and as the
+    original, no map features (roads, mountains, fixed places), no fixed
+    settlements, no areas of influence, and no map in the LOTR menu
+    (`LOTRWorldGen.classic`, sent to a client as it joins). Conquest's own
+    check comes with conquest.
 - [x] **D11 Structures & villages** (`structure`, `structure2`, `village`,
   mapgen dwarven mines/tpyr). Ported before D10 (user): each structure is
   built and tested through the structure spawner item, as the original's
@@ -2791,14 +2889,97 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     structure chances, fixed structures, the village position caches), the
     dwarven mines and Tauredain pyramids (`mapgen`), and conquest.
   - Banners among the structures are placed since D4c.
-- [ ] **D12 NPC spawning, invasions, spawn damping** (extend `LOTRInvasions`).
-- [ ] **D13 Map & waypoints / fast travel** (map GUI, `world/map`; its two
+- [x] **D12 NPC spawning, invasions, spawn damping** (extend `LOTRInvasions`). *Result:*
+  `LOTRSpawnerNPCs`, `LOTRSpawnerAnimals` (with the world-generation packs), the creature kinds
+  and their caps (`LOTRCreatureType`; the LOTRAmbient kind counted by `LOTRAmbientCreature` and
+  vanilla's rabbit, which despawns when the LOTR spawner made it), `LOTRSpawnDamping` and
+  /spawnDamping; vanilla's natural spawning off in Middle-earth; `LOTREventSpawner`: travelling
+  traders, bandits, invasions, Gollum, the Grey Wanderer; `LOTRInvasionSpawnerEntity`, its bar
+  and spinning icon, /invasion, defeatInvasion; the warhorns (`LOTRWarhornItem`, the captains'
+  reward slot, the pyramids' chest pools). Waiting: conquest (with D14's conquest work).
+- [x] **D13 Map & waypoints / fast travel** (map GUI, `world/map`; its two
   keys, Map Teleport M and Fast Travel F, are registered already in
   `LOTRKeyBindings` for the map screen to read). Waits
   on D10: the map places the player, waypoints and travel by Middle-earth's
   own coordinates, which mean nothing until its dimension exists. (The
   waypoints and roads as data, and the map drawing, came with the main
   menu.)
+  - [x] **D13a Waypoints and fast travel.** *Result:* `LOTRAbstractWaypoint`
+    (with the map's lock states); `LOTRWaypoint` unlocked by region and
+    alignment (`hasPlayerUnlocked`, `isCompatibleAlignment`), its region
+    unlocked on entering one of its lands (runAchievementChecks);
+    `LOTRPlayerWaypoints` (`lotr:waypoints`: "UnlockedFTRegions", "WPUses",
+    "LastWP", synced to the player); `LOTRFastTravel` (`lotr:fast_travel`:
+    "FTSince", "MountUUID", "MountUUIDTime", "LastOnlineTime"): the clock
+    and its updates every quarter second, the wait by uses and distance
+    (getWaypointFTTime), the request (LOTRPacketFastTravel: unlocked, the
+    wait passed, not under attack, not in bed), the ten-second countdown and
+    its messages, stopped by walking, jumping or moving on foot
+    (`LOTRServerGamePacketListenerMixin`) or a bandit's theft, the bounce
+    through the client, the journey with the mount (ridden again half a
+    second later), following hired units, Gollum, pets and led animals, the
+    offline clock on multiplayer servers; the cooldowns in the level data
+    ("WpCdMax", "WpCdMin"); /wpCooldown, /fastTravelClock, /lotrWaypoints;
+    the client's clock and cooldowns (`LOTRClientFastTravel`). Waiting:
+    conquest's unlocking of enemy waypoints (with conquest).
+  - [x] **D13b Custom waypoints.** *Result:* `LOTRCustomWaypoint` (made where
+    the player stands, renamed, deleted, shared with fellowships, a safe
+    landing found when its spot has changed); `LOTRCustomWaypoints`, kept
+    for the whole world like the fellowships, since sharing reads fellows
+    who may be away ("CustomWaypoints", "NextCWPID", "CWPUses",
+    "CWPSharedUnlocked", "CWPSharedHidden", "CWPSharedUses" per player): five
+    and one per five achievements, the config's lowest height, banner
+    protection's refusal sent to the map; a fellow's shared waypoints
+    unlocked within a thousand blocks, hideable; sharing worked out from the
+    fellowships when sent rather than cached (the original's copies);
+    leaving a fellowship unshares one's waypoints from it; the optional
+    log (`lotr_cwp_logs`); the client's copy (`LOTRClientCustomWaypoints`).
+    Fixed: the original's server let one waypoint past the limit (<=).
+  - [x] **D13c The map renderer.** *Result:* `client/map/LOTRMapRenderer`
+    (LOTRGuiRendererMap and LOTRGuiMap's drawing: the map clipped to its
+    image, Meneltarma under the sea until `enterMeneltarma`, the overlay,
+    the sepia and OSRS oceans, roads and their names, waypoints by kind and
+    lock with their names and fading, `LOTRMapLabels`, vignettes, the
+    smoothed sprites), used by the main menu; the loading screen on
+    entering Middle-earth (`LOTRLevelLoadingScreenMixin`, LOTRGuiDownloadTerrain);
+    the journey (`LOTRFastTravelScreen`, LOTRGuiFastTravel, with the
+    `lotr:event.fast_travel` sound and the fastTravel speech bank), opened by
+    the server's `ScreenPayload`. The original made no sepia image (its
+    generation was commented out), so the sepia map is the map on a sepia
+    sea, as it was. (Utumno's loading screen: D15b.)
+  - [x] **D13d The map screen.** *Result:* `LOTRMapScreen` (LOTRGuiMap):
+    fullscreen or windowed, dragged, moved by the movement and arrow keys,
+    zoomed by wheel or widget; roads, players' faces (the server's
+    `LOTRMapPlayerData.LocationsPayload` each second: those not hiding, fellows
+    in a fellowship showing members, all to an operator in creative, never an
+    `/opHideMap` operator to a non-operator, `forceMapLocations`), the
+    mini-quest givers, waypoints and labels; the selected waypoint's fast
+    travel (F) or what it waits on; the biome and coordinates under the
+    pointer and the operators' teleport there (M, `TeleportPayload`, run as
+    /tp); the custom waypoint overlays (create, rename, delete, share with
+    fellowships and unshare, hide and unhide shared ones, banner
+    protection's refusal); the widgets and their tooltips; the toggles kept
+    by the server (`lotr:map_options`: "HideOnMap", "AdminHideMap", "ShowWP",
+    "ShowCWP", "ShowHiddenSWP"); the areas of influence from the factions
+    screen, and the faction's map on its front page; the Options screen's
+    Show Map Location; the menu's map icon and the welcome quest's map stage
+    (`VIEW_MAP`); the Fertile Valley's Shamiir lore ("CommemorateEmpressShamiir"
+    in the level data, sent on joining). Divergences: the operator question
+    for the teleport line (LOTRPacketIsOpRequest) is asked at most once a
+    tick rather than every frame; the toggles travel in their own packet
+    rather than with LOTRPacketClientInfo. Waiting: the conquest grid and the
+    conquest unlocking of enemy waypoints (with conquest).
+  - [x] **Bounty help** (after D13d). *Result:* `LOTRNPCQuestInfo.interact`
+    as the original's: with nothing else to say, one time in three, an NPC
+    whose kind has bounty-help speech (`getBountyHelpSpeechDir` on the 37
+    classes that had it; the wicked dwarf none) tells a player hunting one of
+    its people's bounties where the target was last seen -- the biome, or the
+    waypoint last travelled to (`_bountyHelp_biome` / `_bountyHelp_wp`). The
+    ruffian spy answers for any faction's bounty, paid with coins, gold,
+    silver, a gem or a ring in hand, one of which he takes.
+    `LOTRLastKnownLocation`: the Middle-earth biome a player was last in
+    (`lotr:last_biome`, "LastBiome", looked at every five seconds), and for an
+    absent target both are read from their player file.
 - [x] **D14 Quests, fellowships, mini-quests, Grey Wanderer.** Everything
   unblocked is done; conquest, the Grey Wanderer's natural arrival, and the
   quest and fellowship features that use the map wait on D10/D12/D13
@@ -2832,8 +3013,8 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       `BeaconFellowshipName` text is no longer read; a fellow's alignment
       shown even when hidden and fellows' health bars; a title change shown
       to fellows.
-    - Waiting on D13: members shown on the map (ShowMap is kept and
-      toggled) and custom waypoints shared to a fellowship.
+    - (Members shown on the map and custom waypoints shared to a
+      fellowship: D13b/D13d.)
   - [x] **D14b Mini-quests** (`common/quest`, user: "Go ahead with D14b"):
     - `LOTRMiniQuest` and its kinds -- collect, kill entity / faction,
       pickpocket (`IPickpocketable`, the Bree-men and Bree-hobbits with
@@ -2885,12 +3066,10 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       them a quest.
     - Also fixed on the way: the falling leaves were cut from
       `misc/particles.png`; the original drew them from `particles2.png`.
-    - Waiting: the welcome quest's fifth stage (opening the map, D13) --
-      the quest goes no further until then; bounty help, where a target was
-      last seen (biome D10, waypoint D13), and the ruffian spy's paid-for
-      help with it; the biome a quest was given in (D10); the daily advance
-      of the Shire calendar (D10, with the world's time); mini-quests
-      paused during a siege (invasions, D12). (The quest achievements: D7c.)
+    - Since done: the biome a quest was given in and the Shire calendar's
+      daily advance (D10j); the bounty help (after D13d). Not ported:
+      mini-quests paused during a siege, which nothing starts. (The quest
+      achievements: D7c.)
   - [x] **Pouches** (user, after D14b: "Port the pouches and drop chances";
     they had been excluded):
     - `LOTRPouchItem`: three items for the three sizes (9, 18, 27 slots;
@@ -2924,7 +3103,91 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       not 1.7.10's fleece colours.
     - Waiting: the fishing treasure's pouches (20/10/5, with the
       Middle-earth fish hook, D3/D10). (`getPouch`: D7c.)
-- [ ] **D15 Portals**: elven/morgul/utumno portals, Utumno dimension.
+- [x] **D15 Portals**: elven/morgul/utumno portals, Utumno dimension.
+  - [x] **D15a The Ring portal and the built portals.** *Result:* a gold ring
+    burning in the overworld near a player (once in a world) blasts out the
+    Ring portal (`LOTRPortalEntity`, "portal"; `LOTRPortalRenderer`, its
+    ring and writing), which grows for six seconds and takes whoever touches
+    it -- and, grown, any creature -- between the overworld and Middle-earth
+    (`LOTRTeleporter`: into Middle-earth at (0, 0), where the first comer
+    raises its twin and fixes Middle-earth's spawn point; out at the
+    overworld portal's place). The elven portal (an elanor or niphredil
+    dropped into a quendite-ringed pool by a friend of Lothlórien or the High
+    Elves) and the Morgul portal (a bone into a gulduril-pillared lava pit by
+    a servant of Mordor, Angmar or Dol Guldur): `LOTRElvenPortalBlock`,
+    `LOTRMorgulPortalBlock`, `LOTRPortalBlockEntity` (gone when its portal is
+    broken), `LOTRPortalTeleporter` (to the nearest such portal in 128 blocks,
+    else one built), their renderers (the end portal's drawing over the
+    elven textures; the Morgul glow), the burning of the unfriendly, the
+    achievements, the screen overlays and trigger sound (`LOTRPortalsClient`),
+    `enablePortals`. Level data `MadePortal`, `MadeMiddlePortal`,
+    `OverworldX/Y/Z`. The world type's first sending marks the Middle-earth
+    portal made. `/lotrTravel` is gone.
+    - Divergences (surfaced): a built portal's wait is the nether portal's
+      (the game rules; 80 ticks, as 1.7.10's); the standing-portal search
+      uses points of interest (`lotr:elven_portal`, `lotr:morgul_portal`),
+      not a block-by-block scan, and the original's cache of found portals
+      is left out; the client is not sent the Ring portal's place
+      (`LOTRPacketPortalPos`), which in 1.7.10 only pointed the client's
+      compass, since 26.2's compass does not follow a mod dimension's spawn.
+    - As this fork's original: the Ring portal takes a player across at a
+      touch, even while growing (its 100-tick wait was left commented out),
+      and its overlay shows only while one stands in it.
+  - [x] **D15b Utumno.** *Result:* the dimension `lotr:utumno`
+    (`dimension_type/utumno.json`: no sky or sky light, a ceiling, fixed
+    time, beds exploding; one biome, `lotr:utumno`, `LOTRUtumnoBiome`),
+    built by `LOTRUtumnoChunkGenerator` from `LOTRUtumnoLevel.generateTerrain`
+    (the three levels and their corridors, as the original wrote them, each
+    column's x and z the other way about) and `LOTRMapGenCavesUtumno`, and
+    decorated by `LOTRChunkPopulator` (shafts, pits, bridges, stairs,
+    pillars, altars, barred fires, stalactites, skulls); its NPC spawning
+    while a player is there (the lists: D15c). The entrance in the
+    Forodwaith (`LOTRUtumnoEntranceStructure`, `utumno_brick_entrance`,
+    `LOTRUtumnoPortalBlock` with its block entity and renderer, the
+    warning message); `LOTRUtumnoTeleporter`; the return portal
+    (`LOTRUtumnoReturnPortalBlock`, its column of light and renderer, the
+    altars fed by kills with their particles, `lotr:utumno_kill`, the
+    `leaveUtumno` achievement); `LOTRUtumno`: water freezing on the ice
+    level and boiling on the fire level (ice set down and buckets emptied
+    there too), the brick mined only with the Pickaxe of the Underworld and
+    not between the levels, `disableEnderChestsUtumno`, no bane progress;
+    the keys (`LOTRUtumnoKeyItem`) cutting the stair down; the drops;
+    respawning in Middle-earth by the entrance; the enter achievements; the
+    scrap trader's Utumno side; the dimension in `LOTRDimension`, factions,
+    the menu's title and the factions screen. Client (`LOTRUtumnoClient`):
+    the fog in each level's colour, brightening down the fire level, and
+    thick; the camera rolling over in the return portal and the player held
+    in it; the loading screen; the ambience.
+    - Fixed (surfaced): the original's per-tick freezing and boiling of
+      water near players had been moved into the Utumno portal's collision,
+      where it ran once, in Middle-earth, at the arrival's coordinates; it
+      is back in the tick, in Utumno. The keys and their parts stack to
+      one, as the original's item did (they stacked to 64).
+    - Divergences (surfaced): Utumno's light curve (1.7.10's
+      brightness-to-the-fourth table) is today's darkest ambient light
+      instead; the fire level's fog brightening is applied to the fog
+      colour rather than after vanilla's final adjustments; Utumno has no
+      F3 biome line of the mod's own.
+  - [x] **D15c Utumno's creatures.** *Result* (`npc/utumno/`): the Utumno
+    orc and orc archer (man-sized, Utumno arms and armour, deeper-voiced,
+    one in five with an Elvish name), the four Utumno wargs (40 strong,
+    never ridden by players, ridden by Utumno's orcs; the ice warg's bite
+    frosts the sight and slows, the fire warg burns and sets alight), the
+    ice spider (four sizes, slowing venom, frost), the Utumno troll (x1.5,
+    hitting for 7, shattering in the sun) and snow-troll, the tormented elf
+    (silent, Utumno arms, glowing eyes), and the Balrog (`LOTRBalrogEntity`:
+    300 strong and healing, hurling what it strikes, wreathed in fire that
+    spreads about it and burns through Utumno's softer rock, charging from
+    afar, `LOTRBalrogChargeGoal`; its fires go out at its death; coal and
+    the Flame of Udûn; `LOTRBalrogModel`/`LOTRBalrogRenderer` with its
+    sliding fire, bright skin and the "Balrog Wings" option). Their spawn
+    lists (each level's and the guests'), spawn eggs, names, kill
+    achievements, the orc/warg/troll/elf/arthropod tags (banes), Gandalf
+    hunting Balrogs, and the fog closing in near a Balrog.
+    - Divergence (surfaced): the Balrog's held weapon is drawn in today's
+      third-person hand pose after the original's own arm offsets; its bright
+      skin is drawn translucent at full light.
+
 - [ ] **D16 Remaining GUIs, commands, particles/fx, sounds, drunken speech.**
   - [x] **Commands** (`LOTRMiscCommands`): `/pledgeCooldown`, `/lotrEnchant`
     (the modifiers; `add`/`remove`/`clear`, suggesting what fits the held
@@ -2934,8 +3197,164 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     names to `/summon`, which today takes `lotr:` ids itself) and
     `/strscan` (the authors' scan recorder, in 1.7.10 block ids). Waiting:
     `/conquest`, `/invasion`, `/spawnDamping`
-    (D12/D14), `/lotr_time`, `/opHideMap`, `/fastTravelClock`,
-    `/wpCooldown`, `/lotrWaypoints` (D10/D13).
+    (D12/D14), `/lotr_time` (D10). (`/opHideMap`, `/fastTravelClock`,
+    `/wpCooldown`, `/lotrWaypoints`: D13.)
+
+## Track W — World-gen review, biome by biome (user, 2026-10-11: before conquest)
+
+The user's in-game pass found Middle-earth's underground broken ("complete
+garbage") and asked for the whole of world gen to be reviewed biome by biome.
+Track W comes before conquest and the D16 leftovers. Work in small pieces; after
+each fix, tell the user what to look at in game, and wait for their check.
+
+**Method for every unit.** Compare the port's classes with the original's line
+by line (`old mod/.../common/world/...`), not by sampling. Where behaviour can
+be checked outside the game, use the headless harness: it builds chunks with
+the real generator and decorators on a fake level, for any seed and chunk, and
+reports block counts per height and the call stack of any block replaced.
+Move it from the scratchpad into `tools/worldgen-harness/` in W0. Each unit ends
+with a short list of coordinates (seed, x, z) for the user to visit. Divergences
+are surfaced, unportable parts go to the Deferred-port tracker, and values kept
+modern are recorded in the Result.
+
+**Per-biome checklist** (each biome unit covers all of it):
+1. Registration: id, name, map colour, climate (temperature, rainfall), the
+   biome JSON, the lang key; spawning rules that hang on the biome.
+2. Terrain: `rootHeight`/`heightVariation`, `biomeTerrain` (xz scale, height
+   stretch), `enableRocky`, `enablePodzol`, how it blends with its neighbours
+   (`initializeHeightNoise`), and the map's mountains, lava and roads through it.
+3. Surface and underground: top/filler blocks, `generateBiomeTerrain` and
+   `generateMountainTerrain` overrides, the rock layers (Gondor, Rohan, Mordor,
+   Dorwinion, Harad and the rest), sandstone under sand.
+4. Variants: the list and weights, each variant's height, hills, trees,
+   boulders, marsh, scrubland/wasteland/orchard terrain.
+5. Decorator: trees (per chunk, cluster chance, types and weights), flowers,
+   grass and double grass, logs, reeds, cactus, mushrooms, melons/pumpkins,
+   sand/clay/quagmire, ores and gems (`biomeOreFactor`/`biomeGemFactor`), cave
+   cobwebs, stalactites, streams, lava streams, orc dungeons, troll hoards, the
+   biome's own `decorate` override, random structures and their chances,
+   villages and fixed settlements.
+6. Life: animal and NPC spawn lists, invasion lists, banners.
+7. Client: water, grass, foliage and sky colours, fog, clouds, music region,
+   ambience, entry achievement.
+
+- [ ] **W0 Underground and shared generation** (do first).
+  - [ ] **W0a The hollow underground.** Seen again in "New World (4)": Rohan and
+    Mordor hollow (Mordor down to air, lava, bedrock and cobwebs: its surface
+    of Mordor rock, dirt and gravel gone as well), Harad and Far Harad whole.
+    Diagnostic in the build: `LOTRDebugStoneRemovalMixin` (temporary) logs the
+    stack of stone/rock/ore turned to air, "[LOTR W0a]". Found so far (2026-10-11):
+    in Rohan the chunk holds its stone at the end of `fillFromNoise` and none at
+    the very next step (`buildSurface`, status noise), and no block change removes
+    it, so the generating chunk's sections are replaced in between; the spawn area
+    keeps its stone. Stage checks: `LOTRDebugW0a` (temporary, "[LOTR W0a stage]").
+    - User decision (2026-10-11): Middle-earth takes today's overworld height,
+      -64 to 320 (`LOTRChunkGenerator.MIN_Y`/`WORLD_HEIGHT`, the dimension type).
+      The original's terrain keeps its 0-256 heights; below it is deepslate over a
+      bedrock floor at -64, and the original's bedrock at 0-4 is deepslate.
+    - User decision (2026-10-11): the generator follows 26.2's chunk steps rather
+      than building the whole column in `fillFromNoise`. NOISE runs
+      `generateTerrain` only; SURFACE runs `replaceBlocksForBiome` over the
+      chunk's own blocks; CARVERS runs the caves and ravines over them (the
+      chunk's road and village flags recomputed, `chunkFlagsAfterSurface`,
+      `LOTRRoadGenerator.marksRoadFlag`). Same random seeds as provideChunk:
+      the harness found 0 differing blocks in 48 chunks (Rohan, Pinnath Gelin,
+      Mordor) against the one-shot `provideTerrain`, which stays for
+      getBaseHeight/getBaseColumn.
+    - User decision (2026-10-11): "the same type of world gen, not chunk by
+      chunk resemblance", then "port the world gen fully to 26.2 style".
+      Structures are today's: `structure/legacy/LOTRLegacyStructure` (type
+      `lotr:legacy`, structure set every chunk, biome tag
+      `has_structure/legacy`) plans, in STRUCTURE_STARTS, what the original
+      would build in the chunk -- the decorator's random structures (chunk
+      chances, off roads), the marsh hut, Gruk's house, the ticket booth, the
+      villages' buildings whose plan falls in the chunk, and each biome's own
+      (`LOTRBiome.planStructures`: Blue Mountains houses, Iron Hills dwarf
+      houses, Ungoliant's webs, the underwater elven ruins, the Utumno
+      entrance, Forodwaith's mirk-oak) -- building each once with its own code
+      into `LOTRBlueprint` (a recording level over the generator's terrain);
+      `LOTRBlueprintPiece` places each chunk's part in FEATURES. A structure
+      whose code fails while planned is logged and left out. Decoration
+      (`LOTRDecoration`, replacing `LOTRChunkPopulator`, deleted) runs the
+      rest of populate in FEATURES over the chunk's own square; what reaches
+      past the chunks next to it is left out, reads there come from the
+      generator's terrain. Village paths, the Isengard walls and the Rammas
+      Echor are laid column by column there; the dwarven mines and Tauredain
+      pyramids keep their 1.7.10 MapGenStructure pieces, clipped to the chunk.
+      Signs are written through their saved data (no level while generating). Found in "WorldGen test #6": in the
+    Rohan, Shire/Pinnath Gelin and Mordor regions nearly every chunk had lost
+    all its stone, the mod's rocks and its ores between bedrock and the surface
+    crust; dirt, grass, gravel, lava, bedrock and cave cobwebs stayed. The
+    Rhûn region and the chunks about the origin were whole. The harness shows
+    the generator and the whole of `populate` (lakes, decorator, snow) leave the
+    stone in place, and the cobwebs (which only grow next to stone) prove the
+    stone was there when the chunk was decorated, so it is removed later, in the
+    running game. Find what removes it, fix it, and confirm with the user.
+  - [ ] **W0b Caves and ravines** (`LOTRMapGenCaves`, `LOTRMapGenRavine`, the
+    Gorgoroth ravines): frequency, size, lava levels, surface cuts under roads
+    and villages, compared with the original.
+  - [ ] **W0c Ores and underground features**: the decorator's ore, soil and
+    gem lists and heights, the biome factors, stalactites, cobwebs, streams and
+    lava streams, water and lava lakes, dungeons, troll hoards, dwarven mines and
+    Tauredain pyramids (spawn biomes, chances).
+  - [ ] **W0d Shared terrain**: the noise (`initializeHeightNoise`), the
+    genlayers (map biomes, rivers, lakes, oases, beaches, variants and their
+    distribution), roads and bridges, mountains and their lava, the world
+    height (256) against 26.2's limits, sea level, the M.E. Classic world type.
+  - [ ] **W0e Performance**: the "Can't keep up" stalls after teleporting
+    (12 s behind on reaching Mordor); the "UUID of added entity already exists"
+    warnings (orc archers spawned twice); saving the world takes "an extremely
+    long time" (user, 2026-10-11).
+  - [ ] **W0f Screen corners dark in normal play** (user, 2026-10-11): 26.2's
+    vignette (`Hud.extractVignette`, strength 1 − light at the eyes, toggle in
+    Video Settings; 1.7.10 drew it only on Fancy). Check whether Middle-earth's
+    sky darkness (`world_clock`/timeline) leaves it dark in daylight.
+- [ ] **W1 Eriador and Lindon**: Shire, Shire Woodlands, Shire Moors, Shire
+  Marshes, White Downs, Tower Hills, Lindon, Lindon Woodlands, Lindon Coast,
+  Blue Mountains, Blue Mountains Foothills, Bree-land, Chetwood, Midgewater,
+  Old Forest, Barrow-downs, Lone-lands, Lone-lands Hills, Eriador, Eriador
+  Downs, Minhiriath, Enedwaith, Eregion, Trollshaws, Rivendell, Rivendell Hills,
+  Ettenmoors, Coldfells, Angmar, Angmar Mountains, Angle, Swanfleet, Pukel
+  (Drúwaith Iaur), Andrast, Dunland, Nan Curunír, Kanuka (where the original
+  placed it).
+- [ ] **W2 The Misty Mountains and the Vales of Anduin**: Misty Mountains,
+  Misty Mountains Foothills, Anduin Vale, Anduin, Anduin Mouth, Gladden Fields,
+  Celebrant, Lothlórien, Lothlórien Edge, Long Marshes, Brown Lands, Wold, Emyn
+  Muil, Nindalf, Fangorn, Fangorn Clearing, Fangorn Wasteland.
+- [ ] **W3 Rhovanion**: Mirkwood (North, Corrupted, Mountains, the Woodland
+  Realm and its hills, Dol Guldur), Wilderland, Wilderland North, Dale, Erebor,
+  Iron Hills, Grey Mountains, Grey Mountains Foothills, Eastern Desolation,
+  Half-troll Forest (where the original placed it), Dorwinion, Dorwinion Hills.
+- [ ] **W4 Rohan and Gondor**: Rohan, Rohan Woodlands, Rohan Uruk Highlands,
+  Adornland, Entwash Mouth, White Mountains, White Mountains Foothills, Gondor,
+  Gondor Woodlands, Pelennor, Lossarnach, Imloth Melui, Lebennin, Lamedon,
+  Lamedon Hills, Blackroot Vale, Pinnath Gelin, Dor-en-Ernil, Dor-en-Ernil
+  Hills, Pelargir, Tolfalas, Ithilien, Ithilien Hills, Ithilien Wasteland,
+  Harondor.
+- [ ] **W5 Mordor**: Mordor (and Gorgoroth), Mordor Mountains, Morgul Vale,
+  Nan Ungol, Udûn, Dagorlad, Dead Marshes, Nurn, Nurnen, Nurn Marshes.
+- [ ] **W6 Rhûn and the East**: Rhûn, Rhûn Forest, Rhûn Island, Rhûn Island
+  Forest, Rhûn-land (and its hills, steppe and red forest), East Bight, Wind
+  Mountains, Wind Mountains Foothills, Red Mountains, Red Mountains Foothills,
+  Last Desert.
+- [ ] **W7 Harad**: Near Harad (and its fertile land, fertile forest, hills,
+  oasis, red desert, riverbank, semi-desert), Harnedor, Umbar, Umbar Forest,
+  Gulf of Harad and its forest, Lostladen, Harad Mountains, Far Harad (and its
+  arid land, bushland, cloud forest, coast, forest, jungle, jungle edge, jungle
+  lake, jungle mountains, mangrove, savannah, swamp, volcano), Tauredain
+  Clearing, Pertorogwaith, Meneltarma. User, 2026-10-11: far too many squid off
+  the coast of the Far Harad volcano (check the water-creature spawning there).
+- [ ] **W8 The North and the seas**: Forodwaith, Forodwaith Coast, Forodwaith
+  Glacier, Forodwaith Mountains, Tundra, Taiga, Ocean, Lake, River, Beach and
+  the Utumno entrance's surroundings.
+- [ ] **W9 Utumno**: its three levels, caves, decoration, spawning (D15b's
+  generation, checked against the original as the rest).
+
+The regional lists follow `LOTRBiomes`; a biome found to belong elsewhere is
+moved, not dropped. Every one of the 170 biome registrations is ticked in
+exactly one unit.
+
+---
 
 ## Deferred-port tracker
 
@@ -2977,40 +3396,36 @@ only to the unit's *Result*.
 - [ ] Banner protection waiting on other units [D4c] (fellowships on a
   banner's whitelist: D14a; the `bannerProtect` achievement: D7c): NPCs' `getCanSpawnHere` refusing
   protected land, the invasion spawner's and conquest horn's checks (D12);
-  custom waypoints in protected land (`LOTRPacketCreateCWP`, D13).
+  (custom waypoints in protected land: D13b).
 
 ### D5/D6 — player data, config
 - [ ] Config options waiting on their systems (all read into `LOTRConfig`
   already) [D6]:
-  - D10: the `dimension` category, `middleEarthRespawning` and the four
-    `MER*` values, `generateMapFeatures`, `generateFixedSettlements`, XP
-    orbs removed in Middle-earth with vanilla enchanting off, the environment
-    options (`enableLOTRSky`, `enableMistyMountainsMist`, `enableAmbience`,
-    `enableSunFlare`, `cloudRange`, `newWeather`, `aurora`).
+  - (D10 is done: `middleEarthRespawning` and the `MER*` values (D10i),
+    `generateMapFeatures` (D10b), `generateFixedSettlements` (D10h), the XP
+    orbs removed in Middle-earth without vanilla enchanting and the
+    environment options (D10g). The `dimension` category set the 1.7.10
+    dimensions' numeric ids, which 26.2's named dimensions do not have.)
   - (`naturalBlocks` is done: `LOTRNaturalBlockModel`, each listed face
     turned as the chunk is drawn, as the option says; `snowyStone` too:
     `LOTRSnowyStoneModel`. Both redraw the chunks when changed in the
     config screen.)
   - D11: `strTimelapse`/`strTimelapseInterval` and `/strTimelapse`.
-  - D12: `enableBandits`, `enableInvasions`, `invasionProgressReverts`,
-    `fixMobSpawning`, `mobSpawnInterval`.
-  - D13: `enableFastTravel`, `forceMapLocations`, `customWaypointMinY`,
-    `cwpLog`.
-  - D14: `allowMiniquests`, `allowBountyQuests`, `enableConquest`
-    (`enableFellowshipCreation`, `fellowshipMaxSize`: D14a).
-  - D15: `enablePortals`, `disableEnderChestsUtumno`, Utumno kills not
-    counting towards banes.
-  - GUIs/D16: the ENCHANTING message (the config screen, `LOTRGuiConfig`,
-    is done: `LOTRConfigScreen`); `alwaysShowAlignment`,
-    `alignmentXOffset`/`YOffset`, `displayAlignmentAboveHead`, the map
-    options (`enableSepiaMap`, `osrsMap`, `mapLabels`, `mapLabelsConquest`),
-    `enableOnscreenCompass`, `compassExtraInfo`, `hiredUnitHealthBars`,
-    `hiredUnitIcons`, `enableQuestTracker`,
-    `trackingQuestRight`, `fellowPlayerHealthBars`,
-    `displayCoinCounts`, `balrogWings`, the music options,
-    `drunkMessages` (players' own drunken chat), `preventMessageExploit`
-    (the `/msg` fix), `playerDataClearingInterval`, `enableAttackCooldown`,
-    `fixRenderDistance`, `checkUpdates`, `updateLangFiles`.
+  - (D12 is done. `fixMobSpawning` was read by nothing in the original.)
+  - Conquest: `enableConquest`, `mapLabelsConquest`. (D14's others are done.)
+  - (D15 is done: `enablePortals` (D15a), `disableEnderChestsUtumno` and
+    Utumno's kills not counting towards banes (D15b), `balrogWings` (D15c).)
+  - D16: the ENCHANTING message (the config screen, `LOTRGuiConfig`, is
+    done: `LOTRConfigScreen`); `displayCoinCounts`, the music options
+    (the mod's music, `LOTRMusic`), `drunkMessages` (players' own drunken
+    chat), `preventMessageExploit` (the `/msg` fix), `fixRenderDistance`,
+    `checkUpdates`, `updateLangFiles`. Not ported: `enableAttackCooldown`
+    (off by default; its LOTRAttackTiming went with the melee meter the user
+    dropped, G4c, and today's attack cooldown stands in) and
+    `playerDataClearingInterval` (bookkeeping the attachments do
+    themselves). (The other GUI options are
+    read: the alignment, map, compass, hired-unit, quest-tracker and
+    fellow health-bar ones.)
   - Not ported (user): `dropMutton` -- 26.2's sheep drop vanilla mutton, and
     the mod's own mutton smelting recipe is removed too.
   - (`removeGoldenAppleRecipes`/`removeDiamondArmorRecipes` are done,
@@ -3069,12 +3484,12 @@ only to the unit's *Result*.
   mixins); blocks (beacon, banana, kebab, grapes, remains, ores, Dwarven door); items (drinks, foods,
   pipe, jar, cracker, ancient item, Ent-draughts, banner); the anvil, unsmeltery, millstone, barrel
   and selling; banes; bosses; mounts (camel, warg); rank achievements and pledging~~
-- [ ] Biome achievements (`enter*`, `climbMistyMountains`), `growBaobab` (tree growth),
-  `rideGiraffeShire`, `rideBarrelMirkwood` → D10
-- [ ] `fishRing` (the Middle-earth fish hook) → D3/D10; `defeatInvasion` → D12; `factionConquest`
-  → conquest (D14)
-- [ ] Utumno: `enterUtumno*`, `leaveUtumno`, `useElvenPortal`, `useMorgulPortal`, `killBalrog`,
-  `killTormentedElf`, `killUtumnoOrc/Troll/Warg`, `wearFullUtumno`, `craftUtumnoKey` (keys exist) → D15
+- [x] ~~Biome achievements (`enter*`, `climbMistyMountains`), `growBaobab` (tree growth),
+  `rideGiraffeShire`, `rideBarrelMirkwood` → D10~~ -- D10j: `LOTRPlayerAchievements.runAchievementChecks` (lands, enterMiddleEarth, climbMistyMountains), `LOTRBoneMealItemMixin`, the giraffe's and barrel's ticks
+- [ ] `factionConquest` → conquest (D14) (`fishRing`: the Middle-earth fishing, after D10g; `defeatInvasion`: D12)
+- [x] ~~Utumno: `killBalrog`, `killTormentedElf`, `killUtumnoOrc/Troll/Warg` → D15c~~ — D15c
+  (`useElvenPortal`, `useMorgulPortal`: D15a; `enterUtumno*`, `leaveUtumno`: D15b;
+  `wearFullUtumno`, `craftUtumnoKey` were already in)
 - [ ] A boss's kill achievement reaches only those of its damagers who are online (the original
   could write an offline player's data)
 ### D8 — animals and mounts
@@ -3091,24 +3506,24 @@ only to the unit's *Result*.
   - The jar items draw their creature too (`LOTRAnimalJarSpecialRenderer`).
 - [x] ~~The fire pot's hitBirdFirePot achievement (a bird hit in flight);
   the bird cage tag is done [B13c, D8f]~~ — D7c
-- [ ] Creatures' kinds by biome (butterfly: Mirkwood, Lórien, jungle; bird:
+- [x] ~~Creatures' kinds by biome (butterfly: Mirkwood, Lórien, jungle; bird:
   Far Harad) and the Midgewater swarms → D10 (midges' shootDownMidges:
-  D7c) [D8f]
+  D7c) [D8f]~~ -- D12 (finalizeSpawn/tick by biome)
 - [x] ~~LOTR rabbit~~ -- user: dropped as a vanilla duplicate (and with it
   `LOTREntityAIRabbitEatCrops` and the attackRabbit achievement) [D8b]
 - [x] ~~LOTR fish~~ -- user: dropped as a vanilla duplicate [D8f]
-- [ ] Dik-dik's `LOTRAmbientSpawnChecks` and the bear's
+- [x] ~~Dik-dik's `LOTRAmbientSpawnChecks` and the bear's
   `LOTRAnimalSpawnConditions` (trees per chunk in the biome variant) → with
-  natural spawning (D10/D12) [D8b, D8c]
+  natural spawning (D10/D12) [D8b, D8c]~~ -- D12
 - [x] ~~NPC spear throwing in `LOTRAttackOnCollideGoal`~~ -- not ported:
   spears keep 26.2's mechanics (user), and 26.2's spears are not thrown
   [D8b, D9c]
-- [ ] The scorpions' spawner flag and
+- [x] ~~The scorpions' spawner flag and
   depth/pyramid spawn rules, the desert scorpion's ImmuneToHeat, and the
-  crocodile's water search and Far Harad swamp light rule → D10-D12 [D8e]
-- [ ] Mount achievements: rideCamel and rideShirePony done (D7c, B16c);
+  crocodile's water search and Far Harad swamp light rule → D10-D12 [D8e]~~ -- D12 (the spawner flag is the SPAWNER spawn reason; pyramidSpawned was never set)
+- [x] Mount achievements: rideCamel and rideShirePony done (D7c, B16c);
   rideGiraffeShire on the D7 list; the Rohan and Dor-en-Ernil horse boosts, the camel's ImmuneToHeat, the
-  Shire check → D10 [D8d]
+  Shire check → D10 [D8d] -- done: rideGiraffeShire (D10j), the Rohan and Dor-en-Ernil horses (after D13d), the camel's ImmuneToHeat, the Shire check
 - [ ] Vanilla leather horse armour has no 1.7.10-layout sheet, so it is not
   drawn on LOTR horses [D8d]. (LOTR barding no longer goes on vanilla horses
   at all -- user: LOTR horses only.)
@@ -3120,40 +3535,35 @@ only to the unit's *Result*.
 
 ### D9 — NPCs
 - [x] ~~NPC projectiles: `LOTREntityMallornLeafBomb` (mallorn Ent) [D3]~~ — D9q
-- [ ] Corrupt mallorn's tile entity's ticking: in Fangorn, one tick in forty,
+- [x] ~~Corrupt mallorn's tile entity's ticking: in Fangorn, one tick in forty,
   spawns an Ent within 20 if none is within 24 (`LOTRTileEntityCorruptMallorn`),
   with the biomes (D10). The block entity itself exists since D9o, for the
-  Ents to find [D2]
+  Ents to find [D2]~~ -- D10j (`LOTRCorruptMallornBlockEntity.serverTick`)
 - [x] ~~The third Ent slain by a player beside a corrupt mallorn summoning the
   Mallorn Ent (`LOTRBlockCorruptMallorn.summonEntBoss`); until then the count
   stops at two, with the bosses [D9o]~~ — D9q
-- [ ] `LOTRFactionData` per-player per-faction stats (NPC kills, enemy kills,
-  trades, hires, mini-quests, conquest, conquest horn; save keys `NPCKill`,
-  `EnemyKill`, `Trades`, `Hired`, `MiniQuests`, `Conquest`, `ConquestHorn`)
-  and `LOTRFactionBounties` (per faction, per player, kill records;
-  `recordNewKill` on NPC death) [B12d] -- the stats exist (G3); bounties
-  and the mini-quest counts came with D14b; conquest waits on D14
-- [ ] Alignment from kills: every NPC's kill value
+- [ ] `LOTRFactionData`'s conquest stats (`Conquest`, `ConquestHorn`), with conquest [B12d] (the other stats, the bounties and kill records: G3, D14b)
+- [x] Alignment from kills: every NPC's kill value
   (`LOTRAlignmentValues.Bonuses`), checked per NPC in B16d–h [B12a/b]
-  (forced bonus factions and `onPledgeKill`: B16a)
-- [ ] NPC-influence check in control zones (`LOTRFaction` control-zone
-  multiplier) [B12a]
+  (forced bonus factions and `onPledgeKill`: B16a) -- done: each NPC's kill value (B16d-h)
+- [x] NPC-influence check in control zones (`LOTRFaction` control-zone
+  multiplier) [B12a] -- done: `getControlZoneAlignmentMultiplier` in the alignment gains
 - [x] ~~Mountain troll chieftain: the troll totem summons a CHICKEN stand-in
   (`LOTRTrollTotemBlock`) [B5e]~~ — summons the chieftain (D9q)
 - [x] ~~Orders and summons: command sword, command horn, NPC respawner item
   [B7d, LOTRItems]~~ — all three ported (B7d, G2b, G5)
-- [ ] The warhorn (`LOTRItemConquestHorn`, "Warhorn"), which calls an
-  invasion, with invasions (D12) [B7d]
-- [ ] Gandalf: his natural arrival 4 to 16 blocks from a player every two
+- [x] ~~The warhorn (`LOTRItemConquestHorn`, "Warhorn"), which calls an
+  invasion, with invasions (D12) [B7d]~~ -- D12 (`LOTRWarhornItem`)
+- [ ] Gandalf: ~~his natural arrival 4 to 16 blocks from a player every two
   minutes while no Grey Wanderer is abroad
   (`LOTRGreyWandererTracker.performSpawning`, from LOTREventSpawner in the
-  Middle-earth dimension) [D12], and his hunting of Balrogs with
-  Utumno [D15] [D9r-a] (his welcome mini-quest and the renewal of his time
+  Middle-earth dimension) [D12]~~ (D12), and ~~his hunting of Balrogs with
+  Utumno [D15c] [D9r-a]~~ (D15c) (his welcome mini-quest and the renewal of his time
   when he offers it: D14b)
-- [ ] Gollum: natural spawning within 128 of the High Pass waypoint
+- [x] ~~Gollum: natural spawning within 128 of the High Pass waypoint
   (`LOTRGollumSpawner`, with the Middle-earth dimension and waypoints)
   [D12, D13] (`tameGollum`: D7c) [D9r-b] (his pack's screen
-  and health bar: G4b/G5)
+  and health bar: G4b/G5)~~ -- D12 (`LOTREventSpawner.performGollumSpawning`)
 - [x] ~~Structures (D11) until the biomes (D10): a structure's biome top and
   filler blocks are grass and dirt; its flowers and grass are vanilla's
   dandelion, poppy and grass (the original's outside its biomes); a biome's
@@ -3174,156 +3584,151 @@ only to the unit's *Result*.
 - [x] ~~NPCs D9 missed, found at D11: Dale's nine and the Esgaroth banner
   bearer (D9t); the scrap trader with his anvil's half prices and mischief
   [D9, G1]~~ — the scrap trader after B16a
-- [ ] The scrap trader's Utumno side (fading away, no trading, unhurt; the
-  `utumno` speech bank), with D15; and while he
-  misbehaves, the LOTR biomes' sky going black (`LOTRBiome.getSkyColorByTemp`,
-  D10) [after B16a]
+- [x] ~~The scrap trader's Utumno side (fading away, no trading, unhurt; the
+  `utumno` speech bank), with D15 [after B16a]~~ — D15b (the sky going black while he misbehaves: D10g)
 - [x] ~~His rare client-side misbehaving (`scrapTraderMisbehaveTick`)~~ --
   `LOTRScrapTraderMisbehaviour`, the lightmap put out
   (`LOTRLightmapRenderStateExtractorMixin`), his towering ring of copies in
   `LOTRScrapTraderRenderer`, which also hides him from the screenshot key
   as the original did
-- [ ] Dale's warhorn (`LOTRInvasions.DALE`, D12), Dale's pull and spawn check
-  (D10), the merchant's travelling-trader spawning (D12) [D9t]
+- [x] ~~Dale's warhorn (`LOTRInvasions.DALE`, D12), Dale's pull and spawn check
+  (D10), the merchant's travelling-trader spawning (D12) [D9t]~~ -- D12/D10j
 - [x] ~~Structures' trees (`LOTRTreeType...generate`, `placeTree`) grow
   nothing until the tree features (D10) [D11c]~~ -- D10d (`placeTree`,
   `placeBiomeTree`)
-- [ ] The Rangers of the North's warhorn (`LOTRInvasions.RANGER_NORTH`) and
+- [x] ~~The Rangers of the North's warhorn (`LOTRInvasions.RANGER_NORTH`) and
   the Ithilien captain's (`GONDOR_ITHILIEN`), with D12 (their and the
   Dúnedain's mini-quests: D14b); the Dúnedain's natural
-  spawn check and Ithilien's pull on its rangers (D10) [D9s]
+  spawn check and Ithilien's pull on its rangers (D10) [D9s]~~ -- D12/D10j (the mini-quests: D14b)
 - [x] ~~NPC faction checks: Sauron's mace, Gandalf's fireball, the elven rope
   [B7, B10, B13b]~~ — after B16a
 - [x] ~~Termite mound spawning termites [B4]~~ — after B16a (the quagmire and spiders: D9i-c)
 - [x] ~~Hobbits flee trolls and woken huorns (12 blocks) [D9a]~~ — done after B16a
 - [x] ~~Drinking near a friendly bartender makes an NPC drunk: `LOTRBartender`
   on every innkeeper and bartender [D9a]~~ — all eleven have it (B16a)
-- [ ] The shirriff's warhorn (`LOTRInvasions.HOBBIT`), with invasions (D12)
-  [D9a]
-- [ ] The Bree captain's warhorn (`LOTRInvasions.BREE`), with invasions
-  (D12) [D9d]
-- [ ] The Rohirrim marshal's warhorn (`LOTRInvasions.ROHAN`: warriors 10,
-  bowmen 5), with D12 [D9e]
-- [ ] The Gondorian captain's warhorn (`LOTRInvasions.GONDOR`), with D12 [D9f]
-- [ ] Vintner Guards defending Dorwinion's vineyards
+- [x] ~~The shirriff's warhorn (`LOTRInvasions.HOBBIT`), with invasions (D12)
+  [D9a]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] ~~The Bree captain's warhorn (`LOTRInvasions.BREE`), with invasions
+  (D12) [D9d]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] ~~The Rohirrim marshal's warhorn (`LOTRInvasions.ROHAN`: warriors 10,
+  bowmen 5), with D12 [D9e]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] ~~The Gondorian captain's warhorn (`LOTRInvasions.GONDOR`), with D12 [D9f]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] ~~Vintner Guards defending Dorwinion's vineyards
   (`LOTREntityDorwinionGuard.defendGrapevines`: warnings, attacks, guards
   called in and the `VINEYARD_STEAL_PENALTY` for picking grapes there), with
-  the vineyard biome variant (D10) [D9g]
-- [ ] Dorwinion's warhorns (`LOTRInvasions.DORWINION`, `DORWINION_ELF`),
-  with D12 [D9g]
-- [ ] The travelling traders' spawner (`LOTRTravellingTraderSpawner`, which
+  the vineyard biome variant (D10) [D9g]~~ -- D10j (`LOTRDorwinionGuardEntity.defendGrapevines`)
+- [x] ~~Dorwinion's warhorns (`LOTRInvasions.DORWINION`, `DORWINION_ELF`),
+  with D12 [D9g]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] ~~The travelling traders' spawner (`LOTRTravellingTraderSpawner`, which
   calls `startTraderVisiting`), with D12; until then a travelling trader
-  never leaves [D9g]
-- [ ] Galadhrim warriors called out against a player felling mallorn in
+  never leaves [D9g]~~ -- D12 (`LOTRTravellingTraderSpawner`)
+- [x] ~~Galadhrim warriors called out against a player felling mallorn in
   Lothlórien (`LOTRBlockWood.removedByPlayer`, "defendTrees"), with the
-  biomes (D10) [D9g]
-- [ ] The elf lords' warhorns (`LOTRInvasions.GALADHRIM`, `HIGH_ELF_LINDON`,
-  `HIGH_ELF_RIVENDELL`, `WOOD_ELF`), with D12 [D9g]
-- [ ] The fief captains' warhorns (`GONDOR_DOL_AMROTH`, `_LOSSARNACH`,
+  biomes (D10) [D9g]~~ -- D10j (`LOTRGaladhrimWarriorEntity.defendTrees`)
+- [x] ~~The elf lords' warhorns (`LOTRInvasions.GALADHRIM`, `HIGH_ELF_LINDON`,
+  `HIGH_ELF_RIVENDELL`, `WOOD_ELF`), with D12 [D9g]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] ~~The fief captains' warhorns (`GONDOR_DOL_AMROTH`, `_LOSSARNACH`,
   `_PELARGIR`, `_PINNATH_GELIN`, `_BLACKROOT`, `_LEBENNIN`, `_LAMEDON`),
-  with D12 [D9f]
+  with D12 [D9f]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
 - [x] ~~The branding iron in the Gondor and Harad farmers' buy pools [D9f]~~ — after B16a
-- [ ] The hireNurnSlave achievement (the slaver's branding iron: after
+- [x] The hireNurnSlave achievement (the slaver's branding iron: after
   B16a); the Nurn slaves' pull towards the Nurn biome
-  while unfree (getBlockPathWeight +20), with the biomes (D10) [D9i, D11c]
-- [ ] The Mordor orc commander's and Black Uruk captain's warhorns
-  (`LOTRInvasions.MORDOR`, `MORDOR_BLACK_URUK`), with D12 [D9i]
-- [ ] The dwarven biomes' top-block rule, and the biomes where hostiles walk
+  while unfree (getBlockPathWeight +20), with the biomes (D10) [D9i, D11c] -- done (the slaver's branding iron, the Nurn pull: D10j)
+- [x] ~~The Mordor orc commander's and Black Uruk captain's warhorns
+  (`LOTRInvasions.MORDOR`, `MORDOR_BLACK_URUK`), with D12 [D9i]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] ~~The dwarven biomes' top-block rule, and the biomes where hostiles walk
   by day (no daylight slowness there, and no darkness needed to spawn), with
-  the biomes (D10) [D9i] (spawning in darkness: B16a)
-- [ ] Orc achievements: `killMordorOrc`, `killBlackUruk`, `tradeOrcTrader`,
+  the biomes (D10) [D9i] (spawning in darkness: B16a)~~ -- D10j/D12 (`LOTROrcEntity.checkSpawnRules`, `LOTRBiome.isDwarvenBiome`)
+- [x] Orc achievements: `killMordorOrc`, `killBlackUruk`, `tradeOrcTrader`,
   `tradeOrcCaptain`, `tradeBlackUrukCaptain`, `killBombardier`,
-  `hitByOrcSpear`; the Black Uruk shield (`ALIGNMENT_BLACK_URUK`) [D9i]
+  `hitByOrcSpear`; the Black Uruk shield (`ALIGNMENT_BLACK_URUK`) [D9i] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
 - [x] ~~The hired bombardier's bomb slot in the hired-warrior inventory [D9i]~~ — G2b
-- [ ] The Gundabad and Angmar chieftains' warhorns (`LOTRInvasions.GUNDABAD`,
-  `ANGMAR`), with D12 [D9i]
-- [ ] Gundabad and Angmar achievements: `killGundabadOrc`, `killGundabadUruk`,
+- [x] ~~The Gundabad and Angmar chieftains' warhorns (`LOTRInvasions.GUNDABAD`,
+  `ANGMAR`), with D12 [D9i]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] Gundabad and Angmar achievements: `killGundabadOrc`, `killGundabadUruk`,
   `killAngmarOrc`, `tradeGundabadTrader`, `tradeGundabadCaptain`,
   `tradeAngmarTrader`, `tradeAngmarCaptain`; the Gundabad shield
-  (`ALIGNMENT_GUNDABAD`) [D9i]
-- [ ] The Dol Guldur chieftain's and spider keeper's warhorns
-  (`LOTRInvasions.DOL_GULDUR`, `MORDOR_NAN_UNGOL`), with D12 [D9i]
-- [ ] Dol Guldur and spider achievements: `killDolGuldurOrc`,
+  (`ALIGNMENT_GUNDABAD`) [D9i] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] ~~The Dol Guldur chieftain's and spider keeper's warhorns
+  (`LOTRInvasions.DOL_GULDUR`, `MORDOR_NAN_UNGOL`), with D12 [D9i]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] Dol Guldur and spider achievements: `killDolGuldurOrc`,
   `tradeDolGuldurTrader`, `tradeDolGuldurCaptain`, `tradeOrcSpiderKeeper`,
-  `killMirkwoodSpider`, `killMordorSpider` [D9i]
+  `killMirkwoodSpider`, `killMordorSpider` [D9i] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
 - [x] ~~The spider climbing meter on the HUD [D9i]~~ — after B16a
-- [ ] The Rhudaur hillman chieftain's warhorn (`LOTRInvasions.ANGMAR_HILLMEN`),
-  with D12; `killAngmarHillman`, `tradeAngmarHillmanChieftain`; the Angmar
-  shield (`ALIGNMENT_ANGMAR`) on warriors; mini-quests; spawning above y 62
-  on the top block (D10) [D9i]
-- [ ] Isengard: the Uruk chieftain's warhorn (`LOTRInvasions.URUK_HAI`, D12);
+- [x] ~~The Rhudaur hillman chieftain's warhorn (`LOTRInvasions.ANGMAR_HILLMEN`),
+  with D12~~; `killAngmarHillman`, `tradeAngmarHillmanChieftain`; the Angmar
+  shield (`ALIGNMENT_ANGMAR`) on warriors; mini-quests; ~~spawning above y 62
+  on the top block (D10)~~ [D9i] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] Isengard: ~~the Uruk chieftain's warhorn (`LOTRInvasions.URUK_HAI`, D12)~~;
   `killIsengardSnaga`, `killUrukHai`, `tradeUrukTrader`, `tradeUrukCaptain`,
   and `raidUrukCamp` (killing an Uruk near an Uruk NPC respawner, with the
-  respawner item); the Uruk-hai shield (`ALIGNMENT_URUK_HAI`) [D9j]
-- [ ] Dunland: the warlord's warhorn (`LOTRInvasions.DUNLAND`, D12);
+  respawner item); the Uruk-hai shield (`ALIGNMENT_URUK_HAI`) [D9j] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] Dunland: ~~the warlord's warhorn (`LOTRInvasions.DUNLAND`, D12)~~;
   `killDunlending`, `tradeDunlendingWarlord`, `tradeDunlendingBartender`; the
-  Dunland shield (`ALIGNMENT_DUNLAND`) [D9j]
-- [ ] Near Harad coast: the warlord's warhorn (`LOTRInvasions.NEAR_HARAD_COAST`,
-  D12); `killNearHaradrim`, `tradeNearHaradWarlord`,
+  Dunland shield (`ALIGNMENT_DUNLAND`) [D9j] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] Near Harad coast: ~~the warlord's warhorn (`LOTRInvasions.NEAR_HARAD_COAST`,
+  D12)~~; `killNearHaradrim`, `tradeNearHaradWarlord`,
   `tradeNearHaradBlacksmith`, `tradeNearHaradMerchant`, `tradeHaradBartender`,
   `tradeHaradFarmer`, `tradeBazaarTrader`; the Near Harad shield
-  (`ALIGNMENT_NEAR_HARAD`); mini-quests; spawning (D10) [D9k]
-- [ ] Umbar and the Corsairs: the captains' warhorns (`NEAR_HARAD_UMBAR`,
-  `NEAR_HARAD_CORSAIR`, D12); the Umbar and
+  (`ALIGNMENT_NEAR_HARAD`); mini-quests; ~~spawning (D10)~~ [D9k] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] Umbar and the Corsairs: ~~the captains' warhorns (`NEAR_HARAD_UMBAR`,
+  `NEAR_HARAD_CORSAIR`, D12)~~; the Umbar and
   Corsair shields; `tradeUmbarCaptain`, `tradeUmbarBlacksmith`,
   `tradeCorsairCaptain`, `hireHaradSlave` [D9k] (the branding iron in the
-  slaver's hand and the Corsair chest: after B16a)
-- [ ] Harnedor: the warlord's warhorn (`NEAR_HARAD_HARNEDOR`, D12);
+  slaver's hand and the Corsair chest: after B16a) -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] Harnedor: ~~the warlord's warhorn (`NEAR_HARAD_HARNEDOR`, D12)~~;
   the Harnedor shield; `tradeHarnedorWarlord`, `tradeHarnedorBlacksmith`,
-  `hireHarnedorFarmer` [D9k]
-- [ ] The Gulf: the warlord's warhorn (`NEAR_HARAD_GULF`, D12); the Gulf shield (`ALIGNMENT_GULF`);
+  `hireHarnedorFarmer` [D9k] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] The Gulf: ~~the warlord's warhorn (`NEAR_HARAD_GULF`, D12)~~; the Gulf shield (`ALIGNMENT_GULF`);
   `tradeGulfWarlord`, `tradeGulfBlacksmith`, `tradeHaradBartender`,
   `tradeHaradFarmer`, `tradeBazaarTrader`; mini-quests; the Gulf house's lore
-  books [D9k]
-- [ ] Rhûn: the warlord's warhorn (`LOTRInvasions.RHUN`, D12); the Rhûn shield
+  books [D9k] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] Rhûn: ~~the warlord's warhorn (`LOTRInvasions.RHUN`, D12)~~; the Rhûn shield
   (`ALIGNMENT_RHUN`); `killEasterling`, `tradeRhunCaptain`,
   `tradeRhunBlacksmith`, `tradeRhunBartender`, `tradeRhunMarketTrader`,
-  `hireRhunFarmer`; the pull of the Rhûn lands and the y > 62 top-block spawn
-  rule (D10); mini-quests; the Easterling house's lore books [D9l]
-- [ ] The Moredain: the chieftain's warhorn (`LOTRInvasions.MOREDAIN`, D12);
+  `hireRhunFarmer`; ~~the pull of the Rhûn lands and the y > 62 top-block spawn
+  rule (D10)~~; mini-quests; the Easterling house's lore books [D9l] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] The Moredain: ~~the chieftain's warhorn (`LOTRInvasions.MOREDAIN`, D12)~~;
   the Moredain shield (`ALIGNMENT_MOREDAIN`) on warriors and mercenaries;
   `killMoredain`, `tradeMoredainChieftain`, `tradeMoredainVillager`,
-  `hireMoredainMercenary`; the pull of Far Harad and the y > 62 grass/sand
-  spawn rule (D10); mini-quests; the hut's lore books; bosses
-  among the non-civilians of `isCivilianNPC`, with the bosses [D9m]
-- [ ] The Tauredain: the chieftain's warhorn (`LOTRInvasions.TAUREDAIN`, D12); the Taurethrim shield
+  `hireMoredainMercenary`; ~~the pull of Far Harad and the y > 62 grass/sand
+  spawn rule (D10)~~; mini-quests; the hut's lore books; bosses
+  among the non-civilians of `isCivilianNPC`, with the bosses [D9m] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] The Tauredain: ~~the chieftain's warhorn (`LOTRInvasions.TAUREDAIN`, D12)~~; the Taurethrim shield
   (`ALIGNMENT_TAUREDAIN`); `killTauredain`, `tradeTauredainChieftain`,
   `tradeTauredainShaman`, `tradeTauredainSmith`, `tradeTauredainFarmer`,
-  `hireTauredainFarmer`; the pull of Far Harad and the y > 62 top-block
-  spawn rule (D10); mini-quests; the house's lore books [D9m]
-- [ ] The half-trolls: the warlord's warhorn (`LOTRInvasions.HALF_TROLL`, D12);
+  `hireTauredainFarmer`; ~~the pull of Far Harad and the y > 62 top-block
+  spawn rule (D10)~~; mini-quests; the house's lore books [D9m] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] The half-trolls: ~~the warlord's warhorn (`LOTRInvasions.HALF_TROLL`, D12)~~;
   the half-troll shield (`ALIGNMENT_HALF_TROLL`); `killHalfTroll`,
-  `tradeHalfTrollWarlord`, `tradeHalfTrollScavenger`; mini-quests [D9m]
-- [ ] The trolls (their achievements: D7c): the biomes where hostiles walk by day,
-  which the sun does not trouble and where creatures of the dark are at home
-  (`canSpawnHostilesInDay`, D10); conquest spawning's exemption from the
-  dark (D12) [D9n]
-- [ ] Ents and huorns (their achievements: D7c): the pull of Fangorn (the Old Forest for Dark Huorns) and the y > 62
-  grass-or-dirt spawn rule (D10) [D9o]
-- [ ] Wraiths and wights: the marsh wraiths rising in the Dead Marshes for
+  `tradeHalfTrollWarlord`, `tradeHalfTrollScavenger`; mini-quests [D9m] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [ ] The trolls: conquest spawning's exemption from the dark, with conquest [D9n] (the biomes where hostiles walk by day: D10j)
+- [x] ~~Ents and huorns (their achievements: D7c): the pull of Fangorn (the Old Forest for Dark Huorns) and the y > 62
+  grass-or-dirt spawn rule (D10) [D9o]~~ -- D10j (`LOTRTreeEntity`, `LOTRDarkHuornEntity.isTreeHomeBiome`)
+- [x] Wraiths and wights: the marsh wraiths rising in the Dead Marshes for
   whoever wades there (`LOTREventHandler.spawnMarshWraithIfConditionsMet`,
   with `wraith.spawn`) and the wight's y > 62 top-block spawn rule, with
   the biomes (D10); the darkening of the screen of a wight's quarry and the
   barrows' ambience (`LOTRTickHandlerClient`, `wight.ambience`, with the
-  HUD) (`killBarrowWight`, `killMarshWraith`: D7c) [D9p]
-- [ ] The nomads: the chieftain's warhorn (`NEAR_HARAD_NOMAD`, D12);
+  HUD) (`killBarrowWight`, `killMarshWraith`: D7c) [D9p] -- done: the marsh wraiths rising (`LOTRBiomeEffects`), the wight's spawn rule (D10j), the darkening and the barrows' ambience (D10g)
+- [x] The nomads: ~~the chieftain's warhorn (`NEAR_HARAD_NOMAD`, D12)~~;
   `tradeNomadWarlord`, `tradeNomadArmourer`, `tradeNomadMerchant`,
-  `tradeBazaarTrader`; ImmuneToHeat (D10); mini-quests; the nomad tent's lore
-  books [D9k]
-- [ ] The dwarf commanders' warhorns (`LOTRInvasions.DWARF`,
-  `BLUE_MOUNTAINS`), with D12 [D9h]
-- [ ] Dwarves' natural spawning (underground on lit rock below y 60, or one
+  `tradeBazaarTrader`; ~~ImmuneToHeat (D10)~~; mini-quests; the nomad tent's lore
+  books [D9k] -- done: every achievement and shield here is earned (checked against the code, 2026-10-10)
+- [x] ~~The dwarf commanders' warhorns (`LOTRInvasions.DWARF`,
+  `BLUE_MOUNTAINS`), with D12 [D9h]~~ -- D12 (`getWarhorn`, the hire screen's reward slot)
+- [x] Dwarves' natural spawning (underground on lit rock below y 60, or one
   time in 200 anywhere; miners never above ground; wicked dwarves above
   y 62 on the biome's top block) and the dwarven mountains' pull on their
-  wandering (`getBlockPathWeight`), with the biomes (D10) [D9h]
+  wandering (`getBlockPathWeight`), with the biomes (D10) [D9h] -- D10j
 - [x] ~~The LOTR anvil's free mithril repair at a dwarf trader [D9h]~~ — G1
 - [x] ~~The dwarven lore books in `DWARVEN_TOWER`, `BLUE_MOUNTAINS_STRONGHOLD`
   and `DWARVEN_MINE_CORRIDOR`, with lore books [D9h]~~ — with lore books
 - [x] ~~Ruffians keeping clear of the Rangers of the North (12 blocks), with
   the Rangers [D9d]~~ — D9s
-- [ ] Ruffian spy's bounty help (paid off with coins, gold, silver, a gem or
-  a ring), with the bounty help (D10/D13); the thief cancelling the
-  victim's fast travel, with D13 [D9d] (the ruffian mini-quests: D14b)
+- [x] ~~Ruffian spy's bounty help (paid off with coins, gold, silver, a gem or
+  a ring), with the bounty help [D9d] (the ruffian mini-quests: D14b; the
+  thief cancelling the victim's fast travel: D13a)~~ -- bounty help, after D13d
 - [x] ~~`LOTREntityBandit`, `LOTREntityBanditHarad` and their target goal [D9d]~~ — after B16a
 - [x] ~~The branding iron in the Bree farmer's buy pool [D9d]~~ — after B16a
 - [x] ~~Pickpocketing Bree-men and Bree-hobbits (`IPickpocketable`,
@@ -3336,9 +3741,9 @@ only to the unit's *Result*.
   [D9b]~~ — G1/G2
 - [x] ~~Refusing pickpocketed coins and trade items (`IPickpocketable`), with
   the pickpocket mini-quest (D14) [D9b]~~ — D14b
-- [ ] Bounders hunt Bree ruffians (`LOTREntityAIHobbitTargetRuffian`) --
+- [x] ~~Bounders hunt Bree ruffians (`LOTREntityAIHobbitTargetRuffian`) --
   only inside the Shire biome, so it waits for the biomes (D10); the
-  ruffians themselves are ported [D9a]
+  ruffians themselves are ported [D9a]~~ -- D10j (`LOTRHobbitTargetRuffianGoal`)
 - [x] ~~`LOTRRandomSkinsCombinatorial`, NPC capes, `LOTRArmorModels` on NPCs,
   the elf's bowing pose [D9a]~~ — after B16a: capes on the 30 NPCs that wear
   them (and the elven smiths and vintner); the special armour models reach
@@ -3350,64 +3755,61 @@ only to the unit's *Result*.
 - [x] ~~Other mods' NPCs given a faction by config (`LOTREntityRegistry`),
   which `getNPCFaction` and the attack rules also read [D9a]~~ — with the D6
   entry above
-- [ ] NPCs' part in invasions (`invasionID`, saved as `InvasionID`: kills
-  of and by invasion NPCs credited to the invasion, players set watching
-  it), conquest spawning's exemptions, and the biome spawn count multiplier
-  (`getSpawnCountValue`), with D10/D12 [B16a]
-- [ ] Utumno NPCs' drops (`LOTREntityNPC.dropFewItems`): key parts on the ice
+- [ ] Conquest spawning's exemptions for NPCs, with conquest [B16a] (`InvasionID`, the spawn count multiplier: D12)
+- [x] ~~Utumno NPCs' drops (`LOTREntityNPC.dropFewItems`): key parts on the ice
   and obsidian levels (1 in 12), Chill of Daedelos from chilly NPCs on the
   ice level, the Utumno pickaxe on the fire level, mithril nuggets (1 in
-  20), with Utumno (D15) [B16a]
-- [ ] Utumno's creatures, with Utumno (D15): the wargs (plain, ice, obsidian,
+  20), with Utumno (D15) [B16a]~~ — D15b (`LOTRNPCEntity.dropUtumnoItems`)
+- [x] ~~Utumno's creatures, with Utumno (D15c): the wargs (plain, ice, obsidian,
   fire; their rugs are already in) [D9c], orc and orc archer [D9j], troll
   and snow troll [D9n], ice spider [D9i], the Balrog and the tormented elf
-  [D9r]. (`LOTREntitySauron` is never registered in the original, so it is
+  [D9r]~~ — D15c. (`LOTREntitySauron` is never registered in the original, so it is
   not ported.)
-- [ ] Utumno return portal sacrifice kill hook
-  (`LOTRUtumnoReturnPortalBaseBlock`), with D15 [B4]
+- [x] ~~Utumno return portal sacrifice kill hook
+  (`LOTRUtumnoReturnPortalBaseBlock`), with D15 [B4]~~ — D15b (`LOTRUtumno.onServantKilled`)
 
 ### D10 — dimension and world gen
-- [ ] Villages in the world: `LOTRVillageGen.isVillageCentre` (the grid,
+- [x] Villages in the world: `LOTRVillageGen.isVillageCentre` (the grid,
   spawn chance, `LOTRVillagePositionCache`, the road/mountain/fixed-structure
   checks, `areBiomesViable`/`areVariantsSuitableVillage`), `generateInChunk`
   from the biome decorators, the fixed settlements at waypoints
   (`addFixedLocation`, e.g. Bree, with `hasFixedSettlements` and
   "Generate fixed settlements"), each village's spawn biome list, and the
-  roads and bridges themselves (`LOTRRoads`, `LOTRRoadType.BridgeType`) [D11]
-- [ ] Hobbits' wandering drawn to the Shire biomes (`getBlockPathWeight`
+  roads and bridges themselves (`LOTRRoads`, `LOTRRoadType.BridgeType`) [D11] -- D10h
+- [x] ~~Hobbits' wandering drawn to the Shire biomes (`getBlockPathWeight`
   +20) and their natural spawn check (above y 62 on the biome's top block,
-  `getCanSpawnHere`), with the biomes and D12 spawning [D9a]
-- [ ] `LOTREntityFishHook`: swapped in for vanilla's hook in Middle-earth
+  `getCanSpawnHere`), with the biomes and D12 spawning [D9a]~~ -- D10j (`homeBiomePull`, `isAboveSeaOnTopBlock`, `canElfSpawnHere`)
+- [x] `LOTREntityFishHook`: swapped in for vanilla's hook in Middle-earth
   (LOTREventHandler), for the Middle-earth fishing loot (with its treasure's
-  pouches, weights 20/10/5 small/medium/large) [D3]
-- [ ] Marsh lights over the Dead Marshes' water (the block exists, D1d) [D1]
-- [ ] The biomes' water effects (`LOTRTickHandlerClient`'s environment FX):
+  pouches, weights 20/10/5 small/medium/large) [D3] -- after D10g (`LOTRFishing`, `LOTRFishingHookMixin`)
+- [x] Marsh lights over the Dead Marshes' water (the block exists, D1d) [D1] -- D10f
+- [x] The biomes' water effects (`LOTRTickHandlerClient`'s environment FX):
   Mirkwood's corrupted water bubbling (`mirkwoodWater`, a particle not yet
   ported), the Morgul Vale's (`morgul_water`, ported), and the faces rising
   in the Dead Marshes' water (`LOTREntityDeadMarshFace`, one in 800 water
-  blocks sampled), with the biomes (D10) [B16i]
-- [ ] Fallen leaves scattered under trees (the blocks exist, D1b) [D1]
-- [ ] Stalactites and stalagmites in caves (stone; ice and obsidian in their
-  biomes) -- the blocks exist (D1) [D1]
-- [ ] Bree-men's and Bree-hobbits' wandering drawn to Bree-land
+  blocks sampled), with the biomes (D10) [B16i] -- D10g (`LOTRAmbienceClient`, `LOTRDeadMarshFaceParticle`)
+- [x] Fallen leaves scattered under trees (the blocks exist, D1b) [D1] -- D10f
+- [x] Stalactites and stalagmites in caves (stone; ice and obsidian in their
+  biomes) -- the blocks exist (D1) [D1] -- D10f
+- [x] ~~Bree-men's and Bree-hobbits' wandering drawn to Bree-land
   (`getBlockPathWeight` +20) and the Bree-men's natural spawn check (above
-  y 62 on the biome's top block), with the biomes and D12 [D9d]
-- [ ] Dorwinion's natural spawn check and pull towards Dorwinion, with the
-  biomes and D12 [D9g]
-- [ ] Elves' natural spawn check (`canElfSpawnHere`; High Elves above y 62
-  on grass) and each people's pull towards Lothlórien, Lindon or Rivendell, with the biomes and D12 [D9g]
-- [ ] Gondorians' wandering drawn to Gondor (`getBlockPathWeight` +20) and
-  their natural spawn check, with the biomes and D12 [D9f]
-- [ ] Rohirrim wandering drawn to Rohan (`getBlockPathWeight` +20) and their
-  natural spawn check, with the biomes and D12 [D9e]
-- [ ] The `RUFFIANS` spawn list (spy 10, brute 5, groups of 1–4), with the
-  biomes and D12 spawning [D9d]
-- [ ] `LOTRFaction.isFactionDimension` returns true until the dimension
-  exists [B12a]
-- [ ] ~~Sapling tree growers are placeholders~~ (D10d: `LOTRSaplingGrowth`);
+  y 62 on the biome's top block), with the biomes and D12 [D9d]~~ -- D10j (`homeBiomePull`, `isAboveSeaOnTopBlock`, `canElfSpawnHere`)
+- [x] ~~Dorwinion's natural spawn check and pull towards Dorwinion, with the
+  biomes and D12 [D9g]~~ -- D10j (`homeBiomePull`, `isAboveSeaOnTopBlock`, `canElfSpawnHere`)
+- [x] ~~Elves' natural spawn check (`canElfSpawnHere`; High Elves above y 62
+  on grass) and each people's pull towards Lothlórien, Lindon or Rivendell, with the biomes and D12 [D9g]~~ -- D10j (`homeBiomePull`, `isAboveSeaOnTopBlock`, `canElfSpawnHere`)
+- [x] ~~Gondorians' wandering drawn to Gondor (`getBlockPathWeight` +20) and
+  their natural spawn check, with the biomes and D12 [D9f]~~ -- D10j (`homeBiomePull`, `isAboveSeaOnTopBlock`, `canElfSpawnHere`)
+- [x] ~~Rohirrim wandering drawn to Rohan (`getBlockPathWeight` +20) and their
+  natural spawn check, with the biomes and D12 [D9e]~~ -- D10j (`homeBiomePull`, `isAboveSeaOnTopBlock`, `canElfSpawnHere`)
+- [x] ~~The `RUFFIANS` spawn list (spy 10, brute 5, groups of 1–4), with the
+  biomes and D12 spawning [D9d]~~ -- D10f/D12
+- [x] ~~`LOTRFaction.isFactionDimension` returns true until the dimension
+  exists [B12a]~~ -- D10j
+- [x] ~~Sapling tree growers are placeholders~~ (D10d: `LOTRSaplingGrowth`);
   grapes' ×1.6 Dorwinion bonus; ent jar herb brewing needs the Fangorn
   biome; wild yam (the generator is D10d's `LOTRWorldGenYams`, placed by
-  the biomes' decorate, D10f) [B3, B5d]
+  the biomes' decorate, D10f) [B3, B5d] -- done: the grapes' Dorwinion bonus and the ent jar's Fangorn brewing (after D13d), the yams (D10f)
 
 ### D11 — structures
 - [x] ~~The `LOTRChestContents` pools only biome decoration uses:
@@ -3441,24 +3843,24 @@ only to the unit's *Result*.
 - [x] ~~NPC mini-quests: `createMiniQuest` (the Hobbit factory) and the quest
   book and offer icons over NPCs
   (`LOTRNPCRendering.renderQuestBook`/`renderQuestOffer`) [D9a]~~ — D14b
-- [ ] Bounty help: an NPC telling a player hunting a bounty where its target
+- [x] ~~Bounty help: an NPC telling a player hunting a bounty where its target
   was last seen (`getBountyHelpSpeechDir`, `BountyHelp`, the biome or
-  waypoint last known), with the biomes and waypoints (D10, D13) [D14b]
-- [ ] The welcome quest's fifth stage, opening the map (`VIEW_MAP`), and the
-  menu key opening the map for it (D13) [D14b]
-- [ ] A mini-quest's biome given (`biomeGiven`, in the red book's diary), and
-  the Shire calendar's daily advance (`LOTRDate.update`), with D10 [D14b]
-- [ ] Mini-quests paused during a siege (`isSiegeActive`), with invasions
-  (D12) [D14b]
+  waypoint last known), with the biomes and waypoints (D10, D13) [D14b]~~ -- after D13d (`LOTRLastKnownLocation`)
+- [x] ~~The welcome quest's fifth stage, opening the map (`VIEW_MAP`), and the
+  menu key opening the map for it (D13) [D14b]~~ -- D13d
+- [x] ~~A mini-quest's biome given (`biomeGiven`, in the red book's diary), and
+  the Shire calendar's daily advance (`LOTRDate.update`), with D10 [D14b]~~ -- D10j (`biomeGiven`, `LOTRDate.update` on Middle-earth's own clock)
+- [x] ~~Mini-quests paused during a siege (`isSiegeActive`), with invasions
+  (D12) [D14b]~~ -- not ported: a siege was only ever begun by other mods' messages (LOTRInterModComms), so it is never on
 - [ ] Table of command map, squadron and conquest screens [B4, B5e]
 - [ ] Conquest (`LOTRConquestGrid`, `onConquestKill`) [B12] (the mini-quest
   and bounty callers of `createMiniquestBonus`: D14b; `notifyMiniQuestsNeeded`
   had no caller in the original)
 
 ### D16 — GUIs, HUD, fx (user: HUD in a later release, after entities and structures)
-- [ ] The hire screen's alignment reward slot: a captain's warhorn for 2000
+- [x] ~~The hire screen's alignment reward slot: a captain's warhorn for 2000
   coins at +1500 (`LOTRSlotAlignmentReward`, `getWarhorn`), with its frame,
-  lock and "Requires +1500 alignment" tooltip -- with invasions (D12) [G2a]
+  lock and "Requires +1500 alignment" tooltip -- with invasions (D12) [G2a]~~ -- D12 (`LOTRUnitTradeMenu.AlignmentRewardSlot`; the original's tooltip passed a float to %d and showed a format error, fixed)
 - [x] ~~The custom main menu (`LOTRGuiMainMenu`, config "Custom main menu"):
   the Middle-earth map drifting along a route of waypoints behind red-book
   buttons and the title [G5]~~ (user: all the unblocked UI, the main menu
@@ -3479,24 +3881,18 @@ only to the unit's *Result*.
     (`common/world/map/LOTRWaypoint`, `LOTRRoads`), with their lang. The
     roads are built when first asked for, and the road lookup when world
     generation first asks for it, not at start-up as the original's were.
-  - The map screen itself is still D13.
-- [ ] The LOTR menu's other screens, whose icons are greyed out until then:
-  the map (D13; greyed only on a classic world in the original) (the
-  achievements: D7c; titles and shields: D7a/b); the menu's title
-  names the dimension the player is in (D10); openMenu's welcome
-  mini-quest forcing the map (D13; the factions: D14b) [G3a]
-- [ ] Options: Show Map Location (the map, D13) and Conquest Kills
-  (conquest, D14); the other
+  - The map screen itself: D13d (the menu now draws with `LOTRMapRenderer`).
+- [x] ~~The LOTR menu: its title naming the dimension the player is in (D15)
+  [G3a]~~ — D15b (the map, openMenu's welcome forcing it: D13d; greyed on a classic
+  world: D10k-b)
+- [ ] Options: Conquest Kills (conquest, D14) (Show Map Location: D13d); the other
   keys (map, dismount; alignment cycling: D14b) [G3a]
-- [ ] The Utumno warning message's trigger, the Utumno portal (D10) [G3a]
-- [ ] The factions screen's map of the faction and its button to the
-  faction's control zone on the full map (LOTRGuiMap, D13); the menu's and factions
-  screen's dimension (always
-  Middle-earth until Utumno, D10) [G3b]
+- [x] ~~The Utumno warning message's trigger, the Utumno portal (D10) [G3a]~~ — D15b
+- [x] ~~The menu's and factions screen's dimension (always Middle-earth
+  until Utumno, D15) [G3b]~~ — D15b (the factions screen's map and control-zone
+  button: D13d)
 - [x] ~~An operator in creative told who branded a creature (clock) [G2b]~~ — with the branding iron, after B16a
-- [ ] The alignment bar moving down for a watched invasion's bar (D12/D14);
-  the popup's conquest line, with conquest (D14) [G4a]. (Below the boss bars
-  is done: 20 down for the first, 19 more for each stacked under it.)
+- [ ] The alignment popup's conquest line, with conquest [G4a] (the bar moving down for a watched invasion: D12)
 - [x] ~~With fellowships (D14): a fellow's alignment shown overhead even when
   they hide it, and fellow players' health bars (`fellowPlayerHealthBars`)
   [G4b]~~ — D14a
@@ -3505,9 +3901,7 @@ only to the unit's *Result*.
   sets them on the breaker and an Ent says so; in Fangorn it costs a point
   of Fangorn alignment. Fangorn is the biome `lotr:fangorn`, so the penalty
   applies once the biomes exist (D10).
-- [ ] The frost overlay's other sources, frost damage (`LOTRDamage.frost`)
-  and Utumno's ice wargs and spiders, and the burn overlay's, the desert
-  heat; the biome's name above the compass (D10) [G4c]
+- [x] ~~The frost overlay from Utumno's ice wargs and spiders, with D15c [G4c]~~ — D15c (the burn overlay's desert heat: D10f; the biome's name above the compass: D10j; the original's frost damage source was never dealt)
 - [x] ~~Leaf particles [B4], and the entities' leaves [D9g, D9o, D9q]~~ —
   `lotr:leaf_gold`/`_red`/`_mirk`/`_green` (`LOTRLeafParticle`, its frames
   cut from misc/particles.png by the particle atlas), falling from mallorn,
@@ -3669,3 +4063,18 @@ Append here: `- [unit] file:line — description (confirmed|suspected)`.
   back again. The port's respawner now reads `shouldTraderRespawn()`, but
   `LOTRHobbitOrcharderEntity` did not override it, so it kept respawning.
   (resolved: it now returns false)
+- [D15] `old mod/.../LOTREventHandler.java:848` (onExplosionDetonate) — this
+  fork cancels every explosion (`ExplosionEvent.Start`) in Middle-earth and
+  Utumno: no creeper, TNT, orc bomb or fire pot blows up there, and the
+  return portal's flash is cancelled too. Not ported; the port's orc bombs,
+  fire pots and creepers explode in Middle-earth. Needs the user's call
+  whether to port it. (confirmed)
+- [map drag fix, 2026-10-11] `LOTRFactionsScreen:642`, `LOTRShieldsScreen:150`,
+  `LOTRTitlesScreen:185`, `LOTRFellowshipsScreen:779`, `LOTRAchievementsScreen:136,246`,
+  `LOTRRedBookScreen:366` read `mouseHandler.isLeftPressed()`, which 26.2 only
+  updates while no screen is open, so dragging their scroll bars never works
+  (confirmed in `MouseHandler`; the map now reads the button from GLFW). (suspected
+  in game, confirmed in code)
+- [W0, 2026-10-11] A Bree/hobbit chest's written book "Tale of the Squirrel and the
+  Spring-gnomes" fails to save: 26.2 caps book titles at 32 characters (42 here),
+  so the item is dropped from the chest on save. (confirmed, log)

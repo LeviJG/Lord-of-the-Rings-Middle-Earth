@@ -193,6 +193,7 @@ clover	0	lotr:clover		clover
 clover	1	lotr:four_leaf_clover		clover
 cobblebrick	0	lotr:drystone		cobblebrick
 commandTable	*	lotr:table_of_command		commandTable
+coralReef	*	lotr:coral_reef		coralReef
 cornStalk	*	lotr:corn_stalk		cornStalk
 corruptMallorn	*	lotr:corrupt_mallorn		corruptMallorn
 daleTable	*	lotr:dale_crafting_table		daleCraftingTable
@@ -264,6 +265,7 @@ dwarvenDoorIthildin	*	lotr:ithildin_dwarven_door		dwarvenDoorIthildin
 dwarvenForge	*	lotr:dwarven_forge		dwarvenForge
 elanor	*	lotr:elanor		elanor
 elvenBed	*	lotr:galadhrim_bed		elvenBed
+elvenPortal	*	lotr:elven_portal		elvenPortal
 elvenTable	*	lotr:elven_crafting_table		elvenCraftingTable
 elvenForge	*	lotr:elven_forge		elvenForge
 entJar	*	lotr:ent_jar		entJar
@@ -502,6 +504,7 @@ mordorGravel	*	lotr:mordor_gravel		mordorGravel
 mordorMoss	*	lotr:mordor_moss		mordorMoss
 mordorThorn	*	lotr:mordor_thorn		mordorThorn
 moredainTable	*	lotr:moredain_crafting_table		moredainCraftingTable
+morgulPortal	*	lotr:morgul_portal		morgulPortal
 morgulTable	*	lotr:morgul_crafting_table		morgulCraftingTable
 morgulFlower	*	lotr:morgul_flower		morgulFlower
 morgulShroom	*	lotr:morgul_shroom		morgulShroom
@@ -1143,10 +1146,13 @@ utumnoBrick	5	lotr:utumno_obsidian_fire_brick		utumnoBrick
 utumnoBrick	6	lotr:utumno_ice_tile_brick		utumnoBrick
 utumnoBrick	7	lotr:utumno_obsidian_tile_brick		utumnoBrick
 utumnoBrick	8	lotr:utumno_fire_tile_brick		utumnoBrick
+utumnoBrickEntrance	*	lotr:utumno_brick_entrance		utumnoBrickEntrance
 utumnoPillar	0	lotr:fire_utumno_pillar		utumnoPillar
 utumnoPillar	1	lotr:ice_utumno_pillar		utumnoPillar
 utumnoPillar	2	lotr:obsidian_utumno_pillar		utumnoPillar
+utumnoPortal	*	lotr:utumno_portal		utumnoPortal
 utumnoReturnLight	*	lotr:utumno_return_light		utumnoReturnLight
+utumnoReturnPortal	*	lotr:utumno_return_portal		utumnoReturnPortal
 utumnoReturnPortalBase	*	lotr:utumno_return_portal_base		utumnoReturnPortalBase
 wallBone	0	lotr:bone_wall		wallBone
 wallClayTile	0	lotr:clay_tile_wall		wallClayTile

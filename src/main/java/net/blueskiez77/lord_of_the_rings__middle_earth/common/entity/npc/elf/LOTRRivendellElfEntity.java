@@ -18,10 +18,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import org.jspecify.annotations.Nullable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRRivendellBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityRivendellElf: an elf of Rivendell, with its people's dagger and bow; its mounts
@@ -83,5 +84,10 @@ public class LOTRRivendellElfEntity extends LOTRHighElfBaseEntity {
     @Override
     public float getWalkTargetValue(BlockPos pos, LevelReader level) {
         return homeBiomePull(level, pos, LOTRRivendellBiome.class);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.RIVENDELL;
     }
 }

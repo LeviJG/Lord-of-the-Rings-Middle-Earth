@@ -24,11 +24,12 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 
-import org.jspecify.annotations.Nullable;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRLothlorienBiome;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
+
+import org.jspecify.annotations.Nullable;
 
 /**
  * LOTREntityGaladhrimElf: an elf of Lothlórien, with an elven dagger and a
@@ -118,5 +119,10 @@ public class LOTRGaladhrimElfEntity extends LOTRElfEntity {
     @Override
     public boolean canElfSpawnHere(LevelAccessor level) {
         return isAboveSeaOnTopBlock(level, false);
+    }
+
+    @Override
+    public @Nullable LOTRMiniQuestFactory getBountyHelpSpeechDir() {
+        return LOTRMiniQuestFactory.GALADHRIM;
     }
 }

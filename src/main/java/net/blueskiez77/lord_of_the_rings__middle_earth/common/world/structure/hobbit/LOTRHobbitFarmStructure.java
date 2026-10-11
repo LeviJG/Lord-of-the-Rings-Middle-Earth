@@ -9,6 +9,8 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LO
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRLegacyItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureBase2;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.LOTRBiomes;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWeightedRandom;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypes;
@@ -386,34 +388,15 @@ public class LOTRHobbitFarmStructure extends LOTRStructureBase2 {
         }
         int animals = 3 + random.nextInt(6);
         for (int l = 0; l < animals; ++l) {
-            PathfinderMob animal = create(randomShireAnimal(random), world);
-            spawnNPCAndSetHome(animal, world, 0, 1, 0, 8);
+            if (create(randomShireAnimal(random), world) instanceof PathfinderMob animal) {
+                spawnNPCAndSetHome(animal, world, 0, 1, 0, 8);
+            }
         }
         return true;
     }
 
-    /**
-     * A creature from the Shire's spawn list (LOTRBiome's domestic animals and
-     * LOTRBiomeGenShire's ponies), by weight. The list moves to the Shire
-     * biome with D10.
-     */
-    private static EntityType<? extends PathfinderMob> randomShireAnimal(RandomSource random) {
-        int roll = random.nextInt(12 + 10 + 10 + 8 + 5 + 12);
-        if ((roll -= 12) < 0) {
-            return EntityTypes.SHEEP;
-        }
-        if ((roll -= 10) < 0) {
-            return EntityTypes.PIG;
-        }
-        if ((roll -= 10) < 0) {
-            return EntityTypes.CHICKEN;
-        }
-        if ((roll -= 8) < 0) {
-            return EntityTypes.COW;
-        }
-        if (roll - 5 < 0) {
-            return LOTREntities.DEER;
-        }
-        return LOTREntities.SHIRE_PONY;
+    /** A creature from the Shire's spawn list, by weight. */
+    private static EntityType<?> randomShireAnimal(RandomSource random) {
+        return LOTRWeightedRandom.getRandomItem(random, LOTRBiomes.SHIRE.spawnableCreatureList).type();
     }
 }

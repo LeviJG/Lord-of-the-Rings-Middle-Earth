@@ -294,45 +294,13 @@ public class LOTRBiomeDecorator {
             int k = chunkZ + rand.nextInt(16) + 8;
             this.surfaceGravelGen.generate(world, rand, i, 0, k);
         }
+        // The random structures, the villages' buildings, the marsh hut, Gruk's house and the ticket
+        // booth are today's structures, planned in STRUCTURE_STARTS (LOTRLegacyStructure); the
+        // villages' paths are laid here.
         if (!biomeVariant.disableStructures && Math.abs(chunkX) > 32 && Math.abs(chunkZ) > 32) {
-            long seed = chunkX * 1879267L ^ chunkZ * 67209689L;
-            seed = seed * seed * 5829687L + seed * 2876L;
-            RandomSource structureRand = new LegacyRandomSource(seed);
-            boolean roadNear = LOTRRoads.isRoadNear(chunkX + 8, chunkZ + 8, 16) >= 0.0f;
-            if (!roadNear) {
-                for (RandomStructure randomstructure : this.randomStructures) {
-                    if (structureRand.nextInt(randomstructure.chunkChance()) != 0) {
-                        continue;
-                    }
-                    int i = chunkX + rand.nextInt(16) + 8;
-                    int k = chunkZ + rand.nextInt(16) + 8;
-                    place(randomstructure.structureGen(), world, rand, i, topSolid(world, i, k), k);
-                }
-            }
             for (LOTRVillageGen village : this.villages) {
                 village.generateInChunk(world, chunkX, chunkZ);
             }
-        }
-        if (LOTRMarshHutStructure.generatesAt(chunkX, chunkZ)) {
-            int i = chunkX + 8;
-            int k = chunkZ + 8;
-            LOTRMarshHutStructure house = new LOTRMarshHutStructure();
-            house.restrictions = false;
-            house.generateAndFinish(world, rand, i, topSolid(world, i, k), k);
-        }
-        if (LOTRGrukHouseStructure.generatesAt(chunkX, chunkZ)) {
-            int i = chunkX + 8;
-            int k = chunkZ + 8;
-            LOTRGrukHouseStructure house = new LOTRGrukHouseStructure(false);
-            house.restrictions = false;
-            house.generateAndFinish(world, rand, i, topSolid(world, i, k), k, 2);
-        }
-        if (LOTRTicketBoothStructure.generatesAt(chunkX, chunkZ)) {
-            int i = chunkX + 8;
-            int k = chunkZ + 8;
-            LOTRTicketBoothStructure booth = new LOTRTicketBoothStructure(false);
-            booth.restrictions = false;
-            booth.generateAndFinish(world, rand, i, topSolid(world, i, k), k, 3);
         }
         int trees = getVariantTreesPerChunk(biomeVariant);
         if (rand.nextFloat() < this.biome.getTreeIncreaseChance() * biomeVariant.treeFactor) {

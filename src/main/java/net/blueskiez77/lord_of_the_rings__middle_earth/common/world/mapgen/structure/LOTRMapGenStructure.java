@@ -15,6 +15,7 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.levelgen.LegacyRandomSource;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
@@ -43,7 +44,7 @@ public abstract class LOTRMapGenStructure {
 
     protected abstract LOTRStructureStart getStructureStart(LOTRWorldChunkManager chunkManager, RandomSource rand, int i, int k);
 
-    private Map<Long, LOTRStructureStart> structureMap(ServerLevel level) {
+    private synchronized Map<Long, LOTRStructureStart> structureMap(ServerLevel level) {
         return this.structureMaps.computeIfAbsent(level, l -> {
             Map<Long, LOTRStructureStart> map = new HashMap<>();
             Data data = level.getDataStorage().computeIfAbsent(this.dataType);
@@ -84,16 +85,20 @@ public abstract class LOTRMapGenStructure {
         }
     }
 
-    /** generateStructuresInChunk: each structure reaching the area this chunk populates builds its part of it. */
-    public boolean generateStructuresInChunk(ServerLevel level, LOTRWorldChunkManager chunkManager, RandomSource rand, int chunkX, int chunkZ) {
+    /**
+     * generateStructuresInChunk: each structure reaching the square this chunk decorates (from block
+     * (areaX, areaZ)) builds its part of it.
+     */
+    public boolean generateStructuresInChunk(WorldGenLevel world, ServerLevel level, LOTRWorldChunkManager chunkManager, RandomSource rand,
+                                             int chunkX, int chunkZ, int areaX, int areaZ) {
         findStarts(level, chunkManager, chunkX, chunkZ);
-        int k = (chunkX << 4) + 8;
-        int l = (chunkZ << 4) + 8;
+        int k = areaX;
+        int l = areaZ;
         boolean flag = false;
         for (Map.Entry<Long, LOTRStructureStart> e : structureMap(level).entrySet()) {
             LOTRStructureStart start = e.getValue();
             if (start.isSizeableStructure() && start.boundingBox.intersectsWith(k, l, k + 15, l + 15)) {
-                start.generateStructure(level, rand, new LOTRStructureBoundingBox(k, l, k + 15, l + 15));
+                start.generateStructure(world, rand, new LOTRStructureBoundingBox(k, l, k + 15, l + 15));
                 flag = true;
                 saveStart(level, e.getKey(), start);
             }
@@ -109,11 +114,11 @@ public abstract class LOTRMapGenStructure {
         final Map<String, CompoundTag> starts;
 
         Data() {
-            this.starts = new HashMap<>();
+            this.starts = new java.util.concurrent.ConcurrentHashMap<>();
         }
 
         Data(Map<String, CompoundTag> starts) {
-            this.starts = new HashMap<>(starts);
+            this.starts = new java.util.concurrent.ConcurrentHashMap<>(starts);
         }
     }
 }

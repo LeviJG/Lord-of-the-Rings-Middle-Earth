@@ -21,6 +21,15 @@ public final class LOTRMapCoords {
         return (int) Math.round(r * SCALE);
     }
 
+    /** LOTRWaypoint.worldToMapX: the map image's column of a world x. */
+    public static int worldToMapX(double x) {
+        return (int) Math.round(x / SCALE - 0.5 + ORIGIN_X);
+    }
+
+    public static int worldToMapZ(double z) {
+        return (int) Math.round(z / SCALE - 0.5 + ORIGIN_Z);
+    }
+
     public static int worldToMapR(double r) {
         return (int) Math.round(r / SCALE);
     }
