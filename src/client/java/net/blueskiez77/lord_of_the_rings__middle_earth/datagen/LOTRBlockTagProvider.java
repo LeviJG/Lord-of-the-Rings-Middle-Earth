@@ -176,6 +176,9 @@ public class LOTRBlockTagProvider extends FabricTagsProvider.BlockTagsProvider {
             logsTag.add(LOTRBlocks.keyOf(b));
             logsBurnTag.add(LOTRBlocks.keyOf(b));
         });
+        axe.add(LOTRBlocks.keyOf(LOTRBuildingBlocks.MALLORN_WOOD));
+        logsTag.add(LOTRBlocks.keyOf(LOTRBuildingBlocks.MALLORN_WOOD));
+        logsBurnTag.add(LOTRBlocks.keyOf(LOTRBuildingBlocks.MALLORN_WOOD));
         LOTRBlocks.ALL_BEAMS.forEach(b -> axe.add(LOTRBlocks.keyOf(b)));
         LOTRBlocks.ALL_PILLARS.forEach(b -> {
             pickaxe.add(LOTRBlocks.keyOf(b));

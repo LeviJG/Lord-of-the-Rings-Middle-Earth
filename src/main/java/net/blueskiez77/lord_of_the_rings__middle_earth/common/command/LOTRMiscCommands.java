@@ -23,6 +23,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOT
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRCreatureType;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRAchievement;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.achievement.LOTRPlayerAchievements;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifier;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.enchant.LOTRModifiers;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.fac.LOTRPlayerAlignments;
@@ -33,14 +34,20 @@ import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.clock.WorldClock;
 import net.minecraft.world.item.ItemStack;
 
 /**
- * LOTRCommandPledgeCooldown, LOTRCommandEnchant, LOTRCommandDate and LOTRCommandAchievement: an
- * operator's /pledgeCooldown, /lotrEnchant (the mod's modifiers, which the original called
- * enchantments), /lotrDate and /lotrAchievement.
+ * LOTRCommandPledgeCooldown, LOTRCommandEnchant, LOTRCommandDate, LOTRCommandAchievement and
+ * LOTRCommandTime, LOTRCommandStructureTimelapse: an operator's /pledgeCooldown, /lotrEnchant (the
+ * mod's modifiers, which the original called enchantments), /lotrDate, /lotrAchievement, /lotr_time
+ * and /strTimelapse.
  *
  * <p>Not ported: /lotr_summon, which only offered the mod's 1.7.10 entity names to /summon; today's
  * /summon already offers and takes {@code lotr:} entities. /strscan, the authors' tool for recording
@@ -76,7 +83,65 @@ public final class LOTRMiscCommands {
             registerAchievement(dispatcher);
             registerSpawnDamping(dispatcher);
             registerInvasion(dispatcher);
+            registerTime(dispatcher);
+            registerStructureTimelapse(dispatcher);
         });
+    }
+
+    /** LOTRCommandStructureTimelapse: /strTimelapse on, off, or the interval in milliseconds. */
+    private static void registerStructureTimelapse(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("strTimelapse")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .then(Commands.literal("on").executes(ctx -> {
+                    LOTRConfig.setStructureTimelapse(true);
+                    ctx.getSource().sendSuccess(() -> Component.translatable("commands.lotr.strTimelapse.on"), true);
+                    ctx.getSource().sendSuccess(() -> Component.translatable("commands.lotr.strTimelapse.warn"), true);
+                    return 1;
+                }))
+                .then(Commands.literal("off").executes(ctx -> {
+                    LOTRConfig.setStructureTimelapse(false);
+                    ctx.getSource().sendSuccess(() -> Component.translatable("commands.lotr.strTimelapse.off"), true);
+                    return 1;
+                }))
+                .then(Commands.argument("interval", IntegerArgumentType.integer(0)).executes(ctx -> {
+                    int interval = IntegerArgumentType.getInteger(ctx, "interval");
+                    LOTRConfig.setStructureTimelapseInterval(interval);
+                    ctx.getSource().sendSuccess(() -> Component.translatable("commands.lotr.strTimelapse.interval", interval), true);
+                    return 1;
+                })));
+    }
+
+    /**
+     * LOTRCommandTime: /lotr_time set &lt;day|night|ticks&gt; or add &lt;ticks&gt; -- Middle-earth's clock
+     * (lotr:middle_earth), wherever the command is run. Vanilla's /time sets the clock of the
+     * dimension it is run in, so in the overworld it leaves Middle-earth's alone, as
+     * LOTRCommandTimeVanilla did.
+     */
+    private static void registerTime(CommandDispatcher<CommandSourceStack> dispatcher) {
+        dispatcher.register(Commands.literal("lotr_time")
+                .requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
+                .then(Commands.literal("set")
+                        .then(Commands.literal("day").executes(ctx -> setTime(ctx, Math.round(LOTRDate.TICKS_IN_DAY * 0.03))))
+                        .then(Commands.literal("night").executes(ctx -> setTime(ctx, Math.round(LOTRDate.TICKS_IN_DAY * 0.6))))
+                        .then(Commands.argument("time", IntegerArgumentType.integer(0))
+                                .executes(ctx -> setTime(ctx, IntegerArgumentType.getInteger(ctx, "time")))))
+                .then(Commands.literal("add").then(Commands.argument("time", IntegerArgumentType.integer(0)).executes(ctx -> {
+                    int time = IntegerArgumentType.getInteger(ctx, "time");
+                    ctx.getSource().getServer().clockManager().addTicks(middleEarthClock(ctx), time);
+                    ctx.getSource().sendSuccess(() -> Component.translatable("commands.lotr.time.add", time), true);
+                    return 1;
+                }))));
+    }
+
+    private static Holder<WorldClock> middleEarthClock(CommandContext<CommandSourceStack> ctx) {
+        return ctx.getSource().getServer().registryAccess().lookupOrThrow(Registries.WORLD_CLOCK)
+                .getOrThrow(ResourceKey.create(Registries.WORLD_CLOCK, Identifier.fromNamespaceAndPath("lotr", "middle_earth")));
+    }
+
+    private static int setTime(CommandContext<CommandSourceStack> ctx, long time) {
+        ctx.getSource().getServer().clockManager().setTotalTicks(middleEarthClock(ctx), time);
+        ctx.getSource().sendSuccess(() -> Component.translatable("commands.lotr.time.set", time), true);
+        return 1;
     }
 
     /** LOTRLevelData.getHMSTime_Ticks: "1h 2m 3s", "2m 3s" or "3s". */

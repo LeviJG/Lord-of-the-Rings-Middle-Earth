@@ -220,6 +220,10 @@ public class LOTRModClient implements ClientModInitializer {
             }
         });
 
+        // The squadron line and the ranged and poison stat lines, in
+        // getItemTooltip's order: before the ownership lines below.
+        LOTRWeaponStatsTooltip.init();
+
         // LOTRTickHandlerClient's tooltip line: a poisoned drink says so, but
         // only to the poisoner and to creative players.
         ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> {
@@ -283,6 +287,10 @@ public class LOTRModClient implements ClientModInitializer {
         // are RenderShape.INVISIBLE and the whole idol is this model.
         BlockEntityRenderers.register(
                 LOTRBlockEntities.TROLL_TOTEM, LOTRTrollTotemRenderer::new);
+
+        // LOTRRenderCommandTable: the map on the Table of Command's top.
+        BlockEntityRenderers.register(
+                LOTRBlockEntities.TABLE_OF_COMMAND, net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRTableOfCommandRenderer::new);
 
         // The built portals' surfaces: the elven portal's starry depths, the Morgul portal's glow.
         BlockEntityRenderers.register(LOTRBlockEntities.ELVEN_PORTAL,
@@ -836,6 +844,7 @@ public class LOTRModClient implements ClientModInitializer {
         // LOTRTickHandlerClient: nausea drags the view about.
         LOTRDrunkCamera.init();
         LOTRAnimalJarSpecialRenderer.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRTableOfCommandItemRenderer.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.render.LOTRShieldDesignRenderer.init();
         net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry.register(
                 context -> new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRShieldPreviewRenderer());
@@ -863,6 +872,8 @@ public class LOTRModClient implements ClientModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRAchievementToast.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.LOTRConquestToast.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.map.LOTRClientConquest.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.sound.LOTRMusic.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRCoinCountDisplay.init();
         net.fabricmc.fabric.api.client.rendering.v1.PictureInPictureRendererRegistry.register(
                 context -> new net.blueskiez77.lord_of_the_rings__middle_earth.client.gui.LOTRNPCHeadRenderer());
         net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRRedBookItem.openScreen = () -> Minecraft.getInstance()
@@ -929,6 +940,8 @@ public class LOTRModClient implements ClientModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.client.world.LOTRPortalsClient.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.client.world.LOTRUtumnoClient.init();
         LOTRSpiderClimbHud.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRExperienceBarHud.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.client.hud.LOTRBannerRepossessHud.init();
         PictureInPictureRendererRegistry.register(context -> new LOTRCompassRenderer());
         EntityRenderers.register(LOTREntities.ALIGNMENT_BONUS, LOTRAlignmentBonusRenderer::new);
         EntityRenderers.register(LOTREntities.SWORD_COMMAND_MARKER, LOTRSwordCommandMarkerRenderer::new);

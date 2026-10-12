@@ -3188,18 +3188,40 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
       third-person hand pose after the original's own arm offsets; its bright
       skin is drawn translucent at full light.
 
-- [ ] **D16 Remaining GUIs, commands, particles/fx, sounds, drunken speech.**
+- [x] **D16 Remaining GUIs, commands, particles/fx, sounds, drunken speech.**
+  - [x] **The mod's music** (`LOTRMusic`, `LOTRMusicTicker`, `LOTRMusicTrack`,
+    `LOTRRegionTrackPool`/`LOTRTrackSorter`, `LOTRTrackRegionInfo`,
+    `LOTRMusicCategory`): `client/sound`. Music packs (.zip with "music.json",
+    tracks in "assets/lotrmusic") read from ".minecraft/lotrmusic" as the resources
+    load, the readme written there from `assets/lotr/music/readme.txt` (copied); a
+    track of the player's region and subregion (the biome's `getBiomeMusic`), by
+    day, night or underground, after the config's intervals, the menu's on the menu;
+    vanilla's music silenced in Middle-earth and Utumno while there are tracks, and
+    on the menu while there are menu tracks (`LOTRMusicManagerMixin`); "Display music
+    track" fades the title and authors in the corner ("lotr.music.nowPlaying" added).
+    Port: each track is a sound of its own streamed from its pack
+    (`LOTRSoundBufferLibraryMixin`), not a registered sound in a resource domain, so
+    a pack's filenames need not be valid ids.
+  - [x] **Inventory coin counts** (LOTRGuiHandler, `displayCoinCounts`):
+    `client/gui/LOTRCoinCountDisplay` -- beside each inventory of a container screen,
+    level with its top row, a silver coin and its coins' worth (stolen ones too,
+    `LOTRCoins.getContainerValue`) on a fading shadow; not crafting results, the coin
+    exchange's slots, or creative tabs but the inventory. Kept modern: placed from the
+    screen's own left edge (`leftPos`), which 26.2 no longer moves for potion effects.
   - [x] **Commands** (`LOTRMiscCommands`): `/pledgeCooldown`, `/lotrEnchant`
     (the modifiers; `add`/`remove`/`clear`, suggesting what fits the held
     item), `/lotrDate get|set|add` (the new date shown to everyone fading in
     and out, `LOTRDateHud`, which is also where the client now hears the
     date at all). Not ported: `/lotr_summon` (only offered the 1.7.10 entity
     names to `/summon`, which today takes `lotr:` ids itself) and
-    `/strscan` (the authors' scan recorder, in 1.7.10 block ids). Waiting:
-    `/invasion`, `/spawnDamping` (D12) (`/conquest`: D17a), `/lotr_time` (D10). (`/opHideMap`, `/fastTravelClock`,
+    `/strscan` (the authors' scan recorder, in 1.7.10 block ids). Since:
+    `/invasion`, `/spawnDamping` (D12), `/conquest` (D17a), and `/lotr_time`
+    (LOTRCommandTime: Middle-earth's clock, `lotr:middle_earth`, set to day, night or
+    a tick count, or advanced, wherever it is run; vanilla's /time sets the clock of
+    the dimension it is run in, as LOTRCommandTimeVanilla kept /time off Middle-earth). (`/opHideMap`, `/fastTravelClock`,
     `/wpCooldown`, `/lotrWaypoints`: D13.)
 
-- [ ] **D17 Conquest** (user, 2026-10-11: next after Track W). The original's
+- [x] **D17 Conquest** (user, 2026-10-11: next after Track W). The original's
   `LOTRConquestGrid`/`LOTRConquestZone` and everything waiting on them.
   - [x] **D17a Server core**: the zones (8 map pixels a side, the strengths
     decaying after an hour's grace) kept as `SavedData` under the original's
@@ -3235,7 +3257,13 @@ Ordered by dependency. Each bullet is one or more units; split as needed. *Resul
     the mouse ringed with its strength; the strength key; the title; the region
     button and faction scroll bar; the waiting, unpledged and need-rank messages;
     its own labels toggle, `mapLabelsConquest`).
-  - [ ] **D17c The Table of Command's map and squadron screens** (with D16).
+  - [x] **D17c The Table of Command's map and squadron screens** (with D16).
+    *Result:* the squadron screen was already in (G2, `LOTRSquadronItemScreen`);
+    `client/render/LOTRTableOfCommandRenderer` draws the map on the table's top
+    (LOTRRenderCommandTable: 400 map pixels across times two to the table's zoom,
+    centred on the table and kept within the map, the overlay, the compass, the red
+    and black edges, Meneltarma sunk until seen). Its map on the inventory item is
+    tracked under D16.
 
 ## World-gen decisions (Track W, done 2026-10-11)
 
@@ -3288,14 +3316,15 @@ only to the unit's *Result*.
   (`LOTRRecipesBanners`) [B4, B5e, B6d, B7d, B13a] -- D4c
 - [x] Floating barrel entity: `LOTRItemBarrel.onItemRightClick` puts a
   rideable barrel on water → `LOTRBarrelItem` [B5b] -- D4a
-- [ ] Banner protection waiting on other units [D4c] (fellowships on a
+- [x] ~~Banner protection waiting on other units [D4c] (fellowships on a
   banner's whitelist: D14a; the `bannerProtect` achievement: D7c): NPCs' `getCanSpawnHere` refusing
   protected land, the invasion spawner's and conquest horn's checks (D12);
-  (custom waypoints in protected land: D13b).
+  (custom waypoints in protected land: D13b).~~ — found ported (`LOTRNPCEntity.checkSpawnRules`,
+  `LOTRInvasionSpawnerEntity.canInvasionSpawnHere`, `LOTRWarhornItem`, `LOTRCustomWaypoints`)
 
 ### D5/D6 — player data, config
-- [ ] Config options waiting on their systems (all read into `LOTRConfig`
-  already) [D6]:
+- [x] Config options waiting on their systems (all read into `LOTRConfig`
+  already) [D6] -- all settled by D17/D16/D11 (2026-10-11):
   - (D10 is done: `middleEarthRespawning` and the `MER*` values (D10i),
     `generateMapFeatures` (D10b), `generateFixedSettlements` (D10h), the XP
     orbs removed in Middle-earth without vanilla enchanting and the
@@ -3305,16 +3334,19 @@ only to the unit's *Result*.
     turned as the chunk is drawn, as the option says; `snowyStone` too:
     `LOTRSnowyStoneModel`. Both redraw the chunks when changed in the
     config screen.)
-  - D11: `strTimelapse`/`strTimelapseInterval` and `/strTimelapse`.
+  - (D11's are done: `strTimelapse`/`strTimelapseInterval` and `/strTimelapse` -- `LOTRStructureTimelapse`, the spawned structure's code on its own thread as the original's, each world call handed to the server's thread, sleeping after each block.)
   - (D12 is done. `fixMobSpawning` was read by nothing in the original.)
   - (Conquest is done: `enableConquest` (D17a), `mapLabelsConquest` (D17b); D14's others are done.)
   - (D15 is done: `enablePortals` (D15a), `disableEnderChestsUtumno` and
     Utumno's kills not counting towards banes (D15b), `balrogWings` (D15c).)
-  - D16: the ENCHANTING message (the config screen, `LOTRGuiConfig`, is
-    done: `LOTRConfigScreen`); `displayCoinCounts`, the music options
-    (the mod's music, `LOTRMusic`), `drunkMessages` (players' own drunken
-    chat), `preventMessageExploit` (the `/msg` fix), `fixRenderDistance`,
-    `checkUpdates`, `updateLangFiles`. Not ported: `enableAttackCooldown`
+  - (D16 is done: the ENCHANTING message (`LOTRConfigRules`), the config screen
+    (`LOTRConfigScreen`), `drunkMessages` (`LOTRDrunkenSpeech.init`, chat decorated
+    by the server, being signed), `displayCoinCounts` and the music options.)
+    Kept as options that do nothing yet (user, 2026-10-11): `checkUpdates` (the
+    original's version check against its own site) and `updateLangFiles` (its lang
+    file update helper). Not ported: `preventMessageExploit` (26.2's `/msg` already
+    refuses selectors to non-operators, the 1.7.10 exploit it closed) and
+    `fixRenderDistance` (a 1.7.10 crash above 16 chunks, gone today). Not ported: `enableAttackCooldown`
     (off by default; its LOTRAttackTiming went with the melee meter the user
     dropped, G4c, and today's attack cooldown stands in) and
     `playerDataClearingInterval` (bookkeeping the attachments do
@@ -3385,8 +3417,8 @@ only to the unit's *Result*.
 - [x] ~~Utumno: `killBalrog`, `killTormentedElf`, `killUtumnoOrc/Troll/Warg` → D15c~~ — D15c
   (`useElvenPortal`, `useMorgulPortal`: D15a; `enterUtumno*`, `leaveUtumno`: D15b;
   `wearFullUtumno`, `craftUtumnoKey` were already in)
-- [ ] A boss's kill achievement reaches only those of its damagers who are online (the original
-  could write an offline player's data)
+- [x] ~~A boss's kill achievement reaches only those of its damagers who are online (the original
+  could write an offline player's data)~~ — kept for them until they join (`LOTRPlayerAchievements.addAchievement(server, uuid, ..)`, SavedData "lotr:pending_achievements", added quietly as the original's offline write)
 ### D8 — animals and mounts
 - [x] ~~Swan chestplate wings driven by the mount's stride when riding [B9]~~ — after B16a
 - [x] ~~Rohirric marshal helmet plume sway [B9]~~ — after B16a (the walk state was in the armour renderer's render state all along)
@@ -3419,9 +3451,9 @@ only to the unit's *Result*.
 - [x] Mount achievements: rideCamel and rideShirePony done (D7c, B16c);
   rideGiraffeShire on the D7 list; the Rohan and Dor-en-Ernil horse boosts, the camel's ImmuneToHeat, the
   Shire check → D10 [D8d] -- done: rideGiraffeShire (D10j), the Rohan and Dor-en-Ernil horses (after D13d), the camel's ImmuneToHeat, the Shire check
-- [ ] Vanilla leather horse armour has no 1.7.10-layout sheet, so it is not
+- [x] ~~Vanilla leather horse armour has no 1.7.10-layout sheet, so it is not
   drawn on LOTR horses [D8d]. (LOTR barding no longer goes on vanilla horses
-  at all -- user: LOTR horses only.)
+  at all -- user: LOTR horses only.)~~ — left as is (user, 2026-10-12)
 - [x] Spawn eggs (`LOTRItemSpawnEgg`): user said to do them as the original
   did -- 1.7.10's shared egg and spots textures (copied from the 1.7.10
   client jar), tinted with each creature's two registerCreature colours.
@@ -3449,12 +3481,12 @@ only to the unit's *Result*.
   [B7d, LOTRItems]~~ — all three ported (B7d, G2b, G5)
 - [x] ~~The warhorn (`LOTRItemConquestHorn`, "Warhorn"), which calls an
   invasion, with invasions (D12) [B7d]~~ -- D12 (`LOTRWarhornItem`)
-- [ ] Gandalf: ~~his natural arrival 4 to 16 blocks from a player every two
+- [x] Gandalf: ~~his natural arrival 4 to 16 blocks from a player every two
   minutes while no Grey Wanderer is abroad
   (`LOTRGreyWandererTracker.performSpawning`, from LOTREventSpawner in the
   Middle-earth dimension) [D12]~~ (D12), and ~~his hunting of Balrogs with
   Utumno [D15c] [D9r-a]~~ (D15c) (his welcome mini-quest and the renewal of his time
-  when he offers it: D14b)
+  when he offers it: D14b) — all found ported (`LOTRGandalfEntity`, `LOTRMiniQuestWelcome`)
 - [x] ~~Gollum: natural spawning within 128 of the High Pass waypoint
   (`LOTRGollumSpawner`, with the Middle-earth dimension and waypoints)
   [D12, D13] (`tameGollum`: D7c) [D9r-b] (his pack's screen
@@ -3630,8 +3662,8 @@ only to the unit's *Result*.
   `BREE_PICKPOCKET`), with the pickpocket mini-quest (D14) [D9d]~~ — D14b
 - [x] ~~The branding iron in the Hobbit farmer's buy pool [D9b]~~ — after B16a
 - [x] ~~Hired units hunting bandits [D9b]~~ — after B16a
-- [ ] Bandits in the world (`LOTREventSpawner`: each biome's bandit kind),
-  and the Harad bandit's turban ornament (with the ornament) [after B16a]
+- [x] ~~Bandits in the world (`LOTREventSpawner`: each biome's bandit kind),
+  and the Harad bandit's turban ornament (with the ornament) [after B16a]~~ — found ported (`LOTREventSpawner.spawnBandits`, the Harad biomes' `BANDIT_HARAD`, `LOTRBanditHaradEntity`'s turban)
 - [x] ~~Faction trade and hire counters (`LOTRFactionData.addTrade`/`addHire`)
   [D9b]~~ — G1/G2
 - [x] ~~Refusing pickpocketed coins and trade items (`IPickpocketable`), with
@@ -3712,9 +3744,12 @@ only to the unit's *Result*.
   `GONDOR_RUINS_BONES` / `GONDOR_RUINS_TREASURE` (`LOTRWorldGenGondorRuins`),
   with those generators (D10). Every pool a spawnable structure uses is
   ported and matches the original entry for entry (B17a).~~ -- D10d, D10f
-- [ ] The mod's logs with bark all round (metadata 12-15 of `wood`..`wood9`,
+- [x] ~~The mod's logs with bark all round (metadata 12-15 of `wood`..`wood9`,
   `LOTRBlockWoodBase`): the port has no such blocks, so they place as
-  upright logs. Only the extreme mallorn tree (D10) uses one.
+  upright logs. Only the extreme mallorn tree (D10) uses one.~~ — `lotr:mallorn_wood`
+  (no item; drops the mallorn log; logs, logs_that_burn and axe tags; fire info), and
+  `LOTRLegacyBlocks` turns a log at metadata 12-15 into its `_wood` block where one exists.
+  The other logs' bark forms, which nothing generates, are not added.
 
 ### D13/D14 — map, quests, conquest
 - [x] ~~Mini-quest lore rewards: 1 in 10 completed quests of a group with lore
@@ -3747,7 +3782,8 @@ only to the unit's *Result*.
   the Shire calendar's daily advance (`LOTRDate.update`), with D10 [D14b]~~ -- D10j (`biomeGiven`, `LOTRDate.update` on Middle-earth's own clock)
 - [x] ~~Mini-quests paused during a siege (`isSiegeActive`), with invasions
   (D12) [D14b]~~ -- not ported: a siege was only ever begun by other mods' messages (LOTRInterModComms), so it is never on
-- [ ] Table of command map and squadron screens [B4, B5e] (D17c; the conquest screen: D17b)
+- [x] ~~Table of command map and squadron screens [B4, B5e]~~ — D17b/D17c
+- [x] ~~The Table of Command's map on its inventory item (`LOTRRenderCommandTable.renderInvTable`) → a special item model beside `LOTRTableOfCommandRenderer` [D17c]~~ — `LOTRTableOfCommandItemRenderer` (the map turned a quarter, centred on the player, at zoom 0), `items/table_of_command.json` a composite with it
 - [x] ~~Conquest (`LOTRConquestGrid`, `onConquestKill`) [B12]~~ — D17a (the mini-quest
   and bounty callers of `createMiniquestBonus`: D14b; `notifyMiniQuestsNeeded`
   had no caller in the original)
@@ -3805,6 +3841,30 @@ only to the unit's *Result*.
   Galadhrim trader dying (its departure burst never showed in the
   original, so none), the Wood-elf scout vanishing, an Ent healing a
   sapling, and the Mallorn Ent and its leaf bomb.
+
+### Whole-mod audit (2026-10-12)
+Blocks, block entities, items, recipes, entities (with trades, hiring, speech, drops, spawn
+lists), biomes, structures, roads and ores were compared with the original by script: no gaps.
+Found in the systems and ported:
+- [x] ~~Filling an empty vessel at a water cauldron (LOTREventHandler.onBlockInteract,
+  fillMugFromCauldron)~~ — `LOTRCauldronWashing` (the glass bottle stays vanilla's)
+- [x] ~~Bone meal on grass in the mod's biomes growing their grasses and flowers
+  (LOTREventHandler.onUseBonemeal)~~ — `LOTRBiomeBoneMeal`, from `LOTRBoneMealItemMixin.growCrop`
+  (dispensers too)
+- [x] ~~New Year's Day fireworks (LOTRTickHandlerServer.onWorldTick)~~ — `LOTRNewYearFireworks`
+- [x] ~~The squadron tooltip line and LOTRWeaponStats' tooltip lines
+  (LOTRTickHandlerClient.getItemTooltip)~~ — `client/LOTRWeaponStatsTooltip`: the squadron, the
+  ranged block and the poison line. Melee damage, speed, reach and knockback and the armour line
+  are left to vanilla's attribute lines (modern vanilla), the spear has no ranged block (vanilla's spear).
+- [x] ~~The banner repossess hint (bannerRepossessDisplayTick)~~ — `client/hud/LOTRBannerRepossessHud`
+- [x] ~~The experience bar hidden in Middle-earth and Utumno with vanilla enchanting off~~ —
+  `client/hud/LOTRExperienceBarHud` (the locator bar goes with it)
+- [x] ~~Drink poison drawing poisoned hearts~~ — `LOTRHeartTypeMixin`
+Left for the user: the bow draw stopped when hit in melee (LOTREventHandler.onLivingHurt,
+LOTRPacketStopItemUse; vanilla weapon handling), the hotbar name showing modifier prefixes
+(LOTRPacketCancelItemHighlight), sulfur ore's two identical smelting recipes
+(`smelting/material/sulfur`, `sulfur_from_smelting`), and `LOTRAlcoholTolerance` saving a bare
+int rather than under the original's `Alcohol` key.
 
 ## Suggested order
 

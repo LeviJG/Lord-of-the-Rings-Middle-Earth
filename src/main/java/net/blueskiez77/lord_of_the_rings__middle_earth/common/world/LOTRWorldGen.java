@@ -51,6 +51,7 @@ public final class LOTRWorldGen {
         net.blueskiez77.lord_of_the_rings__middle_earth.common.world.biome.variant.LOTRBiomeVariantStorage.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.legacy.LOTRLegacyStructure.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.world.spawning.LOTRSpawning.init();
+        LOTRNewYearFireworks.init();
         Registry.register(BuiltInRegistries.CHUNK_GENERATOR, Identifier.fromNamespaceAndPath("lotr", "middle_earth"), LOTRChunkGenerator.CODEC);
         Registry.register(BuiltInRegistries.BIOME_SOURCE, Identifier.fromNamespaceAndPath("lotr", "middle_earth"), LOTRBiomeSource.CODEC);
         Registry.register(BuiltInRegistries.CHUNK_GENERATOR, Identifier.fromNamespaceAndPath("lotr", "utumno"), LOTRUtumnoChunkGenerator.CODEC);

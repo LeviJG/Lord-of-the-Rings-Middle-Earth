@@ -1,6 +1,18 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "lotr:block/table_of_command"
+    "type": "minecraft:composite",
+    "models": [
+      {
+        "type": "minecraft:model",
+        "model": "lotr:block/table_of_command"
+      },
+      {
+        "type": "minecraft:special",
+        "base": "lotr:block/table_of_command",
+        "model": {
+          "type": "lotr:table_of_command"
+        }
+      }
+    ]
   }
 }

@@ -331,6 +331,13 @@ public class LOTRModelProvider extends FabricModelProvider {
                     generators.createAxisAlignedPillarBlock(b, TexturedModel.COLUMN);
                     generators.registerSimpleItemModel(b, ModelLocationUtils.getModelLocation(b));
                 }));
+        // The mallorn log with bark all round: its side on every face, and no item.
+        Identifier mallornWood = ModelTemplates.CUBE_COLUMN.create(LOTRBuildingBlocks.MALLORN_WOOD, new TextureMapping()
+                        .put(TextureSlot.END, TextureMapping.getBlockTexture(LOTRBuildingBlocks.MALLORN_LOG, "_side"))
+                        .put(TextureSlot.SIDE, TextureMapping.getBlockTexture(LOTRBuildingBlocks.MALLORN_LOG, "_side")),
+                generators.modelOutput);
+        generators.blockStateOutput.accept(BlockModelGenerators.createAxisAlignedPillarBlock(LOTRBuildingBlocks.MALLORN_WOOD,
+                BlockModelGenerators.plainVariant(mallornWood)));
 
         // Pillars are segmented: the side texture loses its top or bottom edge
         // when another pillar is stacked against it, so a column reads as one

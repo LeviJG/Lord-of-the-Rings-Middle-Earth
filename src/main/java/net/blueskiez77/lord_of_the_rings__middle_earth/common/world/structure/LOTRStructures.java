@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.config.LOTRConfig;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.angmar.*;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.bree.*;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.dunland.*;
@@ -22,6 +23,7 @@ import net.blueskiez77.lord_of_the_rings__middle_earth.common.world.village.*;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 
 import org.jspecify.annotations.Nullable;
@@ -464,7 +466,13 @@ public final class LOTRStructures {
                 LOTRStructureBase2 str = factory.apply(true);
                 str.restrictions = false;
                 str.usingPlayer = player;
-                return str.generateAndFinish(level, level.getRandom(), i, j, k, str.usingPlayerRotation());
+                int rotation = str.usingPlayerRotation();
+                if (LOTRConfig.strTimelapse) {
+                    RandomSource random = RandomSource.create(level.getRandom().nextLong());
+                    LOTRStructureTimelapse.start(level, world -> str.generateAndFinish(world, random, i, j, k, rotation));
+                    return true;
+                }
+                return str.generateAndFinish(level, level.getRandom(), i, j, k, rotation);
             }
 
             @Override
@@ -483,6 +491,11 @@ public final class LOTRStructures {
                 LOTRStructureBase str = factory.apply(true);
                 str.restrictions = false;
                 str.usingPlayer = player;
+                if (LOTRConfig.strTimelapse) {
+                    RandomSource random = RandomSource.create(level.getRandom().nextLong());
+                    LOTRStructureTimelapse.start(level, world -> str.generateAndFinish(world, random, i, j, k));
+                    return true;
+                }
                 return str.generateAndFinish(level, level.getRandom(), i, j, k);
             }
 

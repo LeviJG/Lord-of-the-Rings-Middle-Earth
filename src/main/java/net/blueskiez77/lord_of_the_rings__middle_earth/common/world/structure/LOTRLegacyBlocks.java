@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.mojang.serialization.Dynamic;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRDoubleTorchBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRGateBlock;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRMugBlock;
@@ -277,6 +278,13 @@ public final class LOTRLegacyBlocks {
             }
             Block block = BuiltInRegistries.BLOCK.getValue(row.id);
             BlockState state = orient(block, meta);
+            // A log at metadata 12-15 had bark all round: its "_wood" block, where the port has one.
+            if ((meta & 12) == 12 && LOTRBlocks.ALL_LOGS.contains(block) && row.id.getPath().endsWith("_log")) {
+                Identifier woodId = row.id.withPath(row.id.getPath().replace("_log", "_wood"));
+                if (BuiltInRegistries.BLOCK.containsKey(woodId)) {
+                    state = BuiltInRegistries.BLOCK.getValue(woodId).defaultBlockState();
+                }
+            }
             for (Map.Entry<String, String> e : row.forced.entrySet()) {
                 state = withNamed(state, e.getKey(), e.getValue());
             }

@@ -38,6 +38,7 @@ public final class LOTRBlockBehaviours {
 
         // setFireInfo(block, encouragement, flammability)
         LOTRBlocks.ALL_LOGS.forEach(b -> fire.add(b, 5, 5));
+        fire.add(LOTRBuildingBlocks.MALLORN_WOOD, 5, 5);
         LOTRBlocks.ALL_LEAVES.forEach(b -> fire.add(b, 30, 60));
         LOTRBlocks.ALL_FALLEN_LEAVES.forEach(b -> fire.add(b, 30, 60));
         LOTRBlocks.ALL_BUSHES.forEach(b -> fire.add(b, 30, 60));

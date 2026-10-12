@@ -1,8 +1,10 @@
 package net.blueskiez77.lord_of_the_rings__middle_earth.common.block;
 
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRDataComponents;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRFoodItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRMiscItems;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRToolItems;
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRVessel;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRSmokingPipeItem;
 
 import net.minecraft.core.cauldron.CauldronInteractions;
@@ -12,6 +14,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.level.block.LayeredCauldronBlock;
 import net.minecraft.core.component.DataComponents;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.item.LOTRLeatherHatItem;
@@ -71,6 +74,25 @@ public final class LOTRCauldronWashing {
                         BuiltInRegistries.ITEM.getValue(Identifier.fromNamespaceAndPath(
                                 id.getNamespace(), id.getPath().substring("poisoned_".length())))));
         washTo(LOTRToolItems.MOON_CHISEL, LOTRToolItems.CHISEL);
+
+        // LOTREventHandler.onBlockInteract: an empty vessel takes a level of water out as a
+        // vessel of water (fillMugFromCauldron). The glass bottle is left to vanilla's, whose
+        // water bottle the port already treats as the bottle vessel.
+        for (LOTRVessel vessel : LOTRVessel.values()) {
+            if (vessel == LOTRVessel.BOTTLE) {
+                continue;
+            }
+            CauldronInteractions.WATER.put(vessel.emptyItem(), (state, level, pos, player, hand, stack) -> {
+                if (!level.isClientSide()) {
+                    ItemStack water = new ItemStack(LOTRFoodItems.WATER);
+                    water.set(LOTRDataComponents.VESSEL, vessel);
+                    player.setItemInHand(hand, ItemUtils.createFilledResult(stack, player, water));
+                    player.awardStat(Stats.USE_CAULDRON);
+                    LayeredCauldronBlock.lowerFillLevel(state, level, pos);
+                }
+                return InteractionResult.SUCCESS;
+            });
+        }
     }
 
     private static void washTo(Item poisoned, Item plain) {

@@ -48,9 +48,20 @@ public class LOTRBannerItem extends StandingAndWallBlockItem implements LOTRTool
         return data != null && data.copyTag().getCompound(LOTRBannerBlockEntity.ITEM_DATA_KEY).isPresent();
     }
 
+    /** hasChoiceToKeepOriginalOwner: only a creative player may keep a placed banner's owner. */
+    public static boolean hasChoiceToKeepOriginalOwner(Player player) {
+        return player.isCreative();
+    }
+
+    /** isHoldingBannerWithExistingProtection: the held banner still carries protection data. */
+    public static boolean isHoldingBannerWithExistingProtection(Player player) {
+        ItemStack stack = player.getMainHandItem();
+        return stack.getItem() instanceof LOTRBannerItem && hasProtectionData(stack);
+    }
+
     /** shouldKeepOriginalOwnerOnPlacement: a creative player sneaking keeps the banner's owner. */
     public static boolean shouldKeepOriginalOwnerOnPlacement(@Nullable Player player) {
-        return player != null && player.isCreative() && player.isShiftKeyDown();
+        return player != null && hasChoiceToKeepOriginalOwner(player) && player.isShiftKeyDown();
     }
 
     @Override

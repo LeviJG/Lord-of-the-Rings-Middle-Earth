@@ -41,8 +41,7 @@ import org.jspecify.annotations.Nullable;
  * the players the boss is tracked by.
  *
  * <p>Its death earns its kill achievement for everyone who did it forty
- * damage -- here, those of them who are online; the original could reach a
- * player's data offline.
+ * damage, kept for any who are offline until they next join.
  */
 public class LOTRBossInfo {
 
@@ -161,10 +160,7 @@ public class LOTRBossInfo {
                 if (entry.getValue().damage() < PLAYER_DAMAGE_THRESHOLD) {
                     continue;
                 }
-                Player player = level.getServer().getPlayerList().getPlayer(entry.getKey());
-                if (player != null) {
-                    LOTRPlayerAchievements.addAchievement(player, this.theBoss.getBossKillAchievement());
-                }
+                LOTRPlayerAchievements.addAchievement(level.getServer(), entry.getKey(), this.theBoss.getBossKillAchievement());
             }
         }
     }

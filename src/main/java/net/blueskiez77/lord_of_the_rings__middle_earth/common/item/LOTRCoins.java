@@ -3,6 +3,7 @@ package net.blueskiez77.lord_of_the_rings__middle_earth.common.item;
 import net.blueskiez77.lord_of_the_rings__middle_earth.LOTRMod;
 import net.blueskiez77.lord_of_the_rings__middle_earth.common.quest.IPickpocketable;
 
+import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -68,11 +69,27 @@ public final class LOTRCoins {
     }
 
     public static int getInventoryValue(Player player) {
+        return getInventoryValue(player, false);
+    }
+
+    public static int getInventoryValue(Player player, boolean allowStolen) {
         int coins = 0;
         for (ItemStack stack : player.getInventory().getNonEquipmentItems()) {
-            coins += getStackValue(stack);
+            coins += getStackValue(stack, allowStolen);
         }
-        return coins + getStackValue(player.containerMenu.getCarried());
+        return coins + getStackValue(player.containerMenu.getCarried(), allowStolen);
+    }
+
+    /** getContainerValue: a player's inventory as getInventoryValue, any other container slot by slot. */
+    public static int getContainerValue(Container inv, boolean allowStolen) {
+        if (inv instanceof Inventory playerInv) {
+            return getInventoryValue(playerInv.player, allowStolen);
+        }
+        int coins = 0;
+        for (int i = 0; i < inv.getContainerSize(); ++i) {
+            coins += getStackValue(inv.getItem(i), allowStolen);
+        }
+        return coins;
     }
 
     /** giveCoins: the biggest coins that fit, and anything that does not dropped at the player's feet. */

@@ -96,11 +96,10 @@ clouds, aurora, weather, ambience); D10k-b, the "M.E. Classic" world type (all o
 portals, rules and client side (D15b), and its creatures, the Balrog among them (D15c); Track W, the
 world-gen review (2026-10-11; its standing decisions are in PORT_PLAN, "World-gen decisions"); D17a
 and D17b, conquest (`world/map/LOTRConquestGrid`: the zones, kills, spawning, conquest-opened
-waypoints, `/conquest`, and the Table of Command's conquest map).
+waypoints, `/conquest`, and the Table of Command's conquest map); D17c, the map on the table's top.
 
-Open, in the order chosen with the user (D10g, D10k-b, D15, Track W and conquest done):
-- D17c: the map drawn on the Table of Command's surface (`LOTRRenderCommandTable`).
-- D16 leftovers: the mod's music (`LOTRMusic`), coin counts, drunken chat, the Table of Command screens.
+Open, in the order chosen with the user (D10g, D10k-b, D15, Track W and D17 done):
+- The tracker's one open entry: vanilla leather horse armour on LOTR horses (needs the user's call).
 - B17: the user's in-game pass over the structures.
 
 The PORT_PLAN tracker lists every remaining item with its unit.

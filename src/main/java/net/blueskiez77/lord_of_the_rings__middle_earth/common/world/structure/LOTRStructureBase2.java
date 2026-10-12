@@ -118,9 +118,8 @@ import org.jspecify.annotations.Nullable;
  * set has its shape brought into line with its neighbours, so fences, walls
  * and panes join as the original's did when drawn; stairs stay straight, as
  * the original's could not turn corners, and nothing is broken for want of
- * support, since 1.7.10 never looked again.
- *
- * <p>NOT ported yet: the timelapse (a debug option).
+ * support, since 1.7.10 never looked again. A spawned one may be built as a
+ * timelapse (LOTRStructureTimelapse).
  */
 public abstract class LOTRStructureBase2 implements net.blueskiez77.lord_of_the_rings__middle_earth.common.world.feature.LOTRWorldGenerator {
 

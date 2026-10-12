@@ -72,3 +72,4 @@ accessible field net/minecraft/server/MinecraftServer playerDataStorage Lnet/min
 # which the screen keeps in these two protected fields.
 accessible	field	net/minecraft/client/gui/screens/inventory/AbstractContainerScreen	leftPos	I
 accessible	field	net/minecraft/client/gui/screens/inventory/AbstractContainerScreen	topPos	I
+accessible	field	net/minecraft/client/gui/screens/inventory/AbstractContainerScreen	imageWidth	I

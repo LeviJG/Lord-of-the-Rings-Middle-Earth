@@ -92,6 +92,7 @@ public class LOTRMod implements ModInitializer {
         net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRFastTravel.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.world.map.LOTRConquestGrid.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.command.LOTRConquestCommand.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.LOTRDrunkenSpeech.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.LOTREntityRegistry.init();
 
         LOTRPlayerAlignments.init();
@@ -107,6 +108,7 @@ public class LOTRMod implements ModInitializer {
         LOTRStructureScan.loadAllScans();
         LOTRStructures.init();
         LOTRStructureSpawning.init();
+        net.blueskiez77.lord_of_the_rings__middle_earth.common.world.structure.LOTRStructureTimelapse.init();
         LOTRSpawnerChests.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.ent.LOTRTreeDefence.init();
         net.blueskiez77.lord_of_the_rings__middle_earth.common.entity.npc.dorwinion.LOTRDorwinionGuardEntity.initVineyardDefence();

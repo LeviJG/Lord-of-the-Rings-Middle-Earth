@@ -5,12 +5,16 @@ import java.util.concurrent.CompletableFuture;
 import net.fabricmc.fabric.api.datagen.v1.FabricPackOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagsProvider;
 
+import net.blueskiez77.lord_of_the_rings__middle_earth.common.block.LOTRBlocks;
+
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
 // LOTRRecipes.registerOres put every LOTR plank, log, wooden slab, wooden stair, leaf and sapling into the Forge ore dictionary (plankWood, logWood, slabWood, stairWood, treeLeaves, treeSapling), so they worked in every vanilla recipe that asked for "any planks" -- sticks, crafting tables, chests, bowls. The 26.2 equivalent is the item tag, and without these copies only the block tags existed: LOTR planks could not make a stick.
@@ -30,8 +34,14 @@ public class LOTRItemTagProvider extends FabricTagsProvider.ItemTagsProvider {
     @Override
     protected void addTags(HolderLookup.Provider registries) {
         copy(BlockTags.PLANKS, ItemTags.PLANKS);
-        copy(BlockTags.LOGS, ItemTags.LOGS);
-        copy(vanillaBlockTag("logs_that_burn"), ItemTags.LOGS_THAT_BURN);
+        // Not copied: the block tags also hold lotr:mallorn_wood, which has no item.
+        var logs = builder(ItemTags.LOGS);
+        var logsThatBurn = builder(ItemTags.LOGS_THAT_BURN);
+        LOTRBlocks.ALL_LOGS.forEach(b -> {
+            ResourceKey<Item> key = ResourceKey.create(Registries.ITEM, LOTRBlocks.keyOf(b).identifier());
+            logs.add(key);
+            logsThatBurn.add(key);
+        });
         copy(BlockTags.WOODEN_SLABS, ItemTags.WOODEN_SLABS);
         copy(BlockTags.WOODEN_STAIRS, ItemTags.WOODEN_STAIRS);
         copy(BlockTags.LEAVES, ItemTags.LEAVES);

@@ -24,8 +24,8 @@ import net.minecraft.world.level.block.state.BlockState;
  * vanilla enchantments on anything a player carries, stripped every three
  * seconds (not in creative, and never from a fishing rod).
  *
- * <p>The original also told a player once why the enchanting table would not
- * open (LOTRGuiMessageTypes.ENCHANTING), a screen that comes with the GUIs.
+ * <p>A player is told once why the enchanting table will not open
+ * (LOTRGuiMessageTypes.ENCHANTING).
  */
 public final class LOTRConfigRules {
 

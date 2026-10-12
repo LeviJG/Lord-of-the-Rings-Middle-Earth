@@ -368,6 +368,13 @@ public final class LOTRBuildingBlocks {
     public static final Block LIME_LOG = registerLog("lime_log");
     public static final Block MAHOGANY_LOG = registerLog("mahogany_log");
     public static final Block MALLORN_LOG = registerLog("mallorn_log");
+    /**
+     * LOTRBlockWoodBase at metadata 12-15: the log with bark all round, as the extreme mallorn's
+     * branches are built. No item, as the original's dropped (and picked) the log itself.
+     */
+    public static final Block MALLORN_WOOD = register("mallorn_wood", net.minecraft.world.level.block.RotatedPillarBlock::new,
+            BlockBehaviour.Properties.of().mapColor(MapColor.WOOD).instrument(net.minecraft.world.level.block.state.properties.NoteBlockInstrument.BASS)
+                    .strength(2.0f).sound(SoundType.WOOD).ignitedByLava(), false);
     public static final Block MANGO_LOG = registerLog("mango_log");
     public static final Block MANGROVE_LOG = registerLog("mangrove_log");
     public static final Block MAPLE_LOG = registerLog("maple_log");

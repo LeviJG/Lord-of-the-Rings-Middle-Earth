@@ -257,6 +257,7 @@ public class LOTRBlockLootProvider extends FabricBlockLootSubProvider {
         dropSelf(LOTRFoodBlocks.STONEWARE_PLATE);
         dropSelf(LOTRFoodBlocks.WOODEN_PLATE);
         dropOther(LOTRFoodBlocks.BANANA_BLOCK, LOTRFoodItems.BANANA);
+        dropOther(LOTRBuildingBlocks.MALLORN_WOOD, LOTRBuildingBlocks.MALLORN_LOG);
         dropOther(LOTRFoodBlocks.DATE_BLOCK, LOTRFoodItems.DATE);
         List.of(LOTRFoodBlocks.APPLE_CRUMBLE, LOTRFoodBlocks.BANANA_CAKE, LOTRFoodBlocks.BERRY_PIE,
                 LOTRFoodBlocks.CHERRY_PIE, LOTRFoodBlocks.DALISH_PASTRY, LOTRFoodBlocks.LEMON_CAKE,

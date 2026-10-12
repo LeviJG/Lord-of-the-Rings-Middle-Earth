@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
@@ -34,6 +35,7 @@ import net.fabricmc.fabric.api.attachment.v1.AttachmentSyncPredicate;
 import net.fabricmc.fabric.api.attachment.v1.AttachmentType;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -42,12 +44,15 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.saveddata.SavedData;
+import net.minecraft.world.level.saveddata.SavedDataType;
 
 import org.jspecify.annotations.Nullable;
 
@@ -110,6 +115,30 @@ public final class LOTRPlayerAchievements {
         }
     }
 
+    /**
+     * Achievements earned by players while offline (a boss's kill), kept for them until they next
+     * join -- the original wrote them into the offline player's data. "lotr:pending_achievements".
+     */
+    private static final class Pending extends SavedData {
+        static final Codec<Map<String, List<LOTRAchievement>>> MAP_CODEC = Codec.unboundedMap(Codec.STRING, LIST_CODEC);
+        static final Codec<Pending> CODEC = MAP_CODEC.xmap(Pending::new, p -> p.pending);
+        static final SavedDataType<Pending> TYPE = new SavedDataType<>(
+                Identifier.fromNamespaceAndPath(LOTRMod.NAMESPACE, "pending_achievements"), Pending::new, CODEC, null);
+
+        final Map<String, List<LOTRAchievement>> pending = new HashMap<>();
+
+        Pending() {
+        }
+
+        Pending(Map<String, List<LOTRAchievement>> map) {
+            this.pending.putAll(map);
+        }
+
+        static Pending get(MinecraftServer server) {
+            return server.overworld().getDataStorage().computeIfAbsent(TYPE);
+        }
+    }
+
     /** Each armour item's 1.7.10 material, from lotr/legacy_armor_materials.tsv. */
     private static final Map<Identifier, String> ARMOR_MATERIALS = new HashMap<>();
     /** The full-set achievements by material. */
@@ -127,6 +156,42 @@ public final class LOTRPlayerAchievements {
                 runAchievementChecks(player);
             }
         });
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            Pending pending = Pending.get(server);
+            List<LOTRAchievement> held = pending.pending.remove(handler.player.getUUID().toString());
+            if (held != null) {
+                pending.setDirty();
+                List<LOTRAchievement> list = new ArrayList<>(getAchievements(handler.player));
+                for (LOTRAchievement achievement : held) {
+                    if (!list.contains(achievement)) {
+                        list.add(achievement);
+                    }
+                }
+                handler.player.setAttached(ACHIEVEMENTS, List.copyOf(list));
+            }
+        });
+    }
+
+    /**
+     * addAchievement for a player by id: earned at once if they are online; otherwise kept for them,
+     * quietly, as the original added it to an offline player's data.
+     */
+    public static void addAchievement(MinecraftServer server, UUID playerID, @Nullable LOTRAchievement achievement) {
+        if (achievement == null) {
+            return;
+        }
+        ServerPlayer player = server.getPlayerList().getPlayer(playerID);
+        if (player != null) {
+            addAchievement(player, achievement);
+            return;
+        }
+        Pending pending = Pending.get(server);
+        List<LOTRAchievement> held = new ArrayList<>(pending.pending.getOrDefault(playerID.toString(), List.of()));
+        if (!held.contains(achievement)) {
+            held.add(achievement);
+            pending.pending.put(playerID.toString(), List.copyOf(held));
+            pending.setDirty();
+        }
     }
 
     // ---------------------------------------------------------------- the list
